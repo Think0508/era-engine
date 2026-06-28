@@ -131,17 +131,19 @@ function evalSimple(expr: string, ctx: GameContext): boolean {
 export function evaluateCondition(expr: string, ctx: GameContext): boolean {
   expr = expr.trim()
 
-  const stripped = expr.replace(/[><=!]/g, '').replace(/["']/g, '')
+  const stripped = expr.replace(/"[^"]*"/g, '""').replace(/'[^']*'/g, "''").replace(/[><=!]/g, '')
   if (/[\+\-\*\/\%]/.test(stripped)) {
     throw new Error('Arithmetic operators are not allowed in conditions; use condition_script for complex logic')
   }
 
-  while (expr.includes('(')) {
+  let prev: string
+  do {
+    prev = expr
     expr = expr.replace(/\([^()]+\)/g, (match) => {
       const inner = match.slice(1, -1)
       return evaluateCondition(inner, ctx) ? 'true' : 'false'
     })
-  }
+  } while (expr !== prev && expr.includes('('))
 
   expr = expr.replace(/!true/g, 'false').replace(/!false/g, 'true')
 

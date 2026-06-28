@@ -81,4 +81,12 @@ describe('evaluateCondition', () => {
       ctx
     )).toBe(true)
   })
+
+  it('should not false-positive arithmetic check on string content with dashes', () => {
+    expect(() => evaluateCondition('location.name == "酒馆-分店"', ctx)).not.toThrow()
+  })
+
+  it('should not hang on unbalanced parens in string literals', () => {
+    expect(() => evaluateCondition('location.name == "酒馆(分店"', ctx)).not.toThrow()
+  })
 })

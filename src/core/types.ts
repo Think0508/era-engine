@@ -47,7 +47,7 @@ export interface PluginContext {
   events: {
     on: (event: string, handler: Function) => void
     off: (event: string, handler: Function) => void
-    emit: (event: string, payload: any) => void
+    emit: (event: string, payload: any) => Promise<void>
   }
   gameState: {
     currentLocation: LocationData | null

@@ -1,0 +1,8 @@
+[meta]
+id = "test-mod"
+name = "测试模组"
+version = "1.0.0"
+
+dependencies = [
+  { plugin = "combat-base", version = "^1.0.0" }
+]

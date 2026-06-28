@@ -1,0 +1,23 @@
+[colors]
+primary = "#3B82F6"
+secondary = "#6366F1"
+background = "#F8FAFC"
+surface = "#FFFFFF"
+text = "#1E293B"
+text_secondary = "#64748B"
+border = "#CBD5E1"
+success = "#22C55E"
+danger = "#EF4444"
+warning = "#F59E0B"
+
+[typography]
+font_body = "sans-serif"
+font_title = "sans-serif"
+font_size_base = "16px"
+
+[spacing]
+radius_button = "4px"
+radius_panel = "8px"
+gap_small = "8px"
+gap_medium = "16px"
+gap_large = "32px"

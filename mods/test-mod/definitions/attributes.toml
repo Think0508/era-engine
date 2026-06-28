@@ -1,0 +1,6 @@
+[attributes]
+hp = { type = "number", default = 100, category = "base" }
+mp = { type = "number", default = 50, category = "base" }
+attack = { type = "number", default = 10, category = "combat" }
+defense = { type = "number", default = 5, category = "combat" }
+speed = { type = "number", default = 5, category = "base" }

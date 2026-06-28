@@ -1,0 +1,5 @@
+# mods/test-mod/templates/character/test-hero.toml
+id = "test-hero"
+extends = "base-human"
+name = "测试英雄"
+base = { hp = 150, attack = 15 }

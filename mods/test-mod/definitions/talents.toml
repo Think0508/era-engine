@@ -1,0 +1,2 @@
+[talents]
+"剑术精通" = { type = "number", max = 10, description = "剑术天赋" }

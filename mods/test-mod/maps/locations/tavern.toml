@@ -1,0 +1,9 @@
+# mods/test-mod/maps/locations/tavern.toml
+id = "tavern"
+name = "酒馆"
+parent = "town_square"
+type = "building"
+tags = ["has_drink", "rest"]
+exits = [
+  { target = "town_square", name = "去广场", time_cost = 5 }
+]

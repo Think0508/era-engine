@@ -1,0 +1,20 @@
+# mods/test-mod/characters/roster.toml
+[[roster]]
+id = "player"
+template = "test-hero"
+name = "玩家"
+base = { hp = 200, mp = 80 }
+
+[[roster]]
+id = "innkeeper"
+template = "base-human"
+name = "酒馆老板"
+base = { hp = 80, attack = 5 }
+behavior = { activity = 0, home_locations = { tavern = 1.0 } }
+
+[[roster]]
+id = "guard"
+template = "base-human"
+name = "卫兵"
+base = { hp = 120, attack = 12 }
+behavior = { activity = 0.3, home_locations = { town_square = 0.7, tavern = 0.3 } }

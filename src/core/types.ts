@@ -45,7 +45,7 @@ export interface PluginContext {
     api: Record<string, any>
   } | null
   events: {
-    on: (event: string, handler: Function) => void
+    on: (event: string, handler: Function, priority?: number) => void
     off: (event: string, handler: Function) => void
     emit: (event: string, payload: any) => Promise<void>
   }

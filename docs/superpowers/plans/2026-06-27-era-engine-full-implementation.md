@@ -165,8 +165,8 @@ New-Item -ItemType Directory -Path "src/core" -Force
 
 # plugins (创建所有插件目录)
 $plugins = @(
-  "combat-base", "combat-wuxia", "map-system",
-  "character-system", "dialogue-system",
+  "combat-base", "combat-wuxia", "status-system", "ability-progression",
+  "map-system", "character-system", "dialogue-system",
   "inventory-system", "quest-system", "effect-system"
 )
 foreach ($p in $plugins) {
@@ -175,7 +175,7 @@ foreach ($p in $plugins) {
 }
 
 # ui
-$uiDirs = @("layout", "components", "views", "dev-panel", "slots")
+$uiDirs = @("layout", "components", "views", "slots")
 foreach ($d in $uiDirs) {
   New-Item -ItemType Directory -Path "src/ui/$d" -Force
   New-Item -ItemType File -Path "src/ui/$d/.gitkeep"
@@ -190,6 +190,8 @@ $modDirs = @(
   "mods/武侠/templates/character",
   "mods/武侠/templates/item",
   "mods/武侠/characters/named",
+  "mods/武侠/characters/named/_template",
+  "mods/武侠/characters/named/_template/conversations",
   "mods/武侠/maps/locations",
   "mods/武侠/quests/main",
   "mods/武侠/quests/side",
@@ -2240,21 +2242,23 @@ git commit -m "feat: implement plugin manager with extends sorting and lifecycle
 - 实现主题系统（CSS变量注入/卸载，读取 `theme.toml`）
 - 实现通用组件（属性条、头像、日志、按钮）— 全部Tailwind定制，无Naive UI
 
-### 阶段6-7：地图+角色+口上
+### 阶段6-7：地图+角色+对话
 **关键任务：**
-- 实现地图插件（`src/plugins/map-system/`）— exit校验、移动触发事件、tags控制按钮
-- 实现角色插件（`src/plugins/character-system/`）— 三级体系、模板继承、bindings读写
-- 实现口上插件（`src/plugins/dialogue-system/`）— 条件触发、多条随机、模板继承
+- 实现地图插件（`src/plugins/map-system/`）— exit校验、移动触发事件、tags控制按钮、parent递归导航
+- 实现角色插件（`src/plugins/character-system/`）— 三级体系（named/roster/npc）、模板继承、bindings读写、behavior分层
+- 实现对话插件（`src/plugins/dialogue-system/`）— 反应式口上（dialogue.toml，scene触发+条件+随机）+ 交互式对话树（conversations/目录，nodes+choices+effects）
 
-### 阶段8-10：背包+效果+战斗+任务
+### 阶段8-10：状态+能力+背包+效果+战斗+任务
 **关键任务：**
+- 状态系统（`src/plugins/status-system/`）— 独立插件，apply_status/remove_status effect，tick跳动，stack叠加，条件字段注册
+- 能力升级（`src/plugins/ability-progression/`）— 独立插件，gain_ability_xp effect，xp_curve，unlocks自动解锁
 - 背包（`src/plugins/inventory-system/`）— 物品增删、使用效果、条件字段
-- 效果系统（`src/plugins/effect-system/`）— 可扩展效果类型
-- 战斗（`src/plugins/combat-base/` + `combat-wuxia/`）— 回合逻辑、标准事件、插件继承
-- 任务（`src/plugins/quest-system/`）— 节点式分支、条件触发、统一效果
+- 效果系统（`src/plugins/effect-system/`）— 核心效果类型（set_attribute/modify_attribute/set_field/add_item/remove_item/modify_relation/advance_time/narrative_output/enter_mode/exit_mode）+ 插件注册扩展类型
+- 战斗（`src/plugins/combat-base/` + `combat-wuxia/`）— 回合逻辑、标准事件、插件继承、optional_ability_tags适配
+- 任务（`src/plugins/quest-system/`）— steps+objectives+分支、auto_start、事件驱动目标
 
 ### 阶段11-15（可选）
-开发者面板、插件化闭环、存档系统、沙箱脚本、LLM口上
+@命令调试工具、插件化闭环、存档系统、沙箱脚本、LLM口上、角色创建流程、游戏启动流程（标题界面）
 
 ---
 

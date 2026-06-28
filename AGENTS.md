@@ -49,11 +49,13 @@ src/
 │   ├── types.ts              # 所有核心接口定义（PluginContext/GameContext等）
 │   └── api.ts               # 对外公共API注册器
 ├── plugins/                 # 通用玩法插件（多套可并存，模组按需启用）
-│   ├── combat-base/         # 回合制战斗骨架（HP扣减、状态结算、事件钩子）
-│   ├── combat-wuxia/        # 武侠战斗（extends combat-base）
+│   ├── combat-base/         # 回合制战斗骨架（HP扣减、事件钩子；依赖 status-system）
+│   ├── combat-wuxia/        # 武侠战斗（extends combat-base，用 optional_ability_tags 适应不同武侠 mod）
+│   ├── status-system/       # 状态效果系统（独立插件：中毒/醉意/buff等，战斗内外都用）
+│   ├── ability-progression/ # 能力升级系统（XP/等级/unlocks，独立插件，战斗外副职也用）
 │   ├── map-system/          # 地图与移动系统
 │   ├── character-system/    # 角色属性管理（运行时读写绑定、AI行为等）
-│   ├── dialogue-system/     # 口上与对话系统
+│   ├── dialogue-system/     # 口上与对话系统（反应式口上 + 交互式对话树）
 │   ├── inventory-system/    # 背包物品系统
 │   ├── quest-system/        # 任务剧情系统
 │   └── effect-system/       # 统一效果执行器
@@ -61,7 +63,6 @@ src/
 │   ├── layout/              # 响应式整体布局（PC左右分栏、手机上下堆叠）
 │   ├── components/          # 全定制游戏组件（属性条、头像、日志、按钮）
 │   ├── views/               # 核心界面（主场景、战斗、对话、地图、背包）
-│   ├── dev-panel/           # 开发者面板（属性字典、事件追踪、控制台、数据查看）
 │   └── slots/               # UI插槽注册系统
 └── utils/                   # 工具库
     ├── toml-validator.ts    # TOML结构校验（精准报文件名+行号）
@@ -91,7 +92,10 @@ mods/武侠/
 │   ├── named/               # 重要角色：独立文件夹（50-100人）
 │   │   └── linghuchong/
 │   │       ├── base.toml
-│   │       ├── dialogue.toml
+│   │       ├── dialogue.toml      # 反应式口上（场景触发的短台词）
+│   │       ├── conversations/     # 交互式对话（一个文件一个对话树）
+│   │       │   ├── talk_about_sword.toml
+│   │       │   └── daily_chat.toml
 │   │       ├── behavior.toml
 │   │       └── assets/
 │   ├── roster.toml          # 次要角色：批量清单（500人，每人8-10行）
@@ -198,7 +202,11 @@ ctx.api.call('engine', 'bindings.set', characterId, 'hp', newValue)
 const hp = entity.base.气血
 ```
 
-**加载时自动校验**：模组启用了 `combat-wuxia`，但其 `bindings.toml` 里没有 `[bindings.combat-wuxia].hp` → 报错「模组 `武侠` 缺少绑定：插件 `combat-wuxia` 需要 `hp`，请检查 `bindings.toml`」
+**加载时自动校验**（两步）：
+1. **存在性校验**：模组启用了 `combat-wuxia`，但其 `bindings.toml` 里没有 `[bindings.combat-wuxia].hp` → 报错「模组 `武侠` 缺少绑定：插件 `combat-wuxia` 需要 `hp`，请检查 `bindings.toml`」
+2. **类型校验**：绑定的属性类型必须与插件声明的一致。插件声明 `hp = {type = "number"}`，但 `attributes.toml` 里 `气血` 定义为 `type = "string"` → 报错「绑定类型不匹配：插件 `combat-wuxia` 需要 `hp` (number)，但属性 `气血` 定义为 string（检查 `definitions/attributes.toml` 第 X 行）」
+
+**可选绑定**：插件可声明 `optional_attributes`（而非 `required_attributes`）。缺少或类型不匹配 → warning（不阻止加载），插件必须处理未绑定的情况。
 
 **计算属性**：属性可在 `attributes.toml` 中标注需要脚本计算：
 ```toml
@@ -233,8 +241,9 @@ behavior = { activity = 0.5, home_locations = { 华山_练武场 = 0.7 } }
 
 **NPC生命周期**：
 - 首次遇到时按模板生成，存入存档
-- 下次加载：基础属性重新读取当前模板（反映任何手工修改），运行时状态（当前位置、临时buff等）从存档恢复
-- 模板改动（如改默认HP）自动对所有该模板的NPC生效
+- 下次加载：角色完全从存档恢复（存档权威模型）。模板仅提供初始值，不覆盖存档数据
+- 模板改动（如改默认HP）只影响**新游戏/新遭遇**的角色，已有存档中的角色不受影响
+- 如需让旧存档角色反映模板改动，使用存档迁移脚本（见第12节）
 
 ---
 
@@ -325,10 +334,13 @@ extends = "combat-base"
 | `game` | `game:new_day`、`game:hour_changed`、`game:night_start`、`game:save`、`game:load` | 时间/存档 |
 | `save` | （由 `game:save`/`game:load` 覆盖） | 存档相关走 game 域 |
 
-### 7. 事件链调试
-- 每个 handler 必须 try/catch 包裹，报错不阻断后续 handler
-- 开发者面板「事件追踪」页：实时显示事件名 → 触发时间 → 处理耗时 → 成功/失败
+### 7. 事件链与异步处理
+- 处理器可以是 async（返回 Promise），总线按优先级顺序 **await 每个处理器**——串行执行，不并行
+- 每个 handler 必须 try/catch 包裹，报错不阻断后续 handler（错误隔离）
+- 总线检测 same-tick 循环（同一事件 → 同一处理器触发两次）并断链报错，不死循环
+- 慢操作（如 LLM 调用）不应作为事件处理器——应从 UI 渲染管线调用
 - 插件加载错误：降级为「禁用该插件 + 弹红色警告（含文件名+行号+原因）」，不死锁启动
+- `@` 前缀 debug 命令输出到叙事日志，浏览器 console 用于调试（无独立开发者面板）
 
 ---
 
@@ -339,14 +351,27 @@ extends = "combat-base"
 **条件路径结构**（路径格式惯例，具体可用字段由动态收集决定）：
 
 ```
-player.{属性名}             — 玩家属性（属性名来自 attributes.toml）
-character.{角色ID}.{属性名} — 指定NPC的属性
+player.{属性名}              — 玩家属性（属性名来自 attributes.toml）
+character.{角色ID}.{属性名}  — 指定NPC的属性
+character.{角色ID}.abilities.{技能ID}  — NPC的技能等级
+character.{角色ID}.talents.{天赋ID}    — NPC是否拥有该天赋
+character.{角色ID}.factions.{势力ID}   — NPC在该势力的职位
+character.{角色ID}.status.{状态ID}     — NPC是否拥有该状态效果（boolean）
+character.{角色ID}.status.{状态ID}.stack — 状态效果叠加层数
 location.{字段}              — 当前地点属性（id/type/tags/parent）
+location.tags.{标签名}       — 当前地点是否拥有某标签（数组包含检查，返回boolean）
 game.time.{单位}             — 游戏时间（hour/day/month）
 inventory.{物品ID}.count     — 背包物品数量
 quest.{任务ID}.status        — 任务状态
 {插件注册的任意字段}          — 各插件可注册自定义条件字段
 ```
+
+**数组包含检查**——使用点路径语法（不引入新运算符）：
+```toml
+condition = "location.tags.has_gather == true"
+```
+条件引擎在解析路径时：遇到 `location.tags` 返回数组 → 再解析 `.has_gather` → 发现上一级是数组 → 检查 `has_gather` 是否在数组中 → 返回 `true`/`false`。
+对于对象数组（如 `status_effects`），按 `id` 字段匹配：`character.{id}.status.中毒` 检查是否有 `id == "中毒"` 的元素。
 
 以上是**路径结构惯例**，不是硬编码列表。引擎不认识任何具体属性名，所有可用字段来自：
 - 模组 `definitions/attributes.toml` 中定义的所有属性 → 自动注册为条件字段
@@ -359,6 +384,7 @@ quest.{任务ID}.status        — 任务状态
 ```toml
 condition = "player.气血 < 30"
 condition = "(player.气血 < 30 || player.内力 < 20) && game.time.hour >= 18"
+condition = "location.tags.has_gather == true && character.令狐冲.status.醉意 == true"
 ```
 
 **复杂判断 → JS 钩子**（禁止在 TOML 里写算术/函数/正则）：
@@ -516,6 +542,16 @@ hp = { type = "number", description = "战斗用生命值" }
 mp = { type = "number", description = "战斗用能量值" }
 attack = { type = "number", description = "攻击力" }
 
+# 可选：本插件需要的能力标签（mod 必须有至少一个能力带此标签，否则 warning）
+[required_ability_tags]
+combat_active = { description = "可在战斗中主动使用的能力" }
+
+# 可选：本插件可选使用的能力标签（mod 没有则降级处理，不阻止加载）
+[optional_ability_tags]
+sword = { description = "剑类技能，有剑法加成系数" }
+internal = { description = "内功，影响内力计算" }
+movement = { description = "轻功，影响闪避" }
+
 # 可选：本插件注册到条件字典的字段
 [condition_fields]
 "combat.in_progress" = { type = "boolean", description = "是否正在战斗中" }
@@ -530,15 +566,24 @@ description = "响应战斗请求"
 name = "item:used"
 description = "战斗中物品使用"
 
-# 可选：UI入口注册
+# 可选：UI入口注册（命令声明）
+# 分组（location_commands/character_commands/main_menu）只影响UI显示位置，不影响条件范围
+# 每个命令必须有 modes（在哪些模式显示）和 effects 或 handler（做什么）
 [ui]
-main_menu = [{ id = "combat_test", label = "战斗测试", priority = 100 }]
+main_menu = [
+  { id = "combat_test", label = "战斗测试", modes = ["exploration"], priority = 100,
+    effects = [{type = "start_combat", params = {enemies = ["test_enemy"]}}] }
+]
 location_commands = [
-  { id = "challenge_npc", label = "挑战", condition = "location.tags...has_hostile" }
+  { id = "gather_herbs", label = "采集", modes = ["exploration"],
+    condition = "location.tags.has_gather == true", priority = 50,
+    effects = [{type = "gather", params = {}}] }
 ]
 character_commands = [
-  { id = "talk_character", label = "交谈", priority = 10 },
-  { id = "attack_character", label = "攻击", priority = 90 }
+  { id = "talk", label = "交谈", modes = ["exploration", "combat"], priority = 10,
+    effects = [{type = "start_conversation", params = {}}] },
+  { id = "attack", label = "攻击", modes = ["exploration"], priority = 90,
+    effects = [{type = "start_combat", params = {}}] }
 ]
 
 # 可选：注册到控制台的GM指令
@@ -886,7 +931,7 @@ overrides = { name = "王掌柜" }
 ```
 
 - 首次进入地点时生成，之后永存于存档
-- 下次加载：**模板重读**（反映修改），运行时状态从存档恢复
+- 下次加载：角色完全从存档恢复（存档权威模型）。模板仅提供初始值，不覆盖存档数据
 - `name_generator` 是可选的 JS 脚本（或直接写内联名称列表）
 
 ---
@@ -939,7 +984,7 @@ errorReporter.report({
 })
 ```
 
-所有引擎代码通过此接口报错，**禁止直接 `console.error`**。开发者面板通过 `errorReporter.onError()` 订阅实时展示。`errorReporter.getErrors()` 查询全部错误列表。
+所有引擎代码通过此接口报错，**禁止直接 `console.error`**。`@` 前缀 debug 命令可用于查看错误，浏览器 console 用于调试。`errorReporter.getErrors()` 查询全部错误列表。
 
 ---
 
@@ -957,6 +1002,580 @@ if (import.meta.hot) {
 ```
 
 改 TOML 文件 → Vite 检测 → 引擎重载对应文件，无需刷新页面。
+
+---
+
+### 29. 模式栈与执行状态
+
+**执行状态**：游戏在 IDLE 和 EXECUTING 之间交替。
+- **IDLE**：玩家可浏览NPC、查看菜单、从指令栏选择行动
+- **EXECUTING**：行动执行中（移动、对话、战斗回合、物品使用）——指令栏隐藏，全屏文本布局激活，输出流到叙事日志
+- **EXECUTING 不嵌套**：当前执行必须结束（或中止）才能开始下一个执行。对话被战斗打断 → 对话**中止**（不暂停、不恢复），战斗开始。战斗后回 IDLE，mod 可通过事件触发新对话。
+
+**模式栈**：模式用栈管理。进入模式 push，退出模式 pop。
+```
+exploration → (交谈) → dialogue → (对话结束) → exploration
+exploration → (战斗) → combat → (战斗中交谈) → dialogue → (对话结束) → combat → (战斗结束) → exploration
+```
+
+**模式切换机制**：通过 effect 触发
+```toml
+# 进入模式（push 到栈顶）
+effects = [{type = "enter_mode", params = {mode = "dialogue"}}]
+# 退出模式（pop 栈顶）
+effects = [{type = "exit_mode", params = {}}]
+```
+
+`enter_mode` push 模式到栈并发出 `game:mode_changed` 事件。拥有该模式的系统监听事件，从 IDLE 接管。进入模式的系统负责在结束时调用 `exitMode()`。
+
+**布局切换**：由 (state × mode) 驱动
+- IDLE + exploration → 探索布局
+- IDLE + combat → 战斗布局
+- EXECUTING (任何模式) → 全屏文本布局
+
+---
+
+### 30. 对话数据格式
+
+对话分两种类型，分开存放：
+
+**反应式口上**（`dialogue.toml`）——场景触发的短台词，无分支，无玩家选择：
+```toml
+# characters/named/linghuchong/dialogue.toml
+
+[[lines]]
+scene = "greet"
+condition = "character.令狐冲.好感度 >= 60"
+text = "师弟来得正好，陪我喝一杯！"
+
+[[lines]]
+scene = "greet"
+condition = "character.令狐冲.好感度 < 30"
+text = "你是何人？怎敢擅闯华山禁地？"
+
+[[lines]]
+scene = "hurt"
+text = "嘶……下手倒是不轻。"
+```
+- `scene`：场景分类（greet/farewell/hurt/battle_start 等，可无限扩展）
+- `condition`：可选，满足条件才触发
+- 多条同 scene + 满足 condition → 随机选一条
+- dialogue-system 监听游戏事件 → 匹配 scene + condition → 输出到叙事日志
+
+**交互式对话**（`conversations/` 目录）——分支对话树，有玩家选择：
+```toml
+# characters/named/linghuchong/conversations/talk_about_sword.toml
+id = "talk_about_sword"
+condition = "quest.独孤九剑.status == 'active'"
+
+[[nodes]]
+id = "start"
+lines = ["令狐冲道：师弟，你来了。"]
+choices = [
+  { text = "询问独孤九剑", next = "ask_sword" },
+  { text = "闲聊", next = "chitchat" },
+  { text = "告别", next = "farewell" }
+]
+
+[[nodes]]
+id = "ask_sword"
+lines = ["令狐冲低声道：独孤九剑讲究无招胜有招..."]
+effects = [{type = "set_field", params = {path = "abilities.独孤九剑", value = 1}}]
+next = "start"
+
+[[nodes]]
+id = "farewell"
+lines = ["令狐冲挥手道别。"]
+effects = [{type = "exit_mode", params = {}}]
+```
+- 每个文件 = 一个对话树，`id` 唯一
+- `condition`：可选，自动选择对话时检查（玩家点"交谈"→ 选第一个 condition 满足的对话）
+- `[[nodes]]`：对话节点
+  - `id`：节点唯一标识
+  - `lines`：显示的文本数组
+  - `choices`：可选，玩家选项 `{text, next, condition?}`，`condition` 控制选项可见性
+  - `effects`：可选，到达节点时执行的效果
+  - `next`：可选，单选项自动跳转（无 choices 时使用）
+  - **节点无 condition**（条件只在对话级和选项级，条件在边上不在节点上）
+  - 无 choices 且无 next = 终端节点（对话结束）
+- 触发方式：`start_conversation` effect（dialogue-system 注册），自动进入 dialogue 模式
+
+---
+
+### 31. 任务数据格式
+
+每个任务一个 TOML 文件，放在 `quests/main/` 或 `quests/side/`：
+
+```toml
+# quests/main/find_master.toml
+id = "find_master"
+title = "寻找师父"
+description = "你的师父失踪了，去华山找线索。"
+type = "main"                        # "main" | "side"（仅分类标签）
+prerequisites = ["intro_quest"]      # 可选：前置任务必须已完成
+auto_start_condition = "location.id == '华山_正殿'"  # 可选：条件满足时自动开始
+
+[[steps]]
+id = "start"
+type = "dialogue"                    # 委托 dialogue-system
+character = "岳灵珊"
+conversation = "worry_about_master"
+next = "go_to_huashan"
+
+[[steps]]
+id = "go_to_huashan"
+type = "objective"                   # 目标追踪
+description = "前往华山正殿"
+objective = { type = "reach_location", target = "华山_正殿" }
+next = "find_clue"
+
+[[steps]]
+id = "find_clue"
+type = "combat"                      # 委托 combat-system
+enemies = ["华山_弟子_甲", "华山_弟子_乙"]
+on_win = "report"
+on_lose = "retry"
+
+[[steps]]
+id = "report"
+type = "reward"                      # 执行效果
+effects = [
+  {type = "modify_attribute", params = {attr = "声望", value = 10}},
+  {type = "modify_relation", params = {target = "岳灵珊", relation = "好感度", value = 20}}
+]
+next = "complete"
+
+[[steps]]
+id = "complete"
+type = "dialogue"
+character = "岳灵珊"
+conversation = "master_found"
+
+[[steps]]
+id = "retry"
+type = "dialogue"
+character = "岳灵珊"
+conversation = "try_again"
+next = "find_clue"
+```
+
+**步骤类型**（7种）：
+| 类型 | 说明 | 特有字段 |
+|------|------|----------|
+| `dialogue` | 委托 dialogue-system | character, conversation |
+| `combat` | 委托 combat-system | enemies, on_win, on_lose |
+| `objective` | 目标追踪，事件驱动自动检查 | objective |
+| `reward` | 执行效果 | effects |
+| `spawn` | 创建角色/物品 | template, at_location, count |
+| `condition` | 检查游戏状态分支 | condition, next(满足), else(不满足,可选) |
+| `goto` | 跳转到另一个步骤 | target |
+
+**objective 子格式**（事件驱动）：
+```toml
+objective = { type = "reach_location", target = "华山_正殿" }      # 监 location:enter
+objective = { type = "kill_count", target = "华山_弟子", count = 5 } # 监 combat:end
+objective = { type = "collect_items", item = "回血丹", count = 3 }   # 监 item:added
+objective = { type = "talk_to", character = "令狐冲" }              # 监 dialogue:end
+```
+目标满足后自动跳转到 `next`。插件可注册更多 objective 类型。
+
+**任务启动方式**：
+1. `auto_start_condition`：条件满足时自动开始
+2. `start_quest` effect：`{type = "start_quest", params = {quest = "find_master"}}`
+
+**不支持（MVP）**：限时任务（需 `time_limit` 字段）、重复/日常任务（需重置机制）——后续扩展。
+
+---
+
+### 32. 状态效果格式
+
+状态效果 = 持续性条件（中毒、醉意、buff/debuff），由独立的 `status-system` 插件管理（不属 combat-base），因为状态效果广泛用于战斗外：醉意影响对话好感度、春药影响H指令、中毒影响威胁成功率。
+
+**定义格式**（`definitions/status-effects.toml`）：
+```toml
+[status-effects.中毒]
+name = "中毒"
+description = "持续受到毒素伤害"
+category = "debuff"           # debuff | buff | neutral
+duration = 360                # 持续分钟数，-1 = 永久
+tick_interval = 60            # 每隔多少分钟触发一次 tick_effects
+stackable = false             # 是否可叠加
+max_stack = 1                 # 最大层数（stackable=true 时有效）
+tick_effects = [
+  {type = "modify_attribute", params = {attr = "气血", value = -5}}
+]
+on_apply_effects = []         # 施加时触发
+on_remove_effects = []        # 移除时触发
+
+[status-effects.醉意]
+name = "醉意"
+description = "喝醉了，对话好感度加成"
+category = "buff"
+duration = 120
+tick_interval = 0             # 0 = 不触发 tick
+stackable = true
+max_stack = 3
+```
+
+**施加方式**（effect type，status-system 注册）：
+```toml
+effects = [{type = "apply_status", params = {status = "中毒", target = "selected"}}]
+```
+
+**移除方式**（effect type，status-system 注册）：
+```toml
+effects = [{type = "remove_status", params = {status = "中毒", target = "selected"}}]
+```
+- `remove_status` 触发 `on_remove_effects`（和自然到期一样）
+- 移除整个状态（所有 stack），不支持只减一层
+- 角色没有该状态 → 静默跳过（不报错）
+
+**target 字段合法取值**（所有 effect 通用，不只是 apply_status）：
+
+| target 值 | 含义 | 注册者 |
+|-----------|------|--------|
+| `self` | 施加者自己 | 引擎 |
+| `selected` | UI 选中角色（默认值，省略时用这个） | 引擎 |
+| `player` | 玩家角色 | 引擎 |
+| `all_enemies` | 战斗中所有敌方 | 引擎 |
+| `all_allies` | 战斗中所有友方 | combat-base |
+| `target` | 战斗中当前目标 | combat-base |
+
+- 非战斗场景下 `all_enemies`/`target` 不可用 → 静默跳过 + warning
+- `selected = null` 时 → 静默跳过 + warning
+
+**叠加规则**（重新施加已存在的状态时）：
+- **总是刷新 duration** 为新 duration（重置计时器）
+- `stackable = true` + 当前 stack < max_stack → stack +1
+- `stackable = true` + 当前 stack = max_stack → stack 不变（截断）
+- `stackable = false` → stack 不变（始终为 1）
+- 一句话规则：**重新施加 = 刷新时长 + 叠加层数（上限 max_stack）**
+
+**tick_effects 与层数**：
+- 数值类 effect（modify_attribute 等）：`value × stack`（stack=3 的中毒 tick -5 → 实际 -15）
+- 非数值类 effect（apply_status/narrative_output 等）：重复执行 `stack` 次
+- 倍增逻辑由 status-system 内部处理，mod 作者只需写一份 tick_effects
+
+**角色运行时状态**（存档保存）：
+```json
+{
+  "status_effects": [
+    {"id": "中毒", "remaining_duration": 300, "stack": 1, "last_tick_game_time": 1234}
+  ]
+}
+```
+
+**跳动机制**：status-system 监听 `game:hour_changed` → 遍历角色 status_effects → 检查 tick_interval → 执行 tick_effects → 扣减 remaining_duration → 到期执行 on_remove_effects 并移除。
+
+**条件集成**（status-system 注册条件字段）：
+- `character.{id}.status.{状态ID}` → boolean（是否拥有该状态）
+- `character.{id}.status.{状态ID}.stack` → number（叠加层数）
+- `character.{id}.status.{状态ID}.remaining` → number（剩余分钟数）
+
+**combat-base 依赖 status-system**：战斗中的 buff/debuff 由 status-system 统一管理。
+
+---
+
+### 33. 天赋/能力/势力定义格式
+
+这三者都是**定义文件（元数据）+ 角色实体字段（实际值）**的模式，不需要独立系统插件——它们是被其他系统消费的数据。
+
+**天赋定义**（`definitions/talents.toml`）：
+```toml
+[talents.剑骨]
+name = "剑骨"
+description = "天生适合练剑，剑法学习速度+50%"
+category = "innate"              # innate | learned
+effects = [{type = "modify_attribute", params = {attr = "剑法学习速度", value = 0.5}}]
+condition = "player.武学修养 >= 30"  # 可选：仅条件满足时生效
+```
+
+**能力定义**（`definitions/abilities.toml`）：
+```toml
+[abilities.华山剑法]
+name = "华山剑法"
+description = "华山派基础剑法"
+type = "active"                  # active | passive
+max_level = 10                   # 0 = 无等级能力
+tags = ["combat_active", "sword"] # 标签：插件按标签查询能力
+effects = [{type = "modify_attribute", params = {attr = "攻击力", value = 5}}]
+time_cost = 10                   # 可选：使用耗时（分钟，active 专属）
+condition = "player.内力 >= 20"   # 可选：使用条件（active 专属）
+
+# 能力升级字段（由 ability-progression 插件管理）
+xp_curve = "linear"              # linear | exponential | custom
+xp_per_level = 100               # linear: 每级固定 XP；custom: 数组
+
+# 技能树：升到某级解锁子能力/天赋
+[[abilities.华山剑法.unlocks]]
+at_level = 6
+ability = "独孤九剑"
+
+[[abilities.华山剑法.unlocks]]
+at_level = 10
+ability = "华山绝学"
+talent = "剑意天赋"
+```
+
+**势力定义**（`definitions/factions.toml`）：
+```toml
+[factions.华山派]
+name = "华山派"
+description = "五岳剑派之一"
+type = "sect"                    # sect | clan | gang | government
+ranks = ["掌门", "长老", "弟子", "外门弟子"]
+```
+
+**角色数据**（`base.toml` 或 `roster.toml`）：
+```toml
+talents = { 剑骨 = 1 }
+abilities = { 华山剑法 = 3, 混元功 = 2 }
+factions = { 华山派 = "弟子" }
+```
+
+**条件访问**：
+- `character.{id}.talents.{天赋ID}` → 等级或 false（无）
+- `character.{id}.abilities.{能力ID}` → 等级
+- `character.{id}.factions.{势力ID}` → 职位字符串或 false（非成员）
+
+**修改方式**：通过 `set_field` effect（见第34节），不走绑定系统。
+
+---
+
+### 34. 效果系统核心类型
+
+effect-system 插件在 onLoad 中注册以下**核心效果类型**：
+
+| 效果类型 | 说明 | 走绑定系统 |
+|----------|------|-----------|
+| `set_attribute` | 设置属性值 | ✅ 是 |
+| `modify_attribute` | 修改属性值（加减） | ✅ 是 |
+| `set_field` | 直接修改实体字段（abilities/talents/factions等） | ❌ 否 |
+| `add_item` | 添加物品到背包 | ❌ |
+| `remove_item` | 从背包移除物品 | ❌ |
+| `modify_relation` | 修改角色关系值 | ❌ |
+| `advance_time` | 推进游戏时间 | ❌ |
+| `narrative_output` | 输出到叙事日志 | ❌ |
+| `enter_mode` | push 模式到栈 | ❌ |
+| `exit_mode` | pop 模式出栈 | ❌ |
+
+**区分 `set_attribute` 和 `set_field`**：
+- `set_attribute` / `modify_attribute`：操作 `attributes.toml` 中定义的属性，走绑定系统（插件通用名 → 模组属性名映射）
+- `set_field`：直接修改实体上的任意字段（abilities/talents/factions/status_effects/relations等复杂数据结构），不走绑定系统
+
+```toml
+# 走绑定系统（属性由 attributes.toml 定义，由 bindings.toml 映射）
+effects = [{type = "modify_attribute", params = {attr = "hp", value = -10}}]
+
+# 直接修改实体字段（不走绑定系统）
+effects = [{type = "set_field", params = {path = "abilities.华山剑法", value = 3}}]
+effects = [{type = "set_field", params = {path = "factions.华山派", value = "长老"}}]
+```
+
+**插件注册的效果类型**（非核心，由各插件注册）：
+| 效果类型 | 注册者 | 说明 |
+|----------|--------|------|
+| `apply_status` | status-system | 施加状态效果 |
+| `remove_status` | status-system | 移除状态效果（全层移除，触发 on_remove_effects） |
+| `start_conversation` | dialogue-system | 开始交互式对话（自动进入 dialogue 模式） |
+| `start_combat` | combat-base | 开始战斗 |
+| `start_quest` | quest-system | 开始任务 |
+| `gain_ability_xp` | ability-progression | 给能力增加经验值，可能触发升级 |
+| `damage` | combat-wuxia | 战斗伤害 |
+| `teach_kungfu` | combat-wuxia | 传授武功 |
+
+所有效果使用统一结构 `{type, params}`，可选 `id` 和 `depends_on` 字段。执行上下文携带 `sourceId`、`targetId`、`extraContext`。效果组内按数组顺序执行；`depends_on` 表示"仅在前置效果成功时执行"（引用 effect 的 `id`，前置失败则跳过，不报错）。循环依赖或引用不存在的 id → 加载时报错。未知效果类型 → 加载时 warning，运行时静默跳过。
+
+**effect 的 target 字段**（所有 effect 通用）：
+```toml
+effects = [
+  {type = "apply_status", params = {status = "中毒", target = "selected"}},
+  {type = "modify_attribute", params = {attr = "hp", value = -10, target = "all_enemies"}}
+]
+```
+省略 target 时默认 `"selected"`。`selected = null` 时静默跳过 + warning。
+
+---
+
+### 35. 能力标签与查询
+
+能力（abilities）使用**标签机制**（不是绑定）让插件按类型查询能力。标签是自由字符串，引擎不硬编码任何标签名。
+
+**能力定义加 tags 字段**：
+```toml
+[abilities.华山剑法]
+name = "华山剑法"
+tags = ["combat_active", "sword"]
+
+[abilities.混元功]
+name = "混元功"
+tags = ["combat_passive", "internal"]
+
+[abilities.催眠术]
+name = "催眠术"
+tags = ["mystic_active"]
+```
+
+**插件声明期望标签**（plugin.toml）：
+```toml
+[required_ability_tags]
+combat_active = { description = "可在战斗中主动使用的能力" }
+
+[optional_ability_tags]
+sword = { description = "剑类技能，有剑法加成" }
+internal = { description = "内功，影响内力计算" }
+mystic_active = { description = "奇术，触发奇术系统" }
+```
+
+**插件运行时查询 API**：
+```typescript
+// 获取角色所有带某标签的能力
+const combatAbilities = ctx.api.call('engine', 'abilities.getByTag', charId, 'combat_active')
+// 返回 [{id: "华山剑法", level: 3, xp: 45}, {id: "独孤九剑", level: 1, xp: 0}]
+
+// 检查角色是否有带某标签的能力
+const hasMystic = ctx.api.call('engine', 'abilities.hasTag', charId, 'mystic_active')
+```
+
+**技能树（unlocks）**：
+```toml
+[abilities.九阴真经]
+name = "九阴真经"
+max_level = 10
+tags = ["combat_passive", "internal", "legendary"]
+
+[[abilities.九阴真经.unlocks]]
+at_level = 6
+ability = "九阴神爪"
+
+[[abilities.九阴真经.unlocks]]
+at_level = 9
+ability = "蛇行狸翻"
+
+[[abilities.九阴真经.unlocks]]
+at_level = 10
+ability = "九阴神功"
+talent = "九阴天赋"
+```
+
+---
+
+### 36. 能力升级机制
+
+由独立的 `ability-progression` 插件（`src/plugins/ability-progression/`）管理。
+
+**能力定义新增升级字段**：
+```toml
+[abilities.华山剑法]
+max_level = 10
+xp_curve = "linear"           # linear | exponential | custom
+xp_per_level = 100            # linear: 每级固定 100 XP
+# 或 custom: xp_per_level = [100, 200, 400, 800, ...]
+```
+
+**角色数据存储**：
+- mod 作者写简写：`abilities = { 华山剑法 = 3 }`（只等级）
+- 引擎加载时展开为：`{ "华山剑法": { level: 3, xp: 0 } }`
+- 存档保存完整结构（含 xp）
+- 读档直接用完整结构
+
+**增加经验值**：
+```toml
+effects = [{type = "gain_ability_xp", params = {ability = "华山剑法", xp = 20, target = "player"}}]
+```
+
+**升级触发**：
+1. `gain_ability_xp` 增加经验值
+2. xp 达到 `xp_per_level` → xp 归零 + level+1
+3. 检查 `unlocks` → 自动给角色加新能力/天赋（发出 `set_field` effect）
+4. 发出 `character:ability_up` 事件（其他插件可监听）
+
+**无等级能力**（`max_level = 0`）：
+- `gain_ability_xp` 对无等级能力静默跳过
+- 存储为 `{ level: 1, xp: null }`
+
+---
+
+### 37. 跨文件 ID 引用校验
+
+**加载时校验**（error，阻止加载）：
+
+| 引用类型 | 校验内容 |
+|----------|----------|
+| 地点 `exit.target` | target ID 存在 |
+| 能力 `unlocks.ability` | ability ID 存在 |
+| 任务 `steps.character` | 角色 ID 存在 |
+| 任务 `steps.conversation` | 对话 ID 存在 |
+| `bindings.toml` 属性名 | 属性在 attributes.toml 中定义 |
+| 对话 `choices.next` | node ID 存在 |
+| effect `depends_on` | effect id 存在 |
+
+报错格式：`文件名 第X行：引用 'XXX' 不存在（可用：YYY, ZZZ）`
+
+**运行时校验**（warning + 跳过，不阻止）：
+- `apply_status` 的 status ID → 不存在则 warning + 跳过
+- `start_conversation` 的对话 ID → 不存在则 warning + 跳过
+- `modify_attribute` 的 attr → 通过绑定系统解析，未绑定则 warning + 跳过
+
+---
+
+### 38. 条件路径默认值
+
+条件路径解析不到值时，返回默认值（**永不抛异常**）：
+
+| 类型 | 默认值 |
+|------|--------|
+| 数值属性不存在 | `0` |
+| 字符串属性不存在 | `""`（空字符串） |
+| boolean 属性不存在 | `false` |
+| 数组包含检查，数组不存在 | `false` |
+| 角色不存在 | 同上（按属性类型） |
+| 关系不存在 | 用 `relations.toml` 中该关系类型的 `default` 值 |
+
+**`selected` 条件路径**：
+- `selected.好感度 >= 60` → 引用当前 UI 选中角色的属性
+- `selected = null` 时 → 返回默认值（数值 0, boolean false）
+
+**`player` 条件路径**：
+- `player.气血 < 30` → 引用 `meta.toml.player_character` 指定的实体
+- 和 `character.{player_character}.气血` 等价
+
+---
+
+### 39. 游戏启动流程
+
+```
+打开游戏
+  ↓
+引擎初始化（10步，后台）
+  ↓
+active_mod 为空？ 
+  ├─ 是 → 显示「模组选择」界面（列出所有可用 mod）
+  └─ 否 → 加载指定 mod
+  ↓
+显示「标题界面」（引擎提供，mod 只提供标题文字/图片）：
+  ┌─────────────────┐
+  │    {mod.title}   │
+  │                   │
+  │  [新的冒险]       │
+  │  [继续冒险]       │ ← 有存档时显示
+  │  [设置]           │
+  │  [切换模组]       │
+  └─────────────────┘
+  ↓
+[新的冒险] → 角色创建流程 → 进入游戏
+[继续冒险] → 存档列表 → 选择 → 读档 → 进入游戏
+```
+
+mod 的 `meta.toml` 可声明标题信息：
+```toml
+[meta]
+title = "武侠世界"
+title_image = "assets/title.png"    # 可选
+description = "一个武侠同人 ERA 游戏"
+player_character = "player_01"       # 玩家实体的固定 ID
+starting_location = "华山_正殿"       # 可选：创建完成后起始地点
+```
 
 ---
 
@@ -992,3 +1611,17 @@ if (import.meta.hot) {
 - 沙箱脚本禁止访问 DOM/全局对象/文件系统，只能调用受限公共API
 - 脚本超时保护（5秒自动终止）
 - LLM API key 只能通过环境变量或游戏设置面板输入，禁止写死在代码或配置文件里
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues on this repo. External PRs are not a triage surface. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical triage roles use their default label names. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context repo: `CONTEXT.md` + `docs/adr/` at the repo root (neither exists yet; created lazily by `/domain-modeling`). See `docs/agents/domain.md`.

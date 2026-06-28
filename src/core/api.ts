@@ -59,5 +59,7 @@ class ApiSystem {
   }
 }
 
+export { ApiSystem }
+
 export const apiSystem = new ApiSystem()
 apiSystem.registerEngineAPI()

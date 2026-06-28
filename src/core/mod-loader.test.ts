@@ -1,0 +1,130 @@
+import { describe, it, expect } from 'vitest'
+import { parseModData, type LoadedMod } from './mod-loader'
+
+const rawTomlMap = import.meta.glob('/mods/test-mod/**/*.toml', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>
+
+function makeMap(overrides: Record<string, string> = {}): Record<string, string> {
+  return { ...rawTomlMap, ...overrides }
+}
+
+describe('parseModData', () => {
+  let mod: LoadedMod
+
+  it('parses meta.toml correctly', () => {
+    mod = parseModData('test-mod', rawTomlMap)
+    expect(mod.id).toBe('test-mod')
+    expect(mod.name).toBe('测试模组')
+    expect(mod.version).toBe('1.0.0')
+    expect(mod.dependencies).toEqual([
+      { plugin: 'combat-base', version: '^1.0.0' },
+    ])
+  })
+
+  it('parses attributes.toml correctly (5 attributes)', () => {
+    expect(Object.keys(mod.attributes)).toHaveLength(5)
+    expect(mod.attributes.hp.type).toBe('number')
+    expect(mod.attributes.hp.default).toBe(100)
+    expect(mod.attributes.hp.category).toBe('base')
+    expect(mod.attributes.attack.category).toBe('combat')
+  })
+
+  it('parses bindings.toml correctly', () => {
+    expect(mod.bindings['combat-base']).toEqual({
+      hp: 'hp',
+      mp: 'mp',
+      attack: 'attack',
+    })
+  })
+
+  it('parses roster.toml correctly (3 characters)', () => {
+    const characters = mod.entities.get('character')!
+    expect(characters.size).toBe(3)
+    expect(characters.get('player')?.name).toBe('玩家')
+    expect(characters.get('player')?.base).toEqual({ hp: 200, mp: 80 })
+    expect(characters.get('innkeeper')?.name).toBe('酒馆老板')
+    expect(characters.get('guard')?.behavior?.activity).toBe(0.3)
+  })
+
+  it('parses locations correctly (2 locations, exits, parent)', () => {
+    expect(mod.locations.size).toBe(2)
+    const tavern = mod.locations.get('tavern')!
+    expect(tavern.name).toBe('酒馆')
+    expect(tavern.parent).toBe('town_square')
+    expect(tavern.type).toBe('building')
+    expect(tavern.tags).toContain('has_drink')
+    expect(tavern.exits).toHaveLength(1)
+    expect(tavern.exits[0]).toEqual({
+      target: 'town_square',
+      name: '去广场',
+      time_cost: 5,
+    })
+    const square = mod.locations.get('town_square')!
+    expect(square.name).toBe('城镇广场')
+    expect(square.parent).toBeNull()
+    expect(square.exits[0].target).toBe('tavern')
+  })
+
+  it('parses theme.toml correctly', () => {
+    expect(mod.theme.colors?.primary).toBe('#3B82F6')
+    expect(mod.theme.colors?.danger).toBe('#EF4444')
+    expect(mod.theme.typography?.font_body).toBe('sans-serif')
+    expect(mod.theme.spacing?.gap_small).toBe('8px')
+  })
+
+  it('parses character templates correctly (2 templates)', () => {
+    const templates = mod.entities.get('__templates_character__')!
+    expect(templates.size).toBe(2)
+    expect(templates.get('base-human')?.name).toBe('基础人类')
+    expect(templates.get('base-human')?.base).toEqual({
+      hp: 100,
+      mp: 50,
+      attack: 10,
+      defense: 5,
+      speed: 5,
+    })
+    expect(templates.get('test-hero')?.extends).toBe('base-human')
+    expect(templates.get('test-hero')?.base).toEqual({ hp: 150, attack: 15 })
+  })
+
+  it('throws when mod not found (missing meta.toml)', () => {
+    expect(() => parseModData('nonexistent', {})).toThrow(
+      /nonexistent.*meta\.toml/,
+    )
+  })
+
+  it('throws when meta.toml missing [meta] section', () => {
+    const badMap = makeMap({ '/mods/test-mod/meta.toml': 'id = "test"' })
+    expect(() => parseModData('test-mod', badMap)).toThrow(/\[meta\]/)
+  })
+
+  it('throws on invalid TOML syntax with file path in error', () => {
+    const badMap = makeMap({
+      '/mods/test-mod/meta.toml': 'this is = = invalid',
+    })
+    expect(() => parseModData('test-mod', badMap)).toThrow(
+      '/mods/test-mod/meta.toml',
+    )
+  })
+
+  it('handles missing optional files gracefully', () => {
+    const minimalMap: Record<string, string> = {
+      '/mods/test-mod/meta.toml': [
+        '[meta]',
+        'id = "mini"',
+        'name = "最小模组"',
+        'version = "0.1.0"',
+      ].join('\n'),
+    }
+    const result = parseModData('test-mod', minimalMap)
+    expect(result.id).toBe('mini')
+    expect(result.attributes).toEqual({})
+    expect(result.bindings).toEqual({})
+    expect(result.theme).toEqual({})
+    expect(result.locations.size).toBe(0)
+    expect(result.entities.get('character')!.size).toBe(0)
+  })
+})

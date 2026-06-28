@@ -1,5 +1,8 @@
 import { parse as parseTOML } from '@iarna/toml'
 import type { EntityData, LocationData } from './types'
+import { resolveTemplate, deepMerge } from './template'
+import { entitySystem } from './entity-system'
+import { bindingResolver } from './binding-resolver'
 
 export interface ModDependency {
   plugin: string
@@ -128,8 +131,23 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   if (rosterPath in rawTomlMap) {
     const data = parseFile(rosterPath, rawTomlMap[rosterPath])
     const roster = (data.roster as EntityData[]) ?? []
+    const templates = mod.entities.get('__templates_character__')!
     for (const entry of roster) {
-      characters.set(entry.id as string, entry)
+      let resolved: EntityData = { ...entry }
+      if (entry.template) {
+        try {
+          const parentTemplate = resolveTemplate(
+            entry.template as string,
+            templates,
+          )
+          resolved = deepMerge(parentTemplate, entry)
+        } catch (e) {
+          throw new Error(
+            `${rosterPath}: 角色 '${entry.id}' 的模板 '${entry.template}' 解析失败: ${(e as Error).message}`,
+          )
+        }
+      }
+      characters.set(entry.id as string, resolved)
     }
   }
   mod.entities.set('character', characters)
@@ -165,8 +183,18 @@ export class ModLoader {
       }
     }
     const mod = parseModData(modName, rawTomlMap)
+    this.registerEntities(mod)
+    bindingResolver.loadBindings(mod.bindings)
     this.loadedMod = mod
     return mod
+  }
+
+  private registerEntities(mod: LoadedMod): void {
+    const characters = mod.entities.get('character')
+    if (!characters) return
+    for (const [id, data] of characters) {
+      entitySystem.register('character', id, data)
+    }
   }
 
   getMod(): LoadedMod | null {

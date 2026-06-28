@@ -1,5 +1,7 @@
-import { describe, it, expect } from 'vitest'
-import { parseModData, type LoadedMod } from './mod-loader'
+import { describe, it, expect, beforeEach } from 'vitest'
+import { parseModData, ModLoader, type LoadedMod } from './mod-loader'
+import { entitySystem } from './entity-system'
+import { bindingResolver } from './binding-resolver'
 
 const rawTomlMap = import.meta.glob('/mods/test-mod/**/*.toml', {
   query: '?raw',
@@ -44,7 +46,13 @@ describe('parseModData', () => {
     const characters = mod.entities.get('character')!
     expect(characters.size).toBe(3)
     expect(characters.get('player')?.name).toBe('玩家')
-    expect(characters.get('player')?.base).toEqual({ hp: 200, mp: 80 })
+    expect(characters.get('player')?.base).toEqual({
+      hp: 200,
+      mp: 80,
+      attack: 15,
+      defense: 5,
+      speed: 5,
+    })
     expect(characters.get('innkeeper')?.name).toBe('酒馆老板')
     expect(characters.get('guard')?.behavior?.activity).toBe(0.3)
   })
@@ -126,5 +134,68 @@ describe('parseModData', () => {
     expect(result.theme).toEqual({})
     expect(result.locations.size).toBe(0)
     expect(result.entities.get('character')!.size).toBe(0)
+  })
+})
+
+describe('mod-loader integration', () => {
+  beforeEach(() => {
+    entitySystem.clear()
+    bindingResolver.loadBindings({})
+  })
+
+  it('should resolve template inheritance when loading roster', () => {
+    const mod = parseModData('test-mod', rawTomlMap)
+    const player = mod.entities.get('character')!.get('player')!
+    expect(player.base.hp).toBe(200)
+    expect(player.base.mp).toBe(80)
+    expect(player.base.defense).toBe(5)
+    expect(player.base.attack).toBe(15)
+    expect(player.base.speed).toBe(5)
+  })
+
+  it('should resolve templates for all roster entries', () => {
+    const mod = parseModData('test-mod', rawTomlMap)
+    const innkeeper = mod.entities.get('character')!.get('innkeeper')!
+    expect(innkeeper.base.hp).toBe(80)
+    expect(innkeeper.base.attack).toBe(5)
+    expect(innkeeper.base.mp).toBe(50)
+    expect(innkeeper.base.defense).toBe(5)
+    const guard = mod.entities.get('character')!.get('guard')!
+    expect(guard.base.hp).toBe(120)
+    expect(guard.base.attack).toBe(12)
+    expect(guard.base.defense).toBe(5)
+  })
+
+  it('should register characters to entity system via loadMod', async () => {
+    const loader = new ModLoader()
+    await loader.loadMod('test-mod')
+    expect(entitySystem.get('character', 'player')).not.toBeNull()
+    expect(entitySystem.get('character', 'innkeeper')).not.toBeNull()
+    expect(entitySystem.get('character', 'guard')).not.toBeNull()
+    const player = entitySystem.get('character', 'player')!
+    expect(player.base.hp).toBe(200)
+    expect(player.base.attack).toBe(15)
+  })
+
+  it('should load bindings into bindingResolver via loadMod', async () => {
+    const loader = new ModLoader()
+    await loader.loadMod('test-mod')
+    expect(bindingResolver.get('player', 'hp')).toBe(200)
+    expect(bindingResolver.get('player', 'mp')).toBe(80)
+    expect(bindingResolver.get('player', 'attack')).toBe(15)
+  })
+
+  it('should throw with file path when template resolution fails', () => {
+    const badMap = makeMap({
+      '/mods/test-mod/characters/roster.toml': [
+        '[[roster]]',
+        'id = "orphan"',
+        'template = "nonexistent_template"',
+        'name = "孤儿"',
+      ].join('\n'),
+    })
+    expect(() => parseModData('test-mod', badMap)).toThrow(
+      /roster\.toml.*nonexistent_template.*不存在/,
+    )
   })
 })

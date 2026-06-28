@@ -111,7 +111,13 @@ class PluginManager {
       }
     }
 
-    const sorted = this.sortByExtends(allDefs)
+    let sorted: PluginDef[] = []
+    try {
+      sorted = this.sortByExtends(allDefs)
+    } catch (e) {
+      console.warn(`Plugin extends sorting failed: ${(e as Error).message}`)
+      sorted = [...allDefs.values()]
+    }
 
     for (const def of sorted) {
       if (this.disabledPlugins.has(def.meta.id)) continue
@@ -133,6 +139,10 @@ class PluginManager {
 
     for (const def of sorted) {
       if (this.disabledPlugins.has(def.meta.id)) continue
+      if (def.meta.extends && this.disabledPlugins.has(def.meta.extends)) {
+        this.disabledPlugins.add(def.meta.id)
+        continue
+      }
       try {
         const ctx = this.createContext(def)
         const data = enginePlugins.get(def.meta.id) || modPlugins.get(def.meta.id)

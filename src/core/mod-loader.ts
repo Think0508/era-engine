@@ -3,6 +3,7 @@ import type { EntityData, LocationData } from './types'
 import { resolveTemplate, deepMerge } from './template'
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
+import { conditionRegistry } from './condition-registry'
 
 export interface ModDependency {
   plugin: string
@@ -185,6 +186,9 @@ export class ModLoader {
     const mod = parseModData(modName, rawTomlMap)
     this.registerEntities(mod)
     bindingResolver.loadBindings(mod.bindings)
+    conditionRegistry.clear()
+    conditionRegistry.registerFromAttributes(mod.attributes)
+    conditionRegistry.registerFromBindings(mod.bindings)
     this.loadedMod = mod
     return mod
   }

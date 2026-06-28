@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { parseModData, ModLoader, type LoadedMod } from './mod-loader'
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
+import { conditionRegistry } from './condition-registry'
 
 const rawTomlMap = import.meta.glob('/mods/test-mod/**/*.toml', {
   query: '?raw',
@@ -141,6 +142,7 @@ describe('mod-loader integration', () => {
   beforeEach(() => {
     entitySystem.clear()
     bindingResolver.loadBindings({})
+    conditionRegistry.clear()
   })
 
   it('should resolve template inheritance when loading roster', () => {
@@ -183,6 +185,19 @@ describe('mod-loader integration', () => {
     expect(bindingResolver.get('player', 'hp')).toBe(200)
     expect(bindingResolver.get('player', 'mp')).toBe(80)
     expect(bindingResolver.get('player', 'attack')).toBe(15)
+  })
+
+  it('should populate condition registry after loading mod', async () => {
+    const loader = new ModLoader()
+    await loader.loadMod('test-mod')
+    const fields = conditionRegistry.getAllFields()
+    expect(fields.some(f => f.path === 'player.hp' && f.source === 'attributes.toml')).toBe(true)
+    expect(fields.some(f => f.path === 'character.{id}.hp' && f.source === 'attributes.toml')).toBe(true)
+    expect(fields.some(f => f.path === 'player.hp' && f.source === 'bindings:combat-base')).toBe(true)
+    expect(fields.some(f => f.path === 'player.attack' && f.source === 'bindings:combat-base')).toBe(true)
+    expect(fields.some(f => f.path === 'location.id' && f.source === 'engine')).toBe(true)
+    expect(fields.some(f => f.path === 'game.time.hour' && f.source === 'engine')).toBe(true)
+    expect(fields.some(f => f.path === 'player.defense' && f.source === 'attributes.toml')).toBe(true)
   })
 
   it('should throw with file path when template resolution fails', () => {

@@ -23,7 +23,7 @@ class ConditionRegistry {
     for (const [name, def] of Object.entries(attributes)) {
       const attrDef = def as any
       const type = attrDef.type || 'number'
-      const ops = type === 'string' ? '== !=' : '> < >= <= == !='
+      const ops = operatorsForType(type)
       this.fields.push({
         path: `player.${name}`,
         type,
@@ -47,7 +47,7 @@ class ConditionRegistry {
         path,
         type: def.type,
         description: def.description,
-        operators: def.type === 'string' ? '== !=' : '> < >= <= == !=',
+        operators: operatorsForType(def.type),
         source: `plugin:${pluginId}`
       })
     }
@@ -91,6 +91,11 @@ class ConditionRegistry {
   clear(): void {
     this.fields = []
   }
+}
+
+function operatorsForType(type: string): string {
+  if (type === 'number') return '> < >= <= == !='
+  return '== !='
 }
 
 function pathMatch(pattern: string, actual: string): boolean {

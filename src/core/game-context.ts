@@ -12,6 +12,10 @@ class GameContextManager {
   private time: GameTimeData = {
     minute: 0, hour: 8, day: 1, month: 1, year: 1
   }
+  // 注释：执行状态——IDLE 时玩家可操作，EXECUTING 时行动执行中
+  private executionState: 'IDLE' | 'EXECUTING' = 'IDLE'
+  // 注释：模式栈——enterMode push，exitMode pop
+  private modeStack: string[] = ['exploration']
 
   getContext(): GameContext {
     return {
@@ -53,7 +57,10 @@ class GameContextManager {
         if (this.time.hour >= 24) {
           this.time.hour -= 24
           this.time.day++
-          await eventBus.emit('game:new_day', { day: this.time.day })
+          // 注释：game:new_day payload 带 reason 字段
+          // 'natural' = 自然睡眠/时间流逝，'forced' = 被动昏迷
+          // forced 不触发每日菜单（bridge 监听 reason 判断）
+          await eventBus.emit('game:new_day', { day: this.time.day, reason: 'natural' })
           if (this.time.day > DAYS_PER_MONTH) {
             this.time.day = 1
             this.time.month++
@@ -67,10 +74,84 @@ class GameContextManager {
     }
   }
 
+  // 注释：移动到目标地点——command-executor 的 move 指令调用
+  // TODO(phase-6): time_cost 详细规则由 mod 驱动，当前最小化
+  async moveTo(targetLocationId: string): Promise<void> {
+    if (!this.location) {
+      throw new Error('moveTo 失败：当前地点未设置')
+    }
+    // 注释：查 exit 可达性
+    const exit = this.location.exits.find(e => e.target === targetLocationId)
+    if (!exit) {
+      // 注释：也可能是 parent→child 的自动可达
+      // TODO(phase-6): map-system 实现完整的可达性检查
+      throw new Error(
+        `moveTo 失败：从 '${this.location.id}' 无法到达 '${targetLocationId}'（无对应 exit）`,
+      )
+    }
+    // 注释：计算 time_cost——最小化：同 parent=5min，跨 parent=60min
+    // exit.time_cost 优先，否则用默认值
+    let timeCost = exit.time_cost
+    if (timeCost === undefined) {
+      // TODO(phase-6): time_cost 详细规则由 mod 驱动
+      timeCost = 5
+    }
+    // 注释：先 leave 后 enter，符合"离开→到达"直觉
+    const oldLocation = this.location
+    await eventBus.emit('location:leave', { from: oldLocation.id })
+    await this.advanceTime(timeCost)
+    // 注释：从 entity-system 获取目标地点数据
+    const targetEntity = entitySystem.get('location', targetLocationId)
+    if (targetEntity) {
+      this.location = targetEntity as unknown as LocationData
+    }
+    await eventBus.emit('location:enter', { to: targetLocationId })
+  }
+
+  // 注释：设置执行状态——command-executor 调用
+  setExecutionState(state: 'IDLE' | 'EXECUTING'): void {
+    this.executionState = state
+  }
+
+  getExecutionState(): 'IDLE' | 'EXECUTING' {
+    return this.executionState
+  }
+
+  // 注释：push 模式到栈——enter_mode effect / ctx.api.call('engine', 'enterMode', id)
+  // 注释：模式栈由进入模式的系统负责调用 exitMode，引擎不自动 pop
+  async enterMode(id: string): Promise<void> {
+    this.modeStack.push(id)
+    await eventBus.emit('game:mode_changed', { mode: id, action: 'enter' })
+  }
+
+  // 注释：pop 模式出栈
+  async exitMode(): Promise<string | undefined> {
+    const popped = this.modeStack.pop()
+    if (popped) {
+      await eventBus.emit('game:mode_changed', { mode: popped, action: 'exit' })
+    }
+    return popped
+  }
+
+  getCurrentMode(): string {
+    return this.modeStack[this.modeStack.length - 1] ?? 'exploration'
+  }
+
+  getModeStack(): string[] {
+    return [...this.modeStack]
+  }
+
+  // 注释：供 bridge 调用——emit 事件的便捷方法
+  async emit(event: string, payload?: any): Promise<void> {
+    await eventBus.emit(event, payload)
+  }
+
   reset(): void {
     this.player = null
     this.location = null
     this.time = { minute: 0, hour: 8, day: 1, month: 1, year: 1 }
+    this.executionState = 'IDLE'
+    this.modeStack = ['exploration']
   }
 }
 

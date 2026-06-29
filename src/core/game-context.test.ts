@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { gameContext } from './game-context'
 import { eventBus } from './event-bus'
+import { entitySystem } from './entity-system'
 
 describe('game-context', () => {
   beforeEach(() => {
@@ -69,5 +70,88 @@ describe('game-context', () => {
     ctx1.time.hour = 99
     const ctx2 = gameContext.getContext()
     expect(ctx2.time.hour).toBe(8)
+  })
+
+  // 注释：以下为 Phase 5 新增方法的测试
+
+  it('setExecutionState/getExecutionState', () => {
+    expect(gameContext.getExecutionState()).toBe('IDLE')
+    gameContext.setExecutionState('EXECUTING')
+    expect(gameContext.getExecutionState()).toBe('EXECUTING')
+    gameContext.setExecutionState('IDLE')
+    expect(gameContext.getExecutionState()).toBe('IDLE')
+  })
+
+  it('enterMode/exitMode 模式栈行为', async () => {
+    expect(gameContext.getCurrentMode()).toBe('exploration')
+    await gameContext.enterMode('combat')
+    expect(gameContext.getCurrentMode()).toBe('combat')
+    await gameContext.enterMode('dialogue')
+    expect(gameContext.getCurrentMode()).toBe('dialogue')
+    const popped = await gameContext.exitMode()
+    expect(popped).toBe('dialogue')
+    expect(gameContext.getCurrentMode()).toBe('combat')
+    await gameContext.exitMode()
+    expect(gameContext.getCurrentMode()).toBe('exploration')
+  })
+
+  it('enterMode/exitMode emit game:mode_changed', async () => {
+    const handler = vi.fn()
+    eventBus.on('game:mode_changed', handler)
+    await gameContext.enterMode('combat')
+    expect(handler).toHaveBeenCalledWith({ mode: 'combat', action: 'enter' })
+    await gameContext.exitMode()
+    expect(handler).toHaveBeenCalledWith({ mode: 'combat', action: 'exit' })
+  })
+
+  it('moveTo emit location:leave 和 location:enter', async () => {
+    // 注释：设置当前地点和目标地点
+    entitySystem.clear()
+    entitySystem.register('location', 'town', {
+      id: 'town', name: '城镇', parent: null, type: 'building', tags: [],
+      exits: [{ target: 'forest', name: '去森林', time_cost: 10 }],
+    })
+    entitySystem.register('location', 'forest', {
+      id: 'forest', name: '森林', parent: null, type: 'field', tags: [],
+      exits: [{ target: 'town', name: '回城镇', time_cost: 10 }],
+    })
+    gameContext.setLocation(entitySystem.get('location', 'town') as any)
+
+    const leaveHandler = vi.fn()
+    const enterHandler = vi.fn()
+    eventBus.on('location:leave', leaveHandler)
+    eventBus.on('location:enter', enterHandler)
+
+    await gameContext.moveTo('forest')
+
+    // 注释：先 leave 后 enter
+    expect(leaveHandler).toHaveBeenCalledBefore(enterHandler)
+    expect(leaveHandler).toHaveBeenCalledWith({ from: 'town' })
+    expect(enterHandler).toHaveBeenCalledWith({ to: 'forest' })
+    // 注释：地点已切换
+    expect(gameContext.getContext().location?.id).toBe('forest')
+    // 注释：时间推进了 10 分钟
+    expect(gameContext.getContext().time.minute).toBe(10)
+  })
+
+  it('moveTo 无可达路径时报错', async () => {
+    entitySystem.clear()
+    entitySystem.register('location', 'town', {
+      id: 'town', name: '城镇', parent: null, type: 'building', tags: [],
+      exits: [{ target: 'forest', name: '去森林', time_cost: 10 }],
+    })
+    gameContext.setLocation(entitySystem.get('location', 'town') as any)
+    // 注释：unreachable 不是 town 的 exit
+    await expect(gameContext.moveTo('unreachable')).rejects.toThrow(/无法到达/)
+  })
+
+  it('game:new_day payload 带 reason 字段', async () => {
+    const newDayHandler = vi.fn()
+    eventBus.on('game:new_day', newDayHandler)
+    // 注释：从 hour 8 推进到第二天（17 hours = 1020 min）
+    await gameContext.advanceTime(1020)
+    expect(newDayHandler).toHaveBeenCalledTimes(1)
+    // 注释：reason 默认 'natural'（自然时间流逝）
+    expect(newDayHandler.mock.calls[0][0].reason).toBe('natural')
   })
 })

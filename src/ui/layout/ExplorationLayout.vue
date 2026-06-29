@@ -6,8 +6,10 @@
 <script setup lang="ts">
 import StatusBar from '../components/StatusBar.vue'
 import CharacterBar from '../components/CharacterBar.vue'
+import StatusSection from '../components/StatusSection.vue'
+import ParameterSection from '../components/ParameterSection.vue'
+import LookSection from '../components/LookSection.vue'
 import NarrativeLog from '../components/NarrativeLog.vue'
-// 注释：StatusSection/ParameterSection/LookSection 在 Task 5.8 实现
 // 注释：CommandBar 在 Task 5.9 实现
 </script>
 
@@ -15,11 +17,9 @@ import NarrativeLog from '../components/NarrativeLog.vue'
   <div class="exploration-layout">
     <StatusBar />
     <CharacterBar />
-    <!-- 注释：Task 5.8 实现 -->
-    <div class="layout-section section-placeholder">[StatusSection]</div>
-    <div class="layout-section section-placeholder">[ParameterSection]</div>
-    <div class="layout-section section-placeholder">[LookSection]</div>
-    <!-- 注释：叙事日志 -->
+    <StatusSection />
+    <ParameterSection />
+    <LookSection />
     <div class="narrative-log-container">
       <NarrativeLog />
     </div>

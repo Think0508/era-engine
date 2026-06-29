@@ -1,0 +1,13 @@
+[meta]
+id = "dialogue-system"
+name = "对话/口上系统"
+version = "1.0.0"
+description = "口上演出管线 + 交互式对话树——广义口上=演出"
+
+[data_dependencies]
+provides = ["dialogue:ready"]
+depends_on = ["characters:initialized"]
+
+[[events.listen]]
+name = "location:enter"
+description = "触发 enter/greet 口上"

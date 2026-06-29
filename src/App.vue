@@ -6,6 +6,7 @@
 import { onMounted } from 'vue'
 import { useGameStore } from './ui/stores/game-store'
 import { mockPlayer, mockTownSquare, mockTime, mockCharactersAtTownSquare, mockCalendar, mockEquipmentSlots } from './ui/stores/mock-data'
+import { registerNativeCommands } from './ui/native-commands'
 import MainGame from './ui/views/MainGame.vue'
 
 const gameStore = useGameStore()
@@ -19,6 +20,8 @@ onMounted(() => {
   gameStore.setCharactersAtLocation(mockCharactersAtTownSquare)
   gameStore.setCalendar(mockCalendar)
   gameStore.setEquipmentSlots(mockEquipmentSlots)
+  // 注释：注册原生指令
+  registerNativeCommands()
 })
 </script>
 

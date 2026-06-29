@@ -10,7 +10,7 @@ import StatusSection from '../components/StatusSection.vue'
 import ParameterSection from '../components/ParameterSection.vue'
 import LookSection from '../components/LookSection.vue'
 import NarrativeLog from '../components/NarrativeLog.vue'
-// 注释：CommandBar 在 Task 5.9 实现
+import CommandBar from '../components/CommandBar.vue'
 </script>
 
 <template>
@@ -23,8 +23,7 @@ import NarrativeLog from '../components/NarrativeLog.vue'
     <div class="narrative-log-container">
       <NarrativeLog />
     </div>
-    <!-- 注释：Task 5.9 实现 -->
-    <div class="layout-section section-placeholder">[CommandBar]</div>
+    <CommandBar />
   </div>
 </template>
 

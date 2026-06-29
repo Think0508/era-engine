@@ -6,12 +6,14 @@
 // TODO(phase-6+): 插件动态注册 daily-menu 插槽
 
 <script setup lang="ts">
-// 注释：DailyMenu 组件在 Task 5.12 实现
+import DailyMenu from '../components/DailyMenu.vue'
 </script>
 
 <template>
   <div class="daily-menu-layout">
-    <div class="daily-menu-content">[DailyMenu]</div>
+    <div class="daily-menu-content">
+      <DailyMenu @wake-up="() => {}" />
+    </div>
   </div>
 </template>
 

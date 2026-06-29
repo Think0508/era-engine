@@ -11,6 +11,8 @@ import ParameterSection from '../components/ParameterSection.vue'
 import LookSection from '../components/LookSection.vue'
 import NarrativeLog from '../components/NarrativeLog.vue'
 import CommandBar from '../components/CommandBar.vue'
+import SystemPanel from '../components/SystemPanel.vue'
+import ScreenNumpad from '../components/ScreenNumpad.vue'
 </script>
 
 <template>
@@ -24,6 +26,8 @@ import CommandBar from '../components/CommandBar.vue'
       <NarrativeLog />
     </div>
     <CommandBar />
+    <SystemPanel />
+    <ScreenNumpad />
   </div>
 </template>
 

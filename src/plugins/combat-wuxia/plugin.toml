@@ -1,0 +1,18 @@
+[meta]
+id = "combat-wuxia"
+name = "武侠回合制战斗"
+version = "1.0.0"
+description = "extends combat-base——六维/武功/阴阳/暴击/闪避"
+extends = "combat-base"
+
+[dependencies]
+{ plugin = "combat-base", version = "^1.0.0" }
+
+[optional_ability_tags]
+sword = { description = "剑类技能，有剑法加成系数" }
+internal = { description = "内功，影响内力计算" }
+movement = { description = "轻功，影响闪避" }
+
+[data_dependencies]
+provides = ["combat-wuxia:ready"]
+depends_on = ["combat:ready"]

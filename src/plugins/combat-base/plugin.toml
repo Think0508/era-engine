@@ -1,0 +1,17 @@
+[meta]
+id = "combat-base"
+name = "回合制战斗骨架"
+version = "1.0.0"
+description = "回合循环/HP扣减/状态结算/钩子系统"
+
+[data_dependencies]
+provides = ["combat:ready"]
+depends_on = ["status:ready", "abilities:ready", "effects:ready"]
+
+[condition_fields]
+"combat.in_progress" = { type = "boolean", description = "是否正在战斗中" }
+"combat.turn_count" = { type = "number", description = "当前战斗回合数" }
+
+[[events.listen]]
+name = "combat:request"
+description = "响应战斗请求"

@@ -13,8 +13,8 @@ A classification key for entities (e.g. `attribute_def`, `talent_def`, `characte
 _Avoid_: Category, namespace
 
 **Attribute definition**:
-Metadata describing a single game attribute, parsed from `definitions/attributes.toml`. Fields: type (number/string/boolean), default, category (grouping key), compute (optional script path), display (boolean, controls whether it appears in the generic character status viewer), display_group (category label in the viewer). Stored in the attribute-registry (not entity-system).
-_Avoid_: Property, field, entity-system storage
+Metadata describing a single game attribute, parsed from `definitions/attributes.toml`. Fields: type (number/string/boolean), default, category (grouping key), compute (optional script path), display (boolean, controls whether it appears in the generic character status viewer), display_group (category label in the viewer, used for clustering related attributes in Status/Parameter/Look sections), daily_reset (optional boolean, Parameter-specific — when true the attribute resets to its default value when the player wakes up via the `game:wake_up` event). Stored in the attribute-registry (not entity-system).
+_Avoid_: Property, field, entity-system storage, treating daily_reset as a plugin-only concept
 
 **Attribute binding**:
 The mapping from a plugin's generic attribute name (e.g. `hp`) to the mod's concrete attribute (e.g. `气血`), declared in `bindings.toml`. Required bindings block mod loading if missing OR if the bound attribute's type doesn't match the plugin's declared type (load-time error with file + line + expected vs actual type). Optional bindings only emit a warning for missing or type-mismatched cases, and the plugin must handle the unbound case gracefully. At startup, the engine auto-generates a Binding Handbook listing each enabled plugin's required and optional attributes with type and description — the mod author's reference for writing bindings.toml.
@@ -31,6 +31,14 @@ _Avoid_: In-game handbook browser, runtime handbook UI
 **Active mod**:
 The single mod selected by `era-engine.config.toml`'s `active_mod` field, or chosen from the mod selection screen at startup. Only one mod runs at a time; switching requires restart. The mod's `meta.toml` also declares `player_character` (the fixed entity ID of the character the player controls — used by character creation to create the player entity) and optionally `starting_location` (where the player begins after character creation).
 _Avoid_: Current mod, enabled mod, dynamic player ID
+
+**Status**:
+A character's persistent or semi-persistent status display bar. The default status bars shown in the main UI are 体力 (HP), 气力 (MP/energy), and 精力 (stamina), plus emotion and rationality indicators. Mods extend the status area by declaring attributes with `display = true` in `definitions/attributes.toml`. Status values are not automatically reset each day — reset rules, if any, are defined by the mod or plugin.
+_Avoid_: Confusing status with Parameter, hardcoding status bar names in engine code
+
+**Parameter**:
+A set of temporary physical and emotional numeric values that reset daily by default (similar to eraTW's Palam system), used for per-interaction calculations such as pleasure, obedience, arousal, and shame. Parameters are declared by plugins/mods as attributes or via the status-system and are displayed in the Parameter panel. At the start of each new in-game day, parameters are reset to their default values unless a mod overrides this behavior.
+_Avoid_: Confusing Parameter with Status, treating parameters as permanent attributes
 
 **Player alias**:
 The `player` prefix in condition paths (e.g. `player.气血`) is a fixed alias that resolves to the entity whose ID matches `meta.toml`'s `player_character`. `player.xxx` and `character.{player_character}.xxx` are equivalent — `player` is the concise form. The engine sets up this alias at startup; mods and plugins use `player.xxx` in conditions and `target = "player"` in effects.
@@ -60,8 +68,32 @@ _Avoid_: Partial failure, silent degradation
 Handlers listening to an event may emit further events. The event bus detects same-tick cycles (same event → same handler twice) and breaks the chain with an error report rather than infinite-looping. Handlers have priority values (lower number = runs first, default 0). Handlers may be async (return Promises); the bus awaits each handler in priority order before running the next — sequential, not parallel. If a handler throws (sync or async), the error is caught, logged via error-reporter, and does NOT block subsequent handlers. Wildcard subscriptions are supported: `combat:*` matches all events under the `combat` domain. `*` alone matches all events. Slow operations (e.g. LLM calls) should not be event handlers — use a UI rendering pipeline instead.
 _Avoid_: Event loop, unbounded chaining, priority-free execution, parallel handler execution, blocking on slow handlers
 
+**Command ID**:
+A stable string identifier for a registered command (e.g. `talk`, `move`, `gather_herbs`), declared by the plugin or mod in `plugin.toml`. Command IDs are used for automation, macros, and script references because they remain stable across UI contexts and plugin updates. They are distinct from numeric shortcuts shown in the UI.
+_Avoid_: Referring to commands only by display number in scripts, unstable numeric command references
+
+**Numeric shortcut**:
+A temporary number displayed next to a command label in the command bar (e.g. `交谈 [12]`), assigned dynamically at render time based on the currently visible commands. Numeric shortcuts enable keyboard and on-screen numpad input. They are not guaranteed to be stable across mode switches, filter changes, or plugin updates; automation uses Command IDs instead.
+_Avoid_: Treating numeric shortcuts as persistent identifiers, expecting the same command to keep the same number in all contexts
+
+**UI slot**:
+A named extension point in the UI where plugins and mods register custom components. Managed by the SlotRegistry (ui layer) for non-command visual extensions (e.g. `location-panel` for custom location info, `status-extra` for extra status rows, `look-extra` for custom look content, `daily-menu` for daily menu items, `system-panel` for system panel tabs, `character-panel-tab` for character panel tabs). Commands do NOT use SlotRegistry — they use CommandRegistry. Slot items have id, component, priority, and optional condition; items are sorted by priority (ascending) and filtered by condition at render time.
+_Avoid_: Using slots for commands, single global slot, slot without condition support
+
+**Display group**:
+A grouping key on attribute definitions (`display_group` field in `attributes.toml`) that clusters related attributes in the UI. Used by Status, Parameter, and Look sections. Groups can be folded (nested CollapsibleSection with `foldKey='{section}-{group}'`). Group titles can be toggled on/off in options (default off — flat display, but folding still works by group). Groups are ordered by first appearance in attributes.toml.
+_Avoid_: Hardcoded groups, group ordering by separate config, display_group as UI-only concept without data backing
+
+**Display mode**:
+A global UI setting controlling how new narrative log entries appear: `'scroll'` (default, era-style — new content appends to bottom, auto-scroll) or `'clear'` (clear log then show new content). Stored in ui-store (localStorage). Mods can override via `ctx.api.call('engine', 'setDisplayMode', mode)`. Individual log entries are unaware of DisplayMode — the NarrativeLog component applies the strategy uniformly.
+_Avoid_: Per-entry display mode, hardcoded scroll-only
+
+**Equipment slot**:
+A body-part slot defined in `definitions/equipment.toml` (e.g. upper_body, lower_body, accessory). Each slot has id, name, and category. Character entities store current equipment in an `equipment` field mapping slot id to item id. Unlike era's cosmetic-only clothing, equipment in era-engine has real numeric significance (attack/defense bonuses) — read by combat and status systems. Phase 5 only displays equipment; equipping/unequipping is handled by inventory-system (Phase 9).
+_Avoid_: Cosmetic-only clothing, equipment without stats, engine-hardcoded slot names
+
 **Command system**:
-Hybrid interaction model with two-level visibility control. Mode level (coarse): commands are tagged with one or more `modes` (e.g. `exploration`, `combat`, `h_scene`, `dialogue`). When the game enters a mode, only commands tagged for that mode appear in the command bar. Condition level (fine): each command has a per-command `condition` expression checked against game state and selected character. Both levels are extensible — plugins register new modes and new commands. Commands can also be favorited (fixed to top), recently used highlighted, and filtered by text search. The command bar groups by source (location/character/global) with collapsible sections. Commands are declared in plugin.toml `[ui]` section as `location_commands` / `character_commands` / `main_menu` arrays. Each command has: `id`, `label`, `modes` (required), `condition` (optional), `priority` (optional, default 0), `effects` (array — for data-driven commands) or `handler` (JS script path — for complex commands). Grouping (location/character/global) affects UI display only, not condition scope. The `...` tag-check syntax is replaced by dot-path: `location.tags.has_gather == true`.
+Hybrid interaction model with two-level visibility control. Mode level (coarse): commands are tagged with one or more `modes` (e.g. `exploration`, `combat`, `h_scene`, `dialogue`). When the game enters a mode, only commands tagged for that mode appear in the command bar. Condition level (fine): each command has a per-command `condition` expression checked against game state and selected character. Both levels are extensible — plugins register new modes and new commands. Commands can also be favorited (fixed to top), recently used highlighted, and filtered by text search. The command bar groups by source (location/character/global) with collapsible sections. Commands are declared in plugin.toml `[ui]` section as `location_commands` / `character_commands` / `main_menu` arrays. Each command has: `id` (stable string), `label`, `modes` (required), `condition` (optional), `priority` (optional, default 0), `effects` (array — for data-driven commands) or `handler` (JS script path — for complex commands). Grouping (location/character/global) affects UI display only, not condition scope. The `...` tag-check syntax is replaced by dot-path: `location.tags.has_gather == true`.
 _Avoid_: Single flat command list, hardcoded mode switching, mode-only without per-command conditions, commands without effects, ... syntax
 
 **Execution state**:
@@ -141,8 +173,8 @@ The unified scrolling text display that shows all game events in chronological o
 _Avoid_: Per-system log panels, persisted log, event-as-log
 
 **Log entry**:
-A single line in the narrative log. Fields: `text` (the content), `type` (extensible category key, e.g. `combat`, `dialogue`, `system`), `source` (plugin ID), `timestamp` (game time when written). Default types: system, combat, dialogue, movement, item, quest, skill. Plugins register custom types and may provide custom UI renderers for them. UI renders all types in a single scrollable panel but can style each type differently (color, icon, indentation).
-_Avoid_: Fixed type enum, per-type display panels
+A single line in the narrative log. Fields: `text` (the content), `type` (extensible category key, e.g. `combat`, `dialogue`, `system`, `map`, `choice`, `dialogue_choice`), `source` (plugin ID), `timestamp` (game time when written), `interactive` (optional boolean — marks entries that accept player interaction, e.g. map views and dialogue choices), `consumed` (optional boolean — set true when an interactive entry has been acted upon, preventing further interaction), `payload` (optional any — type-specific data, e.g. choices array for `choice` type, location data for `map` type). Default types: system, combat, dialogue, movement, item, quest, skill. Plugins register custom types and may provide custom UI renderers for them. UI renders all types in a single scrollable panel but can style each type differently (color, icon, indentation). Interactive entries render as interactive components (MapView, choice list) instead of plain text.
+_Avoid_: Fixed type enum, per-type display panels, interactive entries without consumed state
 
 **Combat turn**:
 Combat-base emits standard events (`combat:start`, `combat:turn`, `combat:end`). The `combat:turn` payload includes `actor`, `action`, `target`, `effects[]`, and `before`/`after` state snapshots of the target. Action order is determined by participant speed.

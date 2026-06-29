@@ -21,3 +21,4 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "眠奸" = { type = "number", default = 0, category = "parameter", display = true, display_group = "特殊", daily_reset = true }
 
 "金钱" = { type = "number", default = 0, category = "economy", display = true, display_group = "economy" }
+"好感度" = { type = "number", default = 30, category = "social", display = true, display_group = "social" }

@@ -1,0 +1,8 @@
+# mods/test-mod/characters/npc.toml
+# 注释：NPC spawns——首次进入地点时随机生成路人
+
+[[spawns]]
+template = "base-human"
+at_locations = ["town_square"]
+count = { min = 1, max = 2 }
+names = ["路人甲", "路人乙", "路人丙"]

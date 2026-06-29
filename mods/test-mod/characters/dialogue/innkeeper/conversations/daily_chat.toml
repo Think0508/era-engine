@@ -1,0 +1,26 @@
+# mods/test-mod/characters/dialogue/innkeeper/conversations/daily_chat.toml
+id = "daily_chat"
+condition = "selected != null"
+
+[[nodes]]
+id = "start"
+lines = ["酒馆老板擦着杯子，看着你走了过来。", "客官，有什么事吗？"]
+choices = [
+  { text = "询问最近的消息", next = "ask_news" },
+  { text = "点一杯酒", next = "order_drink" },
+  { text = "告别", next = "farewell" }
+]
+
+[[nodes]]
+id = "ask_news"
+lines = ["酒馆老板压低声音说：最近城里来了不少江湖人，听说是在找什么东西。"]
+next = "start"
+
+[[nodes]]
+id = "order_drink"
+lines = ["酒馆老板倒了一杯酒递给你。", "这是本店的招牌，客官尝尝。"]
+next = "start"
+
+[[nodes]]
+id = "farewell"
+lines = ["酒馆老板点点头：慢走，客官。"]

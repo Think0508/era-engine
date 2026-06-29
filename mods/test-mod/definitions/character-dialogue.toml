@@ -1,0 +1,15 @@
+# mods/test-mod/definitions/character-dialogue.toml
+# 注释：角色通用口上——fallback，角色无专属口上时用
+
+[[character_lines]]
+scene = "greet"
+condition = "character.{id}.好感度 < 30"
+text = "你是何人？"
+
+[[character_lines]]
+scene = "greet"
+text = "哦，是你啊。"
+
+[[character_lines]]
+scene = "hurt"
+text = "嘶……下手倒是不轻。"

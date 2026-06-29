@@ -1,0 +1,20 @@
+# mods/test-mod/characters/dialogue/innkeeper/dialogue.toml
+# 注释：innkeeper 角色专属口上
+
+[[lines]]
+scene = "greet"
+condition = "character.innkeeper.好感度 >= 60"
+text = "客官又来了！今日想喝点什么？"
+
+[[lines]]
+scene = "greet"
+condition = "character.innkeeper.好感度 < 30"
+text = "客官面生得很，是第一次来吧？"
+
+[[lines]]
+scene = "greet"
+text = "欢迎光临，请进请进。"
+
+[[lines]]
+scene = "hurt"
+text = "哎哟！客官何必动粗！"

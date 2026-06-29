@@ -64,6 +64,64 @@ export interface Conversation {
   nodes: ConversationNode[]
 }
 
+// 注释：物品定义
+export interface ItemDef {
+  id: string
+  name: string
+  type: string          // weapon/armor/consumable/material/etc
+  stackable: boolean
+  effects?: any[]       // 使用效果（consumable 类）
+  attack_bonus?: number
+  defense_bonus?: number
+  [key: string]: any    // 各 type 可扩展字段
+}
+
+// 注释：套装定义
+export interface SetBonus {
+  required_count: number
+  effects?: any[]
+  talent?: string       // 凑齐给的天赋
+}
+
+export interface SetDef {
+  id: string
+  name: string
+  members: { abilities?: string[]; items?: string[]; talents?: string[] }
+  bonuses: SetBonus[]
+}
+
+// 注释：状态效果定义
+export interface StatusEffectDef {
+  id: string
+  name: string
+  description: string
+  category: string      // debuff/buff/neutral
+  duration: number      // 分钟，-1=永久
+  tick_interval: number // 分钟，0=不 tick
+  stackable: boolean
+  max_stack: number
+  tick_effects?: any[]
+  on_apply_effects?: any[]
+  on_remove_effects?: any[]
+}
+
+// 注释：能力定义（扩展）
+export interface AbilityDef {
+  id: string
+  name: string
+  description?: string
+  type: string          // active/passive
+  max_level: number     // 0=无等级
+  tags: string[]
+  effects?: any[]
+  time_cost?: number
+  condition?: string
+  xp_curve?: string     // linear/exponential/custom
+  xp_per_level?: number | number[]
+  unlocks?: { at_level: number; ability?: string; talent?: string }[]
+  [key: string]: any
+}
+
 export interface LoadedMod {
   id: string
   name: string
@@ -76,12 +134,17 @@ export interface LoadedMod {
   attributes: Record<string, AttributeDefinition>
   equipmentSlots: EquipmentSlot[]
   calendar: CalendarConfig | null
-  // 注释：Phase 6-7 新增
+  // 注释：Phase 6-7
   npcSpawns: NpcSpawn[]
   sceneDialogue: ReactiveLine[]
   characterDialogue: ReactiveLine[]
   characterSpecificDialogue: Map<string, ReactiveLine[]>
   conversations: Map<string, Conversation[]>
+  // 注释：Phase 8-10 新增
+  items: Record<string, ItemDef>
+  sets: SetDef[]
+  statusEffects: Record<string, StatusEffectDef>
+  abilities: Record<string, AbilityDef>
 }
 
 // TODO(phase-x): 当 UI 加载 mod 时把 equipmentSlots/calendar 同步到 game-store
@@ -163,6 +226,11 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     characterDialogue: [],
     characterSpecificDialogue: new Map(),
     conversations: new Map(),
+    // 注释：Phase 8-10 新增
+    items: {},
+    sets: [],
+    statusEffects: {},
+    abilities: {},
   }
 
   const attrPath = `/mods/${modName}/definitions/attributes.toml`
@@ -299,10 +367,64 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     }
   }
 
+  // 注释：加载 items.toml
+  const itemsPath = `/mods/${modName}/definitions/items.toml`
+  if (itemsPath in rawTomlMap) {
+    const data = parseFile(itemsPath, rawTomlMap[itemsPath])
+    mod.items = (data.items as Record<string, ItemDef>) ?? {}
+  }
+
+  // 注释：加载 sets.toml
+  const setsPath = `/mods/${modName}/definitions/sets.toml`
+  if (setsPath in rawTomlMap) {
+    const data = parseFile(setsPath, rawTomlMap[setsPath])
+    mod.sets = (data.sets as SetDef[]) ?? []
+  }
+
+  // 注释：加载 status-effects.toml
+  const statusPath = `/mods/${modName}/definitions/status-effects.toml`
+  if (statusPath in rawTomlMap) {
+    const data = parseFile(statusPath, rawTomlMap[statusPath])
+    // 注释：status-effects.toml 格式 [status-effects.中毒] → Record<string, StatusEffectDef>
+    mod.statusEffects = (data['status-effects'] as Record<string, StatusEffectDef>) ?? data.statusEffects ?? {}
+  }
+
+  // 注释：加载 abilities.toml（扩展字段）
+  const abilitiesPath = `/mods/${modName}/definitions/abilities.toml`
+  if (abilitiesPath in rawTomlMap) {
+    const data = parseFile(abilitiesPath, rawTomlMap[abilitiesPath])
+    mod.abilities = (data.abilities as Record<string, AbilityDef>) ?? {}
+  }
+
+  // 注释：展开角色 abilities 简写——数字 → { level, xp: 0 }
+  // TODO(phase-6): ability-progression 插件 onEnable 时用 max_level 做升级逻辑，不用于展开
+  expandCharacterAbilities(mod)
+
   // 注释：校验 locations——exit.target 和 parent 必须存在
   validateLocations(mod, modName)
 
   return mod
+}
+
+// 注释：展开角色 abilities 简写（数字→{level, xp:0}），已是对象则保持
+function expandCharacterAbilities(mod: LoadedMod): void {
+  const characters = mod.entities.get('character')
+  if (!characters) return
+  for (const [, char] of characters) {
+    const c = char as any
+    if (!c.abilities) continue
+    const expanded: Record<string, { level: number; xp: number | null }> = {}
+    for (const [abilityId, value] of Object.entries(c.abilities)) {
+      if (typeof value === 'number') {
+        // 注释：简写数字 → { level: 数字, xp: 0 }
+        expanded[abilityId] = { level: value, xp: 0 }
+      } else if (typeof value === 'object' && value !== null) {
+        // 注释：已是 { level, xp } 对象 → 保持
+        expanded[abilityId] = value as { level: number; xp: number | null }
+      }
+    }
+    c.abilities = expanded
+  }
 }
 
 // 注释：校验所有 location 的 exit.target 和 parent 存在

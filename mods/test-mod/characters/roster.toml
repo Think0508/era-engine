@@ -6,6 +6,7 @@ name = "玩家"
 base = { hp = 200, mp = 80 }
 equipment = { upper_body = "布衣", lower_body = "长裤" }
 assets = { portrait = "assets/char/player.png" }
+abilities = { "华山剑法" = 3, "混元功" = 2 }
 
 [[roster]]
 id = "innkeeper"

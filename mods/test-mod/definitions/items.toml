@@ -1,1 +1,29 @@
-[items]
+# mods/test-mod/definitions/items.toml
+# 注释：物品定义
+
+[items.healing_potion]
+id = "healing_potion"
+name = "回血丹"
+type = "consumable"
+stackable = true
+effects = [{ type = "modify_attribute", params = { attr = "hp", value = 50, target = "self" } }]
+
+[items.iron_sword]
+id = "iron_sword"
+name = "铁剑"
+type = "weapon"
+stackable = false
+attack_bonus = 15
+
+[items.leather_armor]
+id = "leather_armor"
+name = "皮甲"
+type = "armor"
+stackable = false
+defense_bonus = 10
+
+[items.herb]
+id = "herb"
+name = "草药"
+type = "material"
+stackable = true

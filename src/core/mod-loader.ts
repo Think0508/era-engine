@@ -122,6 +122,39 @@ export interface AbilityDef {
   [key: string]: any
 }
 
+// 注释：任务定义
+export interface QuestStep {
+  id: string
+  type: string          // dialogue/combat/objective/reward/spawn/condition/goto
+  next?: string
+  // dialogue
+  character?: string
+  conversation?: string
+  // combat
+  enemies?: string[]
+  on_win?: string
+  on_lose?: string
+  // objective
+  objective?: { type: string; target?: string; count?: number; item?: string; character?: string }
+  // reward
+  effects?: any[]
+  // condition
+  condition?: string
+  else?: string
+  // goto
+  target?: string
+}
+
+export interface Quest {
+  id: string
+  title: string
+  description?: string
+  type: string          // main/side
+  prerequisites?: string[]
+  auto_start_condition?: string
+  steps: QuestStep[]
+}
+
 export interface LoadedMod {
   id: string
   name: string
@@ -145,6 +178,8 @@ export interface LoadedMod {
   sets: SetDef[]
   statusEffects: Record<string, StatusEffectDef>
   abilities: Record<string, AbilityDef>
+  // 注释：任务
+  quests: Map<string, Quest>
 }
 
 // TODO(phase-x): 当 UI 加载 mod 时把 equipmentSlots/calendar 同步到 game-store
@@ -231,6 +266,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     sets: [],
     statusEffects: {},
     abilities: {},
+    quests: new Map(),
   }
 
   const attrPath = `/mods/${modName}/definitions/attributes.toml`
@@ -394,6 +430,20 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   if (abilitiesPath in rawTomlMap) {
     const data = parseFile(abilitiesPath, rawTomlMap[abilitiesPath])
     mod.abilities = (data.abilities as Record<string, AbilityDef>) ?? {}
+  }
+
+  // 注释：加载 quests（main/ + side/）
+  const questMainPrefix = `/mods/${modName}/quests/main/`
+  const questSidePrefix = `/mods/${modName}/quests/side/`
+  for (const [path, raw] of Object.entries(rawTomlMap)) {
+    if (!path.endsWith('.toml')) continue
+    if (path.startsWith(questMainPrefix) || path.startsWith(questSidePrefix)) {
+      const data = parseFile(path, raw)
+      const quest = data as any as Quest
+      if (quest.id) {
+        mod.quests.set(quest.id, quest)
+      }
+    }
   }
 
   // 注释：展开角色 abilities 简写——数字 → { level, xp: 0 }

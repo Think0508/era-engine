@@ -12,7 +12,7 @@
 | 4 | ✅ | API+插件（api/plugin-manager） |
 | 5 | ✅ | UI 框架（布局/主题/stores/组件/指令栏/叙事日志） |
 | 6-7 | ✅ | 地图+角色+对话插件（map-system/character-system/dialogue-system） |
-| 8-10 | TODO | 状态/能力/背包/效果/战斗/任务插件 |
+| 8-10 | ✅ | 状态/能力/背包/效果/套装/战斗/任务插件 |
 | 11-15 | TODO | 存档/沙箱/LLM口上/角色创建/发布 |
 
 ## 核心架构
@@ -53,6 +53,14 @@ mods/     内容模组——TOML数据，一次只启用一个
 | map-system | map:loaded | map | 移动/地图API/MapView渲染 |
 | character-system | characters:initialized | character | 角色位置初始化/AI移动/NPC生成/属性读写 |
 | dialogue-system | dialogue:ready | dialogue | 口上演出(triggerScene)/交互对话(startConversation) |
+| effect-system | effects:ready | effect-system | 10核心effect类型/execute/target解析/depends_on/错误隔离 |
+| status-system | status:ready | status | apply/remove/tick/stack缩放/duration/condition字段 |
+| ability-progression | abilities:ready | abilities | gain_xp/升级/unlocks/getByTag/hasTag |
+| inventory-system | inventory:ready | inventory | addItem/removeItem/useItem/equip/unequip/item事件 |
+| set-system | sets:ready | set | 广义套装检测/动态给予移除/effects注入 |
+| combat-base | combat:ready | combat | 回合循环/钩子系统/队友接口/标准事件 |
+| combat-wuxia | combat-wuxia:ready | combat-wuxia | extends combat-base/六维公式/阴阳/暴击/闪避 |
+| quest-system | quests:ready | quest | 7step类型/objective事件驱动/auto_start |
 
 ## 开发流程
 
@@ -62,14 +70,10 @@ mods/     内容模组——TOML数据，一次只启用一个
 4. 关键交接位置写简洁注释
 5. 不加无关注释（AGENTS.md 规则），但 TODO 和交接注释允许破例
 
-## 下一步（Phase 8-10）
+## 下一步（Phase 11-15）
 
-按 `docs/superpowers/plans/2026-06-27-era-engine-full-implementation.md` 的概要：
-- **status-system**：状态效果（apply_status/remove_status effect，tick，stack叠加）
-- **ability-progression**：能力升级（gain_ability_xp effect，xp_curve，unlocks）
-- **inventory-system**：背包物品（add_item/remove_item effect）
-- **effect-system**：统一效果执行器（10个核心effect类型 + 插件注册扩展）
-- **combat-base + combat-wuxia**：回合制战斗（标准事件契约，extends继承）
-- **quest-system**：任务剧情（7种step类型，objective事件驱动）
-
-每个插件遵循同样模式：plugin.toml + index.ts(onLoad/onEnable) + 注册API + 注册指令 + 监听事件。
+- **存档系统**：Dexie.js + IndexedDB，多命名空间隔离，存档迁移
+- **沙箱脚本**：JS 钩子执行环境（acorn AST 超时保护）
+- **LLM 口上**：流式/上下文/token/降级设计
+- **角色创建**：mod 定义的创建流程（dialogue/choose/input）
+- **发布**：PWA/移动端适配/打包

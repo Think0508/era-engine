@@ -1,0 +1,34 @@
+# mods/test-mod/quests/main/test_quest.toml
+id = "test_quest"
+title = "测试任务"
+description = "一个测试用的主线任务"
+type = "main"
+
+[[steps]]
+id = "start"
+type = "dialogue"
+character = "innkeeper"
+conversation = "daily_chat"
+next = "go_to_square"
+
+[[steps]]
+id = "go_to_square"
+type = "objective"
+description = "前往城镇广场"
+objective = { type = "reach_location", target = "town_square" }
+next = "reward_step"
+
+[[steps]]
+id = "reward_step"
+type = "reward"
+effects = [
+  { type = "modify_attribute", params = { attr = "hp", value = 50 }, target = "player" },
+  { type = "narrative_output", params = { text = "任务奖励：HP +50" } }
+]
+next = "complete"
+
+[[steps]]
+id = "complete"
+type = "dialogue"
+character = "innkeeper"
+conversation = "daily_chat"

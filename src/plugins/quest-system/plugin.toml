@@ -1,0 +1,28 @@
+[meta]
+id = "quest-system"
+name = "任务剧情系统"
+version = "1.0.0"
+description = "7种step类型+objective事件驱动+auto_start"
+
+[data_dependencies]
+provides = ["quests:ready"]
+depends_on = ["dialogue:ready", "combat:ready"]
+
+[condition_fields]
+"quest.{questId}.status" = { type = "string", description = "任务状态: not_started/active/completed" }
+
+[[events.listen]]
+name = "location:enter"
+description = "objective reach_location + auto_start 检查"
+
+[[events.listen]]
+name = "combat:end"
+description = "objective kill_count + auto_start 检查"
+
+[[events.listen]]
+name = "item:added"
+description = "objective collect_items"
+
+[[events.listen]]
+name = "dialogue:end"
+description = "objective talk_to"

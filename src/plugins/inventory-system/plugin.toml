@@ -1,0 +1,13 @@
+[meta]
+id = "inventory-system"
+name = "背包物品系统"
+version = "1.0.0"
+description = "物品增删/使用/装备穿脱"
+
+[data_dependencies]
+provides = ["inventory:ready"]
+depends_on = ["effects:ready"]
+
+[[events.listen]]
+name = "location:enter"
+description = "tags 驱动指令注册"

@@ -1,0 +1,9 @@
+[meta]
+id = "ability-progression"
+name = "能力升级系统"
+version = "1.0.0"
+description = "XP/等级/unlocks——战斗外副职也用"
+
+[data_dependencies]
+provides = ["abilities:ready"]
+depends_on = ["effects:ready"]

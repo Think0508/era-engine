@@ -1,0 +1,13 @@
+[meta]
+id = "set-system"
+name = "套装系统"
+version = "1.0.0"
+description = "广义套装——装备/武功/天赋组合，凑齐给天赋/效果"
+
+[data_dependencies]
+provides = ["sets:ready"]
+depends_on = ["effects:ready"]
+
+[[events.listen]]
+name = "character:changed"
+description = "检查套装变化"

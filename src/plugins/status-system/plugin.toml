@@ -1,0 +1,18 @@
+[meta]
+id = "status-system"
+name = "状态效果系统"
+version = "1.0.0"
+description = "中毒/醉意/buff等状态——战斗内外都用"
+
+[data_dependencies]
+provides = ["status:ready"]
+depends_on = ["effects:ready"]
+
+[condition_fields]
+"character.{id}.status.{statusId}" = { type = "boolean", description = "是否拥有该状态" }
+"character.{id}.status.{statusId}.stack" = { type = "number", description = "叠加层数" }
+"character.{id}.status.{statusId}.remaining" = { type = "number", description = "剩余分钟数" }
+
+[[events.listen]]
+name = "game:hour_changed"
+description = "tick + duration 扣减"

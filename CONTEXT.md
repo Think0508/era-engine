@@ -195,8 +195,20 @@ JavaScript execution environment using `new Function()` with a frozen read-only 
 _Avoid_: eval(), unguarded Function, no timeout
 
 **Character behavior**:
-Layered position calculation for characters. Layer 1 (MVP): `home_locations` weighted (auto-normalized) + `time_rules` + `activity` probability (0=never moves, 0.5=50% chance per hour trigger). Layer 2: following relationships. Layer 3: group/social network effects. Position is computed on demand when the player enters a location — iterate all characters, filter by home_locations matching the target area. Secondary indexes are not needed for MVP (600-char traversal is sub-millisecond).
-_Avoid_: Full-world simulation, frame-driven AI movement, premature indexing
+Layered position calculation for characters. Layer 1 (MVP): `home_locations` weighted (auto-normalized) + `time_rules` + `activity` probability (0=never moves, 0.5=50% chance per hour trigger). Layer 2: following relationships. Layer 3: group/social network effects. Position is computed on demand when the player enters a location — iterate all characters, filter by home_locations matching the target area. Secondary indexes are not needed for MVP (600-char traversal is sub-millisecond). AI movement runs on every `game:hour_changed` for ALL characters (not just current+adjacent), with `activity < 0.3`降频 (every 5 hours via `hour % 5 == 0`). Movement decision: time_rules first (hour_range match → weighted random target), then home_locations re-weighted, no home_locations → no move.
+_Avoid_: Full-world simulation, frame-driven AI movement, premature indexing, only simulating current+adjacent characters
+
+**Scene**:
+A free-form string identifying a reactive-line trigger context (e.g. `greet`, `hurt`, `rest`, `move`, `enter`). Scenes are not predefined by the engine — mods and plugins define them. Other systems call `dialogue.triggerScene(scene, charId?)` after performing actions; dialogue-system matches scene + condition against reactive line definitions and outputs to the narrative log. Scene-based口上 = the engine's演出 pipeline — nearly every command triggers a scene (rest→rest scene, move→move scene, combat hit→hurt scene). If no matching lines exist for a scene, output is silently skipped (not every scene has口上).
+_Avoid_: Hardcoded scene list,狭义 dialogue (口上 = 演出 not just conversation), requiring every scene to have lines
+
+**Reactive line priority**:
+Three-tier口上 system: (1) scene通用口上 (`definitions/scene-dialogue.toml`) — location/environment descriptions, not bound to a character; (2) character通用口上 (`definitions/character-dialogue.toml`) — fallback default lines for characters without专属口上; (3) character专属口上 (`characters/dialogue/{charId}/dialogue.toml`) — custom lines for specific characters. When triggerScene is called with a charId: character专属 > character通用 (fallback), scene通用 outputs independently (both scene + character lines output if both match). Without charId: only scene通用 is checked. All character tiers (named/roster/npc) can have专属口上.
+_Avoid_: Assuming only named characters can have专属口上, scene vs character as either/or (both output)
+
+**Text formatting**:
+A Markdown-subset + extension syntax supported in narrative log entries and口上 text, parsed by the NarrativeLog renderer. Supported: `**bold**`, `*italic*`, `~~strikethrough~~`, `||spoiler||` (black box, click to reveal like decryption), `{{color:#RRGGBB text}}` / `{{color:#AARRGGBB text}}` (hex RGB with optional alpha transparency), `{{font:fontname text}}` (custom font), `{{size:large text}}` (font size). Enables rich演出 in text-based gameplay.
+_Avoid_: Full Markdown, HTML injection, era-style @b@ tags
 
 **Migration**:
 A version compatibility script applied to save data when the mod version changes. Each migration file covers one version step (1.0→2.0). On load, the engine compares the save's mod version with the current mod version and executes all missing migration steps in order. Migrations run ON THE IN-MEMORY COPY of the save data, never on the original save file. If any migration fails, loading is aborted and the save file remains intact (safe retry). Supported operations: rename fields, set defaults, run script transforms (sandbox). Persisting the migrated data only happens when the player next saves.

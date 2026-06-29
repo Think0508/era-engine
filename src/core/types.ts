@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import type { CommandDef } from './command-registry'
 
 export interface GameTimeData {
   minute: number
@@ -37,6 +38,11 @@ export interface PluginContext {
   api: {
     register: (namespace: string, methods: Record<string, Function>) => void
     call: (namespace: string, method: string, ...args: any[]) => Promise<any>
+  }
+  // 注释：指令注册——插件通过此方法动态注册指令（不通过 plugin.toml）
+  commands: {
+    register: (cmd: CommandDef) => void
+    unregister: (id: string) => void
   }
   ui: {
     registerSlot: (slotName: string, item: UISlotItem) => void

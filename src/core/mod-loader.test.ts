@@ -22,17 +22,41 @@ describe('parseModData', () => {
     expect(mod.id).toBe('test-mod')
     expect(mod.name).toBe('测试模组')
     expect(mod.version).toBe('1.0.0')
-    expect(mod.dependencies).toEqual([
-      { plugin: 'combat-base', version: '^1.0.0' },
-    ])
+    // 注释：Phase 5 移除 combat-base 依赖，插件未实现
+    expect(mod.dependencies).toEqual([])
   })
 
-  it('parses attributes.toml correctly (5 attributes)', () => {
-    expect(Object.keys(mod.attributes)).toHaveLength(5)
+  it('parses attributes.toml correctly (display/display_group/daily_reset)', () => {
+    // 注释：原有5个 + 体力/气力/精力 + 情绪/理性 + 7 Parameter + 金钱 = 16
+    expect(Object.keys(mod.attributes).length).toBeGreaterThanOrEqual(16)
     expect(mod.attributes.hp.type).toBe('number')
     expect(mod.attributes.hp.default).toBe(100)
-    expect(mod.attributes.hp.category).toBe('base')
+    expect(mod.attributes.hp.display).toBe(true)
+    expect(mod.attributes.hp.display_group).toBe('status')
     expect(mod.attributes.attack.category).toBe('combat')
+    // 注释：Parameter 属性有 daily_reset
+    expect(mod.attributes['快C'].daily_reset).toBe(true)
+    expect(mod.attributes['快C'].display_group).toBe('身体快感')
+    expect(mod.attributes['情欲'].display_group).toBe('情绪心理')
+    // 注释：非 Parameter 属性无 daily_reset
+    expect(mod.attributes.hp.daily_reset).toBeUndefined()
+  })
+
+  it('parses equipment.toml correctly (3 slots)', () => {
+    expect(mod.equipmentSlots).toHaveLength(3)
+    expect(mod.equipmentSlots[0].id).toBe('upper_body')
+    expect(mod.equipmentSlots[0].name).toBe('上身')
+    expect(mod.equipmentSlots[0].category).toBe('clothing')
+    expect(mod.equipmentSlots[2].id).toBe('accessory')
+  })
+
+  it('parses calendar.toml correctly', () => {
+    expect(mod.calendar).not.toBeNull()
+    expect(mod.calendar!.month_names).toHaveLength(12)
+    expect(mod.calendar!.month_names[0]).toBe('一月')
+    expect(mod.calendar!.weekday_names).toHaveLength(7)
+    expect(mod.calendar!.hour_names).toHaveLength(12)
+    expect(mod.calendar!.hour_names![0]).toBe('子')
   })
 
   it('parses bindings.toml correctly', () => {
@@ -43,7 +67,7 @@ describe('parseModData', () => {
     })
   })
 
-  it('parses roster.toml correctly (3 characters)', () => {
+  it('parses roster.toml correctly (3 characters, equipment, assets)', () => {
     const characters = mod.entities.get('character')!
     expect(characters.size).toBe(3)
     expect(characters.get('player')?.name).toBe('玩家')
@@ -54,8 +78,17 @@ describe('parseModData', () => {
       defense: 5,
       speed: 5,
     })
+    // 注释：equipment/assets 是 Phase 5 新增的角色字段
+    expect(characters.get('player')?.equipment).toEqual({
+      upper_body: '布衣',
+      lower_body: '长裤',
+    })
+    expect(characters.get('player')?.assets).toEqual({
+      portrait: 'assets/char/player.png',
+    })
     expect(characters.get('innkeeper')?.name).toBe('酒馆老板')
     expect(characters.get('guard')?.behavior?.activity).toBe(0.3)
+    expect(characters.get('guard')?.equipment).toBeDefined()
   })
 
   it('parses locations correctly (2 locations, exits, parent)', () => {

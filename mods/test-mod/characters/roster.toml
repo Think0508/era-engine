@@ -4,6 +4,8 @@ id = "player"
 template = "test-hero"
 name = "玩家"
 base = { hp = 200, mp = 80 }
+equipment = { upper_body = "布衣", lower_body = "长裤" }
+assets = { portrait = "assets/char/player.png" }
 
 [[roster]]
 id = "innkeeper"
@@ -11,6 +13,8 @@ template = "base-human"
 name = "酒馆老板"
 base = { hp = 80, attack = 5 }
 behavior = { activity = 0, home_locations = { tavern = 1.0 } }
+equipment = { upper_body = "布衣", lower_body = "长裤" }
+assets = { portrait = "assets/char/innkeeper.png" }
 
 [[roster]]
 id = "guard"
@@ -18,3 +22,5 @@ template = "base-human"
 name = "卫兵"
 base = { hp = 120, attack = 12 }
 behavior = { activity = 0.3, home_locations = { town_square = 0.7, tavern = 0.3 } }
+equipment = { upper_body = "布衣", lower_body = "长裤" }
+assets = { portrait = "assets/char/guard.png" }

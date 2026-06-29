@@ -1,0 +1,14 @@
+[[slots]]
+id = "upper_body"
+name = "上身"
+category = "clothing"
+
+[[slots]]
+id = "lower_body"
+name = "下身"
+category = "clothing"
+
+[[slots]]
+id = "accessory"
+name = "饰品"
+category = "accessory"

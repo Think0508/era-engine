@@ -1,6 +1,23 @@
 [attributes]
-hp = { type = "number", default = 100, category = "base" }
-mp = { type = "number", default = 50, category = "base" }
-attack = { type = "number", default = 10, category = "combat" }
-defense = { type = "number", default = 5, category = "combat" }
-speed = { type = "number", default = 5, category = "base" }
+hp = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
+mp = { type = "number", default = 50, category = "base", display = true, display_group = "status" }
+attack = { type = "number", default = 10, category = "combat", display = true, display_group = "combat" }
+defense = { type = "number", default = 5, category = "combat", display = true, display_group = "combat" }
+speed = { type = "number", default = 5, category = "base", display = true, display_group = "base" }
+
+"体力" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
+"气力" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
+"精力" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
+
+"情绪" = { type = "number", default = 0, category = "emotion", display = true, display_group = "emotion" }
+"理性" = { type = "number", default = 100, category = "emotion", display = true, display_group = "emotion" }
+
+"快C" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true }
+"快V" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true }
+"润滑" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true }
+"恭顺" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+"情欲" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+"羞耻" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+"眠奸" = { type = "number", default = 0, category = "parameter", display = true, display_group = "特殊", daily_reset = true }
+
+"金钱" = { type = "number", default = 0, category = "economy", display = true, display_group = "economy" }

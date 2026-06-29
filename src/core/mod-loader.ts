@@ -15,6 +15,21 @@ export interface AttributeDefinition {
   default: unknown
   category: string
   compute?: string
+  display?: boolean
+  display_group?: string
+  daily_reset?: boolean
+}
+
+export interface EquipmentSlot {
+  id: string
+  name: string
+  category: string
+}
+
+export interface CalendarConfig {
+  month_names: string[]
+  weekday_names: string[]
+  hour_names?: string[]
 }
 
 export interface LoadedMod {
@@ -27,7 +42,11 @@ export interface LoadedMod {
   bindings: Record<string, Record<string, string>>
   theme: Record<string, Record<string, string>>
   attributes: Record<string, AttributeDefinition>
+  equipmentSlots: EquipmentSlot[]
+  calendar: CalendarConfig | null
 }
+
+// TODO(phase-x): 当 UI 加载 mod 时把 equipmentSlots/calendar 同步到 game-store
 
 type RawTomlMap = Record<string, string>
 
@@ -99,6 +118,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     bindings: {},
     theme: {},
     attributes: {},
+    equipmentSlots: [],
+    calendar: null,
   }
 
   const attrPath = `/mods/${modName}/definitions/attributes.toml`
@@ -161,6 +182,27 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       string,
       Record<string, string>
     >
+  }
+
+  // 注释：equipment.toml 和 calendar.toml 是 mod 文化/显示层定义，
+  // 非实体数据，不进存档。engine UI 读取它们用于渲染装备槽和日期显示。
+  const equipmentPath = `/mods/${modName}/definitions/equipment.toml`
+  if (equipmentPath in rawTomlMap) {
+    const data = parseFile(equipmentPath, rawTomlMap[equipmentPath])
+    mod.equipmentSlots = (data.slots as EquipmentSlot[]) ?? []
+  }
+
+  const calendarPath = `/mods/${modName}/definitions/calendar.toml`
+  if (calendarPath in rawTomlMap) {
+    const data = parseFile(calendarPath, rawTomlMap[calendarPath])
+    const cal = data.calendar as CalendarConfig | undefined
+    if (cal) {
+      mod.calendar = {
+        month_names: cal.month_names ?? [],
+        weekday_names: cal.weekday_names ?? [],
+        hour_names: cal.hour_names,
+      }
+    }
   }
 
   return mod

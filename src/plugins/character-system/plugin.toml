@@ -1,0 +1,20 @@
+[meta]
+id = "character-system"
+name = "角色系统"
+version = "1.0.0"
+description = "角色属性管理、AI移动、NPC生成"
+
+[data_dependencies]
+provides = ["characters:initialized"]
+depends_on = []
+
+[condition_fields]
+"character.{id}.current_location" = { type = "string", description = "角色当前所在地点" }
+
+[[events.listen]]
+name = "game:hour_changed"
+description = "AI 移动检查"
+
+[[events.listen]]
+name = "location:enter"
+description = "NPC spawns 检查"

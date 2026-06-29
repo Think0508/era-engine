@@ -32,6 +32,38 @@ export interface CalendarConfig {
   hour_names?: string[]
 }
 
+// 注释：NPC spawn 定义——首次进入地点时随机生成路人
+export interface NpcSpawn {
+  template: string
+  at_locations: string[]
+  count: { min: number; max: number }
+  overrides?: Record<string, any>
+  names?: string[]
+  name_generator?: string
+}
+
+// 注释：反应式口上条目
+export interface ReactiveLine {
+  scene: string
+  condition?: string
+  text: string
+}
+
+// 注释：交互式对话
+export interface ConversationNode {
+  id: string
+  lines: string[]
+  choices?: { text: string; next: string; condition?: string }[]
+  effects?: any[]
+  next?: string
+}
+
+export interface Conversation {
+  id: string
+  condition?: string
+  nodes: ConversationNode[]
+}
+
 export interface LoadedMod {
   id: string
   name: string
@@ -44,6 +76,12 @@ export interface LoadedMod {
   attributes: Record<string, AttributeDefinition>
   equipmentSlots: EquipmentSlot[]
   calendar: CalendarConfig | null
+  // 注释：Phase 6-7 新增
+  npcSpawns: NpcSpawn[]
+  sceneDialogue: ReactiveLine[]
+  characterDialogue: ReactiveLine[]
+  characterSpecificDialogue: Map<string, ReactiveLine[]>
+  conversations: Map<string, Conversation[]>
 }
 
 // TODO(phase-x): 当 UI 加载 mod 时把 equipmentSlots/calendar 同步到 game-store
@@ -120,6 +158,11 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     attributes: {},
     equipmentSlots: [],
     calendar: null,
+    npcSpawns: [],
+    sceneDialogue: [],
+    characterDialogue: [],
+    characterSpecificDialogue: new Map(),
+    conversations: new Map(),
   }
 
   const attrPath = `/mods/${modName}/definitions/attributes.toml`
@@ -205,7 +248,97 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     }
   }
 
+  // 注释：加载 npc.toml（spawns）
+  const npcPath = `/mods/${modName}/characters/npc.toml`
+  if (npcPath in rawTomlMap) {
+    const data = parseFile(npcPath, rawTomlMap[npcPath])
+    mod.npcSpawns = (data.spawns as NpcSpawn[]) ?? []
+  }
+
+  // 注释：加载场景通用口上
+  const sceneDialoguePath = `/mods/${modName}/definitions/scene-dialogue.toml`
+  if (sceneDialoguePath in rawTomlMap) {
+    const data = parseFile(sceneDialoguePath, rawTomlMap[sceneDialoguePath])
+    mod.sceneDialogue = (data.scene_lines as ReactiveLine[]) ?? []
+  }
+
+  // 注释：加载角色通用口上
+  const charDialoguePath = `/mods/${modName}/definitions/character-dialogue.toml`
+  if (charDialoguePath in rawTomlMap) {
+    const data = parseFile(charDialoguePath, rawTomlMap[charDialoguePath])
+    mod.characterDialogue = (data.character_lines as ReactiveLine[]) ?? []
+  }
+
+  // 注释：加载角色专属口上 + 交互式对话
+  // 路径：characters/dialogue/{charId}/dialogue.toml + conversations/*.toml
+  const dialoguePrefix = `/mods/${modName}/characters/dialogue/`
+  for (const [path, raw] of Object.entries(rawTomlMap)) {
+    if (!path.startsWith(dialoguePrefix) || !path.endsWith('.toml')) continue
+    // 注释：提取 charId——characters/dialogue/{charId}/dialogue.toml 或 .../{charId}/conversations/{convId}.toml
+    const rest = path.slice(dialoguePrefix.length)
+    const parts = rest.split('/')
+    if (parts.length < 2) continue
+    const charId = parts[0]
+
+    if (parts.length === 2 && parts[1] === 'dialogue.toml') {
+      // 注释：角色专属口上
+      const data = parseFile(path, raw)
+      const lines = (data.lines as ReactiveLine[]) ?? []
+      mod.characterSpecificDialogue.set(charId, lines)
+    } else if (parts.length === 3 && parts[1] === 'conversations') {
+      // 注释：交互式对话
+      const data = parseFile(path, raw)
+      const conv: Conversation = {
+        id: (data.id as string) ?? parts[2].replace(/\.toml$/, ''),
+        condition: data.condition as string | undefined,
+        nodes: (data.nodes as ConversationNode[]) ?? [],
+      }
+      const list = mod.conversations.get(charId) ?? []
+      list.push(conv)
+      mod.conversations.set(charId, list)
+    }
+  }
+
+  // 注释：校验 locations——exit.target 和 parent 必须存在
+  validateLocations(mod, modName)
+
   return mod
+}
+
+// 注释：校验所有 location 的 exit.target 和 parent 存在
+// 不存在 → 报错（文件名+行号+不存在的 target+建议）
+// 不可达 → warning（无 exit 指向且无 parent）
+function validateLocations(mod: LoadedMod, modName: string): void {
+  // 注释：收集所有被引用的 target
+  const referencedByOthers = new Set<string>()
+  for (const [, loc] of mod.locations) {
+    for (const exit of loc.exits) {
+      referencedByOthers.add(exit.target)
+    }
+  }
+
+  for (const [id, loc] of mod.locations) {
+    // 注释：校验 exit.target 存在
+    for (const exit of loc.exits) {
+      if (!mod.locations.has(exit.target)) {
+        throw new Error(
+          `mods/${modName}/maps/locations/: 地点 '${id}' 的 exit 目标 '${exit.target}' 不存在（可用：${[...mod.locations.keys()].slice(0, 5).join(', ')}...）`,
+        )
+      }
+    }
+    // 注释：校验 parent 存在
+    if (loc.parent !== null && !mod.locations.has(loc.parent)) {
+      throw new Error(
+        `mods/${modName}/maps/locations/: 地点 '${id}' 的 parent '${loc.parent}' 不存在`,
+      )
+    }
+    // 注释：不可达 warning——无 exit 指向且无 parent
+    if (!referencedByOthers.has(id) && loc.parent === null) {
+      console.warn(
+        `mods/${modName}/maps/locations/: 地点 '${id}' 不可达（无其他地点的 exit 指向它，也无 parent）——可能是设计遗漏`,
+      )
+    }
+  }
 }
 
 const tomlModules = import.meta.glob('/mods/**/*.toml', {

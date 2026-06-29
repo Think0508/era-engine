@@ -4,12 +4,12 @@
 // 对话选项在日志最新一行渲染
 
 <script setup lang="ts">
-// 注释：NarrativeLog 在 Task 5.6 实现
+import NarrativeLog from '../components/NarrativeLog.vue'
 </script>
 
 <template>
   <div class="fullscreen-text-layout">
-    <div class="narrative-log-fullscreen">[NarrativeLog]</div>
+    <NarrativeLog />
   </div>
 </template>
 

@@ -11,4 +11,7 @@ export default defineConfig({
       '@': resolve(import.meta.dirname, 'src'),
     },
   },
+  define: {
+    global: 'globalThis',
+  },
 })

@@ -1,14 +1,7 @@
 // 注释：AppLayout 根布局——按 (executionState × mode × theme) 选子布局
-// 决策树：
-//   EXECUTING → FullScreenTextLayout
-//   daily_menu → DailyMenuLayout
-//   combat → era经典: ExplorationLayout / 现代: ModernLayout（指令栏换战斗指令，Phase 5 骨架）
-//   dialogue → FullScreenTextLayout（对话在日志中处理）
-//   exploration → theme === 'era' ? ExplorationLayout : ModernLayout
-// provide SlotRegistry
 
 <script setup lang="ts">
-import { computed, provide } from 'vue'
+import { computed, inject, provide } from 'vue'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { SlotRegistry, SLOT_REGISTRY_KEY } from '../slots/slot-registry'
@@ -17,9 +10,8 @@ import ModernLayout from './ModernLayout.vue'
 import FullScreenTextLayout from './FullScreenTextLayout.vue'
 import DailyMenuLayout from './DailyMenuLayout.vue'
 
-// 注释：创建 SlotRegistry 实例并 provide
-// TODO(phase-6+): 插件通过 ctx.ui.registerSlot 注册到此实例
-const slotRegistry = new SlotRegistry()
+// 注释：使用 main.ts 提供的 SlotRegistry（不存在时自己创建兜底）
+const slotRegistry = inject<SlotRegistry>(SLOT_REGISTRY_KEY) ?? new SlotRegistry()
 provide(SLOT_REGISTRY_KEY, slotRegistry)
 
 const gameStore = useGameStore()

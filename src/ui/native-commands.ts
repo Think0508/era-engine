@@ -1,8 +1,6 @@
 // 注释：native-commands 原生指令注册
 // 引擎启动时通过 CommandRegistry 注册，source='native'
-// mod 可通过 ui-overrides.toml override（TODO: 后续阶段实现解析）
-// handler 函数走 NativeCommandContext（不是 PluginContext）
-// Phase 5 原生指令全 handler 类（不触发 effect-system）
+// 被插件覆盖的指令（move/talk/save/load）不在 native-commands 注册，由插件接管
 
 import { commandRegistry } from '../core/command-registry'
 import { useUIStore } from './stores/ui-store'
@@ -19,7 +17,6 @@ export function registerNativeCommands(): void {
     priority: 10,
     source: 'native',
     handler: () => {
-      // TODO(task-5.14): CharacterPanel(target='player')
       const uiStore = useUIStore()
       uiStore.setActivePanel('character-player')
     },
@@ -41,50 +38,7 @@ export function registerNativeCommands(): void {
     },
   })
 
-  commandRegistry.register({
-    id: 'move',
-    label: '移动',
-    group: 'location_commands',
-    modes: ['exploration'],
-    priority: 5,
-    source: 'native',
-    handler: () => {
-      // TODO(task-5.11): MapView 作为 interactive entry 渲染
-      const gameStore = useGameStore()
-      // 注释：临时——写一条 map 类型的日志条目
-      gameStore.addLogEntry({
-        id: `map-${Date.now()}`,
-        text: '地图',
-        type: 'map',
-        source: 'native',
-        interactive: true,
-        payload: { locationId: gameStore.location?.id },
-      })
-    },
-  })
-
-  commandRegistry.register({
-    id: 'talk',
-    label: '交谈',
-    group: 'character_commands',
-    modes: ['exploration'],
-    priority: 10,
-    condition: 'selected != null',
-    source: 'native',
-    handler: () => {
-      // TODO(task-5.15): bridge 接入后触发对话系统
-      const gameStore = useGameStore()
-      const uiStore = useUIStore()
-      if (uiStore.selectedCharacterId) {
-        gameStore.addLogEntry({
-          id: `talk-${Date.now()}`,
-          text: `与 ${uiStore.selectedCharacterId} 交谈...（对话系统 Phase 7 实现）`,
-          type: 'dialogue',
-          source: 'native',
-        })
-      }
-    },
-  })
+  // 注释：move 由 map-system 插件注册；talk 由 dialogue-system 插件注册
 
   commandRegistry.register({
     id: 'rest',
@@ -97,7 +51,7 @@ export function registerNativeCommands(): void {
       const gameStore = useGameStore()
       gameStore.addLogEntry({
         id: `rest-${Date.now()}`,
-        text: '你休息了一会儿，恢复了一些体力。（休息系统 Phase 6+ 实现）',
+        text: '你休息了一会儿，恢复了一些体力。',
         type: 'system',
         source: 'native',
       })
@@ -136,14 +90,17 @@ export function registerNativeCommands(): void {
     modes: ['exploration', 'daily_menu'],
     priority: 50,
     source: 'native',
-    handler: () => {
-      const gameStore = useGameStore()
-      gameStore.addLogEntry({
-        id: `save-${Date.now()}`,
-        text: '存档功能开发中（Phase 11 实现）',
-        type: 'system',
-        source: 'native',
-      })
+    handler: async () => {
+      try {
+        const { saveGame } = await import('../core/save-system')
+        const uiStore = useUIStore()
+        await saveGame('manual', uiStore.toSaveData(), '手动存档')
+      } catch (e: any) {
+        useGameStore().addLogEntry({
+          id: `save-err-${Date.now()}`, text: `存档失败：${e.message}`,
+          type: 'system', source: 'native',
+        })
+      }
     },
   })
 
@@ -154,14 +111,23 @@ export function registerNativeCommands(): void {
     modes: ['exploration', 'daily_menu'],
     priority: 51,
     source: 'native',
-    handler: () => {
-      const gameStore = useGameStore()
-      gameStore.addLogEntry({
-        id: `load-${Date.now()}`,
-        text: '读档功能开发中（Phase 11 实现）',
-        type: 'system',
-        source: 'native',
-      })
+    handler: async () => {
+      try {
+        const { getSaveSlots, loadGame, restoreFromSave } = await import('../core/save-system')
+        const slots = await getSaveSlots()
+        if (slots.length === 0) {
+          useGameStore().addLogEntry({ id: `load-${Date.now()}`, text: '无存档可读', type: 'system', source: 'native' })
+          return
+        }
+        const slot = slots[slots.length - 1] // 注释：读最新存档
+        const data = await loadGame(slot.slotId)
+        if (data) {
+          restoreFromSave(data)
+          useGameStore().addLogEntry({ id: `load-${Date.now()}`, text: `读档成功：${slot.slotId}`, type: 'system', source: 'native' })
+        }
+      } catch (e: any) {
+        useGameStore().addLogEntry({ id: `load-err-${Date.now()}`, text: `读档失败：${e.message}`, type: 'system', source: 'native' })
+      }
     },
   })
 
@@ -218,7 +184,7 @@ export function registerNativeCommands(): void {
 // 注释：卸载原生指令
 export function unregisterNativeCommands(): void {
   const ids = [
-    'open_player_panel', 'open_selected_panel', 'move', 'talk', 'rest',
+    'open_player_panel', 'open_selected_panel', 'rest',
     'cheat_skip_day', 'save', 'load', 'options',
     '@attrs', '@setattr', '@teleport', '@spawn', '@additem', '@startquest', '@errors', '@help',
   ]

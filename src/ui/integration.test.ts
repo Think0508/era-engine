@@ -22,9 +22,12 @@ describe('UI 集成测试', () => {
 
   it('原生指令注册后可查询', () => {
     expect(commandRegistry.getById('open_player_panel')).toBeDefined()
-    expect(commandRegistry.getById('move')).toBeDefined()
-    expect(commandRegistry.getById('talk')).toBeDefined()
+    expect(commandRegistry.getById('rest')).toBeDefined()
     expect(commandRegistry.getById('save')).toBeDefined()
+    expect(commandRegistry.getById('load')).toBeDefined()
+    // 注释：move/talk 由插件注册，不在 native-commands 中
+    expect(commandRegistry.getById('move')).toBeUndefined()
+    expect(commandRegistry.getById('talk')).toBeUndefined()
   })
 
   it('game-store 填充 mock 数据后状态正确', () => {
@@ -99,8 +102,7 @@ describe('UI 集成测试', () => {
     const gameStore = useGameStore()
     gameStore.pushMode('exploration')
     const locationCmds = commandRegistry.getByMode('exploration', 'location_commands')
-    expect(locationCmds.length).toBeGreaterThan(0)
-    expect(locationCmds.some(c => c.id === 'move')).toBe(true)
+    // 注释：move 已移出 native-commands，rest 仍在
     expect(locationCmds.some(c => c.id === 'rest')).toBe(true)
   })
 

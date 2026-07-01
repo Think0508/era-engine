@@ -9,6 +9,7 @@
 import { computed, ref, watch } from 'vue'
 import { commandRegistry, type CommandDef } from '../../core/command-registry'
 import { commandExecutor } from '../../core/command-executor'
+import { apiSystem } from '../../core/api'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { useKeyInput } from '../composables/useKeyInput'
@@ -64,11 +65,12 @@ const numberToCommand = computed<Map<number, string>>(() => {
 // 注释：执行指令
 async function executeCommand(commandId: string) {
   lastCommand.value = commandId
-  // TODO(task-5.15): bridge 接入后传入真实 ExecutionContext
   await commandExecutor.execute(commandId, {
     uiStore,
     gameStore,
-    evaluateCondition: () => true, // TODO: 接入 condition-registry 求值
+    api: apiSystem,
+    engine: { setExecutionState: () => {}, emit: () => {} },
+    evaluateCondition: () => true,
   })
 }
 

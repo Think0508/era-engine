@@ -3,7 +3,6 @@
 // 被插件覆盖的指令（move/talk/save/load）不在 native-commands 注册，由插件接管
 
 import { commandRegistry } from '../core/command-registry'
-import { apiSystem } from '../core/api'
 import { useUIStore } from './stores/ui-store'
 import { useGameStore } from './stores/game-store'
 
@@ -170,17 +169,13 @@ export function registerNativeCommands(): void {
       useGameStore().addLogEntry({ id: `@err-${Date.now()}`, text: `查看控制台错误`, type: 'system', source: 'native' })
     }},
     { id: '@help', label: '@帮助', handler: () => {
-      useGameStore().addLogEntry({ id: `@hlp-${Date.now()}`, text: `@命令列表: @attrs/@setattr/@teleport/@spawn/@additem/@startquest/@errors/@help/@test_combat`, type: 'system', source: 'native' })
+      useGameStore().addLogEntry({ id: `@hlp-${Date.now()}`, text: `@命令列表: @attrs/@setattr/@teleport/@spawn/@additem/@startquest/@errors/@help/@testcombat`, type: 'system', source: 'native' })
     }},
-    { id: '@test_combat', label: '@测试战斗', handler: async () => {
+    { id: '@testcombat', label: '@测试战斗', handler: async () => {
+      const { eventBus } = await import('../core/event-bus')
       const gs = useGameStore()
-      const playerId = gs.player?.id
-      if (!playerId) { gs.addLogEntry({ id: `@c-${Date.now()}`, text: '无玩家', type: 'system', source: 'native' }); return }
-      try {
-        await apiSystem.call('combat', 'start', ['test_enemy'], [playerId])
-      } catch {
-        gs.addLogEntry({ id: `@c-${Date.now()}`, text: '战斗系统未就绪', type: 'system', source: 'native' })
-      }
+      gs.addLogEntry({ id: `@tc-${Date.now()}`, text: `测试战斗开始！`, type: 'system', source: 'native' })
+      await eventBus.emit('combat:request', { enemies: ['test_enemy'] })
     }},
   ]
   for (const c of AT_CMDS) {
@@ -197,8 +192,7 @@ export function unregisterNativeCommands(): void {
   const ids = [
     'open_player_panel', 'open_selected_panel', 'rest',
     'cheat_skip_day', 'save', 'load', 'options',
-    '@attrs', '@setattr', '@teleport', '@spawn', '@additem', '@startquest', '@errors', '@help',
-    '@test_combat',
+    '@attrs', '@setattr', '@teleport', '@spawn', '@additem', '@startquest', '@errors', '@help', '@testcombat',
   ]
   for (const id of ids) {
     commandRegistry.unregister(id)

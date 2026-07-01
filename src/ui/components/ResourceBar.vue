@@ -8,15 +8,15 @@ import { computed } from 'vue'
 const props = withDefaults(defineProps<{
   label: string
   value: number
-  max: number
+  max?: number
   color?: string
 }>(), {
+  max: undefined,
   color: 'var(--color-primary)',
 })
 
-// 注释：进度百分比（0-100），max 为 0 时显示 0%
 const percent = computed(() => {
-  if (props.max <= 0) return 0
+  if (props.max === undefined || props.max <= 0) return undefined
   return Math.min(100, Math.max(0, (props.value / props.max) * 100))
 })
 </script>
@@ -24,10 +24,10 @@ const percent = computed(() => {
 <template>
   <div class="resource-bar">
     <span class="resource-label">{{ label }}</span>
-    <div class="resource-track">
+    <div v-if="percent !== undefined" class="resource-track">
       <div class="resource-fill" :style="{ width: percent + '%', backgroundColor: color }" />
     </div>
-    <span class="resource-value">{{ value }}/{{ max }}</span>
+    <span class="resource-value">{{ value }}{{ max !== undefined ? '/' + max : '' }}</span>
   </div>
 </template>
 

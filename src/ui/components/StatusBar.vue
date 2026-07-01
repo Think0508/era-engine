@@ -41,7 +41,6 @@ const statusBars = computed(() => {
     .map(key => ({
       label: key,
       value: base[key],
-      max: 100, // TODO: 从 attribute definitions 读取 max
     }))
 })
 </script>
@@ -61,7 +60,6 @@ const statusBars = computed(() => {
         :key="bar.label"
         :label="bar.label"
         :value="bar.value"
-        :max="bar.max"
       />
     </div>
   </div>

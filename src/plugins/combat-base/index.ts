@@ -99,9 +99,13 @@ export function onEnable(ctx: PluginContext): void {
     handler: async (execCtx: any) => {
       const actorId = execCtx?.gameStore?.player?.id
       const targetId = execCtx?.uiStore?.selectedCharacterId
-      if (actorId && targetId && currentCombat) {
-        await executeAction(actorId, 'attack', targetId)
+      if (!actorId || !targetId || !currentCombat) return
+      // 注释：校验目标在 enemies 列表中，不能攻击非参战者
+      if (!currentCombat.enemies.includes(targetId)) {
+        narrativeLog.write(`${getCharName(actorId)} 不能攻击 ${getCharName(targetId)}，不在战斗中`, 'combat', 'combat-base')
+        return
       }
+      await executeAction(actorId, 'attack', targetId)
     },
   }
   ctx.commands.register(attackCmd)
@@ -184,12 +188,13 @@ async function nextTurn(): Promise<void> {
   }
 }
 
-// 注释：NPC 自动行动——MVP 简单随机选 combat_active 能力
+// 注释：NPC 自动行动——MVP 简单随机选一个存活的敌方目标
 async function npcAutoAction(actorId: string): Promise<void> {
   if (!currentCombat) return
-  // 注释：随机选一个敌方目标
-  const targetId = currentCombat.allies[Math.floor(Math.random() * currentCombat.allies.length)]
-  // TODO: 用 abilities.getByTag 查 combat_active 能力随机选，MVP 直接攻击
+  // 注释：选一个存活的 allies
+  const aliveAllies = currentCombat.allies.filter(id => (bindingResolver.get(id, 'hp') ?? 0) > 0)
+  if (aliveAllies.length === 0) return
+  const targetId = aliveAllies[Math.floor(Math.random() * aliveAllies.length)]
   narrativeLog.write(`${getCharName(actorId)} 攻击了 ${getCharName(targetId)}！`, 'combat', 'combat-base')
   const damage = await calcDamage(actorId, targetId, {})
   applyDamage(targetId, damage)
@@ -221,17 +226,24 @@ async function executeAction(actorId: string, action: string, targetId: string):
   await advanceTurn()
 }
 
-// 注释：推进回合
+// 注释：推进回合——跳过已死亡的参战者
 async function advanceTurn(): Promise<void> {
   if (!currentCombat) return
   // 注释：turn_end 钩子
   await runChainHooks('turn_end', { combat: currentCombat })
 
-  currentCombat.currentActorIndex++
-  if (currentCombat.currentActorIndex >= currentCombat.turnOrder.length) {
-    currentCombat.currentActorIndex = 0
-    currentCombat.currentTurn++
-  }
+  // 注释：跳过已死亡的参战者
+  let attempts = 0
+  do {
+    currentCombat.currentActorIndex++
+    if (currentCombat.currentActorIndex >= currentCombat.turnOrder.length) {
+      currentCombat.currentActorIndex = 0
+      currentCombat.currentTurn++
+    }
+    attempts++
+  } while (attempts < currentCombat.turnOrder.length * 2 &&
+    (bindingResolver.get(currentCombat.turnOrder[currentCombat.currentActorIndex], 'hp') ?? 0) <= 0)
+
   await nextTurn()
 }
 

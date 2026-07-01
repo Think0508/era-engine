@@ -18,12 +18,41 @@ export interface AttributeDefinition {
   display?: boolean
   display_group?: string
   daily_reset?: boolean
+  // 注释：H 状态值 10 级制阈值（0~100000），引擎提供 getLevel 查表
+  level_thresholds?: number[]
 }
 
 export interface EquipmentSlot {
   id: string
   name: string
   category: string
+  // 注释：H 中是否可脱
+  removable?: boolean
+  // 注释：精液容量
+  semen_capacity?: number
+}
+
+// 注释：H 指令定义
+export interface HInstruction {
+  id: string
+  label: string
+  type: string                  // daily/obscenity/sex
+  sex_subtype?: string          // base/foreplay/wait_upon/drug/item/insert/sm
+  priority?: number
+  time_cost?: number
+  premises?: string[]
+  effects?: any[]
+  talk_scene?: string
+  judge_base?: number
+  modes?: string[]
+}
+
+// 注释：H 系数配置
+export interface HConfig {
+  ability_lv_adjust?: number[]
+  status_level_thresholds?: number[]
+  favorability_thresholds?: number[]
+  [key: string]: any
 }
 
 export interface CalendarConfig {
@@ -180,6 +209,9 @@ export interface LoadedMod {
   abilities: Record<string, AbilityDef>
   // 注释：任务
   quests: Map<string, Quest>
+  // 注释：Phase H — H 系统
+  hConfig: HConfig
+  hInstructions: HInstruction[]
 }
 
 // TODO(phase-x): 当 UI 加载 mod 时把 equipmentSlots/calendar 同步到 game-store
@@ -267,6 +299,9 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     statusEffects: {},
     abilities: {},
     quests: new Map(),
+    // 注释：Phase H
+    hConfig: {},
+    hInstructions: [],
   }
 
   const attrPath = `/mods/${modName}/definitions/attributes.toml`
@@ -449,6 +484,21 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   // 注释：展开角色 abilities 简写——数字 → { level, xp: 0 }
   // TODO(phase-6): ability-progression 插件 onEnable 时用 max_level 做升级逻辑，不用于展开
   expandCharacterAbilities(mod)
+
+  // 注释：加载 h-config.toml（H 系数表，mod 可配）
+  const hConfigPath = `/mods/${modName}/h-config.toml`
+  if (hConfigPath in rawTomlMap) {
+    mod.hConfig = parseFile(hConfigPath, rawTomlMap[hConfigPath]) as HConfig
+  }
+
+  // 注释：加载 h-instructions/ 目录下所有 TOML
+  const hInstrPrefix = `/mods/${modName}/definitions/h-instructions/`
+  for (const [path, raw] of Object.entries(rawTomlMap)) {
+    if (!path.startsWith(hInstrPrefix) || !path.endsWith('.toml')) continue
+    const data = parseFile(path, raw)
+    const instructions = (data.instructions as HInstruction[]) ?? []
+    mod.hInstructions.push(...instructions)
+  }
 
   // 注释：校验 locations——exit.target 和 parent 必须存在
   validateLocations(mod, modName)

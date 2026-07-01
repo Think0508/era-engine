@@ -1,0 +1,31 @@
+# mods/test-mod/definitions/h-instructions/obscenity.toml
+# 猥亵指令（轻度 H/邀请 H 前奏）
+
+[[instructions]]
+id = "touch_hand"
+label = "摸手"
+type = "obscenity"
+priority = 10
+time_cost = 10
+premises = ["HAVE_TARGET", "T_NORMAL"]
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 5 }, target = "selected" },
+  { type = "modify_attribute", params = { attr = "情欲", value = 8 }, target = "selected" },
+  { type = "modify_attribute", params = { attr = "羞耻", value = 3 }, target = "selected" }
+]
+talk_scene = "touch_hand"
+
+[[instructions]]
+id = "touch_breast"
+label = "摸胸"
+type = "obscenity"
+priority = 20
+time_cost = 10
+premises = ["HAVE_TARGET", "T_NORMAL"]
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 5 }, target = "selected" },
+  { type = "modify_attribute", params = { attr = "快B", value = 20 }, target = "selected" },
+  { type = "modify_attribute", params = { attr = "羞耻", value = 8 }, target = "selected" },
+  { type = "modify_attribute", params = { attr = "情欲", value = 15 }, target = "selected" }
+]
+talk_scene = "touch_breast"

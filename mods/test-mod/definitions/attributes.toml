@@ -12,12 +12,25 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "情绪" = { type = "number", default = 0, category = "emotion", display = true, display_group = "emotion" }
 "理性" = { type = "number", default = 100, category = "emotion", display = true, display_group = "emotion" }
 
-"快C" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true }
-"快V" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true }
+# 注释：H 状态值（10 级制，daily_reset），level_thresholds 为 10 级阈值
+"快C" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
+"快V" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
 "润滑" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true }
 "恭顺" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
 "情欲" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
 "羞耻" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+
+"快B" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
+"快A" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
+"快乐" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+"屈服" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+"好意" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+"苦痛" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+"恐怖" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+"抑郁" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+"反感" = { type = "number", default = 0, category = "parameter", display = true, display_group = "情绪心理", daily_reset = true }
+"射精欲" = { type = "number", default = 0, category = "parameter", display = true, display_group = "h", daily_reset = false }
+
 "眠奸" = { type = "number", default = 0, category = "parameter", display = true, display_group = "特殊", daily_reset = true }
 
 "金钱" = { type = "number", default = 0, category = "economy", display = true, display_group = "economy" }

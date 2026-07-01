@@ -2,13 +2,19 @@
 id = "upper_body"
 name = "上身"
 category = "clothing"
+removable = true
+semen_capacity = 4000
 
 [[slots]]
 id = "lower_body"
 name = "下身"
 category = "clothing"
+removable = true
+semen_capacity = 4000
 
 [[slots]]
 id = "accessory"
 name = "饰品"
 category = "accessory"
+removable = false
+semen_capacity = 1000

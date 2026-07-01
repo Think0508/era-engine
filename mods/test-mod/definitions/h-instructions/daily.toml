@@ -1,0 +1,66 @@
+# mods/test-mod/definitions/h-instructions/daily.toml
+# 日常指令（非 H 状态可用）
+
+[[instructions]]
+id = "chat"
+label = "聊天"
+type = "daily"
+priority = 10
+time_cost = 10
+premises = ["HAVE_TARGET"]
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 5 }, target = "selected" }
+]
+talk_scene = "chat"
+
+[[instructions]]
+id = "give_gift"
+label = "送礼"
+type = "daily"
+priority = 20
+time_cost = 5
+premises = ["HAVE_TARGET"]
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 30 }, target = "selected" }
+]
+talk_scene = "give_gift"
+
+[[instructions]]
+id = "hand_in_hand"
+label = "牵手"
+type = "daily"
+priority = 30
+time_cost = 10
+premises = ["HAVE_TARGET", "T_NORMAL"]
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 10 }, target = "selected" },
+  { type = "modify_attribute", params = { attr = "情欲", value = 5 }, target = "selected" }
+]
+talk_scene = "hand_in_hand"
+
+[[instructions]]
+id = "embrace"
+label = "拥抱"
+type = "daily"
+priority = 40
+time_cost = 10
+premises = ["HAVE_TARGET", "T_NORMAL"]
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 15 }, target = "selected" },
+  { type = "modify_attribute", params = { attr = "情欲", value = 10 }, target = "selected" }
+]
+talk_scene = "embrace"
+
+[[instructions]]
+id = "kiss"
+label = "亲吻"
+type = "daily"
+priority = 50
+time_cost = 10
+premises = ["HAVE_TARGET", "T_NORMAL", "FALL_LEVEL_GE_1"]
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 20 }, target = "selected" },
+  { type = "modify_attribute", params = { attr = "情欲", value = 15 }, target = "selected" },
+  { type = "modify_attribute", params = { attr = "屈服", value = 5 }, target = "selected" }
+]
+talk_scene = "kiss"

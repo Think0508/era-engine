@@ -50,8 +50,6 @@ export const useGameStore = defineStore('game', () => {
   const modeStack = ref<string[]>(['exploration'])
   const executionState = ref<'IDLE' | 'EXECUTING'>('IDLE')
   const charactersAtLocation = ref<EntityData[]>([])
-  const combatAllies = ref<string[]>([])
-  const combatEnemies = ref<string[]>([])
   const narrativeLogEntries = ref<LogEntry[]>([])
   const weather = ref<WeatherData>({ ...DEFAULT_WEATHER })
   const calendar = ref<CalendarConfig | null>(null)
@@ -113,8 +111,6 @@ export const useGameStore = defineStore('game', () => {
   function setEquipmentSlots(slots: EquipmentSlot[]) {
     equipmentSlots.value = slots
   }
-  function setCombatAllies(ids: string[]) { combatAllies.value = ids }
-  function setCombatEnemies(ids: string[]) { combatEnemies.value = ids }
   function reset() {
     player.value = null
     location.value = null
@@ -122,8 +118,6 @@ export const useGameStore = defineStore('game', () => {
     modeStack.value = ['exploration']
     executionState.value = 'IDLE'
     charactersAtLocation.value = []
-    combatAllies.value = []
-    combatEnemies.value = []
     narrativeLogEntries.value = []
     weather.value = { ...DEFAULT_WEATHER }
   }
@@ -139,8 +133,6 @@ export const useGameStore = defineStore('game', () => {
     weather,
     calendar,
     equipmentSlots,
-    combatAllies,
-    combatEnemies,
     currentMode,
     isExecuting,
     isIdle,
@@ -158,8 +150,6 @@ export const useGameStore = defineStore('game', () => {
     setWeather,
     setCalendar,
     setEquipmentSlots,
-    setCombatAllies,
-    setCombatEnemies,
     reset,
   }
 })

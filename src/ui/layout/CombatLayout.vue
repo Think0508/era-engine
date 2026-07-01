@@ -1,21 +1,43 @@
 // 注释：CombatLayout 战斗专用布局
-// 参战者数据从 game-store 的 combatAllies/combatEnemies 读取
-// combat-base 通过事件或 API 写入
+// 仅显示参战者（从 apiSystem 调 combat.getCombatContext 获取）
+// 不显示地点上所有角色
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
+import { entitySystem } from '../../core/entity-system'
+import { apiSystem } from '../../core/api'
 import NarrativeLog from '../components/NarrativeLog.vue'
 import CommandBar from '../components/CommandBar.vue'
+import ResourceBar from '../components/ResourceBar.vue'
 
 const gameStore = useGameStore()
 const uiStore = useUIStore()
 
-// 注释：combat-base 通过 API 写入 game-store（bridge 同步或直接在 index.ts 中写）
-// 当前简化：combat-start 时 bridge 监听事件写入
-const combatAllies = computed(() => gameStore.combatAllies ?? [])
-const combatEnemies = computed(() => gameStore.combatEnemies ?? [])
+// 注释：冶金量——战斗参与者 ID
+const allyIds = ref<string[]>([])
+const enemyIds = ref<string[]>([])
+
+// 注释：战斗 mode 时获取参战者
+watch(() => gameStore.currentMode, async () => {
+  if (gameStore.currentMode !== 'combat') return
+  try {
+    const ctx = await apiSystem.call('combat', 'getCombatContext')
+    if (ctx) {
+      allyIds.value = ctx.allies ?? []
+      enemyIds.value = ctx.enemies ?? []
+    }
+  } catch { /* combat 插件未注册 */ }
+}, { immediate: true })
+
+// 注释：获取参战者数据
+const allies = computed(() => {
+  return allyIds.value.map(id => entitySystem.get('character', id)).filter(Boolean) as any[]
+})
+const enemies = computed(() => {
+  return enemyIds.value.map(id => entitySystem.get('character', id)).filter(Boolean) as any[]
+})
 </script>
 
 <template>
@@ -24,19 +46,21 @@ const combatEnemies = computed(() => gameStore.combatEnemies ?? [])
     <div class="combat-header">
       <div class="combat-party allies">
         <div class="party-label">我方</div>
-        <div v-for="allyId in combatAllies" :key="allyId" class="combatant-row"
-          :class="{ selected: uiStore.selectedCharacterId === allyId }"
-          @click="uiStore.selectCharacter(allyId)">
-          <span class="combatant-name">{{ allyId }}</span>
+        <div v-for="char in allies" :key="char.id" class="combatant-row"
+          :class="{ selected: uiStore.selectedCharacterId === char.id }"
+          @click="uiStore.selectCharacter(char.id)">
+          <span class="combatant-name">{{ char.name || char.id }}</span>
+          <ResourceBar label="HP" :value="char.base?.hp ?? 0" color="var(--color-success)" />
         </div>
       </div>
       <div class="vs-label">VS</div>
       <div class="combat-party enemies">
         <div class="party-label">敌方</div>
-        <div v-for="enemyId in combatEnemies" :key="enemyId" class="combatant-row"
-          :class="{ selected: uiStore.selectedCharacterId === enemyId }"
-          @click="uiStore.selectCharacter(enemyId)">
-          <span class="combatant-name">{{ enemyId }}</span>
+        <div v-for="char in enemies" :key="char.id" class="combatant-row"
+          :class="{ selected: uiStore.selectedCharacterId === char.id }"
+          @click="uiStore.selectCharacter(char.id)">
+          <span class="combatant-name">{{ char.name || char.id }}</span>
+          <ResourceBar label="HP" :value="char.base?.hp ?? 0" color="var(--color-danger)" />
         </div>
       </div>
     </div>

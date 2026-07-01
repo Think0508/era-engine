@@ -154,7 +154,7 @@ async function startCombat(enemies: string[], allies: string[], _sourceId: strin
   }
 
   await gameContext.enterMode('combat')
-  await eventBus.emit('combat:start', { participants, allies, enemies })
+  await eventBus.emit('combat:start', { participants })
   narrativeLog.write('战斗开始！', 'combat', 'combat-base')
 
   // 注释：开始第一回合

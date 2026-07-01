@@ -79,7 +79,10 @@ export class EngineUIBridge {
     // 注释：监听 character:changed → 更新 player entity（Phase 5 监听到位无触发源）
     const charHandler: BridgeHandler = (payload: any) => {
       if (payload?.id === gameStore.player?.id) {
-        gameStore.setPlayer(entitySystem.get('character', payload.id))
+        const entity = entitySystem.get('character', payload.id)
+        if (entity) {
+          gameStore.setPlayer(JSON.parse(JSON.stringify(entity)))
+        }
       }
     }
     eventBus.on('character:changed', charHandler)
@@ -94,21 +97,7 @@ export class EngineUIBridge {
     eventBus.on('game:new_day', newDayHandler)
     this.handlers.push({ event: 'game:new_day', handler: newDayHandler })
 
-    // 注释：监听 combat:start → 写入参战者到 game-store
-    const combatStartHandler: BridgeHandler = (payload: any) => {
-      gameStore.setCombatAllies(payload.allies ?? payload.participants ?? [])
-      gameStore.setCombatEnemies(payload.enemies ?? [])
-    }
-    eventBus.on('combat:start', combatStartHandler)
-    this.handlers.push({ event: 'combat:start', handler: combatStartHandler })
-
-    // 注释：监听 combat:end → 清除参战者
-    const combatEndHandler: BridgeHandler = () => {
-      gameStore.setCombatAllies([])
-      gameStore.setCombatEnemies([])
-    }
-    eventBus.on('combat:end', combatEndHandler)
-    this.handlers.push({ event: 'combat:end', handler: combatEndHandler })
+    // 注释：监听 narrative:written → game-store.addLogEntry
     const narrativeHandler: BridgeHandler = (entry: LogEntry) => {
       gameStore.addLogEntry(entry)
     }

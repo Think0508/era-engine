@@ -9,6 +9,7 @@ import ExplorationLayout from './ExplorationLayout.vue'
 import ModernLayout from './ModernLayout.vue'
 import FullScreenTextLayout from './FullScreenTextLayout.vue'
 import DailyMenuLayout from './DailyMenuLayout.vue'
+import CombatLayout from './CombatLayout.vue'
 
 // 注释：使用 main.ts 提供的 SlotRegistry（不存在时自己创建兜底）
 const slotRegistry = inject<SlotRegistry>(SLOT_REGISTRY_KEY) ?? new SlotRegistry()
@@ -23,10 +24,11 @@ const layoutComponent = computed(() => {
   if (gameStore.isExecuting) return FullScreenTextLayout
   // 每日菜单模式
   if (gameStore.currentMode === 'daily_menu') return DailyMenuLayout
+  // 战斗模式 → 战斗专用布局
+  if (gameStore.currentMode === 'combat') return CombatLayout
   // 对话模式 → 全屏文本（对话在日志中处理）
   if (gameStore.currentMode === 'dialogue') return FullScreenTextLayout
-  // 探索/战斗模式 → 按 UI 主题选择
-  // TODO: modeTransitionStyle mod 自定义过渡效果，当前瞬间替换
+  // 探索/其他模式 → 按 UI 主题选择
   return uiStore.theme === 'era' ? ExplorationLayout : ModernLayout
 })
 </script>

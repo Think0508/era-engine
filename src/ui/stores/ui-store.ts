@@ -38,6 +38,7 @@ interface UIPreferences {
   fontSize: 'small' | 'medium' | 'large' | 'xlarge'
   showGroupTitles: boolean
   commandPopoverMode: boolean
+  cheatCommands: boolean
   favorites: string[]
 }
 
@@ -75,6 +76,8 @@ export const useUIStore = defineStore('ui', () => {
   // 注释：角色指令栏开关（character_commands 从指令栏移除，只通过长按弹出）
   // TODO: Phase 5 留接口，长按弹出已实现
   const commandPopoverMode = ref(false)
+  // 注释：作弊/调试指令可见开关（默认隐藏，在选项面板开启）
+  const cheatCommands = ref(false)
   // 注释：收藏指令 ID 列表
   const favorites = ref<string[]>([])
   // 注释：当前打开的系统面板（null=无）
@@ -134,6 +137,9 @@ export const useUIStore = defineStore('ui', () => {
   function toggleGroupTitles() {
     showGroupTitles.value = !showGroupTitles.value
   }
+  function toggleCheatCommands() {
+    cheatCommands.value = !cheatCommands.value
+  }
 
   // 注释：localStorage 持久化——saveToLocalStorage/loadFromLocalStorage
   // 键 era-engine:ui-preferences（不加 mod 前缀，设备级跨 mod 共享）
@@ -153,6 +159,7 @@ export const useUIStore = defineStore('ui', () => {
       fontSize: fontSize.value,
       showGroupTitles: showGroupTitles.value,
       commandPopoverMode: commandPopoverMode.value,
+      cheatCommands: cheatCommands.value,
       favorites: favorites.value,
     }
   }
@@ -184,6 +191,7 @@ export const useUIStore = defineStore('ui', () => {
       fontSize.value = prefs.fontSize
       showGroupTitles.value = prefs.showGroupTitles
       commandPopoverMode.value = prefs.commandPopoverMode
+      cheatCommands.value = prefs.cheatCommands ?? false
       favorites.value = prefs.favorites ?? []
     } catch {
       // 注释：localStorage 不可用或 JSON 解析失败，静默跳过
@@ -217,6 +225,8 @@ export const useUIStore = defineStore('ui', () => {
     fontSize,
     showGroupTitles,
     commandPopoverMode,
+    cheatCommands,
+    toggleCheatCommands,
     favorites,
     activePanel,
     commandFilter,

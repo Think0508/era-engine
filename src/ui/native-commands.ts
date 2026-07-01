@@ -177,6 +177,42 @@ export function registerNativeCommands(): void {
       uiStore.setActivePanel('options')
     },
   })
+
+  // 注释：@命令调试——默认隐藏，在选项作弊面板开启
+  const AT_CMDS = [
+    { id: '@attrs', label: '@查看属性', handler: () => {
+      const gs = useGameStore()
+      gs.addLogEntry({ id: `@attrs-${Date.now()}`, text: `属性查看功能开发中`, type: 'system', source: 'native' })
+    }},
+    { id: '@setattr', label: '@设置属性', handler: () => {
+      useGameStore().addLogEntry({ id: `@set-${Date.now()}`, text: `@setattr 属性名 值`, type: 'system', source: 'native' })
+    }},
+    { id: '@teleport', label: '@传送', handler: () => {
+      useGameStore().addLogEntry({ id: `@tel-${Date.now()}`, text: `@teleport 地点ID`, type: 'system', source: 'native' })
+    }},
+    { id: '@spawn', label: '@生成角色', handler: () => {
+      useGameStore().addLogEntry({ id: `@sp-${Date.now()}`, text: `@spawn 模板ID 地点ID`, type: 'system', source: 'native' })
+    }},
+    { id: '@additem', label: '@添加物品', handler: () => {
+      useGameStore().addLogEntry({ id: `@ai-${Date.now()}`, text: `@additem 物品ID 数量`, type: 'system', source: 'native' })
+    }},
+    { id: '@startquest', label: '@开始任务', handler: () => {
+      useGameStore().addLogEntry({ id: `@sq-${Date.now()}`, text: `@startquest 任务ID`, type: 'system', source: 'native' })
+    }},
+    { id: '@errors', label: '@查看错误', handler: () => {
+      useGameStore().addLogEntry({ id: `@err-${Date.now()}`, text: `查看控制台错误`, type: 'system', source: 'native' })
+    }},
+    { id: '@help', label: '@帮助', handler: () => {
+      useGameStore().addLogEntry({ id: `@hlp-${Date.now()}`, text: `@命令列表: @attrs/@setattr/@teleport/@spawn/@additem/@startquest/@errors/@help`, type: 'system', source: 'native' })
+    }},
+  ]
+  for (const c of AT_CMDS) {
+    commandRegistry.register({
+      id: c.id, label: c.label, group: 'main_menu',
+      modes: ['exploration', 'daily_menu', 'combat'], priority: 99,
+      source: 'native', handler: c.handler,
+    })
+  }
 }
 
 // 注释：卸载原生指令
@@ -184,6 +220,7 @@ export function unregisterNativeCommands(): void {
   const ids = [
     'open_player_panel', 'open_selected_panel', 'move', 'talk', 'rest',
     'cheat_skip_day', 'save', 'load', 'options',
+    '@attrs', '@setattr', '@teleport', '@spawn', '@additem', '@startquest', '@errors', '@help',
   ]
   for (const id of ids) {
     commandRegistry.unregister(id)

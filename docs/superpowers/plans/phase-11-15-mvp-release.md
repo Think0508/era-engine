@@ -6,6 +6,47 @@
 
 ---
 
+## Grilling 决策汇总（G99-G105）
+
+### G99 存档数据范围
+- 所有角色（named/roster/spawned NPC）全量保存，不存"已生成名单"
+- spawned NPC 加 `spawn_info = { location, template }` 字段
+- 读档：所有角色从存档恢复。spawns 逻辑只在新游戏时运行
+- 更新 CONTEXT.md "Save slots" 术语，明确 spawned NPC 也存档
+
+### G100 自动存档触发
+- 触发：进入新地点 / 战斗开始前 / 战斗结束后 / 每日开始后 / 距上次存档>5min
+- 不触发：每条 instruction 执行后、对话中、H 中
+- H 中强制存档 → warning "H 中不可存档"
+
+### G101 沙箱安全
+- Proxy+with 方案（非完整安全，MVP 够用）
+- Context 冻结（只读），不提供 window/document/fetch/localStorage 等
+- 超时保护：setTimeout/setInterval 不提供
+- // TODO: 后续用 acorn AST 加强
+
+### G102 角色创建流程
+- 创建流程生成新 player entity，不修改 roster 条目
+- 创建数据收集到 creationData → 基于 roster player+template 继承 → 应用覆写 → 注册
+- 无 `[creation]` 配置 → 直接用 roster player 条目
+- 读档后直接恢复存档角色，不走创建流程
+
+### G103 存档迁移范围
+- 迁移只操作角色数据（characters/quests/game_state），不碰 definition
+- Phase 11.3 只做 rename + default，transform 等沙箱完成（Phase 12.1）后实现
+- 迁移在内存执行，不修改存档文件。
+
+### G104 PWA
+- 纯单机，无网络请求，不需要 Service Worker
+- MVP = manifest.json + 图标 + meta 标签（display=standalone）
+
+### G105 @命令访问控制
+- @命令默认不显示，在选项作弊面板加开关
+- 预留单指令隐藏扩展（后续加 `visible` 字段控制）
+- @命令通过判读取当前角色状态和玩家是否有开启查看模式
+
+---
+
 ## MVP 缺失项清单
 
 | # | 功能 | Phase | 说明 |
@@ -45,7 +86,8 @@ LLM 口上、更多 H 子系统等**非 MVP 项**押后到旧 TODO 文档。
 
 **实现要点：**
 - @ 命令作为 main_menu 指令注册，modes=["exploration","daily_menu"]
-- 仅在 cheat 选项可见时显示（ui-store.commandPopoverMode 控制）
+- 默认不显示，在选项作弊面板加开关启用（ui-store 加 `cheatCommands` boolean）
+- 预留单指令隐藏扩展：后续在 CommandDef 里加 `hidden` 字段，供 ui-store 过滤
 - handler 调对应插件 API
 - `// TODO: 完整 @ 指令集后续扩展`
 
@@ -63,9 +105,12 @@ LLM 口上、更多 H 子系统等**非 MVP 项**押后到旧 TODO 文档。
 **核心机制：**
 - Dexie.js 数据库：`era-engine`
 - 每个存档 = `saves/{modId}/{slotId}`
-- 保存内容：characters + quests + game_state + uiStore.foldStates
+- 保存内容：所有角色（named/roster/spawned NPC）+ quests + game_state + uiStore.foldStates
+- spawned NPC 有 `spawn_info = { location, template }` 字段防重复生成
 - 不保存：locations + definitions（从 TOML 重新加载）
-- 自动存档：进入新地点/战斗前/状态变更后——仅 IDLE
+- 自动存档：进入新地点/战斗开始前/战斗结束后/每日开始后/距上次>5min——仅 IDLE
+- 不自动存档：每条 instruction 执行后、对话中、H 中
+- H 中手动存档 → warning "H 中不可存档"
 - 读档：存档权威模型（角色从存档恢复，模板不覆盖）
 - 存档迁移：按版本号顺序执行迁移脚本（mod 的 migrations/）
 
@@ -93,7 +138,9 @@ ctx.api.register('engine', {
 - 存档存 mod 版本号
 - 读档时比较存档版本与当前 mod 版本
 - 按 versions 顺序执行迁移脚本
-- 迁移类型：rename（字段改名）/ default（设默认值）/ transform（JS 脚本）
+- 迁移类型：rename（字段改名，角色数据）/ default（设默认值）/ transform（JS 脚本，等 Phase 12.1 沙箱）
+- 迁移在内存中执行，不修改原存档文件。玩家下次存盘时写入新格式
+- 迁移失败 → 中止读档 + 报错 + 存档文件不损坏
 - `// TODO(phase-12): transform 脚本需沙箱执行`
 
 ### Task 12.1：沙箱脚本

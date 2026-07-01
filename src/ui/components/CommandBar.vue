@@ -38,7 +38,9 @@ const actCommands = computed<CommandDef[]>(() => {
 
 // 注释：Ex_COM——main_menu，跨模式稳定
 const exCommands = computed<CommandDef[]>(() => {
-  return commandRegistry.getByGroup('main_menu')
+  const cmds = commandRegistry.getByGroup('main_menu')
+  // 注释：过滤 @ 命令（作弊指令），仅在 cheatCommands 开启时显示
+  return uiStore.cheatCommands ? cmds : cmds.filter(c => !c.id.startsWith('@'))
 })
 
 // 注释：编号分配——Act_COM 和 Ex_COM 各自从 1 开始

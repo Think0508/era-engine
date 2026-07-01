@@ -34,7 +34,7 @@ describe('save-system', () => {
     const data = {
       modId: 'test', modVersion: '1.0.0',
       gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
-      characters: [], gameState: {}, uiState: {},
+      characters: [], gameState: {}, uiState: { foldStates: {} },
     }
     localStorage.setItem('save:test_slot1', JSON.stringify(data))
     const loaded = JSON.parse(localStorage.getItem('save:test_slot1')!)
@@ -46,7 +46,7 @@ describe('save-system', () => {
     const data = {
       modId: 'test', modVersion: '1.0.0',
       gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
-      characters: [], gameState: {}, uiState: {},
+      characters: [], gameState: {}, uiState: { foldStates: {} },
     }
     localStorage.setItem('save:test_export', JSON.stringify(data))
     const raw = localStorage.getItem('save:test_export')
@@ -67,7 +67,7 @@ describe('save-system', () => {
       modId: 'test', modVersion: '1.0.0',
       gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
       characters: [{ id: 'char', base: { hp: 100 } }],
-      gameState: {}, uiState: {},
+      gameState: {}, uiState: { foldStates: {} },
     }
     const result = migrateSaveData(data, [
       { from: '1.0.0', to: '2.0.0', steps: [{ rename: { old: 'hp', new: 'hit_point' } }] },
@@ -81,7 +81,7 @@ describe('save-system', () => {
       modId: 'test', modVersion: '1.0.0',
       gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
       characters: [{ id: 'char', base: { hp: 100 } }],
-      gameState: {}, uiState: {},
+      gameState: {}, uiState: { foldStates: {} },
     }
     const result = migrateSaveData(data, [
       { from: '1.0.0', to: '2.0.0', steps: [{ default: { field: 'base.new_attr', value: 50 } }] },
@@ -94,7 +94,7 @@ describe('save-system', () => {
       modId: 'test', modVersion: '2.0.0',
       gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
       characters: [{ id: 'char', base: { hp: 100 } }],
-      gameState: {}, uiState: {},
+      gameState: {}, uiState: { foldStates: {} },
     }
     const result = migrateSaveData(data, [
       { from: '1.0.0', to: '2.0.0', steps: [{ rename: { old: 'hp', new: 'hit_point' } }] },

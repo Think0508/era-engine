@@ -67,9 +67,9 @@ describe('parseModData', () => {
     })
   })
 
-  it('parses roster.toml correctly (3 characters, equipment, assets)', () => {
+  it('parses roster.toml correctly (3 characters + test_enemy, equipment, assets)', () => {
     const characters = mod.entities.get('character')!
-    expect(characters.size).toBe(3)
+    expect(characters.size).toBe(4)
     expect(characters.get('player')?.name).toBe('玩家')
     expect(characters.get('player')?.base).toEqual({
       hp: 200,

@@ -46,8 +46,7 @@ describe('sandbox', () => {
 
   it('runSandbox context is read-only', () => {
     const ctx = createSandboxContext()
-    const result = runSandbox('ctx.player = { id: "hacker" }; return ctx.player', ctx)
-    // 注释：Proxy 静默忽略写入，ctx.player 不变
+    runSandbox('ctx.player = { id: "hacker" }; return ctx.player', ctx)
     expect(ctx.player).toBeNull()
   })
 })

@@ -6,3 +6,9 @@ player_character = "player"
 starting_location = "town_square"
 title = "测试模组"
 description = "era-engine 最小测试模组"
+
+[creation]
+steps = [
+  { type = "input", field = "name", prompt = "你叫什么名字？" },
+  { type = "choose", field = "背景", prompt = "你的出身是？", choices = ["平民", "贵族", "江湖人"] }
+]

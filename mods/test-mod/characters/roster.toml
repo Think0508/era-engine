@@ -6,7 +6,7 @@ name = "玩家"
 base = { hp = 200, mp = 80 }
 equipment = { upper_body = "布衣", lower_body = "长裤" }
 assets = { portrait = "assets/char/player.png" }
-abilities = { "华山剑法" = 3, "混元功" = 2 }
+abilities = { "华山剑法" = 3, "混元功" = 2, "基础攻击" = 1 }
 
 [[roster]]
 id = "innkeeper"
@@ -26,3 +26,13 @@ base = { hp = 120, attack = 12 }
 behavior = { activity = 0.3, home_locations = { town_square = 0.7, tavern = 0.3 } }
 equipment = { upper_body = "布衣", lower_body = "长裤" }
 assets = { portrait = "assets/char/guard.png" }
+
+[[roster]]
+id = "test_enemy"
+template = "base-human"
+name = "山贼"
+base = { hp = 60, attack = 8, defense = 3 }
+abilities = { "基础攻击" = 1 }
+behavior = { activity = 0, home_locations = { town_square = 1.0 } }
+equipment = { upper_body = "布衣" }
+assets = { portrait_type = "villain" }

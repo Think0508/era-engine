@@ -136,6 +136,7 @@ export function onEnable(ctx: PluginContext): void {
 // 注释：开始战斗
 async function startCombat(enemies: string[], allies: string[], _sourceId: string): Promise<void> {
   const participants = [...allies, ...enemies]
+  // 注释：按 speed 排序
   const turnOrder = participants.slice().sort((a, b) => {
     const speedA = bindingResolver.get(a, 'speed') ?? 0
     const speedB = bindingResolver.get(b, 'speed') ?? 0
@@ -143,18 +144,20 @@ async function startCombat(enemies: string[], allies: string[], _sourceId: strin
   })
 
   currentCombat = {
-    participants, enemies, allies,
-    currentTurn: 1, currentActorIndex: 0,
-    target: enemies[0] ?? null, turnOrder,
+    participants,
+    enemies,
+    allies,
+    currentTurn: 1,
+    currentActorIndex: 0,
+    target: enemies[0] ?? null,
+    turnOrder,
   }
 
-  // 注释：emit 参与者数据供 bridge 同步到 game-store
-  eventBus.emit('combat:participants', { allies, enemies })
-
   await gameContext.enterMode('combat')
-  await eventBus.emit('combat:start', { participants })
+  await eventBus.emit('combat:start', { participants, allies, enemies })
   narrativeLog.write('战斗开始！', 'combat', 'combat-base')
 
+  // 注释：开始第一回合
   await nextTurn()
 }
 
@@ -267,16 +270,12 @@ async function calcDamage(sourceId: string, targetId: string, params: any): Prom
 // }
 // TODO: hit_check 在 combat-wuxia 中覆盖，combat-base 保留默认实现供其他战斗插件用
 
-// 注释：应用伤害——emit combat:participants 刷新战斗 UI 的 HP 条
+// 注释：应用伤害
 function applyDamage(targetId: string, damage: number): void {
   const current = bindingResolver.get(targetId, 'hp') ?? 0
   bindingResolver.set(targetId, 'hp', Math.max(0, current - damage))
   narrativeLog.write(`${getCharName(targetId)} 受到 ${damage} 点伤害（HP: ${current}→${Math.max(0, current - damage)}）`, 'combat', 'combat-base')
   eventBus.emit('character:changed', { id: targetId })
-  // 注释：刷新战斗 UI 的 HP 条
-  if (currentCombat) {
-    eventBus.emit('combat:participants', { allies: currentCombat.allies, enemies: currentCombat.enemies })
-  }
 }
 
 // 注释：检查战斗是否结束

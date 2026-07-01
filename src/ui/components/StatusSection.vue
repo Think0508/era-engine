@@ -21,10 +21,11 @@ const playerStatusBars = computed(() => {
   const player = gameStore.player
   if (!player?.base) return []
   const base = player.base as Record<string, number>
-  const knownStatus = ['体力', '气力', '精力', 'hp', 'mp']
+  const knownStatus = ['体力', '气力', '精力']
   return knownStatus.filter(key => key in base).map(key => ({
     label: key,
     value: base[key],
+    max: base[key],
   }))
 })
 
@@ -39,10 +40,11 @@ const selectedStatusBars = computed(() => {
   const char = selectedCharacter.value
   if (!char?.base) return []
   const base = char.base as Record<string, number>
-  const knownStatus = ['体力', '气力', '精力', 'hp', 'mp']
+  const knownStatus = ['体力', '气力', '精力']
   return knownStatus.filter(key => key in base).map(key => ({
     label: key,
     value: base[key],
+    max: base[key],
   }))
 })
 
@@ -55,6 +57,7 @@ const emotionBars = computed(() => {
   return knownEmotion.filter(key => key in base).map(key => ({
     label: key,
     value: base[key],
+    max: base[key],
   }))
 })
 </script>
@@ -70,6 +73,7 @@ const emotionBars = computed(() => {
           :key="bar.label"
           :label="bar.label"
           :value="bar.value"
+          :max="bar.max"
         />
       </div>
 
@@ -81,6 +85,7 @@ const emotionBars = computed(() => {
           :key="bar.label"
           :label="bar.label"
           :value="bar.value"
+          :max="bar.max"
         />
       </div>
 
@@ -91,6 +96,7 @@ const emotionBars = computed(() => {
           :key="bar.label"
           :label="bar.label"
           :value="bar.value"
+          :max="bar.max"
           color="var(--color-secondary)"
         />
       </div>

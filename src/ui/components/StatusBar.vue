@@ -27,20 +27,19 @@ const weatherDisplay = computed(() => {
   return `${w.name} ${w.temperature}℃`
 })
 
-// 注释：玩家资源条——从 player.base 读取
-// TODO(task-5.15): bridge 接入后从真实 attribute definitions 读取 display/display_group
-// 当前简化：从 player.base 读取已知属性
+// 注释：玩家资源条——只显示体力/气力/精力（行动条），不显示 hp/mp（战斗专有）
 const statusBars = computed(() => {
   const player = gameStore.player
   if (!player?.base) return []
   const base = player.base as Record<string, number>
-  // 注释：era 默认 3 条：体力/气力/精力
-  const knownStatus = ['体力', '气力', '精力', 'hp', 'mp']
+  // 注释：h-config.toml 中的体力/气力/精力，原生默认
+  const knownStatus = ['体力', '气力', '精力']
   return knownStatus
     .filter(key => key in base)
     .map(key => ({
       label: key,
       value: base[key],
+      max: base[key], // 注释：最大值默认等于当前值（后续从 attribute definition 算），bar 显示为满
     }))
 })
 </script>
@@ -60,6 +59,7 @@ const statusBars = computed(() => {
         :key="bar.label"
         :label="bar.label"
         :value="bar.value"
+        :max="bar.max"
       />
     </div>
   </div>

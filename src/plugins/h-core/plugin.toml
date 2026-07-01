@@ -1,0 +1,13 @@
+[meta]
+id = "h-core"
+name = "H 系统核心"
+version = "1.0.0"
+description = "指令管道/前提系统/结算公式/实行判定/h_state/绝顶判定"
+
+[data_dependencies]
+provides = ["h:ready"]
+depends_on = ["effects:ready", "status:ready", "dialogue:ready", "characters:initialized"]
+
+[condition_fields]
+"h.in_progress" = { type = "boolean", description = "是否在 H 中" }
+"h.turn_count" = { type = "number", description = "当前 H 内行为次数" }

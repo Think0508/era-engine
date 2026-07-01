@@ -101,6 +101,13 @@ export class EngineUIBridge {
     eventBus.on('narrative:written', narrativeHandler)
     this.handlers.push({ event: 'narrative:written', handler: narrativeHandler })
 
+    // 注释：监听 combat:participants → game-store.setCombatParticipants
+    const combatPartHandler: BridgeHandler = (payload: any) => {
+      gameStore.setCombatParticipants(payload.allies ?? [], payload.enemies ?? [])
+    }
+    eventBus.on('combat:participants', combatPartHandler)
+    this.handlers.push({ event: 'combat:participants', handler: combatPartHandler })
+
     // 注释：设置 narrativeLog 的 eventBus
     narrativeLog.setEventBus(eventBus)
   }

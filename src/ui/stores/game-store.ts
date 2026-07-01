@@ -54,6 +54,8 @@ export const useGameStore = defineStore('game', () => {
   const weather = ref<WeatherData>({ ...DEFAULT_WEATHER })
   const calendar = ref<CalendarConfig | null>(null)
   const equipmentSlots = ref<EquipmentSlot[]>([])
+  // 注释：战斗参与者——由 combat-base 每次行动后更新
+  const combatParticipants = ref<{ allies: string[]; enemies: string[] }>({ allies: [], enemies: [] })
 
   // Getters
   const currentMode = computed(() => modeStack.value[modeStack.value.length - 1] ?? 'exploration')
@@ -111,6 +113,9 @@ export const useGameStore = defineStore('game', () => {
   function setEquipmentSlots(slots: EquipmentSlot[]) {
     equipmentSlots.value = slots
   }
+  function setCombatParticipants(allies: string[], enemies: string[]) {
+    combatParticipants.value = { allies, enemies }
+  }
   function reset() {
     player.value = null
     location.value = null
@@ -133,6 +138,7 @@ export const useGameStore = defineStore('game', () => {
     weather,
     calendar,
     equipmentSlots,
+    combatParticipants,
     currentMode,
     isExecuting,
     isIdle,
@@ -150,6 +156,7 @@ export const useGameStore = defineStore('game', () => {
     setWeather,
     setCalendar,
     setEquipmentSlots,
+    setCombatParticipants,
     reset,
   }
 })

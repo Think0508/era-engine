@@ -1,7 +1,6 @@
 // 注释：save-system — 存档系统（Dexie.js + IndexedDB）
 // 存档全量保存所有角色，不保存 locations/definitions（从 TOML 重新加载）
 // 存档权威模型：读档时角色从存档恢复，模板不覆盖存档数据
-// TODO: 存档迁移（Phase 11.3）
 // TODO: 自动存档
 
 import Dexie, { type Table } from 'dexie'
@@ -153,3 +152,94 @@ export async function importSave(json: string): Promise<void> {
     createdAt: now, updatedAt: now,
   })
 }
+
+// 注释：解析版本号（"1.2.3" → [1,2,3]）
+function parseVersion(v: string): number[] {
+  return v.split('.').map(Number)
+}
+
+// 注释：比较版本号，a > b 返回 >0
+function compareVersion(a: string, b: string): number {
+  const pa = parseVersion(a)
+  const pb = parseVersion(b)
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const va = pa[i] ?? 0
+    const vb = pb[i] ?? 0
+    if (va !== vb) return va - vb
+  }
+  return 0
+}
+
+// 注释：迁移 step 接口
+interface MigrationStep {
+  rename?: { old: string; new: string }
+  default?: { field: string; value: any }
+  transform?: { field: string; script: string }
+}
+
+// 注释：执行存档迁移——将存档数据从旧版本升级到当前版本
+// 迁移在内存中执行，不修改存档文件。玩家下次存盘时写入新格式
+// 迁移失败 → 中止读档 + 报错
+export function migrateSaveData(
+  data: SaveData,
+  migrations: { from: string; to: string; steps: MigrationStep[] }[],
+): SaveData {
+  const saveVer = data.modVersion
+  const result = JSON.parse(JSON.stringify(data)) as SaveData // 深拷贝
+
+  // 注释：按 from → to 顺序执行所有需要的迁移
+  for (const mig of migrations) {
+    if (compareVersion(saveVer, mig.from) < 0) continue
+    if (compareVersion(result.modVersion, mig.to) >= 0) continue
+    for (const step of mig.steps) {
+      try {
+        if (step.rename) {
+          applyRename(result, step.rename.old, step.rename.new)
+        }
+        if (step.default) {
+          applyDefault(result, step.default.field, step.default.value)
+        }
+        if (step.transform) {
+          // TODO(phase-12.1): transform 脚本需沙箱执行
+          console.warn(`迁移 transform 跳过：${step.transform.script}，需沙箱`)
+        }
+      } catch (e) {
+        throw new Error(
+          `存档迁移失败（${mig.from}→${mig.to}，step ${step.rename ? step.rename.old : step.default?.field}）：${e instanceof Error ? e.message : String(e)}`,
+        )
+      }
+    }
+    result.modVersion = mig.to
+  }
+  return result
+}
+
+// 注释：重命名字段（遍历所有角色）
+function applyRename(data: SaveData, oldName: string, newName: string): void {
+  for (const char of data.characters) {
+    if (char.base && oldName in char.base) {
+      char.base[newName] = char.base[oldName]
+      delete char.base[oldName]
+    }
+    if (oldName in char) {
+      char[newName] = char[oldName]
+      delete char[oldName]
+    }
+  }
+}
+
+// 注释：设置默认值
+function applyDefault(data: SaveData, field: string, value: any): void {
+  for (const char of data.characters) {
+    const parts = field.split('.')
+    let obj: any = char
+    for (let i = 0; i < parts.length - 1; i++) {
+      if (!obj[parts[i]]) obj[parts[i]] = {}
+      obj = obj[parts[i]]
+    }
+    if (!(parts[parts.length - 1] in obj)) {
+      obj[parts[parts.length - 1]] = value
+    }
+  }
+}
+

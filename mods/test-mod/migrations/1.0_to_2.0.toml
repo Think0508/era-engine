@@ -1,0 +1,10 @@
+# mods/test-mod/migrations/1.0_to_2.0.toml
+# 注释：测试存档迁移——1.0→2.0
+# rename: 属性名变更
+# default: 新属性默认值
+
+[[migrations]]
+rename = { old = "hp", new = "hit_point" }
+
+[[migrations]]
+default = { field = "base.新属性", value = 50 }

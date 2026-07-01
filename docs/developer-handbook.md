@@ -13,6 +13,7 @@
 | 5 | ✅ | UI 框架（布局/主题/stores/组件/指令栏/叙事日志） |
 | 6-7 | ✅ | 地图+角色+对话插件（map-system/character-system/dialogue-system） |
 | 8-10 | ✅ | 状态/能力/背包/效果/套装/战斗/任务插件 |
+| H | ✅ | H 系统（h-core/射精/妊娠/第一次/露出/刻印）|
 | 11-15 | TODO | 存档/沙箱/LLM口上/角色创建/发布 |
 
 ## 核心架构
@@ -61,6 +62,12 @@ mods/     内容模组——TOML数据，一次只启用一个
 | combat-base | combat:ready | combat | 回合循环/钩子系统/队友接口/标准事件 |
 | combat-wuxia | combat-wuxia:ready | combat-wuxia | extends combat-base/六维公式/阴阳/暴击/闪避 |
 | quest-system | quests:ready | quest | 7step类型/objective事件驱动/auto_start |
+| h-core | h:ready | h-core | H指令管道/前提系统/15公式/实行判定/h_state/绝顶 |
+| h-ejaculation | ejaculation:ready | h-ejaculation | 射精积累/射精量/精液追踪 |
+| h-pregnancy | pregnancy:ready | h-pregnancy | 受孕判定/7阶段孕期/泌乳 |
+| h-first-time | first-time:ready | h-first-time | 处女/初次标记/剧痛惩罚 |
+| h-exposure | exposure:ready | h-exposure | 4级露出/被发现处理 |
+| h-mark | mark:ready | h-mark | 7刻印升级/降级/修正查询 |
 
 ## 开发流程
 

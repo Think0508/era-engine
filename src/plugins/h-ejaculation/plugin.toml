@@ -1,0 +1,9 @@
+[meta]
+id = "h-ejaculation"
+name = "射精系统"
+version = "1.0.0"
+description = "射精积累/忍耐/射精量/精液追踪"
+
+[data_dependencies]
+provides = ["ejaculation:ready"]
+depends_on = ["h:ready"]

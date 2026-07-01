@@ -1,0 +1,9 @@
+[meta]
+id = "h-exposure"
+name = "露出系统"
+version = "1.0.0"
+description = "4级露出模式/被发现处理"
+
+[data_dependencies]
+provides = ["exposure:ready"]
+depends_on = ["h:ready"]

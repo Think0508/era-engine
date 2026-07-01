@@ -1,0 +1,9 @@
+[meta]
+id = "h-mark"
+name = "刻印系统"
+version = "1.0.0"
+description = "7种刻印升级/降级/修正查询"
+
+[data_dependencies]
+provides = ["mark:ready"]
+depends_on = ["h:ready"]

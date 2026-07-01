@@ -1,0 +1,9 @@
+[meta]
+id = "h-first-time"
+name = "第一次系统"
+version = "1.0.0"
+description = "处女/初吻等第一次标记"
+
+[data_dependencies]
+provides = ["first-time:ready"]
+depends_on = ["h:ready"]

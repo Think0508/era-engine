@@ -1,0 +1,9 @@
+[meta]
+id = "h-pregnancy"
+name = "妊娠系统"
+version = "1.0.0"
+description = "受孕判定/孕期推进/泌乳"
+
+[data_dependencies]
+provides = ["pregnancy:ready"]
+depends_on = ["h:ready"]

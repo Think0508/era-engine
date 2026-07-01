@@ -5,8 +5,9 @@ version = "1.0.0"
 description = "extends combat-base——六维/武功/阴阳/暴击/闪避"
 extends = "combat-base"
 
-[dependencies]
-{ plugin = "combat-base", version = "^1.0.0" }
+dependencies = [
+  { plugin = "combat-base", version = "^1.0.0" }
+]
 
 [optional_ability_tags]
 sword = { description = "剑类技能，有剑法加成系数" }

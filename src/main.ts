@@ -88,7 +88,7 @@ async function main(): Promise<void> {
   bridge.start()
   bridge.syncInitialState()
 
-  // 注释：11. 同步 mod 的 calendar/equipmentSlots
+  // 注释：11. 同步 mod 的 calendar/equipmentSlots + 刷新当前地点角色
   const gameStore = useGameStore(pinia)
   gameStore.setCalendar(mod.calendar ? {
     month_names: mod.calendar.month_names,
@@ -96,6 +96,7 @@ async function main(): Promise<void> {
     hour_names: mod.calendar.hour_names,
   } : null)
   gameStore.setEquipmentSlots(mod.equipmentSlots)
+  bridge.refreshCharactersAtLocation(startLoc?.id ?? 'town_square')
 
   // 注释：12. 注册非插件覆盖的原生指令
   registerNativeCommands()

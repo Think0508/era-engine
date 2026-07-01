@@ -14,21 +14,36 @@ import { apiSystem } from '../../core/api'
 
 // 注释：onLoad——注册 10 核心类型 handler
 export function onLoad(_ctx: PluginContext): void {
-  // 注释：set_attribute——走 binding 系统
+  // 注释：set_attribute——走 binding 系统，不存在绑定则直接改 base
   effectTypeRegistry.register('set_attribute', (params: any, ctx: any) => {
     const targetIds = ctx._targetIds as string[]
     for (const id of targetIds) {
-      bindingResolver.set(id, params.attr, params.value)
+      try {
+        bindingResolver.set(id, params.attr, params.value)
+      } catch {
+        // 注释：无绑定时直接修改实体 base
+        const char = entitySystem.get('character', id) as any
+        if (char?.base) char.base[params.attr] = params.value
+      }
     }
     return true
   })
 
-  // 注释：modify_attribute——走 binding 系统，加减
+  // 注释：modify_attribute——走 binding 系统，不存在绑定则直接改 base
   effectTypeRegistry.register('modify_attribute', (params: any, ctx: any) => {
     const targetIds = ctx._targetIds as string[]
     for (const id of targetIds) {
-      const current = bindingResolver.get(id, params.attr) ?? 0
-      bindingResolver.set(id, params.attr, current + params.value)
+      try {
+        const current = bindingResolver.get(id, params.attr) ?? 0
+        bindingResolver.set(id, params.attr, current + params.value)
+      } catch {
+        // 注释：无绑定时直接修改实体 base
+        const char = entitySystem.get('character', id) as any
+        if (char?.base) {
+          const current = char.base[params.attr] ?? 0
+          char.base[params.attr] = current + params.value
+        }
+      }
     }
     return true
   })

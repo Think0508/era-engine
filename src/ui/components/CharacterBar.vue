@@ -4,9 +4,10 @@
 // 有 NPC 时横向排列角色名按钮
 // 当前选中角色高亮（CSS 变量）
 // 点击角色名 → ui-store.selectCharacter(id)
+// 进入地点时自动选中第一个 NPC
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 
@@ -18,7 +19,14 @@ const npcs = computed(() => {
   return gameStore.charactersAtLocation.filter(c => c.id !== gameStore.player?.id)
 })
 
-// 注释：角色名（从 entity 的 name 字段读取）
+// 注释：自动选中第一个 NPC——角色列表变化且无选中时
+watch(() => gameStore.charactersAtLocation.length, () => {
+  if (!uiStore.hasSelection && npcs.value.length > 0) {
+    uiStore.selectCharacter(npcs.value[0].id)
+  }
+}, { immediate: true })
+
+// 注释：角色名
 function getCharacterName(char: any): string {
   return char.name ?? char.id ?? '未知'
 }

@@ -1,52 +1,49 @@
 // 注释：TitleScreen 标题界面
 // 引擎提供 UI 框架，mod 供 title/description（meta.toml）
 // 按钮：新游戏 / 继续冒险 / 设置 / 切换模组
-// 新游戏 → 实例化 player entity → pushMode('daily_menu')
-// 继续 → Phase 11 存档系统，当前显示"功能开发中"
-// TODO(phase-11): 角色创建流程 + 继续游戏读档
+// 继续 → 显示存档列表 → 选择后读档进入游戏
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import SaveSlotList from '../components/SaveSlotList.vue'
 
 const emit = defineEmits<{
   (e: 'newGame'): void
-  (e: 'continue'): void
+  (e: 'continue', slotId: string): void
   (e: 'settings'): void
   (e: 'switchMod'): void
 }>()
 
-// 注释：mod 标题信息由 main.ts 注入（通过 props 或全局状态）
 const props = defineProps<{
   title?: string
   description?: string
   titleImage?: string
 }>()
 
-const showContinuePlaceholder = ref(false)
+const showSaveList = ref(false)
 </script>
 
 <template>
   <div class="title-screen">
     <div class="title-content">
-      <!-- 注释：标题图（可选） -->
       <img v-if="props.titleImage" :src="props.titleImage" class="title-image" alt="title" />
-
-      <!-- 注释：标题文字 -->
       <h1 class="title-text">{{ props.title || 'era-engine' }}</h1>
-
-      <!-- 注释：描述 -->
       <p v-if="props.description" class="title-description">{{ props.description }}</p>
 
-      <!-- 注释：菜单按钮 -->
-      <div class="title-menu">
+      <!-- 注释：存档列表模式 -->
+      <SaveSlotList
+        v-if="showSaveList"
+        @load="(s) => emit('continue', s)"
+        @back="showSaveList = false"
+      />
+
+      <!-- 注释：主菜单模式 -->
+      <div v-else class="title-menu">
         <button class="title-button" @click="emit('newGame')">新的冒险</button>
-        <button class="title-button" @click="showContinuePlaceholder = true">继续冒险</button>
+        <button class="title-button" @click="showSaveList = true">继续冒险</button>
         <button class="title-button" @click="emit('settings')">设置</button>
         <button class="title-button" @click="emit('switchMod')">切换模组</button>
       </div>
-
-      <!-- 注释：继续冒险占位提示 -->
-      <p v-if="showContinuePlaceholder" class="placeholder-text">功能开发中（Phase 11 实现存档系统）</p>
     </div>
   </div>
 </template>

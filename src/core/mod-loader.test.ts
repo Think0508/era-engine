@@ -130,6 +130,9 @@ describe('parseModData', () => {
       attack: 10,
       defense: 5,
       speed: 5,
+      "体力": 100,
+      "气力": 100,
+      "精力": 100,
     })
     expect(templates.get('test-hero')?.extends).toBe('base-human')
     expect(templates.get('test-hero')?.base).toEqual({ hp: 150, attack: 15 })

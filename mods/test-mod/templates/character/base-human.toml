@@ -1,4 +1,4 @@
 # mods/test-mod/templates/character/base-human.toml
 id = "base-human"
 name = "基础人类"
-base = { hp = 100, mp = 50, attack = 10, defense = 5, speed = 5 }
+base = { hp = 100, mp = 50, attack = 10, defense = 5, speed = 5, "体力" = 100, "气力" = 100, "精力" = 100 }

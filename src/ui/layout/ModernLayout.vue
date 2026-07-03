@@ -20,14 +20,16 @@ const uiStore = useUIStore()
 
 <template>
   <div class="modern-layout" :class="{ 'sidebar-side-by-side': uiStore.sidebarMode === 'sideBySide' && uiStore.sidebarOpen }">
-    <aside
-      v-if="uiStore.sidebarOpen"
-      class="sidebar"
-      :class="{ 'sidebar-overlay': uiStore.sidebarMode === 'overlay' }"
-      :style="{ width: uiStore.sidebarWidth + 'px' }"
-    >
-      <Sidebar />
-    </aside>
+    <Transition name="sidebar-slide">
+      <aside
+        v-if="uiStore.sidebarOpen"
+        class="sidebar"
+        :class="{ 'sidebar-overlay': uiStore.sidebarMode === 'overlay' }"
+        :style="{ width: uiStore.sidebarWidth + 'px' }"
+      >
+        <Sidebar />
+      </aside>
+    </Transition>
 
     <main class="main-content">
       <StatusBar />
@@ -43,7 +45,7 @@ const uiStore = useUIStore()
     <ScreenNumpad />
 
     <button class="sidebar-toggle" @click="uiStore.sidebarOpen ? uiStore.closeSidebar() : uiStore.openSidebar()">
-      {{ uiStore.sidebarOpen ? '◀' : '▶' }}
+      {{ uiStore.sidebarOpen ? '◀ 收起侧栏' : '▶ 展开侧栏' }}
     </button>
   </div>
 </template>
@@ -111,5 +113,15 @@ const uiStore = useUIStore()
 .sidebar-toggle:hover {
   background-color: var(--color-primary);
   color: var(--color-surface);
+}
+
+/* 注释：侧栏滑入滑出过渡 */
+.sidebar-slide-enter-active,
+.sidebar-slide-leave-active {
+  transition: transform 0.25s ease;
+}
+.sidebar-slide-enter-from,
+.sidebar-slide-leave-to {
+  transform: translateX(-100%);
 }
 </style>

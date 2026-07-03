@@ -7,6 +7,8 @@ import Sidebar from '../components/Sidebar.vue'
 import StatusBar from '../components/StatusBar.vue'
 import CharacterBar from '../components/CharacterBar.vue'
 import StatusSection from '../components/StatusSection.vue'
+import ParameterSection from '../components/ParameterSection.vue'
+import LookSection from '../components/LookSection.vue'
 import NarrativeLog from '../components/NarrativeLog.vue'
 import CommandBar from '../components/CommandBar.vue'
 import SystemPanel from '../components/SystemPanel.vue'
@@ -54,6 +56,8 @@ function openSidebar() {
       <StatusBar />
       <CharacterBar />
       <StatusSection />
+      <ParameterSection />
+      <LookSection />
       <div class="narrative-log-container">
         <NarrativeLog />
       </div>

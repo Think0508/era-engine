@@ -101,6 +101,8 @@ async function main(): Promise<void> {
   // 注释：12. 注册非插件覆盖的原生指令 + 开启作弊模式（临时，方便测试）
   registerNativeCommands()
   uiStore.cheatCommands = true
+  uiStore.setTheme('modern')
+  uiStore.sidebarOpen = true
 
   // 注释：13. 进入游戏——push bridge 创建后自动同步
   gameStore.pushMode('daily_menu') // 暂时推每日菜单，后续改为标题→新游戏流程

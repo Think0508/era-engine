@@ -77,6 +77,9 @@ describe('parseModData', () => {
       attack: 15,
       defense: 5,
       speed: 5,
+      "体力": 100,
+      "气力": 100,
+      "精力": 100,
     })
     // 注释：equipment/assets 是 Phase 5 新增的角色字段
     expect(characters.get('player')?.equipment).toEqual({

@@ -31,12 +31,20 @@ watch(() => gameStore.currentMode, async () => {
   } catch { /* combat 插件未注册 */ }
 }, { immediate: true })
 
-// 注释：获取参战者数据
+// 注释：获取参战者数据——强制响应式：依赖 narrativeLog 数量变化触刷新
+const refreshKey = ref(0)
 const allies = computed(() => {
+  void refreshKey.value
   return allyIds.value.map(id => entitySystem.get('character', id)).filter(Boolean) as any[]
 })
 const enemies = computed(() => {
+  void refreshKey.value
   return enemyIds.value.map(id => entitySystem.get('character', id)).filter(Boolean) as any[]
+})
+
+// 注释：叙事日志更新时触发刷新（战斗日志写入会触发）
+watch(() => gameStore.narrativeLogEntries.length, () => {
+  refreshKey.value++
 })
 </script>
 

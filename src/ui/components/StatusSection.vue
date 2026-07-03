@@ -25,6 +25,7 @@ const playerStatusBars = computed(() => {
   return knownStatus.filter(key => key in base).map(key => ({
     label: key,
     value: base[key],
+    max: 100,
   }))
 })
 
@@ -43,6 +44,7 @@ const selectedStatusBars = computed(() => {
   return knownStatus.filter(key => key in base).map(key => ({
     label: key,
     value: base[key],
+    max: 100,
   }))
 })
 
@@ -55,6 +57,7 @@ const emotionBars = computed(() => {
   return knownEmotion.filter(key => key in base).map(key => ({
     label: key,
     value: base[key],
+    max: 100,
   }))
 })
 </script>
@@ -70,6 +73,7 @@ const emotionBars = computed(() => {
           :key="bar.label"
           :label="bar.label"
           :value="bar.value"
+          :max="bar.max"
         />
       </div>
 
@@ -81,6 +85,7 @@ const emotionBars = computed(() => {
           :key="bar.label"
           :label="bar.label"
           :value="bar.value"
+          :max="bar.max"
         />
       </div>
 
@@ -91,6 +96,7 @@ const emotionBars = computed(() => {
           :key="bar.label"
           :label="bar.label"
           :value="bar.value"
+          :max="bar.max"
           color="var(--color-secondary)"
         />
       </div>

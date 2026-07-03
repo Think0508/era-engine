@@ -41,6 +41,7 @@ const statusBars = computed(() => {
     .map(key => ({
       label: key,
       value: base[key],
+      max: 100, // 注释：体力/气力/精力的默认上限
     }))
 })
 </script>
@@ -60,6 +61,7 @@ const statusBars = computed(() => {
         :key="bar.label"
         :label="bar.label"
         :value="bar.value"
+        :max="bar.max"
       />
     </div>
   </div>

@@ -1,8 +1,5 @@
 // 注释：ModernLayout 现代主题布局（侧栏 + 主体）
-// 左侧 Sidebar（可调宽，overlay/sideBySide 两种模式）
-// 右侧主体：StatusBar → CharacterBar → StatusSection → NarrativeLog → CommandBar
-// Parameter 默认在侧栏显示（不在主体）
-// 移动端：侧栏仍保留（不变成底部抽屉），主体缩窄
+// 侧栏通过点击左侧边缘手柄滑出/滑入，点击侧栏外关闭
 
 <script setup lang="ts">
 import { useUIStore } from '../stores/ui-store'
@@ -16,21 +13,43 @@ import SystemPanel from '../components/SystemPanel.vue'
 import ScreenNumpad from '../components/ScreenNumpad.vue'
 
 const uiStore = useUIStore()
+
+function closeSidebar() {
+  uiStore.closeSidebar()
+}
+function openSidebar() {
+  uiStore.openSidebar()
+}
 </script>
 
 <template>
   <div class="modern-layout" :class="{ 'sidebar-side-by-side': uiStore.sidebarMode === 'sideBySide' && uiStore.sidebarOpen }">
-    <Transition name="sidebar-slide">
-      <aside
-        v-if="uiStore.sidebarOpen"
-        class="sidebar"
-        :class="{ 'sidebar-overlay': uiStore.sidebarMode === 'overlay' }"
-        :style="{ width: uiStore.sidebarWidth + 'px' }"
-      >
-        <Sidebar />
-      </aside>
-    </Transition>
+    <!-- 注释：侧栏 -->
+    <aside
+      v-if="uiStore.sidebarOpen"
+      class="sidebar"
+      :class="{ 'sidebar-overlay': uiStore.sidebarMode === 'overlay' }"
+      :style="{ width: uiStore.sidebarWidth + 'px' }"
+    >
+      <button class="sidebar-close" @click="closeSidebar">✕</button>
+      <Sidebar />
+    </aside>
 
+    <!-- 注释：侧栏关闭时左侧边缘手柄 -->
+    <button v-if="!uiStore.sidebarOpen" class="sidebar-handle" @click="openSidebar">
+      <span class="handle-bar"></span>
+      <span class="handle-bar"></span>
+      <span class="handle-bar"></span>
+    </button>
+
+    <!-- 注释：overlay 模式下拉出的侧栏——点击主体关闭 -->
+    <div
+      v-if="uiStore.sidebarOpen && uiStore.sidebarMode === 'overlay'"
+      class="sidebar-backdrop"
+      @click="closeSidebar"
+    />
+
+    <!-- 注释：主体区 -->
     <main class="main-content">
       <StatusBar />
       <CharacterBar />
@@ -43,10 +62,6 @@ const uiStore = useUIStore()
 
     <SystemPanel />
     <ScreenNumpad />
-
-    <button class="sidebar-toggle" @click="uiStore.sidebarOpen ? uiStore.closeSidebar() : uiStore.openSidebar()">
-      {{ uiStore.sidebarOpen ? '◀ 收起侧栏' : '▶ 展开侧栏' }}
-    </button>
   </div>
 </template>
 
@@ -72,6 +87,8 @@ const uiStore = useUIStore()
   border-right: 1px solid var(--color-border);
   padding: var(--gap-small);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-overlay {
@@ -81,6 +98,22 @@ const uiStore = useUIStore()
   bottom: 0;
   z-index: 100;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-close {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: var(--gap-small);
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.sidebar-close:hover {
+  color: var(--color-text);
 }
 
 .sidebar-side-by-side .main-content {
@@ -95,33 +128,49 @@ const uiStore = useUIStore()
   flex-direction: column;
 }
 
-.sidebar-toggle {
+.sidebar-backdrop {
   position: fixed;
-  top: var(--gap-medium, 16px);
-  right: var(--gap-medium, 16px);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  background: transparent;
+}
+
+.sidebar-handle {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
   z-index: 101;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 12px 6px;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-button);
-  padding: var(--gap-small);
+  border-left: none;
+  border-radius: 0 var(--radius-button) var(--radius-button) 0;
   cursor: pointer;
-  color: var(--color-text);
   min-height: 44px;
-  min-width: 44px;
 }
 
-.sidebar-toggle:hover {
+.sidebar-handle:hover {
   background-color: var(--color-primary);
-  color: var(--color-surface);
 }
 
-/* 注释：侧栏滑入滑出过渡 */
-.sidebar-slide-enter-active,
-.sidebar-slide-leave-active {
-  transition: transform 0.25s ease;
+.handle-bar {
+  display: block;
+  width: 14px;
+  height: 2px;
+  background-color: var(--color-text-secondary);
+  border-radius: 1px;
 }
-.sidebar-slide-enter-from,
-.sidebar-slide-leave-to {
-  transform: translateX(-100%);
+
+.sidebar-handle:hover .handle-bar {
+  background-color: var(--color-surface);
 }
 </style>

@@ -55,8 +55,8 @@ describe('parseModData', () => {
     expect(mod.calendar!.month_names).toHaveLength(12)
     expect(mod.calendar!.month_names[0]).toBe('一月')
     expect(mod.calendar!.weekday_names).toHaveLength(7)
-    expect(mod.calendar!.hour_names).toHaveLength(12)
-    expect(mod.calendar!.hour_names![0]).toBe('子')
+    // 注释：hour_names 可选——不设则 fallback 24 小时制
+    expect(mod.calendar!.hour_names).toBeUndefined()
   })
 
   it('parses bindings.toml correctly', () => {

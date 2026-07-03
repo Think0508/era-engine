@@ -10,10 +10,7 @@ const gameStore = useGameStore()
 
 const timeDisplay = computed(() => formatTime(gameStore.time, gameStore.calendar))
 const locationName = computed(() => gameStore.location?.name ?? '未知地点')
-const weatherDisplay = computed(() => {
-  const w = gameStore.weather
-  return `${w.name} ${w.temperature}℃`
-})
+const weatherDisplay = computed(() => gameStore.weather.name)
 </script>
 
 <template>

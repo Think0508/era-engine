@@ -172,10 +172,15 @@ export function registerNativeCommands(): void {
       useGameStore().addLogEntry({ id: `@hlp-${Date.now()}`, text: `@命令列表: @attrs/@setattr/@teleport/@spawn/@additem/@startquest/@errors/@help/@testcombat`, type: 'system', source: 'native' })
     }},
     { id: '@testcombat', label: '@测试战斗', handler: async () => {
+      const uiStore = useUIStore()
+      if (!uiStore.selectedCharacterId) {
+        useGameStore().addLogEntry({ id: `@tc-${Date.now()}`, text: `请先选中一个角色`, type: 'system', source: 'native' })
+        return
+      }
       const { eventBus } = await import('../core/event-bus')
       const gs = useGameStore()
-      gs.addLogEntry({ id: `@tc-${Date.now()}`, text: `测试战斗开始！`, type: 'system', source: 'native' })
-      await eventBus.emit('combat:request', { enemies: ['test_enemy'] })
+      gs.addLogEntry({ id: `@tc-${Date.now()}`, text: `与 ${uiStore.selectedCharacterId} 战斗！`, type: 'system', source: 'native' })
+      await eventBus.emit('combat:request', { enemies: [uiStore.selectedCharacterId] })
     }},
   ]
   for (const c of AT_CMDS) {

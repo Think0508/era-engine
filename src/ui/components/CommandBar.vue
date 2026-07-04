@@ -171,7 +171,7 @@ watch(() => gameStore.currentMode, () => {})
 .category-toggles {
   display: flex;
   gap: 1px;
-  margin-left: auto;
+  margin-left: 4px;
 }
 
 .cat-toggle {

@@ -57,19 +57,88 @@ function defaultTemplate() {
 }
 
 // 注释：保留引用，供后续任务使用（骨架阶段通过 void 抑制 noUnusedLocals）
-void groupSexMode
 void NPC_AI_NAMES
-void getSelfId
-void getTargetId
-void getOrCreateTemplate
 
 export function onLoad(_ctx: PluginContext): void {
   // 注释：TODO Task 3 — 注册 10 个效果类型
 }
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
-  void ctx
-  // 注释：TODO Task 2 — 注册 16 个前提
+  // 注释：helper — 注册前提
+  const reg = (id: string, fn: (c: any) => boolean) => {
+    try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+  }
+
+  // 注释：Step 2 — 全局模式前提
+  reg('GROUP_SEX_MODE_ON', () => groupSexMode)
+  reg('GROUP_SEX_MODE_OFF', () => !groupSexMode)
+
+  // 注释：Step 3 — 模板前提
+  reg('HAVE_ONE_GRUOP_SEX_TEMPLE', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    const tmpl = getOrCreateTemplate(id).A
+    return [tmpl.mouth, tmpl.L_hand, tmpl.R_hand, tmpl.penis, tmpl.anal]
+      .some(s => s.targetId !== null) || tmpl.worship.targetIds.length > 0
+  })
+  reg('HAVE_OVER_ONE_GRUOP_SEX_TEMPLE', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    const t = getOrCreateTemplate(id)
+    const hasA = [t.A.mouth, t.A.L_hand, t.A.R_hand, t.A.penis, t.A.anal].some(s => s.targetId !== null) || t.A.worship.targetIds.length > 0
+    const hasB = [t.B.mouth, t.B.L_hand, t.B.R_hand, t.B.penis, t.B.anal].some(s => s.targetId !== null) || t.B.worship.targetIds.length > 0
+    return hasA && hasB
+  })
+  reg('ALL_GROUP_SEX_TEMPLE_RUN_ON', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    return getOrCreateTemplate(id).dualRun
+  })
+  reg('ALL_GROUP_SEX_TEMPLE_RUN_OFF', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    return !getOrCreateTemplate(id).dualRun
+  })
+
+  // 注释：Step 4 — NPC AI 前提
+  reg('NPC_AI_TYPE_0_IN_GROUP_SEX', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    return getOrCreateTemplate(id).npcAiType === 0
+  })
+  reg('NPC_AI_TYPE_1_IN_GROUP_SEX', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    return getOrCreateTemplate(id).npcAiType === 1
+  })
+  reg('NPC_AI_TYPE_2_IN_GROUP_SEX', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    return getOrCreateTemplate(id).npcAiType === 2
+  })
+  reg('NPC_AI_TYPE_3_IN_GROUP_SEX', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    return getOrCreateTemplate(id).npcAiType === 3
+  })
+
+  // 注释：Step 5 — 场景前提
+  reg('SCENE_OVER_TWO', (_ctx2: any) => {
+    return entitySystem.getAll('character').length > 2
+  })
+  reg('SCENE_ALL_NOT_H', (_ctx2: any) => {
+    return !entitySystem.getAll('character').some((c: any) => c?.h_state?.is_h)
+  })
+  reg('SCENE_ALL_NOT_TIRED', (_ctx2: any) => {
+    return !entitySystem.getAll('character').some((c: any) => (c?.base?.['疲劳'] ?? 0) > 74)
+  })
+
+  // 注释：Step 6 — 流程前提
+  reg('SELF_NOW_GO_TO_JOIN_GROUP_SEX', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    const ch = entitySystem.get('character', id) as any
+    return ch?.sp_flag?.go_to_join_group_sex === true
+  })
+  reg('SELF_NOT_GO_TO_JOIN_GROUP_SEX', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    const ch = entitySystem.get('character', id) as any
+    return ch?.sp_flag?.go_to_join_group_sex !== true
+  })
+  reg('INSTRUCT_JUDGE_GROUP_SEX', () => groupSexMode)
+  reg('INSTRUCT_NOT_JUDGE_GROUP_SEX', () => !groupSexMode)
+
   // 注释：TODO Task 3 — 注册公共 API
   // 注释：TODO Task 5 — 注册事件监听 + 公式钩子
 }

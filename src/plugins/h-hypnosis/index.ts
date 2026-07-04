@@ -42,7 +42,39 @@ function setUnconsciousH(charId: string, val: number): void {
 let lastHypnosisType = 1
 
 export function onLoad(_ctx: PluginContext): void { void lastHypnosisType /* TODO Task 3 */ }
-export async function onEnable(_ctx: PluginContext): Promise<void> { /* TODO Task 2 */ }
+export async function onEnable(ctx: PluginContext): Promise<void> {
+  const reg = (id: string, fn: (c: any) => boolean) => {
+    try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+  }
+
+  reg('PRIMARY_HYPNOSIS', () => true)
+  reg('INTERMEDIATE_HYPNOSIS', () => true)
+  reg('ADVANCED_HYPNOSIS', () => true)
+  reg('SPECIAL_HYPNOSIS', () => true)
+
+  reg('SELF_HYPNOSIS_0', (ctx2: any) => { const id = getSelfId(ctx2); return id ? getHypnosis(id).hypnosis_degree === 0 : false })
+  reg('T_HYPNOSIS_0', (ctx2: any) => { const id = getTargetId(ctx2); return id ? getHypnosis(id).hypnosis_degree === 0 : false })
+  reg('SELF_HYPNOSIS_NE_0', (ctx2: any) => { const id = getSelfId(ctx2); return id ? getHypnosis(id).hypnosis_degree !== 0 : false })
+  reg('T_HYPNOSIS_NE_0', (ctx2: any) => { const id = getTargetId(ctx2); return id ? getHypnosis(id).hypnosis_degree !== 0 : false })
+
+  reg('IN_HYPNOSIS', (ctx2: any) => { const id = getSelfId(ctx2); if (!id) return false; const u = getUnconsciousH(id); return u >= 4 && u <= 7 })
+  reg('NOT_IN_HYPNOSIS', (ctx2: any) => { const id = getSelfId(ctx2); if (!id) return false; const u = getUnconsciousH(id); return u < 4 || u > 7 })
+  reg('T_IN_HYPNOSIS', (ctx2: any) => { const id = getTargetId(ctx2); if (!id) return false; const u = getUnconsciousH(id); return u >= 4 && u <= 7 })
+  reg('T_NOT_IN_HYPNOSIS', (ctx2: any) => { const id = getTargetId(ctx2); if (!id) return false; const u = getUnconsciousH(id); return u < 4 || u > 7 })
+
+  function regSubState(name: string, getter: (h: HypnosisData) => boolean) {
+    reg(`HYPNOSIS_${name}`, (ctx2: any) => { const id = getSelfId(ctx2); return id ? getter(getHypnosis(id)) : false })
+    reg(`NOT_HYPNOSIS_${name}`, (ctx2: any) => { const id = getSelfId(ctx2); return id ? !getter(getHypnosis(id)) : false })
+    reg(`T_HYPNOSIS_${name}`, (ctx2: any) => { const id = getTargetId(ctx2); return id ? getter(getHypnosis(id)) : false })
+    reg(`T_NOT_HYPNOSIS_${name}`, (ctx2: any) => { const id = getTargetId(ctx2); return id ? !getter(getHypnosis(id)) : false })
+  }
+  regSubState('INCREASE_BODY_SENSITIVITY', h => h.increase_body_sensitivity)
+  regSubState('FORCE_OVULATION', h => h.force_ovulation)
+  regSubState('BLOCKHEAD', h => h.blockhead)
+  regSubState('ACTIVE_H', h => h.active_h)
+  regSubState('PAIN_AS_PLEASURE', h => h.pain_as_pleasure)
+  regSubState('ROLEPLAY', h => h.roleplay.length > 0)
+}
 
 export type { HypnosisData }
 export { DEFAULT_HYPNOSIS, HYPNOSIS_TYPE_NAMES, getSelfId, getTargetId, getHypnosis, getUnconsciousH, setUnconsciousH }

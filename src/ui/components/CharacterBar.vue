@@ -49,24 +49,23 @@ function getCharacterName(char: any): string {
 <style scoped>
 .character-bar {
   display: flex;
-  gap: var(--gap-small);
-  padding: var(--gap-small) var(--gap-medium);
+  gap: 2px;
+  padding: 2px 8px;
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
   flex-wrap: wrap;
 }
 
 .character-name {
-  padding: var(--gap-small);
+  padding: 1px 6px;
   cursor: pointer;
   border-radius: var(--radius-button);
   color: var(--color-text);
-  font-size: 0.875rem;
-  transition: background-color 0.2s;
-  /* 注释：移动端点击区域最小 44px（AGENTS.md 样式铁律） */
-  min-height: 44px;
+  font-size: 0.7rem;
+  min-height: unset;
   display: flex;
   align-items: center;
+  transition: background-color 0.2s;
 }
 
 .character-name:hover {

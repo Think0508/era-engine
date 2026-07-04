@@ -27,11 +27,11 @@ const weatherDisplay = computed(() => gameStore.weather.name)
 .status-bar {
   display: flex;
   align-items: center;
-  gap: var(--gap-small);
-  padding: var(--gap-small) var(--gap-medium);
+  gap: 4px;
+  padding: 2px 8px;
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   color: var(--color-text);
   flex-wrap: wrap;
 }

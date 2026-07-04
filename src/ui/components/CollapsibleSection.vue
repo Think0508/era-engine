@@ -47,18 +47,19 @@ function toggle() {
 
 <style scoped>
 .collapsible-section {
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: none;
 }
 
 .section-header {
   display: flex;
   align-items: center;
-  gap: var(--gap-small);
-  padding: var(--gap-small);
+  gap: 4px;
+  padding: 1px 6px;
   cursor: pointer;
   user-select: none;
-  color: var(--color-text);
+  color: var(--color-text-secondary);
   font-weight: bold;
+  font-size: 0.7rem;
 }
 
 .section-header:hover {
@@ -67,8 +68,8 @@ function toggle() {
 
 .toggle-icon {
   color: var(--color-text-secondary);
-  font-size: 0.75rem;
-  min-width: 1.5em;
+  font-size: 0.65rem;
+  min-width: 1.2em;
 }
 
 .section-title {
@@ -76,6 +77,6 @@ function toggle() {
 }
 
 .section-content {
-  padding: var(--gap-small);
+  padding: 1px 8px 4px;
 }
 </style>

@@ -35,22 +35,22 @@ const percent = computed(() => {
 .resource-bar {
   display: flex;
   align-items: center;
-  gap: var(--gap-small);
-  font-size: 0.875rem;
+  gap: 3px;
+  font-size: 0.65rem;
 }
 
 .resource-label {
-  min-width: 3em;
+  min-width: 2em;
   color: var(--color-text);
 }
 
 .resource-track {
   flex: 1;
-  height: 8px;
+  height: 4px;
   background-color: var(--color-border);
-  border-radius: 2px;
+  border-radius: 1px;
   overflow: hidden;
-  min-width: 60px;
+  min-width: 40px;
 }
 
 .resource-fill {
@@ -59,9 +59,9 @@ const percent = computed(() => {
 }
 
 .resource-value {
-  min-width: 4em;
+  min-width: 3em;
   text-align: right;
   color: var(--color-text-secondary);
-  font-size: 0.75rem;
+  font-size: 0.6rem;
 }
 </style>

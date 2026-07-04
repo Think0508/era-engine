@@ -10,12 +10,13 @@ import { apiSystem } from '../../core/api'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { useKeyInput } from '../composables/useKeyInput'
-import CollapsibleSection from './CollapsibleSection.vue'
 import CommandItem from './CommandItem.vue'
 
 const gameStore = useGameStore()
 const uiStore = useUIStore()
 const lastCommand = ref<string | null>(null)
+const actComFolded = ref(false)
+const exComFolded = ref(false)
 
 // 注释：所有 Act_COM 指令（按模式+分组过滤）
 const rawActCommands = computed<CommandDef[]>(() => {
@@ -91,132 +92,146 @@ watch(() => gameStore.currentMode, () => {})
 
 <template>
   <div class="command-bar">
-    <!-- 注释：Act_COM 区 -->
-    <CollapsibleSection title="Act_COM" fold-key="actCom">
-      <!-- 类别开关行 -->
-      <div class="category-toggles">
+    <!-- 注释：Act_COM 区——自带折叠+类别开关同一行 -->
+    <div class="act-com-header" @click="actComFolded = !actComFolded">
+      <span class="toggle-icon">{{ actComFolded ? '[+]' : '[-]' }}</span>
+      <span class="section-title">Act_COM</span>
+      <div class="category-toggles" @click.stop>
         <button
           v-for="cat in availableCategories"
           :key="cat"
           class="cat-toggle"
-          :class="{ on: uiStore.commandCategories[cat] !== false, favorite: cat === 'favorite' }"
+          :class="{ on: uiStore.commandCategories[cat] !== false, fav: cat === 'favorite' }"
           @click="uiStore.toggleCategory(cat)"
-        >
-          {{ cat === 'favorite' ? '★' : cat }}
-        </button>
+        >{{ cat === 'favorite' ? '★' : cat }}</button>
       </div>
-
-      <!-- 收藏夹组（单独一行，★高亮且有指令时显示） -->
-      <div v-if="uiStore.commandCategories.favorite && numberedFavoriteCommands.length > 0" class="favorite-group">
-        <div class="favorite-header">★ 收藏夹</div>
-        <div class="command-group">
-          <CommandItem
-            v-for="cmd in numberedFavoriteCommands"
-            :key="cmd.id"
-            :label="cmd.label"
-            :command-id="cmd.id"
-            :number="cmd.number"
-            @execute="executeCommand"
-          />
+    </div>
+    <div v-show="!actComFolded" class="act-com-body">
+      <div v-if="uiStore.commandCategories.favorite && numberedFavoriteCommands.length > 0" class="fav-group">
+        <div class="fav-header">★ 收藏夹</div>
+        <div class="cmd-row">
+          <CommandItem v-for="cmd in numberedFavoriteCommands" :key="cmd.id"
+            :label="cmd.label" :command-id="cmd.id" :number="cmd.number" @execute="executeCommand" />
         </div>
       </div>
-
-      <!-- 常规指令 -->
-      <div class="command-group">
-        <CommandItem
-          v-for="cmd in numberedActCommands"
-          :key="cmd.id"
-          :label="cmd.label"
-          :command-id="cmd.id"
-          :number="cmd.number"
-          @execute="executeCommand"
-        />
-        <p v-if="numberedActCommands.length === 0 && !uiStore.commandCategories.favorite" class="no-commands">无可用指令</p>
+      <div class="cmd-row">
+        <CommandItem v-for="cmd in numberedActCommands" :key="cmd.id"
+          :label="cmd.label" :command-id="cmd.id" :number="cmd.number" @execute="executeCommand" />
+        <p v-if="numberedActCommands.length === 0 && numberedFavoriteCommands.length === 0" class="no-cmds">无可用指令</p>
       </div>
-    </CollapsibleSection>
+    </div>
 
     <!-- 注释：Ex_COM 区 -->
-    <CollapsibleSection title="Ex_COM" fold-key="exCom">
-      <div class="command-group">
-        <CommandItem
-          v-for="cmd in numberedExCommands"
-          :key="cmd.id"
-          :label="cmd.label"
-          :command-id="cmd.id"
-          :number="cmd.number"
-          @execute="executeCommand"
-        />
+    <div class="ex-com-header" @click="exComFolded = !exComFolded">
+      <span class="toggle-icon">{{ exComFolded ? '[+]' : '[-]' }}</span>
+      <span class="section-title">Ex_COM</span>
+    </div>
+    <div v-show="!exComFolded" class="ex-com-body">
+      <div class="cmd-row">
+        <CommandItem v-for="cmd in numberedExCommands" :key="cmd.id"
+          :label="cmd.label" :command-id="cmd.id" :number="cmd.number" @execute="executeCommand" />
       </div>
-    </CollapsibleSection>
+    </div>
 
-    <div v-if="lastCommand" class="last-command">&lt;上回指令: {{ lastCommand }}&gt;</div>
+    <div v-if="lastCommand" class="last-cmd">&lt;上回指令: {{ lastCommand }}&gt;</div>
   </div>
 </template>
 
 <style scoped>
 .command-bar {
   background-color: var(--color-surface);
-  border-top: 1px solid var(--color-border);
-  padding: var(--gap-small);
+  font-size: 0.75rem;
+  padding: 2px var(--gap-small);
 }
 
+/* 注释：Act_COM / Ex_COM 标题行（可折叠点击区域） */
+.act-com-header,
+.ex-com-header {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-small);
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 0;
+  color: var(--color-text-secondary);
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.toggle-icon {
+  font-size: 0.65rem;
+  min-width: 1.2em;
+}
+
+.section-title {
+  flex-shrink: 0;
+}
+
+/* 注释：类别开关——与 Act_COM 同一行 */
 .category-toggles {
   display: flex;
-  gap: 2px;
-  margin-bottom: var(--gap-small);
-  flex-wrap: wrap;
+  gap: 1px;
+  margin-left: auto;
 }
 
 .cat-toggle {
-  padding: 2px 6px;
+  padding: 0 4px;
   background: none;
   border: none;
   color: var(--color-text-secondary);
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-family: var(--font-body);
-  min-height: unset;
-  transition: color 0.15s;
-  letter-spacing: 0.5px;
+  line-height: 1.4;
+  opacity: 0.5;
+  transition: opacity 0.15s;
 }
 
 .cat-toggle.on {
+  opacity: 1;
   color: var(--color-text);
 }
 
-.cat-toggle.favorite.on {
+.cat-toggle.fav.on {
   color: var(--color-warning);
+  opacity: 1;
 }
 
-.favorite-group {
-  margin-bottom: var(--gap-small);
-  padding-bottom: var(--gap-small);
+/* 注释：指令内容区 */
+.act-com-body,
+.ex-com-body {
+  padding: 2px 0;
+}
+
+.cmd-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 6px;
+}
+
+.fav-group {
+  margin-bottom: 2px;
+  padding-bottom: 2px;
   border-bottom: 1px dashed var(--color-border);
 }
 
-.favorite-header {
-  font-size: 0.75rem;
+.fav-header {
+  font-size: 0.65rem;
   color: var(--color-warning);
-  margin-bottom: var(--gap-small);
+  margin-bottom: 1px;
 }
 
-.command-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gap-small);
-}
-
-.no-commands {
+.no-cmds {
   color: var(--color-text-secondary);
-  font-size: 0.75rem;
+  font-size: 0.65rem;
 }
 
-.last-command {
+.last-cmd {
   color: var(--color-text-secondary);
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   text-align: center;
-  margin-top: var(--gap-small);
-  padding-top: var(--gap-small);
+  padding-top: 2px;
   border-top: 1px solid var(--color-border);
+  margin-top: 2px;
 }
 </style>

@@ -58,12 +58,93 @@ function getMode(charId: string): number {
   return ch?.sp_flag?.hidden_sex_mode ?? 0
 }
 
+// 注释：Task 4 实现的函数声明——供 Task 3 效果引用，通过 TypeScript 提升机制
+declare function settleHiddenValue(charId: string, duration: number, addFlag: boolean, intensity: number): Promise<void>
+declare function checkAndSettleDiscovery(charId: string): Promise<void>
+declare function getLevelName(degree: number): { cid: number; name: string }
+
 export function onLoad(_ctx: PluginContext): void {
-  // 注释：TODO Task 3 — 注册效果类型
-  // effectTypeRegistry.register('hidden_sex_set_mode', ...)
-  // effectTypeRegistry.register('hidden_sex_clear', ...)
-  // effectTypeRegistry.register('hidden_sex_discovery_tick', ...)
-  // effectTypeRegistry.register('hidden_sex_orgasm_exposure', ...)
+  // 注释：hidden_sex_set_mode — 设置隐奸模式
+  // 对应 erArk Select_Hidden_Sex_Mode_Panel 的模式设置逻辑
+  effectTypeRegistry.register('hidden_sex_set_mode', (params: any, execCtx: any) => {
+    const mode = Math.max(1, Math.min(4, params.mode ?? 1))
+    // 注释：检查模式 2/3/4 的条件（场景仅 2 人或所有人无意识）
+    if (mode >= 2) {
+      const allChars = entitySystem.getAll('character')
+      const consciousCount = allChars.filter((c: any) => !c?.sp_flag?.unconscious_h).length
+      if (consciousCount > 2 && !allChars.every((c: any) => c?.sp_flag?.unconscious_h || c.id === 'player' || c.id === '0')) {
+        narrativeLog.write('场景条件不满足隐奸模式 ' + mode + '（需仅 2 人或所有人无意识）', 'system', 'h-hidden')
+        return false
+      }
+    }
+    const targetIds = execCtx._targetIds as string[]
+    for (const id of targetIds) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch) continue
+      if (!ch.sp_flag) ch.sp_flag = {}
+      ch.sp_flag.hidden_sex_mode = mode
+      // 注释：目标取消跟随（erArk: is_follow = 0）
+      if (ch.sp_flag) ch.sp_flag.is_follow = 0
+      // 注释：设置不正常 flag 3
+      if (!ch.sp_flag.abnormal_flags) ch.sp_flag.abnormal_flags = {}
+      ch.sp_flag.abnormal_flags['3'] = true
+      // 注释：初始化发现度（存于 h_state）
+      if (!ch.h_state) ch.h_state = {}
+      ch.h_state.hidden_sex_discovery_dregree = 0
+      // 注释：初始化成就记录
+      if (!ch.achievement) ch.achievement = {}
+      if (!ch.achievement.hidden_sex_record) ch.achievement.hidden_sex_record = {}
+      ch.achievement.hidden_sex_record[1] = mode
+      ch.achievement.hidden_sex_record[2] = Math.max(0, entitySystem.getAll('character').length - 2)
+    }
+    // 注释：模式 1(双不隐) 或模式 2(女隐) → 男不隐藏 → 清除玩家 H 标记
+    if (mode === 1 || mode === 2) {
+      for (const ch of entitySystem.getAll('character')) {
+        const c = ch as any
+        if (c.id === 'player' || c.id === '0') {
+          if (c.h_state) c.h_state.is_h = false
+        }
+      }
+    }
+    narrativeLog.write(`进入隐奸模式：${MODE_NAMES[mode]}`, 'system', 'h-hidden')
+    return true
+  })
+
+  // 注释：hidden_sex_clear — 清空隐奸模式为 0
+  // 对应 erArk 效果 471(SELF) / 472(TARGET) / 473(BOTH)
+  effectTypeRegistry.register('hidden_sex_clear', (params: any, execCtx: any) => {
+    const target = params.target ?? 'self'
+    const clearMode = (charId: string) => {
+      const ch = entitySystem.get('character', charId) as any
+      if (ch?.sp_flag) ch.sp_flag.hidden_sex_mode = 0
+    }
+    if (target === 'self') {
+      clearMode(execCtx.sourceId)
+    } else if (target === 'target') {
+      for (const id of execCtx._targetIds as string[]) clearMode(id)
+    } else if (target === 'both') {
+      clearMode(execCtx.sourceId)
+      for (const id of execCtx._targetIds as string[]) clearMode(id)
+    }
+    return true
+  })
+
+  // 注释：hidden_sex_orgasm_exposure — 绝顶暴露结算
+  // 对应 erArk SecondEffect 411-414
+  // 调用同一条 handle_hidden_sex_flow(add_flag=true, duration, intensity)
+  effectTypeRegistry.register('hidden_sex_orgasm_exposure', async (params: any, execCtx: any) => {
+    const duration = params.duration ?? 5
+    const intensity = params.intensity ?? 2
+    const targetIds = execCtx._targetIds as string[]
+    for (const id of targetIds) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch || (ch?.sp_flag?.hidden_sex_mode ?? 0) < 1) continue
+      // 注释：直接调用发现度积累（add_flag=true），然后检查是否被发现
+      await settleHiddenValue(id, duration, true, intensity)
+      await checkAndSettleDiscovery(id)
+    }
+    return true
+  })
 }
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
@@ -171,8 +252,40 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     return false
   })
 
-  // 注释：TODO Task 3 — 注册公共 API
-  // ctx.api.register('h-hidden', { getMode, setMode, getDiscoveryDegree, ... })
+  ctx.api.register('h-hidden', {
+    getMode: (charId: string): number => {
+      const ch = entitySystem.get('character', charId) as any
+      return ch?.sp_flag?.hidden_sex_mode ?? 0
+    },
+    setMode: (charId: string, mode: number) => {
+      const ch = entitySystem.get('character', charId) as any
+      if (!ch) return
+      if (!ch.sp_flag) ch.sp_flag = {}
+      ch.sp_flag.hidden_sex_mode = Math.max(0, Math.min(4, mode))
+    },
+    getDiscoveryDegree: (charId: string): number => {
+      const ch = entitySystem.get('character', charId) as any
+      return ch?.h_state?.hidden_sex_discovery_dregree ?? 0
+    },
+    getModeName: (charId: string): string => {
+      const ch = entitySystem.get('character', charId) as any
+      return MODE_NAMES[ch?.sp_flag?.hidden_sex_mode ?? 0] ?? '无'
+    },
+    getHiddenLevel: (charId: string): { cid: number; name: string } => {
+      const ch = entitySystem.get('character', charId) as any
+      const deg = ch?.h_state?.hidden_sex_discovery_dregree ?? 0
+      return getLevelName(deg)
+    },
+    isHidden: (charId: string): boolean => {
+      // 注释：NPC 隐匿判断（给 NPC AI 使用）
+      const mode = getMode(charId)
+      if (mode === 0) return false
+      if (mode === 4) return true   // 双隐 → 对所有人隐藏
+      if (mode === 3 && (charId === 'player' || charId === '0')) return true  // 男隐 → 玩家隐藏
+      if (mode === 2 && charId !== 'player' && charId !== '0') return true     // 女隐 → NPC 隐藏
+      return false
+    },
+  })
 
   // 注释：TODO Task 5 — 注册事件监听
   // ctx.events.on('game:execution_end', ...)

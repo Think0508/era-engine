@@ -63,11 +63,11 @@ export class CommandExecutor {
       if (cmd.handler) {
         await cmd.handler(ctx)
       } else if (cmd.effects) {
-        // 注释：effects 类指令调 effect-system 插件
-        // Phase 5 没有效应系统插件，effect-system 未注册时 warning + 跳过
-        if (ctx.api?.call) {
+        // 注释：effects 类指令——传递 timeCost 给 settle 效果 handler
+        const effectCtx = { ...ctx, _timeCost: cmd.timeCost ?? 10 }
+        if (effectCtx.api?.call) {
           try {
-            await ctx.api.call('effect-system', 'execute', cmd.effects, ctx)
+            await effectCtx.api.call('effect-system', 'execute', cmd.effects, effectCtx)
           } catch (err) {
             errorReporter.report({
               source: 'command-executor',

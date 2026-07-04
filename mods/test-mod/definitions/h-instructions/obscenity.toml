@@ -1,5 +1,4 @@
 # obscenity.toml——猥亵指令
-# 注释：效果用 settle 公式，不硬编码数值。
 
 [[instructions]]
 id = "touch_hand"
@@ -10,8 +9,8 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "欲情", magnitude = "small" } },
-  { type = "settle_state", params = { state = "羞耻", magnitude = "small" } },
+  { type = "settle_state", params = { state = "欲情" } },
+  { type = "settle_state", params = { state = "羞耻" } },
 ]
 talk_scene = "touch_hand"
 
@@ -24,8 +23,8 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "胸部", magnitude = "mid" } },
-  { type = "settle_state", params = { state = "羞耻", magnitude = "small" } },
-  { type = "settle_state", params = { state = "欲情", magnitude = "small" } },
+  { type = "settle_state", params = { state = "胸部" } },
+  { type = "settle_state", params = { state = "羞耻" } },
+  { type = "settle_state", params = { state = "欲情" } },
 ]
 talk_scene = "touch_breast"

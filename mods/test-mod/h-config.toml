@@ -11,6 +11,3 @@ favorability_thresholds = [0, 100, 500, 1000, 2500, 5000, 10000, 50000, 100000]
 
 # 信赖度 8 级阈值
 trust_thresholds = [0, 25, 50, 75, 100, 150, 200, 250, 300]
-
-# 效果幅度基数——settle 效果的 base 值，受公式修正
-magnitude_base = { small = 10, mid = 30, large = 80 }

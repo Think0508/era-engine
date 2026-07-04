@@ -1,5 +1,5 @@
 # daily/social.toml——日常社交指令
-# 注释：效果用 settle 公式，不硬编码数值。modify_attribute 仅用于特殊场景。
+# 效果用 settle 公式（base = timeCost + 30 对齐 erArk），不写数值
 
 [[instructions]]
 id = "chat"
@@ -10,8 +10,8 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "好意", magnitude = "small" } },
-  { type = "settle_state", params = { state = "屈服", magnitude = "small" } },
+  { type = "settle_state", params = { state = "好意" } },
+  { type = "settle_state", params = { state = "屈服" } },
 ]
 talk_scene = "chat"
 
@@ -22,9 +22,7 @@ type = "daily"
 priority = 20
 time_cost = 5
 premises = ["HAVE_TARGET"]
-effects = [
-  { type = "settle_favorability", params = { base = 30 } },
-]
+effects = [{ type = "settle_favorability", params = { base = 30 } }]
 talk_scene = "give_gift"
 
 [[instructions]]
@@ -36,7 +34,7 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "欲情", magnitude = "small" } },
+  { type = "settle_state", params = { state = "欲情" } },
 ]
 talk_scene = "hand_in_hand"
 
@@ -49,8 +47,8 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "欲情", magnitude = "small" } },
-  { type = "settle_state", params = { state = "屈服", magnitude = "small" } },
+  { type = "settle_state", params = { state = "欲情" } },
+  { type = "settle_state", params = { state = "屈服" } },
 ]
 talk_scene = "embrace"
 
@@ -63,8 +61,8 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL", "FALL_LEVEL_GE_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "欲情", magnitude = "mid" } },
-  { type = "settle_state", params = { state = "屈服", magnitude = "mid" } },
+  { type = "settle_state", params = { state = "欲情" } },
+  { type = "settle_state", params = { state = "屈服" } },
 ]
 talk_scene = "kiss"
 
@@ -77,7 +75,7 @@ time_cost = 15
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "好意", magnitude = "mid" } },
-  { type = "settle_state", params = { state = "欲情", magnitude = "small" } },
+  { type = "settle_state", params = { state = "好意" } },
+  { type = "settle_state", params = { state = "欲情" } },
 ]
 talk_scene = "massage"

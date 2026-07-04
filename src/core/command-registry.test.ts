@@ -25,7 +25,7 @@ describe('command-registry', () => {
 
   it('register 重复 id 报错', () => {
     registry.register(makeCmd())
-    expect(() => registry.register(makeCmd({ source: 'plugin:x' }))).toThrow(/重复注册/)
+    expect(() => registry.register(makeCmd({ source: 'plugin:x' }))).toThrow(/已存在/)
   })
 
   it('unregister', () => {

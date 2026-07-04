@@ -1,0 +1,9 @@
+[meta]
+id = "h-group-sex"
+name = "群交系统"
+version = "1.0.0"
+description = "多人 H 模式，身体部位模板，精确复刻 erArk group_sex"
+
+[data_dependencies]
+provides = ["group-sex:ready"]
+depends_on = ["h:ready"]

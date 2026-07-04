@@ -62,6 +62,7 @@ function calculateHypnosisDegree(charId: string): number {
   return Math.round(1 * adjust * rand * 10) / 10
 }
 
+// TODO: 调香加成（aromatherapy == 6）依赖香薰系统就绪后接入
 function calculateSanityCost(charId: string): number {
   const target = entitySystem.get('character', charId) as any
   if (!target) return 20
@@ -76,6 +77,7 @@ function getHypnosisDegreeLimit(): number {
   return 200
 }
 
+// TODO: 催眠完成检查 — NPC 天赋获取 + 二段行为依赖 NPC 天赋系统
 function checkHypnosisCompletion(charId: string): boolean {
   const h = getHypnosis(charId)
   if (h.hypnosis_degree < 50) return false
@@ -136,7 +138,7 @@ export function onLoad(_ctx: PluginContext): void {
   })
 
   // Core: hypnosis_all
-  effectTypeRegistry.register('hypnosis_all', (_p: any, execCtx: any) => {
+  effectTypeRegistry.register('hypnosis_all', (_p: any, _execCtx: any) => {
     const allIds = entitySystem.getAllIds('character')
     for (const id of allIds) {
       const h = getHypnosis(id)
@@ -229,6 +231,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
   }
 
+  // TODO: 天赋前提返回 true（需天赋系统就绪后接入实际判断）
   reg('PRIMARY_HYPNOSIS', () => true)
   reg('INTERMEDIATE_HYPNOSIS', () => true)
   reg('ADVANCED_HYPNOSIS', () => true)
@@ -255,7 +258,26 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   regSubState('BLOCKHEAD', h => h.blockhead)
   regSubState('ACTIVE_H', h => h.active_h)
   regSubState('PAIN_AS_PLEASURE', h => h.pain_as_pleasure)
+  // TODO: 角色扮演系统（第二阶段）— roleplay 逻辑待实现
   regSubState('ROLEPLAY', h => h.roleplay.length > 0)
+
+  // 注册公共 API
+  ctx.api.register('h-hypnosis', {
+    getDegree: (charId: string) => getHypnosis(charId).hypnosis_degree,
+    getType: () => lastHypnosisType,
+    isHypnotized: (charId: string) => { const u = getUnconsciousH(charId); return u >= 4 && u <= 7 },
+    getTypeName: (charId: string) => HYPNOSIS_TYPE_NAMES[getUnconsciousH(charId) >= 4 && getUnconsciousH(charId) <= 7 ? getUnconsciousH(charId) - 3 : 0] ?? '无',
+  })
+
+  // 注册 UI 插槽 — 催眠状态标签
+  try {
+    ctx.ui.registerSlot('character-tag', {
+      id: 'hypnosis-tag',
+      component: 'HypnosisTag' as any,
+      priority: 40,
+      condition: (gc: any) => gc?.selectedCharacterId ? (getUnconsciousH(gc.selectedCharacterId) >= 4 && getUnconsciousH(gc.selectedCharacterId) <= 7) : false,
+    })
+  } catch { /* UI 未就绪 */ }
 }
 
 export type { HypnosisData }

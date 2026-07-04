@@ -4,6 +4,8 @@
 
 import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
+import { effectTypeRegistry } from '../../core/effect-type-registry'
+import { narrativeLog } from '../../core/narrative-log'
 
 // 注释：群交模板——5 个单目标槽位 + 1 个多目标侍奉槽
 interface GroupSexSlot {
@@ -34,6 +36,9 @@ function getTargetId(ctx: any): string | null {
   return ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId ?? null
 }
 
+// 注释：保留引用，供后续任务使用
+void getTargetId
+
 // 注释：获取角色的群交模板（返回默认空模板）
 function getOrCreateTemplate(charId: string): { A: GroupSexTemplate; B: GroupSexTemplate; lock: boolean; dualRun: boolean; npcAiType: number } {
   const ch = entitySystem.get('character', charId) as any
@@ -56,11 +61,121 @@ function defaultTemplate() {
   }
 }
 
-// 注释：保留引用，供后续任务使用（骨架阶段通过 void 抑制 noUnusedLocals）
-void NPC_AI_NAMES
-
 export function onLoad(_ctx: PluginContext): void {
-  // 注释：TODO Task 3 — 注册 10 个效果类型
+  // 注释：group_sex_mode_on — 启用群交模式（erArk 10010）
+  effectTypeRegistry.register('group_sex_mode_on', (_p: any, execCtx: any) => {
+    groupSexMode = true
+    for (const id of execCtx._targetIds as string[]) {
+      const ch = entitySystem.get('character', id) as any
+      if (ch) {
+        if (!ch.achievement) ch.achievement = {}
+        if (!ch.achievement.group_sex_record) ch.achievement.group_sex_record = {}
+      }
+    }
+    narrativeLog.write('进入群交模式', 'system', 'h-group-sex')
+    return true
+  })
+
+  // 注释：group_sex_mode_off — 关闭群交模式（erArk 10011）
+  effectTypeRegistry.register('group_sex_mode_off', (_p: any, _execCtx: any) => {
+    groupSexMode = false
+    narrativeLog.write('退出群交模式', 'system', 'h-group-sex')
+    return true
+  })
+
+  // 注释：group_sex_end_add_hpmp_max — 全体参与者HPMP上限增长（erArk 529）
+  effectTypeRegistry.register('group_sex_end_add_hpmp_max', (_p: any, _execCtx: any) => {
+    for (const ch of entitySystem.getAll('character')) {
+      const c = ch as any
+      if (!c?.h_state?.is_h) continue
+      const orgasmCount = c.h_state.total_orgasm_count ?? 0
+      if (orgasmCount <= 0) continue
+      if (!c.base) c.base = {}
+      c.base['体力上限'] = Math.min(99999, (c.base['体力上限'] ?? 0) + orgasmCount * 2)
+      c.base['气力上限'] = Math.min(99999, (c.base['气力上限'] ?? 0) + orgasmCount * 3)
+      c.base['欲望'] = Math.max(0, (c.base['欲望'] ?? 0) - orgasmCount * 20)
+      if (c.id === 'player' || c.id === '0') {
+        c.base['精液上限'] = Math.min(999, (c.base['精液上限'] ?? 0) + orgasmCount)
+      }
+    }
+    return true
+  })
+
+  // 注释：group_sex_fail_add_just — 群交失败结算（erArk 530）
+  effectTypeRegistry.register('group_sex_fail_add_just', (_p: any, _execCtx: any) => {
+    for (const ch of entitySystem.getAll('character')) {
+      const c = ch as any
+      if (!c?.h_state?.is_h) continue
+      if (!c.base) c.base = {}
+      c.base['体力'] = Math.max(1, (c.base['体力'] ?? 0) - 10)
+      c.base['气力'] = Math.max(1, (c.base['气力'] ?? 0) - 10)
+    }
+    const refused = entitySystem.getAll('character').filter((c: any) =>
+      c?.action_info?.ask_group_sex_refuse_chara_id_list?.length
+    )
+    for (const c of refused) {
+      narrativeLog.write(`${c.name ?? c.id} 拒绝了群交邀请`, 'system', 'h-group-sex')
+    }
+    return true
+  })
+
+  // 注释：all_group_sex_temple_on — 启用A/B轮换（erArk 1415）
+  effectTypeRegistry.register('all_group_sex_temple_on', (_params: any, execCtx: any) => {
+    for (const id of execCtx._targetIds as string[]) {
+      getOrCreateTemplate(id).dualRun = true
+    }
+    return true
+  })
+
+  // 注释：all_group_sex_temple_off — 关闭A/B轮换（erArk 1416）
+  effectTypeRegistry.register('all_group_sex_temple_off', (_params: any, execCtx: any) => {
+    for (const id of execCtx._targetIds as string[]) {
+      getOrCreateTemplate(id).dualRun = false
+    }
+    return true
+  })
+
+  // 注释：self_join_group_sex_on — NPC开始前往加入群交（erArk 1417）
+  effectTypeRegistry.register('self_join_group_sex_on', (params: any, execCtx: any) => {
+    const charId = params.characterId ?? execCtx.sourceId
+    if (!charId) return true
+    const ch = entitySystem.get('character', charId) as any
+    if (!ch) return true
+    if (!ch.sp_flag) ch.sp_flag = {}
+    ch.sp_flag.go_to_join_group_sex = true
+    narrativeLog.write(`${ch.name ?? charId} 正在前往加入群交`, 'system', 'h-group-sex')
+    return true
+  })
+
+  // 注释：self_join_group_sex_off — NPC停止前往加入（erArk 1418）
+  effectTypeRegistry.register('self_join_group_sex_off', (params: any, execCtx: any) => {
+    const charId = params.characterId ?? execCtx.sourceId
+    if (!charId) return true
+    const ch = entitySystem.get('character', charId) as any
+    if (!ch) return true
+    if (ch.sp_flag) ch.sp_flag.go_to_join_group_sex = false
+    return true
+  })
+
+  // 注释：clear_group_sex_template — 清除群交模板（erArk 1419）
+  effectTypeRegistry.register('clear_group_sex_template', (params: any, execCtx: any) => {
+    const target = params.target ?? 'self'
+    const ids = target === 'self' ? [execCtx.sourceId] : execCtx._targetIds as string[]
+    for (const id of ids) {
+      const ch = entitySystem.get('character', id) as any
+      if (ch?.h_state) ch.h_state.group_sex_body_template = defaultTemplate()
+    }
+    return true
+  })
+
+  // 注释：all_chara_masturebate_in_group_sex_flag_0 — 重置群交自慰标志（erArk 460）
+  effectTypeRegistry.register('all_chara_masturebate_in_group_sex_flag_0', (_p: any, _execCtx: any) => {
+    for (const ch of entitySystem.getAll('character')) {
+      const c = ch as any
+      if (c?.sp_flag) c.sp_flag.masturebate = 0
+    }
+    return true
+  })
 }
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
@@ -139,6 +254,20 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   reg('INSTRUCT_JUDGE_GROUP_SEX', () => groupSexMode)
   reg('INSTRUCT_NOT_JUDGE_GROUP_SEX', () => !groupSexMode)
 
-  // 注释：TODO Task 3 — 注册公共 API
+  // 注释：Step 8 — 注册公共 API
+  ctx.api.register('h-group-sex', {
+    isActive: () => groupSexMode,
+    getTemplate: (charId: string) => getOrCreateTemplate(charId),
+    setTemplate: (charId: string, template: any) => {
+      const ch = entitySystem.get('character', charId) as any
+      if (ch?.h_state) ch.h_state.group_sex_body_template = template
+    },
+    setNpcAiType: (charId: string, type: number) => {
+      getOrCreateTemplate(charId).npcAiType = Math.max(0, Math.min(3, type))
+    },
+    getNpcAiType: (charId: string): number => getOrCreateTemplate(charId).npcAiType,
+    getNpcAiName: (type: number): string => NPC_AI_NAMES[type] ?? '未知',
+  })
+
   // 注释：TODO Task 5 — 注册事件监听 + 公式钩子
 }

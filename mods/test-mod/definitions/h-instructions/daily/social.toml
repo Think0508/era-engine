@@ -93,10 +93,11 @@ label = "亲吻"
 type = "obscenity"
 priority = 50
 time_cost = 10
-# erArk: HAVE_TARGET, NOT_H, TIRED_LE_84, HP_G_1, PENIS_NOT_IN_T_MOUSE
+judge_base = 250
 premises = ["HAVE_TARGET", "NOT_H", "TIRED_LE_84", "HP_G_1"]
 # erArk: [21, 11, 12, 22, 1101, 51, 53, 58, 62, 118, CVE_A2_E|40_G_1, CVE_A1_E|40_G_1, CVE_A2_E|153_G_1, CVE_A1_E|153_G_1]
 effects = [
+  { type = "judge_check", params = { base = 250 } },
   { type = "settle_favorability" },
   { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
   { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },

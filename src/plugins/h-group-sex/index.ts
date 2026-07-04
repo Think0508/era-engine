@@ -6,6 +6,7 @@ import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { narrativeLog } from '../../core/narrative-log'
+import { apiSystem } from '../../core/api'
 
 // 注释：群交模板——5 个单目标槽位 + 1 个多目标侍奉槽
 interface GroupSexSlot {
@@ -38,9 +39,13 @@ function getTargetId(ctx: any): string | null {
 
 // 注释：保留引用，供后续任务使用
 void getTargetId
+void executeGroupSexTemplate
+void applyGroupSexCostReduction
+void applyGroupSexAudienceBonus
+void applyGroupSexRealtimeTick
 
 // 注释：获取角色的群交模板（返回默认空模板）
-function getOrCreateTemplate(charId: string): { A: GroupSexTemplate; B: GroupSexTemplate; lock: boolean; dualRun: boolean; npcAiType: number } {
+function getOrCreateTemplate(charId: string): { A: GroupSexTemplate; B: GroupSexTemplate; lock: boolean; dualRun: boolean; npcAiType: number; _lastUsedB?: boolean } {
   const ch = entitySystem.get('character', charId) as any
   if (!ch) return defaultTemplate()
   if (!ch.h_state) ch.h_state = {}
@@ -59,6 +64,69 @@ function defaultTemplate() {
     dualRun: false,
     npcAiType: 0,
   }
+}
+
+async function executeGroupSexTemplate(charId: string, useTemplateB: boolean): Promise<void> {
+  const tmpl = getOrCreateTemplate(charId)
+  const template = useTemplateB ? tmpl.B : tmpl.A
+  const slots = [template.mouth, template.L_hand, template.R_hand, template.penis, template.anal]
+
+  for (const slot of slots) {
+    if (!slot.targetId || !slot.behaviorId) continue
+    const target = entitySystem.get('character', slot.targetId) as any
+    if (!target) continue
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'h_execute_behavior', params: { behaviorId: slot.behaviorId, target: 'self' } }
+    ], {
+      sourceId: charId,
+      _targetIds: [slot.targetId],
+      _timeCost: 10,
+    })
+  }
+
+  if (template.worship.targetIds.length > 0 && template.worship.behaviorId) {
+    for (const worshipId of template.worship.targetIds) {
+      const target = entitySystem.get('character', worshipId) as any
+      if (!target) continue
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'h_execute_behavior', params: { behaviorId: template.worship.behaviorId, target: 'self' } }
+      ], {
+        sourceId: charId,
+        _targetIds: [worshipId],
+        _timeCost: 10,
+      })
+    }
+  }
+
+  if (tmpl.dualRun) {
+    tmpl._lastUsedB = !tmpl._lastUsedB
+  }
+}
+
+function applyGroupSexCostReduction(charId: string, hpCost: number, mpCost: number): { hp: number; mp: number } {
+  if (!groupSexMode) return { hp: hpCost, mp: mpCost }
+  if (charId === 'player' || charId === '0') {
+    return { hp: Math.ceil(hpCost / 3), mp: Math.ceil(mpCost / 3) }
+  }
+  return { hp: Math.ceil(hpCost / 2), mp: Math.ceil(mpCost / 2) }
+}
+
+function applyGroupSexAudienceBonus(_charId: string, baseAdjust: number): number {
+  if (!groupSexMode) return baseAdjust
+  const sceneCount = entitySystem.getAll('character').length
+  const otherNpcNum = Math.min(10, Math.max(0, sceneCount - 2))
+  return baseAdjust + otherNpcNum * 0.02
+}
+
+function applyGroupSexRealtimeTick(charId: string, addTime: number): void {
+  if (!groupSexMode) return
+  const sceneCount = entitySystem.getAll('character').length
+  const othersCount = Math.max(0, sceneCount - 2)
+  const adjust = Math.min(othersCount * 0.1, 2)
+  const ch = entitySystem.get('character', charId) as any
+  if (!ch?.base) return
+  ch.base['羞耻'] = Math.min(99999, (ch.base['羞耻'] ?? 0) + Math.floor(addTime * adjust))
+  ch.base['心理快感'] = Math.min(99999, (ch.base['心理快感'] ?? 0) + Math.floor(addTime * adjust))
 }
 
 export function onLoad(_ctx: PluginContext): void {

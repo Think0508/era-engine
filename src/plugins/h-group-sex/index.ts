@@ -363,4 +363,17 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   // TODO: 注册 group_sex_end 指令（前提+效果链）
   // TODO: 注册 run_group_sex_template 指令（调用 executeGroupSexTemplate）
   // TODO: 注册 edit_group_sex_template 指令（打开模板编辑器面板）
+
+  // 注释：Step 11 — 注册 UI 插槽 — 群交状态标签
+  try {
+    ctx.ui.registerSlot('character-tag', {
+      id: 'group-sex-tag',
+      component: 'GroupSexTag' as any,
+      priority: 45,
+      condition: () => groupSexMode,
+    })
+  } catch { /* UI 未就绪 */ }
+
+  // 注释：注册 UI 插槽 — 模板编辑器面板
+  // TODO: 编辑群交模板面板（槽位分配 + NPC 邀请 + AI 类型选择）
 }

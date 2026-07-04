@@ -117,6 +117,9 @@ function getRoleplayName(id: number): string {
   return ROLEPLAY_DATA.find(r => r.id === id)?.name ?? `未知(${id})`
 }
 
+void getSanity
+void addHypnosisXp
+
 function getSelfId(ctx: any): string | null { return ctx.gameStore?.player?.id ?? ctx.sourceId ?? null }
 function getTargetId(ctx: any): string | null { return ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId ?? null }
 

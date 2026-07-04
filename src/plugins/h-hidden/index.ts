@@ -218,6 +218,41 @@ function applyHiddenSexTick(charId: string, addTime: number): void {
   ch.base['心理快感'] = Math.min(99999, (ch.base['心理快感'] ?? 0) + pleasureBase)
 }
 
+// 注释：isCharacterHiddenFromNPC — NPC AI 过滤
+// 对应 erArk handle_npc_ai.py:800-815
+// 返回 true 表示该角色对 NPC AI 不可见（应被跳过）
+export function isCharacterHiddenFromNPC(charId: string): boolean {
+  const mode = getMode(charId)
+  if (mode === 0) return false
+  if (mode === 4) return true
+  if ((charId === 'player' || charId === '0') && mode === 3) return true
+  if (charId !== 'player' && charId !== '0' && mode === 2) return true
+  return false
+}
+
+// 注释：checkHiddenSexAchievements — 检查隐奸成就 911-913
+// 对应 erArk 成就 ID 911-913
+// 911: 隐奸中射精 ≥ 1
+// 912: 射精 ≥ 3 + 隐藏方绝顶 ≥ 3
+// 913: mode1 + 未被发现 + 射精 ≥ 3 + 绝顶 ≥ 3 + 在场无感知角色 ≥ 10
+function checkHiddenSexAchievements(charId: string): number[] {
+  const ch = entitySystem.get('character', charId) as any
+  if (!ch?.achievement?.hidden_sex_record) return []
+  const rec = ch.achievement.hidden_sex_record
+  const achieved: number[] = []
+
+  if ((rec[3] ?? 0) >= 1) achieved.push(911)
+  if ((rec[3] ?? 0) >= 3 && (rec[4] ?? 0) >= 3) achieved.push(912)
+  if (rec[1] === 1 && (rec[3] ?? 0) >= 3 && (rec[4] ?? 0) >= 3) {
+    const unconsciousCount = entitySystem.getAll('character').filter((c: any) =>
+      c?.sp_flag?.unconscious_h
+    ).length
+    if (unconsciousCount >= 10) achieved.push(913)
+  }
+
+  return achieved
+}
+
 export function onLoad(_ctx: PluginContext): void {
   // 注释：hidden_sex_set_mode — 设置隐奸模式
   // 对应 erArk Select_Hidden_Sex_Mode_Panel 的模式设置逻辑
@@ -431,15 +466,8 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       const deg = ch?.h_state?.hidden_sex_discovery_dregree ?? 0
       return getLevelName(deg)
     },
-    isHidden: (charId: string): boolean => {
-      // 注释：NPC 隐匿判断（给 NPC AI 使用）
-      const mode = getMode(charId)
-      if (mode === 0) return false
-      if (mode === 4) return true   // 双隐 → 对所有人隐藏
-      if (mode === 3 && (charId === 'player' || charId === '0')) return true  // 男隐 → 玩家隐藏
-      if (mode === 2 && charId !== 'player' && charId !== '0') return true     // 女隐 → NPC 隐藏
-      return false
-    },
+    isHidden: (charId: string): boolean => isCharacterHiddenFromNPC(charId),
+    checkAchievements: (charId: string): number[] => checkHiddenSexAchievements(charId),
   })
 
   // 注释：每次 H 行动后 → 发现度 tick + 羞耻/快感 tick + 经验

@@ -1,0 +1,375 @@
+[[instructions]]
+id = "singing"
+label = "唱歌"
+type = "play"
+time_cost = 10
+priority = 50
+premises = ["NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.85 >= 1" },
+  { type = "settle_state", params = { state = "好感度" } },
+]
+
+[[instructions]]
+id = "play_instrument"
+label = "演奏乐器"
+type = "play"
+time_cost = 10
+priority = 50
+premises = ["NOT_H", "HAVE_INSTRUMENT_OR_IN_MUSIC_ROOM", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.85 >= 1" },
+  { type = "settle_state", params = { state = "好感度" } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "listen_inflation"
+label = "听肚子里的动静"
+type = "play"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "NOT_IN_TOILET", "T_INFLATION_1", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "快乐", target = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+]
+
+[[instructions]]
+id = "play_with_child"
+label = "一起玩耍"
+type = "play"
+time_cost = 30
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "NOT_IN_TOILET", "T_CHILD_OR_LOLI_1", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true, both = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true, both = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "习得", both = true } },
+  { type = "settle_state", params = { state = "好意", target = true } },
+]
+
+[[instructions]]
+id = "exercise"
+label = "锻炼身体"
+type = "play"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "IN_GYM_ROOM", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true, both = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true, both = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "习得", both = true } },
+  { type = "settle_state", params = { state = "体力最大値" } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "watch_movie"
+label = "看电影"
+type = "play"
+time_cost = 120
+priority = 50
+premises = ["NOT_H", "IN_MULTIMEDIA_ROOM", "T_NORMAL_5_6", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.82 >= 1" },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "photography"
+label = "摄影"
+type = "play"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "IN_PHOTOGRAPHY_STUDIO", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "play_water"
+label = "玩水"
+type = "play"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "IN_AQUAPIT_EXPERIENTORIUM", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "play_chess"
+label = "下棋"
+type = "play"
+time_cost = 30
+priority = 50
+premises = ["NOT_H", "HAVE_TARGET", "IN_BOARD_GAMES_ROOM", "T_NORMAL_5_6", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.82 >= 1" },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "play_mahjong"
+label = "打麻将"
+type = "play"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "HAVE_TARGET", "IN_BOARD_GAMES_ROOM", "T_NORMAL_5_6", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.82 >= 1" },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "play_cards"
+label = "打牌"
+type = "play"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "HAVE_TARGET", "IN_BOARD_GAMES_ROOM", "T_NORMAL_5_6", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.82 >= 1" },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "swimming"
+label = "游泳"
+type = "play"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "IN_SWIMMING_POOL", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "taste_wine"
+label = "品酒"
+type = "play"
+time_cost = 30
+priority = 50
+premises = ["NOT_H", "IN_BAR", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.83 >= 1" },
+]
+
+[[instructions]]
+id = "taste_tea"
+label = "品茶"
+type = "play"
+time_cost = 30
+priority = 50
+premises = ["NOT_H", "IN_TEAHOUSE", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.83 >= 1" },
+]
+
+[[instructions]]
+id = "taste_coffee"
+label = "品咖啡"
+type = "play"
+time_cost = 30
+priority = 50
+premises = ["NOT_H", "IN_CAFÉ", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.83 >= 1" },
+]
+
+[[instructions]]
+id = "taste_dessert"
+label = "品尝点心"
+type = "play"
+time_cost = 30
+priority = 50
+premises = ["NOT_H", "IN_WALYRIA_CAKE_SHOP", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.83 >= 1" },
+]
+
+[[instructions]]
+id = "taste_food"
+label = "品尝美食"
+type = "play"
+time_cost = 30
+priority = 50
+premises = ["NOT_H", "IN_RESTAURANT", "EAT_TIME", "HUNGER_GE_80", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", both = true } },
+  { type = "settle_state", params = { state = "气力", both = true } },
+  { type = "settle_state", params = { state = "饥饿", baseValue = 100, negate = true } },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" }, condition = "target.experience.83 >= 1" },
+  { type = "settle_favorability", condition = "player.experience.83 >= 1" },
+]
+
+[[instructions]]
+id = "style_hair"
+label = "修整发型"
+type = "play"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "IN_HAIR_SALON", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "习得" } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "soak_feet"
+label = "泡脚"
+type = "play"
+time_cost = 30
+priority = 50
+premises = ["NOT_H", "IN_FOOT_BATH", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "settle_state", params = { state = "快乐", target = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "反感", target = true } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "steam_sauna"
+label = "蒸桑拿"
+type = "play"
+time_cost = 30
+priority = 50
+premises = ["NOT_H", "IN_SAUNA", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true, both = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true, both = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "settle_state", params = { state = "快乐", target = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "反感", target = true } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "hydrotherapy_treatment"
+label = "水疗护理"
+type = "play"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "IN_SPA_ROOM", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "settle_state", params = { state = "快乐", target = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "反感", target = true } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "onsen_bath"
+label = "泡温泉"
+type = "play"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "IN_ONSEN", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "settle_state", params = { state = "快乐", target = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "反感", target = true } },
+  { type = "check_facility_damage" },
+]

@@ -1,0 +1,143 @@
+# sex-drugs.toml——SEX药品指令
+# 效果链精确复刻 erArk InstructConfig + Behavior_Effect
+
+[[instructions]]
+id = "birth_control_pills"
+label = "避孕药"
+type = "sex"
+sub_type = "drug"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_BIRTH_CONTROL_PILLS"]
+# erArk: 无Behavior_Effect条目（纯道具消耗）
+effects = [
+  { type = "set_flag", params = { flag = "birth_control_pills_used", target = true } },
+]
+
+[[instructions]]
+id = "philter"
+label = "媚药"
+type = "sex"
+sub_type = "drug"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_PHILTER"]
+# erArk(454): [21, 13, 14, 62, 942, 1002]
+# 942=使用媚药, 1002=道具消耗
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "set_flag", params = { flag = "philter_used", target = true } },
+]
+
+[[instructions]]
+id = "diuretics_once"
+label = "一次性利尿剂"
+type = "sex"
+sub_type = "drug"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_DIURETICS_ONCE"]
+# erArk(456): [21, 13, 14, 62, 944, 1005]
+# 944=使用利尿剂, 1005=道具消耗
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "set_flag", params = { flag = "diuretics_once_used", target = true } },
+]
+
+[[instructions]]
+id = "diuretics_persistent"
+label = "持续性利尿剂"
+type = "sex"
+sub_type = "drug"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_DIURETICS_PERSISTENT"]
+# erArk(457): [21, 13, 14, 62, 945, 1006]
+# 945=使用持续性利尿剂, 1006=道具消耗
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "set_flag", params = { flag = "diuretics_persistent_used", target = true } },
+]
+
+[[instructions]]
+id = "sleeping_pills"
+label = "安眠药"
+type = "sex"
+sub_type = "drug"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_SLEEPING_PILLS"]
+# erArk(458): [21, 13, 14, 62, 946, 1007]
+# 946=使用安眠药, 1007=道具消耗
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "set_flag", params = { flag = "sleeping_pills_used", target = true } },
+]
+
+[[instructions]]
+id = "clomid"
+label = "排卵促进药"
+type = "sex"
+sub_type = "drug"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_CLOMID"]
+# erArk(459): [21, 13, 14, 58, 62, 947, 1008]
+# 947=使用排卵药, 1008=道具消耗
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30, target = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "set_flag", params = { flag = "clomid_used", target = true } },
+]
+
+[[instructions]]
+id = "birth_control_pills_before"
+label = "事前避孕药"
+type = "sex"
+sub_type = "drug"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_BIRTH_CONTROL_PILLS_BEFORE"]
+# erArk(452): [21, 13, 14, 62, 948, 1009]
+# 948=使用事前避孕药, 1009=道具消耗
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "set_flag", params = { flag = "birth_control_pills_before_used", target = true } },
+]
+
+[[instructions]]
+id = "birth_control_pills_after"
+label = "事后避孕药"
+type = "sex"
+sub_type = "drug"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_BIRTH_CONTROL_PILLS_AFTER"]
+# erArk(453): [21, 13, 14, 58, 62, 949, 1010]
+# 949=使用事后避孕药, 1010=道具消耗
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30, target = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "set_flag", params = { flag = "birth_control_pills_after_used", target = true } },
+]

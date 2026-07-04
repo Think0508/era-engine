@@ -1,0 +1,242 @@
+[[instructions]]
+id = "wait"
+label = "等待五分钟"
+type = "daily"
+time_cost = 10
+priority = 50
+premises = []
+effects = []
+
+[[instructions]]
+id = "wait_1_hour"
+label = "等待一个小时"
+type = "daily"
+time_cost = 10
+priority = 50
+premises = []
+effects = []
+
+[[instructions]]
+id = "wait_6_hour"
+label = "等待六个小时"
+type = "daily"
+time_cost = 10
+priority = 50
+premises = []
+effects = []
+
+[[instructions]]
+id = "chat"
+label = "聊天"
+type = "daily"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "TIRED_LE_84", "HP_G_1", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "气力", negate = true }, condition = "target.experience.80 >= 1" },
+  { type = "settle_favorability", condition = "player.experience.80 >= 1" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "快乐", target = true } },
+  { type = "settle_state", params = { state = "好感度" } },
+]
+
+[[instructions]]
+id = "stroke"
+label = "身体接触"
+type = "daily"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true, both = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true, both = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "settle_state", params = { state = "快乐", target = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "反感", target = true } },
+]
+
+[[instructions]]
+id = "massage"
+label = "按摩"
+type = "daily"
+time_cost = 30
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "TECHNIQUE_GE_3", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "settle_state", params = { state = "快乐", target = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "习得" } },
+]
+
+[[instructions]]
+id = "make_coffee"
+label = "泡咖啡"
+type = "daily"
+time_cost = 15
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "PLACE_FURNITURE_GE_2", "TIRED_LE_84", "HP_G_1", "TARGET_URINATE_LE_49", "T_NORMAL_24567"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "尿意", target = true } },
+  { type = "settle_state", params = { state = "恭顺", target = true } },
+  { type = "settle_state", params = { state = "好意", target = true }, condition = "player.experience.83 >= 1" },
+  { type = "settle_state", params = { state = "好感度" } },
+]
+
+[[instructions]]
+id = "ask_make_coffee"
+label = "让对方泡咖啡"
+type = "daily"
+time_cost = 15
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "PLACE_FURNITURE_GE_2", "TIRED_LE_84", "HP_G_1", "URINATE_LE_49", "NO_TARGET_OR_TARGET_CAN_COOPERATE"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "尿意" } },
+  { type = "settle_state", params = { state = "恭顺", target = true } },
+  { type = "settle_state", params = { state = "好意", target = true }, condition = "target.experience.83 >= 1" },
+  { type = "settle_state", params = { state = "好感度", target = true } },
+]
+
+[[instructions]]
+id = "rest"
+label = "休息"
+type = "daily"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "TIRED_LE_84"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "set_flag", params = { flag = "rest", value = 0 } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "sleep"
+label = "睡觉"
+type = "daily"
+time_cost = -1
+priority = 50
+premises = ["IN_DORMITORY_OR_HOTEL", "NOT_H", "TIME_STOP_OFF", "TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1"]
+effects = [
+  { type = "settle_state", params = { state = "疲劳", baseValue = 100, negate = true } },
+  { type = "settle_state", params = { state = "睡眠", baseValue = 100, negate = true } },
+  { type = "set_flag", params = { flag = "shower", value = 0 } },
+  { type = "set_flag", params = { flag = "sleep", value = 0 } },
+  { type = "set_flag", params = { flag = "hypnosis", value = 0 } },
+  { type = "set_flag", params = { flag = "masturbate_before_sleep", value = 0 } },
+  { type = "settle_state", params = { state = "好感度" } },
+  { type = "set_flag", params = { flag = "cloth_see", value = 0 } },
+  { type = "set_flag", params = { flag = "sleep_cloth" } },
+  { type = "set_flag", params = { flag = "clean_locker_semen" } },
+  { type = "set_flag", params = { flag = "body_manage_sleep_item" } },
+  { type = "settle_state", params = { state = "理智" } },
+  { type = "settle_state", params = { state = "射精欲" } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "take_shower"
+label = "淋浴"
+type = "daily"
+time_cost = 30
+priority = 50
+premises = ["IN_BATHROOM", "NOT_H", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "set_flag", params = { flag = "shower", value = 3 } },
+  { type = "set_flag", params = { flag = "dirty_reset_in_shower" } },
+  { type = "set_flag", params = { flag = "record_shower_time" } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "pee"
+label = "解手"
+type = "daily"
+time_cost = 5
+priority = 50
+premises = ["IN_TOILET_MAN", "NOT_H", "URINATE_GE_80", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_state", params = { state = "尿意", baseValue = 100, negate = true } },
+  { type = "set_flag", params = { flag = "pee", value = 0 } },
+  { type = "set_flag", params = { flag = "move_to_own_dormitory" } },
+  { type = "check_facility_damage" },
+]
+
+[[instructions]]
+id = "follow"
+label = "邀请同行"
+type = "daily"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TARGET_NOT_FOLLOW"]
+effects = [
+  { type = "set_flag", params = { flag = "intelligent_follow", value = 1, target = true } },
+]
+
+[[instructions]]
+id = "end_follow"
+label = "结束同行"
+type = "daily"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TARGET_IS_FOLLOW"]
+effects = [
+  { type = "set_flag", params = { flag = "intelligent_follow", value = 0, target = true } },
+]
+
+[[instructions]]
+id = "apologize"
+label = "道歉"
+type = "daily"
+time_cost = 60
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_ANGRY_WITH_PLAYER", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_state", params = { state = "反感", target = true }, condition = "player.experience.80 >= 1" },
+  { type = "set_flag", params = { flag = "angry_with_player", value = 0, target = true } },
+]
+
+[[instructions]]
+id = "listen_complaint"
+label = "听牢骚"
+type = "daily"
+time_cost = 45
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_ABD_OR_ANGRY_MOOD", "TARGET_NOT_ANGRY_WITH_PLAYER", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_state", params = { state = "好意", target = true }, condition = "target.experience.80 >= 1" },
+  { type = "settle_favorability", condition = "player.experience.80 >= 1" },
+]
+
+[[instructions]]
+id = "give_gift"
+label = "赠送礼物"
+type = "daily"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "TIRED_LE_84", "HP_G_1", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1"]
+effects = [
+  { type = "settle_state", params = { state = "体力", negate = true } },
+  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "settle_state", params = { state = "好感度" } },
+]

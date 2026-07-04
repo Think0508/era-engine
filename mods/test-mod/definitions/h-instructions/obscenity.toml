@@ -40,3 +40,569 @@ effects = [
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
 ]
 talk_scene = "touch_breast"
+
+# === 追加的猥亵指令 ===
+
+[[instructions]]
+id = "touch_head"
+label = "摸头"
+type = "obscenity"
+time_cost = 10
+priority = 11
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+]
+talk_scene = "touch_head"
+
+[[instructions]]
+id = "touch_buttocks"
+label = "摸屁股"
+type = "obscenity"
+time_cost = 10
+priority = 21
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "肛肠", baseValue = 50 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+]
+talk_scene = "touch_buttocks"
+
+[[instructions]]
+id = "touch_ears"
+label = "摸耳朵"
+type = "obscenity"
+time_cost = 10
+priority = 22
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+]
+talk_scene = "touch_ears"
+
+[[instructions]]
+id = "touch_horn"
+label = "摸角"
+type = "obscenity"
+time_cost = 10
+priority = 23
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_HORN", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+]
+talk_scene = "touch_horn"
+
+[[instructions]]
+id = "touch_tail"
+label = "摸尾巴"
+type = "obscenity"
+time_cost = 10
+priority = 24
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_TAIL", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "兽部", baseValue = 50 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+]
+talk_scene = "touch_tail"
+
+[[instructions]]
+id = "touch_ring"
+label = "摸光环"
+type = "obscenity"
+time_cost = 10
+priority = 25
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_RING", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+]
+talk_scene = "touch_ring"
+
+[[instructions]]
+id = "touch_wing"
+label = "摸翅膀"
+type = "obscenity"
+time_cost = 10
+priority = 26
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_WING", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+]
+talk_scene = "touch_wing"
+
+[[instructions]]
+id = "touch_tentacle"
+label = "摸触手"
+type = "obscenity"
+time_cost = 10
+priority = 27
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_TENTACLE", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "兽部", baseValue = 50 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+]
+talk_scene = "touch_tentacle"
+
+[[instructions]]
+id = "touch_car"
+label = "摸小车"
+type = "obscenity"
+time_cost = 10
+priority = 28
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_CAR", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+]
+talk_scene = "touch_car"
+
+[[instructions]]
+id = "hand_in_hand"
+label = "牵手"
+type = "obscenity"
+time_cost = 5
+priority = 30
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好感度" } },
+]
+talk_scene = "hand_in_hand"
+
+[[instructions]]
+id = "embrace"
+label = "拥抱"
+type = "obscenity"
+time_cost = 10
+priority = 31
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好感度" } },
+]
+talk_scene = "embrace"
+
+[[instructions]]
+id = "kiss"
+label = "亲吻"
+type = "obscenity"
+time_cost = 10
+priority = 40
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "PENIS_NOT_IN_T_MOUSE", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "口喉", baseValue = 50 } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "settle_state", params = { state = "快乐", target = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "好感度" } },
+]
+talk_scene = "kiss"
+
+[[instructions]]
+id = "lap_pillow"
+label = "膝枕"
+type = "obscenity"
+time_cost = 15
+priority = 35
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "PLACE_FURNITURE_GE_1", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好感度" } },
+]
+talk_scene = "lap_pillow"
+
+[[instructions]]
+id = "raise_skirt"
+label = "掀起裙子"
+type = "obscenity"
+time_cost = 5
+priority = 42
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_WEAR_SKIRT", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "set_flag", params = { flag = "skirt_raised" } },
+]
+talk_scene = "raise_skirt"
+
+[[instructions]]
+id = "ask_for_pan"
+label = "索要内裤"
+type = "obscenity"
+time_cost = 5
+priority = 43
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_6", "TARGET_WEAR_PAN", "COLLECT_BONUS_102", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "set_flag", params = { flag = "ask_pan" } },
+]
+talk_scene = "ask_for_pan"
+
+[[instructions]]
+id = "ask_for_socks"
+label = "索要袜子"
+type = "obscenity"
+time_cost = 5
+priority = 44
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_6", "TARGET_WEAR_SOCKS", "COLLECT_BONUS_202", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "欲情", target = true } },
+  { type = "set_flag", params = { flag = "ask_socks" } },
+]
+talk_scene = "ask_for_socks"
+
+[[instructions]]
+id = "invite_to_bath"
+label = "一起洗澡"
+type = "obscenity"
+time_cost = 30
+priority = 50
+premises = ["HAVE_TARGET", "NOT_H", "IN_BATHROOM", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "settle_state", params = { state = "好感度" } },
+  { type = "set_flag", params = { flag = "bathe_together" } },
+]
+talk_scene = "invite_to_bath"
+
+[[instructions]]
+id = "steal_pan"
+label = "偷走内裤"
+type = "obscenity"
+time_cost = 5
+priority = 45
+premises = ["HAVE_TARGET", "NOT_H", "T_UNNORMAL_5_6", "TARGET_WEAR_PAN", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "set_flag", params = { flag = "steal_pan" } },
+]
+talk_scene = "steal_pan"
+
+[[instructions]]
+id = "steal_socks"
+label = "偷走袜子"
+type = "obscenity"
+time_cost = 5
+priority = 46
+premises = ["HAVE_TARGET", "NOT_H", "T_UNNORMAL_5_6", "TARGET_WEAR_SOCKS", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "set_flag", params = { flag = "steal_socks" } },
+]
+talk_scene = "steal_socks"
+
+[[instructions]]
+id = "steal_scene_all_pan"
+label = "偷走所有人内裤"
+type = "obscenity"
+time_cost = 10
+priority = 47
+premises = ["HAVE_TARGET", "NOT_H", "SCENE_OVER_TWO", "SCENE_ALL_UNCONSCIOUS_OR_SLEEP", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "set_flag", params = { flag = "steal_scene_all_pan" } },
+]
+talk_scene = "steal_scene_all_pan"
+
+[[instructions]]
+id = "steal_scene_all_socks"
+label = "偷走所有人袜子"
+type = "obscenity"
+time_cost = 10
+priority = 48
+premises = ["HAVE_TARGET", "NOT_H", "SCENE_OVER_TWO", "SCENE_ALL_UNCONSCIOUS_OR_SLEEP", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "set_flag", params = { flag = "steal_scene_all_socks" } },
+]
+talk_scene = "steal_scene_all_socks"
+
+[[instructions]]
+id = "touch_clitoris"
+label = "阴蒂爱抚"
+type = "obscenity"
+time_cost = 10
+priority = 60
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "阴蒂", baseValue = 50 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+]
+talk_scene = "touch_clitoris"
+
+[[instructions]]
+id = "touch_vagina"
+label = "手指插入（V）"
+type = "obscenity"
+time_cost = 10
+priority = 61
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "阴道", baseValue = 50 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 50 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+]
+talk_scene = "touch_vagina"
+
+[[instructions]]
+id = "touch_anus"
+label = "手指插入（A）"
+type = "obscenity"
+time_cost = 10
+priority = 62
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "肛肠", baseValue = 50 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 50 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 50 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+]
+talk_scene = "touch_anus"
+
+[[instructions]]
+id = "milk"
+label = "挤奶"
+type = "obscenity"
+time_cost = 15
+priority = 55
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_MILK_GE_30", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "胸部", baseValue = 50 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "set_flag", params = { flag = "milked" } },
+]
+talk_scene = "milk"
+
+[[instructions]]
+id = "confession"
+label = "告白"
+type = "obscenity"
+time_cost = 30
+priority = 100
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_LOVE_2", "HAVE_RING", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "settle_state", params = { state = "好意", target = true, baseValue = 50 } },
+  { type = "settle_state", params = { state = "好感度", baseValue = 50 } },
+]
+talk_scene = "confession"
+
+[[instructions]]
+id = "give_necklace"
+label = "戴上项圈"
+type = "obscenity"
+time_cost = 10
+priority = 110
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_OBEY_2", "HAVE_COLLAR", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "TIRED_LE_74"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "set_flag", params = { flag = "collared", target = true } },
+]
+talk_scene = "give_necklace"
+
+[[instructions]]
+id = "sleep_obscenity"
+label = "睡眠猥亵"
+type = "obscenity"
+time_cost = 5
+priority = 120
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_ACTION_SLEEP", "T_UNCONSCIOUS_FLAG_0", "TIRED_LE_74"]
+effects = [
+  { type = "set_flag", params = { flag = "sleep_obscenity", value = 1 } },
+]
+talk_scene = "sleep_obscenity"
+
+[[instructions]]
+id = "stop_sleep_obscenity"
+label = "停止睡眠猥亵"
+type = "obscenity"
+time_cost = 5
+priority = 121
+premises = ["HAVE_TARGET", "NOT_H", "T_UNNORMAL_5_6", "T_UNCONSCIOUS_FLAG_1", "TIRED_LE_74"]
+effects = [
+  { type = "set_flag", params = { flag = "sleep_obscenity", value = 0 } },
+]
+talk_scene = "stop_sleep_obscenity"
+
+[[instructions]]
+id = "do_h"
+label = "邀请H"
+type = "obscenity"
+time_cost = 10
+priority = 130
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "TARGET_NOT_PLAYER_DAUGHTER", "T_IMPRISONMENT_0", "PLACE_ALL_DOOR_LOCKABLE", "SCENE_ONLY_TWO", "TIRED_LE_74"]
+effects = [
+  { type = "enter_mode", params = { mode = "h" } },
+]
+talk_scene = "do_h"
+
+[[instructions]]
+id = "do_h_in_love_hotel"
+label = "邀请在爱情旅馆H"
+type = "obscenity"
+time_cost = 10
+priority = 131
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "IN_LOVE_HOTEL", "SCENE_ONLY_TWO", "LIVE_IN_LOVE_HOTEL", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  { type = "enter_mode", params = { mode = "h" } },
+]
+talk_scene = "do_h_in_love_hotel"
+
+[[instructions]]
+id = "do_h_in_bathroom"
+label = "邀请在浴室H"
+type = "obscenity"
+time_cost = 10
+priority = 132
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "IN_BATHROOM", "SCENE_ONLY_TWO", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  { type = "enter_mode", params = { mode = "h" } },
+]
+talk_scene = "do_h_in_bathroom"
+
+[[instructions]]
+id = "ask_hidden_sex"
+label = "邀请隐奸"
+type = "obscenity"
+time_cost = 10
+priority = 133
+premises = ["HAVE_TARGET", "NOT_H", "HIDDEN_SEX_MODE_0", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  { type = "enter_mode", params = { mode = "hidden_sex" } },
+]
+talk_scene = "ask_hidden_sex"
+
+[[instructions]]
+id = "ask_exhibitionism_sex"
+label = "邀请露出"
+type = "obscenity"
+time_cost = 10
+priority = 134
+premises = ["HAVE_TARGET", "NOT_H", "EXHIBITIONISM_SEX_MODE_0", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  { type = "enter_mode", params = { mode = "exhibitionism" } },
+]
+talk_scene = "ask_exhibitionism_sex"
+
+[[instructions]]
+id = "ask_group_sex"
+label = "邀请群交"
+type = "obscenity"
+time_cost = 10
+priority = 135
+premises = ["HAVE_TARGET", "HIDDEN_SEX_MODE_0", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "SCENE_ALL_NOT_H", "SCENE_OVER_TWO", "SCENE_ALL_NOT_TIRED", "TIRED_LE_74"]
+effects = [
+  { type = "enter_mode", params = { mode = "group_sex" } },
+]
+talk_scene = "ask_group_sex"

@@ -167,6 +167,10 @@ async function settleDiscovered(charId: string): Promise<void> {
   if (hiddenTargets.length > 0 && ch.sp_flag) {
     ch.sp_flag.target_character_id = hiddenTargets[0].id
   }
+  // 注释：标记被发现，用于成就 913 判定
+  if (!ch.achievement) ch.achievement = {}
+  if (!ch.achievement.hidden_sex_record) ch.achievement.hidden_sex_record = {}
+  ch.achievement.hidden_sex_record[5] = 1
   narrativeLog.write(`${ch.name ?? charId} 的隐奸被发现了！`, 'system', 'h-hidden')
   // 注释：TODO — 打开被发现面板（需 UI 系统就绪）
   // TODO: 弹出 Sex_Be_Discovered_Panel
@@ -221,7 +225,7 @@ function checkHiddenSexAchievements(charId: string): number[] {
 
   if ((rec[3] ?? 0) >= 1) achieved.push(911)
   if ((rec[3] ?? 0) >= 3 && (rec[4] ?? 0) >= 3) achieved.push(912)
-  if (rec[1] === 1 && (rec[3] ?? 0) >= 3 && (rec[4] ?? 0) >= 3) {
+  if (rec[1] === 1 && (rec[5] ?? 0) !== 1 && (rec[3] ?? 0) >= 3 && (rec[4] ?? 0) >= 3) {
     const unconsciousCount = entitySystem.getAll('character').filter((c: any) =>
       c?.sp_flag?.unconscious_h
     ).length

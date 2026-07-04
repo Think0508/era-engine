@@ -67,9 +67,9 @@ describe('parseModData', () => {
     })
   })
 
-  it('parses roster.toml correctly (3 characters + test_enemy, equipment, assets)', () => {
+  it('parses roster.toml correctly (5 characters, equipment, assets)', () => {
     const characters = mod.entities.get('character')!
-    expect(characters.size).toBe(4)
+    expect(characters.size).toBe(5)
     expect(characters.get('player')?.name).toBe('玩家')
     expect(characters.get('player')?.base).toEqual({
       hp: 200,
@@ -77,14 +77,15 @@ describe('parseModData', () => {
       attack: 15,
       defense: 5,
       speed: 5,
+      TSP: 200,
+      tsp_max: 200,
       "体力": 100,
       "气力": 100,
       "精力": 100,
     })
-    // 注释：equipment/assets 是 Phase 5 新增的角色字段
     expect(characters.get('player')?.equipment).toEqual({
-      upper_body: '布衣',
-      lower_body: '长裤',
+      upper: '布衣',
+      lower: '长裤',
     })
     expect(characters.get('player')?.assets).toEqual({
       portrait: 'assets/char/player.png',
@@ -92,6 +93,11 @@ describe('parseModData', () => {
     expect(characters.get('innkeeper')?.name).toBe('酒馆老板')
     expect(characters.get('guard')?.behavior?.activity).toBe(0.3)
     expect(characters.get('guard')?.equipment).toBeDefined()
+    expect(characters.get('test_girl')?.name).toBe('小师妹')
+    expect(characters.get('test_girl')?.equipment).toEqual({
+      upper: '布衣',
+      lower: '裙子',
+    })
   })
 
   it('parses locations correctly (2 locations, exits, parent)', () => {

@@ -37,6 +37,10 @@ class GameContextManager {
     this.location = location
   }
 
+  setTime(time: GameTimeData): void {
+    this.time = { ...time }
+  }
+
   async advanceTime(minutes: number): Promise<void> {
     let remaining = minutes
     while (remaining > 0) {

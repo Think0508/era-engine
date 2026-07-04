@@ -1,0 +1,10 @@
+[meta]
+id = "h-bondage"
+name = "紧缚系统"
+version = "1.0.0"
+description = "绳艺捆绑系统，H 中使用绳子捆绑目标"
+
+dependencies = [
+  { plugin = "h-core", version = "^1.0.0" },
+  { plugin = "effect-system", version = "^1.0.0" }
+]

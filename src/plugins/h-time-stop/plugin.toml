@@ -1,0 +1,10 @@
+[meta]
+id = "h-time-stop"
+name = "时停系统"
+version = "1.0.0"
+description = "时间停止系统，H 中时姦、探索时搬运"
+
+dependencies = [
+  { plugin = "h-core", version = "^1.0.0" },
+  { plugin = "effect-system", version = "^1.0.0" }
+]

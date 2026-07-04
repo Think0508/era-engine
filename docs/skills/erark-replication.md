@@ -10,6 +10,11 @@
 1. **每个数值必须有 erArk 源码可追溯**——不猜测、不取中间值
 2. **每个效果 ID 必须逐条映射**——不合并、不省略
 3. **架构清晰、易维护、可扩展**——不因"精确"而写出意大利面条代码
+4. **⛔ 禁止私自简化公式**——erArk 的完整公式必须完整实现。如因缺少依赖字段（能力/状态/数据结构）而无法实现完整公式，必须：
+   - 在代码注释中用 `// 注释：erArk 完整公式：` 写明完整公式和依赖
+   - 在 TODO 中登记缺失依赖
+   - **不准**擅自用简化值替代然后不告诉用户
+   - 例外：仅当用户明确说"这个公式可以简化"时才可简化
 
 ## 复刻工作流
 
@@ -105,7 +110,18 @@ erArk 效果ID: 21   12   CVE_A2  CVE_A1  53  55  501
 | `base_chara_state_common_settle()` | `calcStateChange(base, abilityLevel, abilityTable)` | `settle/state.ts` |
 | `calculation_instuct_judege()` | `calcJudge(judgeBase, favorability, trust)` | `settle/judge.ts` |
 
-## 已完成 vs TODO
+## 自评清单（每次复刻后必须逐条回答）
+
+实施后对照以下问题诚实自评，有一项"否"就不能算完成：
+
+1. □ 每个数值/效果 ID 的来源可追溯到 erArk 参考文件（文件名+行号）
+2. □ 没有简化/合并/省略 erArk 中的任何效果
+3. □ 所有前提 handler 已注册，对齐 erArk 的前提列表
+4. □ 实行判定值（judge_base）已设定
+5. □ 指令 TOML 中每个 effect 的 baseValue 与 erArk default.py 一致
+6. □ 服装/道具等影响的 premise handler 已注册
+7. □ `npm run typecheck` + `npm run test` 通过
+8. □ 改动记录在 skill 的"已完成 vs TODO"表中
 
 ### 服装系统（P1.2）
 - ✅ 9 槽位 equipment.toml（头/上身/外套/胸罩/手/内裤/下身/脚/饰品）

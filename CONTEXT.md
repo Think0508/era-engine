@@ -242,6 +242,25 @@ _Avoid_: Throwing on missing paths, returning null (comparison semantics unclear
 Effects in a group may carry an optional `id` field (string, unique within the group) and an optional `depends_on` field (string, referencing another effect's id). Execution is sequential in array order. An effect with `depends_on` executes only if the referenced effect succeeded (did not throw and did not return false). If the dependency failed, the dependent effect is skipped (not an error — this is branching logic). Cyclic dependencies and references to non-existent ids produce load-time errors (file + line + reason). MVP does NOT do topological sorting — array order + skip is sufficient.
 _Avoid_: DAG scheduler (premature), depends_on referencing array index (fragile), silent execution of dependents when dependency failed
 
+**Body item**:
+A physical H-related item occupying one of 15 numbered body slots (0-14) on a character, tracked separately from clothing equipment. Examples: drugs (slot 8-12), toys (slot 0-7), condoms (slot 13), gag (slot 14). Each slot stores `{itemId, active, expiry?}`. Body items are managed independently per character — the player character and each NPC have their own body_items array. Body items have effects that fire either once on use (consumable) or on every action tick (persistent). The slot index determines the item's purpose, and the item definition's `body_auto_remove` field controls lifecycle (auto-remove at H end / on expiry / manual only).
+_Avoid_: Mixing body items with equipment, treating body items as clothing, assuming body items are shared between characters
+
+**Body item slot**:
+One of 15 numbered positions (0-14) in a character's `body_items` array. Slot assignment is defined by the mod (e.g. via a body_slot field on items.toml or a separate body-slot mapping). Convention matches erArk: 0-7 = toys, 8-12 = drugs, 13 = condom, 14 = gag. Slots 8-12 support expiry (drugs have duration); slots 0-7, 13-14 support auto-remove on H end or manual removal.
+_Avoid_: Hardcoding slot ranges in engine code
+
+**Item use**:
+A field on item definitions (`use` in items.toml) that determines how and when the item can be used. Values: `self` (use from inventory on self, exploration-only), `target` (use on selected character, exploration-only — body mod drugs, gifts), `h_drug` (use during H mode, goes into body_item slot 8-12 — lubricant, aphrodisiac, contraceptives), `h_toy` (use during H mode, goes into body_item slot 0-7 — vibrator, nipple clamp), `h_special` (H mode, context-dependent special logic — condom auto-checked on ejaculation), `equip` (equip to an equipment slot — weapons, armor, clothing), `gift` (give as gift, calculates favorability via gift formula), `key` (special/quest item, no standard use flow).
+_Avoid_: Single use model for all items, hardcoding use logic per item id in engine code
+
+**Body auto remove**:
+A field on item definitions (`body_auto_remove`) controlling the lifecycle of a body item in its slot: `h_end` (auto-removed when H scene ends — e.g. milking machine, blindfold, anal beads), `manual` (removed only by player action — e.g. persistent toys like nipple clamps), `expiry` (auto-removed when duration expires — e.g. drugs like contraceptives). Default is `manual`.
+
+**Item tick effect**:
+An ongoing effect on a body item that fires on every gameplay action tick while the body item is `active`. Implemented by combining body_item slot occupancy with a status-system status_effect that handles the tick interval, tick effects, and expiry. When the status expires (or is removed manually), the body_item slot is automatically deactivated.
+_Avoid_: Separate tick loop for body items, linking tick behavior directly to body_item without status-system
+
 **Ability progression**:
 The mechanism by which abilities gain XP and level up. Managed by the independent `ability-progression` plugin (src/plugins/). Ability definitions declare `max_level` (0 = levelless), `xp_curve` (linear/exponential/custom), `xp_per_level` (number or array). Mod authors write abilities in shorthand: `abilities = { 华山剑法 = 3 }` (level only). The engine expands to full structure: `{ level: 3, xp: 0 }`. XP is gained via the `gain_ability_xp` effect (registered by ability-progression). On level-up: XP resets to 0, level increments, `unlocks` are checked (auto-grant sub-abilities/talents), `character:ability_up` event fires. Levelless abilities (max_level=0) cannot gain XP — `gain_ability_xp` on them is silently skipped. The full structure (with XP) is what gets saved.
 _Avoid_: Mod authors writing XP values, XP stored separately from abilities, leveling without unlocks check

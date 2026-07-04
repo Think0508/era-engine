@@ -10,7 +10,7 @@ export const mockPlayer: EntityData = {
   name: '玩家',
   template: 'test-hero',
   base: { hp: 200, mp: 80, attack: 15, defense: 5, speed: 5 },
-  equipment: { upper_body: '布衣', lower_body: '长裤' },
+  equipment: { upper: '布衣', lower: '长裤' },
   assets: { portrait: 'assets/char/player.png' },
 }
 
@@ -21,7 +21,7 @@ export const mockInnkeeper: EntityData = {
   base: { hp: 80, mp: 50, attack: 5, defense: 5, speed: 5 },
   behavior: { activity: 0, home_locations: { tavern: 1.0 } },
   current_location: 'tavern',
-  equipment: { upper_body: '布衣', lower_body: '长裤' },
+  equipment: { upper: '布衣', lower: '长裤' },
   assets: { portrait: 'assets/char/innkeeper.png' },
 }
 
@@ -32,7 +32,7 @@ export const mockGuard: EntityData = {
   base: { hp: 120, mp: 50, attack: 12, defense: 5, speed: 5 },
   behavior: { activity: 0.3, home_locations: { town_square: 0.7, tavern: 0.3 } },
   current_location: 'town_square',
-  equipment: { upper_body: '布衣', lower_body: '长裤' },
+  equipment: { upper: '布衣', lower: '长裤' },
   assets: { portrait: 'assets/char/guard.png' },
 }
 
@@ -66,7 +66,7 @@ export const mockCalendar: CalendarConfig = {
 }
 
 export const mockEquipmentSlots: EquipmentSlot[] = [
-  { id: 'upper_body', name: '上身', category: 'clothing' },
-  { id: 'lower_body', name: '下身', category: 'clothing' },
+  { id: 'upper', name: '上身', category: 'clothing' },
+  { id: 'lower', name: '下身', category: 'clothing' },
   { id: 'accessory', name: '饰品', category: 'accessory' },
 ]

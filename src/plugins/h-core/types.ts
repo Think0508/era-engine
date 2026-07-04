@@ -1,3 +1,11 @@
+// 注释：身体物品槽——HP 药物/玩具/避孕套等在角色身上
+// body_items 存在角色实体上，key=槽位编号(string), value=BodyItemSlot
+export interface BodyItemSlot {
+  itemId: string     // items.toml 中的物品 ID
+  active: boolean    // 是否激活（插入/服用中）
+  expiry?: number    // 到期游戏时间戳（分钟），仅 body_auto_remove=expiry 时有
+}
+
 // 注释：H 身体状态——只在 H 会话内有意义，H 结束重置
 
 export interface H_STATE {
@@ -17,10 +25,16 @@ export interface H_STATE {
   shoot_semen_amount: number
   // 刚射精标记 0=未 1=刚射 2=已清理
   just_shoot: number
+  // 精力剂使用标记（首次射精量 ×2）
+  used_semen_energy_agent: boolean
+  // 浓厚精液标记（射精量 ×2）
+  thick_semen: boolean
   // 紧缚类型 0=无
   bondage_type: number
   // 避孕套计数 [使用个数, 总精液ml]
   condom_count: [number, number]
+  // 震动棒档位 0=OFF 1=弱 2=中 3=强
+  sex_toy_level: number
   // 是否在 H 中
   is_h: boolean
   // H 内行为次数
@@ -37,8 +51,11 @@ export function createHState(): H_STATE {
     endure_not_shoot_count: 0,
     shoot_semen_amount: 0,
     just_shoot: 0,
+    used_semen_energy_agent: false,
+    thick_semen: false,
     bondage_type: 0,
     condom_count: [0, 0],
+    sex_toy_level: 0,
     is_h: true,
     turn_count: 0,
   }

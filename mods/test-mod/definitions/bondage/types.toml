@@ -1,0 +1,129 @@
+# 紧缚类型定义——完全对齐 erArk Bondage.csv
+
+[[types]]
+id = 0
+name = "未捆绑"
+level = 0
+affect_walking = false
+need_facility = false
+description = "无捆绑"
+
+[[types]]
+id = 1
+name = "双手缚"
+level = 1
+affect_walking = false
+need_facility = false
+description = "双手被绑在身前或身后"
+
+[[types]]
+id = 2
+name = "后高手缚"
+level = 1
+affect_walking = false
+need_facility = false
+description = "双手高举绑在身后"
+
+[[types]]
+id = 3
+name = "直臂缚"
+level = 1
+affect_walking = false
+need_facility = false
+description = "双臂伸直紧贴身体绑住"
+
+[[types]]
+id = 4
+name = "直立缚"
+level = 2
+affect_walking = false
+need_facility = false
+description = "站立状态双手绑在身后"
+
+[[types]]
+id = 5
+name = "后手观音"
+level = 2
+affect_walking = false
+need_facility = false
+description = "一手过肩一手从腰后捆绑"
+
+[[types]]
+id = 6
+name = "苏秦背剑"
+level = 2
+affect_walking = false
+need_facility = false
+description = "双臂在背后高高吊起"
+
+[[types]]
+id = 7
+name = "菱绳缚"
+level = 2
+affect_walking = false
+need_facility = false
+description = "菱形绳结花纹绑在躯干上"
+
+[[types]]
+id = 8
+name = "吊缚"
+level = 2
+affect_walking = true
+need_facility = true
+description = "吊起悬挂"
+
+[[types]]
+id = 9
+name = "后手吊缚"
+level = 2
+affect_walking = true
+need_facility = true
+description = "双手背后吊起悬挂"
+
+[[types]]
+id = 10
+name = "单足吊缚"
+level = 2
+affect_walking = true
+need_facility = true
+description = "单脚吊起悬挂"
+
+[[types]]
+id = 11
+name = "驷马缚"
+level = 3
+affect_walking = true
+need_facility = true
+description = "四肢张开绑缚"
+
+[[types]]
+id = 12
+name = "团缚"
+level = 3
+affect_walking = true
+need_facility = false
+description = "身体蜷曲捆绑成团"
+
+[[types]]
+id = 13
+name = "逆团缚"
+level = 3
+affect_walking = true
+need_facility = false
+description = "反向蜷曲捆绑成团"
+
+[[types]]
+id = 14
+name = "龟甲缚"
+level = 3
+affect_walking = false
+need_facility = false
+description = "龟甲绳纹绑在躯干上"
+
+[[types]]
+id = 15
+name = "海老缚"
+level = 3
+affect_walking = true
+need_facility = true
+description = "虾型反弓捆绑"

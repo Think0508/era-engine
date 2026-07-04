@@ -24,7 +24,7 @@ import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { commandRegistry } from '../../core/command-registry'
-import { apiSystem } from '../../core/api'
+
 
 // 注释：Hidden_Level.csv 的 4 级发现度阈值
 const HIDDEN_LEVELS = [
@@ -172,28 +172,6 @@ async function settleDiscovered(charId: string): Promise<void> {
   // TODO: 弹出 Sex_Be_Discovered_Panel
 }
 
-// 注释：handleHiddenSexFlow — 隐奸主流程（每行动后调用）
-// 对应 erArk hidden_sex_panel.py:32 handle_hidden_sex_flow()
-// 先结算隐蔽值变化，再检查是否被发现
-async function handleHiddenSexFlow(
-  charId: string,
-  addFlag?: boolean,
-  duration?: number,
-  intensity?: number
-): Promise<void> {
-  // 注释：前置检查 — 场景中必须有不在隐奸中且有意识的角色
-  const hasObserver = entitySystem.getAll('character').some((c: any) =>
-    c.id !== charId && (c?.sp_flag?.hidden_sex_mode ?? 0) === 0 && !c?.sp_flag?.unconscious_h
-  )
-  if (!hasObserver) return
-
-  const nowDuration = duration ?? 10
-  const nowAddFlag = addFlag ?? true
-  const nowIntensity = intensity ?? 1
-
-  await settleHiddenValue(charId, nowDuration, nowAddFlag, nowIntensity)
-  await checkAndSettleDiscovery(charId)
-}
 
 // 注释：applyHiddenSexTick — 隐奸中每 tick 增加羞耻和心理快感
 // 对应 erArk realtime_settle.py:503-509
@@ -387,7 +365,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     const id = getSelfId(ctx2); if (!id) return false
     return getMode(id) === 0
   })
-  reg('PL_NOT_HIDDEN_SEX_MODE_3_OR_4', (ctx2: any) => {
+  reg('PL_NOT_HIDDEN_SEX_MODE_3_OR_4', (_ctx2: any) => {
     const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
     if (!playerId) return true
     const m = getMode(playerId); return !(m === 3 || m === 4)
@@ -406,7 +384,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     return (ch?.sp_flag?.unconscious_h === 3) || (getMode(id) >= 1)
   })
 
-  reg('PLAYER_NOT_H_OR_HIDDEN_SEX_MODE', (ctx2: any) => {
+  reg('PLAYER_NOT_H_OR_HIDDEN_SEX_MODE', (_ctx2: any) => {
     const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
     if (!playerId) return true
     const ch = entitySystem.get('character', playerId) as any
@@ -415,15 +393,15 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   })
 
   // 注释：UI/场所相关前提
-  reg('SHOW_NON_H_IN_HIDDEN_SEX', (ctx2: any) => {
+  reg('SHOW_NON_H_IN_HIDDEN_SEX', (_ctx2: any) => {
     // 注释：cache 级标志，存于 game context
     return (gameContext.getContext() as any)?.show_non_h_in_hidden_sex === true
   })
-  reg('NOT_SHOW_NON_H_IN_HIDDEN_SEX', (ctx2: any) => {
+  reg('NOT_SHOW_NON_H_IN_HIDDEN_SEX', (_ctx2: any) => {
     return (gameContext.getContext() as any)?.show_non_h_in_hidden_sex !== true
   })
 
-  reg('PLACE_SOMEONE_H_BUT_NOT_HIDDEN_SEX', (ctx2: any) => {
+  reg('PLACE_SOMEONE_H_BUT_NOT_HIDDEN_SEX', (_ctx2: any) => {
     // 注释：场景中有他人处于非隐奸 H 模式
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
@@ -432,7 +410,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     return false
   })
 
-  reg('PLACE_SOMEONE_NOT_IN_HIDDEN_AND_CONSCIOUS', (ctx2: any) => {
+  reg('PLACE_SOMEONE_NOT_IN_HIDDEN_AND_CONSCIOUS', (_ctx2: any) => {
     // 注释：场景中有他人不在隐奸中且有意识
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
@@ -564,5 +542,16 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     }
   })
 
-  // 注释：TODO Task 6 — UI 插槽注册
+  // 注释：注册 UI 插槽 — 隐奸状态标签
+  try {
+    ctx.ui.registerSlot('character-tag', {
+      id: 'hidden-sex-tag',
+      component: 'HiddenSexTag' as any,   // 注释：TODO — 创建 Vue 组件
+      priority: 50,
+      condition: (gameCtx: any) => {
+        if (!gameCtx?.selectedCharacterId) return false
+        return getMode(gameCtx.selectedCharacterId) >= 1
+      },
+    })
+  } catch { /* UI 未就绪 */ }
 }

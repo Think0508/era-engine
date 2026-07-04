@@ -42,12 +42,12 @@ describe('parseModData', () => {
     expect(mod.attributes.hp.daily_reset).toBeUndefined()
   })
 
-  it('parses equipment.toml correctly (3 slots)', () => {
-    expect(mod.equipmentSlots).toHaveLength(3)
-    expect(mod.equipmentSlots[0].id).toBe('upper_body')
-    expect(mod.equipmentSlots[0].name).toBe('上身')
+  it('parses equipment.toml correctly (9 slots)', () => {
+    expect(mod.equipmentSlots).toHaveLength(9)
+    expect(mod.equipmentSlots[0].id).toBe('head')
+    expect(mod.equipmentSlots[0].name).toBe('头')
     expect(mod.equipmentSlots[0].category).toBe('clothing')
-    expect(mod.equipmentSlots[2].id).toBe('accessory')
+    expect(mod.equipmentSlots[8].id).toBe('accessory')
   })
 
   it('parses calendar.toml correctly', () => {

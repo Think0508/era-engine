@@ -107,6 +107,15 @@ erArk 效果ID: 21   12   CVE_A2  CVE_A1  53  55  501
 
 ## 已完成 vs TODO
 
+### 服装系统（P1.2）
+- ✅ 9 槽位 equipment.toml（头/上身/外套/胸罩/手/内裤/下身/脚/饰品）
+- ✅ 角色字段：equipment（穿着）, equipment_off（H 脱下）, equipment_visible（可见性）
+- ✅ H 开始自动脱 auto_off 槽位（胸罩/内裤）
+- ✅ H 结束自动穿回 equipment_off → equipment
+- ✅ 指令 effect：cloth_remove, cloth_wear, cloth_remove_all, cloth_wear_all, cloth_set_visible
+- ✅ 服装前提：CLOTH_OFF, NOT_WEAR_BRA, NOT_WEAR_PAN, BRA_VISIBLE, PANTIES_VISIBLE, CLOTH_WEAR
+- 📝 TODO：衣柜系统（cloth_locker）、CONF 自动脱衣开关、服装标签(tag)、精液污染追踪
+
 | 效果范围 | 状态 | 说明 |
 |---------|------|------|
 | 21(好感度) | ✅ | settle_favorability |

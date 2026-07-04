@@ -27,9 +27,9 @@ export const premiseRegistry = new PremiseRegistry()
 export function onLoad(_ctx: PluginContext): void {
   // 注释：judge_check——实行判定（公式#3），在效果前运行
   // 结果存 execCtx._judgeResult，settle_* 效果跳过 retreated
-  effectTypeRegistry.register('judge_check', (params: any, execCtx: any) => {
+  effectTypeRegistry.register('judge_check', (_p: any, execCtx: any) => {
     const targetIds = execCtx._targetIds as string[]
-    const judgeBase = params.base ?? 0
+    const judgeBase = _p.base ?? 0
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any
       const f = char?.base?.好感度 ?? 0
@@ -48,10 +48,10 @@ export function onLoad(_ctx: PluginContext): void {
     return !r?.retreated
   }
 
-  effectTypeRegistry.register('settle_favorability', (params: any, execCtx: any) => {
+  effectTypeRegistry.register('settle_favorability', (_p: any, execCtx: any) => {
     if (!canApply(execCtx)) return true
     const ids = execCtx._targetIds as string[]
-    const tc = execCtx._timeCost ?? params.base ?? 10
+    const tc = execCtx._timeCost ?? _p.base ?? 10
     for (const id of ids) {
       const r = calcFavorability(id, tc)
       if (r !== 0) applyStateChange(id, '好感度', r)
@@ -70,28 +70,31 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  effectTypeRegistry.register('settle_state', (params: any, execCtx: any) => {
+  effectTypeRegistry.register('settle_state', (_p: any, execCtx: any) => {
     if (!canApply(execCtx)) return true
     const ids = execCtx._targetIds as string[]
     const hc = (modLoader.getMod()?.hConfig as any) ?? {}
     const tbl = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
     const tc = execCtx._timeCost ?? 10
-    const bv = params.baseValue ?? 30
+    const bv = _p.baseValue ?? 30
     const base = tc + bv
     for (const id of ids) {
       const ch = entitySystem.get('character', id) as any
-      const al = ch?.abilities?.[params.state]?.level ?? 0
+      const al = ch?.abilities?.[_p.state]?.level ?? 0
       const raw = calcStateChange(base, al, tbl)
-      const fv = params.negate ? -raw : raw
-      if (fv !== 0) applyStateChange(id, params.state, fv)
+      const fv = _p.negate ? -raw : raw
+      if (fv !== 0) applyStateChange(id, _p.state, fv)
     }
     return true
   })
 
-  effectTypeRegistry.register('h_start_h', async (params: any, execCtx: any) => {
+  effectTypeRegistry.register('h_start_h', async (_p: any, execCtx: any) => {
     const allyId = execCtx.sourceId
-    const targetId = params.targetId ?? execCtx._targetIds?.[0]
+    const targetId = _p.targetId ?? execCtx._targetIds?.[0]
     if (!allyId || !targetId) return
+    // 注释：H 开始时自动脱 auto_off 槽位（胸罩/内裤等）
+    autoClothOff(allyId)
+    autoClothOff(targetId)
     await startHScene(allyId, targetId)
     return true
   })
@@ -102,20 +105,96 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  effectTypeRegistry.register('h_state_change', (params: any, execCtx: any) => {
+  // 注释：cloth_remove——H 中脱衣（equipment → equipment_off）
+  effectTypeRegistry.register('cloth_remove', (_p: any, execCtx: any) => {
     const ids = execCtx._targetIds as string[]
-    for (const id of ids) applyStateChange(id, params.statusId, params.value)
+    for (const id of ids) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch) continue
+      const slot = _p.slot as string
+      if (!ch.equipment?.[slot]) continue
+      if (!ch.equipment_off) ch.equipment_off = {}
+      ch.equipment_off[slot] = ch.equipment[slot]
+      delete ch.equipment[slot]
+    }
     return true
   })
 
-  effectTypeRegistry.register('h_orgasm_check', (params: any, execCtx: any) => {
+  // 注释：cloth_wear——H 中穿衣（equipment_off → equipment）
+  effectTypeRegistry.register('cloth_wear', (_p: any, execCtx: any) => {
     const ids = execCtx._targetIds as string[]
-    const pt = params.partId ?? 0
+    for (const id of ids) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch) continue
+      const slot = _p.slot as string
+      if (!ch.equipment_off?.[slot]) continue
+      if (!ch.equipment) ch.equipment = {}
+      ch.equipment[slot] = ch.equipment_off[slot]
+      delete ch.equipment_off[slot]
+    }
+    return true
+  })
+
+  // 注释：cloth_remove_all——全裸
+  effectTypeRegistry.register('cloth_remove_all', (_p: any, execCtx: any) => {
+    const ids = execCtx._targetIds as string[]
+    const mod = modLoader.getMod()
+    const autoSlots = new Set(mod?.equipmentSlots?.filter(s => s.removable).map(s => s.id) ?? [])
+    for (const id of ids) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch?.equipment) continue
+      if (!ch.equipment_off) ch.equipment_off = {}
+      for (const [slot, item] of Object.entries(ch.equipment) as [string, any][]) {
+        if (autoSlots.has(slot)) {
+          ch.equipment_off[slot] = item
+          delete ch.equipment[slot]
+        }
+      }
+    }
+    return true
+  })
+
+  // 注释：cloth_wear_all——全部穿回
+  effectTypeRegistry.register('cloth_wear_all', (_p: any, execCtx: any) => {
+    const ids = execCtx._targetIds as string[]
+    for (const id of ids) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch?.equipment_off) continue
+      if (!ch.equipment) ch.equipment = {}
+      for (const [slot, item] of Object.entries(ch.equipment_off) as [string, any][]) {
+        ch.equipment[slot] = item
+      }
+      ch.equipment_off = {}
+    }
+    return true
+  })
+
+  // 注释：cloth_set_visible——设置某槽位可见性
+  effectTypeRegistry.register('cloth_set_visible', (_p: any, execCtx: any) => {
+    const ids = execCtx._targetIds as string[]
+    for (const id of ids) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch) continue
+      if (!ch.equipment_visible) ch.equipment_visible = {}
+      ch.equipment_visible[_p.slot as string] = _p.visible ?? true
+    }
+    return true
+  })
+
+  effectTypeRegistry.register('h_state_change', (_p: any, execCtx: any) => {
+    const ids = execCtx._targetIds as string[]
+    for (const id of ids) applyStateChange(id, _p.statusId, _p.value)
+    return true
+  })
+
+  effectTypeRegistry.register('h_orgasm_check', (_p: any, execCtx: any) => {
+    const ids = execCtx._targetIds as string[]
+    const pt = _p.partId ?? 0
     for (const id of ids) {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.h_state) continue
       const hs = ch.h_state as H_STATE
-      const sv = ch.base?.[params.statusKey] ?? 0
+      const sv = ch.base?.[_p.statusKey] ?? 0
       const r = checkOrgasm(pt, sv, hs.orgasm_level[pt] ?? 0)
       if (r) {
         if (!hs.orgasm_count[pt]) hs.orgasm_count[pt] = [0, 0]
@@ -129,13 +208,13 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  effectTypeRegistry.register('h_experience', (params: any, execCtx: any) => {
+  effectTypeRegistry.register('h_experience', (_p: any, execCtx: any) => {
     const ids = execCtx._targetIds as string[]
     for (const id of ids) {
       const ch = entitySystem.get('character', id) as any
       if (!ch) continue
       if (!ch.experience) ch.experience = {}
-      ch.experience[params.expId] = (ch.experience[params.expId] ?? 0) + (params.value ?? 1)
+      ch.experience[_p.expId] = (ch.experience[_p.expId] ?? 0) + (_p.value ?? 1)
     }
     return true
   })
@@ -194,11 +273,36 @@ async function startHScene(allyId: string, targetId: string): Promise<void> {
 async function endHScene(allyId: string): Promise<void> {
   for (const ch of entitySystem.getAll('character')) {
     const c = ch as any
-    if (c.h_state?.is_h) c.h_state = undefined
+    if (c.h_state?.is_h) {
+      c.h_state = undefined
+      // 注释：H 结束自动穿回 equipment_off → equipment
+      if (c.equipment_off) {
+        if (!c.equipment) c.equipment = {}
+        for (const [slot, item] of Object.entries(c.equipment_off) as [string, any][]) {
+          c.equipment[slot] = item
+        }
+        c.equipment_off = {}
+      }
+    }
   }
   await gameContext.exitMode()
   await eventBus.emit('h:end', { ally: allyId })
   narrativeLog.write('结束 H', 'dialogue', 'h-core')
+}
+
+// 注释：H 开始时自动脱 auto_off 槽位（胸罩/内裤）
+function autoClothOff(charId: string): void {
+  const ch = entitySystem.get('character', charId) as any
+  if (!ch) return
+  const mod = modLoader.getMod()
+  const autoSlots = mod?.equipmentSlots?.filter(s => (s as any).auto_off).map(s => s.id) ?? []
+  for (const slot of autoSlots) {
+    if (ch.equipment?.[slot]) {
+      if (!ch.equipment_off) ch.equipment_off = {}
+      ch.equipment_off[slot] = ch.equipment[slot]
+      delete ch.equipment[slot]
+    }
+  }
 }
 
 function applyStateChange(charId: string, sid: string, val: number): void {

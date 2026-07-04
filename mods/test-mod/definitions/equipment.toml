@@ -1,13 +1,57 @@
 [[slots]]
-id = "upper_body"
+id = "head"
+name = "头"
+category = "clothing"
+removable = true
+semen_capacity = 2000
+
+[[slots]]
+id = "upper"
 name = "上身"
 category = "clothing"
 removable = true
 semen_capacity = 4000
 
 [[slots]]
-id = "lower_body"
+id = "coat"
+name = "外套"
+category = "clothing"
+removable = true
+semen_capacity = 4000
+
+[[slots]]
+id = "bra"
+name = "胸罩"
+category = "underwear"
+removable = true
+semen_capacity = 1000
+auto_off = true   # H 开启时自动脱
+
+[[slots]]
+id = "hand"
+name = "手"
+category = "accessory"
+removable = false
+semen_capacity = 1000
+
+[[slots]]
+id = "panties"
+name = "内裤"
+category = "underwear"
+removable = true
+semen_capacity = 1000
+auto_off = true   # H 开启时自动脱
+
+[[slots]]
+id = "lower"
 name = "下身"
+category = "clothing"
+removable = true
+semen_capacity = 4000
+
+[[slots]]
+id = "foot"
+name = "脚"
 category = "clothing"
 removable = true
 semen_capacity = 4000

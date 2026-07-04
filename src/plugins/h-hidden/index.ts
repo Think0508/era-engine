@@ -58,10 +58,140 @@ function getMode(charId: string): number {
   return ch?.sp_flag?.hidden_sex_mode ?? 0
 }
 
-// 注释：Task 4 实现的函数声明——供 Task 3 效果引用，通过 TypeScript 提升机制
-declare function settleHiddenValue(charId: string, duration: number, addFlag: boolean, intensity: number): Promise<void>
-declare function checkAndSettleDiscovery(charId: string): Promise<void>
-declare function getLevelName(degree: number): { cid: number; name: string }
+// 注释：getLevelName — 根据数值返回发现度等级
+// 对应 erArk hidden_sex_panel.py:56 get_hidden_level()
+function getLevelName(value: number): { cid: number; name: string } {
+  for (const lv of HIDDEN_LEVELS) {
+    if (value <= lv.threshold) return { cid: lv.cid, name: lv.name }
+  }
+  return { cid: 3, name: '随时暴露' }
+}
+
+// 注释：getBehaviorTagIntensity — 从行为标签推导强度
+// erArk hidden_sex_panel.py:172-181
+// 道具=4, 插入=3, 侍奉=2, 基础=1（取 max）
+function getBehaviorTagIntensity(tags: string[]): number {
+  let intensity = 1
+  for (const tag of tags) {
+    if (tag === '道具') intensity = Math.max(4, intensity)
+    else if (tag === '插入') intensity = Math.max(3, intensity)
+    else if (tag === '侍奉') intensity = Math.max(2, intensity)
+  }
+  return intensity
+}
+
+// 注释：settleHiddenValue — 结算隐蔽值变化
+// 对应 erArk hidden_sex_panel.py:134 settle_hidden_value_by_action()
+// 完整公式（erArk 源码逐行复刻）：
+//   增加时: delta = int(duration × intensity × mode_adjust / ability_adjust[90] × max(charaCount-2, 1))
+//   减少时: delta = int(duration × (-2 / mode_adjust) × ability_adjust[90])
+//   mode_adjust: mode1=2, mode4=0.5, else=1
+async function settleHiddenValue(
+  charId: string,
+  duration: number,
+  addFlag: boolean,
+  intensity?: number
+): Promise<void> {
+  const ch = entitySystem.get('character', charId) as any
+  if (!ch) return
+  const mode = ch?.sp_flag?.hidden_sex_mode ?? 0
+  if (mode < 1) return
+
+  // 注释：mode_adjust — erArk hidden_sex_panel.py:164-169
+  let modeAdjust = 1.0
+  if (mode === 1) modeAdjust = 2.0
+  else if (mode === 4) modeAdjust = 0.5
+
+  // 注释：ability[90] = 隐蔽能力 — erArk hidden_sex_panel.py:182-183
+  const abilityLv = ch?.abilities?.['隐蔽']?.level ?? 0
+  const abiAdjust = getAbilityAdjust(abilityLv)
+
+  // 注释：other_chara_adjust — erArk hidden_sex_panel.py:185-187
+  const sceneCount = entitySystem.getAll('character').length
+  const otherCharaAdjust = Math.max(sceneCount - 2, 1)
+
+  let delta: number
+  if (addFlag) {
+    // 注释：增加暴露 — erArk hidden_sex_panel.py:189-195
+    const nowIntensity = intensity ?? getBehaviorTagIntensity([])
+    const adjust = nowIntensity * modeAdjust / abiAdjust * otherCharaAdjust
+    delta = Math.floor(duration * adjust)
+  } else {
+    // 注释：减少暴露（等待/休息）— erArk hidden_sex_panel.py:196-199
+    const adjust = (-2 / modeAdjust) * abiAdjust
+    delta = Math.floor(duration * adjust)
+  }
+
+  // 注释：更新发现度，限制在 0-100
+  if (!ch.h_state) ch.h_state = {}
+  ch.h_state.hidden_sex_discovery_dregree = Math.max(0, Math.min(100,
+    (ch.h_state.hidden_sex_discovery_dregree ?? 0) + delta
+  ))
+}
+
+// 注释：checkAndSettleDiscovery — 检查是否被发现
+// 对应 erArk hidden_sex_panel.py:202 check_hidden_sex_discovery()
+// 发现概率公式（level 2+）: (当前值 - 60) × 3 vs random(0,100)
+async function checkAndSettleDiscovery(charId: string): Promise<boolean> {
+  const ch = entitySystem.get('character', charId) as any
+  if (!ch) return false
+  const degree = ch?.h_state?.hidden_sex_discovery_dregree ?? 0
+
+  // 注释：level < 2 (≤60) → 不可能被发现 — erArk hidden_sex_panel.py:207
+  const lv = getLevelName(degree)
+  if (lv.cid < 2) return false
+
+  // 注释：发现概率 = (当前值 - 等级1阈值(60)) × 3 — erArk hidden_sex_panel.py:209
+  const discoverRate = (degree - HIDDEN_LEVELS[1].threshold) * 3
+  const roll = Math.floor(Math.random() * 101)  // 0-100
+  if (discoverRate < roll) return false
+
+  // 注释：被发现 — erArk hidden_sex_panel.py:223 settle_discovered()
+  await settleDiscovered(charId)
+  return true
+}
+
+// 注释：settleDiscovered — 被发现时的处理
+// 对应 erArk hidden_sex_panel.py:223-251
+async function settleDiscovered(charId: string): Promise<void> {
+  const ch = entitySystem.get('character', charId) as any
+  if (!ch) return
+  // 注释：清除隐奸模式 — erArk: sp_flag.hidden_sex_mode = 0
+  if (ch.sp_flag) ch.sp_flag.hidden_sex_mode = 0
+  // 注释：找场景中第一个隐奸角色作为目标
+  const hiddenTargets = entitySystem.getAll('character').filter((c: any) =>
+    c.id !== charId && (c?.sp_flag?.hidden_sex_mode ?? 0) >= 1
+  )
+  if (hiddenTargets.length > 0 && ch.sp_flag) {
+    ch.sp_flag.target_character_id = hiddenTargets[0].id
+  }
+  narrativeLog.write(`${ch.name ?? charId} 的隐奸被发现了！`, 'system', 'h-hidden')
+  // 注释：TODO — 打开被发现面板（需 UI 系统就绪）
+  // TODO: 弹出 Sex_Be_Discovered_Panel
+}
+
+// 注释：handleHiddenSexFlow — 隐奸主流程（每行动后调用）
+// 对应 erArk hidden_sex_panel.py:32 handle_hidden_sex_flow()
+// 先结算隐蔽值变化，再检查是否被发现
+async function handleHiddenSexFlow(
+  charId: string,
+  addFlag?: boolean,
+  duration?: number,
+  intensity?: number
+): Promise<void> {
+  // 注释：前置检查 — 场景中必须有不在隐奸中且有意识的角色
+  const hasObserver = entitySystem.getAll('character').some((c: any) =>
+    c.id !== charId && (c?.sp_flag?.hidden_sex_mode ?? 0) === 0 && !c?.sp_flag?.unconscious_h
+  )
+  if (!hasObserver) return
+
+  const nowDuration = duration ?? 10
+  const nowAddFlag = addFlag ?? true
+  const nowIntensity = intensity ?? 1
+
+  await settleHiddenValue(charId, nowDuration, nowAddFlag, nowIntensity)
+  await checkAndSettleDiscovery(charId)
+}
 
 export function onLoad(_ctx: PluginContext): void {
   // 注释：hidden_sex_set_mode — 设置隐奸模式

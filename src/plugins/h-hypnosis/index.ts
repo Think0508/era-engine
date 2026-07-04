@@ -105,10 +105,10 @@ function calculateHypnosisDegree(charId: string): number {
 function calculateSanityCost(charId: string): number {
   const target = entitySystem.get('character', charId) as any
   if (!target) return 20
-  const t = target.talent ?? {}
-  if (t[73]) return 1
-  if (t[72]) return 30
-  if (t[71]) return 25
+  if (!target.talent) target.talent = {}
+  if (target.talent[73]) return 1
+  if (target.talent[72]) return 30
+  if (target.talent[71]) return 25
   return 20
 }
 
@@ -120,11 +120,36 @@ function getHypnosisDegreeLimit(): number {
   return 0
 }
 
-// TODO: 催眠完成检查 — NPC 天赋获取 + 二段行为依赖 NPC 天赋系统
+// 注释：NPC 催眠天赋阈值 — 程度 ≥ 50→71, ≥ 100→72, ≥ 200→73
+// erArk hypnosis_panel.py:107-158 + handle_talent.py:189-222
 function checkHypnosisCompletion(charId: string): boolean {
+  const ch = entitySystem.get('character', charId) as any
+  if (!ch) return false
   const h = getHypnosis(charId)
-  if (h.hypnosis_degree < 50) return false
-  return false
+  const degree = h.hypnosis_degree
+  if (!ch.talent) ch.talent = {}
+  const talent = ch.talent
+  let changed = false
+
+  // 注释：程度 ≥ 200 → 完全催眠(73)
+  if (degree >= 200 && !talent[73]) {
+    talent[73] = true
+    narrativeLog.write(`${ch.name ?? charId} 被完全催眠了！`, 'system', 'h-hypnosis')
+    changed = true
+  }
+  // 注释：程度 ≥ 100 → 深度催眠(72)
+  if (degree >= 100 && !talent[72]) {
+    talent[72] = true
+    narrativeLog.write(`${ch.name ?? charId} 被深度催眠了！`, 'system', 'h-hypnosis')
+    changed = true
+  }
+  // 注释：程度 ≥ 50 → 初级催眠(71)
+  if (degree >= 50 && !talent[71]) {
+    talent[71] = true
+    narrativeLog.write(`${ch.name ?? charId} 被初级催眠了！`, 'system', 'h-hypnosis')
+    changed = true
+  }
+  return changed
 }
 
 function applySensitivityBonus(charId: string, baseAdjust: number): number {
@@ -173,6 +198,7 @@ export function onLoad(_ctx: PluginContext): void {
     const h = getHypnosis(id)
     const gain = calculateHypnosisDegree(id)
     h.hypnosis_degree = Math.min(h.hypnosis_degree + gain, getHypnosisDegreeLimit())
+    checkHypnosisCompletion(id)
     if (h.hypnosis_degree > 0 && (getUnconsciousH(id) < 4 || getUnconsciousH(id) > 7)) {
       setUnconsciousH(id, 4)
     }

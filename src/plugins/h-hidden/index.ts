@@ -178,7 +178,17 @@ async function settleDiscovered(charId: string): Promise<void> {
 
 
 // 注释：applyHiddenSexTick — 隐奸中每 tick 增加羞耻和心理快感
-// 对应 erArk realtime_settle.py:503-509
+// 对应 erArk realtime_settle.py:503-509 + common_default.py:154-234
+// erArk 完整公式:
+//   time_base_value = true_add_time * 5 + base_value(0)
+//   final_adjust = chara_feel_state_adjust(charId, stateId, ability[34]) + extra_adjust
+//   chara_feel_state_adjust 内部:
+//     feel_adjust = get_ability_adjust(ability[stateId])   — state 16(羞耻)/102(心理快感)
+//     tech_adjust = get_ability_adjust(ability[34])        — 露出经验
+//     final_adjust = sqrt(feel_adjust * tech_adjust)       — 几何平均
+//   final_value = time_base_value × final_adjust
+//   extra_adjust 是加法（不是乘法），tenths_add=false
+// TODO: 缺少 ability[16](羞耻感觉) 和 ability[102](心理感觉) 字段，暂用 ability[34] 简化
 function applyHiddenSexTick(charId: string, addTime: number): void {
   const ch = entitySystem.get('character', charId) as any
   if (!ch) return
@@ -188,15 +198,23 @@ function applyHiddenSexTick(charId: string, addTime: number): void {
   const sceneCount = entitySystem.getAll('character').length
   const othersCount = Math.max(0, sceneCount - 2)
 
+  // 注释：extra_add = (4 - mode) + others_count × 0.1
   const extraAdd = (4 - mode) + othersCount * 0.1
 
-  const abilityLv = ch?.abilities?.['露出']?.level ?? 0
+  // 注释：ability[34] = 露出经验
+  const techLv = ch?.abilities?.['露出']?.level ?? 0
+  const techAdj = getAbilityAdjust(techLv)
+  // 注释：TODO — 完整公式为 sqrt(getAbilityAdjust(ability[16]) * techAdj)，缺少 ability[16]
+  const feelAdj = techAdj
+  const totalAdj = feelAdj + extraAdd
 
   if (!ch.base) ch.base = {}
-  const shameBase = Math.floor(addTime * 5 * getAbilityAdjust(abilityLv) * (1 + extraAdd))
+  const timeBase = addTime * 5
+  // 注释：羞耻(state 16)
+  const shameBase = Math.floor(timeBase * totalAdj)
   ch.base['羞耻'] = Math.min(99999, (ch.base['羞耻'] ?? 0) + shameBase)
-
-  const pleasureBase = Math.floor(addTime * 5 * getAbilityAdjust(abilityLv) * (1 + extraAdd))
+  // 注释：心理快感(state 23) — 同上公式
+  const pleasureBase = Math.floor(timeBase * totalAdj)
   ch.base['心理快感'] = Math.min(99999, (ch.base['心理快感'] ?? 0) + pleasureBase)
 }
 

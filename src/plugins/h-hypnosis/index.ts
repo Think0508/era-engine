@@ -43,6 +43,73 @@ function setUnconsciousH(charId: string, val: number): void {
 
 let lastHypnosisType = 1
 
+function getAbilityAdjust(lv: number): number {
+  const tbl = [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
+  return tbl[Math.min(Math.max(0, lv), 10)] ?? 4.0
+}
+
+function calculateHypnosisDegree(charId: string): number {
+  const target = entitySystem.get('character', charId) as any
+  if (!target) return 0
+  const type = lastHypnosisType
+  let baseCoeff = 2
+  if (type === 2) baseCoeff = 4
+  else if (type >= 3) baseCoeff = 6
+  const markLv = target?.abilities?.['无觉刻印']?.level ?? 0
+  const abilityAdj = getAbilityAdjust(markLv)
+  const adjust = baseCoeff * abilityAdj
+  const rand = 0.5 + Math.random()
+  return Math.round(1 * adjust * rand * 10) / 10
+}
+
+function calculateSanityCost(charId: string): number {
+  const target = entitySystem.get('character', charId) as any
+  if (!target) return 20
+  const t = target.talent ?? {}
+  if (t[73]) return 1
+  if (t[72]) return 30
+  if (t[71]) return 25
+  return 20
+}
+
+function getHypnosisDegreeLimit(): number {
+  return 200
+}
+
+function checkHypnosisCompletion(charId: string): boolean {
+  const h = getHypnosis(charId)
+  if (h.hypnosis_degree < 50) return false
+  return false
+}
+
+function applySensitivityBonus(charId: string, baseAdjust: number): number {
+  const h = getHypnosis(charId)
+  if (h.increase_body_sensitivity) return baseAdjust + 2
+  return baseAdjust
+}
+
+function applyPainAsPleasure(charId: string, stateId: number): number {
+  const h = getHypnosis(charId)
+  if (h.pain_as_pleasure && stateId === 17) return 23
+  return stateId
+}
+
+function applyAirHypnosisTrustMod(charId: string, trustGain: number): number {
+  if (getUnconsciousH(charId) === 5) return 0
+  return trustGain
+}
+
+function applyHypnosisSexExp(charId: string): void {
+  const u = getUnconsciousH(charId)
+  if (u >= 4 && u <= 7) {
+    const target = entitySystem.get('character', charId) as any
+    if (target) {
+      if (!target.h_exp) target.h_exp = {}
+      target.h_exp.hypnosis = (target.h_exp.hypnosis ?? 0) + 1
+    }
+  }
+}
+
 function registerBoolEffect(type: string, field: string, value: boolean): void {
   effectTypeRegistry.register(type, (_p: any, execCtx: any) => {
     for (const id of execCtx._targetIds as string[]) (getHypnosis(id) as any)[field] = value
@@ -59,8 +126,8 @@ export function onLoad(_ctx: PluginContext): void {
     if (ids.length === 0) return true
     const id = ids[0]
     const h = getHypnosis(id)
-    const gain = 1
-    h.hypnosis_degree = Math.min(h.hypnosis_degree + gain, 200)
+    const gain = calculateHypnosisDegree(id)
+    h.hypnosis_degree = Math.min(h.hypnosis_degree + gain, getHypnosisDegreeLimit())
     if (h.hypnosis_degree > 0 && (getUnconsciousH(id) < 4 || getUnconsciousH(id) > 7)) {
       setUnconsciousH(id, 4)
     }
@@ -192,4 +259,8 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
 }
 
 export type { HypnosisData }
-export { DEFAULT_HYPNOSIS, HYPNOSIS_TYPE_NAMES, getSelfId, getTargetId, getHypnosis, getUnconsciousH, setUnconsciousH }
+export {
+  DEFAULT_HYPNOSIS, HYPNOSIS_TYPE_NAMES, getSelfId, getTargetId, getHypnosis, getUnconsciousH, setUnconsciousH,
+  getAbilityAdjust, calculateHypnosisDegree, calculateSanityCost, getHypnosisDegreeLimit, checkHypnosisCompletion,
+  applySensitivityBonus, applyPainAsPleasure, applyAirHypnosisTrustMod, applyHypnosisSexExp,
+}

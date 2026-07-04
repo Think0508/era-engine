@@ -52,6 +52,12 @@ function getAbilityAdjust(lv: number): number {
   return tbl[Math.min(Math.max(0, lv), 10)] ?? 4.0
 }
 
+// 注释：获取指定角色的 hidden_sex_mode（0=无 1=双不隐 2=女隐 3=男隐 4=双隐）
+function getMode(charId: string): number {
+  const ch = entitySystem.get('character', charId) as any
+  return ch?.sp_flag?.hidden_sex_mode ?? 0
+}
+
 export function onLoad(_ctx: PluginContext): void {
   // 注释：TODO Task 3 — 注册效果类型
   // effectTypeRegistry.register('hidden_sex_set_mode', ...)
@@ -61,8 +67,109 @@ export function onLoad(_ctx: PluginContext): void {
 }
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
-  // 注释：TODO Task 2 — 注册前提
-  // const reg = (id, fn) => { try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch {} }
+  const reg = (id: string, fn: (c: any) => boolean) => {
+    try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+  }
+
+  function getTargetMode(ctx2: any): number {
+    const id = getTargetId(ctx2)
+    if (!id) return 0
+    return getMode(id)
+  }
+
+  function getSelfMode(ctx2: any): number {
+    const id = getSelfId(ctx2)
+    if (!id) return 0
+    return getMode(id)
+  }
+
+  // 注释：HIDDEN_SEX_MODE_0 — 不在隐奸中
+  reg('HIDDEN_SEX_MODE_0', (ctx2: any) => getSelfMode(ctx2) === 0)
+  reg('HIDDEN_SEX_MODE_GE_1', (ctx2: any) => getSelfMode(ctx2) >= 1)
+  reg('HIDDEN_SEX_MODE_1', (ctx2: any) => getSelfMode(ctx2) === 1)
+  reg('HIDDEN_SEX_MODE_2', (ctx2: any) => getSelfMode(ctx2) === 2)
+  reg('HIDDEN_SEX_MODE_3', (ctx2: any) => getSelfMode(ctx2) === 3)
+  reg('HIDDEN_SEX_MODE_4', (ctx2: any) => getSelfMode(ctx2) === 4)
+  reg('HIDDEN_SEX_MODE_1_OR_2', (ctx2: any) => { const m = getSelfMode(ctx2); return m === 1 || m === 2 })
+  reg('HIDDEN_SEX_MODE_3_OR_4', (ctx2: any) => { const m = getSelfMode(ctx2); return m === 3 || m === 4 })
+  reg('HIDDEN_SEX_MODE_1_OR_3', (ctx2: any) => { const m = getSelfMode(ctx2); return m === 1 || m === 3 })
+  reg('HIDDEN_SEX_MODE_2_OR_4', (ctx2: any) => { const m = getSelfMode(ctx2); return m === 2 || m === 4 })
+
+  // 注释：目标的对应前提
+  reg('TARGET_HIDDEN_SEX_MODE_GE_1', (ctx2: any) => getTargetMode(ctx2) >= 1)
+  reg('TARGET_HIDDEN_SEX_MODE_1', (ctx2: any) => getTargetMode(ctx2) === 1)
+  reg('TARGET_HIDDEN_SEX_MODE_2', (ctx2: any) => getTargetMode(ctx2) === 2)
+  reg('TARGET_HIDDEN_SEX_MODE_3', (ctx2: any) => getTargetMode(ctx2) === 3)
+  reg('TARGET_HIDDEN_SEX_MODE_4', (ctx2: any) => getTargetMode(ctx2) === 4)
+  reg('TARGET_HIDDEN_SEX_MODE_1_OR_2', (ctx2: any) => { const m = getTargetMode(ctx2); return m === 1 || m === 2 })
+  reg('TARGET_HIDDEN_SEX_MODE_3_OR_4', (ctx2: any) => { const m = getTargetMode(ctx2); return m === 3 || m === 4 })
+
+  // 注释：TARGET_NOT_IN_HIDDEN_SEX_MODE — 目标不在隐奸中
+  reg('TARGET_NOT_IN_HIDDEN_SEX_MODE', (ctx2: any) => getTargetMode(ctx2) === 0)
+
+  // 注释：玩家相关前提
+  reg('PLAYER_IN_HIDDEN_SEX_MODE', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    return getMode(id) >= 1
+  })
+  reg('PLAYER_NOT_IN_HIDDEN_SEX_MODE', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    return getMode(id) === 0
+  })
+  reg('PL_NOT_HIDDEN_SEX_MODE_3_OR_4', (ctx2: any) => {
+    const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
+    if (!playerId) return true
+    const m = getMode(playerId); return !(m === 3 || m === 4)
+  })
+
+  // 注释：复合前提
+  reg('SLEEP_H_OR_HIDDEN_SEX', (ctx2: any) => {
+    const id = getSelfId(ctx2); if (!id) return false
+    const ch = entitySystem.get('character', id) as any
+    // 注释：睡眠 H（unconscious_h=3）或 hidden_sex_mode >= 1
+    return (ch?.sp_flag?.unconscious_h === 3) || (getMode(id) >= 1)
+  })
+  reg('TARGET_SLEEP_H_OR_HIDDEN_SEX', (ctx2: any) => {
+    const id = getTargetId(ctx2); if (!id) return false
+    const ch = entitySystem.get('character', id) as any
+    return (ch?.sp_flag?.unconscious_h === 3) || (getMode(id) >= 1)
+  })
+
+  reg('PLAYER_NOT_H_OR_HIDDEN_SEX_MODE', (ctx2: any) => {
+    const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
+    if (!playerId) return true
+    const ch = entitySystem.get('character', playerId) as any
+    // 注释：不在 H 中 或者在隐奸中
+    return !ch?.h_state?.is_h || getMode(playerId) >= 1
+  })
+
+  // 注释：UI/场所相关前提
+  reg('SHOW_NON_H_IN_HIDDEN_SEX', (ctx2: any) => {
+    // 注释：cache 级标志，存于 game context
+    return (gameContext.getContext() as any)?.show_non_h_in_hidden_sex === true
+  })
+  reg('NOT_SHOW_NON_H_IN_HIDDEN_SEX', (ctx2: any) => {
+    return (gameContext.getContext() as any)?.show_non_h_in_hidden_sex !== true
+  })
+
+  reg('PLACE_SOMEONE_H_BUT_NOT_HIDDEN_SEX', (ctx2: any) => {
+    // 注释：场景中有他人处于非隐奸 H 模式
+    for (const ch of entitySystem.getAll('character')) {
+      const c = ch as any
+      if (c?.h_state?.is_h && (getMode(c.id) === 0)) return true
+    }
+    return false
+  })
+
+  reg('PLACE_SOMEONE_NOT_IN_HIDDEN_AND_CONSCIOUS', (ctx2: any) => {
+    // 注释：场景中有他人不在隐奸中且有意识
+    for (const ch of entitySystem.getAll('character')) {
+      const c = ch as any
+      if (c.id === 'player' || c.id === '0') continue
+      if (getMode(c.id) === 0 && !c?.sp_flag?.unconscious_h) return true
+    }
+    return false
+  })
 
   // 注释：TODO Task 3 — 注册公共 API
   // ctx.api.register('h-hidden', { getMode, setMode, getDiscoveryDegree, ... })

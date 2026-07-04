@@ -1,0 +1,9 @@
+[meta]
+id = "h-hypnosis"
+name = "催眠系统"
+version = "1.0.0"
+description = "催眠核心机制 - 程度/类型/子状态/公式（第一阶段）"
+
+[data_dependencies]
+provides = ["hypnosis:ready"]
+depends_on = ["h:ready"]

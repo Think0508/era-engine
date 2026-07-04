@@ -40,6 +40,7 @@ interface UIPreferences {
   commandPopoverMode: boolean
   cheatCommands: boolean
   sidebarShowParameter: boolean
+  splitSections: boolean
   favorites: string[]
 }
 
@@ -85,8 +86,8 @@ export const useUIStore = defineStore('ui', () => {
   const favorites = ref<string[]>([])
   // 注释：当前打开的系统面板（null=无）
   const activePanel = ref<string | null>(null)
-  // 注释：指令过滤（显示哪些类别）
-  const commandFilter = ref<string[]>([])
+  // 注释：状态/外观分栏显示（StatusParameter 左，Look 右）
+  const splitSections = ref(false)
   // 注释：指令分类显隐开关——true=显示该类
   const commandCategories = ref<Record<string, boolean>>({
     favorite: true,
@@ -153,6 +154,9 @@ export const useUIStore = defineStore('ui', () => {
   function toggleCategory(cat: string) {
     commandCategories.value[cat] = !commandCategories.value[cat]
   }
+  function toggleSplitSections() {
+    splitSections.value = !splitSections.value
+  }
   function toggleCheatCommands() {
     cheatCommands.value = !cheatCommands.value
   }
@@ -180,6 +184,7 @@ export const useUIStore = defineStore('ui', () => {
       commandPopoverMode: commandPopoverMode.value,
       cheatCommands: cheatCommands.value,
       sidebarShowParameter: sidebarShowParameter.value,
+      splitSections: splitSections.value,
       favorites: favorites.value,
     }
   }
@@ -213,6 +218,7 @@ export const useUIStore = defineStore('ui', () => {
       commandPopoverMode.value = prefs.commandPopoverMode
       cheatCommands.value = prefs.cheatCommands ?? false
       sidebarShowParameter.value = prefs.sidebarShowParameter ?? true
+      splitSections.value = prefs.splitSections ?? false
       favorites.value = prefs.favorites ?? []
     } catch {
       // 注释：localStorage 不可用或 JSON 解析失败，静默跳过
@@ -252,9 +258,10 @@ export const useUIStore = defineStore('ui', () => {
     toggleSidebarParameter,
     favorites,
     activePanel,
-    commandFilter,
     commandCategories,
     toggleCategory,
+    splitSections,
+    toggleSplitSections,
     hasSelection,
     isFolded,
     selectCharacter,

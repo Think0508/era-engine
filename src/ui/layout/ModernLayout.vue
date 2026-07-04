@@ -56,9 +56,20 @@ function openSidebar() {
       <div class="scroll-area">
         <StatusBar />
         <CharacterBar />
-        <StatusSection />
-        <ParameterSection />
-        <LookSection />
+        <div v-if="uiStore.splitSections" class="split-row">
+          <div class="split-left">
+            <StatusSection />
+            <ParameterSection />
+          </div>
+          <div class="split-right">
+            <LookSection />
+          </div>
+        </div>
+        <template v-else>
+          <StatusSection />
+          <ParameterSection />
+          <LookSection />
+        </template>
         <div class="narrative-log-container">
           <NarrativeLog />
         </div>
@@ -98,6 +109,21 @@ function openSidebar() {
   display: flex;
   flex-direction: column;
   min-height: 0;
+}
+
+.split-row {
+  display: flex;
+  gap: 4px;
+}
+
+.split-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.split-right {
+  flex: 1;
+  min-width: 0;
 }
 
 .command-bar-container {

@@ -90,6 +90,14 @@ const FONT_SIZES = ['small', 'medium', 'large', 'xlarge'] as const
           {{ uiStore.sidebarShowParameter ? '侧栏' : '主体' }}
         </button>
       </div>
+      <div class="option-row">
+        <span class="option-label">分栏模式</span>
+        <button class="option-toggle" :class="{ on: uiStore.splitSections }"
+          @click="uiStore.toggleSplitSections()">
+          {{ uiStore.splitSections ? '分栏' : '堆叠' }}
+        </button>
+        <span class="option-hint">Status/Parameter 左栏，Look 右栏</span>
+      </div>
     </CollapsibleSection>
 
     <!-- 注释：指令栏设置 -->

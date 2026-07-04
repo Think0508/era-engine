@@ -1,7 +1,8 @@
 // 注释：ExplorationLayout era经典探索布局（纵向堆叠）
-// 结构：上部分可滚动区 + 底部固定指令栏
+// 可选分栏模式：Status/Parameter 左栏，Look 右栏
 
 <script setup lang="ts">
+import { useUIStore } from '../stores/ui-store'
 import StatusBar from '../components/StatusBar.vue'
 import CharacterBar from '../components/CharacterBar.vue'
 import StatusSection from '../components/StatusSection.vue'
@@ -11,22 +12,34 @@ import NarrativeLog from '../components/NarrativeLog.vue'
 import CommandBar from '../components/CommandBar.vue'
 import SystemPanel from '../components/SystemPanel.vue'
 import ScreenNumpad from '../components/ScreenNumpad.vue'
+
+const uiStore = useUIStore()
 </script>
 
 <template>
   <div class="exploration-layout">
-    <!-- 注释：上部分（可滚动） -->
     <div class="scroll-area">
       <StatusBar />
       <CharacterBar />
-      <StatusSection />
-      <ParameterSection />
-      <LookSection />
+      <!-- 注释：分栏模式——Status+Parameter 左，Look 右 -->
+      <div v-if="uiStore.splitSections" class="split-row">
+        <div class="split-left">
+          <StatusSection />
+          <ParameterSection />
+        </div>
+        <div class="split-right">
+          <LookSection />
+        </div>
+      </div>
+      <template v-else>
+        <StatusSection />
+        <ParameterSection />
+        <LookSection />
+      </template>
       <div class="narrative-log-container">
         <NarrativeLog />
       </div>
     </div>
-    <!-- 注释：底部固定指令栏 -->
     <div class="command-bar-container">
       <CommandBar />
     </div>
@@ -53,6 +66,21 @@ import ScreenNumpad from '../components/ScreenNumpad.vue'
   display: flex;
   flex-direction: column;
   min-height: 0;
+}
+
+.split-row {
+  display: flex;
+  gap: 4px;
+}
+
+.split-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.split-right {
+  flex: 1;
+  min-width: 0;
 }
 
 .narrative-log-container {

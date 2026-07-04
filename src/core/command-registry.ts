@@ -14,6 +14,8 @@ export interface CommandDef {
   group: CommandGroup
   // 注释：指令在哪些模式下显示（如 exploration/combat/daily_menu）
   modes: string[]
+  // 注释：指令分类——用于指令栏分组显示
+  category?: string   // favorite/daily/obscenity/sex/combat/system/custom 等
   // 注释：可选条件表达式字符串，运行时求值
   condition?: string
   // 注释：排序优先级，数字越小越靠前，默认 0

@@ -87,6 +87,16 @@ export const useUIStore = defineStore('ui', () => {
   const activePanel = ref<string | null>(null)
   // 注释：指令过滤（显示哪些类别）
   const commandFilter = ref<string[]>([])
+  // 注释：指令分类显隐开关——true=显示该类
+  const commandCategories = ref<Record<string, boolean>>({
+    favorite: true,
+    daily: true,
+    obscenity: false,
+    sex: false,
+    combat: false,
+    system: true,
+    custom: true,
+  })
 
   // Getters
   const hasSelection = computed(() => selectedCharacterId.value !== null)
@@ -139,6 +149,9 @@ export const useUIStore = defineStore('ui', () => {
   }
   function toggleGroupTitles() {
     showGroupTitles.value = !showGroupTitles.value
+  }
+  function toggleCategory(cat: string) {
+    commandCategories.value[cat] = !commandCategories.value[cat]
   }
   function toggleCheatCommands() {
     cheatCommands.value = !cheatCommands.value
@@ -240,6 +253,8 @@ export const useUIStore = defineStore('ui', () => {
     favorites,
     activePanel,
     commandFilter,
+    commandCategories,
+    toggleCategory,
     hasSelection,
     isFolded,
     selectCharacter,

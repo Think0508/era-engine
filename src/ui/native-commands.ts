@@ -14,6 +14,7 @@ export function registerNativeCommands(): void {
     label: '能力显示(主角)',
     group: 'main_menu',
     modes: ['exploration', 'daily_menu', 'combat'],
+    category: 'system',
     priority: 10,
     source: 'native',
     handler: () => {

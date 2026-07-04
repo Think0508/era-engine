@@ -1,9 +1,6 @@
 // 注释：CommandBar 指令栏
-// Act_COM 区（location_commands + character_commands）——按模式过滤
-// Ex_COM 区（main_menu）——跨模式稳定
-// 编号分配：每屏按可见顺序从 1 开始分配（每屏唯一）
-// 收藏置顶，上次指令提示
-// 键盘输入 → useKeyInput → 查编号映射表 → 执行
+// Act_COM：顶部类别开关行（★收藏夹/日常/猥亵/sex/战斗/自定义）+ 过滤+显示
+// Ex_COM：main_menu（系统指令，跨模式稳定）
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
@@ -18,84 +15,113 @@ import CommandItem from './CommandItem.vue'
 
 const gameStore = useGameStore()
 const uiStore = useUIStore()
-
-// 注释：上次执行的指令
 const lastCommand = ref<string | null>(null)
 
-// 注释：Act_COM——当前模式的 location_commands + character_commands
-const actCommands = computed<CommandDef[]>(() => {
+// 注释：所有 Act_COM 指令（按模式+分组过滤）
+const rawActCommands = computed<CommandDef[]>(() => {
   const mode = gameStore.currentMode
-  const locationCmds = commandRegistry.getByMode(mode, 'location_commands')
-  const charCmds = commandRegistry.getByMode(mode, 'character_commands')
-  // 注释：收藏置顶
-  const all = [...locationCmds, ...charCmds]
-  return all.sort((a, b) => {
-    const aFav = uiStore.favorites.includes(a.id) ? 0 : 1
-    const bFav = uiStore.favorites.includes(b.id) ? 0 : 1
-    if (aFav !== bFav) return aFav - bFav
-    return (a.priority ?? 0) - (b.priority ?? 0)
+  return [
+    ...commandRegistry.getByMode(mode, 'location_commands'),
+    ...commandRegistry.getByMode(mode, 'character_commands'),
+  ].sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0))
+})
+
+// 注释：按分类过滤——只显示 activeCategories 中为 true 的分类
+const actCommands = computed<CommandDef[]>(() => {
+  return rawActCommands.value.filter(cmd => {
+    const cat = cmd.category ?? 'custom'
+    return uiStore.commandCategories[cat] !== false
   })
+})
+
+// 注释：收藏夹——从所有 raw 指令中取收藏的，额外显示一份
+const favoriteCommands = computed<CommandDef[]>(() => {
+  if (!uiStore.commandCategories.favorite) return []
+  return rawActCommands.value.filter(cmd =>
+    uiStore.favorites.includes(cmd.id)
+  ).sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0))
+})
+
+// 注释：类别列表（从所有指令中收集出现的 category）
+const availableCategories = computed(() => {
+  const cats = new Set<string>()
+  for (const cmd of rawActCommands.value) {
+    if (cmd.category) cats.add(cmd.category)
+  }
+  const allOrder = ['favorite', 'daily', 'obscenity', 'sex', 'combat', 'custom']
+  return allOrder.filter(c => cats.has(c) || c === 'favorite' || c === 'custom')
 })
 
 // 注释：Ex_COM——main_menu，跨模式稳定
 const exCommands = computed<CommandDef[]>(() => {
   const cmds = commandRegistry.getByGroup('main_menu')
-  // 注释：过滤 @ 命令（作弊指令），仅在 cheatCommands 开启时显示
   return uiStore.cheatCommands ? cmds : cmds.filter(c => !c.id.startsWith('@'))
 })
 
-// 注释：编号分配——Act_COM 和 Ex_COM 各自从 1 开始
-const numberedActCommands = computed(() => {
-  return actCommands.value.map((cmd, index) => ({ ...cmd, number: index + 1 }))
-})
+// 注释：编号
+const numberedActCommands = computed(() => actCommands.value.map((c, i) => ({ ...c, number: i + 1 })))
+const numberedFavoriteCommands = computed(() => favoriteCommands.value.map((c, i) => ({ ...c, number: i + 1 })))
+const numberedExCommands = computed(() => exCommands.value.map((c, i) => ({ ...c, number: i + 200 })))
 
-const numberedExCommands = computed(() => {
-  return exCommands.value.map((cmd, index) => ({ ...cmd, number: index + 1 }))
-})
-
-// 注释：编号→commandId 映射表（供键盘输入查找）
 const numberToCommand = computed<Map<number, string>>(() => {
   const map = new Map<number, string>()
-  // 注释：Act_COM 用 1-99，Ex_COM 用 100+ 避免冲突
-  numberedActCommands.value.forEach(cmd => map.set(cmd.number, cmd.id))
-  numberedExCommands.value.forEach(cmd => map.set(cmd.number + 100, cmd.id))
+  numberedActCommands.value.forEach(c => map.set(c.number, c.id))
+  numberedExCommands.value.forEach(c => map.set(c.number, c.id))
   return map
 })
 
-// 注释：执行指令
 async function executeCommand(commandId: string) {
   lastCommand.value = commandId
   await commandExecutor.execute(commandId, {
-    uiStore,
-    gameStore,
-    api: apiSystem,
+    uiStore, gameStore, api: apiSystem,
     engine: { setExecutionState: () => {}, emit: () => {} },
     evaluateCondition: () => true,
   })
 }
 
-// 注释：键盘输入处理
 useKeyInput({
   onNumberConfirm: (num: number) => {
-    // 注释：先查 Act_COM 编号，再查 Ex_COM（100+）
-    const cmdId = numberToCommand.value.get(num) ?? numberToCommand.value.get(num + 100)
-    if (cmdId) {
-      executeCommand(cmdId)
-    }
+    const cmdId = numberToCommand.value.get(num)
+    if (cmdId) executeCommand(cmdId)
   },
 })
 
-// 注释：模式变化时重置（编号重新分配，瞬间替换）
-// TODO: modeTransitionStyle mod 自定义过渡效果，当前瞬间替换
-watch(() => gameStore.currentMode, () => {
-  // 注释：模式切换时编号自动重算（computed 自动响应）
-})
+watch(() => gameStore.currentMode, () => {})
 </script>
 
 <template>
   <div class="command-bar">
     <!-- 注释：Act_COM 区 -->
     <CollapsibleSection title="Act_COM" fold-key="actCom">
+      <!-- 类别开关行 -->
+      <div class="category-toggles">
+        <button
+          v-for="cat in availableCategories"
+          :key="cat"
+          class="cat-toggle"
+          :class="{ on: uiStore.commandCategories[cat] !== false, favorite: cat === 'favorite' }"
+          @click="uiStore.toggleCategory(cat)"
+        >
+          {{ cat === 'favorite' ? '★' : cat }}
+        </button>
+      </div>
+
+      <!-- 收藏夹组（单独一行，★高亮且有指令时显示） -->
+      <div v-if="uiStore.commandCategories.favorite && numberedFavoriteCommands.length > 0" class="favorite-group">
+        <div class="favorite-header">★ 收藏夹</div>
+        <div class="command-group">
+          <CommandItem
+            v-for="cmd in numberedFavoriteCommands"
+            :key="cmd.id"
+            :label="cmd.label"
+            :command-id="cmd.id"
+            :number="cmd.number"
+            @execute="executeCommand"
+          />
+        </div>
+      </div>
+
+      <!-- 常规指令 -->
       <div class="command-group">
         <CommandItem
           v-for="cmd in numberedActCommands"
@@ -105,7 +131,7 @@ watch(() => gameStore.currentMode, () => {
           :number="cmd.number"
           @execute="executeCommand"
         />
-        <p v-if="numberedActCommands.length === 0" class="no-commands">无可用指令</p>
+        <p v-if="numberedActCommands.length === 0 && !uiStore.commandCategories.favorite" class="no-commands">无可用指令</p>
       </div>
     </CollapsibleSection>
 
@@ -123,10 +149,7 @@ watch(() => gameStore.currentMode, () => {
       </div>
     </CollapsibleSection>
 
-    <!-- 注释：上次指令提示 -->
-    <div v-if="lastCommand" class="last-command">
-      &lt;上回指令: {{ lastCommand }}&gt;
-    </div>
+    <div v-if="lastCommand" class="last-command">&lt;上回指令: {{ lastCommand }}&gt;</div>
   </div>
 </template>
 
@@ -137,12 +160,52 @@ watch(() => gameStore.currentMode, () => {
   padding: var(--gap-small);
 }
 
+.category-toggles {
+  display: flex;
+  gap: 2px;
+  margin-bottom: var(--gap-small);
+  flex-wrap: wrap;
+}
+
+.cat-toggle {
+  padding: 4px 8px;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: 0.75rem;
+  min-height: 44px;
+  transition: all 0.15s;
+}
+
+.cat-toggle.on {
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+}
+
+.cat-toggle.favorite.on {
+  color: var(--color-warning);
+  border-color: var(--color-warning);
+}
+
+.favorite-group {
+  margin-bottom: var(--gap-small);
+  padding-bottom: var(--gap-small);
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.favorite-header {
+  font-size: 0.75rem;
+  color: var(--color-warning);
+  margin-bottom: var(--gap-small);
+}
+
 .command-group {
   display: flex;
   flex-wrap: wrap;
   gap: var(--gap-small);
-  /* 注释：移动端多列网格（非一行一个） */
-  /* TODO: 响应式网格列数 */
 }
 
 .no-commands {

@@ -10,6 +10,7 @@ export interface Effect {
   id?: string           // 可选，供 depends_on 引用
   depends_on?: string   // 可选，前置 effect id
   target?: string       // self/selected/player/all_enemies/all_allies/target
+  condition?: string    // 可选，条件表达式（用 condition.ts 求值，不满足时跳过）
 }
 
 class EffectTypeRegistryClass {

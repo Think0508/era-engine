@@ -11,6 +11,7 @@ import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
 import { apiSystem } from '../../core/api'
+import { evaluateCondition } from '../../core/condition'
 
 // 注释：onLoad——注册 10 核心类型 handler
 export function onLoad(_ctx: PluginContext): void {
@@ -171,6 +172,14 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
       const depResult = results.get(effect.depends_on)
       if (depResult !== true) {
         // 注释：前置失败 → 跳过（不报错，这是分支逻辑）
+        continue
+      }
+    }
+
+    // 注释：condition 检查——不满足时跳过
+    if (effect.condition) {
+      const gc = gameContext.getContext()
+      if (!evaluateCondition(effect.condition, gc)) {
         continue
       }
     }

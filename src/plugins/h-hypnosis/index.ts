@@ -2,6 +2,7 @@ import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { narrativeLog } from '../../core/narrative-log'
+import { eventBus } from '../../core/event-bus'
 
 interface HypnosisData {
   hypnosis_degree: number
@@ -16,6 +17,44 @@ interface HypnosisData {
 const DEFAULT_HYPNOSIS: HypnosisData = {
   hypnosis_degree: 0, increase_body_sensitivity: false, force_ovulation: false,
   blockhead: false, active_h: false, pain_as_pleasure: false, roleplay: [],
+}
+
+// 精神力 — 消耗资源，参考 h-time-stop TSP 模式
+const HYPNOSIS_SANITY_MAX = 100
+
+function getSanity(charId: string): number {
+  const ch = entitySystem.get('character', charId) as any
+  return ch?.base?.['精神'] ?? HYPNOSIS_SANITY_MAX
+}
+
+function setSanity(charId: string, val: number): void {
+  const ch = entitySystem.get('character', charId) as any
+  if (!ch) return
+  if (!ch.base) ch.base = {}
+  ch.base['精神'] = Math.max(0, Math.min(HYPNOSIS_SANITY_MAX, val))
+}
+
+function getHypnosisXp(charId: string): number {
+  const ch = entitySystem.get('character', charId) as any
+  return ch?.experience?.hypnosis ?? 0
+}
+
+function addHypnosisXp(charId: string, amount: number): void {
+  const ch = entitySystem.get('character', charId) as any
+  if (!ch) return
+  if (!ch.experience) ch.experience = {}
+  ch.experience.hypnosis = (ch.experience.hypnosis ?? 0) + amount
+}
+
+// 玩家催眠天赋检查 — xp 阈值: 1→331, 10→332, 50→333, 200→334
+const HYPNOSIS_TALENT_XP = [1, 10, 50, 200]  // 331, 332, 333, 334
+function hasHypnosisTalent(talentId: number): boolean {
+  const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
+  if (!playerId) return false
+  const xp = getHypnosisXp(playerId)
+  const idx = talentId - 331
+  if (idx < 0 || idx >= HYPNOSIS_TALENT_XP.length) return false
+  return xp >= HYPNOSIS_TALENT_XP[idx]
 }
 
 const HYPNOSIS_TYPE_NAMES = ['无', '平然催眠', '空气催眠', '体控催眠', '心控催眠']
@@ -74,7 +113,11 @@ function calculateSanityCost(charId: string): number {
 }
 
 function getHypnosisDegreeLimit(): number {
-  return 200
+  const limits = [0, 50, 100, 100, 200]  // 331→50, 332→100, 333→100, 334→200
+  for (let i = limits.length - 1; i >= 0; i--) {
+    if (hasHypnosisTalent(331 + i)) return limits[i]
+  }
+  return 0
 }
 
 // TODO: 催眠完成检查 — NPC 天赋获取 + 二段行为依赖 NPC 天赋系统
@@ -231,11 +274,16 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
   }
 
-  // TODO: 天赋前提返回 true（需天赋系统就绪后接入实际判断）
-  reg('PRIMARY_HYPNOSIS', () => true)
-  reg('INTERMEDIATE_HYPNOSIS', () => true)
-  reg('ADVANCED_HYPNOSIS', () => true)
-  reg('SPECIAL_HYPNOSIS', () => true)
+  reg('PRIMARY_HYPNOSIS', () => hasHypnosisTalent(331))
+  reg('INTERMEDIATE_HYPNOSIS', () => hasHypnosisTalent(332))
+  reg('ADVANCED_HYPNOSIS', () => hasHypnosisTalent(333))
+  reg('SPECIAL_HYPNOSIS', () => hasHypnosisTalent(334))
+
+  eventBus.on('game:new_day', () => {
+    for (const ch of entitySystem.getAll('character')) {
+      setSanity(ch.id, HYPNOSIS_SANITY_MAX)
+    }
+  })
 
   reg('SELF_HYPNOSIS_0', (ctx2: any) => { const id = getSelfId(ctx2); return id ? getHypnosis(id).hypnosis_degree === 0 : false })
   reg('T_HYPNOSIS_0', (ctx2: any) => { const id = getTargetId(ctx2); return id ? getHypnosis(id).hypnosis_degree === 0 : false })

@@ -15,6 +15,7 @@ import { registerTargetPremises } from './premise/premise-target'
 import { registerFallPremises } from './premise/premise-fall'
 import { registerClothingPremises } from './premise/premise-clothing'
 import { registerBodyItemPremises } from './premise/premise-body-item'
+import { registerInstructPremises } from './premise/premise-instruct'
 import { loadHInstructions } from './h-instruction-loader'
 import { calcFavorability, getFavorabilityLevel, getTrustLevel } from './settle/favorability'
 import { calcStateChange } from './settle/state'
@@ -409,6 +410,7 @@ export function onEnable(ctx: PluginContext): void {
   registerFallPremises(premiseRegistry)
   registerClothingPremises(premiseRegistry)
   registerBodyItemPremises(premiseRegistry)
+  registerInstructPremises(premiseRegistry)
 
   // 注释：每次 H 行动后自动触发 body_item_tick
   ctx.events.on('game:execution_end', async () => {

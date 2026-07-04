@@ -337,5 +337,30 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     getNpcAiName: (type: number): string => NPC_AI_NAMES[type] ?? '未知',
   })
 
-  // 注释：TODO Task 5 — 注册事件监听 + 公式钩子
+  // 注释：Step 9 — 注册事件监听
+
+  // 每次 H 行动后，群交模式中应用观众加成
+  ctx.events.on('game:execution_end', (payload: any) => {
+    if (!groupSexMode) return
+    const addTime = payload?.timeCost ?? 10
+    for (const ch of entitySystem.getAll('character')) {
+      const c = ch as any
+      if (!c?.h_state?.is_h) continue
+      applyGroupSexRealtimeTick(c.id, addTime)
+    }
+  })
+
+  // 群交中检查角色疲劳退出
+  // 对应 erArk handle_npc_ai.py:55-94
+  ctx.events.on('game:mode_changed', (payload: any) => {
+    if (!groupSexMode || payload?.mode !== 'h_scene') return
+    // TODO: 当NPC疲劳时自动执行group_sex_npc_hp_0_end
+    // TODO: 剩余1NPC → 转单人H，剩余0 → 结束群交
+  })
+
+  // 注释：Step 10 — 指令注册（待 h-core 指令加载器就绪）
+  // TODO: 注册 ask_group_sex 指令（前提+效果链）
+  // TODO: 注册 group_sex_end 指令（前提+效果链）
+  // TODO: 注册 run_group_sex_template 指令（调用 executeGroupSexTemplate）
+  // TODO: 注册 edit_group_sex_template 指令（打开模板编辑器面板）
 }

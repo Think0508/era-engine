@@ -1,5 +1,7 @@
 # daily/social.toml——日常社交指令
-# base_value: 行为参数默认 30，快感部位用 50（取自 erArk default.py）
+# 效果链精确复刻 erArk 06-指令集-攻略期.md + 07-指令集-猥亵期.md
+# 映射: 11=体力-small, 12=气力-small, 22=信赖, 52=恭顺, 53=好意, 55=屈服, 62=苦痛, 81=习得
+# TODO: CVE_*(经验系统), 501/502, 1101(first kiss), 118
 
 [[instructions]]
 id = "chat"
@@ -8,8 +10,10 @@ type = "daily"
 priority = 10
 time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
+# erArk effect IDs: [21, 12, CVE_A2_E|80_G_1, CVE_A1_E|80_G_1, 53, 55, 501]
 effects = [
   { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
 ]
@@ -28,54 +32,58 @@ talk_scene = "give_gift"
 [[instructions]]
 id = "hand_in_hand"
 label = "牵手"
-type = "daily"
+type = "obscenity"
 priority = 30
 time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
+# erArk: [21, 11, 12, 22, 52, 55, 62]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
 talk_scene = "hand_in_hand"
 
 [[instructions]]
 id = "embrace"
 label = "拥抱"
-type = "daily"
+type = "obscenity"
 priority = 40
 time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
+# erArk: [21, 11, 12, 22, 53, 55, 58, 62]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
 talk_scene = "embrace"
 
 [[instructions]]
 id = "kiss"
 label = "亲吻"
-type = "daily"
+type = "obscenity"
 priority = 50
 time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL", "FALL_LEVEL_GE_1"]
+# erArk: [21, 11, 12, 22, 1101, 51, 53, 58, 62, 118, CVE_A2_E|40_G_1, CVE_A1_E|40_G_1, CVE_A2_E|153_G_1, CVE_A1_E|153_G_1]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
-  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "快乐", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
 talk_scene = "kiss"
-
-[[instructions]]
-id = "massage"
-label = "按摩"
-type = "daily"
-priority = 35
-time_cost = 15
-premises = ["HAVE_TARGET", "T_NORMAL"]
-effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
-  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
-]
-talk_scene = "massage"

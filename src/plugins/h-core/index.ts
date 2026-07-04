@@ -1,4 +1,4 @@
-// 注释：h-core 插件——核心入口
+﻿// 注释：h-core 插件——核心入口
 
 import type { PluginContext } from '../../core/types'
 import { createHState } from './types'
@@ -15,7 +15,7 @@ import { registerTargetPremises } from './premise/premise-target'
 import { registerFallPremises } from './premise/premise-fall'
 import { registerClothingPremises } from './premise/premise-clothing'
 import { loadHInstructions } from './h-instruction-loader'
-import { calcFavorability } from './settle/favorability'
+import { calcFavorability, getFavorabilityLevel, getTrustLevel } from './settle/favorability'
 import { calcStateChange } from './settle/state'
 import { calcTrust } from './settle/trust'
 import { calcJudge, getLevel } from './settle/judge'
@@ -25,7 +25,6 @@ import { modLoader } from '../../core/mod-loader'
 export const premiseRegistry = new PremiseRegistry()
 
 export function onLoad(_ctx: PluginContext): void {
-  // 注释：settle_favorability——公式#1，base = _timeCost（指令耗时）
   effectTypeRegistry.register('settle_favorability', (params: any, execCtx: any) => {
     const targetIds = execCtx._targetIds as string[]
     const timeCost = execCtx._timeCost ?? params.base ?? 10
@@ -36,20 +35,29 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：settle_state——公式#8
-  // base = _timeCost + baseValue(default 30, 取自 erArk 各 effect 的 base_value)
-  // 行为参数(baseValue=30) vs 快感部位(baseValue=50)，由指令 TOML 传入
+  effectTypeRegistry.register('settle_trust', (_params: any, execCtx: any) => {
+    const targetIds = execCtx._targetIds as string[]
+    const timeCost = execCtx._timeCost ?? 10
+    for (const id of targetIds) {
+      const result = calcTrust(timeCost, 0)
+      if (result > 0) applyStateChange(id, '信赖度', result)
+    }
+    return true
+  })
+
+  // 注释：settle_state——negate=true 时扣减（对齐 erArk 的 HP/MP→体力/气力）
   effectTypeRegistry.register('settle_state', (params: any, execCtx: any) => {
     const targetIds = execCtx._targetIds as string[]
     const hConfig = (modLoader.getMod()?.hConfig as any) ?? {}
     const abilityTable = hConfig.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
     const timeCost = execCtx._timeCost ?? 10
-    const baseValue = params.baseValue ?? 30  // 注释：erArk 默认 base_value=30，快感等用 50
+    const baseValue = params.baseValue ?? 30
     const base = timeCost + baseValue
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any
       const abilityLevel = char?.abilities?.[params.state]?.level ?? 0
-      const finalValue = calcStateChange(base, abilityLevel, abilityTable)
+      const raw = calcStateChange(base, abilityLevel, abilityTable)
+      const finalValue = params.negate ? -raw : raw
       if (finalValue !== 0) applyStateChange(id, params.state, finalValue)
     }
     return true
@@ -75,14 +83,6 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  effectTypeRegistry.register('h_favorability', (_params: any, _execCtx: any) => {
-    return true
-  })
-
-  effectTypeRegistry.register('h_hp_mp_change', (_params: any, _execCtx: any) => {
-    return true
-  })
-
   effectTypeRegistry.register('h_orgasm_check', (params: any, execCtx: any) => {
     const targetIds = execCtx._targetIds as string[]
     const partId = params.partId ?? 0
@@ -94,8 +94,7 @@ export function onLoad(_ctx: PluginContext): void {
       const result = checkOrgasm(partId, statusVal, hState.orgasm_level[partId] ?? 0)
       if (result) {
         if (!hState.orgasm_count[partId]) hState.orgasm_count[partId] = [0, 0]
-        hState.orgasm_count[partId][0]++
-        hState.orgasm_count[partId][1]++
+        hState.orgasm_count[partId][0]++; hState.orgasm_count[partId][1]++
         if (!hState.orgasm_level[partId]) hState.orgasm_level[partId] = 0
         hState.orgasm_level[partId]++
         narrativeLog.write(`${char.name || id} ${result.level} 绝顶！`, 'dialogue', 'h-core')
@@ -126,6 +125,7 @@ export function onEnable(ctx: PluginContext): void {
   ctx.api.register('h-core', {
     evaluatePremises: (premises: string[], evalCtx: any) => premiseRegistry.evaluate(premises, evalCtx),
     startHScene, endHScene, getLevel, calcFavorability, calcTrust, calcJudge,
+    getFavorabilityLevel, getTrustLevel,
     registerPremise: (id: string, handler: any) => premiseRegistry.register(id, handler),
   })
 

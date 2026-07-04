@@ -1,5 +1,6 @@
 # obscenity.toml——猥亵指令
-# base_value: 快感部位用 50（对齐 erArk default.py），行为参数默认 30
+# 效果链精确复刻 erArk 07-指令集-猥亵期.md
+# TODO: 111(胸部追加快感), CVE_*(经验系统)
 
 [[instructions]]
 id = "touch_hand"
@@ -8,10 +9,15 @@ type = "obscenity"
 priority = 10
 time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
+# erArk: [21, 11, 12, 22, 52, 55, 62]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
-  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
 talk_scene = "touch_hand"
 
@@ -22,9 +28,14 @@ type = "obscenity"
 priority = 20
 time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
+# erArk: [21, 11, 12, 58, 62, 111, CVE_A2_E|1_G_1, CVE_A1_E|41_G_1]
 effects = [
   { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
+  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
   { type = "settle_state", params = { state = "胸部", baseValue = 50 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
 ]

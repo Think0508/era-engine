@@ -1,0 +1,39 @@
+# daily/play.toml——娱乐指令（示例）
+# TODO: 增加场所前提（IN_BATHROOM、PLACE_WATER、PLACE_MUSIC 等）
+
+[[instructions]]
+id = "play_chess"
+label = "下棋"
+type = "daily"
+priority = 60
+time_cost = 20
+premises = ["HAVE_TARGET", "T_NORMAL"]
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 8 }, target = "selected" },
+]
+talk_scene = "play_chess"
+
+[[instructions]]
+id = "sing"
+label = "唱歌"
+type = "daily"
+priority = 61
+time_cost = 15
+premises = ["HAVE_TARGET", "T_NORMAL"]
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 5 }, target = "selected" },
+]
+talk_scene = "sing"
+
+[[instructions]]
+id = "swim"
+label = "游泳"
+type = "daily"
+priority = 62
+time_cost = 30
+premises = ["HAVE_TARGET", "T_NORMAL"]
+effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -10 }, target = "self" },
+  { type = "modify_attribute", params = { attr = "好感度", value = 8 }, target = "selected" },
+]
+talk_scene = "swim"

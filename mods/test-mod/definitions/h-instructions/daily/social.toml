@@ -1,5 +1,4 @@
-# mods/test-mod/definitions/h-instructions/daily.toml
-# 日常指令（非 H 状态可用）
+# daily/social.toml——日常社交指令
 
 [[instructions]]
 id = "chat"
@@ -8,9 +7,7 @@ type = "daily"
 priority = 10
 time_cost = 10
 premises = ["HAVE_TARGET"]
-effects = [
-  { type = "modify_attribute", params = { attr = "好感度", value = 5 }, target = "selected" }
-]
+effects = [{ type = "modify_attribute", params = { attr = "好感度", value = 5 }, target = "selected" }]
 talk_scene = "chat"
 
 [[instructions]]
@@ -20,9 +17,7 @@ type = "daily"
 priority = 20
 time_cost = 5
 premises = ["HAVE_TARGET"]
-effects = [
-  { type = "modify_attribute", params = { attr = "好感度", value = 30 }, target = "selected" }
-]
+effects = [{ type = "modify_attribute", params = { attr = "好感度", value = 30 }, target = "selected" }]
 talk_scene = "give_gift"
 
 [[instructions]]
@@ -34,7 +29,7 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
   { type = "modify_attribute", params = { attr = "好感度", value = 10 }, target = "selected" },
-  { type = "modify_attribute", params = { attr = "情欲", value = 5 }, target = "selected" }
+  { type = "modify_attribute", params = { attr = "欲情", value = 5 }, target = "selected" }
 ]
 talk_scene = "hand_in_hand"
 
@@ -47,7 +42,7 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
   { type = "modify_attribute", params = { attr = "好感度", value = 15 }, target = "selected" },
-  { type = "modify_attribute", params = { attr = "情欲", value = 10 }, target = "selected" }
+  { type = "modify_attribute", params = { attr = "欲情", value = 10 }, target = "selected" }
 ]
 talk_scene = "embrace"
 
@@ -60,7 +55,20 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL", "FALL_LEVEL_GE_1"]
 effects = [
   { type = "modify_attribute", params = { attr = "好感度", value = 20 }, target = "selected" },
-  { type = "modify_attribute", params = { attr = "情欲", value = 15 }, target = "selected" },
+  { type = "modify_attribute", params = { attr = "欲情", value = 15 }, target = "selected" },
   { type = "modify_attribute", params = { attr = "屈服", value = 5 }, target = "selected" }
 ]
 talk_scene = "kiss"
+
+[[instructions]]
+id = "massage"
+label = "按摩"
+type = "daily"
+priority = 35
+time_cost = 15
+premises = ["HAVE_TARGET", "T_NORMAL"]
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 10 }, target = "selected" },
+  # TODO: 疲劳-10（需要实现疲劳attribute）
+]
+talk_scene = "massage"

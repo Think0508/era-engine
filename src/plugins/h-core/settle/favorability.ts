@@ -1,28 +1,21 @@
-// 注释：好感度结算（公式#1）
-// floor(base × status_adjust × ability_adjust × talent_adjust × mark_adjust)
-// 调用方传入 baseValue（来自 magnitude_base × add_time 等）
-// 各修正系数在运行时从角色数据读取
+// 注释：好感度/信赖度等级系统（对齐 erArk）
 
 import { entitySystem } from '../../../core/entity-system'
+import { modLoader } from '../../../core/mod-loader'
 
-// 注释：status_id → 每级修正%
 const STATUS_MOD: Record<string, number> = {
   '恭顺': 0.10, '好意': 0.10, '欲情': 0.10, '快乐': 0.10,
   '羞耻': -0.10, '苦痛': -0.10, '恐怖': -0.30, '抑郁': -0.30, '反感': -0.30,
 }
 
-// 注释：从角色 base 读取状态值的等级（简化用 value/10000 估算 LV）
 function getStatusLevel(char: any, name: string): number {
-  const val = char?.base?.[name] ?? 0
-  return Math.floor(val / 10000)
+  return Math.floor((char?.base?.[name] ?? 0) / 10000)
 }
 
-// 注释：从角色的 abilities 读取指定 ID 的能力等级
 function getAbilityLevel(char: any, abilityId: number): number {
   return char?.abilities?.[abilityId]?.level ?? 0
 }
 
-// 注释：从角色的 talents 读取陷落等级（爱情系 201-204 / 隶属系 211-214）
 function getFallTalentLevel(char: any): number {
   if (!char?.talents) return 0
   for (let i = 0; i < 4; i++) {
@@ -32,54 +25,52 @@ function getFallTalentLevel(char: any): number {
   return 0
 }
 
-// 注释：查角色的某刻印等级（ability 13-19, 存为 abilities.mark_{id}）
 function getMarkLevel(char: any, markId: number): number {
   return char?.abilities?.[`mark_${markId}`]?.level ?? 0
 }
 
-// 注释：好感度修正系数——状态修正
 function calcStatusAdjust(char: any): number {
-  let adjust = 1.0
+  let adj = 1.0
   for (const [key, mod] of Object.entries(STATUS_MOD)) {
     const lv = getStatusLevel(char, key)
-    if (lv > 0) adjust += mod * lv
+    if (lv > 0) adj += mod * lv
   }
-  return adjust
-}
-
-// 注释：能力修正——亲密(33) +20%/lv
-function calcAbilityAdjust(char: any): number {
-  const intimacy = getAbilityLevel(char, 33)
-  return 1.0 + intimacy * 0.2
-}
-
-// 注释：素质修正——爱情/隶属陷落 +25%/lv
-function calcTalentAdjust(char: any): number {
-  const fall = getFallTalentLevel(char)
-  return 1.0 + fall * 0.25
-}
-
-// 注释：刻印修正
-function calcMarkAdjust(char: any): number {
-  let adjust = 1.0
-  const markMods: Record<number, number> = {
-    13: 0.2, 14: 0.2, 15: -0.3, 17: -0.3, 18: -1.0,
-  }
-  for (const [id, mod] of Object.entries(markMods)) {
-    const lv = getMarkLevel(char, Number(id))
-    if (lv > 0) adjust += mod * lv
-  }
-  return adjust
+  return adj
 }
 
 export function calcFavorability(charId: string, baseValue: number): number {
   const char = entitySystem.get('character', charId) as any
   if (!char) return Math.floor(baseValue)
+  const intimacy = getAbilityLevel(char, 33)
+  const abilityAdj = 1.0 + intimacy * 0.2
+  const fall = getFallTalentLevel(char)
+  const talentAdj = 1.0 + fall * 0.25
+  let markAdj = 1.0
+  for (const [id, mod] of Object.entries({ 13: 0.2, 14: 0.2, 15: -0.3, 17: -0.3, 18: -1.0 })) {
+    const lv = getMarkLevel(char, Number(id))
+    if (lv > 0) markAdj += mod * lv
+  }
+  return Math.floor(baseValue * calcStatusAdjust(char) * abilityAdj * talentAdj * markAdj)
+}
 
-  const statusAdj = calcStatusAdjust(char)
-  const abilityAdj = calcAbilityAdjust(char)
-  const talentAdj = calcTalentAdjust(char)
-  const markAdj = calcMarkAdjust(char)
+// 注释：好感度等级——对齐 erArk get_favorability_level
+// 阈值来自 h-config.toml favorability_thresholds
+// 返回 { level(0-8), judgeAdd(+0~+300) }
+export function getFavorabilityLevel(value: number): { level: number; judgeAdd: number } {
+  const cfg = (modLoader.getMod()?.hConfig as any) ?? {}
+  const t = cfg.favorability_thresholds ?? [0, 100, 500, 1000, 2500, 5000, 10000, 50000, 100000]
+  const add = [0, 10, 25, 50, 75, 100, 150, 225, 300]
+  let lv = 0
+  for (let i = t.length - 1; i >= 0; i--) { if (value >= t[i]) { lv = i; break } }
+  return { level: lv, judgeAdd: add[lv] ?? 0 }
+}
 
-  return Math.floor(baseValue * statusAdj * abilityAdj * talentAdj * markAdj)
+// 注释：信赖度等级——对齐 erArk get_trust_level
+export function getTrustLevel(value: number): { level: number; judgeAdd: number } {
+  const cfg = (modLoader.getMod()?.hConfig as any) ?? {}
+  const t = cfg.trust_thresholds ?? [0, 25, 50, 75, 100, 150, 200, 250, 300]
+  const add = [0, 25, 50, 75, 100, 150, 200, 300, 500]
+  let lv = 0
+  for (let i = t.length - 1; i >= 0; i--) { if (value >= t[i]) { lv = i; break } }
+  return { level: lv, judgeAdd: add[lv] ?? 0 }
 }

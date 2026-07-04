@@ -37,6 +37,8 @@ const HIDDEN_LEVELS = [
 // 注释：4 级隐奸模式名称
 const MODE_NAMES = ['无', '双不隐', '女隐', '男隐', '双隐']
 
+let lastActionTimeCost = 10
+
 function getSelfId(ctx: any): string | null {
   return ctx.gameStore?.player?.id ?? ctx.sourceId ?? null
 }
@@ -191,6 +193,29 @@ async function handleHiddenSexFlow(
 
   await settleHiddenValue(charId, nowDuration, nowAddFlag, nowIntensity)
   await checkAndSettleDiscovery(charId)
+}
+
+// 注释：applyHiddenSexTick — 隐奸中每 tick 增加羞耻和心理快感
+// 对应 erArk realtime_settle.py:503-509
+function applyHiddenSexTick(charId: string, addTime: number): void {
+  const ch = entitySystem.get('character', charId) as any
+  if (!ch) return
+  const mode = ch?.sp_flag?.hidden_sex_mode ?? 0
+  if (mode < 1) return
+
+  const sceneCount = entitySystem.getAll('character').length
+  const othersCount = Math.max(0, sceneCount - 2)
+
+  const extraAdd = (4 - mode) + othersCount * 0.1
+
+  const abilityLv = ch?.abilities?.['露出']?.level ?? 0
+
+  if (!ch.base) ch.base = {}
+  const shameBase = Math.floor(addTime * 5 * getAbilityAdjust(abilityLv) * (1 + extraAdd))
+  ch.base['羞耻'] = Math.min(99999, (ch.base['羞耻'] ?? 0) + shameBase)
+
+  const pleasureBase = Math.floor(addTime * 5 * getAbilityAdjust(abilityLv) * (1 + extraAdd))
+  ch.base['心理快感'] = Math.min(99999, (ch.base['心理快感'] ?? 0) + pleasureBase)
 }
 
 export function onLoad(_ctx: PluginContext): void {
@@ -417,10 +442,99 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     },
   })
 
-  // 注释：TODO Task 5 — 注册事件监听
-  // ctx.events.on('game:execution_end', ...)
-  // eventBus.on('h:orgasm', ...)
-  // eventBus.on('h:end', ...)
+  // 注释：每次 H 行动后 → 发现度 tick + 羞耻/快感 tick + 经验
+  ctx.events.on('game:execution_end', async (payload: any) => {
+    const currentMode = gameContext.getCurrentMode()
+    if (currentMode !== 'h_scene') return
+
+    const addTime = payload?.timeCost ?? lastActionTimeCost
+
+    for (const ch of entitySystem.getAll('character')) {
+      const c = ch as any
+      const mode = c?.sp_flag?.hidden_sex_mode ?? 0
+      if (mode < 1) continue
+
+      const behaviorId = c?.behavior?.behavior_id
+      const behaviorTags = c?.behavior?.tags ?? []
+      const isSexTag = behaviorTags.some((t: string) => t === '猥亵' || t === '性爱')
+      const isWait = behaviorId === 'WAIT'
+      const addFlag = isWait ? false : isSexTag
+      const intensity = getBehaviorTagIntensity(behaviorTags)
+
+      await settleHiddenValue(c.id, addTime, addFlag, intensity)
+
+      applyHiddenSexTick(c.id, addTime)
+
+      if (!isWait) {
+        const discovered = await checkAndSettleDiscovery(c.id)
+        if (discovered) break
+      }
+
+      if ((c.id === 'player' || c.id === '0') && isSexTag && !isWait) {
+        if (!c.experience) c.experience = {}
+        c.experience['hidden_sex'] = (c.experience['hidden_sex'] ?? 0) + 1
+        const targetId = c?.sp_flag?.target_character_id
+        if (targetId) {
+          const target = entitySystem.get('character', targetId) as any
+          if (target) {
+            if (!target.experience) target.experience = {}
+            target.experience['hidden_sex'] = (target.experience['hidden_sex'] ?? 0) + 1
+          }
+        }
+      }
+    }
+  })
+
+  // 注释：隐奸中绝顶 → 增加发现度
+  eventBus.on('h:orgasm', async (payload: any) => {
+    if (!payload?.character) return
+    const ch = entitySystem.get('character', payload.character) as any
+    if (!ch || (ch?.sp_flag?.hidden_sex_mode ?? 0) < 1) return
+
+    const orgasmLv = payload.level ?? 0
+    const orgasmMap = [
+      { duration: 5, intensity: 2 },
+      { duration: 6, intensity: 3 },
+      { duration: 7, intensity: 4 },
+      { duration: 10, intensity: 5 },
+    ]
+    const { duration, intensity } = orgasmMap[Math.min(orgasmLv, 3)]
+
+    await settleHiddenValue(payload.character, duration, true, intensity)
+    await checkAndSettleDiscovery(payload.character)
+
+    if (!ch.achievement) ch.achievement = {}
+    if (!ch.achievement.hidden_sex_record) ch.achievement.hidden_sex_record = {}
+    ch.achievement.hidden_sex_record[4] = (ch.achievement.hidden_sex_record[4] ?? 0) + 1
+  })
+
+  // 注释：隐奸中射精 → 成就记录
+  eventBus.on('h:shoot', (payload: any) => {
+    if (!payload?.character) return
+    const ch = entitySystem.get('character', payload.character) as any
+    if (!ch || (ch?.sp_flag?.hidden_sex_mode ?? 0) < 1) return
+    if (!ch.achievement) ch.achievement = {}
+    if (!ch.achievement.hidden_sex_record) ch.achievement.hidden_sex_record = {}
+    ch.achievement.hidden_sex_record[3] = (ch.achievement.hidden_sex_record[3] ?? 0) + 1
+  })
+
+  // 注释：H 结束 → 清除隐奸模式
+  eventBus.on('h:end', () => {
+    for (const ch of entitySystem.getAll('character')) {
+      const c = ch as any
+      if (c?.sp_flag?.hidden_sex_mode) {
+        c.sp_flag.hidden_sex_mode = 0
+      }
+    }
+  })
+
+  // 注释：记录每次行动的时间成本
+  ctx.events.on('game:execution_start', (payload: any) => {
+    const cmd = commandRegistry.getById(payload?.commandId)
+    if (cmd) {
+      lastActionTimeCost = (cmd as any)?.timeCost ?? 10
+    }
+  })
 
   // 注释：TODO Task 6 — UI 插槽注册
 }

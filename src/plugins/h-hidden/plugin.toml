@@ -1,0 +1,9 @@
+[meta]
+id = "h-hidden"
+name = "隐奸系统"
+version = "1.0.0"
+description = "4级隐匿/发现度系统，复刻 erArk hidden_sex_panel"
+
+[data_dependencies]
+provides = ["hidden:ready"]
+depends_on = ["h:ready"]

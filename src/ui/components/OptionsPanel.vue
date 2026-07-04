@@ -2,9 +2,16 @@
 
 <script setup lang="ts">
 import { useUIStore } from '../stores/ui-store'
+import { themeManager } from '../theme/theme-manager'
 import CollapsibleSection from './CollapsibleSection.vue'
 
 const uiStore = useUIStore()
+
+function toggleDarkMode() {
+  const next = uiStore.colorScheme === 'dark' ? 'light' : 'dark'
+  uiStore.setColorScheme(next)
+  themeManager.setColorScheme(next)
+}
 
 const FONTS = ['sans-serif', 'serif', 'monospace', '楷体, serif', '宋体, serif', '微软雅黑, sans-serif']
 const FONT_SIZES = ['small', 'medium', 'large', 'xlarge'] as const
@@ -24,7 +31,7 @@ const FONT_SIZES = ['small', 'medium', 'large', 'xlarge'] as const
       <div class="option-row">
         <span class="option-label">深色模式</span>
         <button class="option-toggle" :class="{ on: uiStore.colorScheme === 'dark' }"
-          @click="uiStore.setColorScheme(uiStore.colorScheme === 'dark' ? 'light' : 'dark')">
+          @click="toggleDarkMode">
           {{ uiStore.colorScheme === 'dark' ? '开启' : '关闭' }}
         </button>
       </div>
@@ -35,6 +42,7 @@ const FONT_SIZES = ['small', 'medium', 'large', 'xlarge'] as const
           {{ uiStore.showGroupTitles ? '显示' : '隐藏' }}
         </button>
       </div>
+      <p class="option-hint">Parameter 数据按组分组的标题（需要角色有数据才显示效果）</p>
       <div class="option-row">
         <span class="option-label">字体</span>
         <select :value="uiStore.fontFamily" @change="(e: any) => uiStore.setFont(e.target.value)" class="option-select">
@@ -55,6 +63,7 @@ const FONT_SIZES = ['small', 'medium', 'large', 'xlarge'] as const
           <option value="scroll">滚动</option>
           <option value="clear">清屏</option>
         </select>
+        <span class="option-hint">清屏：每次执行指令时清空旧日志</span>
       </div>
     </CollapsibleSection>
 
@@ -124,6 +133,7 @@ const FONT_SIZES = ['small', 'medium', 'large', 'xlarge'] as const
           {{ uiStore.numpadShortcuts ? '启用' : '禁用' }}
         </button>
       </div>
+      <p class="option-hint">指令栏中点指令旁的 ★ 收藏到快捷栏</p>
     </CollapsibleSection>
 
     <!-- 注释：游戏设置 -->
@@ -219,5 +229,12 @@ const FONT_SIZES = ['small', 'medium', 'large', 'xlarge'] as const
   font-size: 0.75rem;
   min-width: 3em;
   text-align: right;
+}
+
+.option-hint {
+  color: var(--color-text-secondary);
+  font-size: 0.7rem;
+  padding-left: var(--gap-medium);
+  flex-basis: 100%;
 }
 </style>

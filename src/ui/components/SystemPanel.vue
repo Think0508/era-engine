@@ -8,6 +8,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
 import { useUIStore } from '../stores/ui-store'
+import OptionsPanel from './OptionsPanel.vue'
 
 const uiStore = useUIStore()
 
@@ -63,10 +64,13 @@ onUnmounted(() => {
         <button class="panel-close" @click="closePanel">✕</button>
       </div>
       <div class="panel-content">
-        <!-- 注释：面板内容——当前用占位，Task 5.14 实现 CharacterPanel -->
-        <p>面板内容：{{ uiStore.activePanel }}</p>
-        <p>TODO: 面板选项卡 + 折叠项</p>
-        <!-- TODO(phase-6+): 插件通过 SlotRegistry 注册 system-panel-{id} 插槽 -->
+        <!-- 注释：选项面板 -->
+        <OptionsPanel v-if="uiStore.activePanel === 'options'" />
+        <!-- 注释：其他面板占位 -->
+        <div v-else>
+          <p>面板内容：{{ uiStore.activePanel }}</p>
+          <p>TODO: 面板选项卡 + 折叠项</p>
+        </div>
       </div>
     </div>
   </div>

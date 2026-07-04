@@ -39,6 +39,7 @@ interface UIPreferences {
   showGroupTitles: boolean
   commandPopoverMode: boolean
   cheatCommands: boolean
+  sidebarShowParameter: boolean
   favorites: string[]
 }
 
@@ -61,6 +62,8 @@ export const useUIStore = defineStore('ui', () => {
   const sidebarOpen = ref(false)
   const sidebarMode = ref<'overlay' | 'sideBySide'>('overlay')
   const sidebarWidth = ref(300)
+  // 注释：现代主题侧栏是否显示 Parameter 区
+  const sidebarShowParameter = ref(true)
   // 注释：屏幕小键盘
   const numpadVisible = ref(false)
   const numpadNumbers = ref(false)
@@ -140,6 +143,9 @@ export const useUIStore = defineStore('ui', () => {
   function toggleCheatCommands() {
     cheatCommands.value = !cheatCommands.value
   }
+  function toggleSidebarParameter() {
+    sidebarShowParameter.value = !sidebarShowParameter.value
+  }
 
   // 注释：localStorage 持久化——saveToLocalStorage/loadFromLocalStorage
   // 键 era-engine:ui-preferences（不加 mod 前缀，设备级跨 mod 共享）
@@ -160,6 +166,7 @@ export const useUIStore = defineStore('ui', () => {
       showGroupTitles: showGroupTitles.value,
       commandPopoverMode: commandPopoverMode.value,
       cheatCommands: cheatCommands.value,
+      sidebarShowParameter: sidebarShowParameter.value,
       favorites: favorites.value,
     }
   }
@@ -192,6 +199,7 @@ export const useUIStore = defineStore('ui', () => {
       showGroupTitles.value = prefs.showGroupTitles
       commandPopoverMode.value = prefs.commandPopoverMode
       cheatCommands.value = prefs.cheatCommands ?? false
+      sidebarShowParameter.value = prefs.sidebarShowParameter ?? true
       favorites.value = prefs.favorites ?? []
     } catch {
       // 注释：localStorage 不可用或 JSON 解析失败，静默跳过
@@ -227,6 +235,8 @@ export const useUIStore = defineStore('ui', () => {
     commandPopoverMode,
     cheatCommands,
     toggleCheatCommands,
+    sidebarShowParameter,
+    toggleSidebarParameter,
     favorites,
     activePanel,
     commandFilter,

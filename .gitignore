@@ -26,6 +26,10 @@ dist-ssr
 # Superpowers workflow state
 .superpowers/
 
+# Tauri build artifacts
+src-tauri/target/
+*.exe
+
 # UI reference images (local only)
 供参考的UI*/
 

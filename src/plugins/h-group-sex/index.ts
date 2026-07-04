@@ -104,26 +104,28 @@ async function executeGroupSexTemplate(charId: string, useTemplateB: boolean): P
 }
 
 function applyGroupSexCostReduction(charId: string, hpCost: number, mpCost: number): { hp: number; mp: number } {
-  if (!groupSexMode) return { hp: hpCost, mp: mpCost }
+  const ch = entitySystem.get('character', charId) as any
+  if (!groupSexMode || !ch?.h_state?.is_h) return { hp: hpCost, mp: mpCost }
   if (charId === 'player' || charId === '0') {
     return { hp: Math.ceil(hpCost / 3), mp: Math.ceil(mpCost / 3) }
   }
   return { hp: Math.ceil(hpCost / 2), mp: Math.ceil(mpCost / 2) }
 }
 
-function applyGroupSexAudienceBonus(_charId: string, baseAdjust: number): number {
-  if (!groupSexMode) return baseAdjust
+function applyGroupSexAudienceBonus(charId: string, baseAdjust: number): number {
+  const ch = entitySystem.get('character', charId) as any
+  if (!groupSexMode || !ch?.h_state?.is_h) return baseAdjust
   const sceneCount = entitySystem.getAll('character').length
   const otherNpcNum = Math.min(10, Math.max(0, sceneCount - 2))
   return baseAdjust + otherNpcNum * 0.02
 }
 
 function applyGroupSexRealtimeTick(charId: string, addTime: number): void {
-  if (!groupSexMode) return
+  const ch = entitySystem.get('character', charId) as any
+  if (!groupSexMode || !ch?.h_state?.is_h) return
   const sceneCount = entitySystem.getAll('character').length
   const othersCount = Math.max(0, sceneCount - 2)
   const adjust = Math.min(othersCount * 0.1, 2)
-  const ch = entitySystem.get('character', charId) as any
   if (!ch?.base) return
   ch.base['羞耻'] = Math.min(99999, (ch.base['羞耻'] ?? 0) + Math.floor(addTime * adjust))
   ch.base['心理快感'] = Math.min(99999, (ch.base['心理快感'] ?? 0) + Math.floor(addTime * adjust))
@@ -152,11 +154,16 @@ export function onLoad(_ctx: PluginContext): void {
   })
 
   // 注释：group_sex_end_add_hpmp_max — 全体参与者HPMP上限增长（erArk 529）
+  // 对应 default.py:6755-6814
+  // orgasm_count = 所有身体部位 h_state.orgasm_count[state_id][0] 的总和
   effectTypeRegistry.register('group_sex_end_add_hpmp_max', (_p: any, _execCtx: any) => {
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
       if (!c?.h_state?.is_h) continue
-      const orgasmCount = c.h_state.total_orgasm_count ?? 0
+      // 注释：erArk: 遍历所有快感状态，sum orgasm_count[state_id][0]
+      const oc = c.h_state.orgasm_count as Record<string, number[]> ?? {}
+      let orgasmCount = 0
+      for (const arr of Object.values(oc)) { if (Array.isArray(arr) && arr.length > 0) orgasmCount += arr[0] }
       if (orgasmCount <= 0) continue
       if (!c.base) c.base = {}
       c.base['体力上限'] = Math.min(99999, (c.base['体力上限'] ?? 0) + orgasmCount * 2)

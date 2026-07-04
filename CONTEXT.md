@@ -37,8 +37,8 @@ A character's persistent or semi-persistent status display bar. The default stat
 _Avoid_: Confusing status with Parameter, hardcoding status bar names in engine code
 
 **Parameter**:
-A set of temporary physical and emotional numeric values that reset daily by default (similar to eraTW's Palam system), used for per-interaction calculations such as pleasure, obedience, arousal, and shame. Parameters are declared by plugins/mods as attributes or via the status-system and are displayed in the Parameter panel. At the start of each new in-game day, parameters are reset to their default values unless a mod overrides this behavior.
-_Avoid_: Confusing Parameter with Status, treating parameters as permanent attributes
+A set of temporary physical and emotional numeric values that reset daily by default (similar to eraTW's Palam system), used for per-interaction calculations such as pleasure, obedience, arousal, and shame. Parameters are declared in `definitions/attributes.toml` with `daily_reset = true` and are displayed in the Parameter panel grouped by `display_group`. The standard set includes 9 pleasure sensations (皮肤/胸部/阴蒂/阴茎/阴道/后穴/子宫/口喉/心理) and 13 behavioral params (润滑/习得/恭顺/好意/欲情/快乐/先导/屈服/羞耻/苦痛/恐怖/抑郁/反感). Pleasure params use `level_thresholds` for 10-level grading. Parameters are mod-defined — adding a new parameter just means adding it to attributes.toml with `daily_reset = true`. The ParameterSection reads dynamically from attribute definitions at runtime.
+_Avoid_: Hardcoding parameter keys in ParameterSection, treating parameters as permanent attributes, using erArk-specific terms like 兽部/尿道
 
 **Player alias**:
 The `player` prefix in condition paths (e.g. `player.气血`) is a fixed alias that resolves to the entity whose ID matches `meta.toml`'s `player_character`. `player.xxx` and `character.{player_character}.xxx` are equivalent — `player` is the concise form. The engine sets up this alias at startup; mods and plugins use `player.xxx` in conditions and `target = "player"` in effects.

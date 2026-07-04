@@ -35,9 +35,9 @@ describe('parseModData', () => {
     expect(mod.attributes.hp.display_group).toBe('status')
     expect(mod.attributes.attack.category).toBe('combat')
     // 注释：Parameter 属性有 daily_reset
-    expect(mod.attributes['快C'].daily_reset).toBe(true)
-    expect(mod.attributes['快C'].display_group).toBe('身体快感')
-    expect(mod.attributes['情欲'].display_group).toBe('情绪心理')
+    expect(mod.attributes['皮肤'].daily_reset).toBe(true)
+    expect(mod.attributes['皮肤'].display_group).toBe('身体快感')
+    expect(mod.attributes['恭顺'].display_group).toBe('行为参数')
     // 注释：非 Parameter 属性无 daily_reset
     expect(mod.attributes.hp.daily_reset).toBeUndefined()
   })

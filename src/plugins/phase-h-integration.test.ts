@@ -32,8 +32,9 @@ describe('Phase H 集成测试', () => {
 
   it('calcFavorability 基础值返回', async () => {
     const { calcFavorability } = await import('../plugins/h-core/settle/favorability')
-    expect(calcFavorability(10)).toBe(10)
-    expect(calcFavorability(0)).toBe(0)
+    // TODO: 需要角色实体测试完整公式
+    expect(calcFavorability('player', 10)).toBe(10)
+    expect(calcFavorability('player', 0)).toBe(0)
   })
 
   it('checkOrgasm 绝顶判定', async () => {

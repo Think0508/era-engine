@@ -1,5 +1,5 @@
-# mods/test-mod/definitions/h-instructions/obscenity.toml
-# 猥亵指令（轻度 H/邀请 H 前奏）
+# obscenity.toml——猥亵指令
+# 注释：效果用 settle 公式，不硬编码数值。
 
 [[instructions]]
 id = "touch_hand"
@@ -9,9 +9,9 @@ priority = 10
 time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
-  { type = "modify_attribute", params = { attr = "好感度", value = 5 }, target = "selected" },
-  { type = "modify_attribute", params = { attr = "情欲", value = 8 }, target = "selected" },
-  { type = "modify_attribute", params = { attr = "羞耻", value = 3 }, target = "selected" }
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "欲情", magnitude = "small" } },
+  { type = "settle_state", params = { state = "羞耻", magnitude = "small" } },
 ]
 talk_scene = "touch_hand"
 
@@ -23,9 +23,9 @@ priority = 20
 time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
-  { type = "modify_attribute", params = { attr = "好感度", value = 5 }, target = "selected" },
-  { type = "modify_attribute", params = { attr = "胸部", value = 20 }, target = "selected" },
-  { type = "modify_attribute", params = { attr = "羞耻", value = 8 }, target = "selected" },
-  { type = "modify_attribute", params = { attr = "情欲", value = 15 }, target = "selected" }
+  { type = "settle_favorability" },
+  { type = "settle_state", params = { state = "胸部", magnitude = "mid" } },
+  { type = "settle_state", params = { state = "羞耻", magnitude = "small" } },
+  { type = "settle_state", params = { state = "欲情", magnitude = "small" } },
 ]
 talk_scene = "touch_breast"

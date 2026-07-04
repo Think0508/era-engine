@@ -21,11 +21,37 @@ import { calcFavorability } from './settle/favorability'
 import { calcTrust } from './settle/trust'
 import { calcJudge, getLevel } from './settle/judge'
 import { checkOrgasm } from './settle/orgasm'
+import { modLoader } from '../../core/mod-loader'
 
 export const premiseRegistry = new PremiseRegistry()
 
 export function onLoad(_ctx: PluginContext): void {
-  // 注释：注册 H 核心 effect types
+  // 注释：settle_favorability——公式#1，不硬编码数值
+  // 注释：modify_attribute 应用户需求保留但仅用于特殊场景，规范用法走 settle 公式
+  effectTypeRegistry.register('settle_favorability', (params: any, execCtx: any) => {
+    const targetIds = execCtx._targetIds as string[]
+    const base = params.base ?? 10
+    for (const id of targetIds) {
+      const result = calcFavorability(id, base)
+      if (result !== 0) {
+        applyStateChange(id, '好感度', result)
+      }
+    }
+    return true
+  })
+
+  // 注释：settle_state——公式#8，按 magnitude(small/mid/large) 取基数
+  effectTypeRegistry.register('settle_state', (params: any, execCtx: any) => {
+    const targetIds = execCtx._targetIds as string[]
+    const hConfig = (modLoader.getMod()?.hConfig as any) ?? {}
+    const mag = hConfig.magnitude_base ?? { small: 10, mid: 30, large: 80 }
+    const magnitude = params.magnitude as string ?? 'small'
+    const baseValue = mag[magnitude] ?? 10
+    for (const id of targetIds) {
+      applyStateChange(id, params.state, baseValue)
+    }
+    return true
+  })
   effectTypeRegistry.register('h_start_h', async (params: any, execCtx: any) => {
     const allyId = execCtx.sourceId
     const targetId = params.targetId ?? execCtx._targetIds?.[0]
@@ -48,8 +74,8 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  effectTypeRegistry.register('h_favorability', (_params: any) => {
-    calcFavorability(5)
+  effectTypeRegistry.register('h_favorability', (_params: any, _execCtx: any) => {
+    // TODO: 改用 settle_favorability 效果类型，此 type 保留供向后兼容
     return true
   })
 

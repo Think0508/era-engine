@@ -1,4 +1,5 @@
 import { entitySystem } from '../../../core/entity-system'
+import { gameContext } from '../../../core/game-context'
 
 function targetId(ctx: any): string | null {
   return ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId ?? null
@@ -113,4 +114,208 @@ export function registerInstructPremises(registry: any): void {
   registry.register('T_U_DILATE_GE_5', dilateGe('urethral', 5))
   registry.register('T_W_DILATE_GE_3', dilateGe('womb', 3))
   registry.register('T_W_DILATE_GE_5', dilateGe('womb', 5))
+
+  // ── Clothing (equipment direct) ──────────────────────────────
+  function equipHas(partField: string) {
+    return (ctx: any) => {
+      const ch = getTarget(ctx)
+      if (!ch) return false
+      return !!ch?.equipment?.[partField]
+    }
+  }
+
+  registry.register('TARGET_WEAR_SKIRT', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.equipment?.lower?.includes('裙')
+  })
+
+  registry.register('TARGET_WEAR_PAN', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.equipment?.panties
+  })
+
+  registry.register('TARGET_WEAR_SOCKS', equipHas('foot'))
+  registry.register('TARGET_WEAR_HAT', equipHas('head'))
+  registry.register('TARGET_WEAR_GLASS', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.equipment?.accessory?.includes('眼镜')
+  })
+  registry.register('TARGET_WEAR_BRA', equipHas('bra'))
+  registry.register('TARGET_WEAR_GLOVES', equipHas('hand'))
+  registry.register('TARGET_WEAR_TROUSERS', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    if (!ch?.equipment?.lower) return false
+    return !ch.equipment.lower.includes('裙')
+  })
+  registry.register('TARGET_WEAR_SHOES', equipHas('foot'))
+
+  // ── Location / place ─────────────────────────────────────────
+  function locationTypeIs(typeName: string) {
+    return (_ctx: any) => {
+      const loc = gameContext.getContext().location
+      if (!loc) return false
+      return loc.type === typeName || loc.id === typeName
+    }
+  }
+
+  registry.register('IN_BATHROOM', locationTypeIs('bathroom'))
+  registry.register('IN_PRISON', locationTypeIs('prison'))
+  registry.register('IN_KITCHEN', locationTypeIs('kitchen'))
+  registry.register('IN_LIBRARY', locationTypeIs('library'))
+  registry.register('IN_GYM_ROOM', locationTypeIs('gym'))
+  registry.register('IN_H_SHOP', locationTypeIs('h_shop'))
+  registry.register('IN_TOILET_MAN', locationTypeIs('toilet_man'))
+  registry.register('IN_LOVE_HOTEL', locationTypeIs('love_hotel'))
+
+  registry.register('PLACE_FURNITURE_GE_1', (_ctx: any) => {
+    const loc = gameContext.getContext().location
+    if (!loc) return false
+    return (loc as any).furniture_count >= 1
+  })
+  registry.register('PLACE_FURNITURE_GE_2', (_ctx: any) => {
+    const loc = gameContext.getContext().location
+    if (!loc) return false
+    return (loc as any).furniture_count >= 2
+  })
+  registry.register('PLACE_FURNITURE_GE_3', (_ctx: any) => {
+    const loc = gameContext.getContext().location
+    if (!loc) return false
+    return (loc as any).furniture_count >= 3
+  })
+  registry.register('PLACE_DOOR_LOCKABLE', (_ctx: any) => {
+    const loc = gameContext.getContext().location
+    if (!loc) return false
+    return !!(loc as any).door
+  })
+  registry.register('PLACE_DOOR_OPEN', (_ctx: any) => {
+    const loc = gameContext.getContext().location
+    if (!loc) return false
+    return (loc as any).door === 'open'
+  })
+  registry.register('PLACE_DOOR_CLOSE', (_ctx: any) => {
+    const loc = gameContext.getContext().location
+    if (!loc) return false
+    return (loc as any).door === 'close'
+  })
+
+  // ── Item possession (inventory) ──────────────────────────────
+  function hasItem(itemId: string) {
+    return (ctx: any) => {
+      const ch = getTarget(ctx)
+      if (!ch) return false
+      return !!ch?.inventory?.[itemId]
+    }
+  }
+
+  registry.register('HAVE_BONDAGE', hasItem('绳子'))
+  registry.register('HAVE_VIBRATOR', hasItem('震动棒'))
+  registry.register('HAVE_PHILTER', hasItem('媚药'))
+  registry.register('HAVE_CONDOM', hasItem('避孕套'))
+  registry.register('HAVE_BODY_LUBRICANT', hasItem('润滑液'))
+  registry.register('HAVE_PATCH', hasItem('贴片'))
+  registry.register('HAVE_GAG', hasItem('口枷'))
+  registry.register('HAVE_WHIP', hasItem('鞭子'))
+  registry.register('HAVE_SAFE_CANDLES', hasItem('安全蜡烛'))
+  registry.register('HAVE_CLYSTER_TOOLS', hasItem('灌肠用具'))
+  registry.register('HAVE_MILKING_MACHINE', hasItem('挤奶机'))
+  registry.register('HAVE_URINE_COLLECTOR', hasItem('集尿器'))
+  registry.register('HAVE_COTTON_STICK', hasItem('棉棒'))
+  registry.register('HAVE_LOVE_EGG', hasItem('跳蛋'))
+  registry.register('HAVE_NIPPLE_CLAMP', hasItem('乳头夹'))
+  registry.register('HAVE_CLIT_CLAMP', hasItem('阴蒂夹'))
+  registry.register('HAVE_ANAL_BEADS', hasItem('肛珠'))
+  registry.register('HAVE_ENEMAS', hasItem('灌肠液'))
+  registry.register('HAVE_SLEEPING_PILLS', hasItem('安眠药'))
+  registry.register('HAVE_DIURETICS_ONCE', hasItem('利尿剂瞬间'))
+  registry.register('HAVE_DIURETICS_PERSISTENT', hasItem('利尿剂持续'))
+  registry.register('HAVE_CLOMID', hasItem('克罗米芬'))
+  registry.register('HAVE_BIRTH_CONTROL_PILLS_BEFORE', hasItem('事前避孕药'))
+  registry.register('HAVE_BIRTH_CONTROL_PILLS_AFTER', hasItem('事后避孕药'))
+
+  // ── Misc flags / state ──────────────────────────────────────
+  registry.register('T_LACTATION_1', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.sp_flag?.lactation
+  })
+  registry.register('T_INFLATION_1', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.h_state?.inflation
+  })
+  registry.register('T_CHILD_OR_LOLI_1', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    const age = ch?.base?.age ?? ch?.base?.年龄 ?? 99
+    return age <= 14
+  })
+  registry.register('T_MILK_GE_30', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return (ch?.base?.泌乳量 ?? 0) >= 30
+  })
+  registry.register('T_URINATE_GE_80', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return (ch?.base?.憋尿 ?? 0) >= 80
+  })
+  registry.register('NOW_CONDOM', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return ch?.h_state?.condom === true
+  })
+  registry.register('NOW_NOT_CONDOM', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return ch?.h_state?.condom !== true
+  })
+  function sexToyLevelGe(minLevel: number) {
+    return (ctx: any) => {
+      const ch = getTarget(ctx)
+      if (!ch) return false
+      return (ch?.h_state?.sex_toy_level ?? 0) >= minLevel
+    }
+  }
+  registry.register('TARGET_NOW_SEX_TOY_ON', sexToyLevelGe(1))
+  registry.register('TARGET_NOW_SEX_TOY_OFF', (ctx: any) => !sexToyLevelGe(1)(ctx))
+  registry.register('TARGET_NOW_SEX_TOY_WEAK', (ctx: any) => {
+    const level = (() => {
+      const ch = getTarget(ctx)
+      if (!ch) return 0
+      return ch?.h_state?.sex_toy_level ?? 0
+    })()
+    return level >= 1 && level <= 3
+  })
+  registry.register('TARGET_NOW_SEX_TOY_STRONG', sexToyLevelGe(4))
+  registry.register('TARGET_NOT_VIBRATOR_INSERTION', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !ch?.h_state?.vibrator_insertion
+  })
+  registry.register('TARGET_NOW_VIBRATOR_INSERTION', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.h_state?.vibrator_insertion
+  })
+  registry.register('T_NOT_ENEMA', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !ch?.h_state?.enema
+  })
+  registry.register('T_ENEMA', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.h_state?.enema
+  })
+  registry.register('T_ENEMA_CAPACITY_L_5', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return (ch?.h_state?.enema_capacity ?? 0) < 5
+  })
+  registry.register('DEBUG_MODE_ON', () => false)
+  registry.register('DEBUG_MODE_OFF', () => true)
 }

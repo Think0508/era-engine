@@ -36,13 +36,16 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：settle_state——公式#8，base = _timeCost + 30（对齐 erArk）
+  // 注释：settle_state——公式#8
+  // base = _timeCost + baseValue(default 30, 取自 erArk 各 effect 的 base_value)
+  // 行为参数(baseValue=30) vs 快感部位(baseValue=50)，由指令 TOML 传入
   effectTypeRegistry.register('settle_state', (params: any, execCtx: any) => {
     const targetIds = execCtx._targetIds as string[]
     const hConfig = (modLoader.getMod()?.hConfig as any) ?? {}
     const abilityTable = hConfig.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
     const timeCost = execCtx._timeCost ?? 10
-    const base = timeCost + 30
+    const baseValue = params.baseValue ?? 30  // 注释：erArk 默认 base_value=30，快感等用 50
+    const base = timeCost + baseValue
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any
       const abilityLevel = char?.abilities?.[params.state]?.level ?? 0

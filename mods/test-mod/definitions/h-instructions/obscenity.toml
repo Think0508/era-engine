@@ -1,4 +1,5 @@
 # obscenity.toml——猥亵指令
+# base_value: 快感部位用 50（对齐 erArk default.py），行为参数默认 30
 
 [[instructions]]
 id = "touch_hand"
@@ -9,8 +10,8 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "欲情" } },
-  { type = "settle_state", params = { state = "羞耻" } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
 ]
 talk_scene = "touch_hand"
 
@@ -23,8 +24,8 @@ time_cost = 10
 premises = ["HAVE_TARGET", "T_NORMAL"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "胸部" } },
-  { type = "settle_state", params = { state = "羞耻" } },
-  { type = "settle_state", params = { state = "欲情" } },
+  { type = "settle_state", params = { state = "胸部", baseValue = 50 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
 ]
 talk_scene = "touch_breast"

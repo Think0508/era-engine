@@ -48,13 +48,24 @@ function addHypnosisXp(charId: string, amount: number): void {
 
 // 玩家催眠天赋检查 — xp 阈值: 1→331, 10→332, 50→333, 200→334
 const HYPNOSIS_TALENT_XP = [1, 10, 50, 200]  // 331, 332, 333, 334
+const HYPNOSIS_TALENT_IDS = [331, 332, 333, 334]
 function hasHypnosisTalent(talentId: number): boolean {
   const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
   if (!playerId) return false
   const xp = getHypnosisXp(playerId)
-  const idx = talentId - 331
-  if (idx < 0 || idx >= HYPNOSIS_TALENT_XP.length) return false
+  const idx = HYPNOSIS_TALENT_IDS.indexOf(talentId)
+  if (idx < 0) return false
+  // 注释：检查前置天赋（erArk Hypnosis_Talent_Of_Pl.csv: 332→331, 333→332, 334→333）
+  if (idx > 0 && !hasHypnosisTalent(HYPNOSIS_TALENT_IDS[idx - 1])) return false
   return xp >= HYPNOSIS_TALENT_XP[idx]
+}
+
+// 注释：获取玩家最高催眠天赋对应的系数（erArk hypnosis_panel.py:64-68）
+// 334→6, 333→4, else→2
+function getHypnosisCoefficient(): number {
+  if (hasHypnosisTalent(334)) return 6
+  if (hasHypnosisTalent(333)) return 4
+  return 2
 }
 
 const HYPNOSIS_TYPE_NAMES = ['无', '平然催眠', '空气催眠', '体控催眠', '心控催眠']
@@ -151,12 +162,13 @@ function getAbilityAdjust(lv: number): number {
 function calculateHypnosisDegree(charId: string): number {
   const target = entitySystem.get('character', charId) as any
   if (!target) return 0
-  const type = lastHypnosisType
-  let baseCoeff = 2
-  if (type === 2) baseCoeff = 4
-  else if (type >= 3) baseCoeff = 6
+  // 注释：erArk hypnosis_panel.py:64-68 — 基于玩家最高天赋的系数
+  const baseCoeff = getHypnosisCoefficient()
+  // TODO: 调香加成（aromatherapy == 6 → +5）
+  // 注释：erArk hypnosis_panel.py:74-75 — 无觉刻印 ability[19] 系数
   const markLv = target?.abilities?.['无觉刻印']?.level ?? 0
   const abilityAdj = getAbilityAdjust(markLv)
+  // 注释：erArk hypnosis_panel.py:77-78 — random(0.5, 1.5)
   const adjust = baseCoeff * abilityAdj
   const rand = 0.5 + Math.random()
   return Math.round(1 * adjust * rand * 10) / 10
@@ -251,33 +263,39 @@ function registerBoolEffect(type: string, field: string, value: boolean): void {
 export function onLoad(_ctx: PluginContext): void {
   void lastHypnosisType
 
-  // Core: hypnosis_one
+  // Core: hypnosis_one — erArk 1211, hypnosis_panel.py:42-158
   effectTypeRegistry.register('hypnosis_one', (_p: any, execCtx: any) => {
     const ids = execCtx._targetIds as string[]
     if (ids.length === 0) return true
     const id = ids[0]
     const h = getHypnosis(id)
     const gain = calculateHypnosisDegree(id)
+    if (gain <= 0) return true  // 已达上限
     h.hypnosis_degree = Math.min(h.hypnosis_degree + gain, getHypnosisDegreeLimit())
-    checkHypnosisCompletion(id)
+    // 注释：erArk hypnosis_panel.py:144-147 — 设置 unconscious_h = type + 3
     if (h.hypnosis_degree > 0 && (getUnconsciousH(id) < 4 || getUnconsciousH(id) > 7)) {
-      setUnconsciousH(id, 4)
+      const typeVal = lastHypnosisType + 3  // 1→4(平然), 2→5(空气), 3→6(体控), 4→7(心控)
+      setUnconsciousH(id, Math.max(4, Math.min(7, typeVal)))
     }
+    checkHypnosisCompletion(id)
     narrativeLog.write(`催眠程度 +${gain}`, 'system', 'h-hypnosis')
     return true
   })
 
-  // Core: hypnosis_all
+  // Core: hypnosis_all — erArk 1212
   effectTypeRegistry.register('hypnosis_all', (_p: any, _execCtx: any) => {
     const allIds = entitySystem.getAllIds('character')
     for (const id of allIds) {
       const h = getHypnosis(id)
       if (h.hypnosis_degree === 0) {
-        const gain = 1
-        h.hypnosis_degree = Math.min(h.hypnosis_degree + gain, 200)
+        const gain = calculateHypnosisDegree(id)
+        if (gain <= 0) continue
+        h.hypnosis_degree = Math.min(h.hypnosis_degree + gain, getHypnosisDegreeLimit())
         if (h.hypnosis_degree > 0 && (getUnconsciousH(id) < 4 || getUnconsciousH(id) > 7)) {
-          setUnconsciousH(id, 4)
+          const typeVal = lastHypnosisType + 3
+          setUnconsciousH(id, Math.max(4, Math.min(7, typeVal)))
         }
+        checkHypnosisCompletion(id)
         narrativeLog.write(`催眠程度 +${gain}`, 'system', 'h-hypnosis')
       }
     }

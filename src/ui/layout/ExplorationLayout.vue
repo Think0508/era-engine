@@ -35,7 +35,8 @@ import ScreenNumpad from '../components/ScreenNumpad.vue'
 .exploration-layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-body);

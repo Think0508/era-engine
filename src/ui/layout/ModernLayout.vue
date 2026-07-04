@@ -72,7 +72,8 @@ function openSidebar() {
 <style scoped>
 .modern-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-body);

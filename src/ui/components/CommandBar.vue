@@ -168,26 +168,24 @@ watch(() => gameStore.currentMode, () => {})
 }
 
 .cat-toggle {
-  padding: 4px 8px;
-  background-color: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-button);
+  padding: 2px 6px;
+  background: none;
+  border: none;
   color: var(--color-text-secondary);
   cursor: pointer;
   font-size: 0.75rem;
-  min-height: 44px;
-  transition: all 0.15s;
+  font-family: var(--font-body);
+  min-height: unset;
+  transition: color 0.15s;
+  letter-spacing: 0.5px;
 }
 
 .cat-toggle.on {
   color: var(--color-text);
-  background-color: var(--color-surface);
-  border-color: var(--color-primary);
 }
 
 .cat-toggle.favorite.on {
   color: var(--color-warning);
-  border-color: var(--color-warning);
 }
 
 .favorite-group {

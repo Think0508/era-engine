@@ -1,7 +1,5 @@
 // 注释：ExplorationLayout era经典探索布局（纵向堆叠）
-// 结构：StatusBar → CharacterBar → StatusSection → ParameterSection → LookSection → NarrativeLog → CommandBar
-// 全部用 CSS 变量，无硬编码颜色
-// 移动端：自然纵向（与 PC 相同结构，仅调整间距/字号）
+// 结构：上部分可滚动区 + 底部固定指令栏
 
 <script setup lang="ts">
 import StatusBar from '../components/StatusBar.vue'
@@ -17,15 +15,21 @@ import ScreenNumpad from '../components/ScreenNumpad.vue'
 
 <template>
   <div class="exploration-layout">
-    <StatusBar />
-    <CharacterBar />
-    <StatusSection />
-    <ParameterSection />
-    <LookSection />
-    <div class="narrative-log-container">
-      <NarrativeLog />
+    <!-- 注释：上部分（可滚动） -->
+    <div class="scroll-area">
+      <StatusBar />
+      <CharacterBar />
+      <StatusSection />
+      <ParameterSection />
+      <LookSection />
+      <div class="narrative-log-container">
+        <NarrativeLog />
+      </div>
     </div>
-    <CommandBar />
+    <!-- 注释：底部固定指令栏 -->
+    <div class="command-bar-container">
+      <CommandBar />
+    </div>
     <SystemPanel />
     <ScreenNumpad />
   </div>
@@ -43,21 +47,25 @@ import ScreenNumpad from '../components/ScreenNumpad.vue'
   font-size: var(--font-size-base);
 }
 
-.layout-section {
-  padding: var(--gap-small);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.section-placeholder {
-  color: var(--color-text-secondary);
-  font-size: 0.875rem;
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .narrative-log-container {
   flex: 1;
-  min-height: 200px;
+  min-height: 100px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
+
+.command-bar-container {
+  flex-shrink: 0;
+  border-top: 1px solid var(--color-border);
+}
 </style>
+

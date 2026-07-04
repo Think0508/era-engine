@@ -53,15 +53,19 @@ function openSidebar() {
 
     <!-- 注释：主体区 -->
     <main class="main-content">
-      <StatusBar />
-      <CharacterBar />
-      <StatusSection />
-      <ParameterSection />
-      <LookSection />
-      <div class="narrative-log-container">
-        <NarrativeLog />
+      <div class="scroll-area">
+        <StatusBar />
+        <CharacterBar />
+        <StatusSection />
+        <ParameterSection />
+        <LookSection />
+        <div class="narrative-log-container">
+          <NarrativeLog />
+        </div>
       </div>
-      <CommandBar />
+      <div class="command-bar-container">
+        <CommandBar />
+      </div>
     </main>
 
     <SystemPanel />
@@ -85,6 +89,28 @@ function openSidebar() {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
+}
+
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.command-bar-container {
+  flex-shrink: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.narrative-log-container {
+  flex: 1;
+  min-height: 100px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar {
@@ -123,14 +149,6 @@ function openSidebar() {
 
 .sidebar-side-by-side .main-content {
   flex: 1;
-}
-
-.narrative-log-container {
-  flex: 1;
-  min-height: 200px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
 .sidebar-backdrop {

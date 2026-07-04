@@ -18,6 +18,7 @@ import { registerFallPremises } from './premise/premise-fall'
 import { registerClothingPremises } from './premise/premise-clothing'
 import { loadHInstructions } from './h-instruction-loader'
 import { calcFavorability } from './settle/favorability'
+import { calcStateChange } from './settle/state'
 import { calcTrust } from './settle/trust'
 import { calcJudge, getLevel } from './settle/judge'
 import { checkOrgasm } from './settle/orgasm'
@@ -41,14 +42,21 @@ export function onLoad(_ctx: PluginContext): void {
   })
 
   // 注释：settle_state——公式#8，按 magnitude(small/mid/large) 取基数
+  // 能力修正：从 h-config 的 ability_lv_adjust 表读，abilityLevel 默认 0=1.0x
   effectTypeRegistry.register('settle_state', (params: any, execCtx: any) => {
     const targetIds = execCtx._targetIds as string[]
     const hConfig = (modLoader.getMod()?.hConfig as any) ?? {}
     const mag = hConfig.magnitude_base ?? { small: 10, mid: 30, large: 80 }
+    const abilityTable = hConfig.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
     const magnitude = params.magnitude as string ?? 'small'
     const baseValue = mag[magnitude] ?? 10
     for (const id of targetIds) {
-      applyStateChange(id, params.state, baseValue)
+      const char = entitySystem.get('character', id) as any
+      // 注释：尝试从角色 abilities 中读取与 state 同名的能力等级（如"胸部"→char.abilities["胸部"]?.level）
+      // 无对应能力则 level=0 → abilityTable[0]=1.0x
+      const abilityLevel = char?.abilities?.[params.state]?.level ?? 0
+      const finalValue = calcStateChange(baseValue, abilityLevel, abilityTable)
+      applyStateChange(id, params.state, finalValue)
     }
     return true
   })

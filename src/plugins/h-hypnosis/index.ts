@@ -59,6 +59,64 @@ function hasHypnosisTalent(talentId: number): boolean {
 
 const HYPNOSIS_TYPE_NAMES = ['无', '平然催眠', '空气催眠', '体控催眠', '心控催眠']
 
+interface RoleplayDef {
+  id: number; name: string; type: string; subType: string; info: string
+}
+
+const ROLEPLAY_DATA: RoleplayDef[] = [
+  { id: 0,  name: '无',        type: '无',   subType: '无',   info: '不进行角色扮演。' },
+  { id: 1,  name: '妻子',      type: '家庭', subType: '无',   info: '对方是自己的妻子，和自己感情十分深厚。' },
+  { id: 2,  name: '姐姐',      type: '家庭', subType: '无',   info: '对方是自己的亲姐姐，对自己这个弟弟十分照顾。' },
+  { id: 3,  name: '妹妹',      type: '家庭', subType: '无',   info: '对方是自己的亲妹妹，很依赖自己这个哥哥。' },
+  { id: 4,  name: '女儿',      type: '家庭', subType: '无',   info: '对方是自己的亲生女儿，天真可爱，非常依赖自己。' },
+  { id: 5,  name: '妈妈',      type: '家庭', subType: '无',   info: '对方是自己的妈妈，对自己有强烈的保护欲和溺爱。' },
+  { id: 11, name: '小学生',    type: '职业', subType: '校园', info: '对方是正在上小学的学生，天真无邪，充满好奇心。' },
+  { id: 12, name: '初中生',    type: '职业', subType: '校园', info: '对方是正在上初中的学生，正值叛逆期。' },
+  { id: 13, name: '高中生',    type: '职业', subType: '校园', info: '对方是正在上高中的学生，青春活泼。' },
+  { id: 14, name: '大学生',    type: '职业', subType: '校园', info: '对方是正在上大学的学生，追求梦想。' },
+  { id: 15, name: '教师',      type: '职业', subType: '校园', info: '对方是学校的教师，关心学生的成长与学习。' },
+  { id: 21, name: '护士',      type: '职业', subType: '护士', info: '对方是照顾病人的护士，温柔体贴。' },
+  { id: 22, name: '警察',      type: '职业', subType: '无',   info: '对方是维护社会秩序的警察。' },
+  { id: 23, name: '白领',      type: '职业', subType: '无',   info: '对方是公司职员，工作繁忙压力大。' },
+  { id: 24, name: '偶像',      type: '职业', subType: '偶像', info: '对方是国民级的美少女偶像。' },
+  { id: 25, name: '家庭女仆',  type: '职业', subType: '家庭女仆', info: '对方是自己家雇佣的女仆。' },
+  { id: 26, name: '咖啡厅女仆',type: '职业', subType: '咖啡厅女仆', info: '对方是在女仆咖啡厅工作的女仆。' },
+  { id: 27, name: '巫女',      type: '职业', subType: '巫女', info: '对方是神社的巫女。' },
+  { id: 31, name: '陌生人',    type: '关系', subType: '非家庭', info: '自己和对方之间没有任何关系。' },
+  { id: 32, name: '师生',      type: '关系', subType: '校园', info: '对方和自己是教导的师生关系。' },
+  { id: 33, name: '同学',      type: '关系', subType: '校园', info: '对方是自己的同班同学。' },
+  { id: 34, name: '同事',      type: '关系', subType: '非家庭', info: '对方是自己的同事，工作上互相支持。' },
+  { id: 35, name: '邻居',      type: '关系', subType: '非家庭', info: '对方是住在自己隔壁的邻居。' },
+  { id: 51, name: '宠物猫',    type: '人外', subType: '特殊', info: '对方以为自己是一只猫，拥有猫的所有特征和习性。' },
+  { id: 52, name: '宠物狗',    type: '人外', subType: '特殊', info: '对方以为自己是一只狗，拥有狗的所有特征和习性。' },
+  { id: 53, name: '魅魔',      type: '人外', subType: '无',   info: '对方以为自己是魅魔，以吸取精气为生。' },
+  { id: 101,name: '电车痴汉',  type: '场景', subType: '通用', info: '在拥挤的电车上进行痴汉行为。' },
+  { id: 102,name: '户外当众',  type: '场景', subType: '通用', info: '在公共场所进行亲密行为。' },
+  { id: 103,name: '公共厕所（主动）', type: '场景', subType: '通用', info: '对方把自己捆在公共厕所隔间里。' },
+  { id: 104,name: '公共厕所（被动）', type: '场景', subType: '通用', info: '对方被自己捆在公共厕所隔间里。' },
+  { id: 105,name: '俘虏拷问',  type: '场景', subType: '特殊', info: '对方是被俘虏的敌人，自己是审讯官。' },
+  { id: 106,name: '榨精护士',  type: '场景', subType: '护士', info: '对方是医院的护士，负责精液采集。' },
+  { id: 107,name: '战败魔法少女', type: '场景', subType: '特殊', info: '对方是魔法少女，被自己打败后沦为自己的玩物。' },
+  { id: 108,name: 'VTuber直播中', type: '场景', subType: '家庭', info: '对方是正在直播的VTuber。' },
+  { id: 109,name: '向神灵祭祀', type: '场景', subType: '巫女', info: '在神像面前进行交合。' },
+  { id: 110,name: '向自己祭祀', type: '场景', subType: '巫女', info: '对方是巫女，自己化身神灵。' },
+  { id: 111,name: '女仆惩罚调教', type: '场景', subType: '家庭女仆', info: '对方做了错事，必须接受主人的惩罚。' },
+  { id: 112,name: '女仆咖啡厅里菜单', type: '场景', subType: '咖啡厅女仆', info: '点了特殊的菜单，女仆必须满足要求。' },
+  { id: 121,name: '偶像台前准备室', type: '场景', subType: '偶像', info: '在准备室里对偶像进行特殊的准备。' },
+  { id: 122,name: '偶像单人LIVE', type: '场景', subType: '偶像', info: '对方为自己开了一场私人演出。' },
+  { id: 123,name: '偶像演出后粉丝答谢', type: '场景', subType: '偶像', info: '演出结束后进行特殊的粉丝答谢。' },
+  { id: 124,name: '偶像枕营业', type: '场景', subType: '特殊', info: '为了上台表演必须与自己发生关系。' },
+  { id: 131,name: '放学后教室H', type: '场景', subType: '校园', info: '在空无一人的教室里偷偷进行性行为。' },
+  { id: 132,name: '体育仓库H',  type: '场景', subType: '校园', info: '在体育器材仓库中偷偷进行性行为。' },
+  { id: 133,name: '天台H',     type: '场景', subType: '校园', info: '在学校的天台上进行性行为。' },
+  { id: 134,name: '学校厕所H', type: '场景', subType: '校园', info: '在学校的厕所里进行性行为。' },
+  { id: 135,name: '保健室H',   type: '场景', subType: '校园', info: '藏在保健室的同一张床上进行性行为。' },
+]
+
+function getRoleplayName(id: number): string {
+  return ROLEPLAY_DATA.find(r => r.id === id)?.name ?? `未知(${id})`
+}
+
 function getSelfId(ctx: any): string | null { return ctx.gameStore?.player?.id ?? ctx.sourceId ?? null }
 function getTargetId(ctx: any): string | null { return ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId ?? null }
 
@@ -294,6 +352,15 @@ export function onLoad(_ctx: PluginContext): void {
     }
     return true
   })
+
+  // set_roleplay — 设置角色扮演（第二阶段）
+  effectTypeRegistry.register('set_roleplay', (params: any, execCtx: any) => {
+    const ids = params.roleplayIds as number[] ?? []
+    for (const id of execCtx._targetIds as string[]) {
+      getHypnosis(id).roleplay = ids
+    }
+    return true
+  })
 }
 export async function onEnable(ctx: PluginContext): Promise<void> {
   const reg = (id: string, fn: (c: any) => boolean) => {
@@ -332,7 +399,13 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   regSubState('BLOCKHEAD', h => h.blockhead)
   regSubState('ACTIVE_H', h => h.active_h)
   regSubState('PAIN_AS_PLEASURE', h => h.pain_as_pleasure)
-  // TODO: 角色扮演系统（第二阶段）— roleplay 逻辑待实现
+  // 特定角色扮演 ID 前提 — erArk: t_hypnosis_roleplay_1~6
+  reg('T_HYPNOSIS_ROLEPLAY_1', (ctx2: any) => { const id = getTargetId(ctx2); return id ? getHypnosis(id).roleplay.includes(1) : false })
+  reg('T_HYPNOSIS_ROLEPLAY_2', (ctx2: any) => { const id = getTargetId(ctx2); return id ? getHypnosis(id).roleplay.includes(2) : false })
+  reg('T_HYPNOSIS_ROLEPLAY_3', (ctx2: any) => { const id = getTargetId(ctx2); return id ? getHypnosis(id).roleplay.includes(3) : false })
+  reg('T_HYPNOSIS_ROLEPLAY_4', (ctx2: any) => { const id = getTargetId(ctx2); return id ? getHypnosis(id).roleplay.includes(4) : false })
+  reg('T_HYPNOSIS_ROLEPLAY_5', (ctx2: any) => { const id = getTargetId(ctx2); return id ? getHypnosis(id).roleplay.includes(5) : false })
+  reg('T_HYPNOSIS_ROLEPLAY_6', (ctx2: any) => { const id = getTargetId(ctx2); return id ? getHypnosis(id).roleplay.includes(6) : false })
   regSubState('ROLEPLAY', h => h.roleplay.length > 0)
 
   // 注册公共 API
@@ -356,7 +429,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
 
 export type { HypnosisData }
 export {
-  DEFAULT_HYPNOSIS, HYPNOSIS_TYPE_NAMES, getSelfId, getTargetId, getHypnosis, getUnconsciousH, setUnconsciousH,
+  DEFAULT_HYPNOSIS, HYPNOSIS_TYPE_NAMES, ROLEPLAY_DATA, getRoleplayName, getSelfId, getTargetId, getHypnosis, getUnconsciousH, setUnconsciousH,
   getAbilityAdjust, calculateHypnosisDegree, calculateSanityCost, getHypnosisDegreeLimit, checkHypnosisCompletion,
   applySensitivityBonus, applyPainAsPleasure, applyAirHypnosisTrustMod, applyHypnosisSexExp,
 }

@@ -1,5 +1,7 @@
 import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
+import { effectTypeRegistry } from '../../core/effect-type-registry'
+import { narrativeLog } from '../../core/narrative-log'
 
 interface HypnosisData {
   hypnosis_degree: number
@@ -41,7 +43,120 @@ function setUnconsciousH(charId: string, val: number): void {
 
 let lastHypnosisType = 1
 
-export function onLoad(_ctx: PluginContext): void { void lastHypnosisType /* TODO Task 3 */ }
+function registerBoolEffect(type: string, field: string, value: boolean): void {
+  effectTypeRegistry.register(type, (_p: any, execCtx: any) => {
+    for (const id of execCtx._targetIds as string[]) (getHypnosis(id) as any)[field] = value
+    return true
+  })
+}
+
+export function onLoad(_ctx: PluginContext): void {
+  void lastHypnosisType
+
+  // Core: hypnosis_one
+  effectTypeRegistry.register('hypnosis_one', (_p: any, execCtx: any) => {
+    const ids = execCtx._targetIds as string[]
+    if (ids.length === 0) return true
+    const id = ids[0]
+    const h = getHypnosis(id)
+    const gain = 1
+    h.hypnosis_degree = Math.min(h.hypnosis_degree + gain, 200)
+    if (h.hypnosis_degree > 0 && (getUnconsciousH(id) < 4 || getUnconsciousH(id) > 7)) {
+      setUnconsciousH(id, 4)
+    }
+    narrativeLog.write(`催眠程度 +${gain}`, 'system', 'h-hypnosis')
+    return true
+  })
+
+  // Core: hypnosis_all
+  effectTypeRegistry.register('hypnosis_all', (_p: any, execCtx: any) => {
+    const allIds = entitySystem.getAllIds('character')
+    for (const id of allIds) {
+      const h = getHypnosis(id)
+      if (h.hypnosis_degree === 0) {
+        const gain = 1
+        h.hypnosis_degree = Math.min(h.hypnosis_degree + gain, 200)
+        if (h.hypnosis_degree > 0 && (getUnconsciousH(id) < 4 || getUnconsciousH(id) > 7)) {
+          setUnconsciousH(id, 4)
+        }
+        narrativeLog.write(`催眠程度 +${gain}`, 'system', 'h-hypnosis')
+      }
+    }
+    return true
+  })
+
+  // Core: hypnosis_cancel
+  effectTypeRegistry.register('hypnosis_cancel', (_p: any, execCtx: any) => {
+    for (const id of execCtx._targetIds as string[]) {
+      const h = getHypnosis(id)
+      h.hypnosis_degree = 0
+      h.increase_body_sensitivity = false
+      h.force_ovulation = false
+      h.blockhead = false
+      h.active_h = false
+      h.pain_as_pleasure = false
+      h.roleplay = []
+      setUnconsciousH(id, 0)
+    }
+    return true
+  })
+
+  // Sub-state on/off: increase_body_sensitivity
+  registerBoolEffect('hypnosis_increase_body_sensitivity_on', 'increase_body_sensitivity', true)
+  registerBoolEffect('hypnosis_increase_body_sensitivity_off', 'increase_body_sensitivity', false)
+
+  // Sub-state on/off: force_ovulation
+  registerBoolEffect('hypnosis_force_ovulation_on', 'force_ovulation', true)
+  registerBoolEffect('hypnosis_force_ovulation_off', 'force_ovulation', false)
+
+  // Sub-state on/off: blockhead
+  registerBoolEffect('hypnosis_blockhead_on', 'blockhead', true)
+  registerBoolEffect('hypnosis_blockhead_off', 'blockhead', false)
+
+  // Sub-state on/off: active_h
+  registerBoolEffect('hypnosis_active_h_on', 'active_h', true)
+  registerBoolEffect('hypnosis_active_h_off', 'active_h', false)
+
+  // Sub-state on/off: pain_as_pleasure
+  registerBoolEffect('hypnosis_pain_as_pleasure_on', 'pain_as_pleasure', true)
+  registerBoolEffect('hypnosis_pain_as_pleasure_off', 'pain_as_pleasure', false)
+
+  // Switch: blockhead
+  effectTypeRegistry.register('hypnosis_blockhead_switch', (_p: any, execCtx: any) => {
+    for (const id of execCtx._targetIds as string[]) {
+      getHypnosis(id).blockhead = !getHypnosis(id).blockhead
+    }
+    return true
+  })
+
+  // Switch: active_h (toggle + trigger H when turning on)
+  effectTypeRegistry.register('hypnosis_active_h_switch', (_p: any, execCtx: any) => {
+    for (const id of execCtx._targetIds as string[]) {
+      const h = getHypnosis(id)
+      h.active_h = !h.active_h
+      if (h.active_h) {
+        narrativeLog.write(`逆推触发: ${id}`, 'system', 'h-hypnosis')
+      }
+    }
+    return true
+  })
+
+  // Switch: pain_as_pleasure
+  effectTypeRegistry.register('hypnosis_pain_as_pleasure_switch', (_p: any, execCtx: any) => {
+    for (const id of execCtx._targetIds as string[]) {
+      getHypnosis(id).pain_as_pleasure = !getHypnosis(id).pain_as_pleasure
+    }
+    return true
+  })
+
+  // Force climax
+  effectTypeRegistry.register('hypnosis_force_climax', (_p: any, execCtx: any) => {
+    for (const id of execCtx._targetIds as string[]) {
+      narrativeLog.write(`强制绝顶: ${id}`, 'system', 'h-hypnosis')
+    }
+    return true
+  })
+}
 export async function onEnable(ctx: PluginContext): Promise<void> {
   const reg = (id: string, fn: (c: any) => boolean) => {
     try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }

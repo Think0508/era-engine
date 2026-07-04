@@ -23,6 +23,11 @@ class EntitySystem {
     return pool ? [...pool.values()] : []
   }
 
+  getAllIds(type: string): string[] {
+    const pool = this.entities.get(type)
+    return pool ? [...pool.keys()] : []
+  }
+
   clear(): void {
     this.entities.clear()
   }

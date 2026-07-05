@@ -43,7 +43,9 @@ premises = ["HAVE_TARGET", "NOT_H", "TIRED_LE_84", "HP_G_1", "NO_TARGET_OR_TARGE
 effects = [
   { type = "settle_favorability" },
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
-  { type = "settle_state", params = { state = "好意", baseValue = 30 }, condition = "target.experience.80 >= 1 && player.experience.80 >= 1" },
+  { type = "add_experience", params = { id = "80", value = 1 }, condition = "target.experience.80 >= 1" },
+  { type = "add_experience", params = { id = "80", value = 1 }, condition = "player.experience.80 >= 1" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "add_experience", params = { id = "social", value = 1 } },
 ]
@@ -100,7 +102,8 @@ effects = [
   { type = "modify_attribute", params = { attr = "尿意", value = 5 } },
   { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
-  { type = "add_experience", params = { id = "domestic", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "add_experience", params = { id = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "add_experience", params = { id = "domestic", value = 1 } },
 ]
 
 [[instructions]]
@@ -119,7 +122,8 @@ effects = [
   { type = "modify_attribute", params = { attr = "尿意", value = 5 } },
   { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "503" }, condition = "target.experience.83 >= 1" },
+  { type = "add_experience", params = { id = "83", value = 1 }, condition = "target.experience.83 >= 1" },
+  { type = "_unknown", params = { erArkId = "503" } },
 ]
 
 [[instructions]]
@@ -305,7 +309,8 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "set_field", params = { path = "sp_flag.apologized", value = true }, condition = "player.experience.80 >= 1" },
+  { type = "add_experience", params = { id = "80", value = 1 }, condition = "player.experience.80 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.apologized", value = true } },
 ]
 
 [[instructions]]
@@ -321,6 +326,8 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "add_experience", params = { id = "80", value = 1 }, condition = "target.experience.80 >= 1" },
+  { type = "add_experience", params = { id = "80", value = 1 }, condition = "player.experience.80 >= 1" },
 ]
 
 [[instructions]]

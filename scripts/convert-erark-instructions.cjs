@@ -88,7 +88,11 @@ const SKIP_BEHAVIORS = new Set([
 // ===== 跳过 TO_DO 的指令 =====
 function shouldSkip(instruct) {
   if (SKIP_BEHAVIORS.has(instruct.behavior_id)) return true
-  if (instruct.premises && instruct.premises.includes('TO_DO')) return true
+  // 精确匹配 TO_DO 前提（不是子串匹配！）
+  if (instruct.premises) {
+    const premiseList = instruct.premises.split('|')
+    if (premiseList.some(p => p.trim() === 'TO_DO')) return true
+  }
   return false
 }
 
@@ -122,15 +126,18 @@ function parseEffectChain(str) {
 function translateEffect(effId, prevEff) {
   effId = effId.trim()
 
-  // CVE 复合效果
+  // CVE 复合效果——每个 CVE 独立一个条件效果
   const cveMatch = effId.match(/^CVE_A(\d)_E\|(\d+)_G_(\d+)$/)
   if (cveMatch) {
     const who = cveMatch[1] === '1' ? 'player' : 'target'
     const expId = cveMatch[2]
     const threshold = parseInt(cveMatch[3])
-    // CVE 本身不产生独立效果，是条件修饰符
-    // 返回一个 "condition" 对象，由调用方附加到前一个效果
-    return { _cve: true, condition: `${who}.experience.${expId} >= ${threshold}` }
+    // CVE 是独立的条件性 add_experience 效果
+    return {
+      type: 'add_experience',
+      params: { id: expId, value: 1 },
+      condition: `${who}.experience.${expId} >= ${threshold}`,
+    }
   }
 
   // 数字效果 ID
@@ -315,22 +322,12 @@ function main() {
     const effectStr = effectMap[(behaviorId || '').toUpperCase()] || ''
     const erArkEffectIds = parseEffectChain(effectStr)
 
-    // 翻译效果——CVE 处理: CVE 是"条件满足时添加额外效果"
-    // 我们的架构: CVE 作为 condition 附加到下一个非 CVE 效果
-    // 若 CVE_A1 与 CVE_A2 连续，合并为 && 条件
+    // 翻译效果
     const effects = []
-    const pendingConds = []
     for (const effId of erArkEffectIds) {
       const translated = translateEffect(effId)
-      if (translated._cve) {
-        pendingConds.push(translated.condition)
-        continue
-      }
       const eff = { type: translated.type, params: { ...translated.params } }
-      if (pendingConds.length > 0) {
-        eff.condition = pendingConds.length === 1 ? pendingConds[0] : pendingConds.join(' && ')
-        pendingConds.length = 0
-      }
+      if (translated.condition) eff.condition = translated.condition
       effects.push(eff)
     }
 

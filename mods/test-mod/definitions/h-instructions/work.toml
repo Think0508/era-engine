@@ -1,6 +1,26 @@
 # 自动生成—请勿手动编辑
 # 来源: erArk InstructConfig.csv + Behavior_Effect.csv
-# 指令数: 34
+# 指令数: 35
+
+[[instructions]]
+id = "official_work"
+label = "处理公务"
+type = "work"
+time_cost = 60
+priority = 50
+# erArk behavior: OFFICIAL_WORK
+premises = ["NOT_H", "IN_DR_OFFICE", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "HAVE_OFFICE_WORK_NEED_TO_DO", "TIRED_LE_74"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_trust" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "add_experience", params = { id = "82", value = 1 }, condition = "target.experience.82 >= 1" },
+  { type = "add_experience", params = { id = "82", value = 1 }, condition = "player.experience.82 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.office_work_done", value = true } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+]
 
 [[instructions]]
 id = "field_commission"
@@ -26,7 +46,9 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -50 } },
   { type = "settle_trust" },
   { type = "_unknown", params = { erArkId = "71" } },
-  { type = "_unknown", params = { erArkId = "701" }, condition = "target.experience.81 >= 1 && player.experience.81 >= 1" },
+  { type = "add_experience", params = { id = "81", value = 1 }, condition = "target.experience.81 >= 1" },
+  { type = "add_experience", params = { id = "81", value = 1 }, condition = "player.experience.81 >= 1" },
+  { type = "_unknown", params = { erArkId = "701" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -44,7 +66,9 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_trust" },
   { type = "_unknown", params = { erArkId = "71" } },
-  { type = "_unknown", params = { erArkId = "507" }, condition = "target.experience.88 >= 1 && player.experience.88 >= 1" },
+  { type = "add_experience", params = { id = "88", value = 1 }, condition = "target.experience.88 >= 1" },
+  { type = "add_experience", params = { id = "88", value = 1 }, condition = "player.experience.88 >= 1" },
+  { type = "_unknown", params = { erArkId = "507" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -72,7 +96,9 @@ effects = [
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "_unknown", params = { erArkId = "71" } },
-  { type = "_unknown", params = { erArkId = "510" }, condition = "target.experience.80 >= 1 && player.experience.80 >= 1" },
+  { type = "add_experience", params = { id = "80", value = 1 }, condition = "target.experience.80 >= 1" },
+  { type = "add_experience", params = { id = "80", value = 1 }, condition = "player.experience.80 >= 1" },
+  { type = "_unknown", params = { erArkId = "510" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -124,7 +150,8 @@ effects = [
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "_unknown", params = { erArkId = "71" } },
-  { type = "_unknown", params = { erArkId = "534" }, condition = "player.experience.90 >= 1" },
+  { type = "add_experience", params = { id = "90", value = 1 }, condition = "player.experience.90 >= 1" },
+  { type = "_unknown", params = { erArkId = "534" } },
   { type = "_unknown", params = { erArkId = "371" } },
 ]
 
@@ -142,7 +169,8 @@ effects = [
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "_unknown", params = { erArkId = "71" } },
-  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.90 >= 1" },
+  { type = "add_experience", params = { id = "90", value = 1 }, condition = "player.experience.90 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -170,7 +198,8 @@ effects = [
   { type = "settle_trust" },
   { type = "_unknown", params = { erArkId = "71" } },
   { type = "_unknown", params = { erArkId = "539" } },
-  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.90 >= 1" },
+  { type = "add_experience", params = { id = "90", value = 1 }, condition = "player.experience.90 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -217,7 +246,9 @@ effects = [
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "_unknown", params = { erArkId = "71" } },
-  { type = "_unknown", params = { erArkId = "518" }, condition = "target.experience.80 >= 1 && player.experience.80 >= 1" },
+  { type = "add_experience", params = { id = "80", value = 1 }, condition = "target.experience.80 >= 1" },
+  { type = "add_experience", params = { id = "80", value = 1 }, condition = "player.experience.80 >= 1" },
+  { type = "_unknown", params = { erArkId = "518" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -295,7 +326,8 @@ effects = [
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "_unknown", params = { erArkId = "71" } },
-  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.89 >= 1" },
+  { type = "add_experience", params = { id = "89", value = 1 }, condition = "player.experience.89 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -352,7 +384,8 @@ effects = [
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "_unknown", params = { erArkId = "71" } },
-  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.80 >= 1" },
+  { type = "add_experience", params = { id = "80", value = 1 }, condition = "player.experience.80 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]

@@ -47,6 +47,8 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
+  { type = "add_experience", params = { id = "1", value = 1 }, condition = "target.experience.1 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -66,6 +68,7 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "59" } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "add_experience", params = { id = "0", value = 1 }, condition = "target.experience.0 >= 1" },
 ]
 
 [[instructions]]
@@ -86,6 +89,8 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "119" } },
+  { type = "add_experience", params = { id = "154", value = 1 }, condition = "target.experience.154 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -106,6 +111,8 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "119" } },
+  { type = "add_experience", params = { id = "154", value = 1 }, condition = "target.experience.154 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -126,6 +133,8 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "119" } },
+  { type = "add_experience", params = { id = "154", value = 1 }, condition = "target.experience.154 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -146,6 +155,8 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "119" } },
+  { type = "add_experience", params = { id = "154", value = 1 }, condition = "target.experience.154 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -166,6 +177,8 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "119" } },
+  { type = "add_experience", params = { id = "154", value = 1 }, condition = "target.experience.154 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -186,6 +199,8 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "119" } },
+  { type = "add_experience", params = { id = "154", value = 1 }, condition = "target.experience.154 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -206,6 +221,8 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "119" } },
+  { type = "add_experience", params = { id = "154", value = 1 }, condition = "target.experience.154 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -264,6 +281,10 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "118" } },
+  { type = "add_experience", params = { id = "40", value = 1 }, condition = "target.experience.40 >= 1" },
+  { type = "add_experience", params = { id = "40", value = 1 }, condition = "player.experience.40 >= 1" },
+  { type = "add_experience", params = { id = "153", value = 1 }, condition = "target.experience.153 >= 1" },
+  { type = "add_experience", params = { id = "153", value = 1 }, condition = "player.experience.153 >= 1" },
 ]
 
 [[instructions]]
@@ -430,6 +451,8 @@ effects = [
   { type = "_unknown", params = { erArkId = "60" } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "112" } },
+  { type = "add_experience", params = { id = "2", value = 1 }, condition = "target.experience.2 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -451,6 +474,9 @@ effects = [
   { type = "_unknown", params = { erArkId = "60" } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "114" } },
+  { type = "add_experience", params = { id = "4", value = 1 }, condition = "target.experience.4 >= 1" },
+  { type = "add_experience", params = { id = "65", value = 1 }, condition = "target.experience.65 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -472,6 +498,9 @@ effects = [
   { type = "_unknown", params = { erArkId = "60" } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "115" } },
+  { type = "add_experience", params = { id = "5", value = 1 }, condition = "target.experience.5 >= 1" },
+  { type = "add_experience", params = { id = "66", value = 1 }, condition = "target.experience.66 >= 1" },
+  { type = "add_experience", params = { id = "41", value = 1 }, condition = "player.experience.41 >= 1" },
 ]
 
 [[instructions]]
@@ -492,7 +521,9 @@ effects = [
   { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
-  { type = "_unknown", params = { erArkId = "336" }, condition = "target.experience.1 >= 1 && target.experience.22 >= 1" },
+  { type = "add_experience", params = { id = "1", value = 1 }, condition = "target.experience.1 >= 1" },
+  { type = "add_experience", params = { id = "22", value = 1 }, condition = "target.experience.22 >= 1" },
+  { type = "_unknown", params = { erArkId = "336" } },
   { type = "_unknown", params = { erArkId = "519" } },
 ]
 
@@ -839,6 +870,8 @@ effects = [
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
   { type = "_unknown", params = { erArkId = "704" } },
   { type = "_unknown", params = { erArkId = "1409" } },
+  { type = "add_experience", params = { id = "35", value = 1 }, condition = "player.experience.35 >= 1" },
+  { type = "add_experience", params = { id = "35", value = 1 }, condition = "target.experience.35 >= 1" },
 ]
 
 [[instructions]]
@@ -857,6 +890,8 @@ effects = [
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
   { type = "_unknown", params = { erArkId = "704" } },
   { type = "_unknown", params = { erArkId = "1409" } },
+  { type = "add_experience", params = { id = "34", value = 1 }, condition = "player.experience.34 >= 1" },
+  { type = "add_experience", params = { id = "34", value = 1 }, condition = "target.experience.34 >= 1" },
 ]
 
 [[instructions]]

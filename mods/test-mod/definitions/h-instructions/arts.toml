@@ -13,8 +13,8 @@ premises = ["PRIMARY_HYPNOSIS", "NOT_H", "HAVE_TARGET", "SCENE_ONLY_TWO", "T_NOR
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
-  { type = "add_experience", params = { id = "122", value = 1 }, condition = "player.experience.122 >= 1" },
-  { type = "add_experience", params = { id = "123", value = 1 }, condition = "target.experience.123 >= 1" },
+  { type = "h_experience", params = { expId = "122", value = 1 }, condition = "player.experience.122 >= 1" },
+  { type = "h_experience", params = { expId = "123", value = 1 }, condition = "target.experience.123 >= 1" },
   { type = "hypnosis_one" },
 ]
 
@@ -39,7 +39,7 @@ premises = ["ADVANCED_HYPNOSIS", "NOT_H", "HAVE_TARGET", "SCENE_OVER_TWO", "T_NO
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
-  { type = "add_experience", params = { id = "122", value = 1 }, condition = "player.experience.122 >= 1" },
+  { type = "h_experience", params = { expId = "122", value = 1 }, condition = "player.experience.122 >= 1" },
   { type = "set_field", params = { path = "sp_flag.work_related", value = true } },
   { type = "hypnosis_all" },
 ]

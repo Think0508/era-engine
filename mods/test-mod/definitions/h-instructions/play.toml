@@ -15,7 +15,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "85", value = 1 }, condition = "player.experience.85 >= 1" },
+  { type = "h_experience", params = { expId = "85", value = 1 }, condition = "player.experience.85 >= 1" },
   { type = "_unknown", params = { erArkId = "504" } },
 ]
 
@@ -32,7 +32,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "85", value = 1 }, condition = "player.experience.85 >= 1" },
+  { type = "h_experience", params = { expId = "85", value = 1 }, condition = "player.experience.85 >= 1" },
   { type = "_unknown", params = { erArkId = "505" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
@@ -124,7 +124,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "82", value = 1 }, condition = "player.experience.82 >= 1" },
+  { type = "h_experience", params = { expId = "82", value = 1 }, condition = "player.experience.82 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -189,7 +189,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "82", value = 1 }, condition = "player.experience.82 >= 1" },
+  { type = "h_experience", params = { expId = "82", value = 1 }, condition = "player.experience.82 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -208,7 +208,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "82", value = 1 }, condition = "player.experience.82 >= 1" },
+  { type = "h_experience", params = { expId = "82", value = 1 }, condition = "player.experience.82 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -227,7 +227,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "82", value = 1 }, condition = "player.experience.82 >= 1" },
+  { type = "h_experience", params = { expId = "82", value = 1 }, condition = "player.experience.82 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -246,7 +246,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "80", value = 1 }, condition = "player.experience.80 >= 1" },
+  { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -301,7 +301,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
 ]
 
 [[instructions]]
@@ -319,7 +319,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
 ]
 
 [[instructions]]
@@ -337,7 +337,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
 ]
 
 [[instructions]]
@@ -355,7 +355,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
 ]
 
 [[instructions]]
@@ -372,8 +372,8 @@ effects = [
   { type = "set_field", params = { path = "sp_flag.hunger", value = 0 } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "83", value = 1 }, condition = "target.experience.83 >= 1" },
-  { type = "add_experience", params = { id = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "h_experience", params = { expId = "83", value = 1 }, condition = "target.experience.83 >= 1" },
+  { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
 ]
 
 [[instructions]]
@@ -391,7 +391,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "add_experience", params = { id = "80", value = 1 }, condition = "player.experience.80 >= 1" },
+  { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 

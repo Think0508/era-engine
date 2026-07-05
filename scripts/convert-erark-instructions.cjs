@@ -153,8 +153,8 @@ function translateEffect(effId, prevEff) {
     const threshold = parseInt(cveMatch[3])
     // CVE 是独立的条件性 add_experience 效果
     return {
-      type: 'add_experience',
-      params: { id: expId, value: 1 },
+      type: 'h_experience',
+      params: { expId: expId, value: 1 },
       condition: `${who}.experience.${expId} >= ${threshold}`,
     }
   }
@@ -400,8 +400,8 @@ function translateEffect(effId, prevEff) {
   // 经验/计数效果 (500-599)
   if (numId >= 500 && numId < 600) {
     const expMap = {
-      501: { type: 'add_experience', params: { id: 'social', value: 1 } },
-      502: { type: 'add_experience', params: { id: 'domestic', value: 1 } },
+      501: { type: 'h_experience', params: { expId: 'social', value: 1 } },
+      502: { type: 'h_experience', params: { expId: 'domestic', value: 1 } },
       506: { type: 'set_field', params: { path: 'sp_flag.office_work_done', value: true } },
     }
     if (expMap[numId]) return { ...expMap[numId], params: { ...expMap[numId].params } }

@@ -859,6 +859,7 @@ effects = []
 id = "ask_hidden_sex"
 label = "邀请隐奸"
 type = "obscenity"
+sub_category = "hidden_sex"
 time_cost = 5
 priority = 50
 # erArk behavior: ASK_HIDDEN_SEX
@@ -878,6 +879,7 @@ effects = [
 id = "ask_exhibitionism_sex"
 label = "邀请露出"
 type = "obscenity"
+sub_category = "exposure"
 time_cost = 5
 priority = 50
 # erArk behavior: ASK_EXHIBITIONISM_SEX
@@ -898,6 +900,7 @@ effects = [
 id = "ask_group_sex"
 label = "邀请群交"
 type = "obscenity"
+sub_category = "group_sex"
 time_cost = 5
 priority = 50
 # erArk behavior: ASK_GROUP_SEX
@@ -916,6 +919,7 @@ id = "remote_toy_level_down_in_h"
 label = "降低玩具档位"
 type = "obscenity"
 sub_type = "ITEM"
+sub_category = "item"
 time_cost = 1
 priority = 50
 # erArk behavior: REMOTE_SET_SEX_TOY_WEAK
@@ -929,6 +933,7 @@ id = "remote_toy_all_off_in_h"
 label = "遥控关闭全员玩具"
 type = "obscenity"
 sub_type = "ITEM"
+sub_category = "item"
 time_cost = 1
 priority = 50
 # erArk behavior: REMOTE_ALL_TURN_OFF_SEX_TOY
@@ -942,6 +947,7 @@ id = "remote_all_set_sex_toy_weak_in_h"
 label = "全员玩具调到弱档"
 type = "obscenity"
 sub_type = "ITEM"
+sub_category = "item"
 time_cost = 1
 priority = 50
 # erArk behavior: REMOTE_ALL_SET_SEX_TOY_WEAK
@@ -955,6 +961,7 @@ id = "remote_all_set_sex_toy_medium_in_h"
 label = "全员玩具调到中档"
 type = "obscenity"
 sub_type = "ITEM"
+sub_category = "item"
 time_cost = 1
 priority = 50
 # erArk behavior: REMOTE_ALL_SET_SEX_TOY_MEDIUM
@@ -968,6 +975,7 @@ id = "remote_all_set_sex_toy_strong_in_h"
 label = "全员玩具调到强档"
 type = "obscenity"
 sub_type = "ITEM"
+sub_category = "item"
 time_cost = 1
 priority = 50
 # erArk behavior: REMOTE_ALL_SET_SEX_TOY_STRONG
@@ -981,6 +989,7 @@ id = "ask_copy_key"
 label = "要求复制钥匙"
 type = "obscenity"
 sub_type = "ITEM"
+sub_category = "item"
 time_cost = 5
 priority = 50
 # erArk behavior: ASK_COPY_KEY

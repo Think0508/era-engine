@@ -101,7 +101,11 @@ const SKIP_BEHAVIORS = new Set([
   // 特殊（已在子系统中管理）
   'hidden_sex_end', 'exhibitionism_sex_end', 'group_sex_end',
   'imprisonment_h_end', 'unconscious_h_end', 'h_with_daughter_end',
-  'do_h_with_daughter', 'imprisonment_h',
+  'do_h_with_daughter', 'imprisonment_h', 'unconscious_h',
+  // 特殊/独占指令（不需通用指令系统）
+  'make_coffee_add', 'check_locker', 'prepare_training',
+  'sleep_obscenity', 'stop_sleep_obscenity',
+  'switch_to_h_interface', 'switch_to_non_h_interface',
 ])
 
 // ===== 跳过 TO_DO 的指令 =====
@@ -484,8 +488,29 @@ function main() {
     // 获取耗时（统一转大写查找）
     const dur = durationMap[(behaviorId || '').toUpperCase()] || 10
 
+    // 注释：子系统分类映射（某些指令归属于已有 H 插件）
+    const subSystemMap = {
+      'ask_hidden_sex': 'hidden_sex', 'hidden_sex_end': 'hidden_sex',
+      'ask_exhibitionism_sex': 'exposure', 'exhibitionism_sex_end': 'exposure',
+      'ask_group_sex': 'group_sex', 'group_sex_end': 'group_sex',
+      'run_group_sex_temple': 'group_sex', 'run_all_group_sex_temple': 'group_sex',
+      'edit_group_sex_temple': 'group_sex',
+      'time_stop_on': 'time_stop', 'time_stop_off': 'time_stop', 'time_stop_off_in_h': 'time_stop',
+      'carry_target': 'time_stop', 'stop_carry_target': 'time_stop',
+      'hypnosis_one': 'hypnosis', 'deepening_hypnosis': 'hypnosis',
+      'hypnosis_all': 'hypnosis', 'hypnosis_cancel': 'hypnosis',
+      'change_hypnosis_mode': 'hypnosis',
+      'hypnosis_increase_body_sensitivity': 'hypnosis',
+      'hypnosis_force_climax': 'hypnosis', 'hypnosis_force_ovulation': 'hypnosis',
+      'hypnosis_blockhead': 'hypnosis', 'hypnosis_active_h': 'hypnosis',
+      'hypnosis_roleplay': 'hypnosis', 'hypnosis_pain_as_pleasure': 'hypnosis',
+      'bondage': 'bondage',
+      'h_end': 'h_core', 'undress': 'h_core', 'pull_out_penis': 'h_core',
+    }
+    const subCategory = subSystemMap[id] || (subType !== '0' && subType ? subType.toLowerCase() : undefined)
+
     groups[ourType].push({
-      id, name, type: ourType, subType, premises, effects, time_cost: dur, behaviorId,
+      id, name, type: ourType, subType, subCategory, premises, effects, time_cost: dur, behaviorId,
     })
   }
 
@@ -505,6 +530,9 @@ function main() {
       toml += `type = "${inst.type}"\n`
       if (inst.subType && inst.subType !== '0') {
         toml += `sub_type = "${inst.subType}"\n`
+      }
+      if (inst.subCategory) {
+        toml += `sub_category = "${inst.subCategory}"\n`
       }
       toml += `time_cost = ${inst.time_cost}\n`
       toml += `priority = 50\n`

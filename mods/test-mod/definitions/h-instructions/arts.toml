@@ -6,6 +6,7 @@
 id = "hypnosis_one"
 label = "单人催眠"
 type = "arts"
+sub_category = "hypnosis"
 time_cost = 5
 priority = 50
 # erArk behavior: HYPNOSIS_ONE
@@ -22,6 +23,7 @@ effects = [
 id = "deepening_hypnosis"
 label = "加深催眠"
 type = "arts"
+sub_category = "hypnosis"
 time_cost = 10
 priority = 50
 # erArk behavior: 
@@ -32,6 +34,7 @@ effects = []
 id = "hypnosis_all"
 label = "集体催眠"
 type = "arts"
+sub_category = "hypnosis"
 time_cost = 5
 priority = 50
 # erArk behavior: HYPNOSIS_ALL
@@ -48,6 +51,7 @@ effects = [
 id = "hypnosis_cancel"
 label = "解除催眠"
 type = "arts"
+sub_category = "hypnosis"
 time_cost = 5
 priority = 50
 # erArk behavior: HYPNOSIS_CANCEL
@@ -63,6 +67,7 @@ effects = [
 id = "carry_target"
 label = "搬运对方"
 type = "arts"
+sub_category = "time_stop"
 time_cost = 1
 priority = 50
 # erArk behavior: CARRY_TARGET
@@ -75,6 +80,7 @@ effects = [
 id = "stop_carry_target"
 label = "停止搬运对方"
 type = "arts"
+sub_category = "time_stop"
 time_cost = 1
 priority = 50
 # erArk behavior: STOP_CARRY_TARGET
@@ -88,6 +94,7 @@ id = "change_hypnosis_mode"
 label = "切换催眠模式"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "hypnosis"
 time_cost = -1
 priority = 50
 # erArk behavior: SHARE_BLANKLY
@@ -99,6 +106,7 @@ id = "hypnosis_increase_body_sensitivity"
 label = "体控-敏感度提升"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "hypnosis"
 time_cost = 5
 priority = 50
 # erArk behavior: HYPNOSIS_INCREASE_BODY_SENSITIVITY
@@ -114,6 +122,7 @@ id = "hypnosis_force_climax"
 label = "体控-强制高潮"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "hypnosis"
 time_cost = 5
 priority = 50
 # erArk behavior: HYPNOSIS_FORCE_CLIMAX
@@ -129,6 +138,7 @@ id = "hypnosis_force_ovulation"
 label = "体控-强制排卵"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "hypnosis"
 time_cost = 5
 priority = 50
 # erArk behavior: HYPNOSIS_FORCE_OVULATION
@@ -144,6 +154,7 @@ id = "hypnosis_blockhead"
 label = "体控-木头人"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "hypnosis"
 time_cost = 5
 priority = 50
 # erArk behavior: HYPNOSIS_BLOCKHEAD
@@ -159,6 +170,7 @@ id = "hypnosis_active_h"
 label = "体控-逆推"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "hypnosis"
 time_cost = 5
 priority = 50
 # erArk behavior: HYPNOSIS_ACTIVE_H
@@ -174,6 +186,7 @@ id = "hypnosis_roleplay"
 label = "心控-角色扮演"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "hypnosis"
 time_cost = 5
 priority = 50
 # erArk behavior: HYPNOSIS_ROLEPLAY
@@ -185,6 +198,7 @@ id = "hypnosis_pain_as_pleasure"
 label = "心控-苦痛快感化"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "hypnosis"
 time_cost = 5
 priority = 50
 # erArk behavior: HYPNOSIS_PAIN_AS_PLEASURE
@@ -200,6 +214,7 @@ id = "penetrating_vision_on"
 label = "开启透视"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "arts"
 time_cost = 1
 priority = 50
 # erArk behavior: PENETRATING_VISION_ON
@@ -213,6 +228,7 @@ id = "penetrating_vision_off"
 label = "关闭透视"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "arts"
 time_cost = 1
 priority = 50
 # erArk behavior: PENETRATING_VISION_OFF
@@ -226,6 +242,7 @@ id = "hormone_on"
 label = "开启信息素"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "arts"
 time_cost = 1
 priority = 50
 # erArk behavior: HORMONE_ON
@@ -239,6 +256,7 @@ id = "hormone_off"
 label = "关闭信息素"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "arts"
 time_cost = 1
 priority = 50
 # erArk behavior: HORMONE_OFF
@@ -252,6 +270,7 @@ id = "time_stop_on"
 label = "时间停止流动"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "time_stop"
 time_cost = 1
 priority = 50
 # erArk behavior: TIME_STOP_ON
@@ -265,6 +284,7 @@ id = "time_stop_off"
 label = "时间重新流动"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "time_stop"
 time_cost = 1
 priority = 50
 # erArk behavior: TIME_STOP_OFF
@@ -282,6 +302,7 @@ id = "time_stop_off_in_h"
 label = "在H中取消时停"
 type = "arts"
 sub_type = "ARTS"
+sub_category = "time_stop"
 time_cost = 1
 priority = 50
 # erArk behavior: TIME_STOP_OFF

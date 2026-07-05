@@ -94,9 +94,11 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：tech_adjust——体技修正的部位快感/欲情（erArk TECH_ADD_*）
-  // erArk 公式: feel = (add_time + baseValue) × sqrt(abilityAdj[技巧] × abilityAdj[目标部位感度])
-  //             desire = (add_time + baseValue) × sqrt(abilityAdj[技巧] × abilityAdj[目标欲情感度])
+  // 注释：tech_adjust——体技修正的部位快感/欲情（erArk TECH_ADD_*: default.py:7864-7970）
+  // erArk 公式:
+  //   部位快感: (add_time + baseValue) × sqrt(getAbilityAdj[发起者.技巧] × getAbilityAdj[目标.部位感度])
+  //   欲情:     (add_time + baseValue) × sqrt(getAbilityAdj[目标.部位感度] × getAbilityAdj[目标.欲情感度])
+  // 注意: 欲情的 "体技" 系数用的是目标该部位的感度，不是发起者的技巧！
   // 参数: { part: "皮肤|胸部|阴蒂|阴道|肛肠|尿道|子宫|口喉", baseValue?: 50 }
   effectTypeRegistry.register('tech_adjust', (_p: any, execCtx: any) => {
     const ids = execCtx._targetIds as string[]
@@ -109,26 +111,28 @@ export function onLoad(_ctx: PluginContext): void {
     for (const id of ids) {
       const target = entitySystem.get('character', id) as any
       if (!target) continue
-      // 注释：initiator = 玩家（或 sourceId）
       const initId = execCtx.sourceId
       const initiator = initId ? entitySystem.get('character', initId) as any : null
-      const techLv = initiator?.abilities?.['技巧']?.level ?? 0
-      const techAdj = tbl[Math.min(techLv, 10)] ?? 4.0
 
       if (_p.part) {
-        // 注释：部位快感 = base × sqrt(techAdj × feelAdj)
+        // 注释：发起者的技巧 ability[30]
+        const techLv = initiator?.abilities?.['技巧']?.level ?? 0
+        const techAdj = tbl[Math.min(techLv, 10)] ?? 4.0
+        // 注释：目标的部位感度 ability[part_id]
         const feelLv = target?.abilities?.[_p.part]?.level ?? 0
         const feelAdj = tbl[Math.min(feelLv, 10)] ?? 4.0
+        // 注释：部位快感 = base × sqrt(techAdj × feelAdj)
         const feel = Math.floor(base * Math.sqrt(techAdj * feelAdj))
         if (!target.base) target.base = {}
         target.base[_p.part] = Math.min(99999, (target.base[_p.part] ?? 0) + feel)
+        // 注释：欲情 = base × sqrt(目标.部位感度 × 目标.欲情感度)
+        // erArk: 第二个 ability_level = target_data.ability[part_id](不是技巧)
+        const lustFeelLv = target?.abilities?.['欲情']?.level ?? 0
+        const lustFeelAdj = tbl[Math.min(lustFeelLv, 10)] ?? 4.0
+        const lust = Math.floor(base * Math.sqrt(feelAdj * lustFeelAdj))
+        if (!target.base) target.base = {}
+        target.base['欲情'] = Math.min(99999, (target.base['欲情'] ?? 0) + lust)
       }
-      // 注释：欲情 = base × sqrt(techAdj × 欲情感度)
-      const lustLv = target?.abilities?.['欲情']?.level ?? 0
-      const lustAdj = tbl[Math.min(lustLv, 10)] ?? 4.0
-      const lust = Math.floor(base * Math.sqrt(techAdj * lustAdj))
-      if (!target.base) target.base = {}
-      target.base['欲情'] = Math.min(99999, (target.base['欲情'] ?? 0) + lust)
     }
     return true
   })

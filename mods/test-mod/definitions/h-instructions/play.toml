@@ -16,7 +16,6 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "85", value = 1 }, condition = "player.experience.85 >= 1" },
-  { type = "_unknown", params = { erArkId = "504" } },
 ]
 
 [[instructions]]
@@ -33,7 +32,6 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "85", value = 1 }, condition = "player.experience.85 >= 1" },
-  { type = "_unknown", params = { erArkId = "505" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -85,7 +83,6 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -50 } },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "508" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 

@@ -60,7 +60,6 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "hypnosis_cancel" },
-  { type = "_unknown", params = { erArkId = "536" } },
 ]
 
 [[instructions]]
@@ -219,9 +218,7 @@ time_cost = 1
 priority = 50
 # erArk behavior: PENETRATING_VISION_ON
 premises = ["PRIMARY_PENETRATING_VISION", "PENETRATING_VISION_OFF", "SANITY_POINT_GE_5", "TIRED_LE_84"]
-effects = [
-  { type = "_unknown", params = { erArkId = "1201", note = "源石技艺-跳过" } },
-]
+effects = []
 
 [[instructions]]
 id = "penetrating_vision_off"
@@ -233,9 +230,7 @@ time_cost = 1
 priority = 50
 # erArk behavior: PENETRATING_VISION_OFF
 premises = ["PRIMARY_PENETRATING_VISION", "PENETRATING_VISION_ON", "TIRED_LE_84"]
-effects = [
-  { type = "_unknown", params = { erArkId = "1202", note = "源石技艺-跳过" } },
-]
+effects = []
 
 [[instructions]]
 id = "hormone_on"
@@ -247,9 +242,7 @@ time_cost = 1
 priority = 50
 # erArk behavior: HORMONE_ON
 premises = ["PRIMARY_HORMONE", "NOT_H", "HORMONE_OFF", "TIRED_LE_84"]
-effects = [
-  { type = "_unknown", params = { erArkId = "1203", note = "源石技艺-跳过" } },
-]
+effects = []
 
 [[instructions]]
 id = "hormone_off"
@@ -261,9 +254,7 @@ time_cost = 1
 priority = 50
 # erArk behavior: HORMONE_OFF
 premises = ["PRIMARY_HORMONE", "NOT_H", "HORMONE_ON", "TIRED_LE_84"]
-effects = [
-  { type = "_unknown", params = { erArkId = "1204", note = "源石技艺-跳过" } },
-]
+effects = []
 
 [[instructions]]
 id = "time_stop_on"
@@ -292,7 +283,6 @@ premises = ["PRIMARY_TIME_STOP", "NOT_H", "TIME_STOP_ON", "TIRED_LE_84"]
 effects = [
   { type = "time_stop_carry_stop" },
   { type = "time_stop_free_stop" },
-  { type = "_unknown", params = { erArkId = "536" } },
   { type = "time_stop_off" },
   { type = "set_field", params = { path = "h_state.time_stop_release", value = true } },
 ]
@@ -310,7 +300,6 @@ premises = ["PRIMARY_TIME_STOP", "IS_H", "TIME_STOP_ON", "TIRED_LE_84"]
 effects = [
   { type = "time_stop_carry_stop" },
   { type = "time_stop_free_stop" },
-  { type = "_unknown", params = { erArkId = "536" } },
   { type = "time_stop_off" },
   { type = "set_field", params = { path = "h_state.time_stop_release", value = true } },
 ]

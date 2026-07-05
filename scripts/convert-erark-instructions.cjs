@@ -310,7 +310,7 @@ function translateEffect(effId, prevEff) {
 
   // 源石技艺效果 (1201-1204) — 跳过（方舟特有）
   if (numId === 1201 || numId === 1202 || numId === 1203 || numId === 1204) {
-    return { type: '_unknown', params: { erArkId: String(numId), note: '源石技艺-跳过' } }
+    return null
   }
 
   // 催眠效果 (1211-1231)
@@ -411,8 +411,8 @@ function translateEffect(effId, prevEff) {
     if (expMap[numId]) return { ...expMap[numId], params: { ...expMap[numId].params } }
   }
 
-  // 未知效果 → 注释占位
-  return { type: '_unknown', params: { erArkId: effId } }
+  // 未知效果 → 跳过（不生成 TOML，不阻断已知效果执行）
+  return null
 }
 
 // ===== 主流程 =====
@@ -476,10 +476,11 @@ function main() {
     const effectStr = effectMap[(behaviorId || '').toUpperCase()] || ''
     const erArkEffectIds = parseEffectChain(effectStr)
 
-    // 翻译效果
+    // 翻译效果（跳过 null = 未知效果）
     const effects = []
     for (const effId of erArkEffectIds) {
       const translated = translateEffect(effId)
+      if (!translated) continue
       const eff = { type: translated.type, params: { ...translated.params } }
       if (translated.condition) eff.condition = translated.condition
       effects.push(eff)

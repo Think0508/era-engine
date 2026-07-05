@@ -68,7 +68,6 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "88", value = 1 }, condition = "target.experience.88 >= 1" },
   { type = "h_experience", params = { expId = "88", value = 1 }, condition = "player.experience.88 >= 1" },
-  { type = "_unknown", params = { erArkId = "507" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -98,7 +97,6 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "target.experience.80 >= 1" },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
-  { type = "_unknown", params = { erArkId = "510" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -133,7 +131,6 @@ premises = ["STUDENT_NOT_STUDY_IN_CLASSROOM", "NOT_H", "IN_CLASS_ROOM", "TARGET_
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
-  { type = "_unknown", params = { erArkId = "512" } },
 ]
 
 [[instructions]]
@@ -151,7 +148,6 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "90", value = 1 }, condition = "player.experience.90 >= 1" },
-  { type = "_unknown", params = { erArkId = "534" } },
   { type = "set_field", params = { path = "sp_flag.maintenance_done", value = true } },
 ]
 
@@ -197,7 +193,6 @@ effects = [
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "539" } },
   { type = "h_experience", params = { expId = "90", value = 1 }, condition = "player.experience.90 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
@@ -248,7 +243,6 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "target.experience.80 >= 1" },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
-  { type = "_unknown", params = { erArkId = "518" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 

@@ -373,7 +373,6 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "_unknown", params = { erArkId = "537" } },
   { type = "set_field", params = { path = "sp_flag.last_shower_time", value = "now" } },
 ]
 
@@ -524,7 +523,6 @@ effects = [
   { type = "h_experience", params = { expId = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "h_experience", params = { expId = "22", value = 1 }, condition = "target.experience.22 >= 1" },
   { type = "set_field", params = { path = "sp_flag.milking", value = false } },
-  { type = "_unknown", params = { erArkId = "519" } },
 ]
 
 [[instructions]]
@@ -634,7 +632,6 @@ premises = ["HAVE_TARGET", "NOT_H", "HAVE_BAG", "T_IMPRISONMENT_0", "T_UNNORMAL_
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -30 } },
   { type = "modify_attribute", params = { attr = "气力", value = -30 } },
-  { type = "_unknown", params = { erArkId = "513" } },
   { type = "nop" },
 ]
 
@@ -649,7 +646,6 @@ premises = ["NOT_H", "NOT_IN_PRISON", "SCENE_ONLY_ONE", "PL_BAGGING_CHARA", "TIR
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -30 } },
   { type = "modify_attribute", params = { attr = "气力", value = -30 } },
-  { type = "_unknown", params = { erArkId = "540" } },
 ]
 
 [[instructions]]
@@ -663,7 +659,6 @@ premises = ["NOT_H", "IN_PRISON", "SCENE_ONLY_ONE", "PL_BAGGING_CHARA", "TIRED_L
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -30 } },
   { type = "modify_attribute", params = { attr = "气力", value = -30 } },
-  { type = "_unknown", params = { erArkId = "514" } },
   { type = "modify_attribute", params = { attr = "体力", value = -30 } },
 ]
 
@@ -678,7 +673,6 @@ premises = ["NOT_H", "HAVE_TARGET", "IN_PRISON", "SCENE_ONLY_TWO", "T_IMPRISONME
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
-  { type = "_unknown", params = { erArkId = "515" } },
 ]
 
 [[instructions]]
@@ -997,6 +991,5 @@ premises = ["HAVE_TARGET", "TARGET_WORK_IS_DORMITORY_MANAGER", "TIRED_LE_84", "D
 effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "543" } },
 ]
 

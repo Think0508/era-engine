@@ -123,7 +123,6 @@ effects = [
   { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "h_experience", params = { expId = "83", value = 1 }, condition = "target.experience.83 >= 1" },
-  { type = "_unknown", params = { erArkId = "503" } },
 ]
 
 [[instructions]]

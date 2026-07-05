@@ -121,7 +121,6 @@ priority = 50
 # erArk behavior: GROUP_SEX_END
 premises = ["GROUP_SEX_MODE_ON", "IS_H"]
 effects = [
-  { type = "_unknown", params = { erArkId = "529" } },
   { type = "set_field", params = { path = "scene_all.h_state.is_h", value = false } },
   { type = "cloth_wear_all", params = { target = "scene_all" } },
   { type = "set_field", params = { path = "scene_all.h_state.insert_position", value = -1 } },
@@ -709,7 +708,6 @@ effects = [
   { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "tech_adjust", params = { part = "尿道", baseValue = 50 } },
-  { type = "_unknown", params = { erArkId = "523" } },
   { type = "h_experience", params = { expId = "6", value = 1 }, condition = "target.experience.6 >= 1" },
   { type = "h_experience", params = { expId = "32", value = 1 }, condition = "target.experience.32 >= 1" },
   { type = "h_experience", params = { expId = "67", value = 1 }, condition = "target.experience.67 >= 1" },
@@ -3432,7 +3430,6 @@ effects = [
   { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "tech_adjust", params = { part = "尿道", baseValue = 50 } },
-  { type = "_unknown", params = { erArkId = "522" } },
   { type = "h_experience", params = { expId = "6", value = 1 }, condition = "target.experience.6 >= 1" },
   { type = "h_experience", params = { expId = "67", value = 1 }, condition = "target.experience.67 >= 1" },
   { type = "nop" },

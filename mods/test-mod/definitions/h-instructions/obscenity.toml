@@ -536,7 +536,7 @@ priority = 50
 # erArk behavior: REMOTE_TURN_ON_SEX_TOY
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_OFF", "TIRED_LE_84"]
 effects = [
-  { type = "set_field", params = { path = "h_state.remote_toy_level", value = 1 } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -548,7 +548,7 @@ priority = 50
 # erArk behavior: REMOTE_TURN_OFF_SEX_TOY
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TIRED_LE_84"]
 effects = [
-  { type = "set_field", params = { path = "h_state.remote_toy_active", value = false } },
+  { type = "vibrator_set", params = { level = 0 } },
 ]
 
 [[instructions]]
@@ -560,7 +560,7 @@ priority = 50
 # erArk behavior: REMOTE_SET_SEX_TOY_STRONG
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_STRONG", "TIRED_LE_84"]
 effects = [
-  { type = "set_field", params = { path = "h_state.remote_toy_level", value = 3 } },
+  { type = "vibrator_set", params = { level = 3 } },
 ]
 
 [[instructions]]
@@ -572,7 +572,7 @@ priority = 50
 # erArk behavior: REMOTE_SET_SEX_TOY_WEAK
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
 effects = [
-  { type = "set_field", params = { path = "h_state.remote_toy_level", value = 1 } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -584,7 +584,7 @@ priority = 50
 # erArk behavior: REMOTE_ALL_TURN_OFF_SEX_TOY
 premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_ON", "TIRED_LE_84"]
 effects = [
-  { type = "set_field", params = { path = "scene_all.h_state.remote_toy_active", value = false } },
+  { type = "vibrator_set", params = { level = 0 } },
 ]
 
 [[instructions]]
@@ -596,7 +596,7 @@ priority = 50
 # erArk behavior: REMOTE_ALL_SET_SEX_TOY_WEAK
 premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1060" } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -608,7 +608,7 @@ priority = 50
 # erArk behavior: REMOTE_ALL_SET_SEX_TOY_MEDIUM
 premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_STRONG", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1061" } },
+  { type = "vibrator_set", params = { level = 2 } },
 ]
 
 [[instructions]]
@@ -620,7 +620,7 @@ priority = 50
 # erArk behavior: REMOTE_ALL_SET_SEX_TOY_STRONG
 premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_MIDDLE", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1062" } },
+  { type = "vibrator_set", params = { level = 3 } },
 ]
 
 [[instructions]]
@@ -635,7 +635,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -30 } },
   { type = "modify_attribute", params = { attr = "气力", value = -30 } },
   { type = "_unknown", params = { erArkId = "513" } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 12 } },
+  { type = "nop" },
 ]
 
 [[instructions]]
@@ -705,7 +705,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 10 } },
+  { type = "nop" },
 ]
 
 [[instructions]]
@@ -722,7 +722,7 @@ effects = [
   { type = "settle_state", params = { state = "先导", baseValue = 30 } },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 11 } },
+  { type = "nop" },
 ]
 
 [[instructions]]
@@ -921,7 +921,7 @@ priority = 50
 # erArk behavior: REMOTE_SET_SEX_TOY_WEAK
 premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
 effects = [
-  { type = "set_field", params = { path = "h_state.remote_toy_level", value = 1 } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -934,7 +934,7 @@ priority = 50
 # erArk behavior: REMOTE_ALL_TURN_OFF_SEX_TOY
 premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_ON", "TIRED_LE_84"]
 effects = [
-  { type = "set_field", params = { path = "scene_all.h_state.remote_toy_active", value = false } },
+  { type = "vibrator_set", params = { level = 0 } },
 ]
 
 [[instructions]]
@@ -947,7 +947,7 @@ priority = 50
 # erArk behavior: REMOTE_ALL_SET_SEX_TOY_WEAK
 premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1060" } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -960,7 +960,7 @@ priority = 50
 # erArk behavior: REMOTE_ALL_SET_SEX_TOY_MEDIUM
 premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_STRONG", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1061" } },
+  { type = "vibrator_set", params = { level = 2 } },
 ]
 
 [[instructions]]
@@ -973,7 +973,7 @@ priority = 50
 # erArk behavior: REMOTE_ALL_SET_SEX_TOY_STRONG
 premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_MIDDLE", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1062" } },
+  { type = "vibrator_set", params = { level = 3 } },
 ]
 
 [[instructions]]

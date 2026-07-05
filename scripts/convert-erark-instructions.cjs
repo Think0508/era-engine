@@ -365,22 +365,20 @@ function translateEffect(effId, prevEff) {
     return { type: 'set_field', params: { path: 'h_state.insert_position', value: pos[numId] || 0 } }
   }
 
-  // 更多道具 (941-955)
+  // 道具使用消耗 (941-955) — 物品系统自动处理消耗，无需额外效果
   if (numId >= 941 && numId <= 955) {
-    // 这些是震动棒/跳蛋的强度/模式设定
-    return { type: 'set_field', params: { path: 'h_state.toy_level', value: numId - 940 } }
+    return { type: 'nop', params: {} }
   }
 
-  // 远程玩具 (1055-1063)
-  if (numId >= 1055 && numId <= 1063) {
-    const toyActions = {
-      1055: { type: 'set_field', params: { path: 'h_state.remote_toy_active', value: false } },
-      1056: { type: 'set_field', params: { path: 'h_state.remote_toy_level', value: 1 } },
-      1058: { type: 'set_field', params: { path: 'h_state.remote_toy_level', value: 3 } },
-      1059: { type: 'set_field', params: { path: 'scene_all.h_state.remote_toy_active', value: false } },
-    }
-    if (toyActions[numId]) return { ...toyActions[numId], params: { ...toyActions[numId].params } }
+  // 远程玩具 (1055-1063) — 用已有 vibrator_set 档位控制
+  // 1055=关→level=0, 1056=弱→level=1, 1057=中→level=2, 1058=强→level=3
+  // 1059=全员关, 1060=全员弱, 1061=全员中, 1062=全员强
+  if (numId >= 1055 && numId <= 1062) {
+    const levels = { 1055: 0, 1056: 1, 1057: 2, 1058: 3, 1059: 0, 1060: 1, 1061: 2, 1062: 3 }
+    const lv = levels[numId] ?? 0
+    return { type: 'vibrator_set', params: { level: lv } }
   }
+  if (numId === 1063) return { type: 'vibrator_set', params: { level: 1 } }
 
   // 药物补充 (1003-1006)
   if (numId === 1003) return { type: 'apply_lubricant', params: { value: 5000, target: 'anal' } }

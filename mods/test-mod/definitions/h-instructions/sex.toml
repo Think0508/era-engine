@@ -269,7 +269,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25 } },
   { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 2 } },
+  { type = "nop" },
   { type = "apply_aphrodisiac" },
 ]
 
@@ -287,7 +287,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25 } },
   { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 4 } },
+  { type = "nop" },
   { type = "modify_attribute", params = { attr = "尿意", value = 300 } },
 ]
 
@@ -305,7 +305,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25 } },
   { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 5 } },
+  { type = "nop" },
   { type = "set_field", params = { path = "sp_flag.diuretic_effect", value = true } },
 ]
 
@@ -323,7 +323,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25 } },
   { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 6 } },
+  { type = "nop" },
   { type = "set_field", params = { path = "sp_flag.sleep_pill_effect", value = true } },
 ]
 
@@ -342,7 +342,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 7 } },
+  { type = "nop" },
   { type = "set_field", params = { path = "sp_flag.ovulation_promoted", value = true } },
 ]
 
@@ -360,7 +360,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25 } },
   { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 8 } },
+  { type = "nop" },
   { type = "set_field", params = { path = "sp_flag.contraceptive_before", value = true } },
 ]
 
@@ -379,7 +379,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 9 } },
+  { type = "nop" },
   { type = "set_field", params = { path = "sp_flag.contraceptive_after", value = true } },
 ]
 
@@ -3267,7 +3267,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 1 } },
+  { type = "nop" },
   { type = "apply_lubricant", params = { value = 10000 } },
 ]
 
@@ -3283,7 +3283,7 @@ premises = ["TARGET_IS_H", "T_NPC_NOT_ACTIVE_H", "NOW_NOT_CONDOM", "HAVE_CONDOM"
 effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 13 } },
+  { type = "nop" },
   { type = "set_field", params = { path = "h_state.condom", value = true } },
 ]
 
@@ -3323,7 +3323,7 @@ effects = [
   { type = "_unknown", params = { erArkId = "522" } },
   { type = "add_experience", params = { id = "6", value = 1 }, condition = "target.experience.6 >= 1" },
   { type = "add_experience", params = { id = "67", value = 1 }, condition = "target.experience.67 >= 1" },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 14 } },
+  { type = "nop" },
 ]
 
 [[instructions]]
@@ -3371,7 +3371,7 @@ effects = [
   { type = "add_experience", params = { id = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "add_experience", params = { id = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "乳头夹" } },
-  { type = "_unknown", params = { erArkId = "1063" } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -3432,7 +3432,7 @@ effects = [
   { type = "add_experience", params = { id = "2", value = 1 }, condition = "target.experience.2 >= 1" },
   { type = "add_experience", params = { id = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "阴蒂夹" } },
-  { type = "_unknown", params = { erArkId = "1063" } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -3493,7 +3493,7 @@ effects = [
   { type = "add_experience", params = { id = "4", value = 1 }, condition = "target.experience.4 >= 1" },
   { type = "add_experience", params = { id = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "振动棒V" } },
-  { type = "_unknown", params = { erArkId = "1063" } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -3554,7 +3554,7 @@ effects = [
   { type = "add_experience", params = { id = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "add_experience", params = { id = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "振动棒A" } },
-  { type = "_unknown", params = { erArkId = "1063" } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -3648,7 +3648,7 @@ effects = [
   { type = "add_experience", params = { id = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "add_experience", params = { id = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "搾乳机" } },
-  { type = "_unknown", params = { erArkId = "1063" } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -3690,7 +3690,7 @@ effects = [
   { type = "add_experience", params = { id = "7", value = 1 }, condition = "target.experience.7 >= 1" },
   { type = "add_experience", params = { id = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "采尿器" } },
-  { type = "_unknown", params = { erArkId = "1063" } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -3723,7 +3723,7 @@ priority = 50
 # erArk behavior: REMOTE_TURN_ON_SEX_TOY
 premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_OFF", "TIRED_LE_84"]
 effects = [
-  { type = "set_field", params = { path = "h_state.remote_toy_level", value = 1 } },
+  { type = "vibrator_set", params = { level = 1 } },
 ]
 
 [[instructions]]
@@ -3736,7 +3736,7 @@ priority = 50
 # erArk behavior: REMOTE_TURN_OFF_SEX_TOY
 premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TIRED_LE_84"]
 effects = [
-  { type = "set_field", params = { path = "h_state.remote_toy_active", value = false } },
+  { type = "vibrator_set", params = { level = 0 } },
 ]
 
 [[instructions]]
@@ -3749,7 +3749,7 @@ priority = 50
 # erArk behavior: REMOTE_SET_SEX_TOY_STRONG
 premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_STRONG", "TIRED_LE_84"]
 effects = [
-  { type = "set_field", params = { path = "h_state.remote_toy_level", value = 3 } },
+  { type = "vibrator_set", params = { level = 3 } },
 ]
 
 [[instructions]]
@@ -3888,7 +3888,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "add_experience", params = { id = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "add_experience", params = { id = "51", value = 1 }, condition = "target.experience.51 >= 1" },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 3 } },
+  { type = "nop" },
   { type = "apply_lubricant", params = { value = 5000, target = "anal" } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
   { type = "add_experience", params = { id = "53", value = 1 }, condition = "target.experience.53 >= 1" },
@@ -3915,7 +3915,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "add_experience", params = { id = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "add_experience", params = { id = "51", value = 1 }, condition = "target.experience.51 >= 1" },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 3 } },
+  { type = "nop" },
   { type = "apply_lubricant", params = { value = 5000, target = "anal" } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
   { type = "add_experience", params = { id = "53", value = 1 }, condition = "target.experience.53 >= 1" },
@@ -3972,7 +3972,7 @@ effects = [
   { type = "add_experience", params = { id = "34", value = 1 }, condition = "target.experience.34 >= 1" },
   { type = "add_experience", params = { id = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "add_experience", params = { id = "33", value = 1 }, condition = "player.experience.33 >= 1" },
-  { type = "set_field", params = { path = "h_state.toy_level", value = 15 } },
+  { type = "nop" },
 ]
 
 [[instructions]]

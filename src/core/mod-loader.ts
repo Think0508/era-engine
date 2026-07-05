@@ -1,5 +1,6 @@
 import { parse as parseTOML } from '@iarna/toml'
 import type { EntityData, LocationData } from './types'
+import type { Effect } from './effect-type-registry'
 import { resolveTemplate, deepMerge } from './template'
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
@@ -36,15 +37,14 @@ export interface EquipmentSlot {
 export interface HInstruction {
   id: string
   label: string
-  type: string                  // daily/obscenity/sex
-  sex_subtype?: string          // base/foreplay/wait_upon/drug/item/insert/sm
-  priority?: number
+  type: string
+  sub_type?: string
   time_cost?: number
-  premises?: string[]
-  effects?: any[]
-  talk_scene?: string
-  judge_base?: number
+  priority?: number
   modes?: string[]
+  premises?: string[]
+  effects?: Effect[]
+  talk_scene?: string
 }
 
 // 注释：H 系数配置

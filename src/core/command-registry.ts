@@ -8,6 +8,7 @@ export interface CommandDef {
   group: CommandGroup
   modes: string[]
   category?: string
+  sub_category?: string  // 子系统分类（foreplay/insert/item/drug/sm/wait_upon 等）
   timeCost?: number
   condition?: string
   priority?: number

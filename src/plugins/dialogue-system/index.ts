@@ -12,6 +12,8 @@ import { narrativeLog } from '../../core/narrative-log'
 import { modLoader } from '../../core/mod-loader'
 import { commandRegistry } from '../../core/command-registry'
 import type { CommandDef } from '../../core/command-registry'
+import { evaluateCondition } from '../../core/condition'
+import { premiseRegistry } from '../h-core/index'
 
 // 注释：对话运行时状态——当前在哪个 node
 interface ConversationRuntime {
@@ -134,13 +136,28 @@ function triggerSceneInternal(scene: string, charId?: string): void {
   }
 }
 
-// 注释：从匹配的 lines 中随机选一条（condition 求值 TODO——当前不求值，全选）
-// TODO: 接入 condition-registry 求值
+// 注释：从匹配的 lines 中按 condition 筛选后随机选一条
 function pickMatchingLine(lines: ReactiveLine[]): ReactiveLine | null {
   if (lines.length === 0) return null
-  // 注释：多条匹配 → 随机选一条
-  // TODO: condition 求值——当前简化，不过滤 condition
-  return lines[Math.floor(Math.random() * lines.length)]
+  const gc = gameContext.getContext()
+  // 注释：筛选 condition 为 true 的条目
+  const matched = lines.filter(line => {
+    if (!line.condition) return true
+    // 注释：premises:XXX,YYY 格式 → 调 h-core premise 求值
+    if (line.condition.startsWith('premises:')) {
+      const premiseList = line.condition.slice(9).split(',').map(s => s.trim()).filter(Boolean)
+      if (premiseList.length === 0) return true
+      return premiseRegistry.evaluate(premiseList, {
+        selectedCharacterId: gc.player?.id ?? null,
+        sourceId: gc.player?.id ?? null,
+      })
+    }
+    // 注释：标准 condition 表达式
+    try { return evaluateCondition(line.condition, gc) }
+    catch { return false }
+  })
+  if (matched.length === 0) return null
+  return matched[Math.floor(Math.random() * matched.length)]
 }
 
 // 注释：startConversation 内部实现

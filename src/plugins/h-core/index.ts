@@ -94,6 +94,45 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
+  // 注释：tech_adjust——体技修正的部位快感/欲情（erArk TECH_ADD_*）
+  // erArk 公式: feel = (add_time + baseValue) × sqrt(abilityAdj[技巧] × abilityAdj[目标部位感度])
+  //             desire = (add_time + baseValue) × sqrt(abilityAdj[技巧] × abilityAdj[目标欲情感度])
+  // 参数: { part: "皮肤|胸部|阴蒂|阴道|肛肠|尿道|子宫|口喉", baseValue?: 50 }
+  effectTypeRegistry.register('tech_adjust', (_p: any, execCtx: any) => {
+    const ids = execCtx._targetIds as string[]
+    const tc = execCtx._timeCost ?? 10
+    const bv = _p.baseValue ?? 50
+    const base = tc + bv
+    const hc = (modLoader.getMod()?.hConfig as any) ?? {}
+    const tbl = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
+
+    for (const id of ids) {
+      const target = entitySystem.get('character', id) as any
+      if (!target) continue
+      // 注释：initiator = 玩家（或 sourceId）
+      const initId = execCtx.sourceId
+      const initiator = initId ? entitySystem.get('character', initId) as any : null
+      const techLv = initiator?.abilities?.['技巧']?.level ?? 0
+      const techAdj = tbl[Math.min(techLv, 10)] ?? 4.0
+
+      if (_p.part) {
+        // 注释：部位快感 = base × sqrt(techAdj × feelAdj)
+        const feelLv = target?.abilities?.[_p.part]?.level ?? 0
+        const feelAdj = tbl[Math.min(feelLv, 10)] ?? 4.0
+        const feel = Math.floor(base * Math.sqrt(techAdj * feelAdj))
+        if (!target.base) target.base = {}
+        target.base[_p.part] = Math.min(99999, (target.base[_p.part] ?? 0) + feel)
+      }
+      // 注释：欲情 = base × sqrt(techAdj × 欲情感度)
+      const lustLv = target?.abilities?.['欲情']?.level ?? 0
+      const lustAdj = tbl[Math.min(lustLv, 10)] ?? 4.0
+      const lust = Math.floor(base * Math.sqrt(techAdj * lustAdj))
+      if (!target.base) target.base = {}
+      target.base['欲情'] = Math.min(99999, (target.base['欲情'] ?? 0) + lust)
+    }
+    return true
+  })
+
   effectTypeRegistry.register('h_start_h', async (_p: any, execCtx: any) => {
     const allyId = execCtx.sourceId
     const targetId = _p.targetId ?? execCtx._targetIds?.[0]

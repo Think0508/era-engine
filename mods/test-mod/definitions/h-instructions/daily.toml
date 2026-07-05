@@ -355,7 +355,7 @@ premises = ["IN_TOILET_MAN", "NOT_H", "URINATE_GE_80", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "set_field", params = { path = "sp_flag.urinate", value = 0 } },
   { type = "set_field", params = { path = "sp_flag.peeing", value = false } },
-  { type = "_unknown", params = { erArkId = "1721" } },
+  { type = "set_field", params = { path = "sp_flag.moving_to_dormitory", value = true } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 

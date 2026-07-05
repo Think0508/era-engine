@@ -40,7 +40,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "add_experience", params = { id = "122", value = 1 }, condition = "player.experience.122 >= 1" },
-  { type = "_unknown", params = { erArkId = "201" } },
+  { type = "set_field", params = { path = "sp_flag.work_related", value = true } },
   { type = "hypnosis_all" },
 ]
 

@@ -171,14 +171,22 @@ function translateEffect(effId, prevEff) {
 
   // 100+ 用于部位快感（100-199 = 各部位快感 +50 baseValue）
   if (numId >= 100 && numId < 200) {
-    // Body feel effects with state ID lookup
     const feelMap = {
-      101: '快乐', 111: '皮肤', 154: '胸部', 155: '阴蒂',
-      159: '阴道', 161: '肛肠', 163: '尿道', 165: '子宫',
-      171: '口喉',
+      101: '快乐', 110: '皮肤', 111: '皮肤', 112: '胸部', 114: '阴道',
+      115: '肛肠', 116: '尿道', 117: '子宫', 118: '口喉', 119: '兽部',
+      120: '阴茎', 141: '皮肤', 142: '口喉', 143: '脚', 144: '胸部',
+      145: '阴道', 146: '肛肠', 154: '胸部', 155: '阴蒂',
+      159: '阴道', 161: '肛肠', 163: '尿道', 165: '子宫', 171: '口喉',
     }
-    const state = feelMap[numId]
-    if (state) return { type: 'settle_state', params: { state, baseValue: 50 } }
+    const feelTechMap = { 110: 1, 111: 1, 112: 1, 114: 1, 115: 1, 116: 1, 117: 1, 118: 1, 119: 1 }
+    const part = feelMap[numId]
+    if (part) {
+      // tech_adjust 效果（带体技修正） vs 普通 settle_state
+      if (feelTechMap[numId] || (numId >= 110 && numId <= 146)) {
+        return { type: 'tech_adjust', params: { part, baseValue: 50 } }
+      }
+      return { type: 'settle_state', params: { state: part, baseValue: 50 } }
+    }
   }
 
   // 位置效果 (800-862) — 插入位置
@@ -345,6 +353,48 @@ function translateEffect(effId, prevEff) {
   if (numId === 1504) return { type: 'modify_attribute', params: { attr: '体力', value: 50, target: 'self' } }
   if (numId === 1505) return { type: 'modify_attribute', params: { attr: '气力', value: 50, target: 'self' } }
   if (numId === 1751) return { type: 'set_field', params: { path: 'sp_flag.urinated', value: true } }
+
+  // 疼痛系 tech_adjust (121-135)
+  if ((numId >= 121 && numId <= 125) || (numId >= 131 && numId <= 135)) {
+    return { type: 'tech_adjust', params: { type: 'pain', erArkId: numId } }
+  }
+
+  // 更多体位 (866-868)
+  if (numId >= 866 && numId <= 868) {
+    const pos = { 866: 13, 867: 14, 868: 15 }
+    return { type: 'set_field', params: { path: 'h_state.insert_position', value: pos[numId] || 0 } }
+  }
+
+  // 更多道具 (941-955)
+  if (numId >= 941 && numId <= 955) {
+    // 这些是震动棒/跳蛋的强度/模式设定
+    return { type: 'set_field', params: { path: 'h_state.toy_level', value: numId - 940 } }
+  }
+
+  // 远程玩具 (1055-1063)
+  if (numId >= 1055 && numId <= 1063) {
+    const toyActions = {
+      1055: { type: 'set_field', params: { path: 'h_state.remote_toy_active', value: false } },
+      1056: { type: 'set_field', params: { path: 'h_state.remote_toy_level', value: 1 } },
+      1058: { type: 'set_field', params: { path: 'h_state.remote_toy_level', value: 3 } },
+      1059: { type: 'set_field', params: { path: 'scene_all.h_state.remote_toy_active', value: false } },
+    }
+    if (toyActions[numId]) return { ...toyActions[numId], params: { ...toyActions[numId].params } }
+  }
+
+  // 药物补充 (1003-1006)
+  if (numId === 1003) return { type: 'apply_lubricant', params: { value: 5000, target: 'anal' } }
+  if (numId === 1004) return { type: 'set_field', params: { path: 'h_state.enema_active', value: false } }
+  if (numId === 1005) return { type: 'modify_attribute', params: { attr: '尿意', value: 300 } }
+  if (numId === 1006) return { type: 'set_field', params: { path: 'sp_flag.diuretic_effect', value: true } }
+
+  // 153 = 疼痛, 201 = 工作相关
+  if (numId === 153) return { type: 'modify_attribute', params: { attr: '体力', value: -30 } }
+  if (numId === 201) return { type: 'set_field', params: { path: 'sp_flag.work_related', value: true } }
+
+  // 1721-1722 = 移动/行为
+  if (numId === 1721) return { type: 'set_field', params: { path: 'sp_flag.moving_to_dormitory', value: true } }
+  if (numId === 1722) return { type: 'set_field', params: { path: 'h_state.endurance_released', value: true } }
 
   // 9999 = 无效果（占位）
   if (numId === 9999) return { type: 'nop', params: {} }

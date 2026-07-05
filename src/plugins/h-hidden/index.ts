@@ -338,8 +338,8 @@ export function onLoad(_ctx: PluginContext): void {
 }
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
-  const reg = (id: string, fn: (c: any) => boolean) => {
-    try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+  const reg = async (id: string, fn: (c: any) => boolean) => {
+    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
   }
 
   function getTargetMode(ctx2: any): number {

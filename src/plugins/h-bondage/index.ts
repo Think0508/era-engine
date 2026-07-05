@@ -167,10 +167,10 @@ export function onLoad(_ctx: PluginContext): void {
   })
 }
 
-export function onEnable(ctx: PluginContext): void {
+export async function onEnable(ctx: PluginContext): Promise<void> {
   // 通过插件 API 注册
-  const reg = (id: string, fn: (c: any) => boolean) => {
-    try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+  const reg = async (id: string, fn: (c: any) => boolean) => {
+    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
   }
 
   reg('HAVE_BONDAGE', (ctx2: any) => {

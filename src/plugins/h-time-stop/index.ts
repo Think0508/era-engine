@@ -135,9 +135,9 @@ export function onLoad(_ctx: PluginContext): void {
   })
 }
 
-export function onEnable(ctx: PluginContext): void {
-  const reg = (id: string, fn: (c: any) => boolean) => {
-    try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+export async function onEnable(ctx: PluginContext): Promise<void> {
+  const reg = async (id: string, fn: (c: any) => boolean) => {
+    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
   }
 
   // 时停状态前提

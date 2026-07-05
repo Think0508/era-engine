@@ -255,8 +255,8 @@ export function onLoad(_ctx: PluginContext): void {
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
   // 注释：helper — 注册前提
-  const reg = (id: string, fn: (c: any) => boolean) => {
-    try { ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+  const reg = async (id: string, fn: (c: any) => boolean) => {
+    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
   }
 
   // 注释：Step 2 — 全局模式前提

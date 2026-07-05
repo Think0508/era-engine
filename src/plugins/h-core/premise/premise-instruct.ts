@@ -115,43 +115,9 @@ export function registerInstructPremises(registry: any): void {
   registry.register('T_W_DILATE_GE_3', dilateGe('womb', 3))
   registry.register('T_W_DILATE_GE_5', dilateGe('womb', 5))
 
-  // ── Clothing (equipment direct) ──────────────────────────────
-  function equipHas(partField: string) {
-    return (ctx: any) => {
-      const ch = getTarget(ctx)
-      if (!ch) return false
-      return !!ch?.equipment?.[partField]
-    }
-  }
+  // 注释：服装前提已由 premise-clothing.ts 注册
 
-  registry.register('TARGET_WEAR_SKIRT', (ctx: any) => {
-    const ch = getTarget(ctx)
-    if (!ch) return false
-    return !!ch?.equipment?.lower?.includes('裙')
-  })
-
-  registry.register('TARGET_WEAR_PAN', (ctx: any) => {
-    const ch = getTarget(ctx)
-    if (!ch) return false
-    return !!ch?.equipment?.panties
-  })
-
-  registry.register('TARGET_WEAR_SOCKS', equipHas('foot'))
-  registry.register('TARGET_WEAR_HAT', equipHas('head'))
-  registry.register('TARGET_WEAR_GLASS', (ctx: any) => {
-    const ch = getTarget(ctx)
-    if (!ch) return false
-    return !!ch?.equipment?.accessory?.includes('眼镜')
-  })
-  registry.register('TARGET_WEAR_BRA', equipHas('bra'))
-  registry.register('TARGET_WEAR_GLOVES', equipHas('hand'))
-  registry.register('TARGET_WEAR_TROUSERS', (ctx: any) => {
-    const ch = getTarget(ctx)
-    if (!ch) return false
-    if (!ch?.equipment?.lower) return false
-    return !ch.equipment.lower.includes('裙')
-  })
-  registry.register('TARGET_WEAR_SHOES', equipHas('foot'))
+  // 注释：服装前提已由 premise-clothing.ts 注册，不重复
 
   // ── Location / place ─────────────────────────────────────────
   function locationTypeIs(typeName: string) {

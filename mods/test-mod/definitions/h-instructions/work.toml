@@ -1,58 +1,33 @@
-# WORK 类型指令
-# 映射自 erArk InstructConfig.csv (WORK 行) + Behavior_Effect.csv
-# 映射参考: .superpowers/instruction-mapping-ref.md
-
-[[instructions]]
-id = "official_work"
-label = "处理公务"
-type = "work"
-time_cost = 60
-priority = 50
-premises = ["NOT_H", "IN_DR_OFFICE", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "HAVE_OFFICE_WORK_NEED_TO_DO", "TIRED_LE_74"]
-effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "settle_favorability", condition = "target.experience.82 >= 1" },
-  { type = "settle_favorability", condition = "player.experience.82 >= 1" },
-  { type = "check_facility_damage" },
-]
+# 自动生成—请勿手动编辑
+# 来源: erArk InstructConfig.csv + Behavior_Effect.csv
+# 指令数: 34
 
 [[instructions]]
 id = "field_commission"
 label = "外勤委托"
 type = "work"
-time_cost = 120
+time_cost = 10
 priority = 50
+# erArk behavior: 
 premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_FIELD_ASSEMBLY_POINT"]
-effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "check_facility_damage" },
-]
+effects = []
 
 [[instructions]]
 id = "training"
 label = "战斗训练"
 type = "work"
-time_cost = 60
+time_cost = 120
 priority = 50
+# erArk behavior: TRAINING
 premises = ["NOT_H", "IN_TRAINING_ROOM", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -50 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -50 } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "settle_favorability", condition = "target.experience.81 >= 1" },
-  { type = "settle_favorability", condition = "player.experience.81 >= 1" },
-  { type = "set_flag", params = { flag = "record_training_time" } },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "_unknown", params = { erArkId = "701" }, condition = "target.experience.81 >= 1 && player.experience.81 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -61,17 +36,27 @@ label = "诊疗病人"
 type = "work"
 time_cost = 30
 priority = 50
+# erArk behavior: CURE_PATIENT
 premises = ["NOT_H", "IN_CLINIC", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "settle_favorability", condition = "target.experience.88 >= 1" },
-  { type = "settle_favorability", condition = "player.experience.88 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "_unknown", params = { erArkId = "507" }, condition = "target.experience.88 >= 1 && player.experience.88 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
+
+[[instructions]]
+id = "manage_dedical_department"
+label = "管理医疗系统"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_MEDICAL_OFFICE", "TIRED_LE_74"]
+effects = []
 
 [[instructions]]
 id = "recruit"
@@ -79,16 +64,16 @@ label = "招募干员"
 type = "work"
 time_cost = 60
 priority = 50
+# erArk behavior: RECRUIT
 premises = ["NOT_H", "IN_HR_OFFICE", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "settle_favorability", condition = "target.experience.80 >= 1" },
-  { type = "settle_favorability", condition = "player.experience.80 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "_unknown", params = { erArkId = "510" }, condition = "target.experience.80 >= 1 && player.experience.80 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -97,14 +82,19 @@ label = "确认已招募干员"
 type = "work"
 time_cost = 10
 priority = 50
+# erArk behavior: 
 premises = ["NOT_H", "IN_DR_OFFICE", "NEW_NPC_WAIT", "TIME_STOP_OFF", "TIRED_LE_74"]
-effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_trust" },
-  { type = "check_facility_damage" },
-]
+effects = []
+
+[[instructions]]
+id = "recruitment"
+label = "招募情况"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_HR_OFFICE"]
+effects = []
 
 [[instructions]]
 id = "teach"
@@ -112,11 +102,12 @@ label = "授课"
 type = "work"
 time_cost = 45
 priority = 50
+# erArk behavior: TEACH
 premises = ["STUDENT_NOT_STUDY_IN_CLASSROOM", "NOT_H", "IN_CLASS_ROOM", "TARGET_HP_NE_1", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true, target = "self" } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true, target = "self" } },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "_unknown", params = { erArkId = "512" } },
 ]
 
 [[instructions]]
@@ -125,16 +116,16 @@ label = "维护设施"
 type = "work"
 time_cost = 60
 priority = 50
+# erArk behavior: MAINTENANCE_FACILITIES
 premises = ["NOT_H", "IN_ANY_MAINTENANCE_PLACE", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -25 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "settle_favorability", condition = "player.experience.90 >= 1" },
-  { type = "set_flag", params = { flag = "maintenance_flag_to_0" } },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "_unknown", params = { erArkId = "534" }, condition = "player.experience.90 >= 1" },
+  { type = "_unknown", params = { erArkId = "371" } },
 ]
 
 [[instructions]]
@@ -143,16 +134,26 @@ label = "调控设施供能"
 type = "work"
 time_cost = 30
 priority = 50
+# erArk behavior: MANAGE_FACILITY_POWER
 premises = ["NOT_H", "IN_POWER_DISPATCH", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -25 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "settle_favorability", condition = "player.experience.90 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.90 >= 1" },
 ]
+
+[[instructions]]
+id = "manage_power_system"
+label = "管理能源系统"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_POWER_DISPATCH", "TIRED_LE_74"]
+effects = []
 
 [[instructions]]
 id = "repair_equipment"
@@ -160,16 +161,27 @@ label = "维修装备"
 type = "work"
 time_cost = 60
 priority = 50
+# erArk behavior: REPAIR_EQUIPMENT
 premises = ["NOT_H", "IN_BLACKSMITH_SHOP", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -50 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -50 } },
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "settle_favorability", condition = "player.experience.90 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "_unknown", params = { erArkId = "539" } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.90 >= 1" },
 ]
+
+[[instructions]]
+id = "equipment_maintain"
+label = "管理装备维护"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_BLACKSMITH_SHOP"]
+effects = []
 
 [[instructions]]
 id = "assistant_adjustments"
@@ -177,27 +189,19 @@ label = "助理相关调整"
 type = "work"
 time_cost = 10
 priority = 50
+# erArk behavior: 
 premises = ["NOT_H", "IN_DR_OFFICE"]
-effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "check_facility_damage" },
-]
+effects = []
 
 [[instructions]]
 id = "building"
 label = "基建系统"
 type = "work"
-time_cost = 30
+time_cost = 10
 priority = 50
+# erArk behavior: 
 premises = ["NOT_H", "IN_BUILDING_ROOM"]
-effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "check_facility_damage" },
-]
+effects = []
 
 [[instructions]]
 id = "invite_visitor"
@@ -205,31 +209,77 @@ label = "邀请访客"
 type = "work"
 time_cost = 60
 priority = 50
+# erArk behavior: INVITE_VISITOR
 premises = ["NOT_H", "IN_DIPLOMATIC_OFFICE", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "VISITOR_ZONE_GE_2"]
 effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "settle_favorability", condition = "target.experience.80 >= 1" },
-  { type = "settle_favorability", condition = "player.experience.80 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "_unknown", params = { erArkId = "518" }, condition = "target.experience.80 >= 1 && player.experience.80 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
-id = "navigation"
-label = "导航"
+id = "visitor_system"
+label = "访客系统"
 type = "work"
 time_cost = 10
 priority = 50
-premises = ["NOT_H", "IN_COMMAND_ROOM_OR_OUT_EXIT"]
-effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "check_facility_damage" },
-]
+# erArk behavior: 
+premises = ["NOT_H", "IN_DIPLOMATIC_OFFICE", "VISITOR_ZONE_GE_2"]
+effects = []
+
+[[instructions]]
+id = "nation_diplomacy"
+label = "势力与外交"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_DIPLOMATIC_OFFICE", "VISITOR_ZONE_GE_2"]
+effects = []
+
+[[instructions]]
+id = "deal_with_diplomacy"
+label = "处理外交事宜"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = []
+effects = []
+
+[[instructions]]
+id = "prts"
+label = "普瑞赛斯"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_DR_OFF_OR_SERVER_ROOM_OR_DEBUG"]
+effects = []
+
+[[instructions]]
+id = "manage_library"
+label = "管理图书馆"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_LIBRARY_OR_LIBRARY_OFFICE", "TARGET_WORK_IS_LIBRARY_MANAGER", "T_NORMAL_24567"]
+effects = []
+
+[[instructions]]
+id = "manage_assembly_line"
+label = "管理流水线"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_PRODUCTION_WORKSHOP"]
+effects = []
 
 [[instructions]]
 id = "plant_manage_crop"
@@ -237,16 +287,56 @@ label = "种植与养护作物"
 type = "work"
 time_cost = 60
 priority = 50
+# erArk behavior: PLANT_MANAGE_CROP
 premises = ["NOT_H", "IN_HERB_GARDEN_OR_GREENHOUSE", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -50 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -50 } },
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "settle_favorability", condition = "player.experience.89 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.89 >= 1" },
 ]
+
+[[instructions]]
+id = "manage_agriculture"
+label = "管理农业生产"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_HERB_GARDEN"]
+effects = []
+
+[[instructions]]
+id = "manage_vehicle"
+label = "管理载具"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_GARAGE"]
+effects = []
+
+[[instructions]]
+id = "physical_check_and_manage"
+label = "身体检查与管理"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_PHYSICAL_EXAMINATION", "TIRED_LE_84", "HP_G_1"]
+effects = []
+
+[[instructions]]
+id = "manage_confinement_and_training"
+label = "管理监禁调教"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "T_WORK_IS_WARDEN"]
+effects = []
 
 [[instructions]]
 id = "investigate_resource_market"
@@ -254,13 +344,74 @@ label = "研判资源市场"
 type = "work"
 time_cost = 60
 priority = 50
+# erArk behavior: INVESTIGATE_RESOURCE_MARKET
 premises = ["NOT_H", "IN_RESOURCE_EXCHANGE", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -25 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "settle_favorability", condition = "player.experience.80 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.80 >= 1" },
 ]
+
+[[instructions]]
+id = "manage_resource_exchange"
+label = "管理资源交易"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_RESOURCE_EXCHANGE"]
+effects = []
+
+[[instructions]]
+id = "navigation"
+label = "导航"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_COMMAND_ROOM_OR_OUT_EXIT"]
+effects = []
+
+[[instructions]]
+id = "organize_dormitory_opinion"
+label = "整理宿舍意见"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_DORMITORY_MANAGER_ROOM", "TARGET_WORK_IS_DORMITORY_MANAGER", "DEBUG_MODE_ON"]
+effects = []
+
+[[instructions]]
+id = "handle_dormitory_problem"
+label = "处理宿舍问题"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_DORMITORY_MANAGER_ROOM", "IN_ANY_DORMITORY", "DEBUG_MODE_ON"]
+effects = []
+
+[[instructions]]
+id = "manage_dormitory"
+label = "宿舍管理系统"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_DORMITORY_MANAGER_ROOM", "DEBUG_MODE_ON"]
+effects = []
+
+[[instructions]]
+id = "manage_basement"
+label = "管理罗德岛"
+type = "work"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_DR_OFFICE"]
+effects = []
+

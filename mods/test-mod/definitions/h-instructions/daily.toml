@@ -1,10 +1,15 @@
+# 自动生成—请勿手动编辑
+# 来源: erArk InstructConfig.csv + Behavior_Effect.csv
+# 指令数: 32
+
 [[instructions]]
 id = "wait"
 label = "等待五分钟"
 type = "daily"
-time_cost = 10
+time_cost = -1
 priority = 50
-premises = []
+# erArk behavior: WAIT
+premises = ["NOT_H"]
 effects = []
 
 [[instructions]]
@@ -13,7 +18,8 @@ label = "等待一个小时"
 type = "daily"
 time_cost = 10
 priority = 50
-premises = []
+# erArk behavior: 
+premises = ["DEBUG_MODE_ON"]
 effects = []
 
 [[instructions]]
@@ -22,7 +28,8 @@ label = "等待六个小时"
 type = "daily"
 time_cost = 10
 priority = 50
-premises = []
+# erArk behavior: 
+premises = ["DEBUG_MODE_ON"]
 effects = []
 
 [[instructions]]
@@ -31,14 +38,14 @@ label = "聊天"
 type = "daily"
 time_cost = 5
 priority = 50
+# erArk behavior: CHAT
 premises = ["HAVE_TARGET", "NOT_H", "TIRED_LE_84", "HP_G_1", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "气力", negate = true }, condition = "target.experience.80 >= 1" },
-  { type = "settle_favorability", condition = "player.experience.80 >= 1" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "快乐", target = true } },
-  { type = "settle_state", params = { state = "好感度" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 }, condition = "target.experience.80 >= 1 && player.experience.80 >= 1" },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "add_experience", params = { id = "social", value = 1 } },
 ]
 
 [[instructions]]
@@ -47,15 +54,16 @@ label = "身体接触"
 type = "daily"
 time_cost = 10
 priority = 50
+# erArk behavior: STROKE
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true, both = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true, both = true } },
-  { type = "settle_state", params = { state = "欲情", target = true } },
-  { type = "settle_state", params = { state = "快乐", target = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "settle_state", params = { state = "反感", target = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
 
 [[instructions]]
@@ -64,15 +72,16 @@ label = "按摩"
 type = "daily"
 time_cost = 30
 priority = 50
+# erArk behavior: MASSAGE
 premises = ["HAVE_TARGET", "NOT_H", "TECHNIQUE_GE_3", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
-  { type = "settle_state", params = { state = "欲情", target = true } },
-  { type = "settle_state", params = { state = "快乐", target = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "settle_state", params = { state = "习得" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -30 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
 ]
 
 [[instructions]]
@@ -81,16 +90,17 @@ label = "泡咖啡"
 type = "daily"
 time_cost = 15
 priority = 50
+# erArk behavior: MAKE_COFFEE
 premises = ["HAVE_TARGET", "NOT_H", "PLACE_FURNITURE_GE_2", "TIRED_LE_84", "HP_G_1", "TARGET_URINATE_LE_49", "T_NORMAL_24567"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "尿意", target = true } },
-  { type = "settle_state", params = { state = "恭顺", target = true } },
-  { type = "settle_state", params = { state = "好意", target = true }, condition = "player.experience.83 >= 1" },
-  { type = "settle_state", params = { state = "好感度" } },
+  { type = "modify_attribute", params = { attr = "尿意", value = 5 } },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "add_experience", params = { id = "domestic", value = 1 }, condition = "player.experience.83 >= 1" },
 ]
 
 [[instructions]]
@@ -99,17 +109,48 @@ label = "让对方泡咖啡"
 type = "daily"
 time_cost = 15
 priority = 50
+# erArk behavior: ASK_MAKE_COFFEE
 premises = ["HAVE_TARGET", "NOT_H", "PLACE_FURNITURE_GE_2", "TIRED_LE_84", "HP_G_1", "URINATE_LE_49", "NO_TARGET_OR_TARGET_CAN_COOPERATE"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "尿意" } },
-  { type = "settle_state", params = { state = "恭顺", target = true } },
-  { type = "settle_state", params = { state = "好意", target = true }, condition = "target.experience.83 >= 1" },
-  { type = "settle_state", params = { state = "好感度", target = true } },
+  { type = "modify_attribute", params = { attr = "尿意", value = 5 } },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "503" }, condition = "target.experience.83 >= 1" },
 ]
+
+[[instructions]]
+id = "make_food"
+label = "做饭"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["IN_KITCHEN_OR_IN_DR_ROOM_AND_DR_ROOM_LEVEL_GE_2"]
+effects = []
+
+[[instructions]]
+id = "eat"
+label = "进食"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["HAVE_FOOD", "NOT_H", "TIRED_LE_84"]
+effects = []
+
+[[instructions]]
+id = "put_selfmade_food_in"
+label = "放入正常食物"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["HAVE_FOOD", "NOT_H", "IN_TAKE_FOOD", "TIRED_LE_84", "HP_G_1"]
+effects = []
 
 [[instructions]]
 id = "rest"
@@ -117,12 +158,23 @@ label = "休息"
 type = "daily"
 time_cost = 60
 priority = 50
+# erArk behavior: REST
 premises = ["NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "TIRED_LE_84"]
 effects = [
   { type = "settle_favorability" },
-  { type = "set_flag", params = { flag = "rest", value = 0 } },
-  { type = "check_facility_damage" },
+  { type = "modify_attribute", params = { attr = "疲劳", value = -10 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
+
+[[instructions]]
+id = "diray"
+label = "日记"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["IN_DORMITORY_OR_HOTEL", "NOT_H"]
+effects = []
 
 [[instructions]]
 id = "sleep"
@@ -130,22 +182,23 @@ label = "睡觉"
 type = "daily"
 time_cost = -1
 priority = 50
+# erArk behavior: SLEEP
 premises = ["IN_DORMITORY_OR_HOTEL", "NOT_H", "TIME_STOP_OFF", "TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1"]
 effects = [
-  { type = "settle_state", params = { state = "疲劳", baseValue = 100, negate = true } },
-  { type = "settle_state", params = { state = "睡眠", baseValue = 100, negate = true } },
-  { type = "set_flag", params = { flag = "shower", value = 0 } },
-  { type = "set_flag", params = { flag = "sleep", value = 0 } },
-  { type = "set_flag", params = { flag = "hypnosis", value = 0 } },
-  { type = "set_flag", params = { flag = "masturbate_before_sleep", value = 0 } },
-  { type = "settle_state", params = { state = "好感度" } },
-  { type = "set_flag", params = { flag = "cloth_see", value = 0 } },
-  { type = "set_flag", params = { flag = "sleep_cloth" } },
-  { type = "set_flag", params = { flag = "clean_locker_semen" } },
-  { type = "set_flag", params = { flag = "body_manage_sleep_item" } },
-  { type = "settle_state", params = { state = "理智" } },
-  { type = "settle_state", params = { state = "射精欲" } },
-  { type = "check_facility_damage" },
+  { type = "modify_attribute", params = { attr = "体力", value = -50, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -50, target = "self" } },
+  { type = "_unknown", params = { erArkId = "301" } },
+  { type = "_unknown", params = { erArkId = "321" } },
+  { type = "modify_attribute", params = { attr = "疲劳", value = -30 } },
+  { type = "modify_attribute", params = { attr = "睡意", value = -50 } },
+  { type = "modify_attribute", params = { attr = "欲望", value = -20 } },
+  { type = "set_field", params = { path = "sp_flag.pajamas", value = true } },
+  { type = "set_field", params = { path = "sp_flag.night_clothes", value = true } },
+  { type = "cloth_wear_all" },
+  { type = "modify_attribute", params = { attr = "欲望", value = -50 } },
+  { type = "modify_attribute", params = { attr = "体力", value = 50, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = 50, target = "self" } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -154,28 +207,45 @@ label = "淋浴"
 type = "daily"
 time_cost = 30
 priority = 50
+# erArk behavior: TAKE_SHOWER
 premises = ["IN_BATHROOM", "NOT_H", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "settle_state", params = { state = "气力", negate = true } },
-  { type = "set_flag", params = { flag = "shower", value = 3 } },
-  { type = "set_flag", params = { flag = "dirty_reset_in_shower" } },
-  { type = "set_flag", params = { flag = "record_shower_time" } },
-  { type = "check_facility_damage" },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "set_field", params = { path = "sp_flag.showering", value = true } },
+  { type = "set_field", params = { path = "sp_flag.clean", value = true } },
+  { type = "modify_attribute", params = { attr = "尿意", value = -50 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
-id = "pee"
-label = "解手"
+id = "buy_h_item"
+label = "购买成人用品"
 type = "daily"
-time_cost = 5
+time_cost = 10
 priority = 50
-premises = ["IN_TOILET_MAN", "NOT_H", "URINATE_GE_80", "TIRED_LE_84", "HP_G_1"]
-effects = [
-  { type = "settle_state", params = { state = "尿意", baseValue = 100, negate = true } },
-  { type = "set_flag", params = { flag = "pee", value = 0 } },
-  { type = "set_flag", params = { flag = "move_to_own_dormitory" } },
-  { type = "check_facility_damage" },
-]
+# erArk behavior: 
+premises = ["IN_H_SHOP", "NOT_H"]
+effects = []
+
+[[instructions]]
+id = "buy_food"
+label = "购买食物"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["IN_FOOD_SHOP", "NOT_H", "TIRED_LE_84", "HP_G_1"]
+effects = []
+
+[[instructions]]
+id = "all_npc_position"
+label = "干员位置一览"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H"]
+effects = []
 
 [[instructions]]
 id = "follow"
@@ -183,9 +253,11 @@ label = "邀请同行"
 type = "daily"
 time_cost = 5
 priority = 50
+# erArk behavior: FOLLOW
 premises = ["HAVE_TARGET", "NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TARGET_NOT_FOLLOW"]
 effects = [
-  { type = "set_flag", params = { flag = "intelligent_follow", value = 1, target = true } },
+  { type = "set_field", params = { path = "sp_flag.following", value = true } },
+  { type = "_unknown", params = { erArkId = "9999" } },
 ]
 
 [[instructions]]
@@ -194,10 +266,32 @@ label = "结束同行"
 type = "daily"
 time_cost = 5
 priority = 50
+# erArk behavior: END_FOLLOW
 premises = ["HAVE_TARGET", "NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TARGET_IS_FOLLOW"]
 effects = [
-  { type = "set_flag", params = { flag = "intelligent_follow", value = 0, target = true } },
+  { type = "set_field", params = { path = "sp_flag.following", value = false } },
+  { type = "_unknown", params = { erArkId = "9999" } },
 ]
+
+[[instructions]]
+id = "ask_target_rest"
+label = "让对方休息"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_HP_OR_MP_LOW", "T_NORMAL_1", "T_NORMAL_2", "T_NORMAL_6"]
+effects = []
+
+[[instructions]]
+id = "ask_target_sleep"
+label = "让对方去睡觉"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_TIRED_GE_75", "T_NORMAL_1", "T_NORMAL_2", "T_NORMAL_6"]
+effects = []
 
 [[instructions]]
 id = "apologize"
@@ -205,12 +299,13 @@ label = "道歉"
 type = "daily"
 time_cost = 60
 priority = 50
+# erArk behavior: APOLOGIZE
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_ANGRY_WITH_PLAYER", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
-  { type = "settle_state", params = { state = "反感", target = true }, condition = "player.experience.80 >= 1" },
-  { type = "set_flag", params = { flag = "angry_with_player", value = 0, target = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.apologized", value = true }, condition = "player.experience.80 >= 1" },
 ]
 
 [[instructions]]
@@ -219,13 +314,13 @@ label = "听牢骚"
 type = "daily"
 time_cost = 45
 priority = 50
+# erArk behavior: LISTEN_COMPLAINT
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_ABD_OR_ANGRY_MOOD", "TARGET_NOT_ANGRY_WITH_PLAYER", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
-  { type = "settle_state", params = { state = "好意", target = true }, condition = "target.experience.80 >= 1" },
-  { type = "settle_favorability", condition = "player.experience.80 >= 1" },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
 ]
 
 [[instructions]]
@@ -234,9 +329,86 @@ label = "赠送礼物"
 type = "daily"
 time_cost = 5
 priority = 50
+# erArk behavior: GIVE_GIFT
 premises = ["HAVE_TARGET", "TIRED_LE_84", "HP_G_1", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
-  { type = "settle_state", params = { state = "好感度" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
+  { type = "modify_relation", params = { relation = "好感度", value = 10 } },
 ]
+
+[[instructions]]
+id = "pee"
+label = "解手"
+type = "daily"
+time_cost = 5
+priority = 50
+# erArk behavior: PEE
+premises = ["IN_TOILET_MAN", "NOT_H", "URINATE_GE_80", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "_unknown", params = { erArkId = "32" } },
+  { type = "_unknown", params = { erArkId = "331" } },
+  { type = "_unknown", params = { erArkId = "1721" } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+]
+
+[[instructions]]
+id = "collect"
+label = "摆放藏品"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["IN_COLLECTION_ROOM", "HAVE_COLLECTION", "NOT_H", "TIRED_LE_84"]
+effects = []
+
+[[instructions]]
+id = "take_care_baby"
+label = "照顾婴儿"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "POSITION_IN_IN_NURSERY_AND_FLAG_BABY_EXIST", "TIRED_LE_84", "HP_G_1"]
+effects = []
+
+[[instructions]]
+id = "order_hotel_room"
+label = "预定房间"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_LOVE_HOTEL"]
+effects = []
+
+[[instructions]]
+id = "see_collection"
+label = "查看收藏品"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["IN_COLLECTION_ROOM"]
+effects = []
+
+[[instructions]]
+id = "see_achievement"
+label = "查看蚀刻章"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["IN_COLLECTION_ROOM"]
+effects = []
+
+[[instructions]]
+id = "see_fridge"
+label = "查看冰箱"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["IN_KITCHEN"]
+effects = []
+

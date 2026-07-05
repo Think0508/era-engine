@@ -1,327 +1,343 @@
-# obscenity.toml——猥亵指令
-# 效果链精确复刻 erArk 07-指令集-猥亵期.md
-# TODO: 111(胸部追加快感), CVE_*(经验系统)
+# 自动生成—请勿手动编辑
+# 来源: erArk InstructConfig.csv + Behavior_Effect.csv
+# 指令数: 60
 
 [[instructions]]
-id = "touch_hand"
-label = "摸手"
+id = "make_coffee_add"
+label = "泡咖啡（加料）"
 type = "obscenity"
-priority = 10
 time_cost = 10
-premises = ["HAVE_TARGET", "T_NORMAL"]
-# erArk: [21, 11, 12, 22, 52, 55, 62]
-effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_trust" },
-  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
-  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
-  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-]
-talk_scene = "touch_hand"
-
-[[instructions]]
-id = "touch_breast"
-label = "摸胸"
-type = "obscenity"
-priority = 20
-time_cost = 10
-premises = ["HAVE_TARGET", "T_NORMAL"]
-# erArk: [21, 11, 12, 58, 62, 111, CVE_A2_E|1_G_1, CVE_A1_E|41_G_1]
-effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "胸部", baseValue = 50 } },
-  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
-  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
-]
-talk_scene = "touch_breast"
-
-# === 追加的猥亵指令 ===
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "PLACE_FURNITURE_GE_2", "SCENE_ONLY_ONE", "TIRED_LE_84", "PL_SEMEN_G_2", "HP_G_1"]
+effects = []
 
 [[instructions]]
 id = "touch_head"
 label = "摸头"
 type = "obscenity"
 time_cost = 10
-priority = 11
+priority = 50
+# erArk behavior: TOUCH_HEAD
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
-talk_scene = "touch_head"
+
+[[instructions]]
+id = "touch_breast"
+label = "摸胸"
+type = "obscenity"
+time_cost = 10
+priority = 50
+# erArk behavior: TOUCH_BREAST
+premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
+]
 
 [[instructions]]
 id = "touch_buttocks"
 label = "摸屁股"
 type = "obscenity"
 time_cost = 10
-priority = 21
+priority = 50
+# erArk behavior: TOUCH_BUTTOCKS
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "肛肠", baseValue = 50 } },
-  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
-  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "59" } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
-talk_scene = "touch_buttocks"
 
 [[instructions]]
 id = "touch_ears"
 label = "摸耳朵"
 type = "obscenity"
 time_cost = 10
-priority = 22
+priority = 50
+# erArk behavior: TOUCH_EARS
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
-  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "119" } },
 ]
-talk_scene = "touch_ears"
 
 [[instructions]]
 id = "touch_horn"
 label = "摸角"
 type = "obscenity"
 time_cost = 10
-priority = 23
+priority = 50
+# erArk behavior: TOUCH_HORN
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_HORN", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
-  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "119" } },
 ]
-talk_scene = "touch_horn"
 
 [[instructions]]
 id = "touch_tail"
 label = "摸尾巴"
 type = "obscenity"
 time_cost = 10
-priority = 24
+priority = 50
+# erArk behavior: TOUCH_TAIL
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_TAIL", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "兽部", baseValue = 50 } },
-  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "119" } },
 ]
-talk_scene = "touch_tail"
 
 [[instructions]]
 id = "touch_ring"
 label = "摸光环"
 type = "obscenity"
 time_cost = 10
-priority = 25
+priority = 50
+# erArk behavior: TOUCH_RING
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_RING", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
-  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "119" } },
 ]
-talk_scene = "touch_ring"
 
 [[instructions]]
 id = "touch_wing"
 label = "摸翅膀"
 type = "obscenity"
 time_cost = 10
-priority = 26
+priority = 50
+# erArk behavior: TOUCH_WING
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_WING", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
-  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "119" } },
 ]
-talk_scene = "touch_wing"
 
 [[instructions]]
 id = "touch_tentacle"
 label = "摸触手"
 type = "obscenity"
 time_cost = 10
-priority = 27
+priority = 50
+# erArk behavior: TOUCH_TENTACLE
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_TENTACLE", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "兽部", baseValue = 50 } },
-  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "119" } },
 ]
-talk_scene = "touch_tentacle"
 
 [[instructions]]
 id = "touch_car"
 label = "摸小车"
 type = "obscenity"
 time_cost = 10
-priority = 28
+priority = 50
+# erArk behavior: TOUCH_CAR
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_HAVE_CAR", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
-  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "119" } },
 ]
-talk_scene = "touch_car"
 
 [[instructions]]
 id = "hand_in_hand"
 label = "牵手"
 type = "obscenity"
-time_cost = 5
-priority = 30
+time_cost = 10
+priority = 50
+# erArk behavior: HAND_IN_HAND
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
-  { type = "settle_state", params = { state = "好感度" } },
+  { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
-talk_scene = "hand_in_hand"
 
 [[instructions]]
 id = "embrace"
 label = "拥抱"
 type = "obscenity"
-time_cost = 10
-priority = 31
+time_cost = 3
+priority = 50
+# erArk behavior: EMBRACE
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
-  { type = "settle_state", params = { state = "好感度" } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
-talk_scene = "embrace"
 
 [[instructions]]
 id = "kiss"
 label = "亲吻"
 type = "obscenity"
-time_cost = 10
-priority = 40
+time_cost = 5
+priority = 50
+# erArk behavior: KISS
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "PENIS_NOT_IN_T_MOUSE", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "口喉", baseValue = 50 } },
-  { type = "settle_state", params = { state = "欲情", target = true } },
-  { type = "settle_state", params = { state = "快乐", target = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "settle_state", params = { state = "好感度" } },
+  { type = "set_field", params = { path = "sp_flag.first_kiss", value = true } },
+  { type = "settle_state", params = { state = "快乐", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "118" } },
 ]
-talk_scene = "kiss"
 
 [[instructions]]
 id = "lap_pillow"
 label = "膝枕"
 type = "obscenity"
-time_cost = 15
-priority = 35
+time_cost = 30
+priority = 50
+# erArk behavior: LAP_PILLOW
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "PLACE_FURNITURE_GE_1", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
-  { type = "settle_state", params = { state = "好感度" } },
+  { type = "_unknown", params = { erArkId = "56" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
-talk_scene = "lap_pillow"
 
 [[instructions]]
 id = "raise_skirt"
 label = "掀起裙子"
 type = "obscenity"
 time_cost = 5
-priority = 42
+priority = 50
+# erArk behavior: RAISE_SKIRT
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_WEAR_SKIRT", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "settle_state", params = { state = "欲情", target = true } },
-  { type = "set_flag", params = { flag = "skirt_raised" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
 ]
-talk_scene = "raise_skirt"
 
 [[instructions]]
 id = "ask_for_pan"
 label = "索要内裤"
 type = "obscenity"
 time_cost = 5
-priority = 43
+priority = 50
+# erArk behavior: ASK_FOR_PAN
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_6", "TARGET_WEAR_PAN", "COLLECT_BONUS_102", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "settle_state", params = { state = "欲情", target = true } },
-  { type = "set_flag", params = { flag = "ask_pan" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "621" } },
 ]
-talk_scene = "ask_for_pan"
 
 [[instructions]]
 id = "ask_for_socks"
 label = "索要袜子"
 type = "obscenity"
 time_cost = 5
-priority = 44
+priority = 50
+# erArk behavior: ASK_FOR_SOCKS
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_6", "TARGET_WEAR_SOCKS", "COLLECT_BONUS_202", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "settle_state", params = { state = "欲情", target = true } },
-  { type = "set_flag", params = { flag = "ask_socks" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "622" } },
 ]
-talk_scene = "ask_for_socks"
 
 [[instructions]]
 id = "invite_to_bath"
@@ -329,280 +345,614 @@ label = "一起洗澡"
 type = "obscenity"
 time_cost = 30
 priority = 50
+# erArk behavior: INVITE_TO_BATH
 premises = ["HAVE_TARGET", "NOT_H", "IN_BATHROOM", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "好感度" } },
-  { type = "set_flag", params = { flag = "bathe_together" } },
+  { type = "_unknown", params = { erArkId = "537" } },
+  { type = "modify_attribute", params = { attr = "尿意", value = -50 } },
 ]
-talk_scene = "invite_to_bath"
 
 [[instructions]]
 id = "steal_pan"
 label = "偷走内裤"
 type = "obscenity"
 time_cost = 5
-priority = 45
+priority = 50
+# erArk behavior: STEAL_PAN
 premises = ["HAVE_TARGET", "NOT_H", "T_UNNORMAL_5_6", "TARGET_WEAR_PAN", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "set_flag", params = { flag = "steal_pan" } },
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "_unknown", params = { erArkId = "621" } },
 ]
-talk_scene = "steal_pan"
 
 [[instructions]]
 id = "steal_socks"
 label = "偷走袜子"
 type = "obscenity"
 time_cost = 5
-priority = 46
+priority = 50
+# erArk behavior: STEAL_SOCKS
 premises = ["HAVE_TARGET", "NOT_H", "T_UNNORMAL_5_6", "TARGET_WEAR_SOCKS", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "set_flag", params = { flag = "steal_socks" } },
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "_unknown", params = { erArkId = "622" } },
 ]
-talk_scene = "steal_socks"
 
 [[instructions]]
 id = "steal_scene_all_pan"
 label = "偷走所有人内裤"
 type = "obscenity"
 time_cost = 10
-priority = 47
+priority = 50
+# erArk behavior: STEAL_SCENE_ALL_PAN
 premises = ["HAVE_TARGET", "NOT_H", "SCENE_OVER_TWO", "SCENE_ALL_UNCONSCIOUS_OR_SLEEP", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
-  { type = "set_flag", params = { flag = "steal_scene_all_pan" } },
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "_unknown", params = { erArkId = "623" } },
 ]
-talk_scene = "steal_scene_all_pan"
 
 [[instructions]]
 id = "steal_scene_all_socks"
 label = "偷走所有人袜子"
 type = "obscenity"
 time_cost = 10
-priority = 48
+priority = 50
+# erArk behavior: STEAL_SCENE_ALL_SOCKS
 premises = ["HAVE_TARGET", "NOT_H", "SCENE_OVER_TWO", "SCENE_ALL_UNCONSCIOUS_OR_SLEEP", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
-  { type = "set_flag", params = { flag = "steal_scene_all_socks" } },
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "_unknown", params = { erArkId = "624" } },
 ]
-talk_scene = "steal_scene_all_socks"
 
 [[instructions]]
 id = "touch_clitoris"
 label = "阴蒂爱抚"
 type = "obscenity"
-time_cost = 10
-priority = 60
+time_cost = 5
+priority = 50
+# erArk behavior: TOUCH_CLITORIS
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "阴蒂", baseValue = 50 } },
-  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "60" } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "112" } },
 ]
-talk_scene = "touch_clitoris"
 
 [[instructions]]
 id = "touch_vagina"
 label = "手指插入（V）"
 type = "obscenity"
-time_cost = 10
-priority = 61
+time_cost = 5
+priority = 50
+# erArk behavior: TOUCH_VAGINA
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "阴道", baseValue = 50 } },
-  { type = "settle_state", params = { state = "润滑", baseValue = 50 } },
-  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "59" } },
+  { type = "_unknown", params = { erArkId = "60" } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "114" } },
 ]
-talk_scene = "touch_vagina"
 
 [[instructions]]
 id = "touch_anus"
 label = "手指插入（A）"
 type = "obscenity"
-time_cost = 10
-priority = 62
+time_cost = 5
+priority = 50
+# erArk behavior: TOUCH_ANUS
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "肛肠", baseValue = 50 } },
-  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "settle_state", params = { state = "苦痛", baseValue = 50 } },
-  { type = "settle_state", params = { state = "羞耻", baseValue = 50 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "59" } },
+  { type = "_unknown", params = { erArkId = "60" } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "115" } },
 ]
-talk_scene = "touch_anus"
 
 [[instructions]]
 id = "milk"
 label = "挤奶"
 type = "obscenity"
-time_cost = 15
-priority = 55
+time_cost = 10
+priority = 50
+# erArk behavior: MILK
 premises = ["HAVE_TARGET", "NOT_H", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "TARGET_MILK_GE_30", "TIRED_LE_84", "HP_G_1"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "胸部", baseValue = 50 } },
-  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "_unknown", params = { erArkId = "42" } },
   { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
-  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
-  { type = "set_flag", params = { flag = "milked" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
+  { type = "_unknown", params = { erArkId = "336" }, condition = "target.experience.1 >= 1 && target.experience.22 >= 1" },
+  { type = "_unknown", params = { erArkId = "519" } },
 ]
-talk_scene = "milk"
+
+[[instructions]]
+id = "remote_toy_on"
+label = "遥控启动玩具"
+type = "obscenity"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_TURN_ON_SEX_TOY
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_OFF", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1056" } },
+]
+
+[[instructions]]
+id = "remote_toy_off"
+label = "遥控关闭玩具"
+type = "obscenity"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_TURN_OFF_SEX_TOY
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1055" } },
+]
+
+[[instructions]]
+id = "remote_toy_level_up"
+label = "调高玩具档位"
+type = "obscenity"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_SET_SEX_TOY_STRONG
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_STRONG", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1058" } },
+]
+
+[[instructions]]
+id = "remote_toy_level_down"
+label = "降低玩具档位"
+type = "obscenity"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_SET_SEX_TOY_WEAK
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1056" } },
+]
+
+[[instructions]]
+id = "remote_toy_all_off"
+label = "遥控关闭全员玩具"
+type = "obscenity"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_ALL_TURN_OFF_SEX_TOY
+premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_ON", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1059" } },
+]
+
+[[instructions]]
+id = "remote_all_set_sex_toy_weak"
+label = "全员玩具调到弱档"
+type = "obscenity"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_ALL_SET_SEX_TOY_WEAK
+premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1060" } },
+]
+
+[[instructions]]
+id = "remote_all_set_sex_toy_medium"
+label = "全员玩具调到中档"
+type = "obscenity"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_ALL_SET_SEX_TOY_MEDIUM
+premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_STRONG", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1061" } },
+]
+
+[[instructions]]
+id = "remote_all_set_sex_toy_strong"
+label = "全员玩具调到强档"
+type = "obscenity"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_ALL_SET_SEX_TOY_STRONG
+premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_MIDDLE", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1062" } },
+]
+
+[[instructions]]
+id = "bagging_and_moving"
+label = "装袋搬走"
+type = "obscenity"
+time_cost = 10
+priority = 50
+# erArk behavior: BAGGING_AND_MOVING
+premises = ["HAVE_TARGET", "NOT_H", "HAVE_BAG", "T_IMPRISONMENT_0", "T_UNNORMAL_6", "TARGET_NOT_VISITOR_FLAG_1", "T_UNCONSCIOUS_FLAG_0", "SCENE_ALL_UNCONSCIOUS_OR_SLEEP", "PL_NOT_BAGGING_CHARA", "NOT_CARRY_ANYBODY_IN_TIME_STOP", "TIRED_LE_74"]
+effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -30 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -30 } },
+  { type = "_unknown", params = { erArkId = "513" } },
+  { type = "_unknown", params = { erArkId = "952" } },
+]
+
+[[instructions]]
+id = "release_from_bag"
+label = "从袋中放出来"
+type = "obscenity"
+time_cost = 10
+priority = 50
+# erArk behavior: RELEASE_FROM_BAG
+premises = ["NOT_H", "NOT_IN_PRISON", "SCENE_ONLY_ONE", "PL_BAGGING_CHARA", "TIRED_LE_74"]
+effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -30 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -30 } },
+  { type = "_unknown", params = { erArkId = "540" } },
+]
+
+[[instructions]]
+id = "put_into_prison"
+label = "投入监牢"
+type = "obscenity"
+time_cost = 10
+priority = 50
+# erArk behavior: PUT_INTO_PRISON
+premises = ["NOT_H", "IN_PRISON", "SCENE_ONLY_ONE", "PL_BAGGING_CHARA", "TIRED_LE_74"]
+effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -30 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -30 } },
+  { type = "_unknown", params = { erArkId = "514" } },
+  { type = "_unknown", params = { erArkId = "153" } },
+]
+
+[[instructions]]
+id = "set_free"
+label = "解除囚禁"
+type = "obscenity"
+time_cost = 10
+priority = 50
+# erArk behavior: SET_FREE
+premises = ["NOT_H", "HAVE_TARGET", "IN_PRISON", "SCENE_ONLY_TWO", "T_IMPRISONMENT_1", "TIRED_LE_74"]
+effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
+  { type = "_unknown", params = { erArkId = "515" } },
+]
+
+[[instructions]]
+id = "check_locker"
+label = "检查衣柜"
+type = "obscenity"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_LOCKER_ROOM_OR_DORMITORY", "TIRED_LE_84", "HP_G_1"]
+effects = []
 
 [[instructions]]
 id = "confession"
 label = "告白"
 type = "obscenity"
-time_cost = 30
-priority = 100
+time_cost = 10
+priority = 50
+# erArk behavior: CONFESSION
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_LOVE_2", "HAVE_RING", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "好意", target = true, baseValue = 50 } },
-  { type = "settle_state", params = { state = "好感度", baseValue = 50 } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "950" } },
 ]
-talk_scene = "confession"
 
 [[instructions]]
 id = "give_necklace"
 label = "戴上项圈"
 type = "obscenity"
 time_cost = 10
-priority = 110
+priority = 50
+# erArk behavior: GIVE_NECKLACE
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_OBEY_2", "HAVE_COLLAR", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "TIRED_LE_74"]
 effects = [
-  { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 30, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 30, negate = true } },
-  { type = "set_flag", params = { flag = "collared", target = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "_unknown", params = { erArkId = "56" } },
+  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "951" } },
 ]
-talk_scene = "give_necklace"
+
+[[instructions]]
+id = "prepare_training"
+label = "调教前准备"
+type = "obscenity"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["HAVE_TARGET", "NOT_H", "T_IMPRISONMENT_1", "HAVE_WARDEN", "TARGET_HP_NE_1", "TIRED_LE_74"]
+effects = []
 
 [[instructions]]
 id = "sleep_obscenity"
 label = "睡眠猥亵"
 type = "obscenity"
-time_cost = 5
-priority = 120
+time_cost = 10
+priority = 50
+# erArk behavior: 
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_ACTION_SLEEP", "T_UNCONSCIOUS_FLAG_0", "TIRED_LE_74"]
-effects = [
-  { type = "set_flag", params = { flag = "sleep_obscenity", value = 1 } },
-]
-talk_scene = "sleep_obscenity"
+effects = []
 
 [[instructions]]
 id = "stop_sleep_obscenity"
 label = "停止睡眠猥亵"
 type = "obscenity"
-time_cost = 5
-priority = 121
+time_cost = 10
+priority = 50
+# erArk behavior: 
 premises = ["HAVE_TARGET", "NOT_H", "T_UNNORMAL_5_6", "T_UNCONSCIOUS_FLAG_1", "TIRED_LE_74"]
-effects = [
-  { type = "set_flag", params = { flag = "sleep_obscenity", value = 0 } },
-]
-talk_scene = "stop_sleep_obscenity"
+effects = []
 
 [[instructions]]
 id = "do_h"
 label = "邀请H"
 type = "obscenity"
-time_cost = 10
-priority = 130
+time_cost = 5
+priority = 50
+# erArk behavior: H
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "TARGET_NOT_PLAYER_DAUGHTER", "T_IMPRISONMENT_0", "PLACE_ALL_DOOR_LOCKABLE", "SCENE_ONLY_TWO", "TIRED_LE_74"]
 effects = [
-  { type = "enter_mode", params = { mode = "h" } },
+  { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
+  { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
+  { type = "_unknown", params = { erArkId = "752" } },
+  { type = "_unknown", params = { erArkId = "1409" } },
 ]
-talk_scene = "do_h"
 
 [[instructions]]
 id = "do_h_in_love_hotel"
 label = "邀请在爱情旅馆H"
 type = "obscenity"
-time_cost = 10
-priority = 131
+time_cost = 5
+priority = 50
+# erArk behavior: H
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "IN_LOVE_HOTEL", "SCENE_ONLY_TWO", "LIVE_IN_LOVE_HOTEL", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "enter_mode", params = { mode = "h" } },
+  { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
+  { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
+  { type = "_unknown", params = { erArkId = "752" } },
+  { type = "_unknown", params = { erArkId = "1409" } },
 ]
-talk_scene = "do_h_in_love_hotel"
 
 [[instructions]]
 id = "do_h_in_bathroom"
 label = "邀请在浴室H"
 type = "obscenity"
-time_cost = 10
-priority = 132
+time_cost = 5
+priority = 50
+# erArk behavior: H
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "IN_BATHROOM", "SCENE_ONLY_TWO", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "enter_mode", params = { mode = "h" } },
+  { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
+  { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
+  { type = "_unknown", params = { erArkId = "752" } },
+  { type = "_unknown", params = { erArkId = "1409" } },
 ]
-talk_scene = "do_h_in_bathroom"
+
+[[instructions]]
+id = "do_h_with_daughter"
+label = "邀请乱伦H"
+type = "obscenity"
+time_cost = 5
+priority = 50
+# erArk behavior: H
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TARGET_IS_PLAYER_DAUGHTER", "SCENE_ONLY_TWO", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
+  { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
+  { type = "_unknown", params = { erArkId = "752" } },
+  { type = "_unknown", params = { erArkId = "1409" } },
+]
+
+[[instructions]]
+id = "imprisonment_h"
+label = "监禁奸"
+type = "obscenity"
+time_cost = 5
+priority = 50
+# erArk behavior: H
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_IMPRISONMENT_1", "SCENE_ONLY_TWO", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "TIRED_LE_74"]
+effects = [
+  { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
+  { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
+  { type = "_unknown", params = { erArkId = "752" } },
+  { type = "_unknown", params = { erArkId = "1409" } },
+]
+
+[[instructions]]
+id = "unconscious_h"
+label = "无意识奸"
+type = "obscenity"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_UNCONSCIOUS_FLAG", "TIRED_LE_74"]
+effects = []
 
 [[instructions]]
 id = "ask_hidden_sex"
 label = "邀请隐奸"
 type = "obscenity"
-time_cost = 10
-priority = 133
+time_cost = 5
+priority = 50
+# erArk behavior: ASK_HIDDEN_SEX
 premises = ["HAVE_TARGET", "NOT_H", "HIDDEN_SEX_MODE_0", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "enter_mode", params = { mode = "hidden_sex" } },
+  { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
+  { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
+  { type = "_unknown", params = { erArkId = "704" } },
+  { type = "_unknown", params = { erArkId = "1409" } },
 ]
-talk_scene = "ask_hidden_sex"
 
 [[instructions]]
 id = "ask_exhibitionism_sex"
 label = "邀请露出"
 type = "obscenity"
-time_cost = 10
-priority = 134
+time_cost = 5
+priority = 50
+# erArk behavior: ASK_EXHIBITIONISM_SEX
 premises = ["HAVE_TARGET", "NOT_H", "EXHIBITIONISM_SEX_MODE_0", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "enter_mode", params = { mode = "exhibitionism" } },
+  { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
+  { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
+  { type = "_unknown", params = { erArkId = "704" } },
+  { type = "_unknown", params = { erArkId = "1409" } },
 ]
-talk_scene = "ask_exhibitionism_sex"
 
 [[instructions]]
 id = "ask_group_sex"
 label = "邀请群交"
 type = "obscenity"
-time_cost = 10
-priority = 135
+time_cost = 5
+priority = 50
+# erArk behavior: ASK_GROUP_SEX
 premises = ["HAVE_TARGET", "HIDDEN_SEX_MODE_0", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "SCENE_ALL_NOT_H", "SCENE_OVER_TWO", "SCENE_ALL_NOT_TIRED", "TIRED_LE_74"]
 effects = [
-  { type = "enter_mode", params = { mode = "group_sex" } },
+  { type = "set_field", params = { path = "h_state.is_h", value = true } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "_unknown", params = { erArkId = "608" } },
+  { type = "_unknown", params = { erArkId = "1410" } },
+  { type = "group_sex_mode_on" },
 ]
-talk_scene = "ask_group_sex"
+
+[[instructions]]
+id = "remote_toy_level_down_in_h"
+label = "降低玩具档位"
+type = "obscenity"
+sub_type = "ITEM"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_SET_SEX_TOY_WEAK
+premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1056" } },
+]
+
+[[instructions]]
+id = "remote_toy_all_off_in_h"
+label = "遥控关闭全员玩具"
+type = "obscenity"
+sub_type = "ITEM"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_ALL_TURN_OFF_SEX_TOY
+premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_ON", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1059" } },
+]
+
+[[instructions]]
+id = "remote_all_set_sex_toy_weak_in_h"
+label = "全员玩具调到弱档"
+type = "obscenity"
+sub_type = "ITEM"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_ALL_SET_SEX_TOY_WEAK
+premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1060" } },
+]
+
+[[instructions]]
+id = "remote_all_set_sex_toy_medium_in_h"
+label = "全员玩具调到中档"
+type = "obscenity"
+sub_type = "ITEM"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_ALL_SET_SEX_TOY_MEDIUM
+premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_STRONG", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1061" } },
+]
+
+[[instructions]]
+id = "remote_all_set_sex_toy_strong_in_h"
+label = "全员玩具调到强档"
+type = "obscenity"
+sub_type = "ITEM"
+time_cost = 1
+priority = 50
+# erArk behavior: REMOTE_ALL_SET_SEX_TOY_STRONG
+premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_MIDDLE", "TIRED_LE_84"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1062" } },
+]
+
+[[instructions]]
+id = "ask_copy_key"
+label = "要求复制钥匙"
+type = "obscenity"
+sub_type = "ITEM"
+time_cost = 5
+priority = 50
+# erArk behavior: ASK_COPY_KEY
+premises = ["HAVE_TARGET", "TARGET_WORK_IS_DORMITORY_MANAGER", "TIRED_LE_84", "DEBUG_MODE_ON"]
+effects = [
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "543" } },
+]
+

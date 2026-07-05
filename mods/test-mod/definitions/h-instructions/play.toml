@@ -1,16 +1,21 @@
+# 自动生成—请勿手动编辑
+# 来源: erArk InstructConfig.csv + Behavior_Effect.csv
+# 指令数: 30
+
 [[instructions]]
 id = "singing"
 label = "唱歌"
 type = "play"
 time_cost = 10
 priority = 50
+# erArk behavior: SINGING
 premises = ["NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.85 >= 1" },
-  { type = "settle_state", params = { state = "好感度" } },
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "504" }, condition = "player.experience.85 >= 1" },
 ]
 
 [[instructions]]
@@ -19,14 +24,15 @@ label = "演奏乐器"
 type = "play"
 time_cost = 10
 priority = 50
+# erArk behavior: PLAY_INSTRUMENT
 premises = ["NOT_H", "HAVE_INSTRUMENT_OR_IN_MUSIC_ROOM", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.85 >= 1" },
-  { type = "settle_state", params = { state = "好感度" } },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "_unknown", params = { erArkId = "505" }, condition = "player.experience.85 >= 1" },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -35,14 +41,15 @@ label = "听肚子里的动静"
 type = "play"
 time_cost = 5
 priority = 50
+# erArk behavior: LISTEN_INFLATION
 premises = ["HAVE_TARGET", "NOT_H", "NOT_IN_TOILET", "T_INFLATION_1", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "快乐", target = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
 ]
 
 [[instructions]]
@@ -51,14 +58,15 @@ label = "一起玩耍"
 type = "play"
 time_cost = 30
 priority = 50
+# erArk behavior: PLAY_WITH_CHILD
 premises = ["HAVE_TARGET", "NOT_H", "NOT_IN_TOILET", "T_CHILD_OR_LOLI_1", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true, both = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true, both = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得", both = true } },
-  { type = "settle_state", params = { state = "好意", target = true } },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
 ]
 
 [[instructions]]
@@ -67,16 +75,37 @@ label = "锻炼身体"
 type = "play"
 time_cost = 60
 priority = 50
+# erArk behavior: EXERCISE
 premises = ["NOT_H", "IN_GYM_ROOM", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
   { type = "settle_favorability" },
-  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true, both = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true, both = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -50 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -50 } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "习得", both = true } },
-  { type = "settle_state", params = { state = "体力最大値" } },
-  { type = "check_facility_damage" },
+  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "_unknown", params = { erArkId = "508" } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
+
+[[instructions]]
+id = "borrow_book"
+label = "借阅书籍"
+type = "play"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["IN_LIBRARY", "NOT_H", "TIRED_LE_84", "HP_G_1"]
+effects = []
+
+[[instructions]]
+id = "read_book"
+label = "读书"
+type = "play"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "TIRED_LE_74", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "PLACE_FURNITURE_GE_2"]
+effects = []
 
 [[instructions]]
 id = "watch_movie"
@@ -84,15 +113,16 @@ label = "看电影"
 type = "play"
 time_cost = 120
 priority = 50
+# erArk behavior: WATCH_MOVIE
 premises = ["NOT_H", "IN_MULTIMEDIA_ROOM", "T_NORMAL_5_6", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.82 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.82 >= 1" },
 ]
 
 [[instructions]]
@@ -101,15 +131,16 @@ label = "摄影"
 type = "play"
 time_cost = 60
 priority = 50
+# erArk behavior: PHOTOGRAPHY
 premises = ["NOT_H", "IN_PHOTOGRAPHY_STUDIO", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -118,16 +149,27 @@ label = "玩水"
 type = "play"
 time_cost = 60
 priority = 50
+# erArk behavior: PLAY_WATER
 premises = ["NOT_H", "IN_AQUAPIT_EXPERIENTORIUM", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true } },
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
+
+[[instructions]]
+id = "play_gomoku"
+label = "下五子棋"
+type = "play"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "HAVE_TARGET", "IN_BOARD_GAMES_ROOM", "T_NORMAL_5_6", "TIRED_LE_74"]
+effects = []
 
 [[instructions]]
 id = "play_chess"
@@ -135,15 +177,16 @@ label = "下棋"
 type = "play"
 time_cost = 30
 priority = 50
+# erArk behavior: PLAY_CHESS
 premises = ["NOT_H", "HAVE_TARGET", "IN_BOARD_GAMES_ROOM", "T_NORMAL_5_6", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.82 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.82 >= 1" },
 ]
 
 [[instructions]]
@@ -152,15 +195,16 @@ label = "打麻将"
 type = "play"
 time_cost = 60
 priority = 50
+# erArk behavior: PLAY_MAHJONG
 premises = ["NOT_H", "HAVE_TARGET", "IN_BOARD_GAMES_ROOM", "T_NORMAL_5_6", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.82 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.82 >= 1" },
 ]
 
 [[instructions]]
@@ -169,15 +213,52 @@ label = "打牌"
 type = "play"
 time_cost = 60
 priority = 50
+# erArk behavior: PLAY_CARDS
 premises = ["NOT_H", "HAVE_TARGET", "IN_BOARD_GAMES_ROOM", "T_NORMAL_5_6", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.82 >= 1" },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.82 >= 1" },
+]
+
+[[instructions]]
+id = "rehearse_dance"
+label = "排演舞剧"
+type = "play"
+time_cost = 120
+priority = 50
+# erArk behavior: REHEARSE_DANCE
+premises = ["NOT_H", "IN_FAIRY_BANQUET", "TIRED_LE_74"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.80 >= 1" },
+]
+
+[[instructions]]
+id = "play_arcade_game"
+label = "玩街机游戏"
+type = "play"
+time_cost = 60
+priority = 50
+# erArk behavior: PLAY_ARCADE_GAME
+premises = ["NOT_H", "IN_AVANT_GARDE_ARCADE", "TIRED_LE_74"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -186,15 +267,16 @@ label = "游泳"
 type = "play"
 time_cost = 60
 priority = 50
+# erArk behavior: SWIMMING
 premises = ["NOT_H", "IN_SWIMMING_POOL", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", baseValue = 80, negate = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 80, negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -30 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -30 } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -203,14 +285,15 @@ label = "品酒"
 type = "play"
 time_cost = 30
 priority = 50
+# erArk behavior: TASTE_WINE
 premises = ["NOT_H", "IN_BAR", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.83 >= 1" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
 ]
 
 [[instructions]]
@@ -219,14 +302,15 @@ label = "品茶"
 type = "play"
 time_cost = 30
 priority = 50
+# erArk behavior: TASTE_TEA
 premises = ["NOT_H", "IN_TEAHOUSE", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.83 >= 1" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
 ]
 
 [[instructions]]
@@ -235,14 +319,15 @@ label = "品咖啡"
 type = "play"
 time_cost = 30
 priority = 50
+# erArk behavior: TASTE_COFFEE
 premises = ["NOT_H", "IN_CAFÉ", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.83 >= 1" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
 ]
 
 [[instructions]]
@@ -251,14 +336,15 @@ label = "品尝点心"
 type = "play"
 time_cost = 30
 priority = 50
+# erArk behavior: TASTE_DESSERT
 premises = ["NOT_H", "IN_WALYRIA_CAKE_SHOP", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "player.experience.83 >= 1" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
 ]
 
 [[instructions]]
@@ -267,14 +353,32 @@ label = "品尝美食"
 type = "play"
 time_cost = 30
 priority = 50
+# erArk behavior: TASTE_FOOD
 premises = ["NOT_H", "IN_RESTAURANT", "EAT_TIME", "HUNGER_GE_80", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", both = true } },
-  { type = "settle_state", params = { state = "气力", both = true } },
-  { type = "settle_state", params = { state = "饥饿", baseValue = 100, negate = true } },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" }, condition = "target.experience.83 >= 1" },
-  { type = "settle_favorability", condition = "player.experience.83 >= 1" },
+  { type = "_unknown", params = { erArkId = "2" } },
+  { type = "_unknown", params = { erArkId = "3" } },
+  { type = "_unknown", params = { erArkId = "34" } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+]
+
+[[instructions]]
+id = "play_house"
+label = "过家家"
+type = "play"
+time_cost = 60
+priority = 50
+# erArk behavior: PLAY_HOUSE
+premises = ["NOT_H", "IN_GOLDEN_GAME_ROOM", "TIRED_LE_74"]
+effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true }, condition = "player.experience.80 >= 1" },
 ]
 
 [[instructions]]
@@ -283,15 +387,34 @@ label = "修整发型"
 type = "play"
 time_cost = 60
 priority = 50
+# erArk behavior: STYLE_HAIR
 premises = ["NOT_H", "IN_HAIR_SALON", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "习得" } },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+]
+
+[[instructions]]
+id = "full_body_styling"
+label = "全身造型服务"
+type = "play"
+time_cost = 120
+priority = 50
+# erArk behavior: FULL_BODY_STYLING
+premises = ["NOT_H", "IN_STYLING_STUDIO", "TIRED_LE_74"]
+effects = [
+  { type = "_unknown", params = { erArkId = "1513" } },
+  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "settle_favorability" },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -300,18 +423,19 @@ label = "泡脚"
 type = "play"
 time_cost = 30
 priority = 50
+# erArk behavior: SOAK_FEET
 premises = ["NOT_H", "IN_FOOT_BATH", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "欲情", target = true } },
-  { type = "settle_state", params = { state = "快乐", target = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "settle_state", params = { state = "反感", target = true } },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -320,18 +444,19 @@ label = "蒸桑拿"
 type = "play"
 time_cost = 30
 priority = 50
+# erArk behavior: STEAM_SAUNA
 premises = ["NOT_H", "IN_SAUNA", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", baseValue = 50, negate = true, both = true } },
-  { type = "settle_state", params = { state = "气力", baseValue = 50, negate = true, both = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "欲情", target = true } },
-  { type = "settle_state", params = { state = "快乐", target = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "settle_state", params = { state = "反感", target = true } },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -340,18 +465,19 @@ label = "水疗护理"
 type = "play"
 time_cost = 60
 priority = 50
+# erArk behavior: HYDROTHERAPY_TREATMENT
 premises = ["NOT_H", "IN_SPA_ROOM", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "欲情", target = true } },
-  { type = "settle_state", params = { state = "快乐", target = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "settle_state", params = { state = "反感", target = true } },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
 [[instructions]]
@@ -360,16 +486,28 @@ label = "泡温泉"
 type = "play"
 time_cost = 60
 priority = 50
+# erArk behavior: ONSEN_BATH
 premises = ["NOT_H", "IN_ONSEN", "TIRED_LE_74"]
 effects = [
-  { type = "settle_state", params = { state = "体力", negate = true } },
-  { type = "settle_state", params = { state = "气力", negate = true } },
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } },
+  { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "好意", target = true } },
-  { type = "settle_state", params = { state = "欲情", target = true } },
-  { type = "settle_state", params = { state = "快乐", target = true } },
-  { type = "settle_state", params = { state = "羞耻", target = true } },
-  { type = "settle_state", params = { state = "反感", target = true } },
-  { type = "check_facility_damage" },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
+
+[[instructions]]
+id = "aromatherapy"
+label = "香薰疗愈"
+type = "play"
+time_cost = 10
+priority = 50
+# erArk behavior: 
+premises = ["NOT_H", "IN_AROMATHERAPY_ROOM"]
+effects = []
+

@@ -11,8 +11,8 @@ priority = 50
 # erArk behavior: SINGING
 premises = ["NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "add_experience", params = { id = "85", value = 1 }, condition = "player.experience.85 >= 1" },
@@ -28,8 +28,8 @@ priority = 50
 # erArk behavior: PLAY_INSTRUMENT
 premises = ["NOT_H", "HAVE_INSTRUMENT_OR_IN_MUSIC_ROOM", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "add_experience", params = { id = "85", value = 1 }, condition = "player.experience.85 >= 1" },
@@ -67,7 +67,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -25 } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
 ]
 
@@ -84,7 +84,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -50 } },
   { type = "modify_attribute", params = { attr = "气力", value = -50 } },
   { type = "settle_trust" },
-  { type = "_unknown", params = { erArkId = "71" } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "508" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
@@ -137,8 +137,8 @@ priority = 50
 # erArk behavior: PHOTOGRAPHY
 premises = ["NOT_H", "IN_PHOTOGRAPHY_STUDIO", "TIRED_LE_74"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
@@ -155,8 +155,8 @@ priority = 50
 # erArk behavior: PLAY_WATER
 premises = ["NOT_H", "IN_AQUAPIT_EXPERIENTORIUM", "TIRED_LE_74"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
@@ -240,8 +240,8 @@ priority = 50
 # erArk behavior: REHEARSE_DANCE
 premises = ["NOT_H", "IN_FAIRY_BANQUET", "TIRED_LE_74"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
@@ -259,8 +259,8 @@ priority = 50
 # erArk behavior: PLAY_ARCADE_GAME
 premises = ["NOT_H", "IN_AVANT_GARDE_ARCADE", "TIRED_LE_74"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
@@ -367,9 +367,9 @@ priority = 50
 # erArk behavior: TASTE_FOOD
 premises = ["NOT_H", "IN_RESTAURANT", "EAT_TIME", "HUNGER_GE_80", "TIRED_LE_74"]
 effects = [
-  { type = "_unknown", params = { erArkId = "2" } },
-  { type = "_unknown", params = { erArkId = "3" } },
-  { type = "_unknown", params = { erArkId = "34" } },
+  { type = "modify_attribute", params = { attr = "体力", value = 15 } },
+  { type = "modify_attribute", params = { attr = "气力", value = 25 } },
+  { type = "set_field", params = { path = "sp_flag.hunger", value = 0 } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "add_experience", params = { id = "83", value = 1 }, condition = "target.experience.83 >= 1" },
@@ -422,8 +422,8 @@ priority = 50
 # erArk behavior: FULL_BODY_STYLING
 premises = ["NOT_H", "IN_STYLING_STUDIO", "TIRED_LE_74"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },

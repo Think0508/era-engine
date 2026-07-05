@@ -64,9 +64,9 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -10 } },
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "59" } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "add_experience", params = { id = "0", value = 1 }, condition = "target.experience.0 >= 1" },
 ]
@@ -301,7 +301,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "56" } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
 ]
@@ -336,10 +336,10 @@ effects = [
   { type = "settle_favorability" },
   { type = "modify_attribute", params = { attr = "体力", value = -10 } },
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
-  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "621" } },
+  { type = "set_field", params = { path = "inventory.panty_collected", value = true } },
 ]
 
 [[instructions]]
@@ -354,10 +354,10 @@ effects = [
   { type = "settle_favorability" },
   { type = "modify_attribute", params = { attr = "体力", value = -10 } },
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
-  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "622" } },
+  { type = "set_field", params = { path = "inventory.socks_collected", value = true } },
 ]
 
 [[instructions]]
@@ -374,7 +374,7 @@ effects = [
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "_unknown", params = { erArkId = "537" } },
-  { type = "modify_attribute", params = { attr = "尿意", value = -50 } },
+  { type = "set_field", params = { path = "sp_flag.last_shower_time", value = "now" } },
 ]
 
 [[instructions]]
@@ -386,9 +386,9 @@ priority = 50
 # erArk behavior: STEAL_PAN
 premises = ["HAVE_TARGET", "NOT_H", "T_UNNORMAL_5_6", "TARGET_WEAR_PAN", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
-  { type = "_unknown", params = { erArkId = "621" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
+  { type = "set_field", params = { path = "inventory.panty_collected", value = true } },
 ]
 
 [[instructions]]
@@ -400,9 +400,9 @@ priority = 50
 # erArk behavior: STEAL_SOCKS
 premises = ["HAVE_TARGET", "NOT_H", "T_UNNORMAL_5_6", "TARGET_WEAR_SOCKS", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
-  { type = "_unknown", params = { erArkId = "622" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
+  { type = "set_field", params = { path = "inventory.socks_collected", value = true } },
 ]
 
 [[instructions]]
@@ -414,9 +414,9 @@ priority = 50
 # erArk behavior: STEAL_SCENE_ALL_PAN
 premises = ["HAVE_TARGET", "NOT_H", "SCENE_OVER_TWO", "SCENE_ALL_UNCONSCIOUS_OR_SLEEP", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
-  { type = "_unknown", params = { erArkId = "623" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
+  { type = "set_field", params = { path = "scene_all.inventory.panty_collected", value = true } },
 ]
 
 [[instructions]]
@@ -428,9 +428,9 @@ priority = 50
 # erArk behavior: STEAL_SCENE_ALL_SOCKS
 premises = ["HAVE_TARGET", "NOT_H", "SCENE_OVER_TWO", "SCENE_ALL_UNCONSCIOUS_OR_SLEEP", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1513" } },
-  { type = "_unknown", params = { erArkId = "1514" } },
-  { type = "_unknown", params = { erArkId = "624" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
+  { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
+  { type = "set_field", params = { path = "scene_all.inventory.socks_collected", value = true } },
 ]
 
 [[instructions]]
@@ -446,9 +446,9 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -10 } },
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "60" } },
+  { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "112" } },
   { type = "add_experience", params = { id = "2", value = 1 }, condition = "target.experience.2 >= 1" },
@@ -468,10 +468,10 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -10 } },
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "59" } },
-  { type = "_unknown", params = { erArkId = "60" } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "114" } },
   { type = "add_experience", params = { id = "4", value = 1 }, condition = "target.experience.4 >= 1" },
@@ -492,10 +492,10 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -10 } },
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
-  { type = "_unknown", params = { erArkId = "59" } },
-  { type = "_unknown", params = { erArkId = "60" } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "115" } },
   { type = "add_experience", params = { id = "5", value = 1 }, condition = "target.experience.5 >= 1" },
@@ -517,13 +517,13 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_favorability" },
   { type = "settle_trust" },
-  { type = "_unknown", params = { erArkId = "42" } },
+  { type = "settle_state", params = { state = "胸部", baseValue = 30 } },
   { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "皮肤", baseValue = 50 } },
   { type = "add_experience", params = { id = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "add_experience", params = { id = "22", value = 1 }, condition = "target.experience.22 >= 1" },
-  { type = "_unknown", params = { erArkId = "336" } },
+  { type = "set_field", params = { path = "sp_flag.milking", value = false } },
   { type = "_unknown", params = { erArkId = "519" } },
 ]
 
@@ -719,8 +719,8 @@ premises = ["HAVE_TARGET", "NOT_H", "TARGET_OBEY_2", "HAVE_COLLAR", "NO_TARGET_O
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -10 } },
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
-  { type = "_unknown", params = { erArkId = "56" } },
-  { type = "_unknown", params = { erArkId = "57" } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "_unknown", params = { erArkId = "951" } },
 ]
@@ -765,12 +765,12 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "TARGET_NOT_PLAYER_DAUGHTER", "T_IMPRISONMENT_0", "PLACE_ALL_DOOR_LOCKABLE", "SCENE_ONLY_TWO", "TIRED_LE_74"]
 effects = [
   { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = true } },
+  { type = "set_field", params = { path = "target.h_state.npc_active_h", value = true } },
   { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
-  { type = "_unknown", params = { erArkId = "752" } },
-  { type = "_unknown", params = { erArkId = "1409" } },
+  { type = "set_field", params = { path = "scene.close_flag", value = 1 } },
+  { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
 ]
 
 [[instructions]]
@@ -783,12 +783,12 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "IN_LOVE_HOTEL", "SCENE_ONLY_TWO", "LIVE_IN_LOVE_HOTEL", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
   { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = true } },
+  { type = "set_field", params = { path = "target.h_state.npc_active_h", value = true } },
   { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
-  { type = "_unknown", params = { erArkId = "752" } },
-  { type = "_unknown", params = { erArkId = "1409" } },
+  { type = "set_field", params = { path = "scene.close_flag", value = 1 } },
+  { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
 ]
 
 [[instructions]]
@@ -801,12 +801,12 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "IN_BATHROOM", "SCENE_ONLY_TWO", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
   { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = true } },
+  { type = "set_field", params = { path = "target.h_state.npc_active_h", value = true } },
   { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
-  { type = "_unknown", params = { erArkId = "752" } },
-  { type = "_unknown", params = { erArkId = "1409" } },
+  { type = "set_field", params = { path = "scene.close_flag", value = 1 } },
+  { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
 ]
 
 [[instructions]]
@@ -819,12 +819,12 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TARGET_IS_PLAYER_DAUGHTER", "SCENE_ONLY_TWO", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
   { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = true } },
+  { type = "set_field", params = { path = "target.h_state.npc_active_h", value = true } },
   { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
-  { type = "_unknown", params = { erArkId = "752" } },
-  { type = "_unknown", params = { erArkId = "1409" } },
+  { type = "set_field", params = { path = "scene.close_flag", value = 1 } },
+  { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
 ]
 
 [[instructions]]
@@ -837,12 +837,12 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_IMPRISONMENT_1", "SCENE_ONLY_TWO", "T_NORMAL_5_6", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "TIRED_LE_74"]
 effects = [
   { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = true } },
+  { type = "set_field", params = { path = "target.h_state.npc_active_h", value = true } },
   { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
-  { type = "_unknown", params = { erArkId = "752" } },
-  { type = "_unknown", params = { erArkId = "1409" } },
+  { type = "set_field", params = { path = "scene.close_flag", value = 1 } },
+  { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
 ]
 
 [[instructions]]
@@ -865,11 +865,11 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "HIDDEN_SEX_MODE_0", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
   { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "target.h_state.npc_active_h", value = true } },
   { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
-  { type = "_unknown", params = { erArkId = "704" } },
-  { type = "_unknown", params = { erArkId = "1409" } },
+  { type = "set_field", params = { path = "sp_flag.last_conscious_h_time", value = "now" } },
+  { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
   { type = "add_experience", params = { id = "35", value = 1 }, condition = "player.experience.35 >= 1" },
   { type = "add_experience", params = { id = "35", value = 1 }, condition = "target.experience.35 >= 1" },
 ]
@@ -884,12 +884,12 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "EXHIBITIONISM_SEX_MODE_0", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
 effects = [
   { type = "set_field", params = { path = "h_state.orgasm_level_sync", value = true } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = true } },
+  { type = "set_field", params = { path = "target.h_state.npc_active_h", value = true } },
   { type = "cloth_set_visible", params = { part = "胸罩", visible = true } },
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
-  { type = "_unknown", params = { erArkId = "704" } },
-  { type = "_unknown", params = { erArkId = "1409" } },
+  { type = "set_field", params = { path = "sp_flag.last_conscious_h_time", value = "now" } },
+  { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
   { type = "add_experience", params = { id = "34", value = 1 }, condition = "player.experience.34 >= 1" },
   { type = "add_experience", params = { id = "34", value = 1 }, condition = "target.experience.34 >= 1" },
 ]
@@ -904,10 +904,10 @@ priority = 50
 premises = ["HAVE_TARGET", "HIDDEN_SEX_MODE_0", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "SCENE_ALL_NOT_H", "SCENE_OVER_TWO", "SCENE_ALL_NOT_TIRED", "TIRED_LE_74"]
 effects = [
   { type = "set_field", params = { path = "h_state.is_h", value = true } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
-  { type = "set_field", params = { path = "h_state.npc_active_h", value = false } },
-  { type = "_unknown", params = { erArkId = "608" } },
-  { type = "_unknown", params = { erArkId = "1410" } },
+  { type = "set_field", params = { path = "h_state.npc_active_h", value = true } },
+  { type = "set_field", params = { path = "target.h_state.npc_active_h", value = true } },
+  { type = "cloth_set_visible", params = { part = "all", visible = true } },
+  { type = "set_field", params = { path = "scene_all.h_state.condom_info_show", value = true } },
   { type = "group_sex_mode_on" },
 ]
 

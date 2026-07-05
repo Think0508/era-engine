@@ -68,7 +68,7 @@ priority = 50
 # erArk behavior: CARRY_TARGET
 premises = ["INTERMEDIATE_TIME_STOP", "NOT_H", "TIME_STOP_ON", "NOT_CARRY_ANYBODY_IN_TIME_STOP", "PL_NOT_BAGGING_CHARA", "HAVE_TARGET", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1243" } },
+  { type = "time_stop_carry" },
 ]
 
 [[instructions]]
@@ -80,7 +80,7 @@ priority = 50
 # erArk behavior: STOP_CARRY_TARGET
 premises = ["INTERMEDIATE_TIME_STOP", "NOT_H", "TIME_STOP_ON", "TARGET_IS_CARRIED_IN_TIME_STOP", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1244" } },
+  { type = "time_stop_carry_stop" },
 ]
 
 [[instructions]]
@@ -205,7 +205,7 @@ priority = 50
 # erArk behavior: PENETRATING_VISION_ON
 premises = ["PRIMARY_PENETRATING_VISION", "PENETRATING_VISION_OFF", "SANITY_POINT_GE_5", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1201" } },
+  { type = "_unknown", params = { erArkId = "1201", note = "源石技艺-跳过" } },
 ]
 
 [[instructions]]
@@ -218,7 +218,7 @@ priority = 50
 # erArk behavior: PENETRATING_VISION_OFF
 premises = ["PRIMARY_PENETRATING_VISION", "PENETRATING_VISION_ON", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1202" } },
+  { type = "_unknown", params = { erArkId = "1202", note = "源石技艺-跳过" } },
 ]
 
 [[instructions]]
@@ -231,7 +231,7 @@ priority = 50
 # erArk behavior: HORMONE_ON
 premises = ["PRIMARY_HORMONE", "NOT_H", "HORMONE_OFF", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1203" } },
+  { type = "_unknown", params = { erArkId = "1203", note = "源石技艺-跳过" } },
 ]
 
 [[instructions]]
@@ -244,7 +244,7 @@ priority = 50
 # erArk behavior: HORMONE_OFF
 premises = ["PRIMARY_HORMONE", "NOT_H", "HORMONE_ON", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1204" } },
+  { type = "_unknown", params = { erArkId = "1204", note = "源石技艺-跳过" } },
 ]
 
 [[instructions]]
@@ -270,11 +270,11 @@ priority = 50
 # erArk behavior: TIME_STOP_OFF
 premises = ["PRIMARY_TIME_STOP", "NOT_H", "TIME_STOP_ON", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1244" } },
-  { type = "_unknown", params = { erArkId = "1246" } },
+  { type = "time_stop_carry_stop" },
+  { type = "time_stop_free_stop" },
   { type = "_unknown", params = { erArkId = "536" } },
   { type = "time_stop_off" },
-  { type = "_unknown", params = { erArkId = "527" } },
+  { type = "set_field", params = { path = "h_state.time_stop_release", value = true } },
 ]
 
 [[instructions]]
@@ -287,10 +287,10 @@ priority = 50
 # erArk behavior: TIME_STOP_OFF
 premises = ["PRIMARY_TIME_STOP", "IS_H", "TIME_STOP_ON", "TIRED_LE_84"]
 effects = [
-  { type = "_unknown", params = { erArkId = "1244" } },
-  { type = "_unknown", params = { erArkId = "1246" } },
+  { type = "time_stop_carry_stop" },
+  { type = "time_stop_free_stop" },
   { type = "_unknown", params = { erArkId = "536" } },
   { type = "time_stop_off" },
-  { type = "_unknown", params = { erArkId = "527" } },
+  { type = "set_field", params = { path = "h_state.time_stop_release", value = true } },
 ]
 

@@ -14,6 +14,8 @@ const OUT_DIR = 'mods/test-mod/definitions/h-instructions'
 // ===== 效果 ID → 我们的 effect type + params 映射 =====
 const EFFECT_MAP = {
   // 基础属性 (0-99)
+  2: { type: 'modify_attribute', params: { attr: '体力', value: 15 } },
+  3: { type: 'modify_attribute', params: { attr: '气力', value: 25 } },
   11: { type: 'modify_attribute', params: { attr: '体力', value: -10 } },
   12: { type: 'modify_attribute', params: { attr: '气力', value: -10 } },
   13: { type: 'modify_attribute', params: { attr: '体力', value: -25 } },
@@ -24,22 +26,39 @@ const EFFECT_MAP = {
   22: { type: 'settle_trust', params: {} },
   23: { type: 'settle_trust', params: { base: 2 } },
   31: { type: 'modify_attribute', params: { attr: '体力', value: -50, target: 'self' } },
+  32: { type: 'set_field', params: { path: 'sp_flag.urinate', value: 0 } },
+  33: { type: 'set_field', params: { path: 'target.sp_flag.urinate', value: 0 } },
+  34: { type: 'set_field', params: { path: 'sp_flag.hunger', value: 0 } },
   36: { type: 'modify_attribute', params: { attr: '气力', value: -50, target: 'self' } },
   38: { type: 'modify_attribute', params: { attr: '尿意', value: 5 } },
   39: { type: 'modify_attribute', params: { attr: '尿意', value: 5 } },
 
   // 状态值 (50-99) → settle_state，baseValue 各不同
   // 注意: 51-70 大部分是 TARGET_* 效果，用 settle_state 默认 target
+  41: { type: 'settle_state', params: { state: '皮肤', baseValue: 30 } },
+  42: { type: 'settle_state', params: { state: '胸部', baseValue: 30 } },
+  43: { type: 'settle_state', params: { state: '阴蒂', baseValue: 30 } },
+  44: { type: 'settle_state', params: { state: '阴茎', baseValue: 30 } },
+  45: { type: 'settle_state', params: { state: '阴道', baseValue: 30 } },
+  46: { type: 'settle_state', params: { state: '肛肠', baseValue: 30 } },
+  47: { type: 'settle_state', params: { state: '尿道', baseValue: 30 } },
+  48: { type: 'settle_state', params: { state: '子宫', baseValue: 30 } },
   49: { type: 'settle_state', params: { state: '欲情', baseValue: 30 } },
   51: { type: 'settle_state', params: { state: '快乐', baseValue: 30 } },
   52: { type: 'settle_state', params: { state: '恭顺', baseValue: 30 } },
   53: { type: 'settle_state', params: { state: '好意', baseValue: 30 } },
   54: { type: 'settle_state', params: { state: '羞耻', baseValue: 30 } },
   55: { type: 'settle_state', params: { state: '屈服', baseValue: 30 } },
+  56: { type: 'settle_state', params: { state: '先导', baseValue: 30 } },
+  57: { type: 'settle_state', params: { state: '屈服', baseValue: 30 } },
   58: { type: 'settle_state', params: { state: '润滑', baseValue: 30 } },
+  59: { type: 'settle_state', params: { state: '苦痛', baseValue: 30 } },
+  60: { type: 'settle_state', params: { state: '恐怖', baseValue: 30 } },
   62: { type: 'settle_state', params: { state: '苦痛', baseValue: 30 } },
   70: { type: 'settle_state', params: { state: '恐怖', baseValue: 30 } },
+  71: { type: 'settle_state', params: { state: '习得', baseValue: 30 } },
   81: { type: 'settle_state', params: { state: '习得', baseValue: 30 } },
+  86: { type: 'settle_state', params: { state: '先导', baseValue: 30 } },
 
   // H 中消耗 (1515, 1516) — 大的体力/气力消耗
   1515: { type: 'modify_attribute', params: { attr: '体力', value: -30 } },
@@ -162,47 +181,127 @@ function translateEffect(effId, prevEff) {
     if (state) return { type: 'settle_state', params: { state, baseValue: 50 } }
   }
 
+  // 位置效果 (800-862) — 插入位置
+  if (numId >= 800 && numId <= 840) {
+    const posMap = {
+      800: -1, 801: -1, 802: 0, 803: 1, 804: 2, 805: 3, 806: 4, 807: 5,
+      808: 6, 809: 7, 810: 8, 811: 9, 812: 10, 813: 11, 814: 12, 815: 13,
+      816: 14, 817: 15, 821: 20, 822: 21, 823: 22, 824: 23, 825: 24,
+      826: 25, 827: 26, 828: 27, 829: 28, 830: 29, 831: 30, 832: 31, 833: 32, 834: 33,
+    }
+    if (numId === 800) return { type: 'set_field', params: { path: 'scene_all.h_state.insert_position', value: -1 } }
+    if (numId === 840) return { type: 'set_field', params: { path: 'h_state.insert_position', value: -1 } }
+    const val = posMap[numId]
+    if (val !== undefined) return { type: 'set_field', params: { path: 'h_state.insert_position', value: val } }
+  }
+  // 体位效果 (850-862)
+  if (numId >= 850 && numId <= 862) {
+    const posMap = { 850: -1, 851: 1, 852: 2, 853: 3, 854: 4, 855: 5, 856: 6, 857: 7, 858: 8, 859: 9, 860: 10, 861: 11, 862: 12 }
+    const val = posMap[numId]
+    if (val !== undefined) return { type: 'set_field', params: { path: 'h_state.current_sex_position', value: val } }
+  }
+
   // 服饰效果 (600-649)
   if (numId >= 600 && numId < 650) {
-    // 已经有 cloth_remove/cloth_wear 等 effect type
     const clothMap = {
       601: { type: 'cloth_set_visible', params: { part: '内衣', visible: true } },
       603: { type: 'cloth_set_visible', params: { part: '胸罩', visible: true } },
       605: { type: 'cloth_set_visible', params: { part: '内裤', visible: true } },
+      608: { type: 'cloth_set_visible', params: { part: 'all', visible: true } },
+      621: { type: 'set_field', params: { path: 'inventory.panty_collected', value: true } },
+      622: { type: 'set_field', params: { path: 'inventory.socks_collected', value: true } },
+      623: { type: 'set_field', params: { path: 'scene_all.inventory.panty_collected', value: true } },
+      624: { type: 'set_field', params: { path: 'scene_all.inventory.socks_collected', value: true } },
       631: { type: 'cloth_wear_all', params: {} },
       632: { type: 'cloth_remove_all', params: {} },
+      633: { type: 'cloth_set_visible', params: { part: '浴巾', visible: true } },
+      634: { type: 'cloth_set_visible', params: { part: '睡衣', visible: true } },
+      635: { type: 'cloth_wear_all', params: { target: 'self' } },
+      636: { type: 'cloth_wear_all', params: { target: 'scene_all' } },
     }
     if (clothMap[numId]) return { ...clothMap[numId], params: { ...clothMap[numId].params } }
   }
 
-  // H 特殊效果 (400-530)
-  if (numId === 404) return { type: 'h_end_h', params: {} }
+  // H 特殊效果 (400-699)
+  if (numId === 301) return { type: 'set_field', params: { path: 'sp_flag.shower_state', value: 0 } }
+  if (numId === 321) return { type: 'set_field', params: { path: 'sp_flag.sleeping', value: false } }
+  if (numId === 331) return { type: 'set_field', params: { path: 'sp_flag.peeing', value: false } }
+  if (numId === 336) return { type: 'set_field', params: { path: 'sp_flag.milking', value: false } }
+  if (numId === 371) return { type: 'set_field', params: { path: 'sp_flag.maintenance_done', value: true } }
+  if (numId === 404) return { type: 'set_field', params: { path: 'h_state.is_h', value: false } }
   if (numId === 405) return { type: 'set_field', params: { path: 'h_state.orgasm_level_sync', value: true } }
   if (numId === 406) return { type: 'set_field', params: { path: 'h_state.is_h', value: true } }
-  if (numId === 407) return { type: 'set_field', params: { path: 'h_state.is_h', value: false } }
-  if (numId === 461) return { type: 'set_field', params: { path: 'h_state.npc_active_h', value: true } }
-  if (numId === 462) return { type: 'set_field', params: { path: 'h_state.npc_active_h', value: false } }
-  if (numId === 463) return { type: 'set_field', params: { path: 'h_state.npc_active_h', value: true } }
-  if (numId === 464) return { type: 'set_field', params: { path: 'h_state.npc_active_h', value: false } }
+  if (numId === 407) return { type: 'set_field', params: { path: 'scene_all.h_state.is_h', value: false } }
+  if (numId === 461) return { type: 'set_field', params: { path: 'h_state.npc_active_h', value: false } }
+  if (numId === 462) return { type: 'set_field', params: { path: 'h_state.npc_active_h', value: true } }
+  if (numId === 463) return { type: 'set_field', params: { path: 'target.h_state.npc_active_h', value: false } }
+  if (numId === 464) return { type: 'set_field', params: { path: 'target.h_state.npc_active_h', value: true } }
+  if (numId === 480) return { type: 'set_field', params: { path: 'sp_flag.last_conscious_h_time', value: 'now' } }
+  if (numId === 481) return { type: 'set_field', params: { path: 'sp_flag.last_unconscious_h_time', value: 'now' } }
+  if (numId === 484) return { type: 'set_field', params: { path: 'sp_flag.unconscious_h', value: 3 } }
   if (numId === 526) return { type: 'set_field', params: { path: 'h_state.orgasm_edge', value: 2 } }
-  if (numId === 528) return { type: 'group_sex_end_add_hpmp_max', params: {} }
-  if (numId === 529) return { type: 'group_sex_end_add_hpmp_max', params: {} }
-  if (numId === 530) return { type: 'group_sex_fail_add_just', params: {} }
-  if (numId === 535) return { type: 'train_prisoners_add_adjust', params: {} }
+  if (numId === 527) return { type: 'set_field', params: { path: 'h_state.time_stop_release', value: true } }
+  if (numId === 528) return { type: 'modify_attribute', params: { attr: '体力上限', value: '+orgasm*2' } }
+  if (numId === 535) return { type: 'set_field', params: { path: 'sp_flag.prisoners_trained', value: true } }
+  if (numId === 538) return { type: 'modify_relation', params: { relation: '好感度', value: 10 } }
+  if (numId === 701) return { type: 'set_field', params: { path: 'sp_flag.last_training_time', value: 'now' } }
+  if (numId === 702) return { type: 'set_field', params: { path: 'sp_flag.last_shower_time', value: 'now' } }
+  if (numId === 703) return { type: 'set_field', params: { path: 'sp_flag.wake_time', value: 'now' } }
+  if (numId === 704) return { type: 'set_field', params: { path: 'sp_flag.last_conscious_h_time', value: 'now' } }
+  if (numId === 752) return { type: 'set_field', params: { path: 'scene.close_flag', value: 1 } }
+  if (numId === 753) return { type: 'set_field', params: { path: 'scene.close_flag', value: 0 } }
+  if (numId === 1406) return { type: 'set_field', params: { path: 'h_state.just_shoot', value: false } }
+  if (numId === 1409) return { type: 'set_field', params: { path: 'target.h_state.condom_info_show', value: true } }
+  if (numId === 1410) return { type: 'set_field', params: { path: 'scene_all.h_state.condom_info_show', value: true } }
+  if (numId === 1413) return { type: 'set_field', params: { path: 'h_state.orgasm_edge', value: 1 } }
+  if (numId === 1513) return { type: 'modify_attribute', params: { attr: '体力', value: -25, target: 'self' } }
+  if (numId === 1514) return { type: 'modify_attribute', params: { attr: '气力', value: -25, target: 'self' } }
+  if (numId === 1519) return { type: 'modify_attribute', params: { attr: '体力', value: -50, target: 'target' } }
+  if (numId === 1520) return { type: 'modify_attribute', params: { attr: '气力', value: -50, target: 'target' } }
 
-  // 首次相关 (1101-1109)
-  if (numId === 1101) return { type: 'set_field', params: { path: 'sp_flag.first_kiss', value: true } }
-  if (numId === 1103) return { type: 'set_field', params: { path: 'sp_flag.first_sex', value: true } }
-
-  // 时停效果
+  // 时停效果 (1241-1246)
   if (numId === 1241) return { type: 'time_stop_on', params: {} }
   if (numId === 1242) return { type: 'time_stop_off', params: {} }
+  if (numId === 1243) return { type: 'time_stop_carry', params: {} }
+  if (numId === 1244) return { type: 'time_stop_carry_stop', params: {} }
+  if (numId === 1246) return { type: 'time_stop_free_stop', params: {} }
 
   // 群交模式
   if (numId === 10010) return { type: 'group_sex_mode_on', params: {} }
   if (numId === 10011) return { type: 'group_sex_mode_off', params: {} }
 
-  // 催眠效果
+  // 道具效果 (900-929)
+  if (numId >= 911 && numId <= 928) {
+    const toyOn = { 911: '振动棒V', 913: '振动棒A', 915: '乳头夹', 917: '阴蒂夹', 919: '拉珠', 921: '搾乳机', 923: '采尿器', 925: '眼罩', 927: '口球' }
+    const toyOff = { 912: '振动棒V', 914: '振动棒A', 916: '乳头夹', 918: '阴蒂夹', 920: '拉珠', 922: '搾乳机', 924: '采尿器', 926: '眼罩', 928: '口球' }
+    if (toyOn[numId]) return { type: 'body_item_equip', params: { item: toyOn[numId] } }
+    if (toyOff[numId]) return { type: 'body_item_unequip', params: { item: toyOff[numId] } }
+  }
+
+  // 药物效果 (1001-1012)
+  if (numId === 1001) return { type: 'apply_lubricant', params: { value: 10000 } }
+  if (numId === 1002) return { type: 'apply_aphrodisiac', params: {} }
+  if (numId === 1007) return { type: 'set_field', params: { path: 'sp_flag.sleep_pill_effect', value: true } }
+  if (numId === 1008) return { type: 'set_field', params: { path: 'sp_flag.ovulation_promoted', value: true } }
+  if (numId === 1009) return { type: 'set_field', params: { path: 'sp_flag.contraceptive_before', value: true } }
+  if (numId === 1010) return { type: 'set_field', params: { path: 'sp_flag.contraceptive_after', value: true } }
+  if (numId === 1011) return { type: 'set_field', params: { path: 'h_state.condom', value: true } }
+  if (numId === 1012) return { type: 'set_field', params: { path: 'h_state.condom', value: false } }
+
+  // 首次效果 (1101-1109)
+  if (numId === 1101) return { type: 'set_field', params: { path: 'sp_flag.first_kiss', value: true } }
+  if (numId === 1103) return { type: 'set_field', params: { path: 'sp_flag.first_vaginal', value: true } }
+  if (numId === 1104) return { type: 'set_field', params: { path: 'sp_flag.first_anal', value: true } }
+  if (numId === 1107) return { type: 'set_field', params: { path: 'sp_flag.first_penis_kiss', value: true } }
+  if (numId === 1108) return { type: 'set_field', params: { path: 'sp_flag.first_urethral', value: true } }
+  if (numId === 1109) return { type: 'set_field', params: { path: 'sp_flag.first_womb', value: true } }
+
+  // 源石技艺效果 (1201-1204) — 跳过（方舟特有）
+  if (numId === 1201 || numId === 1202 || numId === 1203 || numId === 1204) {
+    return { type: '_unknown', params: { erArkId: String(numId), note: '源石技艺-跳过' } }
+  }
+
+  // 催眠效果 (1211-1231)
   if (numId >= 1211 && numId <= 1231) {
     const hypoMap = {
       1211: 'hypnosis_one', 1212: 'hypnosis_all', 1213: 'hypnosis_cancel',
@@ -246,6 +345,9 @@ function translateEffect(effId, prevEff) {
   if (numId === 1504) return { type: 'modify_attribute', params: { attr: '体力', value: 50, target: 'self' } }
   if (numId === 1505) return { type: 'modify_attribute', params: { attr: '气力', value: 50, target: 'self' } }
   if (numId === 1751) return { type: 'set_field', params: { path: 'sp_flag.urinated', value: true } }
+
+  // 9999 = 无效果（占位）
+  if (numId === 9999) return { type: 'nop', params: {} }
 
   // 经验/计数效果 (500-599)
   if (numId >= 500 && numId < 600) {

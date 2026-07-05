@@ -191,13 +191,13 @@ premises = ["IN_DORMITORY_OR_HOTEL", "NOT_H", "TIME_STOP_OFF", "TIRED_GE_75_OR_S
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -50, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -50, target = "self" } },
-  { type = "_unknown", params = { erArkId = "301" } },
-  { type = "_unknown", params = { erArkId = "321" } },
+  { type = "set_field", params = { path = "sp_flag.shower_state", value = 0 } },
+  { type = "set_field", params = { path = "sp_flag.sleeping", value = false } },
   { type = "modify_attribute", params = { attr = "疲劳", value = -30 } },
   { type = "modify_attribute", params = { attr = "睡意", value = -50 } },
   { type = "modify_attribute", params = { attr = "欲望", value = -20 } },
   { type = "set_field", params = { path = "sp_flag.pajamas", value = true } },
-  { type = "set_field", params = { path = "sp_flag.night_clothes", value = true } },
+  { type = "cloth_set_visible", params = { part = "睡衣", visible = true } },
   { type = "cloth_wear_all" },
   { type = "modify_attribute", params = { attr = "欲望", value = -50 } },
   { type = "modify_attribute", params = { attr = "体力", value = 50, target = "self" } },
@@ -217,7 +217,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "set_field", params = { path = "sp_flag.showering", value = true } },
   { type = "set_field", params = { path = "sp_flag.clean", value = true } },
-  { type = "modify_attribute", params = { attr = "尿意", value = -50 } },
+  { type = "set_field", params = { path = "sp_flag.last_shower_time", value = "now" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]
 
@@ -261,7 +261,7 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TARGET_NOT_FOLLOW"]
 effects = [
   { type = "set_field", params = { path = "sp_flag.following", value = true } },
-  { type = "_unknown", params = { erArkId = "9999" } },
+  { type = "nop" },
 ]
 
 [[instructions]]
@@ -274,7 +274,7 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TARGET_IS_FOLLOW"]
 effects = [
   { type = "set_field", params = { path = "sp_flag.following", value = false } },
-  { type = "_unknown", params = { erArkId = "9999" } },
+  { type = "nop" },
 ]
 
 [[instructions]]
@@ -353,8 +353,8 @@ priority = 50
 # erArk behavior: PEE
 premises = ["IN_TOILET_MAN", "NOT_H", "URINATE_GE_80", "TIRED_LE_84", "HP_G_1"]
 effects = [
-  { type = "_unknown", params = { erArkId = "32" } },
-  { type = "_unknown", params = { erArkId = "331" } },
+  { type = "set_field", params = { path = "sp_flag.urinate", value = 0 } },
+  { type = "set_field", params = { path = "sp_flag.peeing", value = false } },
   { type = "_unknown", params = { erArkId = "1721" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
 ]

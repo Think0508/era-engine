@@ -9,6 +9,7 @@ import { gameContext } from '../core/game-context'
 import { eventBus } from '../core/event-bus'
 import { entitySystem } from '../core/entity-system'
 import { narrativeLog } from '../core/narrative-log'
+import { apiSystem } from '../core/api'
 import { useGameStore, type LogEntry } from './stores/game-store'
 import { useUIStore } from './stores/ui-store'
 
@@ -149,6 +150,7 @@ export class EngineUIBridge {
       uiStore,
       gameStore,
       engine: gameContext,
+      api: apiSystem,
       evaluateCondition: () => true, // TODO: 接入 condition-registry 求值
     }
   }

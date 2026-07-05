@@ -142,6 +142,9 @@ export function onLoad(_ctx: PluginContext): void {
     await gameContext.exitMode()
     return true
   })
+
+  // 注释：nop——无操作（占位用，显式跳过）
+  effectTypeRegistry.register('nop', () => true)
 }
 
 // 注释：onEnable——注册 effect API（execute 方法）

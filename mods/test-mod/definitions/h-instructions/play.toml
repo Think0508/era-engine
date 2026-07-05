@@ -16,6 +16,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "85", value = 1 }, condition = "player.experience.85 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "singing" } },
 ]
 
 [[instructions]]
@@ -33,6 +34,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "85", value = 1 }, condition = "player.experience.85 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "play_instrument" } },
 ]
 
 [[instructions]]
@@ -50,6 +52,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "trigger_dialogue", params = { scene = "listen_inflation" } },
 ]
 
 [[instructions]]
@@ -67,6 +70,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "trigger_dialogue", params = { scene = "play_with_child" } },
 ]
 
 [[instructions]]
@@ -84,6 +88,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "exercise" } },
 ]
 
 [[instructions]]
@@ -94,7 +99,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["IN_LIBRARY", "NOT_H", "TIRED_LE_84", "HP_G_1"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "borrow_book" } },
+]
 
 [[instructions]]
 id = "read_book"
@@ -104,7 +111,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "TIRED_LE_74", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "PLACE_FURNITURE_GE_2"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "read_book" } },
+]
 
 [[instructions]]
 id = "watch_movie"
@@ -123,6 +132,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "82", value = 1 }, condition = "player.experience.82 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "watch_movie" } },
 ]
 
 [[instructions]]
@@ -141,6 +151,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "photography" } },
 ]
 
 [[instructions]]
@@ -159,6 +170,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "play_water" } },
 ]
 
 [[instructions]]
@@ -169,7 +181,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "HAVE_TARGET", "IN_BOARD_GAMES_ROOM", "T_NORMAL_5_6", "TIRED_LE_74"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "play_gomoku" } },
+]
 
 [[instructions]]
 id = "play_chess"
@@ -188,6 +202,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "82", value = 1 }, condition = "player.experience.82 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "play_chess" } },
 ]
 
 [[instructions]]
@@ -207,6 +222,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "82", value = 1 }, condition = "player.experience.82 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "play_mahjong" } },
 ]
 
 [[instructions]]
@@ -226,6 +242,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "82", value = 1 }, condition = "player.experience.82 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "play_cards" } },
 ]
 
 [[instructions]]
@@ -245,6 +262,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "rehearse_dance" } },
 ]
 
 [[instructions]]
@@ -263,6 +281,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "play_arcade_game" } },
 ]
 
 [[instructions]]
@@ -281,6 +300,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "swimming" } },
 ]
 
 [[instructions]]
@@ -299,6 +319,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "taste_wine" } },
 ]
 
 [[instructions]]
@@ -317,6 +338,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "taste_tea" } },
 ]
 
 [[instructions]]
@@ -335,6 +357,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "taste_coffee" } },
 ]
 
 [[instructions]]
@@ -353,6 +376,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "taste_dessert" } },
 ]
 
 [[instructions]]
@@ -371,6 +395,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "83", value = 1 }, condition = "target.experience.83 >= 1" },
   { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "taste_food" } },
 ]
 
 [[instructions]]
@@ -390,6 +415,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "play_house" } },
 ]
 
 [[instructions]]
@@ -408,6 +434,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "style_hair" } },
 ]
 
 [[instructions]]
@@ -426,6 +453,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "full_body_styling" } },
 ]
 
 [[instructions]]
@@ -447,6 +475,7 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "soak_feet" } },
 ]
 
 [[instructions]]
@@ -468,6 +497,7 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "steam_sauna" } },
 ]
 
 [[instructions]]
@@ -489,6 +519,7 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "hydrotherapy_treatment" } },
 ]
 
 [[instructions]]
@@ -510,6 +541,7 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "onsen_bath" } },
 ]
 
 [[instructions]]
@@ -520,5 +552,7 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_AROMATHERAPY_ROOM"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "aromatherapy" } },
+]
 

@@ -564,9 +564,13 @@ function main() {
           line += ' },\n'
           toml += line
         }
+        // 注释：自动添加触发口上效果
+        toml += `  { type = "trigger_dialogue", params = { scene = "${inst.id}" } },\n`
         toml += ']\n'
       } else {
-        toml += `effects = []\n`
+        toml += `effects = [\n`
+        toml += `  { type = "trigger_dialogue", params = { scene = "${inst.id}" } },\n`
+        toml += ']\n'
       }
       toml += '\n'
     }

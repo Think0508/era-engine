@@ -10,7 +10,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "PLACE_FURNITURE_GE_2", "SCENE_ONLY_ONE", "TIRED_LE_84", "PL_SEMEN_G_2", "HP_G_1"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "make_coffee_add" } },
+]
 
 [[instructions]]
 id = "touch_head"
@@ -30,6 +32,7 @@ effects = [
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "trigger_dialogue", params = { scene = "touch_head" } },
 ]
 
 [[instructions]]
@@ -49,6 +52,7 @@ effects = [
   { type = "tech_adjust", params = { part = "皮肤", baseValue = 50 } },
   { type = "h_experience", params = { expId = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_breast" } },
 ]
 
 [[instructions]]
@@ -69,6 +73,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "h_experience", params = { expId = "0", value = 1 }, condition = "target.experience.0 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_buttocks" } },
 ]
 
 [[instructions]]
@@ -91,6 +96,7 @@ effects = [
   { type = "tech_adjust", params = { part = "兽部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "154", value = 1 }, condition = "target.experience.154 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_ears" } },
 ]
 
 [[instructions]]
@@ -113,6 +119,7 @@ effects = [
   { type = "tech_adjust", params = { part = "兽部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "154", value = 1 }, condition = "target.experience.154 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_horn" } },
 ]
 
 [[instructions]]
@@ -135,6 +142,7 @@ effects = [
   { type = "tech_adjust", params = { part = "兽部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "154", value = 1 }, condition = "target.experience.154 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_tail" } },
 ]
 
 [[instructions]]
@@ -157,6 +165,7 @@ effects = [
   { type = "tech_adjust", params = { part = "兽部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "154", value = 1 }, condition = "target.experience.154 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_ring" } },
 ]
 
 [[instructions]]
@@ -179,6 +188,7 @@ effects = [
   { type = "tech_adjust", params = { part = "兽部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "154", value = 1 }, condition = "target.experience.154 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_wing" } },
 ]
 
 [[instructions]]
@@ -201,6 +211,7 @@ effects = [
   { type = "tech_adjust", params = { part = "兽部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "154", value = 1 }, condition = "target.experience.154 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_tentacle" } },
 ]
 
 [[instructions]]
@@ -223,6 +234,7 @@ effects = [
   { type = "tech_adjust", params = { part = "兽部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "154", value = 1 }, condition = "target.experience.154 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_car" } },
 ]
 
 [[instructions]]
@@ -241,6 +253,7 @@ effects = [
   { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "trigger_dialogue", params = { scene = "hand_in_hand" } },
 ]
 
 [[instructions]]
@@ -260,6 +273,7 @@ effects = [
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "trigger_dialogue", params = { scene = "embrace" } },
 ]
 
 [[instructions]]
@@ -285,6 +299,7 @@ effects = [
   { type = "h_experience", params = { expId = "40", value = 1 }, condition = "player.experience.40 >= 1" },
   { type = "h_experience", params = { expId = "153", value = 1 }, condition = "target.experience.153 >= 1" },
   { type = "h_experience", params = { expId = "153", value = 1 }, condition = "player.experience.153 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "kiss" } },
 ]
 
 [[instructions]]
@@ -304,6 +319,7 @@ effects = [
   { type = "settle_state", params = { state = "先导", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "trigger_dialogue", params = { scene = "lap_pillow" } },
 ]
 
 [[instructions]]
@@ -322,6 +338,7 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
+  { type = "trigger_dialogue", params = { scene = "raise_skirt" } },
 ]
 
 [[instructions]]
@@ -340,6 +357,7 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "set_field", params = { path = "inventory.panty_collected", value = true } },
+  { type = "trigger_dialogue", params = { scene = "ask_for_pan" } },
 ]
 
 [[instructions]]
@@ -358,6 +376,7 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "set_field", params = { path = "inventory.socks_collected", value = true } },
+  { type = "trigger_dialogue", params = { scene = "ask_for_socks" } },
 ]
 
 [[instructions]]
@@ -374,6 +393,7 @@ effects = [
   { type = "settle_favorability" },
   { type = "settle_trust" },
   { type = "set_field", params = { path = "sp_flag.last_shower_time", value = "now" } },
+  { type = "trigger_dialogue", params = { scene = "invite_to_bath" } },
 ]
 
 [[instructions]]
@@ -388,6 +408,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "set_field", params = { path = "inventory.panty_collected", value = true } },
+  { type = "trigger_dialogue", params = { scene = "steal_pan" } },
 ]
 
 [[instructions]]
@@ -402,6 +423,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "set_field", params = { path = "inventory.socks_collected", value = true } },
+  { type = "trigger_dialogue", params = { scene = "steal_socks" } },
 ]
 
 [[instructions]]
@@ -416,6 +438,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "set_field", params = { path = "scene_all.inventory.panty_collected", value = true } },
+  { type = "trigger_dialogue", params = { scene = "steal_scene_all_pan" } },
 ]
 
 [[instructions]]
@@ -430,6 +453,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
   { type = "set_field", params = { path = "scene_all.inventory.socks_collected", value = true } },
+  { type = "trigger_dialogue", params = { scene = "steal_scene_all_socks" } },
 ]
 
 [[instructions]]
@@ -452,6 +476,7 @@ effects = [
   { type = "tech_adjust", params = { part = "胸部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "2", value = 1 }, condition = "target.experience.2 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_clitoris" } },
 ]
 
 [[instructions]]
@@ -476,6 +501,7 @@ effects = [
   { type = "h_experience", params = { expId = "4", value = 1 }, condition = "target.experience.4 >= 1" },
   { type = "h_experience", params = { expId = "65", value = 1 }, condition = "target.experience.65 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_vagina" } },
 ]
 
 [[instructions]]
@@ -500,6 +526,7 @@ effects = [
   { type = "h_experience", params = { expId = "5", value = 1 }, condition = "target.experience.5 >= 1" },
   { type = "h_experience", params = { expId = "66", value = 1 }, condition = "target.experience.66 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "touch_anus" } },
 ]
 
 [[instructions]]
@@ -523,6 +550,7 @@ effects = [
   { type = "h_experience", params = { expId = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "h_experience", params = { expId = "22", value = 1 }, condition = "target.experience.22 >= 1" },
   { type = "set_field", params = { path = "sp_flag.milking", value = false } },
+  { type = "trigger_dialogue", params = { scene = "milk" } },
 ]
 
 [[instructions]]
@@ -535,6 +563,7 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_OFF", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "remote_toy_on" } },
 ]
 
 [[instructions]]
@@ -547,6 +576,7 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 0 } },
+  { type = "trigger_dialogue", params = { scene = "remote_toy_off" } },
 ]
 
 [[instructions]]
@@ -559,6 +589,7 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_STRONG", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 3 } },
+  { type = "trigger_dialogue", params = { scene = "remote_toy_level_up" } },
 ]
 
 [[instructions]]
@@ -571,6 +602,7 @@ priority = 50
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "remote_toy_level_down" } },
 ]
 
 [[instructions]]
@@ -583,6 +615,7 @@ priority = 50
 premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_ON", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 0 } },
+  { type = "trigger_dialogue", params = { scene = "remote_toy_all_off" } },
 ]
 
 [[instructions]]
@@ -595,6 +628,7 @@ priority = 50
 premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "remote_all_set_sex_toy_weak" } },
 ]
 
 [[instructions]]
@@ -607,6 +641,7 @@ priority = 50
 premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_STRONG", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 2 } },
+  { type = "trigger_dialogue", params = { scene = "remote_all_set_sex_toy_medium" } },
 ]
 
 [[instructions]]
@@ -619,6 +654,7 @@ priority = 50
 premises = ["NOT_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_MIDDLE", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 3 } },
+  { type = "trigger_dialogue", params = { scene = "remote_all_set_sex_toy_strong" } },
 ]
 
 [[instructions]]
@@ -633,6 +669,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -30 } },
   { type = "modify_attribute", params = { attr = "气力", value = -30 } },
   { type = "nop" },
+  { type = "trigger_dialogue", params = { scene = "bagging_and_moving" } },
 ]
 
 [[instructions]]
@@ -646,6 +683,7 @@ premises = ["NOT_H", "NOT_IN_PRISON", "SCENE_ONLY_ONE", "PL_BAGGING_CHARA", "TIR
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -30 } },
   { type = "modify_attribute", params = { attr = "气力", value = -30 } },
+  { type = "trigger_dialogue", params = { scene = "release_from_bag" } },
 ]
 
 [[instructions]]
@@ -660,6 +698,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -30 } },
   { type = "modify_attribute", params = { attr = "气力", value = -30 } },
   { type = "modify_attribute", params = { attr = "体力", value = -30 } },
+  { type = "trigger_dialogue", params = { scene = "put_into_prison" } },
 ]
 
 [[instructions]]
@@ -673,6 +712,7 @@ premises = ["NOT_H", "HAVE_TARGET", "IN_PRISON", "SCENE_ONLY_TWO", "T_IMPRISONME
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
+  { type = "trigger_dialogue", params = { scene = "set_free" } },
 ]
 
 [[instructions]]
@@ -683,7 +723,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_LOCKER_ROOM_OR_DORMITORY", "TIRED_LE_84", "HP_G_1"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "check_locker" } },
+]
 
 [[instructions]]
 id = "confession"
@@ -700,6 +742,7 @@ effects = [
   { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "nop" },
+  { type = "trigger_dialogue", params = { scene = "confession" } },
 ]
 
 [[instructions]]
@@ -717,6 +760,7 @@ effects = [
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "nop" },
+  { type = "trigger_dialogue", params = { scene = "give_necklace" } },
 ]
 
 [[instructions]]
@@ -727,7 +771,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "NOT_H", "T_IMPRISONMENT_1", "HAVE_WARDEN", "TARGET_HP_NE_1", "TIRED_LE_74"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "prepare_training" } },
+]
 
 [[instructions]]
 id = "sleep_obscenity"
@@ -737,7 +783,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_ACTION_SLEEP", "T_UNCONSCIOUS_FLAG_0", "TIRED_LE_74"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "sleep_obscenity" } },
+]
 
 [[instructions]]
 id = "stop_sleep_obscenity"
@@ -747,7 +795,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "NOT_H", "T_UNNORMAL_5_6", "T_UNCONSCIOUS_FLAG_1", "TIRED_LE_74"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "stop_sleep_obscenity" } },
+]
 
 [[instructions]]
 id = "do_h"
@@ -765,6 +815,7 @@ effects = [
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
   { type = "set_field", params = { path = "scene.close_flag", value = 1 } },
   { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
+  { type = "trigger_dialogue", params = { scene = "do_h" } },
 ]
 
 [[instructions]]
@@ -783,6 +834,7 @@ effects = [
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
   { type = "set_field", params = { path = "scene.close_flag", value = 1 } },
   { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
+  { type = "trigger_dialogue", params = { scene = "do_h_in_love_hotel" } },
 ]
 
 [[instructions]]
@@ -801,6 +853,7 @@ effects = [
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
   { type = "set_field", params = { path = "scene.close_flag", value = 1 } },
   { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
+  { type = "trigger_dialogue", params = { scene = "do_h_in_bathroom" } },
 ]
 
 [[instructions]]
@@ -819,6 +872,7 @@ effects = [
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
   { type = "set_field", params = { path = "scene.close_flag", value = 1 } },
   { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
+  { type = "trigger_dialogue", params = { scene = "do_h_with_daughter" } },
 ]
 
 [[instructions]]
@@ -837,6 +891,7 @@ effects = [
   { type = "cloth_set_visible", params = { part = "内裤", visible = true } },
   { type = "set_field", params = { path = "scene.close_flag", value = 1 } },
   { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
+  { type = "trigger_dialogue", params = { scene = "imprisonment_h" } },
 ]
 
 [[instructions]]
@@ -847,7 +902,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_UNCONSCIOUS_FLAG", "TIRED_LE_74"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "unconscious_h" } },
+]
 
 [[instructions]]
 id = "ask_hidden_sex"
@@ -867,6 +924,7 @@ effects = [
   { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
   { type = "h_experience", params = { expId = "35", value = 1 }, condition = "player.experience.35 >= 1" },
   { type = "h_experience", params = { expId = "35", value = 1 }, condition = "target.experience.35 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "ask_hidden_sex" } },
 ]
 
 [[instructions]]
@@ -888,6 +946,7 @@ effects = [
   { type = "set_field", params = { path = "target.h_state.condom_info_show", value = true } },
   { type = "h_experience", params = { expId = "34", value = 1 }, condition = "player.experience.34 >= 1" },
   { type = "h_experience", params = { expId = "34", value = 1 }, condition = "target.experience.34 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "ask_exhibitionism_sex" } },
 ]
 
 [[instructions]]
@@ -906,6 +965,7 @@ effects = [
   { type = "cloth_set_visible", params = { part = "all", visible = true } },
   { type = "set_field", params = { path = "scene_all.h_state.condom_info_show", value = true } },
   { type = "group_sex_mode_on" },
+  { type = "trigger_dialogue", params = { scene = "ask_group_sex" } },
 ]
 
 [[instructions]]
@@ -920,6 +980,7 @@ priority = 50
 premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "remote_toy_level_down_in_h" } },
 ]
 
 [[instructions]]
@@ -934,6 +995,7 @@ priority = 50
 premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_ON", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 0 } },
+  { type = "trigger_dialogue", params = { scene = "remote_toy_all_off_in_h" } },
 ]
 
 [[instructions]]
@@ -948,6 +1010,7 @@ priority = 50
 premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_NOT_WEAK", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "remote_all_set_sex_toy_weak_in_h" } },
 ]
 
 [[instructions]]
@@ -962,6 +1025,7 @@ priority = 50
 premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_STRONG", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 2 } },
+  { type = "trigger_dialogue", params = { scene = "remote_all_set_sex_toy_medium_in_h" } },
 ]
 
 [[instructions]]
@@ -976,6 +1040,7 @@ priority = 50
 premises = ["HAVE_TARGET", "TARGET_IS_H", "SCENE_HAVE_OVER_TWO_CHARA_HAVE_SEX_TOY", "SCENE_HAVE_OVER_ONE_CHARA_SEX_TOY_WEAK_OR_MIDDLE", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 3 } },
+  { type = "trigger_dialogue", params = { scene = "remote_all_set_sex_toy_strong_in_h" } },
 ]
 
 [[instructions]]
@@ -991,5 +1056,6 @@ premises = ["HAVE_TARGET", "TARGET_WORK_IS_DORMITORY_MANAGER", "TIRED_LE_84", "D
 effects = [
   { type = "modify_attribute", params = { attr = "气力", value = -10 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "trigger_dialogue", params = { scene = "ask_copy_key" } },
 ]
 

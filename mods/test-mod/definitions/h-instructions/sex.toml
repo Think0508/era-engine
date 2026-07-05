@@ -10,7 +10,9 @@ time_cost = -1
 priority = 50
 # erArk behavior: WAIT
 premises = ["IS_H"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "wait_5_min_in_h" } },
+]
 
 [[instructions]]
 id = "h_end"
@@ -27,6 +29,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力上限", value = "+orgasm*2" } },
   { type = "set_field", params = { path = "h_state.is_h", value = false } },
   { type = "cloth_wear_all" },
+  { type = "trigger_dialogue", params = { scene = "h_end" } },
 ]
 
 [[instructions]]
@@ -43,6 +46,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力上限", value = "+orgasm*2" } },
   { type = "set_field", params = { path = "h_state.is_h", value = false } },
   { type = "cloth_wear_all" },
+  { type = "trigger_dialogue", params = { scene = "h_with_daughter_end" } },
 ]
 
 [[instructions]]
@@ -59,6 +63,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力上限", value = "+orgasm*2" } },
   { type = "set_field", params = { path = "h_state.is_h", value = false } },
   { type = "cloth_wear_all" },
+  { type = "trigger_dialogue", params = { scene = "imprisonment_h_end" } },
 ]
 
 [[instructions]]
@@ -75,6 +80,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力上限", value = "+orgasm*2" } },
   { type = "set_field", params = { path = "h_state.is_h", value = false } },
   { type = "cloth_wear_all" },
+  { type = "trigger_dialogue", params = { scene = "unconscious_h_end" } },
 ]
 
 [[instructions]]
@@ -92,6 +98,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力上限", value = "+orgasm*2" } },
   { type = "set_field", params = { path = "h_state.is_h", value = false } },
   { type = "cloth_wear_all" },
+  { type = "trigger_dialogue", params = { scene = "hidden_sex_end" } },
 ]
 
 [[instructions]]
@@ -109,6 +116,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力上限", value = "+orgasm*2" } },
   { type = "set_field", params = { path = "h_state.is_h", value = false } },
   { type = "cloth_wear_all" },
+  { type = "trigger_dialogue", params = { scene = "exhibitionism_sex_end" } },
 ]
 
 [[instructions]]
@@ -125,6 +133,7 @@ effects = [
   { type = "cloth_wear_all", params = { target = "scene_all" } },
   { type = "set_field", params = { path = "scene_all.h_state.insert_position", value = -1 } },
   { type = "group_sex_mode_off" },
+  { type = "trigger_dialogue", params = { scene = "group_sex_end" } },
 ]
 
 [[instructions]]
@@ -136,7 +145,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "undress" } },
+]
 
 [[instructions]]
 id = "change_top_and_bottom"
@@ -146,7 +157,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "T_NORMAL_5_6", "T_NPC_NOT_ACTIVE_H", "GROUP_SEX_MODE_OFF", "TARGET_NOT_BONDAGE", "TARGET_IS_H"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "change_top_and_bottom" } },
+]
 
 [[instructions]]
 id = "keep_enjoy"
@@ -156,7 +169,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "T_NPC_ACTIVE_H", "TARGET_IS_H"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "keep_enjoy" } },
+]
 
 [[instructions]]
 id = "try_pl_active_h"
@@ -166,7 +181,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "T_NPC_ACTIVE_H", "TARGET_IS_H"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "try_pl_active_h" } },
+]
 
 [[instructions]]
 id = "orgasm_edge_on"
@@ -178,6 +195,7 @@ priority = 50
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "TIME_STOP_OFF", "TARGET_NOT_ORGASM_EDGE"]
 effects = [
   { type = "set_field", params = { path = "h_state.orgasm_edge", value = 1 } },
+  { type = "trigger_dialogue", params = { scene = "orgasm_edge_on" } },
 ]
 
 [[instructions]]
@@ -190,6 +208,7 @@ priority = 50
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "TIME_STOP_OFF", "TARGET_ORGASM_EDGE"]
 effects = [
   { type = "set_field", params = { path = "h_state.orgasm_edge", value = 2 } },
+  { type = "trigger_dialogue", params = { scene = "orgasm_edge_off" } },
 ]
 
 [[instructions]]
@@ -201,7 +220,9 @@ time_cost = -1
 priority = 50
 # erArk behavior: WAIT
 premises = ["HAVE_TARGET", "TARGET_IS_H", "GROUP_SEX_MODE_ON", "T_NPC_NOT_ACTIVE_H", "TIME_STOP_OFF", "ALL_GROUP_SEX_TEMPLE_RUN_OFF"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "run_group_sex_temple" } },
+]
 
 [[instructions]]
 id = "run_all_group_sex_temple"
@@ -212,7 +233,9 @@ time_cost = -1
 priority = 50
 # erArk behavior: WAIT
 premises = ["HAVE_TARGET", "TARGET_IS_H", "GROUP_SEX_MODE_ON", "T_NPC_NOT_ACTIVE_H", "TIME_STOP_OFF", "ALL_GROUP_SEX_TEMPLE_RUN_ON"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "run_all_group_sex_temple" } },
+]
 
 [[instructions]]
 id = "edit_group_sex_temple"
@@ -223,7 +246,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "TARGET_IS_H", "GROUP_SEX_MODE_ON", "T_NPC_NOT_ACTIVE_H", "TIME_STOP_OFF"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "edit_group_sex_temple" } },
+]
 
 [[instructions]]
 id = "pull_out_penis"
@@ -238,6 +263,7 @@ effects = [
   { type = "set_field", params = { path = "scene_all.h_state.insert_position", value = -1 } },
   { type = "set_field", params = { path = "h_state.current_sex_position", value = -1 } },
   { type = "set_field", params = { path = "h_state.insert_position", value = 13 } },
+  { type = "trigger_dialogue", params = { scene = "pull_out_penis" } },
 ]
 
 [[instructions]]
@@ -250,6 +276,7 @@ priority = 50
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "PL_ENDURE_ORGASM_COUNT_GE_1"]
 effects = [
   { type = "set_field", params = { path = "h_state.endurance_released", value = true } },
+  { type = "trigger_dialogue", params = { scene = "stop_endure" } },
 ]
 
 [[instructions]]
@@ -262,7 +289,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = []
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "birth_control_pills" } },
+]
 
 [[instructions]]
 id = "philter"
@@ -281,6 +310,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "nop" },
   { type = "apply_aphrodisiac" },
+  { type = "trigger_dialogue", params = { scene = "philter" } },
 ]
 
 [[instructions]]
@@ -300,6 +330,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "nop" },
   { type = "modify_attribute", params = { attr = "尿意", value = 300 } },
+  { type = "trigger_dialogue", params = { scene = "diuretics_once" } },
 ]
 
 [[instructions]]
@@ -319,6 +350,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "nop" },
   { type = "set_field", params = { path = "sp_flag.diuretic_effect", value = true } },
+  { type = "trigger_dialogue", params = { scene = "diuretics_persistent" } },
 ]
 
 [[instructions]]
@@ -338,6 +370,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "nop" },
   { type = "set_field", params = { path = "sp_flag.sleep_pill_effect", value = true } },
+  { type = "trigger_dialogue", params = { scene = "sleeping_pills" } },
 ]
 
 [[instructions]]
@@ -358,6 +391,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "nop" },
   { type = "set_field", params = { path = "sp_flag.ovulation_promoted", value = true } },
+  { type = "trigger_dialogue", params = { scene = "clomid" } },
 ]
 
 [[instructions]]
@@ -377,6 +411,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "nop" },
   { type = "set_field", params = { path = "sp_flag.contraceptive_before", value = true } },
+  { type = "trigger_dialogue", params = { scene = "birth_control_pills_before" } },
 ]
 
 [[instructions]]
@@ -397,6 +432,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "nop" },
   { type = "set_field", params = { path = "sp_flag.contraceptive_after", value = true } },
+  { type = "trigger_dialogue", params = { scene = "birth_control_pills_after" } },
 ]
 
 [[instructions]]
@@ -418,6 +454,7 @@ effects = [
   { type = "tech_adjust", params = { part = "皮肤", baseValue = 50 } },
   { type = "h_experience", params = { expId = "0", value = 1 }, condition = "target.experience.0 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "making_out" } },
 ]
 
 [[instructions]]
@@ -443,6 +480,7 @@ effects = [
   { type = "h_experience", params = { expId = "153", value = 1 }, condition = "target.experience.153 >= 1" },
   { type = "h_experience", params = { expId = "153", value = 1 }, condition = "player.experience.153 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = -1 } },
+  { type = "trigger_dialogue", params = { scene = "kiss_h" } },
 ]
 
 [[instructions]]
@@ -464,6 +502,7 @@ effects = [
   { type = "tech_adjust", params = { part = "皮肤", baseValue = 50 } },
   { type = "h_experience", params = { expId = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "breast_caress" } },
 ]
 
 [[instructions]]
@@ -485,6 +524,7 @@ effects = [
   { type = "tech_adjust", params = { part = "皮肤", baseValue = 50 } },
   { type = "h_experience", params = { expId = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "twiddle_nipples" } },
 ]
 
 [[instructions]]
@@ -506,6 +546,7 @@ effects = [
   { type = "tech_adjust", params = { part = "皮肤", baseValue = 50 } },
   { type = "h_experience", params = { expId = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "h_experience", params = { expId = "42", value = 1 }, condition = "player.experience.42 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "breast_sucking" } },
 ]
 
 [[instructions]]
@@ -527,6 +568,7 @@ effects = [
   { type = "tech_adjust", params = { part = "胸部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "2", value = 1 }, condition = "target.experience.2 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "clit_caress" } },
 ]
 
 [[instructions]]
@@ -548,6 +590,7 @@ effects = [
   { type = "tech_adjust", params = { part = "胸部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "2", value = 1 }, condition = "target.experience.2 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "open_labia" } },
 ]
 
 [[instructions]]
@@ -569,6 +612,7 @@ effects = [
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
   { type = "h_experience", params = { expId = "5", value = 1 }, condition = "target.experience.5 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "open_anus" } },
 ]
 
 [[instructions]]
@@ -592,6 +636,7 @@ effects = [
   { type = "h_experience", params = { expId = "4", value = 1 }, condition = "target.experience.4 >= 1" },
   { type = "h_experience", params = { expId = "42", value = 1 }, condition = "player.experience.42 >= 1" },
   { type = "h_experience", params = { expId = "42", value = 1 }, condition = "player.experience.42 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "cunnilingus" } },
 ]
 
 [[instructions]]
@@ -613,6 +658,7 @@ effects = [
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
   { type = "h_experience", params = { expId = "5", value = 1 }, condition = "target.experience.5 >= 1" },
   { type = "h_experience", params = { expId = "42", value = 1 }, condition = "player.experience.42 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "lick_anal" } },
 ]
 
 [[instructions]]
@@ -638,6 +684,7 @@ effects = [
   { type = "h_experience", params = { expId = "4", value = 1 }, condition = "target.experience.4 >= 1" },
   { type = "h_experience", params = { expId = "65", value = 1 }, condition = "target.experience.65 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "finger_insertion" } },
 ]
 
 [[instructions]]
@@ -663,6 +710,7 @@ effects = [
   { type = "h_experience", params = { expId = "5", value = 1 }, condition = "target.experience.5 >= 1" },
   { type = "h_experience", params = { expId = "66", value = 1 }, condition = "target.experience.66 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "anal_caress" } },
 ]
 
 [[instructions]]
@@ -686,6 +734,7 @@ effects = [
   { type = "tech_adjust", params = { part = "子宫", baseValue = 50 } },
   { type = "h_experience", params = { expId = "7", value = 1 }, condition = "target.experience.7 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "player.experience.41 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "external_womb_massage" } },
 ]
 
 [[instructions]]
@@ -711,6 +760,7 @@ effects = [
   { type = "h_experience", params = { expId = "6", value = 1 }, condition = "target.experience.6 >= 1" },
   { type = "h_experience", params = { expId = "32", value = 1 }, condition = "target.experience.32 >= 1" },
   { type = "h_experience", params = { expId = "67", value = 1 }, condition = "target.experience.67 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "urethral_finger_insertion" } },
 ]
 
 [[instructions]]
@@ -737,6 +787,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "target.experience.41 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "make_masturebate" } },
 ]
 
 [[instructions]]
@@ -763,6 +814,7 @@ effects = [
   { type = "tech_adjust", params = { part = "阴茎", baseValue = 50 } },
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "42", value = 1 }, condition = "target.experience.42 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "make_lick_anal" } },
 ]
 
 [[instructions]]
@@ -787,6 +839,7 @@ effects = [
   { type = "h_experience", params = { expId = "6", value = 1 }, condition = "target.experience.6 >= 1" },
   { type = "h_experience", params = { expId = "23", value = 1 }, condition = "target.experience.23 >= 1" },
   { type = "h_experience", params = { expId = "34", value = 1 }, condition = "target.experience.34 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "ask_pee" } },
 ]
 
 [[instructions]]
@@ -819,6 +872,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "vaginal_sex" } },
 ]
 
 [[instructions]]
@@ -851,6 +905,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "change_vaginal_sex_position" } },
 ]
 
 [[instructions]]
@@ -883,6 +938,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "normal_sex" } },
 ]
 
 [[instructions]]
@@ -915,6 +971,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_sex" } },
 ]
 
 [[instructions]]
@@ -947,6 +1004,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "riding_sex" } },
 ]
 
 [[instructions]]
@@ -979,6 +1037,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_riding_sex" } },
 ]
 
 [[instructions]]
@@ -1011,6 +1070,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_seat_sex" } },
 ]
 
 [[instructions]]
@@ -1043,6 +1103,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_seat_sex" } },
 ]
 
 [[instructions]]
@@ -1077,6 +1138,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_stand_sex" } },
 ]
 
 [[instructions]]
@@ -1111,6 +1173,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_stand_sex" } },
 ]
 
 [[instructions]]
@@ -1145,6 +1208,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_hug_sex" } },
 ]
 
 [[instructions]]
@@ -1179,6 +1243,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_hug_sex" } },
 ]
 
 [[instructions]]
@@ -1211,6 +1276,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_lay_sex" } },
 ]
 
 [[instructions]]
@@ -1243,6 +1309,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_lay_sex" } },
 ]
 
 [[instructions]]
@@ -1273,6 +1340,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 122 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "stimulate_g_point" } },
 ]
 
 [[instructions]]
@@ -1306,6 +1374,7 @@ effects = [
   { type = "h_experience", params = { expId = "68", value = 1 }, condition = "target.experience.68 >= 1" },
   { type = "h_experience", params = { expId = "60", value = 1 }, condition = "player.experience.60 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 6 } },
+  { type = "trigger_dialogue", params = { scene = "womb_os_caress" } },
 ]
 
 [[instructions]]
@@ -1342,6 +1411,7 @@ effects = [
   { type = "h_experience", params = { expId = "60", value = 1 }, condition = "player.experience.60 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 7 } },
   { type = "set_field", params = { path = "h_state.insert_position", value = 14 } },
+  { type = "trigger_dialogue", params = { scene = "womb_insertion" } },
 ]
 
 [[instructions]]
@@ -1380,6 +1450,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "change_cervix_sex_position" } },
 ]
 
 [[instructions]]
@@ -1418,6 +1489,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "normal_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1456,6 +1528,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1494,6 +1567,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "riding_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1532,6 +1606,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_riding_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1570,6 +1645,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_seat_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1608,6 +1684,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_seat_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1648,6 +1725,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_stand_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1688,6 +1766,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_stand_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1728,6 +1807,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_hug_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1768,6 +1848,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_hug_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1806,6 +1887,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_lay_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1844,6 +1926,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_lay_cervix_sex" } },
 ]
 
 [[instructions]]
@@ -1881,6 +1964,7 @@ effects = [
   { type = "h_experience", params = { expId = "60", value = 1 }, condition = "player.experience.60 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 7 } },
   { type = "set_field", params = { path = "h_state.insert_position", value = 15 } },
+  { type = "trigger_dialogue", params = { scene = "womb_sex" } },
 ]
 
 [[instructions]]
@@ -1919,6 +2003,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "change_womb_sex_position" } },
 ]
 
 [[instructions]]
@@ -1957,6 +2042,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "normal_womb_sex" } },
 ]
 
 [[instructions]]
@@ -1995,6 +2081,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2033,6 +2120,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "riding_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2071,6 +2159,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_riding_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2109,6 +2198,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_seat_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2147,6 +2237,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_seat_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2187,6 +2278,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_stand_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2227,6 +2319,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_stand_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2267,6 +2360,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_hug_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2307,6 +2401,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_hug_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2345,6 +2440,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_lay_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2383,6 +2479,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 131 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 134 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_lay_womb_sex" } },
 ]
 
 [[instructions]]
@@ -2415,6 +2512,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "anal_sex" } },
 ]
 
 [[instructions]]
@@ -2447,6 +2545,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "change_anal_sex_position" } },
 ]
 
 [[instructions]]
@@ -2479,6 +2578,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "normal_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2511,6 +2611,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2543,6 +2644,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "riding_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2575,6 +2677,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_riding_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2607,6 +2710,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_seat_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2639,6 +2743,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_seat_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2673,6 +2778,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_stand_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2707,6 +2813,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_stand_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2741,6 +2848,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_hug_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2775,6 +2883,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_hug_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2807,6 +2916,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_lay_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2839,6 +2949,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_lay_anal_sex" } },
 ]
 
 [[instructions]]
@@ -2869,6 +2980,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "stimulate_sigmoid_colon" } },
 ]
 
 [[instructions]]
@@ -2900,6 +3012,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 123 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 132 } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "stimulate_vagina" } },
 ]
 
 [[instructions]]
@@ -2932,6 +3045,7 @@ effects = [
   { type = "h_experience", params = { expId = "67", value = 1 }, condition = "target.experience.67 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 9 } },
   { type = "set_field", params = { path = "h_state.current_sex_position", value = 1 } },
+  { type = "trigger_dialogue", params = { scene = "urethral_sex" } },
 ]
 
 [[instructions]]
@@ -2964,6 +3078,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "change_urethral_sex_position" } },
 ]
 
 [[instructions]]
@@ -2996,6 +3111,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "normal_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3028,6 +3144,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3060,6 +3177,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "riding_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3092,6 +3210,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_riding_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3124,6 +3243,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_seat_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3156,6 +3276,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_seat_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3190,6 +3311,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_stand_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3224,6 +3346,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_stand_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3258,6 +3381,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_hug_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3292,6 +3416,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_hug_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3324,6 +3449,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "face_lay_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3356,6 +3482,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 124 } },
   { type = "tech_adjust", params = { type = "pain", erArkId = 133 } },
   { type = "tech_adjust", params = { part = "阴道", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "back_lay_urethral_sex" } },
 ]
 
 [[instructions]]
@@ -3376,6 +3503,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "nop" },
   { type = "apply_lubricant", params = { value = 10000 } },
+  { type = "trigger_dialogue", params = { scene = "body_lubricant" } },
 ]
 
 [[instructions]]
@@ -3393,6 +3521,7 @@ effects = [
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "nop" },
   { type = "set_field", params = { path = "h_state.condom", value = true } },
+  { type = "trigger_dialogue", params = { scene = "put_condom" } },
 ]
 
 [[instructions]]
@@ -3408,6 +3537,7 @@ premises = ["TARGET_IS_H", "T_NPC_NOT_ACTIVE_H", "NOW_CONDOM"]
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
   { type = "set_field", params = { path = "h_state.condom", value = false } },
+  { type = "trigger_dialogue", params = { scene = "take_condom_out" } },
 ]
 
 [[instructions]]
@@ -3433,6 +3563,7 @@ effects = [
   { type = "h_experience", params = { expId = "6", value = 1 }, condition = "target.experience.6 >= 1" },
   { type = "h_experience", params = { expId = "67", value = 1 }, condition = "target.experience.67 >= 1" },
   { type = "nop" },
+  { type = "trigger_dialogue", params = { scene = "urethral_swab" } },
 ]
 
 [[instructions]]
@@ -3456,6 +3587,7 @@ effects = [
   { type = "tech_adjust", params = { part = "皮肤", baseValue = 50 } },
   { type = "h_experience", params = { expId = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "nipples_love_egg" } },
 ]
 
 [[instructions]]
@@ -3483,6 +3615,7 @@ effects = [
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "乳头夹" } },
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "nipple_clamp_on" } },
 ]
 
 [[instructions]]
@@ -3497,6 +3630,7 @@ priority = 50
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_NIPPLE_CLAMP", "TARGET_NOW_NIPPLE_CLAMP"]
 effects = [
   { type = "body_item_unequip", params = { item = "乳头夹" } },
+  { type = "trigger_dialogue", params = { scene = "nipple_clamp_off" } },
 ]
 
 [[instructions]]
@@ -3520,6 +3654,7 @@ effects = [
   { type = "tech_adjust", params = { part = "胸部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "2", value = 1 }, condition = "target.experience.2 >= 1" },
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "clit_love_egg" } },
 ]
 
 [[instructions]]
@@ -3547,6 +3682,7 @@ effects = [
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "阴蒂夹" } },
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "clit_clamp_on" } },
 ]
 
 [[instructions]]
@@ -3561,6 +3697,7 @@ priority = 50
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_CLIT_CLAMP", "TARGET_NOW_CLIT_CLAMP"]
 effects = [
   { type = "body_item_unequip", params = { item = "阴蒂夹" } },
+  { type = "trigger_dialogue", params = { scene = "clit_clamp_off" } },
 ]
 
 [[instructions]]
@@ -3584,6 +3721,7 @@ effects = [
   { type = "tech_adjust", params = { part = "胸部", baseValue = 50 } },
   { type = "h_experience", params = { expId = "2", value = 1 }, condition = "target.experience.2 >= 1" },
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "electric_message_stick" } },
 ]
 
 [[instructions]]
@@ -3611,6 +3749,7 @@ effects = [
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "振动棒V" } },
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "vibrator_insertion" } },
 ]
 
 [[instructions]]
@@ -3623,7 +3762,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = []
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "big_vibrator_insertion" } },
+]
 
 [[instructions]]
 id = "huge_vibrator_insertion"
@@ -3635,7 +3776,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = []
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "huge_vibrator_insertion" } },
+]
 
 [[instructions]]
 id = "vibrator_insertion_off"
@@ -3649,6 +3792,7 @@ priority = 50
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_VIBRATOR", "TARGET_NOW_VIBRATOR_INSERTION"]
 effects = [
   { type = "body_item_unequip", params = { item = "振动棒V" } },
+  { type = "trigger_dialogue", params = { scene = "vibrator_insertion_off" } },
 ]
 
 [[instructions]]
@@ -3676,6 +3820,7 @@ effects = [
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "振动棒A" } },
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "vibrator_insertion_anal" } },
 ]
 
 [[instructions]]
@@ -3688,7 +3833,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = []
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "big_vibrator_insertion_anal" } },
+]
 
 [[instructions]]
 id = "huge_vibrator_insertion_anal"
@@ -3700,7 +3847,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = []
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "huge_vibrator_insertion_anal" } },
+]
 
 [[instructions]]
 id = "vibrator_insertion_anal_off"
@@ -3714,6 +3863,7 @@ priority = 50
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_VIBRATOR", "TARGET_NOW_VIBRATOR_INSERTION_ANAL"]
 effects = [
   { type = "body_item_unequip", params = { item = "振动棒A" } },
+  { type = "trigger_dialogue", params = { scene = "vibrator_insertion_anal_off" } },
 ]
 
 [[instructions]]
@@ -3739,6 +3889,7 @@ effects = [
   { type = "h_experience", params = { expId = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "拉珠" } },
+  { type = "trigger_dialogue", params = { scene = "anal_beads" } },
 ]
 
 [[instructions]]
@@ -3753,6 +3904,7 @@ priority = 50
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_ANAL_BEADS", "TARGET_NOW_ANAL_BEADS"]
 effects = [
   { type = "body_item_unequip", params = { item = "拉珠" } },
+  { type = "trigger_dialogue", params = { scene = "anal_beads_off" } },
 ]
 
 [[instructions]]
@@ -3776,6 +3928,7 @@ effects = [
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "搾乳机" } },
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "milking_machine_on" } },
 ]
 
 [[instructions]]
@@ -3797,6 +3950,7 @@ effects = [
   { type = "tech_adjust", params = { part = "皮肤", baseValue = 50 } },
   { type = "h_experience", params = { expId = "1", value = 1 }, condition = "target.experience.1 >= 1" },
   { type = "body_item_unequip", params = { item = "搾乳机" } },
+  { type = "trigger_dialogue", params = { scene = "milking_machine_off" } },
 ]
 
 [[instructions]]
@@ -3820,6 +3974,7 @@ effects = [
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "采尿器" } },
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "urine_collector_on" } },
 ]
 
 [[instructions]]
@@ -3841,6 +3996,7 @@ effects = [
   { type = "tech_adjust", params = { part = "尿道", baseValue = 50 } },
   { type = "h_experience", params = { expId = "7", value = 1 }, condition = "target.experience.7 >= 1" },
   { type = "body_item_unequip", params = { item = "采尿器" } },
+  { type = "trigger_dialogue", params = { scene = "urine_collector_off" } },
 ]
 
 [[instructions]]
@@ -3855,6 +4011,7 @@ priority = 50
 premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_OFF", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 1 } },
+  { type = "trigger_dialogue", params = { scene = "remote_toy_on_in_h" } },
 ]
 
 [[instructions]]
@@ -3869,6 +4026,7 @@ priority = 50
 premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 0 } },
+  { type = "trigger_dialogue", params = { scene = "remote_toy_off_in_h" } },
 ]
 
 [[instructions]]
@@ -3883,6 +4041,7 @@ priority = 50
 premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_STRONG", "TIRED_LE_84"]
 effects = [
   { type = "vibrator_set", params = { level = 3 } },
+  { type = "trigger_dialogue", params = { scene = "remote_toy_level_up_in_h" } },
 ]
 
 [[instructions]]
@@ -3905,6 +4064,7 @@ effects = [
   { type = "tech_adjust", params = { type = "pain", erArkId = 135 } },
   { type = "h_experience", params = { expId = "32", value = 1 }, condition = "target.experience.32 >= 1" },
   { type = "h_experience", params = { expId = "33", value = 1 }, condition = "player.experience.33 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "spanking" } },
 ]
 
 [[instructions]]
@@ -3926,6 +4086,7 @@ effects = [
   { type = "settle_state", params = { state = "先导", baseValue = 30 } },
   { type = "h_experience", params = { expId = "70", value = 1 }, condition = "player.experience.70 >= 1" },
   { type = "h_experience", params = { expId = "52", value = 1 }, condition = "target.experience.52 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "bondage" } },
 ]
 
 [[instructions]]
@@ -3946,6 +4107,7 @@ effects = [
   { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "眼罩" } },
+  { type = "trigger_dialogue", params = { scene = "patch_on" } },
 ]
 
 [[instructions]]
@@ -3965,6 +4127,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
   { type = "body_item_unequip", params = { item = "眼罩" } },
+  { type = "trigger_dialogue", params = { scene = "patch_off" } },
 ]
 
 [[instructions]]
@@ -3985,6 +4148,7 @@ effects = [
   { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "body_item_equip", params = { item = "口球" } },
+  { type = "trigger_dialogue", params = { scene = "gag_on" } },
 ]
 
 [[instructions]]
@@ -4004,6 +4168,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
   { type = "body_item_unequip", params = { item = "口球" } },
+  { type = "trigger_dialogue", params = { scene = "gag_off" } },
 ]
 
 [[instructions]]
@@ -4032,6 +4197,7 @@ effects = [
   { type = "apply_lubricant", params = { value = 5000, target = "anal" } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
   { type = "h_experience", params = { expId = "53", value = 1 }, condition = "target.experience.53 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "clyster" } },
 ]
 
 [[instructions]]
@@ -4060,6 +4226,7 @@ effects = [
   { type = "apply_lubricant", params = { value = 5000, target = "anal" } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
   { type = "h_experience", params = { expId = "53", value = 1 }, condition = "target.experience.53 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "continue_clyster" } },
 ]
 
 [[instructions]]
@@ -4086,6 +4253,7 @@ effects = [
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "set_field", params = { path = "h_state.enema_active", value = false } },
   { type = "tech_adjust", params = { part = "肛肠", baseValue = 50 } },
+  { type = "trigger_dialogue", params = { scene = "clyster_end" } },
 ]
 
 [[instructions]]
@@ -4116,6 +4284,7 @@ effects = [
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "h_experience", params = { expId = "33", value = 1 }, condition = "player.experience.33 >= 1" },
   { type = "nop" },
+  { type = "trigger_dialogue", params = { scene = "safe_candles" } },
 ]
 
 [[instructions]]
@@ -4144,6 +4313,7 @@ effects = [
   { type = "h_experience", params = { expId = "32", value = 1 }, condition = "target.experience.32 >= 1" },
   { type = "h_experience", params = { expId = "51", value = 1 }, condition = "target.experience.51 >= 1" },
   { type = "h_experience", params = { expId = "33", value = 1 }, condition = "player.experience.33 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "whip" } },
 ]
 
 [[instructions]]
@@ -4173,6 +4343,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "41", value = 1 }, condition = "target.experience.41 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 5 } },
+  { type = "trigger_dialogue", params = { scene = "handjob" } },
 ]
 
 [[instructions]]
@@ -4205,6 +4376,7 @@ effects = [
   { type = "h_experience", params = { expId = "153", value = 1 }, condition = "target.experience.153 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 2 } },
   { type = "set_field", params = { path = "sp_flag.first_penis_kiss", value = true } },
+  { type = "trigger_dialogue", params = { scene = "blowjob" } },
 ]
 
 [[instructions]]
@@ -4237,6 +4409,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "43", value = 1 }, condition = "target.experience.43 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 3 } },
+  { type = "trigger_dialogue", params = { scene = "paizuri" } },
 ]
 
 [[instructions]]
@@ -4265,6 +4438,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "44", value = 1 }, condition = "target.experience.44 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 11 } },
+  { type = "trigger_dialogue", params = { scene = "footjob" } },
 ]
 
 [[instructions]]
@@ -4293,6 +4467,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "45", value = 1 }, condition = "target.experience.45 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 0 } },
+  { type = "trigger_dialogue", params = { scene = "hairjob" } },
 ]
 
 [[instructions]]
@@ -4322,6 +4497,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "46", value = 1 }, condition = "target.experience.46 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 4 } },
+  { type = "trigger_dialogue", params = { scene = "axillajob" } },
 ]
 
 [[instructions]]
@@ -4352,6 +4528,7 @@ effects = [
   { type = "h_experience", params = { expId = "4", value = 1 }, condition = "target.experience.4 >= 1" },
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 10 } },
+  { type = "trigger_dialogue", params = { scene = "rub_buttock" } },
 ]
 
 [[instructions]]
@@ -4384,6 +4561,7 @@ effects = [
   { type = "h_experience", params = { expId = "153", value = 1 }, condition = "target.experience.153 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 2 } },
   { type = "set_field", params = { path = "sp_flag.first_penis_kiss", value = true } },
+  { type = "trigger_dialogue", params = { scene = "hand_blowjob" } },
 ]
 
 [[instructions]]
@@ -4418,6 +4596,7 @@ effects = [
   { type = "h_experience", params = { expId = "153", value = 1 }, condition = "target.experience.153 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 2 } },
   { type = "set_field", params = { path = "sp_flag.first_penis_kiss", value = true } },
+  { type = "trigger_dialogue", params = { scene = "tits_blowjob" } },
 ]
 
 [[instructions]]
@@ -4449,6 +4628,7 @@ effects = [
   { type = "h_experience", params = { expId = "153", value = 1 }, condition = "target.experience.153 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 2 } },
   { type = "set_field", params = { path = "sp_flag.first_penis_kiss", value = true } },
+  { type = "trigger_dialogue", params = { scene = "focus_blowjob" } },
 ]
 
 [[instructions]]
@@ -4483,6 +4663,7 @@ effects = [
   { type = "h_experience", params = { expId = "153", value = 1 }, condition = "target.experience.153 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 15 } },
   { type = "set_field", params = { path = "sp_flag.first_penis_kiss", value = true } },
+  { type = "trigger_dialogue", params = { scene = "deep_throat" } },
 ]
 
 [[instructions]]
@@ -4516,6 +4697,7 @@ effects = [
   { type = "set_field", params = { path = "h_state.insert_position", value = 2 } },
   { type = "set_field", params = { path = "sp_flag.first_penis_kiss", value = true } },
   { type = "set_field", params = { path = "h_state.just_shoot", value = false } },
+  { type = "trigger_dialogue", params = { scene = "clean_blowjob" } },
 ]
 
 [[instructions]]
@@ -4550,6 +4732,7 @@ effects = [
   { type = "h_experience", params = { expId = "153", value = 1 }, condition = "player.experience.153 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 2 } },
   { type = "set_field", params = { path = "sp_flag.first_penis_kiss", value = true } },
+  { type = "trigger_dialogue", params = { scene = "sixty_nine" } },
 ]
 
 [[instructions]]
@@ -4578,6 +4761,7 @@ effects = [
   { type = "tech_adjust", params = { part = "脚", baseValue = 50 } },
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 10 } },
+  { type = "trigger_dialogue", params = { scene = "legjob" } },
 ]
 
 [[instructions]]
@@ -4606,6 +4790,7 @@ effects = [
   { type = "tech_adjust", params = { part = "阴茎", baseValue = 50 } },
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 12 } },
+  { type = "trigger_dialogue", params = { scene = "tailjob" } },
 ]
 
 [[instructions]]
@@ -4634,6 +4819,7 @@ effects = [
   { type = "tech_adjust", params = { part = "阴茎", baseValue = 50 } },
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 1 } },
+  { type = "trigger_dialogue", params = { scene = "face_rub" } },
 ]
 
 [[instructions]]
@@ -4662,6 +4848,7 @@ effects = [
   { type = "tech_adjust", params = { part = "阴茎", baseValue = 50 } },
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 13 } },
+  { type = "trigger_dialogue", params = { scene = "horn_rub" } },
 ]
 
 [[instructions]]
@@ -4690,6 +4877,7 @@ effects = [
   { type = "tech_adjust", params = { part = "阴茎", baseValue = 50 } },
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 14 } },
+  { type = "trigger_dialogue", params = { scene = "ears_rub" } },
 ]
 
 [[instructions]]
@@ -4714,6 +4902,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 20 } },
+  { type = "trigger_dialogue", params = { scene = "hat_job" } },
 ]
 
 [[instructions]]
@@ -4738,6 +4927,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 21 } },
+  { type = "trigger_dialogue", params = { scene = "glasses_job" } },
 ]
 
 [[instructions]]
@@ -4762,6 +4952,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 22 } },
+  { type = "trigger_dialogue", params = { scene = "ear_ornament_job" } },
 ]
 
 [[instructions]]
@@ -4786,6 +4977,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 23 } },
+  { type = "trigger_dialogue", params = { scene = "neck_ornament_job" } },
 ]
 
 [[instructions]]
@@ -4810,6 +5002,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 24 } },
+  { type = "trigger_dialogue", params = { scene = "mouth_ornament_job" } },
 ]
 
 [[instructions]]
@@ -4834,6 +5027,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 25 } },
+  { type = "trigger_dialogue", params = { scene = "top_job" } },
 ]
 
 [[instructions]]
@@ -4858,6 +5052,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 26 } },
+  { type = "trigger_dialogue", params = { scene = "corset_job" } },
 ]
 
 [[instructions]]
@@ -4882,6 +5077,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 27 } },
+  { type = "trigger_dialogue", params = { scene = "gloves_job" } },
 ]
 
 [[instructions]]
@@ -4906,6 +5102,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 28 } },
+  { type = "trigger_dialogue", params = { scene = "skirt_job" } },
 ]
 
 [[instructions]]
@@ -4930,6 +5127,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 33 } },
+  { type = "trigger_dialogue", params = { scene = "trousers_job" } },
 ]
 
 [[instructions]]
@@ -4954,6 +5152,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 29 } },
+  { type = "trigger_dialogue", params = { scene = "underwear_job" } },
 ]
 
 [[instructions]]
@@ -4978,6 +5177,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 30 } },
+  { type = "trigger_dialogue", params = { scene = "socks_job" } },
 ]
 
 [[instructions]]
@@ -5002,6 +5202,7 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 31 } },
+  { type = "trigger_dialogue", params = { scene = "shoes_job" } },
 ]
 
 [[instructions]]
@@ -5026,5 +5227,6 @@ effects = [
   { type = "h_experience", params = { expId = "30", value = 1 }, condition = "target.experience.30 >= 1" },
   { type = "h_experience", params = { expId = "47", value = 1 }, condition = "target.experience.47 >= 1" },
   { type = "set_field", params = { path = "h_state.insert_position", value = 32 } },
+  { type = "trigger_dialogue", params = { scene = "weapons_job" } },
 ]
 

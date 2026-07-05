@@ -20,6 +20,7 @@ effects = [
   { type = "h_experience", params = { expId = "82", value = 1 }, condition = "player.experience.82 >= 1" },
   { type = "set_field", params = { path = "sp_flag.office_work_done", value = true } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "official_work" } },
 ]
 
 [[instructions]]
@@ -30,7 +31,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_FIELD_ASSEMBLY_POINT"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "field_commission" } },
+]
 
 [[instructions]]
 id = "training"
@@ -50,6 +53,7 @@ effects = [
   { type = "h_experience", params = { expId = "81", value = 1 }, condition = "player.experience.81 >= 1" },
   { type = "set_field", params = { path = "sp_flag.last_training_time", value = "now" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "training" } },
 ]
 
 [[instructions]]
@@ -69,6 +73,7 @@ effects = [
   { type = "h_experience", params = { expId = "88", value = 1 }, condition = "target.experience.88 >= 1" },
   { type = "h_experience", params = { expId = "88", value = 1 }, condition = "player.experience.88 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "cure_patient" } },
 ]
 
 [[instructions]]
@@ -79,7 +84,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_MEDICAL_OFFICE", "TIRED_LE_74"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "manage_dedical_department" } },
+]
 
 [[instructions]]
 id = "recruit"
@@ -98,6 +105,7 @@ effects = [
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "target.experience.80 >= 1" },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "recruit" } },
 ]
 
 [[instructions]]
@@ -108,7 +116,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_DR_OFFICE", "NEW_NPC_WAIT", "TIME_STOP_OFF", "TIRED_LE_74"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "confim_recruit" } },
+]
 
 [[instructions]]
 id = "recruitment"
@@ -118,7 +128,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_HR_OFFICE"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "recruitment" } },
+]
 
 [[instructions]]
 id = "teach"
@@ -131,6 +143,7 @@ premises = ["STUDENT_NOT_STUDY_IN_CLASSROOM", "NOT_H", "IN_CLASS_ROOM", "TARGET_
 effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -25, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -25, target = "self" } },
+  { type = "trigger_dialogue", params = { scene = "teach" } },
 ]
 
 [[instructions]]
@@ -149,6 +162,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "90", value = 1 }, condition = "player.experience.90 >= 1" },
   { type = "set_field", params = { path = "sp_flag.maintenance_done", value = true } },
+  { type = "trigger_dialogue", params = { scene = "maintenance_facilities" } },
 ]
 
 [[instructions]]
@@ -167,6 +181,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "90", value = 1 }, condition = "player.experience.90 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "manage_facility_power" } },
 ]
 
 [[instructions]]
@@ -177,7 +192,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_POWER_DISPATCH", "TIRED_LE_74"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "manage_power_system" } },
+]
 
 [[instructions]]
 id = "repair_equipment"
@@ -195,6 +212,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "90", value = 1 }, condition = "player.experience.90 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "repair_equipment" } },
 ]
 
 [[instructions]]
@@ -205,7 +223,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_BLACKSMITH_SHOP"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "equipment_maintain" } },
+]
 
 [[instructions]]
 id = "assistant_adjustments"
@@ -215,7 +235,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_DR_OFFICE"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "assistant_adjustments" } },
+]
 
 [[instructions]]
 id = "building"
@@ -225,7 +247,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_BUILDING_ROOM"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "building" } },
+]
 
 [[instructions]]
 id = "invite_visitor"
@@ -244,6 +268,7 @@ effects = [
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "target.experience.80 >= 1" },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "invite_visitor" } },
 ]
 
 [[instructions]]
@@ -254,7 +279,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_DIPLOMATIC_OFFICE", "VISITOR_ZONE_GE_2"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "visitor_system" } },
+]
 
 [[instructions]]
 id = "nation_diplomacy"
@@ -264,7 +291,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_DIPLOMATIC_OFFICE", "VISITOR_ZONE_GE_2"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "nation_diplomacy" } },
+]
 
 [[instructions]]
 id = "deal_with_diplomacy"
@@ -274,7 +303,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = []
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "deal_with_diplomacy" } },
+]
 
 [[instructions]]
 id = "prts"
@@ -284,7 +315,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_DR_OFF_OR_SERVER_ROOM_OR_DEBUG"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "prts" } },
+]
 
 [[instructions]]
 id = "manage_library"
@@ -294,7 +327,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_LIBRARY_OR_LIBRARY_OFFICE", "TARGET_WORK_IS_LIBRARY_MANAGER", "T_NORMAL_24567"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "manage_library" } },
+]
 
 [[instructions]]
 id = "manage_assembly_line"
@@ -304,7 +339,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_PRODUCTION_WORKSHOP"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "manage_assembly_line" } },
+]
 
 [[instructions]]
 id = "plant_manage_crop"
@@ -322,6 +359,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "89", value = 1 }, condition = "player.experience.89 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "plant_manage_crop" } },
 ]
 
 [[instructions]]
@@ -332,7 +370,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_HERB_GARDEN"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "manage_agriculture" } },
+]
 
 [[instructions]]
 id = "manage_vehicle"
@@ -342,7 +382,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_GARAGE"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "manage_vehicle" } },
+]
 
 [[instructions]]
 id = "physical_check_and_manage"
@@ -352,7 +394,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_PHYSICAL_EXAMINATION", "TIRED_LE_84", "HP_G_1"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "physical_check_and_manage" } },
+]
 
 [[instructions]]
 id = "manage_confinement_and_training"
@@ -362,7 +406,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "T_WORK_IS_WARDEN"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "manage_confinement_and_training" } },
+]
 
 [[instructions]]
 id = "investigate_resource_market"
@@ -380,6 +426,7 @@ effects = [
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "investigate_resource_market" } },
 ]
 
 [[instructions]]
@@ -390,7 +437,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "TIRED_LE_84", "HP_G_1", "IN_RESOURCE_EXCHANGE"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "manage_resource_exchange" } },
+]
 
 [[instructions]]
 id = "navigation"
@@ -400,7 +449,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_COMMAND_ROOM_OR_OUT_EXIT"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "navigation" } },
+]
 
 [[instructions]]
 id = "organize_dormitory_opinion"
@@ -410,7 +461,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_DORMITORY_MANAGER_ROOM", "TARGET_WORK_IS_DORMITORY_MANAGER", "DEBUG_MODE_ON"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "organize_dormitory_opinion" } },
+]
 
 [[instructions]]
 id = "handle_dormitory_problem"
@@ -420,7 +473,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_DORMITORY_MANAGER_ROOM", "IN_ANY_DORMITORY", "DEBUG_MODE_ON"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "handle_dormitory_problem" } },
+]
 
 [[instructions]]
 id = "manage_dormitory"
@@ -430,7 +485,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_DORMITORY_MANAGER_ROOM", "DEBUG_MODE_ON"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "manage_dormitory" } },
+]
 
 [[instructions]]
 id = "manage_basement"
@@ -440,5 +497,7 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_DR_OFFICE"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "manage_basement" } },
+]
 

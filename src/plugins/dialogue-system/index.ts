@@ -14,6 +14,7 @@ import { commandRegistry } from '../../core/command-registry'
 import type { CommandDef } from '../../core/command-registry'
 import { evaluateCondition } from '../../core/condition'
 import { premiseRegistry } from '../h-core/index'
+import { effectTypeRegistry } from '../../core/effect-type-registry'
 
 // 注释：对话运行时状态——当前在哪个 node
 interface ConversationRuntime {
@@ -25,10 +26,17 @@ interface ConversationRuntime {
 
 let currentConversation: ConversationRuntime | null = null
 
-// 注释：onLoad——注册 start_conversation effect type（TODO: effect-system Phase 9 接入）
+// 注释：onLoad——注册 effect types
 export function onLoad(_ctx: PluginContext): void {
-  // 注释：start_conversation effect 由 effect-system 调 dialogue API 实现
-  // Phase 7 不注册 effect type（effect-system 未实现），直接通过 talk 指令 handler 调用
+  // 注释：trigger_dialogue——指令执行后触发对口上
+  effectTypeRegistry.register('trigger_dialogue', (params: any, execCtx: any) => {
+    const scene = (params.scene as string) ?? execCtx._commandId
+    if (!scene) return true
+    const targetIds = execCtx._targetIds as string[]
+    const charId = targetIds.length > 0 ? targetIds[0] : undefined
+    triggerSceneInternal(scene, charId)
+    return true
+  })
 }
 
 // 注释：onEnable——注册 dialogue API + talk 指令 + 监听 location:enter

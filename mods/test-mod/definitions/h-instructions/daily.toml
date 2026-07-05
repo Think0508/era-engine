@@ -10,7 +10,9 @@ time_cost = -1
 priority = 50
 # erArk behavior: WAIT
 premises = ["NOT_H"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "wait" } },
+]
 
 [[instructions]]
 id = "wait_1_hour"
@@ -20,7 +22,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["DEBUG_MODE_ON"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "wait_1_hour" } },
+]
 
 [[instructions]]
 id = "wait_6_hour"
@@ -30,7 +34,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["DEBUG_MODE_ON"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "wait_6_hour" } },
+]
 
 [[instructions]]
 id = "chat"
@@ -48,6 +54,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "h_experience", params = { expId = "social", value = 1 } },
+  { type = "trigger_dialogue", params = { scene = "chat" } },
 ]
 
 [[instructions]]
@@ -66,6 +73,7 @@ effects = [
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "trigger_dialogue", params = { scene = "stroke" } },
 ]
 
 [[instructions]]
@@ -84,6 +92,7 @@ effects = [
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "trigger_dialogue", params = { scene = "massage" } },
 ]
 
 [[instructions]]
@@ -104,6 +113,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "h_experience", params = { expId = "83", value = 1 }, condition = "player.experience.83 >= 1" },
   { type = "h_experience", params = { expId = "domestic", value = 1 } },
+  { type = "trigger_dialogue", params = { scene = "make_coffee" } },
 ]
 
 [[instructions]]
@@ -123,6 +133,7 @@ effects = [
   { type = "settle_state", params = { state = "恭顺", baseValue = 30 } },
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "h_experience", params = { expId = "83", value = 1 }, condition = "target.experience.83 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "ask_make_coffee" } },
 ]
 
 [[instructions]]
@@ -133,7 +144,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["IN_KITCHEN_OR_IN_DR_ROOM_AND_DR_ROOM_LEVEL_GE_2"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "make_food" } },
+]
 
 [[instructions]]
 id = "eat"
@@ -143,7 +156,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_FOOD", "NOT_H", "TIRED_LE_84"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "eat" } },
+]
 
 [[instructions]]
 id = "put_selfmade_food_in"
@@ -153,7 +168,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_FOOD", "NOT_H", "IN_TAKE_FOOD", "TIRED_LE_84", "HP_G_1"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "put_selfmade_food_in" } },
+]
 
 [[instructions]]
 id = "rest"
@@ -167,6 +184,7 @@ effects = [
   { type = "settle_favorability" },
   { type = "modify_attribute", params = { attr = "疲劳", value = -10 } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "rest" } },
 ]
 
 [[instructions]]
@@ -177,7 +195,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["IN_DORMITORY_OR_HOTEL", "NOT_H"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "diray" } },
+]
 
 [[instructions]]
 id = "sleep"
@@ -202,6 +222,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = 50, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = 50, target = "self" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "sleep" } },
 ]
 
 [[instructions]]
@@ -218,6 +239,7 @@ effects = [
   { type = "set_field", params = { path = "sp_flag.clean", value = true } },
   { type = "set_field", params = { path = "sp_flag.last_shower_time", value = "now" } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "take_shower" } },
 ]
 
 [[instructions]]
@@ -228,7 +250,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["IN_H_SHOP", "NOT_H"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "buy_h_item" } },
+]
 
 [[instructions]]
 id = "buy_food"
@@ -238,7 +262,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["IN_FOOD_SHOP", "NOT_H", "TIRED_LE_84", "HP_G_1"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "buy_food" } },
+]
 
 [[instructions]]
 id = "all_npc_position"
@@ -248,7 +274,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "all_npc_position" } },
+]
 
 [[instructions]]
 id = "follow"
@@ -261,6 +289,7 @@ premises = ["HAVE_TARGET", "NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TARGET
 effects = [
   { type = "set_field", params = { path = "sp_flag.following", value = true } },
   { type = "nop" },
+  { type = "trigger_dialogue", params = { scene = "follow" } },
 ]
 
 [[instructions]]
@@ -274,6 +303,7 @@ premises = ["HAVE_TARGET", "NOT_H", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TARGET
 effects = [
   { type = "set_field", params = { path = "sp_flag.following", value = false } },
   { type = "nop" },
+  { type = "trigger_dialogue", params = { scene = "end_follow" } },
 ]
 
 [[instructions]]
@@ -284,7 +314,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_HP_OR_MP_LOW", "T_NORMAL_1", "T_NORMAL_2", "T_NORMAL_6"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "ask_target_rest" } },
+]
 
 [[instructions]]
 id = "ask_target_sleep"
@@ -294,7 +326,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["HAVE_TARGET", "NOT_H", "TARGET_TIRED_GE_75", "T_NORMAL_1", "T_NORMAL_2", "T_NORMAL_6"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "ask_target_sleep" } },
+]
 
 [[instructions]]
 id = "apologize"
@@ -310,6 +344,7 @@ effects = [
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
   { type = "set_field", params = { path = "sp_flag.apologized", value = true } },
+  { type = "trigger_dialogue", params = { scene = "apologize" } },
 ]
 
 [[instructions]]
@@ -327,6 +362,7 @@ effects = [
   { type = "settle_state", params = { state = "好意", baseValue = 30 } },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "target.experience.80 >= 1" },
   { type = "h_experience", params = { expId = "80", value = 1 }, condition = "player.experience.80 >= 1" },
+  { type = "trigger_dialogue", params = { scene = "listen_complaint" } },
 ]
 
 [[instructions]]
@@ -341,6 +377,7 @@ effects = [
   { type = "modify_attribute", params = { attr = "体力", value = -15, target = "self" } },
   { type = "modify_attribute", params = { attr = "气力", value = -15, target = "self" } },
   { type = "modify_relation", params = { relation = "好感度", value = 10 } },
+  { type = "trigger_dialogue", params = { scene = "give_gift" } },
 ]
 
 [[instructions]]
@@ -356,6 +393,7 @@ effects = [
   { type = "set_field", params = { path = "sp_flag.peeing", value = false } },
   { type = "set_field", params = { path = "sp_flag.moving_to_dormitory", value = true } },
   { type = "set_field", params = { path = "sp_flag.urinated", value = true } },
+  { type = "trigger_dialogue", params = { scene = "pee" } },
 ]
 
 [[instructions]]
@@ -366,7 +404,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["IN_COLLECTION_ROOM", "HAVE_COLLECTION", "NOT_H", "TIRED_LE_84"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "collect" } },
+]
 
 [[instructions]]
 id = "take_care_baby"
@@ -376,7 +416,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "POSITION_IN_IN_NURSERY_AND_FLAG_BABY_EXIST", "TIRED_LE_84", "HP_G_1"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "take_care_baby" } },
+]
 
 [[instructions]]
 id = "order_hotel_room"
@@ -386,7 +428,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["NOT_H", "IN_LOVE_HOTEL"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "order_hotel_room" } },
+]
 
 [[instructions]]
 id = "see_collection"
@@ -396,7 +440,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["IN_COLLECTION_ROOM"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "see_collection" } },
+]
 
 [[instructions]]
 id = "see_achievement"
@@ -406,7 +452,9 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["IN_COLLECTION_ROOM"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "see_achievement" } },
+]
 
 [[instructions]]
 id = "see_fridge"
@@ -416,5 +464,7 @@ time_cost = 10
 priority = 50
 # erArk behavior: 
 premises = ["IN_KITCHEN"]
-effects = []
+effects = [
+  { type = "trigger_dialogue", params = { scene = "see_fridge" } },
+]
 

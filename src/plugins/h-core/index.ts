@@ -60,7 +60,7 @@ export function onLoad(_ctx: PluginContext): void {
     const tc = execCtx._timeCost ?? _p.base ?? 10
     for (const id of ids) {
       const r = calcFavorability(id, tc)
-      if (r !== 0) applyStateChange(id, '好感度', r)
+      if (r !== 0) execCtx.settlement.applyChange(id, '好感度', r)
     }
     return true
   })
@@ -71,7 +71,7 @@ export function onLoad(_ctx: PluginContext): void {
     const tc = execCtx._timeCost ?? 10
     for (const id of ids) {
       const r = calcTrust(tc, 0)
-      if (r > 0) applyStateChange(id, '信赖度', r)
+      if (r > 0) execCtx.settlement.applyChange(id, '信赖度', r)
     }
     return true
   })
@@ -89,7 +89,7 @@ export function onLoad(_ctx: PluginContext): void {
       const al = ch?.abilities?.[_p.state]?.level ?? 0
       const raw = calcStateChange(base, al, tbl)
       const fv = _p.negate ? -raw : raw
-      if (fv !== 0) applyStateChange(id, _p.state, fv)
+      if (fv !== 0) execCtx.settlement.applyChange(id, _p.state, fv)
     }
     return true
   })
@@ -232,7 +232,7 @@ export function onLoad(_ctx: PluginContext): void {
 
   effectTypeRegistry.register('h_state_change', (_p: any, execCtx: any) => {
     const ids = execCtx._targetIds as string[]
-    for (const id of ids) applyStateChange(id, _p.statusId, _p.value)
+    for (const id of ids) execCtx.settlement.applyChange(id, _p.statusId, _p.value)
     return true
   })
 
@@ -566,12 +566,4 @@ function autoClothOff(charId: string): void {
       delete ch.equipment[slot]
     }
   }
-}
-
-function applyStateChange(charId: string, sid: string, val: number): void {
-  const ch = entitySystem.get('character', charId) as any
-  if (!ch) return
-  if (!ch.base) ch.base = {}
-  const cur = ch.base[sid] ?? 0
-  ch.base[sid] = Math.max(0, cur + val)
 }

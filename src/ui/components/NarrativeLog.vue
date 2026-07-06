@@ -128,8 +128,7 @@ function handleKeydown(e: KeyboardEvent) {
         <!-- 注释：选项已选择，不显示 -->
       </template>
     </div>
-    <p v-if="gameStore.narrativeLogEntries.length === 0" class="log-empty">（等待事件...）</p>
-  </div>
+    </div>
 </template>
 
 <style scoped>

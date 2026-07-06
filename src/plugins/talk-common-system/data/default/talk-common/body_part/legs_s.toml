@@ -1,0 +1,582 @@
+# 自动生成—请勿手动编辑
+# 来源: erArk data/talk_common/ (legs_s_A.csv, legs_s_B.csv)
+# 条目数: 115
+
+variable = "legs_s"
+description = "腿短词——part A+part B拼接"
+parts = ["A", "B"]
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "光滑"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "温热"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "紧致"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "优美"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "弹性"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "温暖"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "幼嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "稚嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "幼小"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "娇嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "幼童"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "细嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "短小"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "瘦弱"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "粉嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "柔嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "修长"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "娇小"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "嫩滑"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "细腻"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "青春"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "优美"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "紧致"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "柔韧"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "笔直"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "活力"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "优雅"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "迷人"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "结实"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "健美"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "诱惑"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "禁忌"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+context = "半开"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+context = "敏感"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "摇摆"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "无力"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "软弱"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_4"
+context = "被动"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_5"
+context = "自然"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+context = "被迫"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+context = "僵直"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+context = "尴尬"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+context = "窘迫"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+context = "收拢"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "炫耀"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "挑逗"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "大胆"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "表演般"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "自信"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "张开"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "假装正常"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "维持平静"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "表面如常"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "掩饰"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "装作无事"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "强装镇定"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "隐藏"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "躲避"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "小心"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "隐蔽"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "谨慎"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "收敛"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-1"
+context = "紧绷"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "纤细"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "修长"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "细腻"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "优雅"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "娇弱"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "敏感"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "柔韧"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "笔直"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|130_E_1"
+context = "丰满"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|130_E_1"
+context = "肉感"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|130_E_1"
+context = "弹性"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|130_E_1"
+context = "丰润"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|130_E_1"
+context = "厚实"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|130_E_1"
+context = "饱满"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|130_E_1"
+context = "圆润"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_A|0_G_6"
+context = "敏感"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_A|0_G_6"
+context = "超敏感"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_A|0_G_6"
+context = "极敏感"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_A|0_G_6"
+context = "异常敏感"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "双腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "腿部"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "大腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "小腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "美腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "玉腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "腿儿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "小腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "腿儿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "小腿儿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "细腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "小腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "玉腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "腿儿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "美腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "美腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "玉腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "长腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "美腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "长腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "玉腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "美腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "熟腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "丰腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "人妻腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "妻腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "美腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "细腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "纤腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|129_E_1"
+context = "瘦腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|130_E_1"
+context = "肉腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|130_E_1"
+context = "丰腿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|130_E_1"
+context = "厚腿"

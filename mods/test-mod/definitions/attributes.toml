@@ -1,29 +1,50 @@
 [attributes]
+# ════════════════════════════════════════
+# 战斗属性（绑定系统用）
+# ════════════════════════════════════════
 hp = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
 mp = { type = "number", default = 50, category = "base", display = true, display_group = "status" }
 attack = { type = "number", default = 10, category = "combat", display = true, display_group = "combat" }
 defense = { type = "number", default = 5, category = "combat", display = true, display_group = "combat" }
 speed = { type = "number", default = 5, category = "base", display = true, display_group = "base" }
 
+# ════════════════════════════════════════
+# BASE — 基础属性
+# ════════════════════════════════════════
 "体力" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
 "气力" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
 "精力" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
+"疲劳度" = { type = "number", default = 0, category = "base", display = true, display_group = "status" }
+"尿意" = { type = "number", default = 0, category = "base", display = true, display_group = "status" }
+"愤怒" = { type = "number", default = 0, category = "base", display = true, display_group = "emotion" }
+"酒气" = { type = "number", default = 0, category = "base", display = true, display_group = "emotion" }
 
-"情绪" = { type = "number", default = 0, category = "emotion", display = true, display_group = "emotion" }
-"理性" = { type = "number", default = 100, category = "emotion", display = true, display_group = "emotion" }
+# ════════════════════════════════════════
+# 情绪基调（不 daily_reset，长期积累）
+# ════════════════════════════════════════
+"情绪" = { type = "number", default = 50, category = "base", display = true, display_group = "emotion" }
+"理性" = { type = "number", default = 100, category = "base", display = true, display_group = "emotion" }
 
-# 注释：H 状态值（10 级制，daily_reset），22 种：9 快感 + 13 行为
-# 快感部位
+# ── 性别（用于 sex 过滤）
+"性别" = { type = "number", default = 0, category = "base", display = false }
+
+# ════════════════════════════════════════
+# PARAMETER — 行动参数（erark status_data[0..23] 等价物）
+# 每日重置，10 级制 (level_thresholds 对齐 erark)
+# 体感快感（9 部位，去尿道/兽部）
 "皮肤" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
 "胸部" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
-"阴蒂" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
-"阴茎" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
-"阴道" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
+"阴蒂" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000], sex = "female" }
+"阴茎" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000], sex = "male" }
+"阴道" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000], sex = "female" }
 "后穴" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
-"子宫" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
+"子宫" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000], sex = "female" }
 "口喉" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
 "心理" = { type = "number", default = 0, category = "parameter", display = true, display_group = "身体快感", daily_reset = true, level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000] }
-# 行为参数
+
+# ════════════════════════════════════════
+# 行为参数（情绪类 PALAM）
+# ════════════════════════════════════════
 "润滑" = { type = "number", default = 0, category = "parameter", display = true, display_group = "行为参数", daily_reset = true }
 "习得" = { type = "number", default = 0, category = "parameter", display = true, display_group = "行为参数", daily_reset = true }
 "恭顺" = { type = "number", default = 0, category = "parameter", display = true, display_group = "行为参数", daily_reset = true }
@@ -37,8 +58,37 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "恐怖" = { type = "number", default = 0, category = "parameter", display = true, display_group = "行为参数", daily_reset = true }
 "抑郁" = { type = "number", default = 0, category = "parameter", display = true, display_group = "行为参数", daily_reset = true }
 "反感" = { type = "number", default = 0, category = "parameter", display = true, display_group = "行为参数", daily_reset = true }
-"射精欲" = { type = "number", default = 0, category = "parameter", display = true, display_group = "h", daily_reset = false }
 
+# eraTW 独有 PALAM，补充
+"优越" = { type = "number", default = 0, category = "parameter", display = true, display_group = "行为参数", daily_reset = true }
+
+# ════════════════════════════════════════
+# MARK — 刻印（永久，不分级时为 0/1，分级时 0-3）
+# 对齐 erark ability[13..19]
+# ════════════════════════════════════════
+"快乐刻印" = { type = "number", default = 0, category = "mark", display = true, display_group = "刻印" }
+"屈服刻印" = { type = "number", default = 0, category = "mark", display = true, display_group = "刻印" }
+"苦痛刻印" = { type = "number", default = 0, category = "mark", display = true, display_group = "刻印" }
+"恐怖刻印" = { type = "number", default = 0, category = "mark", display = true, display_group = "刻印" }
+"反发刻印" = { type = "number", default = 0, category = "mark", display = true, display_group = "刻印" }
+"时姦刻印" = { type = "number", default = 0, category = "mark", display = true, display_group = "刻印" }
+"无觉刻印" = { type = "number", default = 0, category = "mark", display = true, display_group = "刻印" }
+
+# ════════════════════════════════════════
+# ABL — 能力（由 ability-progression 插件管理）
+# 此处仅注册到条件字典，具体成长阈值在 abilities.toml
+# ════════════════════════════════════════
+"技巧" = { type = "number", default = 0, category = "ability", display = true, display_group = "性能力" }
+"顺从" = { type = "number", default = 0, category = "ability", display = true, display_group = "性能力" }
+"亲密" = { type = "number", default = 0, category = "ability", display = true, display_group = "性能力" }
+"欲望" = { type = "number", default = 0, category = "ability", display = true, display_group = "性能力" }
+"露出" = { type = "number", default = 0, category = "ability", display = true, display_group = "性能力" }
+"施虐" = { type = "number", default = 0, category = "ability", display = true, display_group = "性能力" }
+"受虐" = { type = "number", default = 0, category = "ability", display = true, display_group = "性能力" }
+
+# ════════════════════════════════════════
+# 社会/经济
+# ════════════════════════════════════════
 "金钱" = { type = "number", default = 0, category = "economy", display = true, display_group = "economy" }
 "好感度" = { type = "number", default = 30, category = "social", display = true, display_group = "social" }
 "信赖度" = { type = "number", default = 0, category = "social", display = true, display_group = "social" }

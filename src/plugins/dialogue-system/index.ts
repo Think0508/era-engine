@@ -14,6 +14,7 @@ import { commandRegistry } from '../../core/command-registry'
 import type { CommandDef } from '../../core/command-registry'
 import { evaluateCondition } from '../../core/condition'
 import { premiseRegistry } from '../h-core/index'
+import { commonTextsEngine } from '../talk-common-system/engine'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 
 // 注释：对话运行时状态——当前在哪个 node
@@ -113,7 +114,7 @@ function triggerSceneInternal(scene: string, charId?: string): void {
 
   // 注释：1. 场景通用口上——独立输出
   const sceneLines = mod.sceneDialogue.filter(line => line.scene === scene)
-  const matchedSceneLine = pickMatchingLine(sceneLines)
+  const matchedSceneLine = pickMatchingLine(sceneLines, charId)
   if (matchedSceneLine) {
     const interpolated = interpolateLine(matchedSceneLine.text, charId)
     narrativeLog.write(interpolated, 'dialogue', 'dialogue-system')
@@ -123,7 +124,7 @@ function triggerSceneInternal(scene: string, charId?: string): void {
   if (charId) {
     // 注释：角色专属 > 角色通用
     const specificLines = mod.characterSpecificDialogue.get(charId) ?? []
-    const matchedSpecific = pickMatchingLine(specificLines.filter(l => l.scene === scene))
+    const matchedSpecific = pickMatchingLine(specificLines.filter(l => l.scene === scene), charId)
 
     if (matchedSpecific) {
       const char = entitySystem.get('character', charId) as any
@@ -133,7 +134,7 @@ function triggerSceneInternal(scene: string, charId?: string): void {
     } else {
       // 注释：角色通用 fallback
       const genericLines = mod.characterDialogue.filter(l => l.scene === scene)
-      const matchedGeneric = pickMatchingLine(genericLines)
+      const matchedGeneric = pickMatchingLine(genericLines, charId)
       if (matchedGeneric) {
         const char = entitySystem.get('character', charId) as any
         const speakerName = char?.name ?? charId
@@ -145,20 +146,23 @@ function triggerSceneInternal(scene: string, charId?: string): void {
 }
 
 // 注释：从匹配的 lines 中按 condition 筛选后随机选一条
-function pickMatchingLine(lines: ReactiveLine[]): ReactiveLine | null {
+// premiseTargetId — 触发口上的目标角色（用于 premise 求值，如 high_1 查谁的状态）
+function pickMatchingLine(lines: ReactiveLine[], premiseTargetId?: string): ReactiveLine | null {
   if (lines.length === 0) return null
   const gc = gameContext.getContext()
+  const selectedId = premiseTargetId ?? gc.player?.id ?? null
   // 注释：筛选 condition 为 true 的条目
   const matched = lines.filter(line => {
     if (!line.condition) return true
-    // 注释：premises:XXX,YYY 格式 → 调 h-core premise 求值
+    // 注释：premises:XXX&YYY 格式 → 调 h-core premise 求值
+    // 注意分隔符是 & 不是 ,（与 convert-erark-talk.cjs 输出一致）
     if (line.condition.startsWith('premises:')) {
-      const premiseList = line.condition.slice(9).split(',').map(s => s.trim()).filter(Boolean)
+      const premiseList = line.condition.slice(9).split('&').map(s => s.trim()).filter(Boolean)
       if (premiseList.length === 0) return true
       return premiseRegistry.evaluate(premiseList, {
-        selectedCharacterId: gc.player?.id ?? null,
+        selectedCharacterId: selectedId,
         sourceId: gc.player?.id ?? null,
-      })
+      }, false)  // 注释：非严格——未知 erark 前提跳过（不阻塞）
     }
     // 注释：标准 condition 表达式
     try { return evaluateCondition(line.condition, gc) }
@@ -281,15 +285,28 @@ function endConversation(): void {
 // 未找到保留原样 {xxx}
 function interpolateLine(text: string, charId?: string): string {
   const ctx = gameContext.getContext()
+  const targetId = charId ?? ctx.player?.id ?? null
+
+  // 注释：第1层——talk_common 替换 {vagina_s} {penis} 等
+  const commonReplaced = commonTextsEngine.replaceAll(text, targetId)
+
+  // 注释：第2层——标准插值 {player.name} {character.name} 等
   const context: any = {
     player: ctx.player,
     location: ctx.location,
     time: ctx.time,
   }
   if (charId) {
-    context.character = entitySystem.get('character', charId)
+    const charData = entitySystem.get('character', charId) as any
+    context.character = charData
+    // 注释：给 talk_common 替换结果中可能含的 {Name} {TargetName} 等提供上下文
+    const playerData = ctx.player as any
+    context.target = playerData ? {
+      name: playerData.name,
+      nickname: charData?.nickname ?? playerData?.name ?? '',
+    } : undefined
   }
-  return interpolateText(text, context)
+  return interpolateText(commonReplaced, context)
 }
 
 // 注释：通用插值函数——正则匹配 {xxx} 替换

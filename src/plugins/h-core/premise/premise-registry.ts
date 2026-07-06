@@ -15,12 +15,15 @@ export class PremiseRegistry {
     this.handlers.set(id, handler)
   }
 
-  evaluate(premises: string[], ctx: any): boolean {
+  evaluate(premises: string[], ctx: any, strict = true): boolean {
     for (const premiseId of premises) {
       const handler = this.handlers.get(premiseId)
       if (!handler) {
-        // 注释：未注册的前提 → 默认拒绝（安全优先）
-        return false
+        if (strict) {
+          return false
+        }
+        // 注释：非严格模式 → 未知前提跳过（适用于 scene-dialogue 的 erark 旧前提）
+        continue
       }
       const result = handler(ctx)
       if (typeof result === 'boolean' && !result) return false

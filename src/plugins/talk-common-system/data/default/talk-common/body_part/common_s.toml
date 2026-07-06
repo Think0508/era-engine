@@ -1,0 +1,692 @@
+# 自动生成—请勿手动编辑
+# 来源: erArk data/talk_common/ (common_s_A.csv)
+# 条目数: 137
+
+variable = "common_s"
+description = "common短词——part A拼接"
+parts = ["A"]
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "诱人"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "柔软"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "滑嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "幼女"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "稚嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "娇嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "幼嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "萝莉"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "少女"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "青涩"
+
+[[entries]]
+part = "A"
+conditions = "premises:target_is_player_daughter"
+context = "女儿"
+
+[[entries]]
+part = "A"
+conditions = "premises:target_is_player_daughter"
+context = "亲生女儿"
+
+[[entries]]
+part = "A"
+conditions = "premises:target_is_player_daughter"
+context = "亲女儿"
+
+[[entries]]
+part = "A"
+conditions = "premises:target_is_player_daughter"
+context = "背德"
+
+[[entries]]
+part = "A"
+conditions = "premises:target_is_player_daughter"
+context = "禁断"
+
+[[entries]]
+part = "A"
+conditions = "premises:target_is_player_daughter"
+context = "乱伦"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "大姐姐"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "性感"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "成熟"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "熟女"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "成熟"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "性感"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "人妻"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "已婚"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "背德"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "诱人"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "性感"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "妖娆"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "淫荡"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "放荡"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_is_assistant"
+context = "助理"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_is_assistant"
+context = "秘书"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_is_assistant"
+context = "服务"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_is_assistant"
+context = "义务"
+
+[[entries]]
+part = "A"
+conditions = "premises:target_visitor_flag_1"
+context = "访客"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag"
+context = "无意识"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+context = "无防备"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+context = "熟睡"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+context = "梦中"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+context = "沉睡"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+context = "装睡"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+context = "假寐"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+context = "默许"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+context = "微颤"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+context = "轻颤"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+context = "紧张"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "醉意"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "迷糊"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "微醺"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "朦胧"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "迷醉"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "恍惚"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_3"
+context = "静止"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_3"
+context = "凝固"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_3"
+context = "定格"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_3"
+context = "停滞"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_3"
+context = "冷冻般"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_3"
+context = "暂停"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_3"
+context = "凝滞"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_3"
+context = "不动"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_4"
+context = "平静"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_4"
+context = "如常"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_4"
+context = "麻木"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_4"
+context = "顺从"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_4"
+context = "淡然"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_4"
+context = "平然"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_5"
+context = "无视"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_5"
+context = "忽略"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_5"
+context = "无反应"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_5"
+context = "无察觉"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_5"
+context = "漠视"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_5"
+context = "放松"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+context = "僵硬"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+context = "动不了"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+context = "不抵抗"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+context = "被控制"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+context = "木头人"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+context = "禁锢"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+context = "主动"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+context = "积极"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+context = "违心"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+context = "渴望"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+context = "被操控"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+context = "不由己"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+context = "羞涩"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+context = "害臊"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+context = "紧张"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+context = "害羞"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+context = "羞耻"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "享受"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_npc_active_h"
+context = "主动"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_npc_active_h"
+context = "娴熟"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_npc_active_h"
+context = "主导"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_npc_active_h"
+context = "灵活"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_npc_active_h"
+context = "配合"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_npc_active_h"
+context = "迎合"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_1"
+context = "懵懂"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_1"
+context = "迷茫"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_1"
+context = "悸动"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_1"
+context = "期待"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_1"
+context = "好奇"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_1"
+context = "茫然"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_2"
+context = "暗恋"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_2"
+context = "羞涩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_2"
+context = "含情"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_2"
+context = "期待"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_2"
+context = "犹豫"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_2"
+context = "思慕"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_3"
+context = "恋人"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_3"
+context = "爱意"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_3"
+context = "恋爱"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_3"
+context = "热恋"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_3"
+context = "温柔"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_3"
+context = "恋慕"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_4"
+context = "爱侣"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_4"
+context = "默契"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-1"
+context = "勉强"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-1"
+context = "不情愿"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-1"
+context = "不满"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-1"
+context = "顺从"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-1"
+context = "抵触"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-1"
+context = "僵硬"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-2"
+context = "驯顺"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-2"
+context = "听话"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-2"
+context = "温顺"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-2"
+context = "屈服"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-2"
+context = "认命"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-3"
+context = "宠物"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-3"
+context = "依恋"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-3"
+context = "渴望"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-3"
+context = "服从"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-3"
+context = "讨好"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-4"
+context = "臣服"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-4"
+context = "奴性"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-4"
+context = "献身"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-4"
+context = "奴隶"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-4"
+context = "卑微"

@@ -12,6 +12,7 @@ import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
 import { apiSystem } from '../../core/api'
 import { evaluateCondition } from '../../core/condition'
+import { SettlementContext } from './settlement-context'
 
 // 注释：onLoad——注册 10 核心类型 handler
 export function onLoad(_ctx: PluginContext): void {
@@ -165,9 +166,10 @@ export function onEnable(ctx: PluginContext): void {
   })
 }
 
-// 注释：执行 effects 数组——遍历→查 registry→调 handler→depends_on→错误隔离
+// 注释：执行 effects 数组——遍历→查 registry→调 handler→depends_on→错误隔离→输出结算
 async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
-  const results = new Map<string, boolean>() // 注释：effect id → 成功/失败
+  const results = new Map<string, boolean>()
+  const settlement = new SettlementContext()
 
   for (const effect of effects) {
     // 注释：depends_on 检查——前置成功才执行
@@ -201,7 +203,7 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
 
     // 注释：解析 target → targetIds
     const targetIds = await resolveTarget(effect.target ?? 'selected', execCtx)
-    const handlerCtx = { ...execCtx, _targetIds: targetIds }
+    const handlerCtx = { ...execCtx, _targetIds: targetIds, settlement }
 
     try {
       const result = await handler(effect.params, handlerCtx)
@@ -220,6 +222,11 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
         results.set(effect.id, false)
       }
     }
+  }
+
+  // 注释：输出结算变化到日志
+  if (!settlement.isEmpty) {
+    narrativeLog.write(settlement.format(), 'system', 'effect-system')
   }
 }
 

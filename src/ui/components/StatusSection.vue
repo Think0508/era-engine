@@ -53,7 +53,7 @@ const emotionBars = computed(() => {
   const char = selectedCharacter.value
   if (!char?.base) return []
   const base = char.base as Record<string, number>
-  const knownEmotion = ['情绪', '理性']
+  const knownEmotion = ['情绪', '理性', '愤怒', '酒气']
   return knownEmotion.filter(key => key in base).map(key => ({
     label: key,
     value: base[key],

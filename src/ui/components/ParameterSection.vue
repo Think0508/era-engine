@@ -1,25 +1,31 @@
 // 注释：ParameterSection 参数折叠区
-// 动态从 mod 的 attribute definitions 读取 daily_reset=true 的属性
-// 按 display_group 分组显示，不再硬编码 key 列表
+// 从 mod 的 attribute definitions 读取 daily_reset=true 的属性
+// 按 display_group 分组，sex 过滤，紧凑行内 ResourceBar + level 显示
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { modLoader } from '../../core/mod-loader'
+import { getLevel } from '../../plugins/h-core/settle/judge'
 import CollapsibleSection from './CollapsibleSection.vue'
-import ResourceBar from './ResourceBar.vue'
 
 const gameStore = useGameStore()
 const uiStore = useUIStore()
 
-// 注释：选中角色
 const selectedCharacter = computed(() => {
   if (!uiStore.selectedCharacterId) return null
   return gameStore.charactersAtLocation.find(c => c.id === uiStore.selectedCharacterId) ?? null
 })
 
-// 注释：从 attribute definitions 读取所有 daily_reset=true 的属性，按 display_group 分组
+interface ParamItem {
+  label: string
+  value: number
+  level: number
+  barValue: number
+  barMax: number
+}
+
 const parameterGroups = computed(() => {
   const mod = modLoader.getMod()
   if (!mod) return []
@@ -27,19 +33,29 @@ const parameterGroups = computed(() => {
   if (!char?.base) return []
 
   const base = char.base as Record<string, number>
+  const charSex = base['性别'] ?? 0
 
-  // 注释：按 display_group 分组
-  const groups = new Map<string, { label: string; value: number; max?: number }[]>()
+  const groups = new Map<string, ParamItem[]>()
   for (const [attrName, def] of Object.entries(mod.attributes)) {
     if (!def.daily_reset) continue
     if (!(attrName in base)) continue
+    if (def.sex && def.sex !== (charSex === 1 ? 'male' : 'female')) continue
+
+    const v = base[attrName]
+    let level = 0
+    let barValue = v
+    let barMax = 100
+    if (def.level_thresholds && def.level_thresholds.length > 0) {
+      level = getLevel(v, def.level_thresholds)
+      const baseVal = def.level_thresholds[level] ?? 0
+      const nextVal = def.level_thresholds[Math.min(level + 1, def.level_thresholds.length - 1)]
+      barValue = v - baseVal
+      barMax = Math.max(1, nextVal - baseVal)
+    }
+
     const groupName = def.display_group || '默认'
     if (!groups.has(groupName)) groups.set(groupName, [])
-    groups.get(groupName)!.push({
-      label: attrName,
-      value: base[attrName],
-      max: 100, // 注释：进度条上限 100，实际依赖 level_thresholds 的最后一级
-    })
+    groups.get(groupName)!.push({ label: attrName, value: v, level, barValue, barMax })
   }
 
   return Array.from(groups.entries()).map(([group, items]) => ({ group, items }))
@@ -50,21 +66,17 @@ const parameterGroups = computed(() => {
   <CollapsibleSection title="Parameter" fold-key="parameter">
     <div v-if="selectedCharacter" class="param-content">
       <template v-for="pg in parameterGroups" :key="pg.group">
-        <div v-if="uiStore.showGroupTitles" class="group-title">{{ pg.group }}</div>
-        <CollapsibleSection :title="pg.group" :fold-key="`parameter-${pg.group}`">
-          <div class="group-items">
-            <ResourceBar
-              v-for="item in pg.items"
-              :key="item.label"
-              :label="item.label"
-              :value="item.value"
-              :max="item.max"
-              color="var(--color-secondary)"
-            />
+        <div class="param-row">
+          <div v-for="item in pg.items" :key="item.label" class="param-item">
+            <span class="param-label">{{ item.label }}</span>
+            <span class="param-level">LV{{ item.level }}</span>
+            <div class="mini-track">
+              <div class="mini-fill" :style="{ width: (item.barMax > 0 ? Math.min(100, (item.barValue / item.barMax) * 100) : 0) + '%' }" />
+            </div>
           </div>
-        </CollapsibleSection>
+        </div>
       </template>
-      <p v-if="parameterGroups.length === 0" class="no-data">无参数数据（未选中角色或无角色有 Parameter）</p>
+      <p v-if="parameterGroups.length === 0" class="no-data">无参数数据</p>
     </div>
     <p v-else class="no-data">未选中角色</p>
   </CollapsibleSection>
@@ -77,16 +89,41 @@ const parameterGroups = computed(() => {
   gap: 2px;
 }
 
-.group-title {
-  font-size: 0.65rem;
-  color: var(--color-text-secondary);
-  margin-top: 2px;
+.param-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px 4px;
 }
 
-.group-items {
+.param-item {
   display: flex;
-  flex-direction: column;
-  gap: 1px;
+  align-items: center;
+  gap: 2px;
+}
+
+.param-label {
+  font-size: 0.65rem;
+  color: var(--color-text);
+}
+
+.param-level {
+  font-size: 0.55rem;
+  color: var(--color-text-secondary);
+  min-width: 1.8em;
+}
+
+.mini-track {
+  width: 36px;
+  height: 4px;
+  background-color: var(--color-border);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.mini-fill {
+  height: 100%;
+  background-color: var(--color-secondary);
+  transition: width 0.3s ease;
 }
 
 .no-data {

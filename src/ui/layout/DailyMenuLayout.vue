@@ -6,13 +6,29 @@
 // TODO(phase-6+): 插件动态注册 daily-menu 插槽
 
 <script setup lang="ts">
+import { useGameStore } from '../stores/game-store'
 import DailyMenu from '../components/DailyMenu.vue'
+import NarrativeLog from '../components/NarrativeLog.vue'
+
+const gameStore = useGameStore()
+
+function onWakeUp(): void {
+  gameStore.addLogEntry({
+    id: `wake-${Date.now()}`,
+    text: '你从睡梦中醒来，新的一天开始了。',
+    type: 'narrative',
+    source: 'system',
+  })
+}
 </script>
 
 <template>
   <div class="daily-menu-layout">
     <div class="daily-menu-content">
-      <DailyMenu @wake-up="() => {}" />
+      <DailyMenu @wake-up="onWakeUp" />
+    </div>
+    <div v-if="gameStore.narrativeLogEntries.length > 0" class="daily-menu-log">
+      <NarrativeLog />
     </div>
   </div>
 </template>
@@ -36,5 +52,11 @@ import DailyMenu from '../components/DailyMenu.vue'
   background-color: var(--color-surface);
   border-radius: var(--radius-panel);
   border: 1px solid var(--color-border);
+}
+
+.daily-menu-log {
+  max-width: 600px;
+  width: 100%;
+  margin-top: var(--gap-medium);
 }
 </style>

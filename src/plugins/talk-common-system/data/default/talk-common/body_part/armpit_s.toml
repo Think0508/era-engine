@@ -1,0 +1,527 @@
+# 自动生成—请勿手动编辑
+# 来源: erArk data/talk_common/ (armpit_s_A.csv, armpit_s_B.csv)
+# 条目数: 104
+
+variable = "armpit_s"
+description = "腋下短词——part A+part B拼接"
+parts = ["A", "B"]
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "温热"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "湿润"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "温暖"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "光滑"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "湿滑"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "嫩滑"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "细腻"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "敏感"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "幼小"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "稚嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "紧小"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "狭小"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "幼嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "细嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "娇嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "幼童"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "天真"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "纯洁"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "无毛"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "光滑"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "小巧"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "粉嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "紧致"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "嫩滑"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "娇嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "纯真"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "清香"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "无毛"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "光洁"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "青春"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "优美"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "清新"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "活力"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "柔嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "淡香"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "稀疏"
+
+[[entries]]
+part = "A"
+conditions = "premises:target_is_player_daughter"
+context = "血亲"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "丰满"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "迷人"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "魅惑"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "柔美"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "老练"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "纯熟"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "丰满"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "诱惑"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "妩媚"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "纯熟"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "丰满"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "妩媚"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "禁忌"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "出轨"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+context = "松弛"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+context = "安静"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+context = "隐忍"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "酒气"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "酒香"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+context = "被迫"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+context = "紧绷"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+context = "尴尬"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+context = "窘迫"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "炫耀"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "挑逗"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "大胆"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "表演般"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+context = "自信"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "假装正常"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "维持平静"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "表面如常"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "掩饰"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "装作无事"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "强装镇定"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "隐藏"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "躲避"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "小心"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "隐蔽"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "谨慎"
+
+[[entries]]
+part = "A"
+conditions = "premises:CVP_A2_G_E_-1"
+context = "紧绷"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "腋窝"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "腋下"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "腋部"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "腋间"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "腋沟"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "腋肉"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "腋穴"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "小腋窝"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "小腋下"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "幼腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "嫩腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|102_E_1"
+context = "腋儿"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "小腋窝"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "小腋下"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "嫩腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|103_E_1"
+context = "粉腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "玉腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|104_E_1"
+context = "香腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "美腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "香腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|105_E_1"
+context = "玉腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "熟腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "丰腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "骚腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|106_E_1"
+context = "淫腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "骚腋"
+
+[[entries]]
+part = "B"
+conditions = "premises:CVP_A2_T|107_E_1"
+context = "淫腋"

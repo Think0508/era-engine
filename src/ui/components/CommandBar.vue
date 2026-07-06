@@ -7,6 +7,9 @@ import { computed, ref, watch } from 'vue'
 import { commandRegistry, type CommandDef } from '../../core/command-registry'
 import { commandExecutor } from '../../core/command-executor'
 import { apiSystem } from '../../core/api'
+import { evaluateCondition } from '../../core/condition'
+import { gameContext } from '../../core/game-context'
+import { premiseRegistry } from '../../plugins/h-core'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { useKeyInput } from '../composables/useKeyInput'
@@ -71,12 +74,26 @@ const numberToCommand = computed<Map<number, string>>(() => {
   return map
 })
 
+function evalCondition(expr: string): boolean {
+  if (expr.startsWith('premises:')) {
+    const premises = expr.slice(9).split(/[&,]/).map(s => s.trim()).filter(Boolean)
+    if (premises.length === 0) return true
+    // 注释：非严格——未知 erark 前提跳过（已注册的 HAVE_TARGET/NOT_H/HP_G_1 等仍正常求值）
+    return premiseRegistry.evaluate(premises, {
+      selectedCharacterId: uiStore.selectedCharacterId ?? gameStore.player?.id ?? null,
+    }, false)
+  }
+  const gc = gameContext.getContext()
+  try { return evaluateCondition(expr, gc) }
+  catch { return false }
+}
+
 async function executeCommand(commandId: string) {
   lastCommand.value = commandId
   await commandExecutor.execute(commandId, {
     uiStore, gameStore, api: apiSystem,
     engine: { setExecutionState: () => {}, emit: () => {} },
-    evaluateCondition: () => true,
+    evaluateCondition: evalCondition,
   })
 }
 

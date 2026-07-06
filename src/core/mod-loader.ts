@@ -19,8 +19,8 @@ export interface AttributeDefinition {
   display?: boolean
   display_group?: string
   daily_reset?: boolean
-  // 注释：H 状态值 10 级制阈值（0~100000），引擎提供 getLevel 查表
   level_thresholds?: number[]
+  sex?: 'male' | 'female'
 }
 
 export interface EquipmentSlot {
@@ -260,6 +260,39 @@ function loadLocations(
   return result
 }
 
+/**
+ * 将 attributes.toml 中定义的默认值同步到角色实体
+ * 按 category 放入对应的容器：
+ *   parameter → char.base
+ *   base      → char.base
+ *   mark      → char.base
+ *   ability   → char.abilities
+ *   social    → char.base
+ *   economy   → char.base
+ *   combat    → char.base
+ */
+function applyAttributeDefaults(
+  entity: EntityData,
+  attributes: Record<string, AttributeDefinition>,
+): void {
+  if (!entity.base) entity.base = {}
+  if (!entity.abilities) entity.abilities = {}
+
+  for (const [attrName, def] of Object.entries(attributes)) {
+    const defaultValue = def.default ?? 0
+    // 注释：已有值不覆盖（roster 或模板中显式设置的值优先）
+    if (def.category === 'ability') {
+      if (entity.abilities[attrName] === undefined) {
+        entity.abilities[attrName] = { level: defaultValue, xp: 0 }
+      }
+    } else {
+      if (entity.base[attrName] === undefined) {
+        entity.base[attrName] = defaultValue
+      }
+    }
+  }
+}
+
 export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod {
   const metaPath = `/mods/${modName}/meta.toml`
   if (!(metaPath in rawTomlMap)) {
@@ -351,6 +384,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
           )
         }
       }
+      // 注释：应用 attributes.toml 默认值到角色实体
+      applyAttributeDefaults(resolved, mod.attributes)
       characters.set(entry.id as string, resolved)
     }
   }

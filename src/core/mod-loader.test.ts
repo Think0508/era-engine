@@ -71,7 +71,7 @@ describe('parseModData', () => {
     const characters = mod.entities.get('character')!
     expect(characters.size).toBe(5)
     expect(characters.get('player')?.name).toBe('玩家')
-    expect(characters.get('player')?.base).toEqual({
+    expect(characters.get('player')?.base).toMatchObject({
       hp: 200,
       mp: 80,
       attack: 15,

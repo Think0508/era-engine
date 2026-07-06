@@ -4,6 +4,10 @@ name = "对话/口上系统"
 version = "1.0.0"
 description = "口上演出管线 + 交互式对话树——广义口上=演出"
 
+dependencies = [
+  { plugin = "talk-common-system", version = "^1.0.0" }
+]
+
 [data_dependencies]
 provides = ["dialogue:ready"]
 depends_on = ["characters:initialized"]

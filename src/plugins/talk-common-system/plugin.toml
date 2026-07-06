@@ -1,0 +1,20 @@
+[meta]
+id = "talk-common-system"
+name = "条件文本片断生成系统"
+version = "1.0.0"
+description = "erark talk_common 的精确复刻——管理条件身体部位/动作/绝顶文本片断的运行时生成"
+
+dependencies = [
+  { plugin = "h-core", version = "^1.0.0" }
+]
+
+[condition_fields]
+"common_texts.variable" = { type = "string", description = "talk_common 变量列表，供条件手册校验" }
+
+[[events.emit]]
+name = "common-texts:loaded"
+description = "talk_common 数据加载完成时发出"
+
+[[events.listen]]
+name = "game:mod_loaded"
+description = "模组加载完成后重新构建索引"

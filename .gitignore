@@ -35,3 +35,8 @@ src-tauri/target/
 
 
 用来复刻的蓝本游戏 erArk 不要commit/
+用来复刻的蓝本游戏 eratw/
+
+# Big Files
+mods/_erark_source/definitions/scene-dialogue.toml
+mods/test-mod/definitions/scene-dialogue.toml

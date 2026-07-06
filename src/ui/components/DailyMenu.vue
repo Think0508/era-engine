@@ -8,7 +8,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useGameStore } from '../stores/game-store'
+import { useUIStore } from '../stores/ui-store'
 import { commandExecutor } from '../../core/command-executor'
+import { apiSystem } from '../../core/api'
 import GameButton from './GameButton.vue'
 
 const emit = defineEmits<{
@@ -16,6 +18,7 @@ const emit = defineEmits<{
 }>()
 
 const gameStore = useGameStore()
+const uiStore = useUIStore()
 
 // 注释：主菜单项（Ex_COM 中 modes 含 daily_menu 的指令）
 const dailyMenuCommands = computed(() => {
@@ -39,9 +42,11 @@ function wakeUp() {
 
 // 注释：执行菜单指令
 async function executeCommand(commandId: string) {
-  // TODO(task-5.15): bridge 接入后传入真实 ExecutionContext
   await commandExecutor.execute(commandId, {
     gameStore,
+    uiStore,
+    api: apiSystem,
+    engine: { setExecutionState: () => {}, emit: () => {} },
     evaluateCondition: () => true,
   })
 }

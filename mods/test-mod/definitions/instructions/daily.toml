@@ -1,0 +1,27 @@
+# 通用指令 — 日常
+# 每类指令一个文件，按 type 分
+
+[effect_blocks]
+recover_hp = { type = "recover_permil", target = "self", params = { attr = "体力", rate = 100 } }
+recover_mp = { type = "recover_permil", target = "self", params = { attr = "气力", rate = 200 } }
+recover_target_hp = { type = "recover_permil", target = "selected", params = { attr = "体力", rate = 100 } }
+recover_target_mp = { type = "recover_permil", target = "selected", params = { attr = "气力", rate = 200 } }
+
+[[instructions]]
+id = "rest"
+label = "休息"
+type = "daily"
+time_cost = 60
+priority = 50
+premises = ["NOT_H", "TIRED_LE_84"]
+effects = ["recover_hp", "recover_mp",
+           "recover_target_hp", "recover_target_mp"]
+
+[[instructions]]
+id = "wait"
+label = "待机"
+type = "daily"
+time_cost = 30
+priority = 40
+premises = ["NOT_H"]
+effects = []

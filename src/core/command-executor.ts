@@ -8,6 +8,10 @@
 
 import { commandRegistry } from './command-registry'
 import { errorReporter } from './error-reporter'
+import { gameContext } from './game-context'
+import { entitySystem } from './entity-system'
+import { realtimeSettle, clampHpMp } from './realtime-settle'
+import { newDaySettle } from './newday-settle'
 
 // 注释：ExecutionContext 暴露给 handler 函数的上下文
 // 与 PluginContext 不同——原生指令是 UI 层概念，不需要 parent/api.register
@@ -59,12 +63,18 @@ export class CommandExecutor {
       await engine.emit('game:execution_start', { commandId: id })
     }
 
+    const timeCost = cmd.timeCost ?? (cmd.effects ? 10 : 0)
+
     try {
+      // 注释：推进时间（effects 类指令才推进）
+      if (timeCost > 0 && cmd.effects) {
+        await gameContext.advanceTime(timeCost)
+      }
+
       if (cmd.handler) {
         await cmd.handler(ctx)
       } else if (cmd.effects) {
-        // 注释：effects 类指令——传递 timeCost 给 settle 效果 handler
-        const effectCtx = { ...ctx, _timeCost: cmd.timeCost ?? 10 }
+        const effectCtx = { ...ctx, _timeCost: timeCost }
         if (effectCtx.api?.call) {
           try {
             await effectCtx.api.call('effect-system', 'execute', cmd.effects, effectCtx)
@@ -77,12 +87,30 @@ export class CommandExecutor {
             })
           }
         } else {
-          // TODO(phase-9): effect-system 插件实现后接入
           errorReporter.report({
             source: 'command-executor',
             severity: 'warning',
-            message: `指令 '${id}' 是 effects 类指令，但 effect-system 未注册（Phase 5 原生指令用 handler）`,
+            message: `指令 '${id}' 是 effects 类指令，但 effect-system 未注册`,
           })
+        }
+        // 注释：实时结算（疲劳/饥饿/尿意等）
+        if (timeCost > 0) {
+          const isRest = cmd.id === 'rest' || cmd.id === 'sleep'
+          const isSleep = cmd.id === 'sleep'
+          const settleOpts = { isRest, isSleep }
+
+          const playerId = gameContext.getContext().player?.id
+          if (playerId) {
+            const player = entitySystem.get('character', playerId) as any
+            if (player) realtimeSettle(player, timeCost, settleOpts)
+          }
+          for (const char of entitySystem.getAll('character')) {
+            const c = char as any
+            if (c.id && c.id !== playerId && c.current_location) {
+              realtimeSettle(c, timeCost, settleOpts)
+            }
+          }
+          newDaySettle()
         }
       } else {
         errorReporter.report({

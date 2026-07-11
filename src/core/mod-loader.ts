@@ -212,6 +212,10 @@ export interface LoadedMod {
   // 注释：Phase H — H 系统
   hConfig: HConfig
   hInstructions: HInstruction[]
+
+  // 注释：通用指令（非 H 专属）
+  instructions?: HInstruction[]
+  effectBlocks?: Record<string, Effect>
 }
 
 // TODO(phase-x): 当 UI 加载 mod 时把 equipmentSlots/calendar 同步到 game-store
@@ -262,32 +266,27 @@ function loadLocations(
 
 /**
  * 将 attributes.toml 中定义的默认值同步到角色实体
- * 按 category 放入对应的容器：
- *   parameter → char.base
- *   base      → char.base
- *   mark      → char.base
- *   ability   → char.abilities
- *   social    → char.base
- *   economy   → char.base
- *   combat    → char.base
+ * 命名空间 = category 的值：
+ *   category="ability" → entity.abilities[name] = { level, xp: 0 }
+ *   category="parameter" → entity.params[name] = defaultValue
+ *   其他 category → entity[category][name] = defaultValue
  */
 function applyAttributeDefaults(
   entity: EntityData,
   attributes: Record<string, AttributeDefinition>,
 ): void {
-  if (!entity.base) entity.base = {}
-  if (!entity.abilities) entity.abilities = {}
-
   for (const [attrName, def] of Object.entries(attributes)) {
     const defaultValue = def.default ?? 0
-    // 注释：已有值不覆盖（roster 或模板中显式设置的值优先）
     if (def.category === 'ability') {
+      if (!entity.abilities) entity.abilities = {}
       if (entity.abilities[attrName] === undefined) {
-        entity.abilities[attrName] = { level: defaultValue, xp: 0 }
+        entity.abilities[attrName] = { level: defaultValue as number, xp: 0 }
       }
     } else {
-      if (entity.base[attrName] === undefined) {
-        entity.base[attrName] = defaultValue
+      const ns = def.category === 'parameter' ? 'params' : def.category
+      if (!entity[ns]) entity[ns] = {}
+      if (entity[ns][attrName] === undefined) {
+        entity[ns][attrName] = defaultValue
       }
     }
   }
@@ -533,6 +532,23 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     const data = parseFile(path, raw)
     const instructions = (data.instructions as HInstruction[]) ?? []
     mod.hInstructions.push(...instructions)
+  }
+
+  // 注释：加载通用 instructions/ 目录下所有 TOML
+  const instrPrefix = `/mods/${modName}/definitions/instructions/`
+  const allInstructions: HInstruction[] = []
+  let effectBlocks: Record<string, Effect> = {}
+  for (const [path, raw] of Object.entries(rawTomlMap)) {
+    if (!path.startsWith(instrPrefix) || !path.endsWith('.toml')) continue
+    const data = parseFile(path, raw)
+    const blocks = (data as any).effect_blocks as Record<string, Effect> | undefined
+    if (blocks) effectBlocks = { ...effectBlocks, ...blocks }
+    const instructions = (data.instructions as HInstruction[]) ?? []
+    allInstructions.push(...instructions)
+  }
+  if (allInstructions.length > 0 || Object.keys(effectBlocks).length > 0) {
+    mod.instructions = allInstructions
+    mod.effectBlocks = effectBlocks
   }
 
   // 注释：校验 locations——exit.target 和 parent 必须存在

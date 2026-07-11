@@ -107,6 +107,16 @@ export class EngineUIBridge {
 
     // 注释：设置 narrativeLog 的 eventBus
     narrativeLog.setEventBus(eventBus)
+
+    // 注释：监听时间变化 → 同步到 game-store
+    const timeHandler: BridgeHandler = () => {
+      const ctx = gameContext.getContext()
+      gameStore.setTime(ctx.time)
+    }
+    eventBus.on('game:hour_changed', timeHandler)
+    eventBus.on('game:new_day', timeHandler)
+    this.handlers.push({ event: 'game:hour_changed', handler: timeHandler })
+    this.handlers.push({ event: 'game:new_day', handler: timeHandler })
   }
 
   // 注释：刷新当前地点角色列表

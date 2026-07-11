@@ -2,6 +2,8 @@
 
 import { entitySystem } from '../../../core/entity-system'
 import { modLoader } from '../../../core/mod-loader'
+import { getEntityAttr } from '../../../core/entity-utils'
+import { getLevel } from './judge'
 
 const STATUS_MOD: Record<string, number> = {
   '恭顺': 0.10, '好意': 0.10, '欲情': 0.10, '快乐': 0.10,
@@ -9,7 +11,13 @@ const STATUS_MOD: Record<string, number> = {
 }
 
 function getStatusLevel(char: any, name: string): number {
-  return Math.floor((char?.base?.[name] ?? 0) / 10000)
+  const mod = modLoader.getMod()
+  const def = mod?.attributes?.[name]
+  const thresholds = (def as any)?.level_thresholds as number[] | undefined
+  if (!thresholds || thresholds.length === 0) return 0
+  const value = getEntityAttr(char, name)
+  if (typeof value !== 'number' || value <= 0) return 0
+  return getLevel(value, thresholds)
 }
 
 function getAbilityLevel(char: any, abilityId: number): number {

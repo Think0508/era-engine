@@ -299,11 +299,20 @@ function interpolateLine(text: string, charId?: string): string {
   if (charId) {
     const charData = entitySystem.get('character', charId) as any
     context.character = charData
-    // 注释：给 talk_common 替换结果中可能含的 {Name} {TargetName} 等提供上下文
+
+    // 注释：target = 当前对话的交互对象（NPC说话时 = 玩家，玩家说话时 = 选中角色）
     const playerData = ctx.player as any
-    context.target = playerData ? {
-      name: playerData.name,
-      nickname: charData?.nickname ?? playerData?.name ?? '',
+    const isPlayer = charId === playerData?.id
+    const targetId = isPlayer
+      ? (playerData as any)?.target_character_id ?? null
+      : playerData?.id ?? null
+    const targetData = targetId ? entitySystem.get('character', targetId) as any : null
+    context.target = targetData ? {
+      name: targetData.name ?? '',
+      nickname: targetData.nick_name ?? targetData.name ?? '',
+    } : playerData ? {
+      name: playerData.name ?? '',
+      nickname: playerData.name ?? '',
     } : undefined
   }
   return interpolateText(commonReplaced, context)

@@ -1,0 +1,121 @@
+// 实时结算——每次指令执行后自动触发
+// 对齐 erark Script/Settle/realtime_settle.py
+
+import { getEntityAttr, setEntityAttr } from './entity-utils'
+
+export interface SettleOptions {
+  /** 是否为休息/睡眠行为——不积累疲劳、改为恢复 HP/MP */
+  isRest?: boolean
+  /** 是否为睡眠行为——加速疲劳减少 + 积累熟睡值 */
+  isSleep?: boolean
+}
+
+// ── 疲劳 ──
+function settleTired(entity: any, minutes: number, opts: SettleOptions): void {
+  // 休息/睡眠时不积累疲劳
+  if (opts.isRest || opts.isSleep) return
+  const tired = getEntityAttr(entity, '疲劳度')
+  if (typeof tired !== 'number') return
+  if (tired >= 160) return
+  const add = Math.max(1, Math.floor(minutes / 6))
+  setEntityAttr(entity, '疲劳度', Math.min(160, tired + add))
+}
+
+// ── 休息/睡眠恢复体力气力（erark settle_rest/settle_sleep）──
+function settleRestRecovery(entity: any, minutes: number, opts: SettleOptions): void {
+  if (!opts.isRest && !opts.isSleep) return
+
+  const hp = getEntityAttr(entity, '体力')
+  const hpMax = getEntityAttr(entity, '体力上限')
+  const mp = getEntityAttr(entity, '气力')
+  const mpMax = getEntityAttr(entity, '气力上限')
+  if (typeof hp !== 'number' || typeof hpMax !== 'number') return
+
+  // erark 公式：恢复量 = 取整((上限 * 0.003 + 10) * 分钟 * 倍率)
+  // 休息室 1.0，非休息室 0.3。简化：统一 1.0
+  const hpRecover = Math.floor((hpMax * 0.003 + 10) * minutes)
+  const mpRecover = Math.floor((mpMax * 0.006 + 20) * minutes)
+
+  if (typeof hp === 'number') setEntityAttr(entity, '体力', Math.min(hpMax, hp + hpRecover))
+  if (typeof mp === 'number') setEntityAttr(entity, '气力', Math.min(mpMax, mp + mpRecover))
+
+  // 睡眠时额外减少疲劳（erark: 2倍速度）
+  if (opts.isSleep) {
+    const tired = getEntityAttr(entity, '疲劳度')
+    if (typeof tired === 'number' && tired > 0) {
+      const reduce = Math.max(1, Math.floor(minutes / 6) * 2)
+      setEntityAttr(entity, '疲劳度', Math.max(0, tired - reduce))
+    }
+    // 熟睡值积累（erark: 浅睡时 +1.5/分钟，深睡后随机）
+    const sleepVal = getEntityAttr(entity, '熟睡值')
+    if (typeof sleepVal === 'number') {
+      const add = sleepVal <= 60
+        ? Math.floor(minutes * 1.5)
+        : Math.floor(minutes * (0.3 + Math.random() * 0.9))
+      setEntityAttr(entity, '熟睡值', Math.min(100, sleepVal + add))
+    }
+  }
+}
+
+// ── 饥饿 ──
+function settleHunger(entity: any, minutes: number): void {
+  const hunger = getEntityAttr(entity, '饥饿值')
+  if (typeof hunger !== 'number') return
+  if (hunger >= 240) return
+  const variance = 0.8 + Math.random() * 0.4
+  const add = Math.max(1, Math.floor(minutes * variance))
+  setEntityAttr(entity, '饥饿值', Math.min(240, hunger + add))
+}
+
+// ── 尿意 ──
+function settleUrine(entity: any, minutes: number): void {
+  const urine = getEntityAttr(entity, '尿意')
+  if (typeof urine !== 'number') return
+  if (urine >= 240) return
+  const variance = 0.8 + Math.random() * 0.4
+  const add = Math.max(1, Math.floor(minutes * variance))
+  setEntityAttr(entity, '尿意', Math.min(240, urine + add))
+}
+
+// ── 射精槽衰减 ──
+function settleEjaculation(entity: any, minutes: number): void {
+  const eja = getEntityAttr(entity, '射精槽')
+  if (typeof eja !== 'number' || eja <= 0) return
+  setEntityAttr(entity, '射精槽', Math.max(0, eja - minutes * 10))
+}
+
+// ── 精液量恢复 ──
+function settleSemen(entity: any, minutes: number): void {
+  const semen = getEntityAttr(entity, '精液量')
+  const max = getEntityAttr(entity, '精液量上限')
+  if (typeof semen !== 'number' || typeof max !== 'number') return
+  if (semen >= max) return
+  const add = Math.max(1, Math.floor(minutes / 20))
+  setEntityAttr(entity, '精液量', Math.min(max, semen + add))
+}
+
+// ── 体力/气力钳位 ──
+export function clampHpMp(entity: any): void {
+  const hp = getEntityAttr(entity, '体力')
+  const hpMax = getEntityAttr(entity, '体力上限')
+  if (typeof hp === 'number' && typeof hpMax === 'number' && hp > hpMax) {
+    setEntityAttr(entity, '体力', hpMax)
+  }
+  const mp = getEntityAttr(entity, '气力')
+  const mpMax = getEntityAttr(entity, '气力上限')
+  if (typeof mp === 'number' && typeof mpMax === 'number' && mp > mpMax) {
+    setEntityAttr(entity, '气力', mpMax)
+  }
+}
+
+// ── 入口 ──
+export function realtimeSettle(entity: any, minutes: number, opts: SettleOptions = {}): void {
+  if (!entity || minutes <= 0) return
+  settleTired(entity, minutes, opts)
+  settleRestRecovery(entity, minutes, opts)
+  settleHunger(entity, minutes)
+  settleUrine(entity, minutes)
+  settleEjaculation(entity, minutes)
+  settleSemen(entity, minutes)
+  clampHpMp(entity)
+}

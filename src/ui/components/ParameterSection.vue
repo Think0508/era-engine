@@ -7,6 +7,7 @@ import { computed } from 'vue'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { modLoader } from '../../core/mod-loader'
+import { getEntityAttr } from '../../core/entity-utils'
 import { getLevel } from '../../plugins/h-core/settle/judge'
 import CollapsibleSection from './CollapsibleSection.vue'
 
@@ -30,18 +31,16 @@ const parameterGroups = computed(() => {
   const mod = modLoader.getMod()
   if (!mod) return []
   const char = selectedCharacter.value
-  if (!char?.base) return []
+  if (!char) return []
 
-  const base = char.base as Record<string, number>
-  const charSex = base['性别'] ?? 0
+  const charSex = (char.base?.['性别'] ?? 0) as number
 
   const groups = new Map<string, ParamItem[]>()
   for (const [attrName, def] of Object.entries(mod.attributes)) {
     if (!def.daily_reset) continue
-    if (!(attrName in base)) continue
+    const v = getEntityAttr(char, attrName)
+    if (typeof v !== 'number' || v === 0 && !(attrName in (char.params ?? {})) && !(attrName in (char.base ?? {}))) continue
     if (def.sex && def.sex !== (charSex === 1 ? 'male' : 'female')) continue
-
-    const v = base[attrName]
     let level = 0
     let barValue = v
     let barMax = 100

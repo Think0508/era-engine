@@ -10,6 +10,8 @@
 import { ref, watch, nextTick } from 'vue'
 import { useGameStore, type LogEntry } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
+import FormattedText from './FormattedText.vue'
+import TypewriterText from './TypewriterText.vue'
 
 const gameStore = useGameStore()
 const uiStore = useUIStore()
@@ -61,6 +63,20 @@ function selectChoice(entry: LogEntry, _choiceIndex: number) {
   gameStore.markLogConsumed(entry.id)
 }
 
+// 注释：typewriter 完成
+function onTypewriterComplete(entry: LogEntry) {
+  // typewriter 播放完毕，如 trigger=click 则保留点击继续提示
+  if (entry.payload?._display?.trigger !== 'click') {
+    // auto 模式直接标记完成
+    gameStore.markLogConsumed(entry.id)
+  }
+}
+
+// 注释：点击继续——标记当前 line 已消费
+function consumeClickEntry(entry: LogEntry) {
+  gameStore.markLogConsumed(entry.id)
+}
+
 // 注释：键盘交互——方向键移动焦点，回车确认
 function handleKeydown(e: KeyboardEvent) {
   // 注释：找到最新的可交互 choice entry
@@ -97,9 +113,23 @@ function handleKeydown(e: KeyboardEvent) {
       :key="entry.id"
       :class="entryClass(entry)"
     >
-      <!-- 注释：普通文本条目 -->
+      <!-- 注释：普通文本条目 — BBCode 解析渲染（支持 typewriter/click） -->
       <template v-if="!isChoiceEntry(entry) && entry.type !== 'map'">
-        {{ entry.text }}
+        <template v-if="entry.payload?._display?.display === 'typewriter'">
+          <TypewriterText
+            :text="entry.text"
+            :speed="entry.payload._display.speed ?? 60"
+            @complete="onTypewriterComplete(entry)"
+          />
+        </template>
+        <template v-else>
+          <FormattedText :text="entry.text" />
+        </template>
+        <span
+          v-if="entry.payload?._display?.trigger === 'click' && !entry.consumed"
+          class="click-hint"
+          @click="consumeClickEntry(entry)"
+        >▼ 点击继续</span>
       </template>
 
       <!-- 注释：choice 类型——渲染选项列表 -->
@@ -171,6 +201,20 @@ function handleKeydown(e: KeyboardEvent) {
 .choice-item.focused {
   background-color: var(--color-primary);
   color: var(--color-surface);
+}
+
+.click-hint {
+  display: inline-block;
+  margin-left: var(--gap-small);
+  font-size: 0.65rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  animation: pulse 1.5s ease-in-out infinite;
+  user-select: none;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.4; }
 }
 
 .map-placeholder {

@@ -15,7 +15,16 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "气力" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
 "精力" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
 "疲劳度" = { type = "number", default = 0, category = "base", display = true, display_group = "status" }
+"饥饿值" = { type = "number", default = 0, category = "base", display = true, display_group = "status" }
+"熟睡值" = { type = "number", default = 0, category = "base", display = true, display_group = "status" }
 "尿意" = { type = "number", default = 0, category = "base", display = true, display_group = "status" }
+"体力上限" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
+"气力上限" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
+"欲望值" = { type = "number", default = 0, category = "base", display = true, display_group = "h" }
+"射精槽" = { type = "number", default = 0, category = "base", display = true, display_group = "h" }
+"射精槽上限" = { type = "number", default = 1000, category = "base", display = true, display_group = "h" }
+"精液量" = { type = "number", default = 100, category = "base", display = true, display_group = "h" }
+"精液量上限" = { type = "number", default = 100, category = "base", display = true, display_group = "h" }
 "愤怒" = { type = "number", default = 0, category = "base", display = true, display_group = "emotion" }
 "酒气" = { type = "number", default = 0, category = "base", display = true, display_group = "emotion" }
 

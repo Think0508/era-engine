@@ -1,0 +1,36 @@
+// 每日结算——游戏时间过午夜时触发
+// 对齐 erark Script/Settle/past_day_settle.py
+
+import { entitySystem } from './entity-system'
+import { getEntityAttr, setEntityAttr } from './entity-utils'
+import { gameContext } from './game-context'
+
+let lastSettledDay = -1
+let lastSettledMonth = -1
+
+/** 每日结算——同一天内只做一次 */
+export function newDaySettle(): void {
+  const ctx = gameContext.getContext()
+  const today = ctx.time.day
+  const month = ctx.time.month
+
+  // 同一天同一月已结算过 → 跳过
+  if (today === lastSettledDay && month === lastSettledMonth) return
+  lastSettledDay = today
+  lastSettledMonth = month
+
+  const allChars = entitySystem.getAll('character')
+  for (const char of allChars as any[]) {
+    if (!char.id) continue
+    // 欲望积累：随机(ability[33] ~ ability[33]*2)
+    const abl33 = char.abilities?.[33]?.level ?? 0
+    if (abl33 > 0) {
+      const add = abl33 + Math.floor(Math.random() * (abl33 + 1))
+      const desire = getEntityAttr(char.id, '欲望值')
+      if (typeof desire === 'number') {
+        const newVal = Math.min(100, desire + add)
+        setEntityAttr(char.id, '欲望值', newVal)
+      }
+    }
+  }
+}

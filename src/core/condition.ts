@@ -1,4 +1,5 @@
 import type { GameContext } from './types'
+import { getEntityAttr } from './entity-utils'
 
 function getDefaultValue(_parts: string[], _index: number): any {
   return 0
@@ -59,8 +60,9 @@ function resolveValue(path: string, ctx: GameContext): any {
     if (typeof current === 'object' && current !== null) {
       if (part in current) {
         current = current[part]
-      } else if ('base' in current && typeof current.base === 'object' && part in current.base) {
-        current = current.base[part]
+      } else if ('base' in current && typeof current.base === 'object') {
+        // 注释：实体对象 → 跨命名空间查找
+        current = getEntityAttr(current, part)
       } else {
         return getDefaultValue(parts, i)
       }

@@ -32,19 +32,25 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：modify_attribute——加减属性，逻辑同上
+  // 注释：modify_attribute——加减属性，走 settlement 记录
   effectTypeRegistry.register('modify_attribute', (params: any, ctx: any) => {
     const targetIds = ctx._targetIds as string[]
+    const delta = params.value as number ?? 0
     for (const id of targetIds) {
-      const hasBinding = bindingResolver.get(id, params.attr) !== null
-      if (hasBinding) {
-        const current = bindingResolver.get(id, params.attr) ?? 0
-        bindingResolver.set(id, params.attr, current + params.value)
+      if (ctx.settlement) {
+        ctx.settlement.applyChange(id, params.attr, delta)
       } else {
-        const char = entitySystem.get('character', id) as any
-        if (char?.base) {
-          const current = char.base[params.attr] ?? 0
-          char.base[params.attr] = current + params.value
+        // fallback：没有 settlement 时直接改
+        const hasBinding = bindingResolver.get(id, params.attr) !== null
+        if (hasBinding) {
+          const current = bindingResolver.get(id, params.attr) ?? 0
+          bindingResolver.set(id, params.attr, current + delta)
+        } else {
+          const char = entitySystem.get('character', id) as any
+          if (char?.base) {
+            const current = char.base[params.attr] ?? 0
+            char.base[params.attr] = current + delta
+          }
         }
       }
     }
@@ -64,6 +70,29 @@ export function onLoad(_ctx: PluginContext): void {
         obj = obj[parts[i]]
       }
       obj[parts[parts.length - 1]] = params.value
+    }
+    return true
+  })
+
+  // 注释：recover_permil——千分比恢复（eraTW 风格）
+  // attr: "体力" or "气力", rate: permil (100 = 10%, 200 = 20%)
+  effectTypeRegistry.register('recover_permil', (params: any, ctx: any) => {
+    const targetIds = ctx._targetIds as string[]
+    const attr = params.attr as string
+    const rate = params.rate as number ?? 100
+    const maxAttr = attr === '体力' ? '体力上限' : attr === '气力' ? '气力上限' : null
+    if (!maxAttr) return true
+    for (const id of targetIds) {
+      const char = entitySystem.get('character', id) as any
+      if (!char) continue
+      let maxVal = 0
+      if (char.base?.[maxAttr] !== undefined) maxVal = char.base[maxAttr]
+      else if (char.params?.[maxAttr] !== undefined) maxVal = char.params[maxAttr]
+      if (maxVal <= 0) continue
+      const delta = Math.ceil(maxVal * rate / 1000)
+      if (ctx.settlement) {
+        ctx.settlement.applyChange(id, attr, delta)
+      }
     }
     return true
   })
@@ -170,6 +199,7 @@ export function onEnable(ctx: PluginContext): void {
 async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
   const results = new Map<string, boolean>()
   const settlement = new SettlementContext()
+  settlement.timeCost = execCtx._timeCost ?? 0
 
   for (const effect of effects) {
     // 注释：depends_on 检查——前置成功才执行

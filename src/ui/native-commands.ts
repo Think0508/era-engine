@@ -41,24 +41,6 @@ export function registerNativeCommands(): void {
 
   // 注释：move 由 map-system 插件注册；talk 由 dialogue-system 插件注册
 
-  commandRegistry.register({
-    id: 'rest',
-    label: '休息',
-    group: 'location_commands',
-    modes: ['exploration'],
-    priority: 20,
-    source: 'native',
-    handler: () => {
-      const gameStore = useGameStore()
-      gameStore.addLogEntry({
-        id: `rest-${Date.now()}`,
-        text: '你休息了一会儿，恢复了一些体力。',
-        type: 'system',
-        source: 'native',
-      })
-    },
-  })
-
   // 注释：@测试：跳到明天——供 Phase 5 测试每日菜单触发
   // TODO(phase-11): 作弊面板实现后移除
   commandRegistry.register({

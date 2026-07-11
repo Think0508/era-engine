@@ -17,6 +17,7 @@ import { registerClothingPremises } from './premise/premise-clothing'
 import { registerBodyItemPremises } from './premise/premise-body-item'
 import { registerInstructPremises } from './premise/premise-instruct'
 import { loadHInstructions } from './h-instruction-loader'
+import { loadInstructions } from '../instruction-loader'
 import { calcFavorability, getFavorabilityLevel, getTrustLevel } from './settle/favorability'
 import { calcStateChange } from './settle/state'
 import { calcTrust } from './settle/trust'
@@ -480,6 +481,7 @@ export function onEnable(ctx: PluginContext): void {
   })
 
   loadHInstructions()
+  loadInstructions()
 
   const doHCmd: CommandDef = {
     id: 'do_h', label: '邀请H', group: 'character_commands',

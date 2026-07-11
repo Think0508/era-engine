@@ -1,4 +1,7 @@
 import { entitySystem } from '../../core/entity-system'
+import { getEntityAttr, setEntityAttr } from '../../core/entity-utils'
+import { modLoader } from '../../core/mod-loader'
+import { getLevel } from '../h-core/settle/judge'
 
 interface ChangeRecord {
   old: number
@@ -17,6 +20,8 @@ interface ChangeRecord {
 export class SettlementContext {
   // charId → attrName → {old, new}
   private changes = new Map<string, Map<string, ChangeRecord>>()
+  /** 本次行动耗时（分钟），用于时间输出 */
+  timeCost = 0
 
   /**
    * 修改属性并记录变化
@@ -29,10 +34,10 @@ export class SettlementContext {
     if (!char) return
 
     const oldVal = this.resolveValue(char, attrName)
-    const newVal = oldVal + delta
-    this.writeValue(char, attrName, newVal)
+    const clamped = this.clampValue(char, attrName, oldVal + delta)
+    this.writeValue(char, attrName, clamped)
 
-    this.record(charId, attrName, oldVal, newVal)
+    this.record(charId, attrName, oldVal, clamped)
   }
 
   /**
@@ -64,8 +69,9 @@ export class SettlementContext {
     return this.changes.get(charId) ?? new Map()
   }
 
-  /** 格式化输出文本——按角色分组，列出所有变化 */
+  /** 格式化输出文本——erark 风格，含等级变化提示 */
   format(): string {
+    const mod = modLoader.getMod()
     const parts: string[] = []
     for (const charId of this.charIds()) {
       const char = entitySystem.get('character', charId) as any
@@ -74,21 +80,35 @@ export class SettlementContext {
 
       for (const [attr, rec] of this.getChanges(charId)) {
         const delta = rec.new - rec.old
-        if (delta >= 0) {
-          lines.push(`${attr} ${rec.old} + ${delta} = ${rec.new}`)
-        } else {
-          lines.push(`${attr} ${rec.old} - ${Math.abs(delta)} = ${rec.new}`)
+        if (delta === 0) continue
+        const sign = delta >= 0 ? '+' : ''
+        let line = `  ${sign}${delta} ${attr}`
+
+        // 注释：等级变化检测
+        const def = mod?.attributes?.[attr]
+        if (def?.level_thresholds) {
+          const oldLv = getLevel(rec.old, def.level_thresholds)
+          const newLv = getLevel(rec.new, def.level_thresholds)
+          if (newLv !== oldLv) {
+            line += ` (lv${oldLv}->lv${newLv})`
+          }
         }
+
+        lines.push(line)
       }
 
       if (lines.length > 0) {
-        parts.push(`\n${name}\n${lines.join('\n')}`)
+        parts.push(`\n${name}:\n${lines.join('\n')}`)
       }
+    }
+    // 注释：erark 风格时间输出
+    if (this.timeCost > 0) {
+      parts.push(`\n${this.timeCost}分钟过去了`)
     }
     return parts.join('\n')
   }
 
-  /** 简单摘要格式（用于简短变化） */
+  /** 简单摘要格式（单行，用于小改动） */
   formatSummary(): string {
     const items: string[] = []
     for (const charId of this.charIds()) {
@@ -96,17 +116,60 @@ export class SettlementContext {
       const name = char?.name ?? charId
       for (const [attr, rec] of this.getChanges(charId)) {
         const delta = rec.new - rec.old
-        if (delta >= 0) {
-          items.push(`${name}:${attr}+${delta}`)
-        } else {
-          items.push(`${name}:${attr}${delta}`)
-        }
+        if (delta === 0) continue
+        const sign = delta >= 0 ? '+' : ''
+        items.push(`${name}:${attr}${sign}${delta}`)
       }
     }
     return items.join(' ')
   }
 
   // ── private ──
+
+  /** 钳制属性值到有效范围（体力不超上限、属性不低于0等） */
+  private clampValue(char: any, attr: string, value: number): number {
+    // 下限统一为 0（除非没找到该属性）
+    let v = Math.max(0, value)
+
+    // 体力 → 不超 体力上限
+    if (attr === '体力') {
+      const max = this.resolveValue(char, '体力上限')
+      if (max > 0) v = Math.min(max, v)
+    }
+    // 气力 → 不超 气力上限
+    else if (attr === '气力') {
+      const max = this.resolveValue(char, '气力上限')
+      if (max > 0) v = Math.min(max, v)
+    }
+    // 疲劳度上限 160
+    else if (attr === '疲劳度') {
+      v = Math.min(160, v)
+    }
+    // 饥饿值上限 240
+    else if (attr === '饥饿值') {
+      v = Math.min(240, v)
+    }
+    // 尿意上限 240
+    else if (attr === '尿意') {
+      v = Math.min(240, v)
+    }
+    // 射精槽 → 不超 射精槽上限
+    else if (attr === '射精槽') {
+      const max = this.resolveValue(char, '射精槽上限')
+      if (max > 0) v = Math.min(max, v)
+    }
+    // 精液量 → 不超 精液量上限
+    else if (attr === '精液量') {
+      const max = this.resolveValue(char, '精液量上限')
+      if (max > 0) v = Math.min(max, v)
+    }
+    // 欲望值上限 100
+    else if (attr === '欲望值') {
+      v = Math.min(100, v)
+    }
+
+    return v
+  }
 
   private record(charId: string, attr: string, oldVal: number, newVal: number): void {
     if (!this.changes.has(charId)) {
@@ -122,19 +185,13 @@ export class SettlementContext {
   }
 
   private resolveValue(char: any, attr: string): number {
-    // 按可能的位置查找：base > abilities > 直接字段
-    if (char.base && typeof char.base[attr] === 'number') return char.base[attr]
-    if (char.abilities && typeof char.abilities[attr]?.level === 'number') return char.abilities[attr].level
-    if (typeof char[attr] === 'number') return char[attr]
-    return 0
+    const val = getEntityAttr(char, attr)
+    return typeof val === 'number' ? val : 0
   }
 
   private writeValue(char: any, attr: string, value: number): void {
-    if (char.base && typeof char.base[attr] === 'number') {
-      char.base[attr] = value
-    } else if (char.abilities && typeof char.abilities[attr]?.level === 'number') {
-      char.abilities[attr].level = value
-    } else if (typeof char[attr] === 'number') {
+    if (!setEntityAttr(char, attr, value)) {
+      // 找不到已有命名空间 → 设为直接属性
       char[attr] = value
     }
   }

@@ -1,0 +1,68 @@
+﻿;-----------------------------------------------------------
+;	手に入れた乐谱の表示
+;-----------------------------------------------------------
+@SHOW_COLLECTION_SCORE
+DRAWLINE
+CALL DISPLAY_ALL_COLLECTION_SCORE
+
+PRINTL
+PRINTFORML 收集的乐谱数({RESULT:2}/{RESULT:1})
+
+PRINT [0] - 返回 
+
+$SCORE_INPUT
+INPUT
+IF RESULT == 0
+	RETURN 0
+ELSE
+	CLEARLINE 1
+ENDIF
+GOTO SCORE_INPUT
+
+;-----------------------------------------------------------
+;全乐谱收藏表示
+;SHOW_EMPTY_SERIES_FLAG 未入手のシリーズを表示する場合、1
+;
+;RESULT:1 総数
+;RESULT:2 所有数
+;QOL的修复
+;-----------------------------------------------------------
+@DISPLAY_ALL_COLLECTION_SCORE(SHOW_EMPTY_SERIES_FLAG=1)
+#DIM SHOW_EMPTY_SERIES_FLAG	; 未入手のシリーズを表示する場合、1
+
+#DIM SCORE_NO			; 楽譜番号
+#DIM SERIES_NO			; シリーズ番号
+#DIM SERIES_SCORE_NO	; シリーズ内の楽譜番号
+#DIMS sPrint_Text		; HTML_PRINTする文字列TEMP
+#DIMS SCORES_HTML, 50 ;keeps a list of html buttons to be printed later
+#DIM  SCORES_COUNT ;per album
+
+RESULT:1 = 0
+RESULT:2 = 0
+FOR LOCAL, 0, 乐谱最大数
+	SCORE_NO = (乐谱名開始番号 + LOCAL) 
+	SERIES_NO = GET_SERIES_NO(SCORE_NO)
+	SERIES_SCORE_NO = GET_SERIES_SCORE_NO(SCORE_NO)
+
+	IF SERIES_SCORE_NO == 0
+		LOCAL:1 = EXEC_SCORES(乐谱処理モード：総数カウント, -1, SERIES_NO)	; 総数
+		LOCAL:2 = EXEC_SCORES(乐谱処理モード：所持数カウント, -1, SERIES_NO); 所持数
+		LOCAL:3 = (SHOW_EMPTY_SERIES_FLAG || (0 < LOCAL:2))					; 表示判定
+		
+		; 結果に加算
+		RESULT:1 += LOCAL:1
+		RESULT:2 += LOCAL:2
+
+		IF (0 < LOCAL:1) && LOCAL:3
+			PRINTFORML
+			PRINTFORML 【{SERIES_NO + 1,2}:%GET_SERIES_NAME(SERIES_NO)%】({LOCAL:2}/{LOCAL:1})
+		ENDIF
+		SCORES_COUNT = 0
+		VARSET SCORES_HTML
+	ELSEIF SERIES_SCORE_NO == 乐谱最大数（シリーズ毎） - 1
+		CALL QOL_PRINT_SCORES(SCORES_HTML, SCORES_COUNT)
+	ENDIF
+
+	SIF LOCAL:3
+		CALL QOL_DISPLAY_SCORE_MAKE_HTML(SCORES_HTML, SCORES_COUNT, SCORE_NO, SCORE_NO, SERIES_SCORE_NO)
+NEXT

@@ -1,0 +1,190 @@
+﻿;-----------------------------------------------------------
+;约会中かどうか判定する関数
+;現在はCFLAG:约会中が現在位置のMAPIDとして使われている為、约会中の判定が別途必要になった
+;ARG      CFLAG:X:约会中（MAPID)
+;RETURNF  0=约会してない,1=约会してる
+;-----------------------------------------------------------
+@CHK_DATENOW(ARG)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+;#DIM MAPID_DATE
+;幻想乡大地图，因为要在所有地图都能约会，所以只能重写逻辑了
+SIF GMF_GETBIT("幻想乡大地图")
+	RETURNF GMF_CHK_DATENOW(ARG)
+IF ARG == MAIN_MAP
+	RETURNF 0
+ELSE
+	RETURNF 1
+ENDIF
+
+;-----------------------------------------------------------
+;場所ARGのMAPIDを返す関数
+;ARG      場所ID
+;RETURNF  MAPID
+;-----------------------------------------------------------
+@GET_MAPID(ARG)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+RETURNF ARG / 100
+
+;-------------------------------------------------
+;いわゆるROUND関数判定
+;ARG <= ARG:1 <= ARG:2ならば1を、そうでなければ0を返す
+;-------------------------------------------------
+@CHK_FOCUS(ARG, ARG:1, ARG:2)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+SIF INRANGE(ARG:1, ARG:0, ARG:2)
+	RETURNF 1
+SIF ARG > ARG:2
+	PRINT ARG:0 > ARG:2 エラー
+RETURNF 0
+
+;-----------------------------------------------------------
+;在宅判定
+;角色ARGが拠点にいるか判定
+;ARG        角色番号
+;RETURN     0=拠点にいない、1=拠点にいる、2=拠点の外
+;-----------------------------------------------------------
+@AT_HOME(ARG)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+RETURNF IN_HOME(CFLAG:ARG:現在位置)
+
+;-----------------------------------------------------------
+;拠点判定
+;場所ARGが拠点の中か判定
+;ARG        場所ID
+;RETURN     0=拠点ではない、1=拠点の中、2=拠点の外
+;-----------------------------------------------------------
+@IN_HOME(ARG)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+;幻想乡大地图，GMF调用函数修改MAIN_MAP后获得对应地图返回值
+;IF GMF_GETBIT("幻想乡大地图") && GMF_METHOD_STACK != "IN_HOME"
+;	RETURNF GMF_MAP_METHODF(ARG, 1, "IN_HOME", 0, ARG)
+;ENDIF
+IF ARG == MAXROOM
+	RETURNF 2
+ELSEIF INRANGE(ARG, MINROOM(), MAXROOM)
+	RETURNF 1
+ELSE
+	RETURNF 0
+ENDIF
+
+;------------------------------------------
+;拠点（お出掛け先）の出入り口となる地点の場所IDを返す
+;------------------------------------------
+@GET_ENTRANCE(MAPID)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIM MAPID
+;幻想乡大地图，GMF调用函数修改MAIN_MAP后获得对应地图返回值
+IF GMF_GETBIT("幻想乡大地图") && GMF_METHOD_STACK != "GET_ENTRANCE"
+	;这里需要填地点id，因此转为地图最小房间处理
+	RETURNF GMF_MAP_METHODF(MAPID*100+1, 1, "GET_ENTRANCE", 0, MAPID)
+ENDIF
+;拠点
+IF MAPID == MAIN_MAP
+	RETURNF ENTRANCE
+;お出掛け先
+ELSE
+	RETURNF MAPID * 100 + 10
+ENDIF
+
+;------------------------------------------
+;場所IDがMAPIDの参道（出入り口）か判定する
+;MAPIDを省略した場合はMAPIDにARGの所属MAPを代入する
+;ARG:場所ID
+;MAPID：対象MAP
+;------------------------------------------
+@CHK_ENTRANCE(ARG, MAPID = 999)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIM MAPID
+;	// MAPIDが省略された場合
+SIF MAPID == 999
+	MAPID = GET_MAPID(ARG)
+;	//ODEKAKEMAP使用時
+SIF ARG == GET_ENTRANCE(MAPID)
+	RETURNF 1
+;出発専用の入口(裏口),何かのために区別できるよう2にしておく
+SIF MAPID == MAP山麓 && ARG == P732通向山頂的路
+	RETURNF 2
+RETURNF 0
+
+;------------------------------------------
+;待客室の名前文字列を返す。招かれる前はTARGETの待客室文字列を返す
+;呼び出し元:NAME_FROM_PLACE()
+;ARG  家主
+;------------------------------------------
+@OMANEKI_PLACE(ARG)
+#FUNCTIONS
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS PNAME
+#DIM OMANEKI_TARGET
+IF ARG
+	OMANEKI_TARGET = ARG
+ELSE
+	IF CFLAG:MASTER:招待
+		OMANEKI_TARGET = CFLAG:MASTER:招待
+	ELSE
+		OMANEKI_TARGET = TARGET
+	ENDIF
+ENDIF
+
+PNAME = %CALLNAME:(OMANEKI_TARGET)%
+
+IF TEQUIP:浴室PLAY
+	IF TFLAG:泡風呂
+		PNAME = %PNAME%家的浴室
+	ELSE
+		PNAME = %PNAME%的浴室
+	ENDIF
+ELSE
+	SELECTCASE OMANEKI_TARGET
+		CASE [[阿求]]
+				PNAME = 稗田邸
+		CASEELSE
+			IF OUTROOF(CFLAG:OMANEKI_TARGET:自宅位置)
+				PNAME = %PNAME%的住所
+			ELSE
+				PNAME = %PNAME%的房间
+			ENDIF
+	ENDSELECT
+ENDIF
+RETURNF PNAME
+
+;-----------------------------------------------------------
+;おでかけ地点を随机に出力する関数    随机输出外出地图地点
+;拠点ごとに等分の確率で出す（地点が多いほど確率が高くなったりしない）    每个地点出现的概率相等（概率不会随着目的地数量的增加而增加）。
+;-----------------------------------------------------------
+@RANDOM_ODEKAKE
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIM DYNAMIC P_ID
+#DIM DYNAMIC LPCOUNT
+#DIM CONST EXISTMAP = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+;幻想乡大地图，GMF调用函数修改MAIN_MAP后获得对应地图返回值
+IF GMF_GETBIT("幻想乡大地图") && GMF_METHOD_STACK != "RANDOM_ODEKAKE"
+	RETURNF GMF_MAP_METHODF(-1, 0, "RANDOM_ODEKAKE", -1)
+ENDIF
+WHILE P_ID == 0 || P_ID / 100 == MAIN_MAP || !GET_EXISTMAP(P_ID / 100) || NAME_FROM_PLACE(P_ID) == ""
+	P_ID = RAND:MAXHOME * 100 + RAND:10 * 10
+	;;防死结界（？）
+	;LPCOUNT++
+	;IF LPCOUNT > 100 && NAME_FROM_PLACE(P_ID) == ""
+	;	P_ID = MAPID * 100 + 10
+	;	BREAK
+	;ENDIF
+WEND
+RETURNF P_ID

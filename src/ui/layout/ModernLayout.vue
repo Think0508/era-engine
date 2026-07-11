@@ -9,7 +9,6 @@ import CharacterBar from '../components/CharacterBar.vue'
 import StatusSection from '../components/StatusSection.vue'
 import ParameterSection from '../components/ParameterSection.vue'
 import LookSection from '../components/LookSection.vue'
-import NarrativeLog from '../components/NarrativeLog.vue'
 import CommandBar from '../components/CommandBar.vue'
 import SystemPanel from '../components/SystemPanel.vue'
 import ScreenNumpad from '../components/ScreenNumpad.vue'
@@ -70,9 +69,6 @@ function openSidebar() {
           <ParameterSection />
           <LookSection />
         </template>
-        <div class="narrative-log-container">
-          <NarrativeLog />
-        </div>
       </div>
       <div class="command-bar-container">
         <CommandBar />
@@ -129,14 +125,6 @@ function openSidebar() {
 .command-bar-container {
   flex-shrink: 0;
   border-top: 1px solid var(--color-border);
-}
-
-.narrative-log-container {
-  flex: 1;
-  min-height: 100px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
 .sidebar {

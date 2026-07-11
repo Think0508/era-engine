@@ -1,0 +1,39 @@
+﻿#DIM SAVEDATA CHARADATA MASTER_COUNTER_RECORD, 2
+#DIM GLOBAL SAVEDATA NEW_SAVE_MARK, 1001
+#DIM CHARADATA SAVEDATA CHILD_INTERACTABLE_HERE, 101
+#DIM SAVEDATA NUM_OF_INTERACTABLE_CHILD_HERE
+
+#DIM SAVEDATA 告白之神帮助次数
+#DIM SAVEDATA 在家召唤告白女神
+#DIM SAVEDATA 今日请教次数
+
+#DIM SAVEDATA 摄影系统开关
+#DIM SAVEDATA 射影机
+#DIMS SAVEDATA 相册照片, 100
+#DIMS SAVEDATA 照片信息, 100
+
+
+#DIM CHARADATA TEMP_CLOTHES, 100
+#DIM SAVEDATA 自设套装, 101, 23
+#DIMS SAVEDATA 自设套装名称, 101
+
+;在永琳通搬家之前，超指令的TFLAG由全局变量接管
+#DIM SAVEDATA TFLAG_GiftsHide ;900
+#DIM SAVEDATA TFLAG_ScheduleHide ;904
+#DIM SAVEDATA TFLAG_HideSongs ;909
+;#DIM CONST HideSkillAcquisition = 915
+;#DIM CONST HideFallingStates = 914
+#DIM SAVEDATA TFLAG_HideSkillAcquisition
+#DIM SAVEDATA TFLAG_HideFallingStates
+#DIM CONST LastArea = 908
+#DIM CONST DangerousTravelBonus = 911
+#DIM CONST DangerousTravelDisaster = 912
+;911,DangerousTravelBonus,;from daily travel fortune, affects risk
+;912,DangerousTravelDisaster,;from daily travel fortune, multiplier that increases chance of major disaster
+
+#DIMS SAVEDATA 公测字典
+
+;天气重修 幻想乡天气系统（GWTS GRBS GWVS），对应数值位可以查询DEBUG字典
+#DIM SAVEDATA GENSOKYO_WEATHER_SYSTEM, 10
+#DIM SAVEDATA GENSOKYO_RAINBOW_SYSTEM, 10
+#DIM SAVEDATA GENSOKYO_WIND_VE_SYSTEM, 10

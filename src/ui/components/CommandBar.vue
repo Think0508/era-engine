@@ -7,6 +7,7 @@ import { computed, ref, watch } from 'vue'
 import { commandRegistry, type CommandDef } from '../../core/command-registry'
 import { commandExecutor } from '../../core/command-executor'
 import { apiSystem } from '../../core/api'
+import { entitySystem } from '../../core/entity-system'
 import { evaluateCondition } from '../../core/condition'
 import { gameContext } from '../../core/game-context'
 import { premiseRegistry } from '../../plugins/h-core'
@@ -90,11 +91,37 @@ function evalCondition(expr: string): boolean {
 
 async function executeCommand(commandId: string) {
   lastCommand.value = commandId
+  const player = gameStore.player as any
   await commandExecutor.execute(commandId, {
     uiStore, gameStore, api: apiSystem,
     engine: { setExecutionState: () => {}, emit: () => {} },
     evaluateCondition: evalCondition,
+    sourceId: player?.id ?? null,
   })
+  // 注释：指令执行完成后推入输出模式（全屏逐条显示日志）
+  if (gameStore.narrativeLogEntries.length > 0) {
+    gameStore.pushMode('output')
+  }
+  // 注释：重新从 entity-system 读取玩家数据，触发 Vue 响应式更新
+  const playerId = (gameStore.player as any)?.id
+  if (playerId) {
+    const fresh = entitySystem.get('character', playerId) as any
+    if (fresh) {
+      // 注释：浅拷贝触发响应式（直接设同一引用不会触发）
+      gameStore.setPlayer({ ...fresh })
+    }
+  }
+  // 注释：刷新当前地点角色列表
+  const loc = gameStore.location as any
+  if (loc?.id) {
+    const freshChars: any[] = []
+    for (const char of entitySystem.getAll('character')) {
+      if ((char as any).current_location === loc.id) {
+        freshChars.push(char)
+      }
+    }
+    gameStore.setCharactersAtLocation(freshChars.map(c => ({ ...c })))
+  }
 }
 
 useKeyInput({

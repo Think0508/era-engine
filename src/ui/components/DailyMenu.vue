@@ -42,12 +42,14 @@ function wakeUp() {
 
 // 注释：执行菜单指令
 async function executeCommand(commandId: string) {
+  const player = gameStore.player as any
   await commandExecutor.execute(commandId, {
     gameStore,
     uiStore,
     api: apiSystem,
     engine: { setExecutionState: () => {}, emit: () => {} },
     evaluateCondition: () => true,
+    sourceId: player?.id ?? null,
   })
 }
 </script>

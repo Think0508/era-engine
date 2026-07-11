@@ -75,7 +75,6 @@ export function onLoad(_ctx: PluginContext): void {
   })
 
   // 注释：recover_permil——千分比恢复（eraTW 风格）
-  // attr: "体力" or "气力", rate: permil (100 = 10%, 200 = 20%)
   effectTypeRegistry.register('recover_permil', (params: any, ctx: any) => {
     const targetIds = ctx._targetIds as string[]
     const attr = params.attr as string

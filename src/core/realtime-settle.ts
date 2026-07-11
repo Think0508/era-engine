@@ -23,22 +23,8 @@ function settleTired(entity: any, minutes: number, opts: SettleOptions): void {
 
 // ── 休息/睡眠恢复体力气力（erark settle_rest/settle_sleep）──
 function settleRestRecovery(entity: any, minutes: number, opts: SettleOptions): void {
-  if (!opts.isRest && !opts.isSleep) return
-
-  const hp = getEntityAttr(entity, '体力')
-  const hpMax = getEntityAttr(entity, '体力上限')
-  const mp = getEntityAttr(entity, '气力')
-  const mpMax = getEntityAttr(entity, '气力上限')
-  if (typeof hp !== 'number' || typeof hpMax !== 'number') return
-
-  // erark 公式：恢复量 = 取整((上限 * 0.003 + 10) * 分钟 * 倍率)
-  // 休息室 1.0，非休息室 0.3。简化：统一 1.0
-  const hpRecover = Math.floor((hpMax * 0.003 + 10) * minutes)
-  const mpRecover = Math.floor((mpMax * 0.006 + 20) * minutes)
-
-  if (typeof hp === 'number') setEntityAttr(entity, '体力', Math.min(hpMax, hp + hpRecover))
-  if (typeof mp === 'number') setEntityAttr(entity, '气力', Math.min(mpMax, mp + mpRecover))
-
+  // 注释：HP/MP 恢复由指令 effect 处理（recover_permil），实时结算不重复恢复
+  
   // 睡眠时额外减少疲劳（erark: 2倍速度）
   if (opts.isSleep) {
     const tired = getEntityAttr(entity, '疲劳度')

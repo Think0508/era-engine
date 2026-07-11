@@ -12,9 +12,20 @@ import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import CollapsibleSection from './CollapsibleSection.vue'
 import ResourceBar from './ResourceBar.vue'
+import { getEntityAttr } from '../../core/entity-utils'
 
 const gameStore = useGameStore()
 const uiStore = useUIStore()
+
+// 注释：计算属性的显示上限（体力→体力上限，气力→气力上限，其余默认100）
+function barMax(char: any, attr: string): number {
+  if (attr === '体力' || attr === '气力') {
+    const maxKey = attr + '上限'
+    const mv = getEntityAttr(char, maxKey)
+    if (typeof mv === 'number' && mv > 0) return mv
+  }
+  return 100
+}
 
 // 注释：玩家资源条（display_group="status"）
 const playerStatusBars = computed(() => {
@@ -25,7 +36,7 @@ const playerStatusBars = computed(() => {
   return knownStatus.filter(key => key in base).map(key => ({
     label: key,
     value: base[key],
-    max: 100,
+    max: barMax(player, key),
   }))
 })
 
@@ -44,7 +55,7 @@ const selectedStatusBars = computed(() => {
   return knownStatus.filter(key => key in base).map(key => ({
     label: key,
     value: base[key],
-    max: 100,
+    max: barMax(char, key),
   }))
 })
 

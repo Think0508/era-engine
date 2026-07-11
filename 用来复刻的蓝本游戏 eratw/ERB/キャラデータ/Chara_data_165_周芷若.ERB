@@ -1,0 +1,57 @@
+﻿@CHARAMOVE_DATA_165(ARG, ARG:2)
+LOCAL = 165
+SELECTCASE ARG
+    ;检查可移动的成员
+    CASE 1
+    ;起床时间段
+    CASE 3
+        RETURN 睡眠時間(LOCAL)
+    ;移动倾向
+    CASE 4
+        SELECTCASE ARG:2
+            ;没什么特别的
+            CASEELSE
+                RETURN 0
+        ENDSELECT
+    CASE 7
+		SELECTCASE ARG:2
+			CASE 霧之湖, 正門, 大廳, 食堂, 大図書館, 地下室
+				RETURN 1
+		ENDSELECT
+ENDSELECT
+
+
+@EXIST_キャラデータ165
+#LOCALSIZE 1
+#LOCALSSIZE 1
+
+@キャラデータ165(ARG, O_DATA, V_NAME)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIMS O_DATA
+#DIMS V_NAME
+SELECTCASE O_DATA
+    CASE "稱呼"
+        CALLF MAKE_STR(V_NAME, "周芷若")
+    CASE "固有内衣形容詞"
+        CALLF MAKE_STR(V_NAME, "简洁素雅的")
+    CASE "固有下半身内衣名"
+        CALLF MAKE_STR(V_NAME, "青布亵裤")
+    CASE "固有上半身内衣"
+        CALLF MAKE_INT(V_NAME, 1)
+    CASE "固有上半身内衣名"
+        CALLF MAKE_STR(V_NAME, "青布束胸")
+    ;料理関連
+    CASE "料理：喜欢的味道"
+        CALLF MAKE_STR(V_NAME, "米/肉料理/野菜/中華/煮物/濃厚/家庭的/甜/甜/咸/咸/")
+    CASE "料理：讨厌的味道"
+        CALLF MAKE_STR(V_NAME, "淡白/辣/辣/" + "青蛙/虫肉/蘑菇/怪诞/謎料理/" * 3)
+    CASE "料理：助手効果"
+        CALLF MAKE_STR(V_NAME, "浓郁/")
+    ;贈り物関連
+    CASE "感性：好き"
+        CALLF MAKE_STR(V_NAME, "茶/可愛的/芸術的/和風/別緻/" + "音楽/楽器/" * 3 + "嵐の/旋律の/爪/拨片/" * 5)
+    CASE "感性：嫌い"
+        CALLF MAKE_STR(V_NAME, "洋風/繊細/" + "刃物/生体品/护臂/" * 3 + "鼓槌/指揮棒/" * 5 + "精霊銀の/" * 10)
+ENDSELECT

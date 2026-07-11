@@ -1,0 +1,216 @@
+﻿;补丁与内容优化的基础或附属函数
+;-------------------------------------------------
+;函数名:KOJO_OPTION_WALKTHROUGH
+;概　要:剧本选项系统的新接口，用于转接KOJO_OPTION_ITEM函数的封装
+;引　用：HTMLCOLOR
+;KOJO_OPTION_K{ARG:1}_WALKTHROUGH_{ARG}(ARG)内部将选择性地调用KOJO_OPTION_ITEM("选项名",ARG)：
+;1：按钮显示并可用；2：按钮显示并不可用（以上是ITEM的二则状态）；3：按钮名称隐藏并提示；4：按钮隐藏
+;备  注：此功能顺利运作最好事先进行TARGET的重定位
+;-------------------------------------------------
+@KOJO_OPTION_WALKTHROUGH(ARG, ARG:1)
+#LOCALSIZE 1
+#LOCALSSIZE 1
+ARG:1 = ARG:1 ? ARG:1 # TARGET
+ARG:1 = ARG:1 == -1 ? MASTER # ARG:1
+TRYCALLFORM KOJO_OPTION_K{ARG:1}_WALKTHROUGH_{ARG}(ARG)
+
+@RELINE(ARG,ARG:1)
+;ARG，存行栏位，0~9；1，存行开关
+#LOCALSIZE 10
+#LOCALSSIZE 1
+;自机喜好，4；OPTIONDLC，5、6
+;无ARG:1与存行，记录；否则清行
+IF !LOCAL:ARG || ARG:1
+	LOCAL:ARG=LINECOUNT
+ELSE
+	CLEARLINE LINECOUNT-LOCAL:ARG
+ENDIF
+
+;-------------------------------------------------
+;函数名:HTMLCCHK
+;概　要:检查HTMLCOLOR的合法性
+;引　用：HTMLCOLOR
+;RETURNF "#" + TOSTR((ARG:0 < 0 ? GETCOLOR() # ARG:0) & 0xFFFFFF, "X6")
+;用HTMLCOLOR绝对合法，但是如果不使用的话就可能有错
+;-------------------------------------------------
+@HTMLCCHK(ARGS)
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#FUNCTION
+SIF STRCOUNT(ARGS, @"^0x[0-9a-fA-F]{6}$") == 1
+	RETURNF 1
+SIF COLOR_FROMNAME(ARGS) >= 0
+	RETURNF 1
+
+;-------------------------------------------------
+;概　要:优化并调整过的TSP升级
+;-------------------------------------------------
+@TSP_GRADE_MODIFICATION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#FUNCTION
+SELECTCASE MAXBASE:MASTER:TSP
+	CASE 0 TO 199
+		RETURNF 1
+	CASE 200 TO 399
+		RETURNF 2
+	CASE 400 TO 799
+		RETURNF 3
+	CASE 800 TO 1599
+		RETURNF 4
+	CASE 1600 TO 3199
+		RETURNF 5
+	CASE 3200 TO 6665
+		RETURNF 6
+	CASE IS >= 6666
+		RETURNF 7
+	CASEELSE
+		THROW ⚠️WARNING⚠️ ILLEGAL TSP VALUE
+ENDSELECT
+RETURNF 0
+
+;-------------------------------------------------
+;函数名:IS_TSUKIAU
+;概　要:同行状态的综合判断
+;-------------------------------------------------
+@IS_TSUKIAU(ARG)
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#FUNCTION
+RETURNF CFLAG:ARG:同行 || FLAG:デート相手 == ARG || FINDELEMENT(Datees, ARG) > -1
+
+;-------------------------------------------------
+;函数名:GROUPCHECK_TSUKIAU
+;概　要:同行状态的群组判断
+;-------------------------------------------------
+@GROUPCHECK_TSUKIAU(LIST)
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIM REF LIST
+#FUNCTION
+FOR LOCAL, 0, VARSIZE("LIST")
+	SIF CFLAG:(LIST:LOCAL):同行 || FLAG:デート相手 == (LIST:LOCAL) || FINDELEMENT(Datees, (LIST:LOCAL)) > -1
+		RETURNF 1
+NEXT
+RETURNF 0
+
+;-------------------------------------------------
+;概　要:判定角色所在的区域，包含了招待室的情况
+;参数：CID-角色
+;返回值：PID-AREA，参见ERB\DIM.ERH
+;-------------------------------------------------
+@AT_AREA(ARG = -1)
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#FUNCTION
+SIF ARG == -1
+	ARG = MASTER
+SIF CFLAG:ARG:現在位置 == OMANEKIBEYA()
+	RETURNF (CFLAG:(CFLAG:ARG:招待):自宅位置)
+RETURNF VISITOR_LOCATION(CFLAG:ARG:現在位置)
+
+;=========================================================
+;概　要:连乘函数
+
+;POWER的扩展，用于底数为小数的运算，因为没法传递浮点数，所以底数采取有效数字和精度两个部分，精度默认为两位
+;intbase是底数*精度的int整数，如计算某数乘以0.80的幂，则intbase为80
+;※如果需要增加精度，intbase也要同时增大倍数
+;返回值：ARG * intbase^(expo/precision)
+;=========================================================
+@ExPOWER(ARG,intbase,expo,precision=100)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIM DYNAMIC intbase
+#DIM DYNAMIC expo
+#DIM DYNAMIC precision
+LOCAL = 0
+SIF !ARG
+	RETURNF 0
+SIF !expo
+	RETURNF 1
+WHILE ARG && LOCAL != expo
+ARG = ARG * intbase / precision
+LOCAL++
+WEND
+RETURNF ARG
+
+@生成图片(ARGS,ARGS:1)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+CALLF 生成GID
+GCREATEFROMFILE NEXT_GID, ARGS
+SPRITECREATE ARGS:1,NEXT_GID
+RETURNF NEXT_GID
+
+@生成GID
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIM GID
+GID = NEXT_GID
+WHILE GCREATED(GID)
+	GID ++
+WEND
+NEXT_GID = GID
+
+;-------------------------------------------------
+;函数名:GROUPMATCH_CVAR
+;概　要:角色变量的群组判断
+;参  数:ARG = 匹配值,ARG:1 = 0匹配模式，1排除模式）,ARG:2 = 完全匹配）
+;-------------------------------------------------
+@GROUPMATCH_CVAR(LIST,CVAR,ARG = 0,ARG:1 = 0,ARG:2 = 0)
+#LOCALSIZE 1
+#DIM REF LIST
+#DIM DYNAMIC TEMP
+#DIM DYNAMIC TEMP_RESULT
+#DIMS DYNAMIC VAR_INDEX,2
+#DIMS CVAR
+#FUNCTION
+
+;在式中函数中调用会重写RESULT(S)的命令时需要暂存RESULT(S)
+TEMP_RESULT = RESULT
+SPLIT CVAR, ":", VAR_INDEX
+RESULT = TEMP_RESULT
+
+FOR LOCAL, 0, VARSIZE("LIST")
+	IF ARG:1 == 1
+		IF GETVAR(@"%VAR_INDEX:0%:{(LIST:LOCAL)}:%VAR_INDEX:1%") != ARG
+			TEMP++
+		ELSE
+			SIF ARG:2
+				RETURNF 0
+		ENDIF
+	ELSE
+		IF GETVAR(@"%VAR_INDEX:0%:{(LIST:LOCAL)}:%VAR_INDEX:1%") == ARG
+			TEMP++
+		ELSE
+			SIF ARG:2
+				RETURNF 0
+		ENDIF
+	ENDIF
+NEXT
+RETURNF TEMP
+
+@GET_IN_BUILDING(P_ID, Q_ID)
+#FUNCTION
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIM P_ID
+#DIM Q_ID
+SIF Q_ID/100 != P_ID/100
+	RETURNF 0
+RETURNF GETMETH(@"GETMAP_BUILDING_{P_ID/100}", 0, P_ID, Q_ID,1)
+
+;判定角色是否在某个建筑内
+;P_ID是建筑规定的入口，参见@GETMAP_BUILDING_X
+@IS_IN_BUILDING(P_ID, C_ID)
+#LOCALSIZE 1
+#LOCALSSIZE 1
+#DIM P_ID
+#DIM C_ID
+#FUNCTION
+SIF !C_ID
+	C_ID = MASTER
+RETURNF GET_IN_BUILDING(P_ID, CFLAG:C_ID:現在位置)

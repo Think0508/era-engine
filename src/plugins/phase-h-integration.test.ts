@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getLevel } from '../plugins/h-core/settle/judge'
+import { getLevel } from '../core/entity-utils'
 
 // 注释：Phase H 集成测试——核心公式 + h-state 生命周期
 // 完整的端到端 H 流程测试需要 browser 环境，这里测可独立验证的部分

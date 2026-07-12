@@ -68,6 +68,41 @@ attack = "攻击力"
 **{var} 插值**——口上文本中用变量：
 - `{player.name}` `{player.气血}` `{character.name}` `{location.name}` `{time.hour}`
 
+## 自定义前提
+
+前提（Premise）是指令的显隐条件和口上的匹配条件。你可以在 `definitions/premises.toml` 中用条件表达式定义自己的前提，无需写代码：
+
+```toml
+# mods/武侠/definitions/premises.toml
+[[premises]]
+id = "IN_SWORD_VALLEY"
+description = "位于剑谷"
+condition = "location.id == 'sword_valley'"
+
+[[premises]]
+id = "HAVE_SWORD_ABILITY"
+description = "玩家有剑类技能 ≥ 3 级"
+condition = "player.abilities.华山剑法 >= 3"
+```
+
+然后就可以在指令和口上中引用：
+
+```toml
+# 指令中使用
+[[instructions]]
+id = "sword_practice"
+premises = ["NOT_H", "IN_SWORD_VALLEY", "HAVE_SWORD_ABILITY"]
+
+# 口上中使用
+condition = "premises:IN_SWORD_VALLEY"
+```
+
+**机制**：
+- `condition` 字段支持所有标准条件表达式（`> < >= <= == != && || !`）
+- 可引用 `player.*`、`location.*`、`character.{ID}.*`、`game.time.*` 等路径
+- 引擎启动时自动加载 `definitions/premises.toml`，注册到前提系统
+- 如果条件表达式不足以表达你的逻辑，需要写 mod 专属插件（见 `docs/plugin-author-guide.md`）
+
 ## 对接什么
 
 | 你要做的 | 对接哪里 |

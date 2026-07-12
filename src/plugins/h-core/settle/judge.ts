@@ -1,6 +1,8 @@
 // 注释：实行判定（公式#3）
 // 实行值 = 基准需求 + 好感等级修正 + 信赖等级修正 + 状态修正 + 陷落修正 + 能力修正
 
+import { getLevel } from '../../../core/entity-utils'
+
 const FAV_THRESHOLDS = [0, 100, 500, 1000, 2500, 5000, 10000, 50000, 100000]
 const FAV_JUDGE_ADD = [0, 10, 25, 50, 75, 100, 150, 225, 300]
 const TRUST_THRESHOLDS = [0, 25, 50, 75, 100, 150, 200, 250, 300]
@@ -10,13 +12,6 @@ export interface JudgeResult {
   success: boolean
   partial: boolean
   retreated: boolean
-}
-
-export function getLevel(value: number, thresholds: number[]): number {
-  for (let i = thresholds.length - 1; i >= 0; i--) {
-    if (value >= thresholds[i]) return i
-  }
-  return 0
 }
 
 export function calcJudge(

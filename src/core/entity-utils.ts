@@ -1,3 +1,40 @@
+/** 属性名常量——插件代码引用属性的唯一途径，禁止直接写字符串 */
+export const ATTR = {
+  // 基础
+  HP: '体力', MP: '气力', STAMINA: '精力',
+  FATIGUE: '疲劳度', HUNGER: '饥饿值', SLEEP: '熟睡值', URINE: '尿意',
+  HP_MAX: '体力上限', MP_MAX: '气力上限',
+  DESIRE: '欲望值', EJA_GAUGE: '射精槽', EJA_GAUGE_MAX: '射精槽上限',
+  SEMEN: '精液量', SEMEN_MAX: '精液量上限',
+  ANGER: '愤怒', ALCOHOL: '酒气',
+  // 情绪
+  MOOD: '情绪', REASON: '理性',
+  // 性别
+  SEX: '性别',
+  // 刻印
+  MARK_PLEASURE: '快乐刻印', MARK_OBEDIENCE: '屈服刻印',
+  MARK_PAIN: '苦痛刻印', MARK_FEAR: '恐怖刻印',
+  MARK_REBEL: '反发刻印', MARK_TIMESTOP: '时姦刻印', MARK_VOID: '无觉刻印',
+  // 社交
+  FAVORABILITY: '好感度', TRUST: '信赖度',
+  // 经济
+  MONEY: '金钱',
+  // PALAM（参数）
+  SKIN: '皮肤', BREAST: '胸部', CLITORIS: '阴蒂', PENIS: '阴茎',
+  VAGINA: '阴道', ANUS: '后穴', WOMB: '子宫', THROAT: '口喉', MIND: '心理',
+  LUBE: '润滑', LEARN: '习得', DEFERENCE: '恭顺', FONDNESS: '好意',
+  AROUSAL: '欲情', PLEASURE: '快乐', ANTICIPATION: '先导', OBEDIENCE: '屈服',
+  SHAME: '羞耻', PAIN: '苦痛', FEAR: '恐怖', DEPRESSION: '抑郁', RESENTMENT: '反感',
+  SUPERIORITY: '优越',
+  // ABL（能力）
+  TECHNIQUE: '技巧', SUBMISSION: '顺从', INTIMACY: '亲密',
+  LUST: '欲望', EXPOSURE: '露出', SADISM: '施虐', MASOCHISM: '受虐',
+  // 战斗（走绑定系统的通用名）
+  ATTACK: 'attack', DEFENSE: 'defense', SPEED: 'speed',
+  // 武侠战斗（combat-wuxia 独有，不走绑定）
+  STR: '力道', CON: '根骨', WILL: '定力', AGI: '灵敏', FORT: '福缘',
+} as const
+
 // 命名空间搜索顺序
 const SEARCH_ORDER = [
   'base', 'params', 'flags', 'talents', 'marks',
@@ -81,4 +118,12 @@ export function setEntityPath(entity: any, path: string, value: any): boolean {
   const last = parts[parts.length - 1]
   current[last] = value
   return true
+}
+
+/** 根据阈值数组获取等级（纯函数） */
+export function getLevel(value: number, thresholds: number[]): number {
+  for (let i = thresholds.length - 1; i >= 0; i--) {
+    if (value >= thresholds[i]) return i
+  }
+  return 0
 }

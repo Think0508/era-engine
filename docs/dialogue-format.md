@@ -35,6 +35,9 @@ Line（文本行——最小单位）
 - 被动触发的剧情 → `scene` + `type = "event"`
 - 玩家有明确目标的剧情 → `scene` + `type = "quest"`
 
+**三者都支持 `effects`**：口上命中、对话节点到达、任务步骤执行时，可以触发任意 effect，
+包括 `start_conversation`、`start_quest`、`trigger_dialogue` 等，实现组件间自由串联。
+
 ## 一、`lines` 统一格式
 
 所有场景共用 `lines` 数组：
@@ -67,6 +70,7 @@ lines = [
 | `strikethrough` | boolean | false | 整句删除线 |
 | `bold` | boolean | false | 整句加粗 |
 | `bg` | string | 无 | 背景色，用于涂黑效果 `"#000000"` |
+| `effects` | Effect[] | 无 | 本条文字显示后执行的 effects（可选）|
 
 优先级：`text` 里的 BBCode > `style` > 本条字段 > 默认值
 

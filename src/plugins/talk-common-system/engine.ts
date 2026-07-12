@@ -1,4 +1,4 @@
-import { premiseRegistry } from '../h-core'
+import { premiseRegistry } from '../../core/premise-registry'
 import type { CommonTextIndex, CommonTextEntry } from './types'
 
 export type VariableData = Record<string, {

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { CommonTextsEngine, type VariableData } from './engine'
-import { premiseRegistry } from '../h-core'
+import { premiseRegistry } from '../../core/premise-registry'
 
 // 注册测试用的前提 handler
 function registerTestPremises() {

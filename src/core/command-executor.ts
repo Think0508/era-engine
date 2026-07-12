@@ -13,6 +13,7 @@ import { entitySystem } from './entity-system'
 import { realtimeSettle, clampHpMp } from './realtime-settle'
 import { newDaySettle } from './newday-settle'
 import { processPendingSpawns } from './spawn-system'
+import { checkTalentGain } from './talent-utils'
 
 // 注释：ExecutionContext 暴露给 handler 函数的上下文
 // 与 PluginContext 不同——原生指令是 UI 层概念，不需要 parent/api.register
@@ -135,6 +136,11 @@ export class CommandExecutor {
       }
       if (engine?.emit) {
         await engine.emit('game:execution_end', { commandId: id })
+      }
+      // 注释：检查天赋自动习得
+      const player = entitySystem.get('character', gameContext.getContext().player?.id ?? '')
+      if (player) {
+        checkTalentGain((player as any).id)
       }
     }
   }

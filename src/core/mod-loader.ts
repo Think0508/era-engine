@@ -44,7 +44,6 @@ export interface HInstruction {
   modes?: string[]
   premises?: string[]
   effects?: Effect[]
-  talk_scene?: string
 }
 
 // 注释：H 系数配置
@@ -76,6 +75,7 @@ export interface ReactiveLine {
   scene: string
   condition?: string
   text: string
+  effects?: Effect[]
 }
 
 // 注释：交互式对话
@@ -103,6 +103,33 @@ export interface ItemDef {
   attack_bonus?: number
   defense_bonus?: number
   [key: string]: any    // 各 type 可扩展字段
+}
+
+// 注释：天赋 modifier 声明
+export interface TalentModifier {
+  formula: string          // judge / combat_damage / favorability / trust / state_change
+  when_tag?: string        // 按标签过滤（如 "sword", "anal"）
+  when_type?: string       // 按 type 过滤（如 "anal", "kiss"）
+  when_ability?: string    // 按能力 ID 过滤（如 "降龙十八掌"）
+  condition?: string       // 额外条件表达式
+  plus?: number            // 每级加法值
+  multiply?: number         // 每级乘法系数（如 0.05 = +5%/级）
+}
+
+// 注释：天赋自动习得条件
+export interface TalentGain {
+  condition: string        // 条件表达式，满足时自动获得
+  replace?: string         // 获得时替换已有天赋 ID（升级类天赋用）
+}
+
+// 注释：天赋定义
+export interface TalentDef {
+  name: string
+  description?: string
+  max: number              // 最大等级，0=无等级
+  modifiers?: TalentModifier[]
+  gain?: TalentGain
+  tags?: string[]
 }
 
 // 注释：套装定义
@@ -178,9 +205,12 @@ export interface Quest {
   id: string
   title: string
   description?: string
-  type: string          // main/side
+  type: string          // main/side/event
   prerequisites?: string[]
   auto_start_condition?: string
+  // 注释：event 专用字段
+  display?: string      // "current" 显示剧情面板 / "hidden" 全程隐藏 / "log" 只记大事志
+  visible?: string      // 可选：条件——满足时 quest 在 UI 中可见
   steps: QuestStep[]
 }
 
@@ -209,6 +239,8 @@ export interface LoadedMod {
   abilities: Record<string, AbilityDef>
   // 注释：任务
   quests: Map<string, Quest>
+  // 注释：天赋定义
+  talentDefs: Record<string, TalentDef>
   // 注释：Phase H — H 系统
   hConfig: HConfig
   hInstructions: HInstruction[]
@@ -340,6 +372,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     statusEffects: {},
     abilities: {},
     quests: new Map(),
+    talentDefs: {},
     // 注释：Phase H
     hConfig: {},
     hInstructions: [],
@@ -405,6 +438,31 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       }
     }
   }
+  // 注释：加载 named 角色（characters/named/{charId}/base.toml）
+  // 同名 ID 覆盖 roster 条目（升级路径：roster → named）
+  const namedPrefix = `/mods/${modName}/characters/named/`
+  const templates = mod.entities.get('__templates_character__')!
+  for (const [path, raw] of Object.entries(rawTomlMap)) {
+    const rest = path.startsWith(namedPrefix) ? path.slice(namedPrefix.length) : ''
+    if (!rest.endsWith('/base.toml')) continue
+    const charId = rest.split('/')[0]
+    if (!charId) continue
+    const data = parseFile(path, raw) as EntityData
+    let resolved: EntityData = { ...data }
+    if (data.template) {
+      try {
+        const parentTemplate = resolveTemplate(data.template as string, templates)
+        resolved = deepMerge(parentTemplate, data)
+      } catch (e) {
+        throw new Error(
+          `${path}: 角色 '${charId}' 的模板 '${data.template}' 解析失败: ${(e as Error).message}`,
+        )
+      }
+    }
+    applyAttributeDefaults(resolved, mod.attributes)
+    characters.set(charId, resolved)
+  }
+
   mod.entities.set('character', characters)
   if (pendingSpawns.length > 0) mod.pendingSpawns = pendingSpawns
 
@@ -461,34 +519,40 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   }
 
   // 注释：加载角色专属口上 + 交互式对话
-  // 路径：characters/dialogue/{charId}/dialogue.toml + conversations/*.toml
-  const dialoguePrefix = `/mods/${modName}/characters/dialogue/`
-  for (const [path, raw] of Object.entries(rawTomlMap)) {
-    if (!path.startsWith(dialoguePrefix) || !path.endsWith('.toml')) continue
-    // 注释：提取 charId——characters/dialogue/{charId}/dialogue.toml 或 .../{charId}/conversations/{convId}.toml
-    const rest = path.slice(dialoguePrefix.length)
-    const parts = rest.split('/')
-    if (parts.length < 2) continue
-    const charId = parts[0]
+  // 优先级：characters/dialogue/{charId}/（低）← characters/named/{charId}/（高）
+  // 同名 charId 时 named 覆盖，方便从 roster 升级到 named
+  function loadDialogueForPrefix(prefix: string): void {
+    for (const [path, raw] of Object.entries(rawTomlMap)) {
+      if (!path.startsWith(prefix) || !path.endsWith('.toml')) continue
+      const rest = path.slice(prefix.length)
+      const parts = rest.split('/')
+      if (parts.length < 2) continue
+      const charId = parts[0]
 
-    if (parts.length === 2 && parts[1] === 'dialogue.toml') {
-      // 注释：角色专属口上
-      const data = parseFile(path, raw)
-      const lines = (data.lines as ReactiveLine[]) ?? []
-      mod.characterSpecificDialogue.set(charId, lines)
-    } else if (parts.length === 3 && parts[1] === 'conversations') {
-      // 注释：交互式对话
-      const data = parseFile(path, raw)
-      const conv: Conversation = {
-        id: (data.id as string) ?? parts[2].replace(/\.toml$/, ''),
-        condition: data.condition as string | undefined,
-        nodes: (data.nodes as ConversationNode[]) ?? [],
+      if (parts.length === 2 && parts[1] === 'dialogue.toml') {
+        const data = parseFile(path, raw)
+        const lines = (data.lines as ReactiveLine[]) ?? []
+        mod.characterSpecificDialogue.set(charId, lines)
+      } else if (parts.length === 3 && parts[1] === 'conversations') {
+        const data = parseFile(path, raw)
+        const conv: Conversation = {
+          id: (data.id as string) ?? parts[2].replace(/\.toml$/, ''),
+          condition: data.condition as string | undefined,
+          nodes: (data.nodes as ConversationNode[]) ?? [],
+        }
+        const list = mod.conversations.get(charId) ?? []
+        const existingIdx = list.findIndex(c => c.id === conv.id)
+        if (existingIdx >= 0) {
+          list[existingIdx] = conv
+        } else {
+          list.push(conv)
+        }
+        mod.conversations.set(charId, list)
       }
-      const list = mod.conversations.get(charId) ?? []
-      list.push(conv)
-      mod.conversations.set(charId, list)
     }
   }
+  loadDialogueForPrefix(`/mods/${modName}/characters/dialogue/`)
+  loadDialogueForPrefix(`/mods/${modName}/characters/named/`)
 
   // 注释：加载 items.toml
   const itemsPath = `/mods/${modName}/definitions/items.toml`
@@ -517,6 +581,13 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   if (abilitiesPath in rawTomlMap) {
     const data = parseFile(abilitiesPath, rawTomlMap[abilitiesPath])
     mod.abilities = (data.abilities as Record<string, AbilityDef>) ?? {}
+  }
+
+  // 注释：加载 talents.toml
+  const talentsPath = `/mods/${modName}/definitions/talents.toml`
+  if (talentsPath in rawTomlMap) {
+    const data = parseFile(talentsPath, rawTomlMap[talentsPath])
+    mod.talentDefs = (data.talents as Record<string, TalentDef>) ?? {}
   }
 
   // 注释：加载 quests（main/ + side/）
@@ -571,6 +642,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
 
   // 注释：校验 locations——exit.target 和 parent 必须存在
   validateLocations(mod, modName)
+  validateTalents(mod, modName)
 
   return mod
 }
@@ -628,6 +700,24 @@ function validateLocations(mod: LoadedMod, modName: string): void {
       console.warn(
         `mods/${modName}/maps/locations/: 地点 '${id}' 不可达（无其他地点的 exit 指向它，也无 parent）——可能是设计遗漏`,
       )
+    }
+  }
+}
+
+function validateTalents(mod: LoadedMod, modName: string): void {
+  const defs = mod.talentDefs
+  if (Object.keys(defs).length === 0) return
+  const characters = mod.entities.get('character')
+  if (!characters) return
+  for (const [charId, char] of characters) {
+    const charTalents = (char as any).talents as Record<string, number> | undefined
+    if (!charTalents) continue
+    for (const talentId of Object.keys(charTalents)) {
+      if (!defs[talentId]) {
+        throw new Error(
+          `mods/${modName}/characters/: 角色 '${charId}' 使用了未定义的天赋 '${talentId}'（可用：${Object.keys(defs).slice(0, 10).join(', ')}）`,
+        )
+      }
     }
   }
 }

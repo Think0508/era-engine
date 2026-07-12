@@ -13,9 +13,9 @@ import { modLoader } from '../../core/mod-loader'
 import { commandRegistry } from '../../core/command-registry'
 import type { CommandDef } from '../../core/command-registry'
 import { evaluateCondition } from '../../core/condition'
-import { premiseRegistry } from '../h-core/index'
-import { commonTextsEngine } from '../talk-common-system/engine'
+import { premiseRegistry } from '../../core/premise-registry'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
+import { apiSystem } from '../../core/api'
 
 // 注释：对话运行时状态——当前在哪个 node
 interface ConversationRuntime {
@@ -30,12 +30,12 @@ let currentConversation: ConversationRuntime | null = null
 // 注释：onLoad——注册 effect types
 export function onLoad(_ctx: PluginContext): void {
   // 注释：trigger_dialogue——指令执行后触发对口上
-  effectTypeRegistry.register('trigger_dialogue', (params: any, execCtx: any) => {
+  effectTypeRegistry.register('trigger_dialogue', async (params: any, execCtx: any) => {
     const scene = (params.scene as string) ?? execCtx._commandId
     if (!scene) return true
     const targetIds = execCtx._targetIds as string[]
     const charId = targetIds.length > 0 ? targetIds[0] : undefined
-    triggerSceneInternal(scene, charId)
+    await triggerSceneInternal(scene, charId)
     return true
   })
 }
@@ -47,14 +47,14 @@ export function onEnable(ctx: PluginContext): void {
     // 注释：触发反应式口上（演出管线）——其他系统调此方法
     // scene: 场景名（如 greet/hurt/rest/move/enter）
     // charId: 可选角色ID——有则查角色专属>通用，无则只查场景通用
-    triggerScene: (scene: string, charId?: string): void => {
-      triggerSceneInternal(scene, charId)
+    triggerScene: async (scene: string, charId?: string): Promise<void> => {
+      await triggerSceneInternal(scene, charId)
     },
     // 注释：开始交互式对话——start_conversation effect / talk 指令调此方法
     // charId: 对话对象
     // conversationId: 可选指定对话，不传则自动选第一个 condition 满足的
-    startConversation: (charId: string, conversationId?: string): void => {
-      startConversationInternal(charId, conversationId)
+    startConversation: async (charId: string, conversationId?: string): Promise<void> => {
+      await startConversationInternal(charId, conversationId)
     },
     // 注释：获取角色的对话列表
     getConversations: (charId: string): Conversation[] => {
@@ -83,17 +83,17 @@ export function onEnable(ctx: PluginContext): void {
       // 注释：设 selected = 对话对象
       execCtx.uiStore.selectCharacter(selectedId)
       // 注释：调 startConversation
-      startConversationInternal(selectedId)
+      await startConversationInternal(selectedId)
     },
   }
   ctx.commands.register(talkCmd)
 
   // 注释：监听 location:enter → 触发 enter/greet 口上
-  ctx.events.on('location:enter', (payload: any) => {
+  ctx.events.on('location:enter', async (payload: any) => {
     const locationId = payload?.to
     if (!locationId) return
     // 注释：场景通用口上（scene="enter" 或 scene=locationId）
-    triggerSceneInternal('enter')
+    await triggerSceneInternal('enter')
     // 注释：遍历在场角色 → 对每个调 triggerScene('greet', charId)
     const mod = modLoader.getMod()
     if (!mod) return
@@ -101,14 +101,23 @@ export function onEnable(ctx: PluginContext): void {
       const c = char as any
       if (c.id === gameContext.getContext().player?.id) continue // 注释：跳过玩家
       if (c.current_location === locationId) {
-        triggerSceneInternal('greet', c.id)
+        await triggerSceneInternal('greet', c.id)
       }
     }
   })
 }
 
+async function executeLineEffects(line: ReactiveLine | null): Promise<void> {
+  if (!line?.effects?.length) return
+  try {
+    await apiSystem.call('effect-system', 'execute', line.effects, {})
+  } catch {
+    // 注释：效果执行错误隔离，不阻断口上输出
+  }
+}
+
 // 注释：triggerScene 内部实现——三层口上匹配
-function triggerSceneInternal(scene: string, charId?: string): void {
+async function triggerSceneInternal(scene: string, charId?: string): Promise<void> {
   const mod = modLoader.getMod()
   if (!mod) return
 
@@ -116,8 +125,9 @@ function triggerSceneInternal(scene: string, charId?: string): void {
   const sceneLines = mod.sceneDialogue.filter(line => line.scene === scene)
   const matchedSceneLine = pickMatchingLine(sceneLines, charId)
   if (matchedSceneLine) {
-    const interpolated = interpolateLine(matchedSceneLine.text, charId)
+    const interpolated = await interpolateLine(matchedSceneLine.text, charId)
     narrativeLog.write(interpolated, 'dialogue', 'dialogue-system')
+    await executeLineEffects(matchedSceneLine)
   }
 
   // 注释：2. 角色口上——有 charId 时才查
@@ -129,8 +139,9 @@ function triggerSceneInternal(scene: string, charId?: string): void {
     if (matchedSpecific) {
       const char = entitySystem.get('character', charId) as any
       const speakerName = char?.name ?? charId
-      const interpolated = interpolateLine(matchedSpecific.text, charId)
+      const interpolated = await interpolateLine(matchedSpecific.text, charId)
       narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system')
+      await executeLineEffects(matchedSpecific)
     } else {
       // 注释：角色通用 fallback
       const genericLines = mod.characterDialogue.filter(l => l.scene === scene)
@@ -138,8 +149,9 @@ function triggerSceneInternal(scene: string, charId?: string): void {
       if (matchedGeneric) {
         const char = entitySystem.get('character', charId) as any
         const speakerName = char?.name ?? charId
-        const interpolated = interpolateLine(matchedGeneric.text, charId)
+        const interpolated = await interpolateLine(matchedGeneric.text, charId)
         narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system')
+        await executeLineEffects(matchedGeneric)
       }
     }
   }
@@ -173,7 +185,7 @@ function pickMatchingLine(lines: ReactiveLine[], premiseTargetId?: string): Reac
 }
 
 // 注释：startConversation 内部实现
-function startConversationInternal(charId: string, conversationId?: string): void {
+async function startConversationInternal(charId: string, conversationId?: string): Promise<void> {
   const mod = modLoader.getMod()
   if (!mod) return
 
@@ -214,11 +226,11 @@ function startConversationInternal(charId: string, conversationId?: string): voi
   eventBus.emit('dialogue:start', { character: charId, conversationId: selected.id })
 
   // 注释：渲染 start node
-  renderNode('start')
+  await renderNode('start')
 }
 
 // 注释：渲染当前 node
-function renderNode(nodeId: string): void {
+async function renderNode(nodeId: string): Promise<void> {
   if (!currentConversation) return
   const node = currentConversation.nodes.get(nodeId)
   if (!node) return
@@ -229,13 +241,19 @@ function renderNode(nodeId: string): void {
 
   // 注释：渲染 lines
   for (const line of node.lines) {
-    const interpolated = interpolateLine(line, currentConversation.charId)
+    const interpolated = await interpolateLine(line, currentConversation.charId)
     eventBus.emit('dialogue:line', { speaker: speakerName, text: interpolated })
     narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system')
   }
 
-  // 注释：node effects——Phase 7 跳过（Phase 9 effect-system 接入后生效）
-  // TODO(phase-9): 执行 node.effects
+  // 注释：执行 node effects
+  if (node.effects?.length) {
+    try {
+      await apiSystem.call('effect-system', 'execute', node.effects, {})
+    } catch {
+      // 注释：效果执行错误隔离，不阻断对话流程
+    }
+  }
 
   // 注释：渲染 choices（如果有）
   if (node.choices && node.choices.length > 0) {
@@ -255,7 +273,7 @@ function renderNode(nodeId: string): void {
 
 // 注释：玩家选择 choice——由 UI 调用
 // TODO: 暴露此方法供 NarrativeLog 的 choice 交互调用
-export function selectChoice(entryId: string, choiceIndex: number): void {
+export async function selectChoice(entryId: string, choiceIndex: number): Promise<void> {
   if (!currentConversation) return
   const node = currentConversation.nodes.get(currentConversation.nodeId)
   if (!node?.choices || choiceIndex >= node.choices.length) return
@@ -264,7 +282,7 @@ export function selectChoice(entryId: string, choiceIndex: number): void {
   // 注释：标记当前 choice entry consumed
   narrativeLog.markConsumed(entryId)
   // 注释：跳转到 choice.next
-  renderNode(choice.next)
+  await renderNode(choice.next)
 }
 
 // 注释：结束对话
@@ -283,12 +301,12 @@ function endConversation(): void {
 // {location.name} → 当前地点名
 // {time.hour} → 当前时间
 // 未找到保留原样 {xxx}
-function interpolateLine(text: string, charId?: string): string {
+async function interpolateLine(text: string, charId?: string): Promise<string> {
   const ctx = gameContext.getContext()
   const targetId = charId ?? ctx.player?.id ?? null
 
   // 注释：第1层——talk_common 替换 {vagina_s} {penis} 等
-  const commonReplaced = commonTextsEngine.replaceAll(text, targetId)
+  const commonReplaced = await apiSystem.call('talk-common', 'replace', text, targetId) as string
 
   // 注释：第2层——标准插值 {player.name} {character.name} 等
   const context: any = {

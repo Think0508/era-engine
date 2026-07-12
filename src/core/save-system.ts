@@ -45,15 +45,25 @@ const db = new SaveDatabase()
 const MAX_AUTO_INTERVAL = 5 * 60 * 1000 // 5 minutes
 let lastAutoSave = 0
 
+// 注释：禁止存档的模式集——插件在 onEnable 中注册
+// 这样 core 层不出现任何具体模式名
+const noSaveModes = new Set<string>()
+
+export function registerNoSaveMode(mode: string): void {
+  noSaveModes.add(mode)
+}
+
+function isNoSaveMode(): boolean {
+  return noSaveModes.has(gameContext.getCurrentMode())
+}
+
 // 注释：保存游戏
 export async function saveGame(slotId: string, uiState: any, label?: string): Promise<void> {
   const mod = modLoader.getMod()
   if (!mod) throw new Error('no mod loaded')
 
-  // 注释：H 中不可存档
-  const mode = gameContext.getCurrentMode()
-  if (mode === 'h_scene') {
-    throw new Error('H 中不可存档')
+  if (isNoSaveMode()) {
+    throw new Error('当前模式不可存档')
   }
 
   const ctx = gameContext.getContext()
@@ -113,8 +123,7 @@ export async function deleteSave(slotId: string): Promise<void> {
 export async function autoSave(uiState: any, label?: string): Promise<void> {
   const now = Date.now()
   if (now - lastAutoSave < MAX_AUTO_INTERVAL) return
-  // 注释：H 中不自动存档
-  if (gameContext.getCurrentMode() === 'h_scene') return
+  if (isNoSaveMode()) return
   lastAutoSave = now
   await saveGame('autosave', uiState, label ?? '自动存档')
 }

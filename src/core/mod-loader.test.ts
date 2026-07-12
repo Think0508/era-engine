@@ -70,7 +70,8 @@ describe('parseModData', () => {
   it('parses roster.toml correctly (5 characters + 1 pending, equipment, assets)', () => {
     const m = parseModData('test-mod', rawTomlMap)
     const characters = m.entities.get('character')!
-    expect(characters.size).toBe(5)  // 注释：1 个 pending 不在此集合
+    // 注释：5 roster + 1 named（test_named，覆盖之前没有同名 roster 条目，作为新增角色）
+    expect(characters.size).toBe(6)
     // 注释：有 spawn_condition 的角色在 pendingSpawns 里
     expect((m as any).pendingSpawns).toHaveLength(1)
     expect((m as any).pendingSpawns[0].id).toBe('test_spawn')
@@ -105,6 +106,22 @@ describe('parseModData', () => {
       upper: '布衣',
       lower: '裙子',
     })
+  })
+
+  it('loads named characters from characters/named/{id}/base.toml', () => {
+    const m = parseModData('test-mod', rawTomlMap)
+    const characters = m.entities.get('character')!
+    // 注释：named 角色覆盖 roster 同名 ID
+    const named = characters.get('test_named')
+    expect(named).toBeDefined()
+    expect(named!.name).toBe('命名测试角色（覆盖版）')
+    // 注释：template 继承正确
+    expect(named!.base.hp).toBe(999)
+    expect(named!.base.mp).toBe(50)
+    // 注释：talents 正确
+    expect(named!.talents).toEqual({ '剑骨': 1 })
+    // 注释：named 不增加 counts（只覆盖已存在的 ID，或新增不存在的 ID）
+    expect(characters.size).toBe(6)  // 5 roster + 1 named（test_named 在 roster 中没有，而是新增）
   })
 
   it('parses locations correctly (2 locations, exits, parent)', () => {

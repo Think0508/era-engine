@@ -9,7 +9,7 @@ import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import type { CommandDef } from '../../core/command-registry'
-import { PremiseRegistry } from './premise/premise-registry'
+import { premiseRegistry } from '../../core/premise-registry'
 import { registerHPremises } from './premise/premise-h'
 import { registerTargetPremises } from './premise/premise-target'
 import { registerFallPremises } from './premise/premise-fall'
@@ -25,8 +25,8 @@ import { calcJudge, getLevel } from './settle/judge'
 import { checkOrgasm } from './settle/orgasm'
 import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
-
-export const premiseRegistry = new PremiseRegistry()
+import { ATTR, getEntityAttr, setEntityAttr } from '../../core/entity-utils'
+import { registerNoSaveMode } from '../../core/save-system'
 
 export function onLoad(_ctx: PluginContext): void {
   // 注释：judge_check——实行判定（公式#3），在效果前运行
@@ -61,7 +61,7 @@ export function onLoad(_ctx: PluginContext): void {
     const tc = execCtx._timeCost ?? _p.base ?? 10
     for (const id of ids) {
       const r = calcFavorability(id, tc)
-      if (r !== 0) execCtx.settlement.applyChange(id, '好感度', r)
+      if (r !== 0) execCtx.settlement.applyChange(id, ATTR.FAVORABILITY, r)
     }
     return true
   })
@@ -72,7 +72,7 @@ export function onLoad(_ctx: PluginContext): void {
     const tc = execCtx._timeCost ?? 10
     for (const id of ids) {
       const r = calcTrust(tc, 0)
-      if (r > 0) execCtx.settlement.applyChange(id, '信赖度', r)
+      if (r > 0) execCtx.settlement.applyChange(id, ATTR.TRUST, r)
     }
     return true
   })
@@ -132,7 +132,7 @@ export function onLoad(_ctx: PluginContext): void {
         const lustFeelAdj = tbl[Math.min(lustFeelLv, 10)] ?? 4.0
         const lust = Math.floor(base * Math.sqrt(feelAdj * lustFeelAdj))
         if (!target.base) target.base = {}
-        target.base['欲情'] = Math.min(99999, (target.base['欲情'] ?? 0) + lust)
+        target.base[ATTR.AROUSAL] = Math.min(99999, (target.base[ATTR.AROUSAL] ?? 0) + lust)
       }
     }
     return true
@@ -293,10 +293,10 @@ export function onLoad(_ctx: PluginContext): void {
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.base) continue
-      const curD = ch.base['欲情'] ?? 0
-      ch.base['欲情'] = Math.min(99999, curD + (10000 - Math.floor(curD * 0.016)))
-      const curS = ch.base['屈服'] ?? 0
-      ch.base['屈服'] = Math.min(99999, curS + (10000 - Math.floor(curS * 0.016)))
+      const curD = ch.base[ATTR.AROUSAL] ?? 0
+      ch.base[ATTR.AROUSAL] = Math.min(99999, curD + (10000 - Math.floor(curD * 0.016)))
+      const curS = ch.base[ATTR.OBEDIENCE] ?? 0
+      ch.base[ATTR.OBEDIENCE] = Math.min(99999, curS + (10000 - Math.floor(curS * 0.016)))
       // 注释：desire_point 满值
       if (!ch.desire_point) ch.desire_point = 0
       ch.desire_point = Math.min(100, (ch.desire_point ?? 0) + 100)
@@ -449,6 +449,7 @@ export function onLoad(_ctx: PluginContext): void {
 }
 
 export function onEnable(ctx: PluginContext): void {
+  registerNoSaveMode('h_scene')
   registerHPremises(premiseRegistry)
   registerTargetPremises(premiseRegistry)
   registerFallPremises(premiseRegistry)

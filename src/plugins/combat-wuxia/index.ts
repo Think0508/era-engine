@@ -7,6 +7,7 @@ import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { modLoader } from '../../core/mod-loader'
 import { narrativeLog } from '../../core/narrative-log'
+import { ATTR } from '../../core/entity-utils'
 
 // 注释：默认六维→面板换算系数（mod 可 override）
 // TODO: mod override 机制（通过 config 段或 bindings）
@@ -136,17 +137,17 @@ function calcPanel(charId: string): any {
 
   const base = char.base ?? {}
   // 注释：六维属性
-  const str = base['力道'] ?? 0
-  const con = base['根骨'] ?? 0
-  const will = base['定力'] ?? 0
-  const agi = base['灵敏'] ?? 0
-  const fort = base['福缘'] ?? 0
+  const str = base[ATTR.STR] ?? 0
+  const con = base[ATTR.CON] ?? 0
+  const will = base[ATTR.WILL] ?? 0
+  const agi = base[ATTR.AGI] ?? 0
+  const fort = base[ATTR.FORT] ?? 0
 
   // 注释：面板属性
-  const atk = str * DEFAULT_COEFFICIENTS.atkStrMul + (base['attack'] ?? 0)
-  const def = con * DEFAULT_COEFFICIENTS.defConMul + will * DEFAULT_COEFFICIENTS.defWillMul + (base['defense'] ?? 0)
-  const hp = con * DEFAULT_COEFFICIENTS.hpConMul + (base['hp'] ?? 0)
-  const mp = will * DEFAULT_COEFFICIENTS.mpWillMul + (base['mp'] ?? 0)
+  const atk = str * DEFAULT_COEFFICIENTS.atkStrMul + (base[ATTR.ATTACK] ?? 0)
+  const def = con * DEFAULT_COEFFICIENTS.defConMul + will * DEFAULT_COEFFICIENTS.defWillMul + (base[ATTR.DEFENSE] ?? 0)
+  const hp = con * DEFAULT_COEFFICIENTS.hpConMul + (base[ATTR.HP] ?? 0)
+  const mp = will * DEFAULT_COEFFICIENTS.mpWillMul + (base[ATTR.MP] ?? 0)
   const dodgeRate = agi * DEFAULT_COEFFICIENTS.dodgeAgiMul / 100 // 注释：百分比
   const critRate = fort * DEFAULT_COEFFICIENTS.critFortMul / 100
 

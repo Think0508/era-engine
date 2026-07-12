@@ -29,7 +29,7 @@ Scene 是引擎的统一剧情单元，覆盖两种常见呈现方式：
 id = "first_meeting"                    # 唯一 ID
 title = "初次见面"                       # 可选：场景名称（用于列表/日志）
 display = "current"                     # "current" 当前剧情面板 / "hidden" 不显示 / "log" 只记大事志
-type = "event"                          # "event" 被动 / "quest" 主动
+type = "event"                          # "event" 被动 / "main" 主线 / "side" 支线
 
 # 可选：触发条件（event 用）
 condition = "location.id == '华山_正殿' && scene.has_character('令狐冲') && quest.初遇.status == 'not_started'"

@@ -1,0 +1,11 @@
+# 测试 named 角色——覆盖 roster 中同名 ID 的条目
+id = "test_named"
+name = "命名测试角色（覆盖版）"
+template = "test-hero"
+
+[base]
+hp = 999
+"体力" = 999
+
+[talents]
+"剑骨" = 1

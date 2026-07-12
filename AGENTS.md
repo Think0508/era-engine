@@ -1626,6 +1626,38 @@ starting_location = "华山_正殿"       # 可选：创建完成后起始地点
 - 禁止静默失败、禁止控制台只打 `console.error`、禁止 catch 后什么都不做
 - 插件错误降级为「禁用该插件 + 弹警告」，不清空数据、不死锁启动
 
+## API 文档铁律（不可违反）
+- **每个插件必须有完整的 API 文档**，记录在 `docs/plugin-author-guide.md` 中
+- API 文档必须记录：namespace、所有方法名、参数签名、返回值、用途说明
+- 新增插件时**必须同时更新 API 文档**，禁止"先写代码后补文档"
+- 修改已有 API 签名/参数/行为时**必须同步更新 API 文档**
+- `docs/plugin-author-guide.md` 的 API 速查表必须与实际 `ctx.api.register()` 一致
+- 验收标准：`docs/plugin-author-guide.md` 覆盖所有已注册的 API namespace
+
+## 使用手册铁律（不可违反）
+- **每个插件系统必须有独立的使用手册**（`docs/` 下对应 .md 文件）
+- 手册必须覆盖：该系统的概念、数据格式（TOML）、使用方法、前提条件、与其他系统的交互
+- 手册的参考文档索引必须在 `docs/master-todo.md` 顶部维护
+- 新增系统时**必须同时创建手册**，修改系统行为时**必须同步更新手册**
+
+## 架构合规铁律（不可违反）
+- **三层绝对分离**：`src/core/` 不得出现任何具体玩法名词（属性名、模式名、系统名）
+- **插件之间禁止直接 import**：跨插件通信只能走 `ctx.api.call()` 或事件总线
+- **属性名禁止硬编码**：插件代码中禁止出现中文属性名字符串（如 `'好感度'`、`'体力'`），必须走 `ctx.api.call('engine', 'bindings.get/set', ...)` 或 `entity-utils.ts` 常量
+- 每次 commit 前必须验证：
+  1. `src/core/` 无具体玩法引用
+  2. 插件之间无直接 import（`import ... from '../other-plugin/'`）
+  3. API 文档与代码一致
+- 上述验证写进 `开发检查清单.md` 的"跨阶段持续检查项"
+
+## 唯一数据/通信路径铁律
+- 插件间的所有通信只有两条合法路径：
+  1. **公共 API 系统**：`ctx.api.register()` + `ctx.api.call()` —— 适用于功能调用
+  2. **事件总线**：`ctx.events.emit()` + `ctx.events.on()` —— 适用于通知/广播
+- 禁止：直接 import、共享模块变量（singleton）、Pinia store 跨插件访问
+- 引擎核心暴露的能力也走 API 系统：`ctx.api.call('engine', 'xxx', ...)`
+- 插件对外暴露的所有功能必须通过 `ctx.api.register()` 注册，无隐藏 API
+
 ## 样式铁律
 - 所有颜色/字体/圆角/间距必须走 CSS 主题变量，禁止在组件内写死
 - 核心游戏界面（主场景/战斗/对话/地图）全定制，禁止使用 Naive UI 组件

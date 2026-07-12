@@ -1,7 +1,6 @@
 import { entitySystem } from '../../core/entity-system'
-import { getEntityAttr, setEntityAttr } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, getLevel } from '../../core/entity-utils'
 import { modLoader } from '../../core/mod-loader'
-import { getLevel } from '../h-core/settle/judge'
 
 interface ChangeRecord {
   old: number

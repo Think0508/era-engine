@@ -1,2 +1,33 @@
 [talents]
-"剑术精通" = { type = "number", max = 10, description = "剑术天赋" }
+
+[talents."剑骨"]
+name = "剑骨"
+description = "天生适合练剑，剑法伤害+5%/级"
+max = 10
+tags = ["combat"]
+
+[[talents."剑骨".modifiers]]
+formula = "combat_damage"
+when_tag = "sword"
+multiply = 0.05
+
+[talents."剑术精通"]
+name = "剑术精通"
+description = "剑术天赋"
+max = 10
+
+[talents."肛交擅长"]
+name = "肛交擅长"
+description = "肛交实行值+10/级"
+max = 5
+
+[[talents."肛交擅长".modifiers]]
+formula = "judge"
+when_type = "anal"
+plus = 10
+
+[talents."初出茅庐"]
+name = "初出茅庐"
+description = "自动获得"
+max = 1
+gain = { condition = "player.技巧 >= 10" }

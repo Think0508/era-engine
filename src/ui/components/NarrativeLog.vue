@@ -28,6 +28,8 @@ watch(() => gameStore.executionState, (state) => {
 
 // 注释：新条目时自动滚动到底部（scroll 模式）
 watch(() => gameStore.narrativeLogEntries.length, async () => {
+  const last = gameStore.narrativeLogEntries[gameStore.narrativeLogEntries.length - 1]
+  if (last) console.log('NarrativeLog entry:', last.id, 'type:', last.type, '_display:', JSON.stringify(last._display), 'text:', last.text.slice(0, 30))
   if (uiStore.displayMode === 'scroll') {
     await nextTick()
     if (logContainer.value) {
@@ -65,9 +67,7 @@ function selectChoice(entry: LogEntry, _choiceIndex: number) {
 
 // 注释：typewriter 完成
 function onTypewriterComplete(entry: LogEntry) {
-  // typewriter 播放完毕，如 trigger=click 则保留点击继续提示
-  if (entry.payload?._display?.trigger !== 'click') {
-    // auto 模式直接标记完成
+  if (entry._display?.trigger !== 'click') {
     gameStore.markLogConsumed(entry.id)
   }
 }
@@ -112,21 +112,29 @@ function handleKeydown(e: KeyboardEvent) {
       v-for="entry in gameStore.narrativeLogEntries"
       :key="entry.id"
       :class="entryClass(entry)"
+      :data-display="entry._display ? JSON.stringify(entry._display) : ''"
     >
       <!-- 注释：普通文本条目 — BBCode 解析渲染（支持 typewriter/click） -->
       <template v-if="!isChoiceEntry(entry) && entry.type !== 'map'">
-        <template v-if="entry.payload?._display?.display === 'typewriter'">
-          <TypewriterText
-            :text="entry.text"
-            :speed="entry.payload._display.speed ?? 60"
-            @complete="onTypewriterComplete(entry)"
-          />
+        <template v-if="entry._display?.display === 'typewriter'">
+          <span :style="{ color: entry._display?.color, fontFamily: entry._display?.font }">
+            <TypewriterText
+              :text="entry.text"
+              :speed="entry._display.speed ?? 60"
+              @complete="onTypewriterComplete(entry)"
+            />
+          </span>
         </template>
         <template v-else>
-          <FormattedText :text="entry.text" />
+          <FormattedText
+            :text="entry.text"
+            :color="entry._display?.color"
+            :font="entry._display?.font"
+            :size="entry._display?.size === 'small' ? '0.85em' : entry._display?.size === 'large' ? '1.3em' : undefined"
+          />
         </template>
         <span
-          v-if="entry.payload?._display?.trigger === 'click' && !entry.consumed"
+          v-if="entry._display?.trigger === 'click' && !entry.consumed"
           class="click-hint"
           @click="consumeClickEntry(entry)"
         >▼ 点击继续</span>

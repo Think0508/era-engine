@@ -8,7 +8,7 @@ import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { modLoader } from '../../core/mod-loader'
 import { getEntityAttr } from '../../core/entity-utils'
-import { getLevel } from '../../plugins/h-core/settle/judge'
+import { getLevel } from '../../core/entity-utils'
 import CollapsibleSection from './CollapsibleSection.vue'
 
 const gameStore = useGameStore()

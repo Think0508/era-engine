@@ -6,6 +6,9 @@ import { parseBBCode, type TextSegment } from '../utils/bbcode-parser'
 
 const props = defineProps<{
   text: string
+  color?: string
+  font?: string
+  size?: string
 }>()
 
 const segments = computed<TextSegment[]>(() => parseBBCode(props.text))
@@ -24,9 +27,9 @@ const segments = computed<TextSegment[]>(() => parseBBCode(props.text))
         spoiler: seg.spoiler,
       }"
       :style="{
-        color: seg.color || undefined,
-        fontFamily: seg.font || undefined,
-        fontSize: seg.size || undefined,
+        color: seg.color || props.color || undefined,
+        fontFamily: seg.font || props.font || undefined,
+        fontSize: seg.size || props.size || undefined,
       }"
     >{{ seg.text }}</span>
   </span>

@@ -17,6 +17,15 @@ export interface LogEntry {
   interactive?: boolean
   consumed?: boolean
   payload?: any
+  _display?: {
+    trigger?: 'auto' | 'click'
+    display?: 'instant' | 'typewriter'
+    speed?: number
+    pause?: number
+    color?: string
+    size?: string
+    font?: string
+  }
 }
 
 // 注释：天气数据——Phase 5 占位，未来天气插件写入

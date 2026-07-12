@@ -76,6 +76,22 @@ mods/     内容模组——TOML数据，一次只启用一个
 | h-exposure | exposure:ready | h-exposure | 4级露出/被发现处理 |
 | h-mark | mark:ready | h-mark | 7刻印升级/降级/修正查询 |
 
+## 日志渲染双组件
+
+两条渲染管线共用同一数据源（`gameStore.narrativeLogEntries`）：
+
+| | NarrativeLog | FullscreenOutput |
+|--|-------------|-----------------|
+| 何时显示 | IDLE 状态，exploration/combat/dialogue 布局中 | EXECUTING 完成后进入 output 模式时 |
+| 角色 | 滚动历史日志，供翻阅 | 全屏覆盖层，逐条推进，点一下出下一条 |
+| 显示范围 | 所有条目（可回溯历史轮次） | 仅本轮 entry（cursor 控制） |
+| 生命周期 | 常驻，随游戏持续 | 执行完成后弹出，读完退出后消失 |
+| 交互 | choice 选项、spoiler 点击 | choice 选项、click 推进 |
+
+**铁律**：对 `entry._display`、`entry.interactive`、`entry.payload` 等字段的任何新增或修改，**必须同步更新两个组件**。否则新增功能只在其中一个组件生效。
+
+两个组件都在 `src/ui/components/` 下：`NarrativeLog.vue` 和 `FullscreenOutput.vue`。
+
 ## 开发流程
 
 1. 改代码后跑 `npm run typecheck && npm run test`

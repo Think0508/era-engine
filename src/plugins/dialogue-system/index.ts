@@ -116,6 +116,25 @@ async function executeLineEffects(line: ReactiveLine | null): Promise<void> {
   }
 }
 
+function resolveLineDisplay(line: ReactiveLine): Record<string, any> | undefined {
+  if (!line.style && !line.display && line.trigger === undefined) return undefined
+  const mod = modLoader.getMod()
+  const resolved: Record<string, any> = {}
+  // 注释：先查 [styles] 注册表
+  if (line.style && mod?.styles?.[line.style]) {
+    Object.assign(resolved, mod.styles[line.style])
+  }
+  // 注释：行级字段覆盖 style
+  if (line.display) resolved.display = line.display
+  if (line.trigger !== undefined) resolved.trigger = line.trigger
+  if (line.speed !== undefined) resolved.speed = line.speed
+  if (line.pause !== undefined) resolved.pause = line.pause
+  if (line.color) resolved.color = line.color
+  if (line.size) resolved.size = line.size
+  if (line.font) resolved.font = line.font
+  return resolved
+}
+
 // 注释：triggerScene 内部实现——三层口上匹配
 async function triggerSceneInternal(scene: string, charId?: string): Promise<void> {
   const mod = modLoader.getMod()
@@ -126,7 +145,8 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
   const matchedSceneLine = pickMatchingLine(sceneLines, charId)
   if (matchedSceneLine) {
     const interpolated = await interpolateLine(matchedSceneLine.text, charId)
-    narrativeLog.write(interpolated, 'dialogue', 'dialogue-system')
+    const display = resolveLineDisplay(matchedSceneLine)
+    narrativeLog.write(interpolated, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
     await executeLineEffects(matchedSceneLine)
   }
 
@@ -140,7 +160,8 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
       const char = entitySystem.get('character', charId) as any
       const speakerName = char?.name ?? charId
       const interpolated = await interpolateLine(matchedSpecific.text, charId)
-      narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system')
+      const display = resolveLineDisplay(matchedSpecific)
+      narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
       await executeLineEffects(matchedSpecific)
     } else {
       // 注释：角色通用 fallback
@@ -150,7 +171,8 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
         const char = entitySystem.get('character', charId) as any
         const speakerName = char?.name ?? charId
         const interpolated = await interpolateLine(matchedGeneric.text, charId)
-        narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system')
+        const display = resolveLineDisplay(matchedGeneric)
+        narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
         await executeLineEffects(matchedGeneric)
       }
     }

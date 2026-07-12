@@ -4,7 +4,7 @@
 import { gameContext } from '../../../core/game-context'
 import { entitySystem } from '../../../core/entity-system'
 import { modLoader } from '../../../core/mod-loader'
-import { getLevel } from '../settle/judge'
+import { getLevel } from '../../../core/entity-utils'
 
 function getTargetChar(ctx: any): any {
   const charId = ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId

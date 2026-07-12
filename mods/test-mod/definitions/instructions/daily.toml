@@ -14,8 +14,13 @@ type = "daily"
 time_cost = 60
 priority = 50
 premises = ["NOT_H", "TIRED_LE_84"]
-effects = ["recover_hp", "recover_mp",
-           "recover_target_hp", "recover_target_mp"]
+effects = [
+  { type = "recover_permil", target = "self", params = { attr = "体力", rate = 100 } },
+  { type = "recover_permil", target = "self", params = { attr = "气力", rate = 200 } },
+  { type = "recover_permil", target = "selected", params = { attr = "体力", rate = 100 } },
+  { type = "recover_permil", target = "selected", params = { attr = "气力", rate = 200 } },
+  { type = "trigger_dialogue", params = { scene = "rest" } }
+]
 
 [[instructions]]
 id = "wait"

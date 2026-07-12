@@ -76,6 +76,15 @@ export interface ReactiveLine {
   condition?: string
   text: string
   effects?: Effect[]
+  // 注释：展示参数（[styles] 引用或行级覆盖）
+  style?: string
+  display?: string
+  trigger?: string
+  speed?: number
+  pause?: number
+  color?: string
+  size?: string
+  font?: string
 }
 
 // 注释：交互式对话
@@ -241,6 +250,8 @@ export interface LoadedMod {
   quests: Map<string, Quest>
   // 注释：天赋定义
   talentDefs: Record<string, TalentDef>
+  // 注释：命名样式——[styles] 注册表
+  styles: Record<string, Record<string, any>>
   // 注释：Phase H — H 系统
   hConfig: HConfig
   hInstructions: HInstruction[]
@@ -373,6 +384,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     abilities: {},
     quests: new Map(),
     talentDefs: {},
+    styles: {},
     // 注释：Phase H
     hConfig: {},
     hInstructions: [],
@@ -588,6 +600,13 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   if (talentsPath in rawTomlMap) {
     const data = parseFile(talentsPath, rawTomlMap[talentsPath])
     mod.talentDefs = (data.talents as Record<string, TalentDef>) ?? {}
+  }
+
+  // 注释：加载 styles.toml（命名样式注册表）
+  const stylesPath = `/mods/${modName}/definitions/talk/styles.toml`
+  if (stylesPath in rawTomlMap) {
+    const data = parseFile(stylesPath, rawTomlMap[stylesPath])
+    mod.styles = (data.styles as Record<string, Record<string, any>>) ?? {}
   }
 
   // 注释：加载 quests（main/ + side/）

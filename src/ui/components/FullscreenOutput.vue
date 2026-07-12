@@ -7,6 +7,7 @@
 import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { useGameStore, type LogEntry } from '../stores/game-store'
 import FormattedText from './FormattedText.vue'
+import TypewriterText from './TypewriterText.vue'
 
 const gameStore = useGameStore()
 const emit = defineEmits<{ (e: 'done'): void }>()
@@ -15,6 +16,7 @@ const emit = defineEmits<{ (e: 'done'): void }>()
 const cursor = ref(0)
 const waitingForClick = ref(false)
 const allDone = ref(false)
+const typewriterBusy = ref(false)
 const scrollRef = ref<HTMLElement | null>(null)
 const outputRef = ref<HTMLElement | null>(null)
 // 焦点选择索引（每条 choice entry 独立追踪）
@@ -30,9 +32,19 @@ const visibleEntries = computed<LogEntry[]>(() => {
   return entries.value.slice(0, cursor.value)
 })
 
+// 注释：typewriter 播放完成回调
+function onTypewriterDone(entry: LogEntry) {
+  typewriterBusy.value = false
+  if (entry._display?.trigger === 'click') {
+    waitingForClick.value = true
+  } else {
+    advance()
+  }
+}
+
 // 推进逻辑：显示到下一个 click 断点（或末尾）
 function advance() {
-  if (allDone.value) return
+  if (allDone.value || typewriterBusy.value) return
 
   let i = cursor.value
   while (i < entries.value.length) {
@@ -43,11 +55,14 @@ function advance() {
       waitingForClick.value = true
       return
     }
-    const trigger = entry.payload?._display?.trigger ?? 'auto'
+    const trigger = entry._display?.trigger ?? 'auto'
     cursor.value = i + 1
     if (trigger === 'click') {
-      cursor.value = i + 1
       waitingForClick.value = true
+      return
+    }
+    if (entry._display?.display === 'typewriter') {
+      typewriterBusy.value = true  // 注释：等待 typewriter 动画播完才推进下一条
       return
     }
     i++
@@ -140,7 +155,23 @@ function isChoiceEntry(entry: LogEntry): boolean {
       >
         <!-- 普通文本 -->
         <template v-if="!isChoiceEntry(entry)">
-          <FormattedText :text="entry.text" />
+          <template v-if="entry._display?.display === 'typewriter'">
+            <span :style="{ color: entry._display?.color, fontFamily: entry._display?.font }">
+              <TypewriterText
+                :text="entry.text"
+                :speed="entry._display.speed ?? 60"
+                @complete="onTypewriterDone(entry)"
+              />
+            </span>
+          </template>
+          <template v-else>
+            <FormattedText
+              :text="entry.text"
+              :color="entry._display?.color"
+              :font="entry._display?.font"
+              :size="entry._display?.size === 'small' ? '0.85em' : entry._display?.size === 'large' ? '1.3em' : undefined"
+            />
+          </template>
         </template>
 
         <!-- 对话选项 -->
@@ -236,4 +267,5 @@ function isChoiceEntry(entry: LogEntry): boolean {
   color: var(--color-text-secondary);
   font-style: italic;
 }
+
 </style>

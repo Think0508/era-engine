@@ -3,7 +3,7 @@
 import { entitySystem } from '../../../core/entity-system'
 import { modLoader } from '../../../core/mod-loader'
 import { getEntityAttr } from '../../../core/entity-utils'
-import { getLevel } from './judge'
+import { getLevel } from '../../../core/entity-utils'
 
 const STATUS_MOD: Record<string, number> = {
   '恭顺': 0.10, '好意': 0.10, '欲情': 0.10, '快乐': 0.10,

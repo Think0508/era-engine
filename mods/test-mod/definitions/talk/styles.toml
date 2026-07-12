@@ -1,0 +1,5 @@
+[styles]
+emphasis = { trigger = "click", display = "typewriter", speed = 30, color = "#CC4444" }
+whisper = { display = "typewriter", speed = 70, color = "#888888", size = "small" }
+narrator = { color = "#666666", font = "楷体" }
+fast = { display = "typewriter", speed = 10 }

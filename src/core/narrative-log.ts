@@ -5,6 +5,16 @@
 
 import type { EventBus } from './event-bus'
 
+export interface LogDisplay {
+  trigger?: 'auto' | 'click'
+  display?: 'instant' | 'typewriter'
+  speed?: number
+  pause?: number
+  color?: string
+  size?: string
+  font?: string
+}
+
 export interface LogEntry {
   id: string
   text: string
@@ -14,6 +24,7 @@ export interface LogEntry {
   interactive?: boolean
   consumed?: boolean
   payload?: any
+  _display?: LogDisplay
 }
 
 const DEFAULT_LIMIT = 1000
@@ -40,6 +51,7 @@ export class NarrativeLog {
     source?: string,
     interactive?: boolean,
     payload?: any,
+    display?: LogDisplay,
   ): string {
     const id = `log-${++this.idCounter}`
     const entry: LogEntry = {
@@ -50,7 +62,9 @@ export class NarrativeLog {
       timestamp: Date.now(),
       interactive,
       payload,
+      _display: display,
     }
+
     this.entries.push(entry)
     // 注释：自动淘汰——超过 limit 删最旧
     if (this.entries.length > this.limit) {

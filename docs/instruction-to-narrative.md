@@ -363,6 +363,19 @@ effects = [
 
 ## 相关文档
 
+## 文字渲染到哪里
+
+文字最终出现在两个地方：
+
+| 时机 | 组件 | 行为 |
+|------|------|------|
+| 指令执行后（output 模式） | **FullscreenOutput** | 全屏覆盖，逐条显示，click 条目隐式等待点击推进 |
+| IDLE 状态（exploration 布局） | **NarrativeLog** | 主界面日志栏，可滚动查看历史，始终可见 |
+
+两者读同一数据源（`gameStore.narrativeLogEntries`）。新增 `_display` 等字段时需同步更新两个组件。
+
+---
+
 | 文档 | 内容 |
 |------|------|
 | `docs/skills/add-instruction.md` | 添加一条新指令的完整工作流 |

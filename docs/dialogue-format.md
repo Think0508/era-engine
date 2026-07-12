@@ -85,13 +85,26 @@ click × typewriter  → 玩家点击后逐字显示
 
 ## 二、`[styles]` 命名样式
 
-`[styles]` 可在三个层级定义，下层覆盖上层：
+命名样式把展示参数（trigger/display/speed/color/size/font）抽取为可复用的名，让口上作者只需写 `style = "emphasis"`。
 
-| 层级 | 文件位置 | 说明 |
-|------|---------|------|
-| 插件默认 | `src/plugins/dialogue-system/styles.toml` | 引擎自带默认样式 |
-| mod 定义 | `mods/[mod]/definitions/talk/styles.toml` | 模组可覆盖/增量 |
-| 局部定义 | 在口上/事件/任务 TOML 文件顶部 | 仅该文件内可用 |
+### 定义位置
+
+```
+mods/[mod]/definitions/talk/styles.toml      ← 当前唯一支持的位置
+```
+
+`[styles]` 遵循三层 override 规则（`docs/mod-override.md`）：
+插件可在 `data/default/talk/styles.toml` 提供默认样式，mod 在 `definitions/talk/styles.toml` 中覆盖。
+
+### 工作流
+
+```
+第1步：在 definitions/talk/styles.toml 中定义一个样式
+第2步：在口上级写 style = "样式名" 引用
+第3步：如需微调，在行级覆盖同名字段即可
+```
+
+### 格式
 
 ```toml
 # mods/武侠/definitions/talk/styles.toml
@@ -116,6 +129,19 @@ lines = [
   { text = "风格引用后再覆盖单个参数", style = "emphasis", speed = 50 },
 ]
 ```
+
+**各种 style 的渲染效果**：
+
+| style | trigger | display | 视觉 | 玩家操作 |
+|-------|---------|---------|------|---------|
+| 默认（无 style） | auto | instant | 白色文字，瞬间全出 | 播完直接继续 |
+| `narrator` | auto | instant | 灰色 (`#666666`) 楷体，瞬间全出 | 播完直接继续 |
+| `whisper` | auto | typewriter | 灰色 (`#888888`) 小字，逐字出现 | 逐字播完直接继续 |
+| `fast` | auto | typewriter | 白色，极速逐字 | 逐字播完直接继续 |
+| `emphasis` | click | typewriter | 红色 (`#CC4444`)，逐字慢速 | 逐字播完后隐式等待点击 |
+| `click` | click | instant | 白色，瞬间全出 | 全出后隐式等待点击 |
+
+**注意**：`trigger = "click"` 的条目播完后，游戏会**隐式等待**玩家点击屏幕任意位置才继续下一条——没有 `▼ 点击继续` 等提示文字。交互方式是自然不言明的：文字停住了 → 点击一下 → 继续。
 
 ## 三、插值变量
 

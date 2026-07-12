@@ -11,13 +11,14 @@ import FormattedText from './FormattedText.vue'
 const gameStore = useGameStore()
 const emit = defineEmits<{ (e: 'done'): void }>()
 
-// 当前已消费到第几条（exclusive——currentBatch 显示 [0, cursor) 的条目）
+// 当前已消费到第几条
 const cursor = ref(0)
-// 当前轮是否在等待点击
 const waitingForClick = ref(false)
-// 当前轮是否已全部显示完（等最后一次点击退出）
 const allDone = ref(false)
 const scrollRef = ref<HTMLElement | null>(null)
+const outputRef = ref<HTMLElement | null>(null)
+// 焦点选择索引（每条 choice entry 独立追踪）
+const focusMap = ref<Record<string, number>>({})
 
 // 本轮显示的条目（从 gameStore 里取最近的未消费批次）
 const entries = computed<LogEntry[]>(() => {
@@ -36,22 +37,21 @@ function advance() {
   let i = cursor.value
   while (i < entries.value.length) {
     const entry = entries.value[i]
+    // 注释：choice 条目也作为断点，等待用户选择
+    if (isChoiceEntry(entry)) {
+      cursor.value = i + 1
+      waitingForClick.value = true
+      return
+    }
     const trigger = entry.payload?._display?.trigger ?? 'auto'
-    // 显示这条
     cursor.value = i + 1
     if (trigger === 'click') {
-      // click 条目已显示，停住等下次点击
-      // 如果不是最后一条，等点击；如果是最后一条，转 allDone
-      if (cursor.value >= entries.value.length) {
-        allDone.value = true
-      } else {
-        waitingForClick.value = true
-      }
+      cursor.value = i + 1
+      waitingForClick.value = true
       return
     }
     i++
   }
-  // 全是 auto，走到末尾
   allDone.value = true
 }
 
@@ -63,8 +63,11 @@ function init() {
   advance()
 }
 
-// 全局点击推进
-function handleClick() {
+// 全局点击推进（仅在没有 choice 条目时）
+function handleClick(e: MouseEvent) {
+  // 如果最新显示的条目是 choice，忽略全局点击（用户必须选选项）
+  const lastEntry = visibleEntries.value[visibleEntries.value.length - 1]
+  if (lastEntry && isChoiceEntry(lastEntry)) return
   if (allDone.value) {
     emit('done')
     return
@@ -72,6 +75,34 @@ function handleClick() {
   if (waitingForClick.value) {
     waitingForClick.value = false
     advance()
+  }
+}
+
+// 选择选项
+function selectChoice(entry: LogEntry, choiceIndex: number) {
+  gameStore.markLogConsumed(entry.id)
+  // TODO: 通知对话系统继续——emit 事件或调 API
+  advance()
+}
+
+// 键盘交互
+function handleKeydown(e: KeyboardEvent) {
+  const lastEntry = visibleEntries.value[visibleEntries.value.length - 1]
+  if (!lastEntry || !isChoiceEntry(lastEntry)) return
+  const choices = lastEntry.payload?.choices ?? []
+  if (choices.length === 0) return
+
+  const key = focusMap.value[lastEntry.id] ?? 0
+
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+    e.preventDefault()
+    focusMap.value[lastEntry.id] = (key + 1) % choices.length
+  } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+    e.preventDefault()
+    focusMap.value[lastEntry.id] = (key - 1 + choices.length) % choices.length
+  } else if (e.key === 'Enter') {
+    e.preventDefault()
+    selectChoice(lastEntry, key)
   }
 }
 
@@ -85,6 +116,8 @@ watch(cursor, async () => {
 
 onMounted(() => {
   init()
+  // 自动获取焦点以接收键盘事件
+  outputRef.value?.focus()
 })
 
 // 条目类型样式
@@ -98,7 +131,7 @@ function isChoiceEntry(entry: LogEntry): boolean {
 </script>
 
 <template>
-  <div class="fullscreen-output" @click="handleClick">
+  <div ref="outputRef" class="fullscreen-output" tabindex="0" @click="handleClick" @keydown="handleKeydown">
     <div ref="scrollRef" class="output-scroll">
       <div
         v-for="entry in visibleEntries"
@@ -112,15 +145,27 @@ function isChoiceEntry(entry: LogEntry): boolean {
 
         <!-- 对话选项 -->
         <template v-else-if="isChoiceEntry(entry)">
-          <div class="choice-list">
-            <div
-              v-for="(choice, idx) in (entry.payload?.choices ?? [])"
-              :key="idx"
-              class="choice-item"
-            >
-              > {{ choice.text }}
+          <!-- 已消费：显示所选选项（不做交互） -->
+          <template v-if="entry.consumed">
+            <div class="chosen-text">
+              > {{ (entry.payload?.choices ?? [])[(focusMap[entry.id] ?? 0)]?.text ?? '' }}
             </div>
-          </div>
+          </template>
+          <!-- 未消费：可交互选项列表 -->
+          <template v-else>
+            <div class="choice-list">
+              <div
+                v-for="(choice, idx) in (entry.payload?.choices ?? [])"
+                :key="idx"
+                class="choice-item"
+                :class="{ focused: (focusMap[entry.id] ?? 0) === idx }"
+                @click.stop="selectChoice(entry, idx)"
+                @mouseover="focusMap[entry.id] = idx"
+              >
+                > {{ choice.text }}
+              </div>
+            </div>
+          </template>
         </template>
       </div>
     </div>
@@ -179,9 +224,16 @@ function isChoiceEntry(entry: LogEntry): boolean {
   cursor: pointer;
 }
 
-.choice-item:hover {
+.choice-item:hover,
+.choice-item.focused {
   background-color: var(--color-primary);
   color: var(--color-surface);
   border-radius: var(--radius-button);
+}
+
+.chosen-text {
+  padding: var(--gap-small) var(--gap-medium);
+  color: var(--color-text-secondary);
+  font-style: italic;
 }
 </style>

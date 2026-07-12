@@ -46,3 +46,12 @@ relations = { player = { "好感度" = 60 } }
 behavior = { activity = 0.5, home_locations = { town_square = 1.0 } }
 equipment = { upper = "布衣", lower = "裙子" }
 abilities = { "基础攻击" = 1, "采药" = 2 }
+
+# 注释：测试——角色在 flags.赵灵儿出现 == true 后才会创建
+[[roster]]
+id = "test_spawn"
+template = "base-human"
+name = "赵灵儿"
+spawn_condition = "flags.赵灵儿出现 == true"
+base = { hp = 80, attack = 3, "好感度" = 60, "性别" = 2 }
+ability = { "基础攻击" = 1 }

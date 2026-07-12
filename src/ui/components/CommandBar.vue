@@ -100,6 +100,28 @@ async function executeCommand(commandId: string) {
   })
   // 注释：指令执行完成后推入输出模式（全屏逐条显示日志）
   if (gameStore.narrativeLogEntries.length > 0) {
+    // 注释：测试 choice——后续移入对话系统
+    gameStore.addLogEntry({
+      id: `test-choice-${Date.now()}`,
+      text: '',
+      type: 'dialogue_choice',
+      source: 'test',
+      interactive: true,
+      payload: {
+        choices: [
+          { text: '继续休息' },
+          { text: '起来走走' },
+        ],
+      },
+    })
+    // 添加第三个 auto 条目让 choice 后还有内容可推进
+    gameStore.addLogEntry({
+      id: `test-after-${Date.now()}`,
+      text: '你做出了选择。',
+      type: 'system',
+      source: 'test',
+      payload: { _display: { trigger: 'click' } },
+    })
     gameStore.pushMode('output')
   }
   // 注释：重新从 entity-system 读取玩家数据，触发 Vue 响应式更新

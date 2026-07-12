@@ -67,9 +67,13 @@ describe('parseModData', () => {
     })
   })
 
-  it('parses roster.toml correctly (5 characters, equipment, assets)', () => {
-    const characters = mod.entities.get('character')!
-    expect(characters.size).toBe(5)
+  it('parses roster.toml correctly (5 characters + 1 pending, equipment, assets)', () => {
+    const m = parseModData('test-mod', rawTomlMap)
+    const characters = m.entities.get('character')!
+    expect(characters.size).toBe(5)  // 注释：1 个 pending 不在此集合
+    // 注释：有 spawn_condition 的角色在 pendingSpawns 里
+    expect((m as any).pendingSpawns).toHaveLength(1)
+    expect((m as any).pendingSpawns[0].id).toBe('test_spawn')
     expect(characters.get('player')?.name).toBe('玩家')
     expect(characters.get('player')?.base).toMatchObject({
       hp: 200,
@@ -79,9 +83,12 @@ describe('parseModData', () => {
       speed: 5,
       TSP: 200,
       tsp_max: 200,
-      "体力": 100,
-      "气力": 100,
+      "体力": 1200,
+      "气力": 800,
+      "体力上限": 2500,
+      "气力上限": 2000,
       "精力": 100,
+      "性别": 1,
     })
     expect(characters.get('player')?.equipment).toEqual({
       upper: '布衣',

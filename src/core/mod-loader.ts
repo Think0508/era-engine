@@ -216,6 +216,15 @@ export interface LoadedMod {
   // 注释：通用指令（非 H 专属）
   instructions?: HInstruction[]
   effectBlocks?: Record<string, Effect>
+
+  // 注释：待激活角色——spawn_condition 满足后才注册到 entity-system
+  pendingSpawns?: PendingSpawn[]
+}
+
+export interface PendingSpawn {
+  id: string
+  data: EntityData
+  condition: string
 }
 
 // TODO(phase-x): 当 UI 加载 mod 时把 equipmentSlots/calendar 同步到 game-store
@@ -364,11 +373,13 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
 
   const rosterPath = `/mods/${modName}/characters/roster.toml`
   const characters = new Map<string, EntityData>()
+  const pendingSpawns: PendingSpawn[] = []
   if (rosterPath in rawTomlMap) {
     const data = parseFile(rosterPath, rawTomlMap[rosterPath])
     const roster = (data.roster as EntityData[]) ?? []
     const templates = mod.entities.get('__templates_character__')!
     for (const entry of roster) {
+      const spawnCondition = entry.spawn_condition as string | undefined
       let resolved: EntityData = { ...entry }
       if (entry.template) {
         try {
@@ -383,12 +394,19 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
           )
         }
       }
-      // 注释：应用 attributes.toml 默认值到角色实体
       applyAttributeDefaults(resolved, mod.attributes)
-      characters.set(entry.id as string, resolved)
+
+      if (spawnCondition) {
+        // 注释：条件激活角色——暂不注册，等待条件满足后动态创建
+        delete resolved.spawn_condition
+        pendingSpawns.push({ id: entry.id as string, data: resolved, condition: spawnCondition })
+      } else {
+        characters.set(entry.id as string, resolved)
+      }
     }
   }
   mod.entities.set('character', characters)
+  if (pendingSpawns.length > 0) mod.pendingSpawns = pendingSpawns
 
   mod.locations = loadLocations(rawTomlMap, modName)
 

@@ -12,6 +12,7 @@ import { gameContext } from './game-context'
 import { entitySystem } from './entity-system'
 import { realtimeSettle, clampHpMp } from './realtime-settle'
 import { newDaySettle } from './newday-settle'
+import { processPendingSpawns } from './spawn-system'
 
 // 注释：ExecutionContext 暴露给 handler 函数的上下文
 // 与 PluginContext 不同——原生指令是 UI 层概念，不需要 parent/api.register
@@ -111,6 +112,7 @@ export class CommandExecutor {
             }
           }
           newDaySettle()
+          processPendingSpawns()
         }
       } else {
         errorReporter.report({

@@ -51,6 +51,7 @@ export const useGameStore = defineStore('game', () => {
   const executionState = ref<'IDLE' | 'EXECUTING'>('IDLE')
   const charactersAtLocation = ref<EntityData[]>([])
   const narrativeLogEntries = ref<LogEntry[]>([])
+  const historyLog = ref<LogEntry[]>([])
   const weather = ref<WeatherData>({ ...DEFAULT_WEATHER })
   const calendar = ref<CalendarConfig | null>(null)
   const equipmentSlots = ref<EquipmentSlot[]>([])
@@ -88,9 +89,16 @@ export const useGameStore = defineStore('game', () => {
   }
   function addLogEntry(entry: LogEntry) {
     narrativeLogEntries.value.push(entry)
+    historyLog.value.push(entry)
+    // 注释：historyLog 保留最近 5000 条（约 3000KB），超出时放弃最旧 2000 条保持空间
+    // 不做分片/文件归档，因单条日志平均 < 1KB，5000 条对内存无压力
+    // 如将来做跨会话历史持久化，可改为 IndexedDB 存储 + 按日期分片
     // 注释：自动淘汰——超过 MAX_LOG_ENTRIES 删最旧
     if (narrativeLogEntries.value.length > MAX_LOG_ENTRIES) {
       narrativeLogEntries.value = narrativeLogEntries.value.slice(-MAX_LOG_ENTRIES)
+    }
+    if (historyLog.value.length > 5000) {
+      historyLog.value = historyLog.value.slice(-3000)
     }
   }
   function clearLogEntries() {
@@ -119,6 +127,7 @@ export const useGameStore = defineStore('game', () => {
     executionState.value = 'IDLE'
     charactersAtLocation.value = []
     narrativeLogEntries.value = []
+    historyLog.value = []
     weather.value = { ...DEFAULT_WEATHER }
   }
 
@@ -130,6 +139,7 @@ export const useGameStore = defineStore('game', () => {
     executionState,
     charactersAtLocation,
     narrativeLogEntries,
+    historyLog,
     weather,
     calendar,
     equipmentSlots,

@@ -11,6 +11,7 @@ import FullScreenTextLayout from './FullScreenTextLayout.vue'
 import DailyMenuLayout from './DailyMenuLayout.vue'
 import CombatLayout from './CombatLayout.vue'
 import FullscreenOutput from '../components/FullscreenOutput.vue'
+import FullscreenHistory from '../components/FullscreenHistory.vue'
 
 // 注释：使用 main.ts 提供的 SlotRegistry（不存在时自己创建兜底）
 const slotRegistry = inject<SlotRegistry>(SLOT_REGISTRY_KEY) ?? new SlotRegistry()
@@ -57,4 +58,7 @@ const layoutComponent = computed(() => {
 
   <!-- 注释：全屏输出 overlay（output 模式） -->
   <FullscreenOutput v-if="showOutput" @done="onOutputDone" />
+
+  <!-- 注释：全屏历史日志（log 模式） -->
+  <FullscreenHistory v-if="showLog" @done="onLogDone" />
 </template>

@@ -127,6 +127,19 @@ export function registerNativeCommands(): void {
     },
   })
 
+  commandRegistry.register({
+    id: 'log_history',
+    label: '日志',
+    group: 'main_menu',
+    modes: ['exploration'],
+    priority: 53,
+    source: 'native',
+    handler: () => {
+      const gameStore = useGameStore()
+      gameStore.pushMode('log')
+    },
+  })
+
   // 注释：@命令调试——默认隐藏，在选项作弊面板开启
   const AT_CMDS = [
     { id: '@attrs', label: '@查看属性', handler: () => {
@@ -178,8 +191,8 @@ export function registerNativeCommands(): void {
 // 注释：卸载原生指令
 export function unregisterNativeCommands(): void {
   const ids = [
-    'open_player_panel', 'open_selected_panel', 'rest',
-    'cheat_skip_day', 'save', 'load', 'options',
+    'open_player_panel', 'open_selected_panel',
+    'cheat_skip_day', 'save', 'load', 'options', 'log_history',
     '@attrs', '@setattr', '@teleport', '@spawn', '@additem', '@startquest', '@errors', '@help', '@testcombat',
   ]
   for (const id of ids) {

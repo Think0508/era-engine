@@ -66,8 +66,8 @@ function groupedAttrs(group: string) {
   })
 }
 
-const senseAttrs = groupedAttrs('感觉')
-const abilAttrs = groupedAttrs('性能力')
+const senseAttrs = groupedAttrs('感觉')  // 无 level_thresholds，只显数值
+const abilAttrs = groupedAttrs('性能力')  // 有 level_thresholds 时显 Lv
 
 // 刻印（category=mark）
 const markAttrs = computed(() => {
@@ -136,10 +136,7 @@ const skillAttrs = computed(() => {
           <div v-if="senseAttrs.length > 0" class="attr-list">
             <div v-for="a in senseAttrs" :key="a.label" class="attr-row">
               <span class="attr-label">{{ a.label }}</span>
-              <span class="attr-val">
-                {{ a.value }}
-                <span v-if="a.level > 0" class="attr-level">Lv{{ a.level }}</span>
-              </span>
+              <span class="attr-val">{{ a.value }}</span>
             </div>
           </div>
           <p v-else class="text-dim">（无数据）</p>

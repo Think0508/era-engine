@@ -1,7 +1,35 @@
 # 属性系统全链路
 
 > 属性是什么、定义在哪、插件怎么用、模版怎么继承、改名/改值改哪几个文件。
-> 本文档覆盖整个链路：`attributes.toml` → `ATTR` 常量 → `bindings.toml` → 模板 → 角色赋值。
+> 本文档覆盖整个链路：`attributes.toml` + `abilities.toml` → `ATTR` 常量 → `bindings.toml` → 模板 → 角色赋值。
+
+## 数据流总览
+
+```
+ Layer 1（插件默认）
+   src/plugins/*/data/default/
+   ├── attributes.toml    ← 纯数值属性（体力/好感度/每日重置参数）
+   └── abilities.toml     ← 带等级的能力（感觉/ABL/刻印/技术）
+         ↓ deepMerge
+ Layer 3（mod 定义）
+   mods/[mod]/definitions/
+   ├── attributes.toml    ← 覆盖同名属性
+   └── abilities.toml     ← 覆盖同名能力（deepMerge 子字段）
+         ↓
+   mod.attributes  ← 最终合并结果
+   mod.abilities   ← 最终合并结果
+         ↓
+ 角色加载（模板 → roster/named → 存档）：
+   expandCharacterAbilities():
+     ① 遍历 mod.abilities，全部初始化为 {level: 0, xp: 0}
+     ② 用角色已有 abilities 覆盖（从模板/roster 来的值）
+   applyAttributeDefaults():
+     遍历 mod.attributes，填 default 到对应命名空间
+         ↓
+   char.abilities["指技"] = { level: 0, xp: 0 }     ← 来自插件默认
+   char.abilities["技巧"] = { level: 3, xp: 0 }      ← 来自 roster 覆盖
+   char.base["体力"] = 1200                           ← 来自 attributes.toml default
+```
 
 ---
 

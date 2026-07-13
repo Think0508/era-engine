@@ -2951,7 +2951,7 @@ context = "{character.name}感受着女儿{target.name}的{urethra}紧紧缠绕�
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&premises:target_is_player_daughter"
-context = "{target.name}的{urethra}如同炽热的窄穴套弄着{name}的{penis}，女儿掌握着节奏上下起伏，望着她年轻的后背，{character.name}沉醉于这份乱伦的极致快乐中无法醒来。"
+context = "{target.name}的{urethra}如同炽热的窄穴套弄着{character.name}的{penis}，女儿掌握着节奏上下起伏，望着她年轻的后背，{character.name}沉醉于这份乱伦的极致快乐中无法醒来。"
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&premises:target_is_player_daughter"

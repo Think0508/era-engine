@@ -202,6 +202,12 @@ const VAR_MAP = [
   // 杂项
   ['{Jump}', ''],
   ['{n}', ''],
+  // erArk 同义词/笔误修正
+  ['{anus_s}', '{anal_s}'],
+  ['{asshole}', '{anal}'],
+  ['{chest_s}', '{breast_s}'],
+  ['{womsb_s}', '{womb_s}'],
+  ['{name}', '{character.name}'],
 ]
 
 function convertContextVars(text) {

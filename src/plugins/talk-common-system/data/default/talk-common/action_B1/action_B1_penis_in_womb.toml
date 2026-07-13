@@ -13807,7 +13807,7 @@ context = "{character.name}扶住{target.name}的臀部，{penis_s}完全插在{
 
 [[entries]]
 conditions = "premises:dr_womb_position_sex&selected.talents.人妻 == 1&premises:jj_0"
-context = "{character.name}扶着{target.name}的腰肢，短小的{penis_s}整根没入{womsb_s}深处，龟头抵在子宫底部来回碾磨，小巧的尺寸让他能够在狭窄的子宫腔内自由转动。"
+context = "{character.name}扶着{target.name}的腰肢，短小的{penis_s}整根没入{womb_s}深处，龟头抵在子宫底部来回碾磨，小巧的尺寸让他能够在狭窄的子宫腔内自由转动。"
 
 [[entries]]
 conditions = "premises:dr_womb_position_sex&selected.talents.人妻 == 1&premises:jj_0"

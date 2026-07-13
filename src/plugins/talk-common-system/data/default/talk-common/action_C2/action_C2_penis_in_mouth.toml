@@ -13435,7 +13435,7 @@ context = "{target.name}感觉{penis}在{mouth}内跳动，口腔敏感的内壁
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
-context = "{target.name}的{mouth}柔软地包裹着{penis}，口腔里充斥着雄性信息素的气息，每一次舌头与龟头接触都让她的身体微微发颤，口喉处涌起一阵阵酥麻的快意。"
+context = "{target.name}的{mouth}柔软地包裹着{penis}，口腔里充斥着雄性荷尔蒙的气息，每一次舌头与龟头接触都让她的身体微微发颤，口喉处涌起一阵阵酥麻的快意。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"

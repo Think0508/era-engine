@@ -276,7 +276,57 @@ effects = []
 | 80 | 快（25 字/秒） | 轻松聊天 |
 | 100 | 很快 | 急促、兴奋 |
 
-## 九、渲染层实现要点
+## 九、变量插值（{var} 替换）
+
+### 两层替换
+
+```
+第1层（talk-common.replaceAll）：
+  {penis} {anal} {vagina_s} {breast} ...
+  → 替换为角色的身体部位描述（详情见 docs/talk-common-system.md）
+
+第2层（interpolateText）：
+  {player.name} {character.name} {target.name} ...
+  → 替换为游戏运行时的上下文数据
+```
+
+### 可用变量表
+
+| 变量 | 说明 | 示例值 |
+|------|------|--------|
+| `{player.name}` | 玩家角色名 | "博士" |
+| `{player.nickname}` | 玩家昵称 | "主人" |
+| `{character.name}` | 当前说话/动作的角色名 | "令狐冲" |
+| `{target.name}` | 当前交互目标名 | "岳灵珊" |
+| `{target.nickname}` | 目标昵称 | "珊儿" |
+| `{location.name}` | 当前地点名 | "华山剑坪" |
+| `{time.hour}` | 当前小时(0-23) | "14" |
+| `{time.minute}` | 当前分钟 | "30" |
+| `{time.day}` | 当前日 | "15" |
+
+### 新增自定义变量
+
+在 `src/plugins/dialogue-system/index.ts` 的 `interpolateLine` 函数中，
+把数据加到 `context` 对象即可：
+
+```typescript
+const context: any = {
+  player: ctx.player,
+  location: ctx.location,
+  time: ctx.time,
+  weather: ctx.weather,  // 新增 {weather.temperature}
+}
+```
+
+所有口上 TOML 数据自动支持新变量，无需逐条修改。
+
+### 两层关系
+
+- 第1层处理 `{word}`（无点号，由 talk-common 索引管理）
+- 第2层处理 `{obj.prop}`（带点号，由 context 对象管理）
+- 未识别的变量**保留原样**，不报错，不崩溃
+
+## 十、渲染层实现要点
 
 1. `narrativeLog.write()` 保持纯文本兼容
 2. 新增 `narrativeLog.writePieces(type, source, pieces)` 写入带样式的条目

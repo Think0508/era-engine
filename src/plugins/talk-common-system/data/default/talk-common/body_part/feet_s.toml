@@ -58,262 +58,262 @@ context = "润泽"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "幼小"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "稚嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "娇小"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "迷你"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "袖珍"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "细嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "肉嘟嘟"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "圆润"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "小巧"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "玲珑"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "粉嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "娇嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "秀气"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "精巧"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "莹润"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "青春"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "清纯"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "秀美"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "俏丽"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "动人"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "靓丽"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "优雅"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "迷人"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "大方"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "优美"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "活力"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "优雅"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "高贵"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "端庄"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "淑女"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "风情"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "迷人"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "妩媚"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "撩人"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "魅惑"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "小巧"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "娇小"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "玲珑"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "精致"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "迷你"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "袖珍"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "紧致"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "可爱"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "修长"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "纤长"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "优美"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "高贵"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "端庄"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "典雅"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "细长"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "放松"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "平静"
 
 [[entries]]
@@ -323,42 +323,42 @@ context = "摇摆"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "被迫"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "尴尬"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "窘迫"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "炫耀"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "挑逗"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "大胆"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "表演般"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "自信"
 
 [[entries]]
@@ -433,17 +433,17 @@ context = "紧绷"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|0_G_6"
+conditions = "selected.abilities.皮肤感度.level > 6"
 context = "敏感"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|0_G_6"
+conditions = "selected.abilities.皮肤感度.level > 6"
 context = "极敏"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|0_G_6"
+conditions = "selected.abilities.皮肤感度.level > 6"
 context = "超敏"
 
 [[entries]]
@@ -493,150 +493,150 @@ context = "脚丫"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "小脚"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "小足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "脚儿"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "小脚丫"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "肉脚"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "嫩脚"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "小脚"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "小足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "脚儿"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "秀足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "粉足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "玉足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "秀足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "美足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "美足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "秀足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "俏足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "丰足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "贵足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "骚足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "淫足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "小足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "迷你足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "袖珍足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "精巧足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|131_E_1"
+conditions = "selected.talents.小足 == 1"
 context = "娇足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "长足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "修足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "优足"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|132_E_1"
+conditions = "selected.talents.长足 == 1"
 context = "雅足"

@@ -86,83 +86,83 @@ conditions = "premises:high_1"
 context = "{character.name}的{penis}在{target.name}的{hair}中进进出出，每一次抽插都让发丝摩擦过敏感的龟头，带来一阵阵快感。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}的{penis}在熟睡中的{target.name}的{hair}间摩擦着，发出轻微的声响，睡梦中的{target.name}毫无察觉。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "熟睡的{target.name}丝毫不知道自己的{hair}正被{character.name}的{penis}摩擦蹭弄，包裹住肉棒的发丝随着动作微微颤动。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}将{penis}埋在沉睡中{target.name}的{hair}里，轻轻抽动享受着丝滑触感，少女依旧安静地睡着。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "熟睡中的{target.name}毫无知觉，{character.name}的{penis}在她的{hair}间来回摩擦，前端已经开始渗出液体。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}把{penis}夹在睡梦中{target.name}的{hair}之间，缓缓蹭动着，享受细腻的发丝包裹带来的快感。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{target.name}安睡着，全然不知自己的{hair}正裹着{character.name}的{penis}上下摩擦，带给对方无限快意。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "沉睡中的{target.name}发出均匀的呼吸声，{character.name}把{penis}插在她的{hair}中抽送，感受着发丝的摩擦。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}用{penis}拨弄着熟睡{target.name}的{hair}，在发丝间轻轻蹭动，享受着这种偷偷摸摸的快感。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "睡梦中的{target.name}浑然不觉自己的{hair}正被{character.name}的{penis}摩擦着，发丝间已沾上了些许黏液。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}将{penis}埋在熟睡{target.name}的{hair}中缓缓摩擦，少女的发丝随着动作轻轻颤动，还带着沐浴后的香气。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{target.name}装睡着，暗暗感受{character.name}的{penis}在自己的{hair}间摩擦，心跳加速却不敢睁开眼睛。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "明明已经醒来却假装熟睡的{target.name}能感觉到自己的{hair}被{character.name}的{penis}摩擦着，羞耻又兴奋。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}不知道{target.name}已经醒了，继续用{penis}在她的{hair}间抽送，而她则强忍着不发出声音。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "装睡的{target.name}感受着{character.name}用{penis}拨弄自己的{hair}，心中既羞耻又暗暗期待接下来会发生什么。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}的{penis}在{target.name}的{hair}间来回摩擦，她装睡着却能感觉到发丝被拉扯的微痛和对方的喘息声。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{target.name}维持着均匀的呼吸假装熟睡，实则清晰地感受着{character.name}的{penis}在自己{hair}间挺动的每一下。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "装睡的{target.name}能感觉到{character.name}把{penis}埋进自己的{hair}中抽动，前端分泌的液体沾湿了发丝。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}不断用{penis}摩擦{target.name}的{hair}，而她早已醒来，正紧闭双眼忍耐着难以言喻的复杂感受。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "虽然装睡，但{target.name}能清晰地感受到{character.name}的{penis}在自己{hair}间的每一次摩擦和抖动。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{target.name}假装熟睡着，任由{character.name}把{penis}夹在自己的{hair}中蹭动，脸上故作平静内心却波涛汹涌。"
 
 [[entries]]
@@ -326,163 +326,163 @@ conditions = "premises:t_unconscious_flag_5"
 context = "被催眠后的{target.name}对{character.name}视而不见，即使{penis}正在她的{hair}间来回摩擦也毫无反应。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{target.name}的身体动弹不得，只能任由{character.name}将{penis}插入她的{hair}间肆意摩擦，眼中充满了屈辱。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "被控制成木头人的{target.name}无法移动，只能眼睁睁地看着{character.name}用{penis}玩弄自己的{hair}而无力阻止。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}抓起被控制住的{target.name}的{hair}，用{penis}在其间来回摩擦，她虽心中抗拒却无法动弹。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{target.name}被控制成了木头人，只能任由{character.name}的{penis}在她的{hair}间来回蹭动，内心充满了羞耻。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "无法动弹的{target.name}只能用眼神表达抗拒，而{character.name}则肆意用{penis}在她的{hair}间摩擦。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "被控制的{target.name}身体僵硬如木偶，意识却清醒地感受着{character.name}的{penis}在自己{hair}间抽送的每一下。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}把{penis}埋入被控制成木头人的{target.name}的{hair}中摩擦，她眼中满是不甘却无法反抗。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{target.name}被控制住无法动弹，只能眼睁睁地看着{character.name}抓起自己的{hair}，用{penis}在其间来回摩擦。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "无法反抗的{target.name}看着{character.name}肆意用{penis}玩弄自己的{hair}，眼中满是屈辱和无奈。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "被控制成木头人的{target.name}内心清醒却身体僵硬，只能任由{character.name}的{penis}在自己{hair}间重复摩擦。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{target.name}被控制着主动将{character.name}的{penis}贴近自己的{hair}摩擦，内心却充满了羞耻和抗拒。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "被催眠的{target.name}违背内心意愿，热情地用自己的{hair}包裹{character.name}的{penis}来回摩擦，眼神中满是矛盾。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{target.name}在催眠控制下主动抓起自己的{hair}缠绕在{character.name}的{penis}上，心里却呐喊着停止。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "被控制的{target.name}嘴角挂着不自然的微笑，主动将{character.name}的{penis}埋入自己的{hair}中摩擦，内心却充满了抗拒。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{target.name}的身体在催眠下主动迎合，用自己的{hair}摩擦{character.name}的{penis}，同时说着违心的淫言秽语。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "被催眠控制的{target.name}热情地将{character.name}的{penis}贴在自己的{hair}上摩擦，眼中却透露出清醒时的羞耻。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{target.name}在催眠的作用下，主动将自己的{hair}缠绕在{character.name}的{penis}上来回摩擦，心中却是无尽的屈辱。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "被控制的{target.name}脸上挂着机械式的微笑，双手捧起自己的{hair}为{character.name}的{penis}服务，内心却在反抗。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{target.name}被催眠后身体变得格外主动，热情地用{hair}服侍着{character.name}的{penis}，眼神中却闪烁着清醒的痛苦。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "被控制的{target.name}违背内心意愿，热情地摇晃头部，让自己的{hair}不断刺激{character.name}的{penis}，内心却充满了抗拒。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}的{penis}在{target.name}的{hair}间来回摩擦着，{target.name}羞涩地低下头，不敢看向周围其他女性的目光，身体微微颤抖。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{target.name}的{hair}包裹着{character.name}粗壮的{penis}，她红着脸尝试用身体挡住这淫秽的画面，不想被其他人看到这羞耻的一幕。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "在众人的注视下，{character.name}握着自己的{penis}在{target.name}的{hair}中抽送，让她羞得几乎要钻到地底下去，脸颊燃烧般通红。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{target.name}闭着眼睛承受着{penis}在她{hair}间的摩擦，因为周围有其他女性在场，她咬着嘴唇试图隐藏自己的羞耻感。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}用{penis}拍打着{target.name}的{hair}，她不敢抬头，只能忍受着周围其他人审视的目光，全身因为羞耻而微微发抖。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{target.name}的{hair}被{character.name}的{penis}弄得乱糟糟的，她羞耻地想要躲开众人的视线，却被{character.name}牢牢固定在原地继续这淫靡的行为。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}的{penis}在{target.name}柔顺的{hair}中进出，每当她察觉到其他女性的目光，就会紧闭双眼，脸上露出无地自容的表情。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{target.name}试图用手挡住{character.name}的{penis}在她{hair}间的活动，不想让其他女性看到这种羞人的情景，但却被{character.name}强制拉开。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "在房间内其他人的注视下，{penis}被{target.name}的{hair}包围着，她紧张地缩成一团，希望能减少自己暴露在众人视线中的面积。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}的{penis}插在{target.name}的{hair}中摩擦，她的脸涨得通红，感受到其他女性的目光时，羞耻感让她几乎要哭出来。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}的{penis}在{target.name}丝滑的{hair}中抽动着，她抬起头向周围的女性骄傲地展示着，故意发出浪荡的呻吟声引起大家注意。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{target.name}的{hair}紧紧缠绕着{character.name}粗壮的{penis}，她挑逗地看向其他女性，展示着自己独特的服务方式，脸上带着炫耀的表情。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "在众人瞩目下，{target.name}主动用{hair}套弄{character.name}的{penis}，享受着被观看的刺激，还不时对其他女性眨眼，展示着自己的淫荡技巧。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{target.name}的{hair}摩擦着{penis}，她故意大声呻吟着，确保每个在场的女性都能看清楚她是如何用头发取悦{character.name}的。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}粗大的{penis}在{target.name}的{hair}间穿梭，她兴奋地向其他女性展示这淫靡的景象，享受着众人羡慕和嫉妒的目光。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{target.name}将{character.name}的{penis}埋在{hair}中摩擦，同时挑衅地看着周围的女性们，仿佛在炫耀自己对{character.name}的独特控制力。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}的{penis}被{target.name}的{hair}缠绕着，她调整姿势让所有人都能欣赏到这淫秽的画面，脸上洋溢着被注视的快感。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{target.name}摇晃着头部让{hair}刺激{character.name}的{penis}，大胆地朝其他女性们展示自己的淫荡技巧，享受着成为焦点的快感。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "在众目睽睽之下，{target.name}用{hair}服侍着{character.name}硬挺的{penis}，刻意夸张地表现出享受的样子，想让其他女性感到嫉妒。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}的{penis}在{target.name}的{hair}间磨蹭着，她不但不遮掩，反而主动邀请其他女性靠近观看，展示她与{character.name}之间的亲密关系。"
 
 [[entries]]
@@ -526,123 +526,123 @@ conditions = "premises:t_npc_active_h"
 context = "{target.name}自信地摇摆着头部，让{hair}不断摩擦{character.name}坚挺的{penis}，掌握着主动权，看着{character.name}逐渐沉沦于她创造的快感中。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}强迫被锁链束缚的{target.name}接受{penis}插入她的{hair}，她眼中满是屈辱和厌恶，却无力反抗这种下流的侮辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "被监禁的{target.name}的{hair}被迫包裹着{character.name}的{penis}，她眼中充满恐惧和仇恨，却因为颈上的锁链而无法逃离这种羞辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}抓住{target.name}的头强迫她用{hair}摩擦自己的{penis}，被囚禁的她泪流满面，却不得不忍受这种侮辱性的对待。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{target.name}被迫承受{character.name}的{penis}在她{hair}间抽动，她愤怒地扭过头想要反抗，却被手腕上的镣铐限制住了全部动作。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}的{penis}粗暴地在{target.name}的{hair}中摩擦着，她被迫跪在地上，眼中闪烁着恨意，憎恶着自己被监禁的无力处境。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "被监禁的{target.name}忍受着{character.name}用{penis}亵玩她的{hair}，她紧闭双眼，试图在精神上逃离这种屈辱的境地，却无济于事。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}将{penis}埋入被囚禁的{target.name}的{hair}中肆意妄为，她无法反抗只能忍受，眼中满是屈辱与不甘的泪水。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{target.name}的{hair}被迫服务着{character.name}的{penis}，她带着镣铐的双手握成拳头，充满仇恨地承受着这种无法摆脱的侮辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}强迫链子拴着的{target.name}用{hair}摩擦自己的{penis}，她屈辱地颤抖着，却因无法挣脱而不得不忍受这种耻辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{target.name}被{character.name}按在地上，{penis}粗暴地插入她的{hair}中，尽管她的眼神中充满了怨恨，却只能在镣铐的束缚下屈服。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{target.name}麻木地让{character.name}的{penis}在她的{hair}间摩擦，已经不再有强烈的反抗，只是沉默地接受了这种作为囚犯的命运。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "被监禁已久的{target.name}任由{character.name}用{penis}玩弄她的{hair}，她的眼神已经失去了当初的锐气，只剩下认命的顺从。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}的{penis}在{target.name}的{hair}中来回磨蹭，她已经习惯了这种羞耻，只是偶尔微微皱眉，表情中混合着麻木和隐忍。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "长期监禁使{target.name}已经不再强烈抵抗，默默地让{character.name}的{penis}在她的{hair}间进出，眼神中透露出妥协和屈服。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{target.name}低着头让{character.name}用{penis}亵玩她的{hair}，曾经的抵抗已化为顺从，接受了自己作为性奴的事实。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}的{penis}插在{target.name}的{hair}中抽动，她已经学会了不再反抗，只是消极地承受着，眼中带着一丝复杂的情绪。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "被囚禁许久的{target.name}已经不再挣扎，静静地让{character.name}将{penis}埋入她的{hair}中，表情麻木却又藏着一丝羞耻。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{target.name}的{hair}包裹着{character.name}的{penis}，她不再有最初的抗拒，而是以一种认命的态度承受着，偶尔还会因习惯而轻轻配合。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "带着镣铐的{target.name}让{character.name}的{penis}在她{hair}间进出，虽然内心仍有抗拒，但长期的囚禁已让她学会了顺从与接受。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}将{penis}插入{target.name}的{hair}中摩擦，她眼神空洞，身体微微颤抖，但已不再反抗，接受了这种耻辱的对待。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "完全顺从的{target.name}主动用{hair}服务{character.name}的{penis}，尽管带着锁链，却热情地摇晃着头部取悦主人，眼中充满感激和崇拜。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{target.name}跪在地上，虔诚地将{character.name}的{penis}埋入自己的{hair}中，感谢主人的恩赐，甚至主动摇晃头部增加刺激。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "尽管身上带着锁链，{target.name}却欣喜地用{hair}缠绕着{character.name}的{penis}，眼神中充满对主人的渴望和服从，努力取悦着她的监禁者。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "被彻底调教的{target.name}主动将{hair}缠绕在{character.name}的{penis}上，虔诚地服务着，感谢主人对她的特殊关照和使用。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}的{penis}在{target.name}的{hair}中进出，她尽管戴着项圈却满脸幸福，感激主人选择用她的头发满足欲望。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "彻底顺从的{target.name}激动地用{hair}包裹着{character.name}的{penis}，乞求主人的宠幸，眼神中流露出对这种特殊使用方式的喜悦。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{target.name}虽被锁链束缚，却欣喜若狂地让{character.name}的{penis}在她的{hair}间抽送，甚至请求主人更粗暴地对待她。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "完全崩坏的{target.name}跪伏在地，满脸幸福地让{character.name}用{penis}玩弄她的{hair}，感谢主人赐予的任何形式的接触。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}将{penis}插入{target.name}的{hair}中，她尽管带着镣铐却无比快乐，主动摇晃着头部增加刺激，渴望取悦她的主人。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "彻底沦为性奴的{target.name}在锁链允许的范围内主动移动，让{character.name}的{penis}能更好地在她{hair}间抽送，眼中满是服从和感激。"
 
 [[entries]]
@@ -726,161 +726,161 @@ conditions = "premises:h_in_bathroom"
 context = "在雾气腾腾的浴室里，{character.name}将{penis}埋入{target.name}滴着水的{hair}中，湿润和温暖的感觉让他的快感不断攀升。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}的{penis}被{target.name}的{hair}缠绕着摩擦，两人装作正常交谈，而周围的人却好像察觉到了什么，投来疑惑的目光。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}故作镇定地与他人交谈，而{penis}却正被{target.name}的{hair}包裹着上下套弄，引来旁人狐疑的眼神。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}摆动着头部，让{hair}更紧地贴合{character.name}的{penis}，周围的人似乎感到氛围有些异常，不时张望着。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}的{penis}在{target.name}的{hair}中来回磨蹭，两人明目张胆地享受着这种刺激，只靠最低限度的掩饰来遮蔽行为。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}假装整理头发，实则用{hair}缠绕着{character.name}的{penis}轻轻挤压，引得路人频频侧目察看。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}控制不住呼吸变重，{penis}被{target.name}柔滑的{hair}揉搓着，周围人已经开始窃窃私语，似乎注意到了异样。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}的{hair}像灵蛇般缠绕着{character.name}的{penis}滑动，两人若无其事地交谈，但周围人的目光已经开始聚集。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}的{penis}在{target.name}的{hair}间摩擦出微妙的快感，两人故作正常，但周围人的表情已经显露出些许疑惑。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}转动着脖子，让{hair}给予{character.name}的{penis}不同角度的刺激，引得路过的人纷纷侧目而视。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}的{penis}被{target.name}柔软的{hair}包裹着轻轻挤压，两人虽然表面如常，但已经有人开始注意到这诡异的氛围。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}躲在隐蔽处，用{hair}缠绕着{character.name}的{penis}上下套弄，而{character.name}则装作若无其事地与他人交谈。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}站在人前表情自若，实则他的{penis}正被藏在暗处的{target.name}用{hair}包裹着摩擦，给予极致的快感。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}躲在旁边，用{hair}摩擦着{character.name}的{penis}，而{character.name}却表面镇定地与同事讨论工作。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}强忍快感继续说话，实际上他的{penis}正被躲在旁边的{target.name}用{hair}缠绕着刺激。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}隐身在遮盖物后，用{hair}套弄着{character.name}的{penis}，而{character.name}则站在旁边与其他人谈笑风生。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}的{penis}被藏在桌下的{target.name}用{hair}缠绕抚弄，他却挣扎着保持面部表情不变，继续做事。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}躲在旁边，用{hair}勾缠着{character.name}的{penis}，而{character.name}则强装镇定地应对着周围的其他人。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}的{penis}被隐藏在旁边的{target.name}用{hair}温柔地摩擦着，他却面不改色地和其他干员交谈。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}藏身在旁边，用{hair}包裹着{character.name}的{penis}轻轻套弄，而{character.name}则表现得一切如常应对着干员。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}的{penis}被躲在旁边的{target.name}用{hair}缠绕着揉搓，他却强忍快感继续与他人保持正常对话。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}藏在暗处，用{penis}摩擦着{target.name}垂落的{hair}，而{target.name}则表面镇定地与周围人交谈着。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}站在众人面前若无其事，实则垂下的{hair}正被藏在身后的{character.name}用{penis}来回磨蹭。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}躲在桌下，用{penis}摩擦着{target.name}垂落的{hair}，而{target.name}却强装淡定地继续做事。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}面色如常地话和其他干员聊天，身后却藏着{character.name}，他的{penis}正在{target.name}的{hair}中滑动。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}藏在隐蔽处，伸出{penis}在{target.name}的{hair}间来回磨蹭，而{target.name}则装作正在这里整理头发。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}的{hair}被躲在身后的{character.name}用{penis}缠绕着摩擦，她却表情自若地与其他干员交谈着。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}隐藏在隐蔽处，用{penis}蹭弄着{target.name}的{hair}末端，而{target.name}却正常地进行着自己手头的工作。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}假装低头看终端，实则她的{hair}正被藏在桌下的{character.name}用{penis}来回磨擦，享受着这份快感。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}躲在旁边，伸出{penis}在{target.name}的{hair}间穿梭磨蹭，而{target.name}则镇定地在终端中查看自己的工作情况。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{target.name}的{hair}被躲在旁边的{character.name}用{penis}轻轻摩擦着，她却假装无事发生，继续与同事讨论。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}和{target.name}躲在角落，{character.name}的{penis}被{target.name}的{hair}缠绕着摩擦，两人极力忍住声音，生怕被附近的人发现。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "躲在书架后面的两人，{target.name}用{hair}包裹着{character.name}的{penis}轻轻套弄，听到脚步声时立刻停下动作屏住呼吸。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}和{target.name}藏在暗处，{character.name}的{penis}在{target.name}的{hair}间来回滑动，两人听着外面的动静小心翼翼。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "两人躲在桌底下，{target.name}的{hair}紧紧缠绕着{character.name}的{penis}，外面有人走过时两人都屏住了呼吸。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}和{target.name}躲在狭小的空间中，{character.name}的{penis}被{target.name}柔滑的{hair}包裹着摩擦，外面的谈话声让两人格外紧张。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "藏在隐蔽处里的两人，{target.name}用{hair}给予{character.name}的{penis}刺激，走廊上的脚步声让他们心跳加速。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}和{target.name}躲在隐蔽处，{character.name}的{penis}在{target.name}的{hair}中进出磨蹭，外面的说话声让两人不敢发出任何声响。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "两人藏身在窄小的隐蔽藏身处内，{target.name}的{hair}缠绕着{character.name}的{penis}来回滑动，四周的动静让他们全神贯注。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}和{target.name}躲在遮盖物下，{character.name}的{penis}被{target.name}的{hair}轻柔地包裹着，周围人的脚步声让他们格外警觉。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "两人隐藏在隐蔽的角落，{target.name}的{hair}缠绕着{character.name}的{penis}缓慢摩擦，外面的说笑声让他们紧张到极点。"

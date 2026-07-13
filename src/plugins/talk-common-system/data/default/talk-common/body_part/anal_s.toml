@@ -63,112 +63,112 @@ context = "包裹"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "幼小"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "稚嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "紧小"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "狭小"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "幼嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "细嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "幼童"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "娇嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "紧窄"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "小巧"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "粉嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "紧小"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "紧致"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "幼嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "嫩滑"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "娇嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "稚嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "优美"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "青春"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "紧致"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "活力"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "柔嫩"
 
 [[entries]]
@@ -178,72 +178,72 @@ context = "禁忌"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "丰满"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "有经验"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "魅力"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "老练"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "纯熟"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "丰满"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "熟练"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "纯熟"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "熟练"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "丰满"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "禁忌"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "偷情"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "松弛"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "半开"
 
 [[entries]]
@@ -273,57 +273,57 @@ context = "无感"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "被迫"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "大张"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "尴尬"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "窘迫"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "遮掩"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "炫耀"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "挑逗"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "大胆"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "表演般"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "自信"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "展示"
 
 [[entries]]
@@ -333,32 +333,32 @@ context = "紧绷"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_1"
+conditions = "selected.talents.肛门处女 == 1"
 context = "处女"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_1"
+conditions = "selected.talents.肛门处女 == 1"
 context = "初次"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_1"
+conditions = "selected.talents.肛门处女 == 1"
 context = "纯洁"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_1"
+conditions = "selected.talents.肛门处女 == 1"
 context = "未开发"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_1"
+conditions = "selected.talents.肛门处女 == 1"
 context = "紧闭"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_1"
+conditions = "selected.talents.肛门处女 == 1"
 context = "生涩"
 
 [[entries]]
@@ -388,107 +388,107 @@ context = "适应中"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_LE_3"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level <= 3"
 context = "稚嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_LE_3"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level <= 3"
 context = "紧致"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_LE_3"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level <= 3"
 context = "已开发"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_LE_3"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level <= 3"
 context = "初步适应"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_G_3&CVP_A2_A|10_LE_6"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 3&selected.abilities.后穴扩张.level <= 6"
 context = "有经验"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_G_3&CVP_A2_A|10_LE_6"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 3&selected.abilities.后穴扩张.level <= 6"
 context = "适应"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_G_3&CVP_A2_A|10_LE_6"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 3&selected.abilities.后穴扩张.level <= 6"
 context = "熟练"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_G_6"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6"
 context = "丰富经验"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_G_6"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6"
 context = "熟练"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_G_6"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6"
 context = "充分开发"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|1_E_0&CVP_A2_A|10_G_6"
+conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6"
 context = "轻松适应"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|5_LE_3"
+conditions = "selected.abilities.后穴感度.level <= 3"
 context = "低感度"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|5_LE_3"
+conditions = "selected.abilities.后穴感度.level <= 3"
 context = "平淡"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|5_LE_3"
+conditions = "selected.abilities.后穴感度.level <= 3"
 context = "反应微弱"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|5_G_3&CVP_A2_A|5_LE_6"
+conditions = "selected.abilities.后穴感度.level > 3&selected.abilities.后穴感度.level <= 6"
 context = "适度感度"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|5_G_3&CVP_A2_A|5_LE_6"
+conditions = "selected.abilities.后穴感度.level > 3&selected.abilities.后穴感度.level <= 6"
 context = "明显快感"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|5_G_3&CVP_A2_A|5_LE_6"
+conditions = "selected.abilities.后穴感度.level > 3&selected.abilities.后穴感度.level <= 6"
 context = "愉悦"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|5_G_6"
+conditions = "selected.abilities.后穴感度.level > 6"
 context = "极敏感"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|5_G_6"
+conditions = "selected.abilities.后穴感度.level > 6"
 context = "敏感"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|5_G_6"
+conditions = "selected.abilities.后穴感度.level > 6"
 context = "强烈快感"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_A|5_G_6"
+conditions = "selected.abilities.后穴感度.level > 6"
 context = "剧烈反应"
 
 [[entries]]
@@ -538,75 +538,75 @@ context = "屁眼"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "小后穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "小菊穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "小肠道"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "小后庭"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "小菊花"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "幼穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "小后穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "小菊穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "萝莉穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "嫩穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "粉穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "肥穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "骚穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "骚穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "淫穴"

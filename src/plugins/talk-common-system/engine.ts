@@ -1,4 +1,6 @@
 import { premiseRegistry } from '../../core/premise-registry'
+import { evaluateCondition } from '../../core/condition'
+import { gameContext } from '../../core/game-context'
 import type { CommonTextIndex, CommonTextEntry } from './types'
 
 export type VariableData = Record<string, {
@@ -44,18 +46,44 @@ export class CommonTextsEngine {
   }
 
   private parseConditions(raw: string): string[] {
-    const prefix = 'premises:'
-    if (raw.startsWith(prefix)) {
-      return raw.slice(prefix.length).split('&').filter(Boolean)
+    if (raw.startsWith('premises:')) {
+      // 注释：保持 premises: 前缀，逐段保留
+      return raw.slice(9).split('&').filter(Boolean).map(s => s.includes('==') || s.includes('>') || s.includes('<') ? s : `premises:${s}`)
     }
     return [raw]
   }
 
   private pickEntry(entries: CommonTextEntry[], targetId: string | null): string | null {
-    const ctx = { selectedCharacterId: targetId }
+    const premiseCtx = { selectedCharacterId: targetId }
     const matched = entries.filter(e => {
       if (e.conditions.length === 0) return true
-      return premiseRegistry.evaluate(e.conditions, ctx)
+      for (const cond of e.conditions) {
+        if (cond.startsWith('premises:')) {
+          // 注释：premise 格式 → premiseRegistry 求值
+          // 注意：premises: 后可能混有条件表达式（由转换脚本生成）
+          const parts = cond.slice(9).split('&').filter(Boolean)
+          // 注释：逐段检查——premise ID 走 premiseRegistry，其他走表达式
+          for (const part of parts) {
+            if (part.includes('==') || part.includes('>=') || part.includes('<=') || part.includes('>') || part.includes('<')) {
+              // 注释：表达式部分 → evaluateCondition
+              try {
+                const gc = gameContext.getContext()
+                if (!evaluateCondition(part, gc)) return false
+              } catch { return false }
+            } else {
+              // 注释：premise ID → premiseRegistry
+              if (!premiseRegistry.evaluate([part], premiseCtx)) return false
+            }
+          }
+        } else {
+          // 注释：纯条件表达式
+          try {
+            const gc = gameContext.getContext()
+            if (!evaluateCondition(cond, gc)) return false
+          } catch { return false }
+        }
+      }
+      return true
     })
     if (matched.length === 0) return null
     return matched[Math.floor(Math.random() * matched.length)].context

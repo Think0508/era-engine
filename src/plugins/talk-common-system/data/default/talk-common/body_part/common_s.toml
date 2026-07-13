@@ -23,37 +23,37 @@ context = "滑嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "幼女"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "稚嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "娇嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "selected.talents.幼女 == 1"
 context = "幼嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|103_E_1"
+conditions = "selected.talents.少女 == 1"
 context = "萝莉"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "少女"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|104_E_1"
+conditions = "selected.talents.処女 == 1"
 context = "青涩"
 
 [[entries]]
@@ -88,72 +88,72 @@ context = "乱伦"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "大姐姐"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "性感"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|105_E_1"
+conditions = "selected.talents.成人 == 1"
 context = "成熟"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "熟女"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "成熟"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|106_E_1"
+conditions = "selected.talents.淑女 == 1"
 context = "性感"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "人妻"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "已婚"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "背德"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "诱人"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "性感"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "妖娆"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "淫荡"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_T|107_E_1"
+conditions = "selected.talents.人妻 == 1"
 context = "放荡"
 
 [[entries]]
@@ -188,52 +188,52 @@ context = "无意识"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "无防备"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "熟睡"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "梦中"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "沉睡"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "装睡"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "假寐"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "默许"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "微颤"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "轻颤"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "紧张"
 
 [[entries]]
@@ -368,92 +368,92 @@ context = "放松"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "僵硬"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "动不了"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "不抵抗"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "被控制"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "木头人"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "禁锢"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "主动"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "积极"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "违心"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "渴望"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "被操控"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "不由己"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "羞涩"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "害臊"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "紧张"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "害羞"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "羞耻"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "享受"
 
 [[entries]]
@@ -488,102 +488,102 @@ context = "迎合"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_1"
+conditions = "premises:FALL_LEVEL_E_1"
 context = "懵懂"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_1"
+conditions = "premises:FALL_LEVEL_E_1"
 context = "迷茫"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_1"
+conditions = "premises:FALL_LEVEL_E_1"
 context = "悸动"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_1"
+conditions = "premises:FALL_LEVEL_E_1"
 context = "期待"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_1"
+conditions = "premises:FALL_LEVEL_E_1"
 context = "好奇"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_1"
+conditions = "premises:FALL_LEVEL_E_1"
 context = "茫然"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_2"
+conditions = "premises:FALL_LEVEL_E_2"
 context = "暗恋"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_2"
+conditions = "premises:FALL_LEVEL_E_2"
 context = "羞涩"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_2"
+conditions = "premises:FALL_LEVEL_E_2"
 context = "含情"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_2"
+conditions = "premises:FALL_LEVEL_E_2"
 context = "期待"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_2"
+conditions = "premises:FALL_LEVEL_E_2"
 context = "犹豫"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_2"
+conditions = "premises:FALL_LEVEL_E_2"
 context = "思慕"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_3"
+conditions = "premises:FALL_LEVEL_E_3"
 context = "恋人"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_3"
+conditions = "premises:FALL_LEVEL_E_3"
 context = "爱意"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_3"
+conditions = "premises:FALL_LEVEL_E_3"
 context = "恋爱"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_3"
+conditions = "premises:FALL_LEVEL_E_3"
 context = "热恋"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_3"
+conditions = "premises:FALL_LEVEL_E_3"
 context = "温柔"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_3"
+conditions = "premises:FALL_LEVEL_E_3"
 context = "恋慕"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_4"
+conditions = "premises:FALL_LEVEL_E_4"
 context = "爱侣"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_4"
+conditions = "premises:FALL_LEVEL_E_4"
 context = "默契"
 
 [[entries]]

@@ -86,841 +86,841 @@ conditions = "premises:high_1"
 context = "唇齿湿润口腔温暖，散发诱人气息的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "内壁光滑稚嫩，对性刺激几乎没有感觉的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "牙齿细小整齐，舌头对性刺激几乎没有反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "异常紧小干燥，对入侵物的性刺激没有反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唾液分泌不足，内壁对摩擦感知迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "咽喉空间狭小紧致，但对性刺激几乎没有反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "樱桃般小巧的嘴唇内，舌头被触碰也没有感觉到性快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "内腔感觉迟钝，唾液稀少，喉咙进入困难的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "内壁光滑细嫩，对深入探索几乎没有反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "小巧干净，对任何性刺激都几乎没有反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "内腔细嫩紧致，却对性刺激几乎没反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "湿润温暖，舌头对触碰有明显快感反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内壁柔软，对轻轻舔舐就有反应的敏感{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "小巧的嘴唇内藏着敏感的舌头，被刺激会分泌唾液的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "咽喉黏膜分布着敏感点，被轻触就有快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内腔湿热紧致，对摩擦产生明显性快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇齿唾液丰富，被舔舐时会流出更多液体的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "舌头柔软多汁，轻触就有明显反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内壁细嫩湿润，对性刺激能产生明显反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "咽部黏膜敏感，被舔舐时全身会微微发抖的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内腔温暖湿润，轻轻吸吮就有明显快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 6"
 context = "小嘴异常敏感，轻轻触碰就会全身颤抖的极致{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 6"
 context = "咽喉神经过度发达，被侵犯就会引起强烈快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 6"
 context = "幼嫩内腔黏膜高度敏感，被侵犯就会达到口部高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 6"
 context = "舌头和唇齿黏膜神经异常发达，轻触就引起强烈性反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 6"
 context = "嘴儿湿热多汁，被轻触就会达到强烈高潮的极品{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 6"
 context = "唇瓣和舌头异常敏感，轻轻刺激就会浑身发抖的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 6"
 context = "咽部敏感度极高，被侵犯就会分泌大量唾液的幼嫩{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 6"
 context = "内腔过度敏感，对任何刺激都会产生电击般快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 6"
 context = "唇舌黏膜极度敏感，稍微刺激就会引起全身痉挛的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|102_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.幼女 == 1&selected.abilities.口喉感度.level > 6"
 context = "小小的嘴巴内神经密布，轻微刺激就会引起强烈高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "内壁粉红稚嫩，舌头柔软却不够灵活的青涩{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "牙齿整齐细小，湿润度适中的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "双唇樱桃般小巧，对刺激不太敏感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "内壁粉嫩柔软，但被侵入时只有轻微反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "对刺激的反应十分有限，湿润度不足的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇舌青涩，温暖却感觉迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "内壁光滑却唾液分泌不够充分的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "空间小巧却对深入探索反应迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "内部柔软紧致却缺乏敏感点的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "双唇粉嫩，舌头温度适中的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内壁湿润红嫩，舌头灵活敏感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "温暖潮湿，舌尖敏感灵活的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇瓣粉嫩柔软，敏感度适中的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "樱桃咽喉内壁湿润光滑，被摩擦时会分泌更多唾液的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内腔黏膜幼嫩，对侵入有明显快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇舌空间湿热紧致，被吮吸时会产生酥麻感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "嘴儿唾液丰富，内壁敏感多汁的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "青涩却已开始觉醒情欲的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇齿内分布着足够多的快感神经的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "咽部内壁光滑温热，湿润敏感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 6"
 context = "异常敏感，舌尖被轻触就引起强烈电流般快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 6"
 context = "粉嫩内腔黏膜，布满了过度敏感的神经末梢的性爱专用{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 6"
 context = "咽喉高度敏感，轻微刺激就会全身酥麻的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 6"
 context = "樱桃小嘴内的每一处黏膜都异常敏感的极致{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 6"
 context = "充满过度敏感神经的，湿热紧致的淫荡{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 6"
 context = "唇齿内壁娇嫩过敏，连唾液都变得粘稠的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 6"
 context = "内腔黏膜极度敏感，被深入时会被性快感刺激到流泪的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 6"
 context = "唾液分泌旺盛的咽部内壁敏感点密集的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 6"
 context = "嘴唇神经异常敏感，被刺激会导致口部高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|103_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 6"
 context = "樱口感觉神经过度发达，轻微刺激就会高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "青涩不敏感，对侵入反应有限的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "双唇丰满，却对摩擦刺激感知迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "湿润度正常但舌头不够灵活的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇形优美，但还没有觉醒摩擦快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "内壁湿润温暖，却对性爱刺激反应平淡的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇齿黏膜光滑，对快感反应迟缓的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "舌头柔软但对深入刺激几乎无反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "温暖但干燥，唾液分泌不足的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "喉咙深处对冲击毫无感觉的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇瓣动作生硬，对性刺激没有足够反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内壁敏感湿润，舌头灵活有力的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "粉嫩红唇包裹的湿热多汁敏感{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "灵巧的舌头能主动缠绕吮吸的敏感{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唾液丰富，对摩擦有快感反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "湿润温暖，被侵入时会轻微颤抖的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "喉咙深处对冲击有明显反应的敏感{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内腔肌肉熟练，湿热紧致的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "被侵入时会发出满足呻吟的敏感{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "舌头布满细密感觉神经的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇舌协调灵活，能产生快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 6"
 context = "极度敏感，轻微刺激就会浑身颤抖的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 6"
 context = "性感红唇内布满超敏感神经的极致{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 6"
 context = "舌尖每一处都是快感源点的极敏感{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 6"
 context = "内腔内壁稍微触碰就会引发强烈快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 6"
 context = "唾液不断泛滥，随时处于高潮边缘的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 6"
 context = "喉咙深处对冲击极度敏感的淫荡{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 6"
 context = "舌头如同阴蒂般敏感多汁的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 6"
 context = "轻易就可以抵达唇部高潮的极度敏感{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 6"
 context = "被深入时会全身痉挛抽搐的性爱超敏感{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|104_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level > 6"
 context = "舌尖的每一次吮吸都能带来灭顶快感的极品{mouth_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_LE_3"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
 context = "唇瓣小巧紧闭，舔舐反应迟钝的女儿口腔"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_LE_3"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
 context = "牙齿整齐干净，对摩擦感知迟缓的女儿小嘴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_LE_3"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
 context = "唾液分泌不足，对侵入几无感觉的亲生女儿嘴巴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_LE_3"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
 context = "咽喉湿润度不足，对深入刺激不敏感的女儿嘴穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_LE_3"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
 context = "内壁光滑却感觉迟钝，对扩张无反应的女儿内腔"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_LE_3"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
 context = "舌头柔软却不灵活，对触碰反应平淡的亲女儿肉洞"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_LE_3"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
 context = "喉咙狭窄干燥，对深入缺乏快感的亲生女儿口穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_LE_3"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
 context = "唇齿黏膜稚嫩，但对侵犯几无感觉的女儿樱唇"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_LE_3"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
 context = "温暖却对摩擦没有快感反应的亲女儿嘴儿"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_LE_3"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
 context = "内部柔软紧致，却对性刺激反应迟钝的女儿唇舌"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇舌湿润柔软，对轻舔就有反应的女儿敏感口腔"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "咽喉黏膜湿滑敏感，被侵入会颤抖的女儿小嘴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内壁光滑湿润，舔舐会流出更多唾液的女儿嘴巴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内腔内壁分布着明显的敏感带的亲女儿口穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "舌头柔软灵活，品尝时会有明显反应的女儿嘴穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "喉咙湿润有弹性，被深入能产生快感的女儿肉洞"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唾液分泌丰富，被占满时会有愉悦感的亲生女儿樱唇"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇齿温度较高，舌头对刺激敏感的亲女儿肉洞"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "咽部内壁柔嫩敏感，被侵犯时会发出呻吟的女儿嘴儿"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "湿热紧致，唾液带着甜味的敏感女儿唇舌"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
 context = "极度敏感，轻触就会引起强烈颤抖的女儿淫嘴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
 context = "舌头布满密集神经，轻微刺激就会高潮的亲生女儿咽喉"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
 context = "内腔黏膜过度敏感，被侵入就会痉挛的女儿肉穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
 context = "喉咙深处异常敏感，高潮时会紧缩的女儿嘴巴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
 context = "唇齿每一处都布满敏感点的极品女儿嘴穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
 context = "舌头和内腔内壁异常灵敏，轻触就颤抖的亲女儿口穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
 context = "唾液过度分泌，被舔舐就会达到高潮的女儿淫嘴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
 context = "咽部神经过度发达，被侵犯就会流水的亲生女儿肉洞"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
 context = "喉咙极度敏感，深入时会引发全身痉挛的女儿樱唇"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&CVP_A2_A|100_G_6"
+conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
 context = "嘴儿湿热多汁，轻微刺激就会高潮连连的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇舌动作僵硬，对刺激感知迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level <= 3"
 context = "温度适宜但湿润度不足，对深入刺激反应有限的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level <= 3"
 context = "咽喉黏膜略显青涩，对舔舐刺激反应平淡的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level <= 3"
 context = "红唇丰满却对刺激不太有快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇齿湿润度正常但对摩擦无明显感觉的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇形性感却对舌尖刺激毫无反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level <= 3"
 context = "技巧纯熟但嘴儿感官迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level <= 3"
 context = "喉咙深处紧致但几乎感觉不到刺激的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唾液分泌正常但对口交几乎没有快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇形性感却内腔快感迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇舌灵活敏感，对深入能产生明显快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "湿润温暖，喉咙对抽插反应良好的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "咽喉黏膜敏感，舌尖能主动寻找快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "丰满红唇包裹着敏感的，会自动收缩的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "内腔湿热紧致，对摩擦有良好反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唾液分泌丰富，对舔舐反应明显的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "口技熟练且自身能获得充分快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "喉咙柔软湿润，对深入冲击有快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "舌尖灵活，唇齿黏膜有足够敏感度的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "技巧娴熟且体验良好，会主动吸吮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 6"
 context = "异常敏感的口腔黏膜，轻触就会颤抖的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 6"
 context = "舌尖过度敏感，轻微刺激就能口喉高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 6"
 context = "咽喉内壁布满敏感点，被侵犯就会失神的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 6"
 context = "内腔神经过度发达，深喉就会潮吹的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 6"
 context = "喉咙极度敏感，插入就会全身痉挛的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 6"
 context = "唾液腺异常发达，被刺激就会湿透的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 6"
 context = "唇齿敏感度过高，轻舔就能高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 6"
 context = "唇舌过度敏感，被入侵就会浑身发抖的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 6"
 context = "嘴儿快感神经密布，能体验极致高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|105_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.成人 == 1&selected.abilities.口喉感度.level > 6"
 context = "内腔刺激就能轻易达到高潮的极品淫荡{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "成熟丰满的红唇却对刺激感知迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "咽喉黏膜温度适宜，但对性爱快感钝感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "舌头灵活熟练却对被刺激几乎没反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唾液分泌正常但对深处侵入无明显感觉的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "喉咙经验丰富但被刺激时几乎无快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇齿动作纯熟但自身感觉缺失的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "嘴儿内壁柔软却对摩擦几乎没体验的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "喉咙深度适宜但对冲击无感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "舌头动作灵活但咽部被填满时无感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level <= 3"
 context = "温度湿度适中但感觉神经迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "口技娴熟且能自我满足的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "丰满的红唇包裹着对刺激敏感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "成熟熟练的舌头能主动寻找快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "喉咙经验丰富且对深入有明显反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "咽喉黏膜分布着敏感带的熟练熟女内腔"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唾液分泌充足，被舔舐时会兴奋的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇齿内壁富有弹性，对摩擦反应良好的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "既能取悦对方也能满足自己的湿热{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "老练技巧与自身快感并存的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "喉咙深处紧致湿润，对冲击有良好体验的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 6"
 context = "过度敏感，轻度刺激就能湿透的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 6"
 context = "舌头敏感至极，稍微刺激就能引发强烈高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 6"
 context = "喉咙异常敏感，深入就会失控痉挛的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 6"
 context = "内腔神经密集，侵入就会潮喷的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 6"
 context = "丰满红唇包裹着的极度敏感的熟女淫荡{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 6"
 context = "唾液分泌过度旺盛，唇齿高潮会流水的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 6"
 context = "嘴儿内壁每一寸都敏感至极的极品{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 6"
 context = "成熟咽部布满神经末梢，轻触就会高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 6"
 context = "口喉被深入时会痉挛抽搐到失神的极品{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|106_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.淑女 == 1&selected.abilities.口喉感度.level > 6"
 context = "喉咙深处极度敏感，能带来极致高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level <= 3"
 context = "经验丰富但对自身快感迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level <= 3"
 context = "技巧纯熟却对口交刺激几乎无感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level <= 3"
 context = "舌头配合度高但自身快感缺失的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇舌动作熟练但对被侵入感觉平淡的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level <= 3"
 context = "内腔湿润度适中但感觉神经迟钝的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level <= 3"
 context = "喉咙深度适宜但对冲击无明显反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level <= 3"
 context = "丰满诱人的红唇但内部感觉缺乏的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唇齿温度适中但对摩擦几乎无感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level <= 3"
 context = "唾液分泌量正常但对吮吸无反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_LE_3"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level <= 3"
 context = "口交取悦技术高超但自身享受有限的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "口技娴熟且自身能获得明显快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇舌熟练灵活，对被侵入有敏感反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "湿润温暖的咽喉内壁分布着敏感点的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "喉咙深度适宜且对顶入能产生快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唾液分泌丰富，舌头能主动寻找快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "唇齿动作老道且对侵入会湿润反应的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "既能满足对方又能享受自己的已婚女性口穴"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "丰满红唇下藏着能给自己带来快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "嘴儿黏膜敏感，被摩擦时会呻吟的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_3&CVP_A2_A|100_LE_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
 context = "喉咙深处对摩擦冲击有明显快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 6"
 context = "过度敏感，在偷情下的刺激能轻易高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 6"
 context = "舌头敏感至极，轻触就会浑身颤抖的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 6"
 context = "咽喉神经密布，被侵入就会失控痉挛的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 6"
 context = "喉咙异常敏感，深喉能达到极致高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 6"
 context = "内腔内壁每处都能引发强烈快感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 6"
 context = "唾液腺异常发达，口交就能湿透下体的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 6"
 context = "丰满红唇含着超敏感的，会高潮抽搐的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 6"
 context = "唇齿感觉过度发达，轻吻就能达到高潮的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 6"
 context = "喉咙深处极度敏感，能因口喉刺激而潮喷的{mouth_s}"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|107_E_1&CVP_A2_A|100_G_6"
+conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 6"
 context = "嘴儿快感异常强烈，被侵入就会失神的{mouth_s}"

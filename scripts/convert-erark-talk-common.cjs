@@ -217,6 +217,80 @@ function convertContextVars(text) {
   return result
 }
 
+// ===== CVP → 条件表达式转换 =====
+const TALENT_MAP = {
+  '0': '阴道处女', '1': '肛门处女', '2': '尿道处女', '3': '子宫处女',
+  '6': '未初潮', '7': '未成年',
+  '20': '受精', '21': '妊娠', '24': '育儿',
+  '102': '幼女', '103': '少女', '104': '処女', '105': '成人',
+  '106': '淑女', '107': '人妻',
+  '121': '绝壁', '122': '贫乳', '123': '普乳', '124': '巨乳', '125': '爆乳',
+  '129': '细腿', '130': '肉腿', '131': '小足', '132': '长足',
+  '222': '性无知',
+}
+
+const STATUS_MAP = {
+  '0': '皮肤', '4': '阴道', '5': '后穴', '6': '尿道', '7': '子宫',
+}
+
+const ABILITY_MAP = {
+  '0': '皮肤感度', '1': '胸部感度', '4': '阴道感度', '5': '后穴感度',
+  '6': '尿道感度', '7': '子宫感度', '9': '阴道扩张', '10': '后穴扩张',
+  '11': '尿道扩张', '12': '子宫扩张', '34': '露出', '71': '舌技', '75': '肛技',
+  '100': '口喉感度',
+}
+
+// 注释：转换 CVP 前提字符串为混合格式（表达式 + premises）
+// 输入: "CVP_A2_T|102_E_1&dr_position_normal"
+// 输出: "selected.talents.幼女 == 1&premises:dr_position_normal"
+// 第一部分无前缀走 evaluateCondition，第二部分有 premises: 走 premiseRegistry
+function convertCVPPremise(premiseStr) {
+  const parts = premiseStr.split('&')
+  const result = []
+  for (const p of parts) {
+    // CVP_{subject}_{type}|{id}_{cmp}_{val}  (T/S/A 有 ID)
+    // CVP_{subject}_{type}_{cmp}_{val}        (G 无 ID)
+    let m = p.match(/^CVP_(A\d)_(T|S|A)\|(\d+)_([GLE]+)_?(\d*)$/)
+    let type, id, cmp, val
+    if (m) {
+      type = m[2]; id = m[3]; cmp = m[4]; val = m[5] || '1'
+    } else {
+      m = p.match(/^CVP_(A\d)_(G)_([GLE]+)_?(\d*)$/)
+      if (m) { type = m[2]; id = null; cmp = m[3]; val = m[4] || '1' }
+    }
+    if (!m) {
+      // 非 CVP → 保持 premises 前缀
+      result.push(`premises:${p}`)
+      continue
+    }
+    const subj = m[1]
+    const cvpPrefix = subj === 'A1' ? 'player' : 'selected'
+    const cmpMap = { G: '>', GE: '>=', L: '<', LE: '<=', E: '==' }
+    const op = cmpMap[cmp] || '=='
+
+    if (type === 'T') {
+      const name = TALENT_MAP[id]
+      if (name) { result.push(`${cvpPrefix}.talents.${name} ${op} ${val}`); continue }
+    }
+    if (type === 'S') {
+      const attr = STATUS_MAP[id]
+      if (attr) { result.push(`${cvpPrefix}.${attr} ${op} ${val}`); continue }
+    }
+    if (type === 'A') {
+      const abil = ABILITY_MAP[id]
+      if (abil) { result.push(`${cvpPrefix}.abilities.${abil}.level ${op} ${val}`); continue }
+    }
+    if (type === 'G') {
+      result.push(`premises:FALL_LEVEL_${cmp}_${val}`); continue
+    }
+    // 无法转换 → 保持 premises 前缀
+    result.push(`premises:${p}`)
+    // 无法转换 → 保持 premises 前缀（但不匹配时静默保留）
+    result.push(`premises:${p}`)
+  }
+  return result.join('&')
+}
+
 // ===== 主流程 =====
 function main() {
   const eraDir = path.resolve(ERA_DIR)
@@ -340,7 +414,8 @@ function main() {
         toml += `part = "${e.part}"\n`
       }
       if (e.premise && e.premise !== '0') {
-        toml += `conditions = "premises:${e.premise}"\n`
+        const cond = convertCVPPremise(e.premise)
+        toml += `conditions = "${cond}"\n`
       }
       toml += `context = "${escapeToml(e.context)}"\n`
     }

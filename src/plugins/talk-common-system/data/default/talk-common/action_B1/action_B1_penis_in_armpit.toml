@@ -166,83 +166,83 @@ conditions = "premises:high_1"
 context = "{character.name}掌控{target.name}的上臂位置，让{armpit_s}紧紧夹住{penis_s}，然后快速挺动腰部，在狭小的空间中激烈抽插。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}用力挤压着熟睡中{target.name}的双臂，将{penis_s}在{armpit_s}间快速摩擦，汗水使得动作更加顺畅。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}双手紧压{target.name}的手臂，让{penis_s}在睡梦中{target.name}的{armpit_s}来回抽送，前液沾湿了细嫩的肌肤。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}调整角度让{penis_s}更深入{target.name}的{armpit_s}，在熟睡的{target.name}腋窝间大力抽插，摩擦声回荡在寂静的房间里。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}加快速度在{target.name}的{armpit_s}内挺动，睡梦中的{target.name}无意识地轻哼一声，腋下被摩得通红。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}俯身压住{target.name}，让{penis_s}在沉睡{target.name}的{armpit_s}间进出，龟头不时蹭过她的乳房侧面。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}用拇指揉搓{target.name}的腋窝，同时将{penis_s}在睡熟的{target.name}{armpit_s}间猛烈抽送，带出细微的水声。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}往{target.name}的腋下吐了些唾液当润滑，然后用{penis_s}在熟睡{target.name}的{armpit_s}大力摩擦，发出淫靡的声响。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}紧紧挤压{target.name}的双臂，让{penis_s}在昏睡中{target.name}的{armpit_s}反复进出，每次抽送都带出一小股汗液。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}变换着角度，让{penis_s}在{target.name}沉睡的{armpit_s}内肆意戳刺，{target.name}的手臂随着动作微微摇晃。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}抓紧{target.name}的手腕固定位置，将{penis_s}用力挤入熟睡{target.name}的{armpit_s}，像操穴一样来回抽动。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}将{penis_s}在装睡的{target.name}的{armpit_s}间快速摩擦，{target.name}的腋下肌肉微微绷紧，却仍装作熟睡的样子。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}挤压{target.name}的双臂，让{penis_s}在“熟睡”{target.name}的{armpit_s}用力抽送，装睡的她悄悄调整姿势方便插入。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}加大力度让{penis_s}贯穿{target.name}的{armpit_s}，装睡的{target.name}呼吸节奏被打乱，却强忍着不发出声音。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}放慢动作，让{penis_s}在{target.name}的{armpit_s}慢慢磨蹭，装睡的{target.name}偷偷夹紧手臂增加摩擦力。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}轻柔而快速地让{penis_s}在{target.name}的{armpit_s}进出，{target.name}假装在睡梦中微微转身，实则方便他更好地抽插。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}双手固定{target.name}的姿势，让{penis_s}在装睡{target.name}的{armpit_s}猛烈摩擦，她的睫毛因快感而颤抖却不敢睁眼。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}将{penis_s}整根没入{target.name}的{armpit_s}，装睡的{target.name}暗自调整手臂角度，使腋下的凹陷更加明显。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}抽送{penis_s}在{target.name}的{armpit_s}间进出，装睡的{target.name}偷偷渗出汗水增加润滑，使摩擦更加顺畅。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}旋转角度让{penis_s}在{target.name}的{armpit_s}内画圈，装睡的{target.name}假装在梦中翻身，实则迎合他的动作。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&target_sleep_h_awake_but_pretend_sleep"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
 context = "{character.name}将{penis_s}抵在{target.name}的腋窝深处快速抖动，装睡的{target.name}呼吸急促，却依然紧闭双眼假装不知情。"
 
 [[entries]]
@@ -406,163 +406,163 @@ conditions = "premises:t_unconscious_flag_5"
 context = "{character.name}以各种角度让{penis_s}在{target.name}的{armpit_s}间抽送摩擦，{target.name}的手臂被迫摆出各种姿势，她却像感觉不到一般继续着自己的活动。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}让{penis_s}在被控制的{target.name}的{armpit_s}间用力摩擦，{target.name}清醒的眼神中充满屈辱，却无法移动分毫。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}双手挤压{target.name}僵硬的手臂，让{penis_s}在她动弹不得的{armpit_s}内抽送，{target.name}眼中含泪却无法反抗。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}加快速度让{penis_s}在{target.name}的{armpit_s}激烈摩擦，被控制的{target.name}只能眼睁睁看着自己被侵犯却无法移动身体。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}调整被控制的{target.name}的手臂角度，让{penis_s}更深入地在她的{armpit_s}间抽送，{target.name}意识清醒却如木偶般任人摆布。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}用{target.name}的腋下的香汗作润滑，然后让{penis_s}在她的{armpit_s}大力摩擦，{target.name}眼中闪烁着屈辱的泪光。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}将{penis_s}深深插入{target.name}的{armpit_s}，被精神控制的{target.name}清醒地感受着每一次摩擦，却无法作出任何反应。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}用力抽送{penis_s}在{target.name}的{armpit_s}间，{target.name}的脸上写满了羞耻和愤怒，但身体却被控制得动弹不得。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}让{penis_s}在{target.name}的{armpit_s}内或深或浅地摩擦，{target.name}意识清醒地感受着侵犯，却只能像人偶一样保持姿势。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}握住{target.name}的手腕固定位置，让{penis_s}在被控制{target.name}的{armpit_s}间快速抽插，她的眼中充满了无助和愤怒。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_blockhead"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
 context = "{character.name}变换角度让{penis_s}在{target.name}的{armpit_s}来回摩擦，被控制的{target.name}眼角流下了屈辱的泪水，却无法挪动一根手指。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{character.name}让{penis_s}在被控制的{target.name}的{armpit_s}间摩擦，{target.name}在精神控制下主动挤压双臂增加快感，眼中却充满了羞耻。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{character.name}控制着节奏让{penis_s}在{target.name}的{armpit_s}内抽送，被操控的{target.name}违背意愿地做出享受的表情，内心却在哭泣。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{character.name}加快速度让{penis_s}在{target.name}的{armpit_s}用力摩擦，{target.name}被迫做出淫荡的呻吟，眼神中却流露出抗拒。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{character.name}挤压{target.name}的双臂，让{penis_s}在她的{armpit_s}间激烈抽插，被控制的{target.name}违背心意地说着下流话。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{character.name}调整角度让{penis_s}更深入{target.name}的{armpit_s}，被控制的{target.name}主动调整姿势迎合，脸上的表情却充满矛盾。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{character.name}将{penis_s}埋入{target.name}的{armpit_s}深处，{target.name}在精神控制下主动用肌肤挤压摩擦，眼神中却闪烁着不甘的泪光。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{character.name}让{penis_s}在{target.name}的{armpit_s}间快速抽送，被控制的{target.name}违背意愿地发出浪叫，身体却诚实地反应着每一次摩擦。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{character.name}以各种角度让{penis_s}在{target.name}的{armpit_s}内摩擦，被控制的{target.name}主动配合着变换姿势，内心却在抗拒这种羞辱。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{character.name}抓住{target.name}的手腕，让{penis_s}在她的{armpit_s}大力抽插，被控制的{target.name}违背本心地说着淫言秽语，眼神却充满羞耻。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&t_hypnosis_active_h"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
 context = "{character.name}调整了{target.name}的姿势，让{penis_s}在{armpit_s}间进出，被控制的{target.name}被迫做出享受的表情，内心却极度抗拒。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}缓慢抽动着腰部，{penis_s}在{target.name}的{armpit_s}间摩擦，{target.name}侧着身子试图避开其他人的视线，羞耻地低着头不敢看周围人的反应。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}用力挺动腰身，让{penis_s}在{target.name}的{armpit_s}中快速磨蹭，{target.name}紧张地缩着肩膀，努力遮挡自己被侵犯的部位，不愿让其他女性看到这淫靡的画面。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}握住{target.name}的手臂固定位置，{penis_s}用力捅进{armpit_s}的狭窄空间，{target.name}羞得满脸通红，拼命压低身体想要减少存在感。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}将{target.name}的双臂压紧，加快了{penis_s}在{armpit_s}间的抽插速度，{target.name}咬紧下唇，眼神躲闪着不敢直视周围女性投来的目光。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}调整角度让{penis_s}更深入{armpit_s}的凹陷处，{target.name}尴尬地转过头去，希望别人不要注意到自己被迫进行的腋交。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}双手按住{target.name}的肩膀，{penis_s}在{armpit_s}中大力抽送，{target.name}羞耻地闭上眼睛，试图将自己与周围的环境隔离。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}扶着{target.name}的腋下，让{penis_s}在{armpit_s}沟壑中进出，{target.name}紧张地拉扯着自己的衣物，想要遮掩这羞人的情景。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}用手固定{target.name}的姿势，{penis_s}在{armpit_s}处摩擦出淫靡水声，{target.name}羞赧地将脸埋进胸口，不堪忍受他人的注视。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}挺腰顶弄，使{penis_s}在{target.name}的{armpit_s}间快速摩擦，{target.name}微微发抖，羞耻地试图用另一只手遮挡腋下的春光。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_LE_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
 context = "{character.name}增加了抽送力度，{penis_s}撑开{target.name}的{armpit_s}窄缝，{target.name}紧闭双眼，双颊绯红，不愿意让别人看到自己被迫接受的淫秽行为。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}大力抽动腰部，{penis_s}在{target.name}的{armpit_s}间激烈摩擦，{target.name}挺起胸膛故意向其他女性展示自己的腋下正被侵犯的淫荡景象。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}双手固定{target.name}姿势，{penis_s}深入{armpit_s}抽送，{target.name}得意地看向其他女性，刻意张开双臂让所有人都能清晰看到腋交的全过程。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}加快了{penis_s}在{target.name}的{armpit_s}间的摩擦速度，{target.name}挑逗地舔着嘴唇，享受着其他女性嫉妒的目光。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}粗暴地顶弄着{target.name}的腋窝，{penis_s}在{armpit_s}间进出时发出啪啪水声，{target.name}刻意大声呻吟以吸引更多人的注意。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}用力挺动胯部，让{penis_s}在{target.name}的{armpit_s}中来回抽送，{target.name}扭动身体摆出最佳角度，方便所有人欣赏这淫靡的腋交表演。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}调整{target.name}的手臂位置，使{penis_s}能更深入{armpit_s}的凹陷处，{target.name}自豪地向其他女性展示自己特权般的亲密服务。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}大力抽动让{penis_s}在{target.name}的{armpit_s}中摩擦，{target.name}高傲地扬起下巴，享受着成为焦点的快感。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}握住{target.name}的乳房迫使她挺胸，{penis_s}快速在{armpit_s}的狭窄空间冲刺，{target.name}故意将身体转向观众展示这淫乱画面。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}双手按压{target.name}的肩膀，让{penis_s}在{armpit_s}间快速抽插，{target.name}挑衅地盯着其他女性，炫耀自己得到{character.name}青睐的特殊待遇。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&CVP_A2_A|34_G_4"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
 context = "{character.name}扣住{target.name}后颈，{penis_s}用力在{armpit_s}的缝隙中进出，{target.name}放声浪叫着，眼神中充满了对其他女性的挑衅和炫耀。"
 
 [[entries]]
@@ -606,123 +606,123 @@ conditions = "premises:t_npc_active_h"
 context = "{character.name}站立不动，{penis_s}被{target.name}的{armpit_s}包裹住来回摩擦，{character.name}被迫享受这种被服务的快感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}粗暴地扯开{target.name}的手臂，强迫她夹紧，{penis_s}野蛮地在{armpit_s}间来回抽送，{target.name}脸上写满屈辱和厌恶，却无力反抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}用力按住戴着镣铐的{target.name}，{penis_s}在{armpit_s}的狭缝中摩擦，{target.name}扭动身体想要逃离却被牢牢控制。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}捏住{target.name}的下巴强迫她抬头，同时{penis_s}在她的{armpit_s}中粗暴抽插，{target.name}眼中充满仇恨却只能被迫承受。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}按住{target.name}的肩膀，{penis_s}在她颤抖的{armpit_s}中蛮横进出，{target.name}眼中含泪，身体因恐惧而僵硬。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}拽住{target.name}的双臂向后拉，强迫她挺胸，{penis_s}粗暴地在{armpit_s}间摩擦，{target.name}愤怒地咬紧牙关却无计可施。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}用绳索固定住{target.name}的双臂姿势，{penis_s}粗暴地在{armpit_s}的窄缝中抽动，{target.name}屈辱地闭上眼睛忍受这一切。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}抓住镣铐的链条拉扯{target.name}，{penis_s}快速地在{armpit_s}中进出，{target.name}厌恶地别过脸去，身体因屈辱而发抖。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}强行分开{target.name}紧闭的双臂，{penis_s}用力地在{armpit_s}间摩擦，{target.name}试图挣扎但无法撼动牢固的束缚。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}按住被锁链束缚的{target.name}，{penis_s}用力在{armpit_s}中抽送，{target.name}眼中燃烧着怒火，却只能被迫承受这羞辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
 context = "{character.name}抓住{target.name}的肩膀，{penis_s}快速地在{armpit_s}的嫩肉间来回摩擦，{target.name}无助地喘息着，眼神中充满了抵抗和绝望。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}命令{target.name}抬起手臂，{penis_s}在{armpit_s}间有节奏地抽送，{target.name}面无表情地服从，眼神空洞地望向远方。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}调整戴着镣铐的{target.name}的姿势，{penis_s}在{armpit_s}的凹陷处摩擦，{target.name}麻木地配合，已不再有强烈抵抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}按住{target.name}的肩膀，{penis_s}在{armpit_s}中缓慢抽动，{target.name}消极地接受这一切，目光中的抵抗已变得微弱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}掐住{target.name}的下巴，同时{penis_s}在{armpit_s}间进出，{target.name}不再强烈挣扎，只是偶尔发出无力的呜咽。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}固定{target.name}双臂的位置，{penis_s}在{armpit_s}的窄缝中来回抽送，{target.name}顺从地保持姿势，已经学会了接受命运。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}抓住锁链将{target.name}拉近，{penis_s}在{armpit_s}处摩擦，{target.name}机械地配合着动作，眼神中的反抗已经黯淡。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}命令{target.name}挺起胸部，{penis_s}在{armpit_s}间抽动，{target.name}无精打采地照做，身体早已习惯了这种侵犯。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}扯动锁链调整{target.name}的角度，{penis_s}在{armpit_s}中摩擦出水声，{target.name}默默承受，眼神中只剩下认命。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}按住{target.name}的肩膀，{penis_s}在{armpit_s}的嫩肉间来回磨蹭，{target.name}表情空洞，身体条件反射般地配合着动作。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-1&CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
 context = "{character.name}按住{target.name}的手臂，{penis_s}在{armpit_s}处快速摩擦，{target.name}眼神游离，只是机械地保持着姿势，不再有任何抵抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}轻声命令，{target.name}立刻主动抬高双臂并夹紧，让{penis_s}在{armpit_s}间舒适地摩擦，眼神中充满渴望主人满意的期待。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}随意挺动腰部，{penis_s}在{target.name}的{armpit_s}中进出，{target.name}欣喜地感谢主人的恩赐，主动调整角度以取悦{character.name}。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}拽住{target.name}的手臂，{penis_s}在{armpit_s}处粗暴摩擦，{target.name}陶醉地呻吟着，感谢主人赐予的疼痛与快感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}抚摸{target.name}的脸颊，同时{penis_s}在{armpit_s}间抽送，{target.name}露出幸福的表情，为能服务主人而感到无比荣幸。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}拽动锁链迫使{target.name}挺胸，{penis_s}在{armpit_s}中快速摩擦，{target.name}欢快地迎合着，乞求主人更粗暴地对待自己。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}命令{target.name}夹紧腋下，{penis_s}在{armpit_s}处用力抽插，{target.name}狂热地感谢主人的宠幸，乞求能提供更多服务。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}抓住{target.name}的肩膀向后拉，{penis_s}在{armpit_s}间凶狠摩擦，{target.name}喜悦地呻吟着，感谢主人的每一次使用。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}抽动皮鞭警告{target.name}，{penis_s}同时在{armpit_s}中抽送，{target.name}兴奋地颤抖着，渴望更多的惩罚与使用。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}随意摆动腰肢，{penis_s}在{armpit_s}处慢慢磨蹭，{target.name}双眼放光地盯着主人，乞求更多的关注与使用。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
 context = "{character.name}轻轻挺腰，{penis_s}在{armpit_s}间来回滑动，{target.name}沉醉其中，感谢主人将她训练成如此完美的性奴隶。"
 
 [[entries]]
@@ -806,601 +806,601 @@ conditions = "premises:h_in_bathroom"
 context = "{character.name}在雾气缭绕的浴室中调整角度，{penis_s}在{target.name}的{armpit_s}间用力摩擦，水滴顺着两人的身体滑落，画面淫靡又色情。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}缓缓挺动腰部，让{penis_s}在{target.name}的{armpit_s}间来回摩擦，同时假装与她并排站立闲聊，周围人投来疑惑的目光。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}加快了腰部挺动的频率，{penis_s}在{target.name}的{armpit_s}间滑动摩擦，汗水增加了润滑，周围的人开始窃窃私语。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}一边与其他人交谈，一边用力挺胯，让{penis_s}在{target.name}的{armpit_s}中抽插，动作幅度控制得很小但频率很快。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}将{penis_s}在{target.name}的{armpit_s}间前后抽送，故意放慢速度增加摩擦感，旁边的人频频投来怀疑的目光。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}借着遮挡物的掩护，大幅度挺动腰部，让{penis_s}快速穿梭于{target.name}的{armpit_s}中，透明液体随着动作飞溅。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}靠近{target.name}，假装交头接耳，实则快速挺动下身，使{penis_s}在{armpit_s}间摩擦出轻微的水声。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}悄悄调整角度，让{penis_s}深入{target.name}的{armpit_s}更深处，同时加快摩擦速度，汗液和前液混合增强了快感。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}小幅度而快速地挺动腰胯，{penis_s}在{target.name}的{armpit_s}间激烈抽送，两人装作若无其事交谈。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}放慢速度但增加力度，让{penis_s}用力碾压{target.name}的{armpit_s}每一寸皮肤，他人的注视增加了禁忌的刺激感。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}频繁变换角度，让{penis_s}在{target.name}的{armpit_s}各处摩擦，同时不动声色地观察周围人的反应。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}装作若无其事站立，实则快速挺动腰部，让{penis_s}在躲藏在一旁的{target.name}的{armpit_s}间抽送。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}微笑着与他人交谈，下身却悄悄挺动，{penis_s}在隐藏处{target.name}的{armpit_s}间快速摩擦，享受这禁忌的刺激。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}一边做日常动作，一边将{penis_s}深深插入藏在桌下的{target.name}的{armpit_s}，快速抽送着。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}装作看风景，实则用力挺动腰胯，让{penis_s}在躲在角落的{target.name}的{armpit_s}间来回摩擦。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}面不改色心不跳，下身却快速抽送，{penis_s}在隐蔽处{target.name}的{armpit_s}间摩擦出细微水声。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}借着桌子的遮挡，大力挺动腰部，使{penis_s}在躲藏的{target.name}的{armpit_s}深处用力抽插。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}站在原地假装思考，身体微微晃动，{penis_s}却在隐藏的{target.name}的{armpit_s}间激烈摩擦。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}表情自然地与他人聊天，下身却用力抽送，让{penis_s}在藏起来的{target.name}的{armpit_s}间快速进出。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}调整站姿，同时加快腰部动作，使{penis_s}在躲避的{target.name}的{armpit_s}处高频率摩擦。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}假装整理衣物，实则用力挺动下身，让{penis_s}在隐藏的{target.name}的{armpit_s}间深入浅出。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}躲在隐蔽处快速挺动腰部，让{penis_s}在公开场合中的{target.name}的{armpit_s}间激烈摩擦，旁人只见到{target.name}有些不自然的样子。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "藏在帘后的{character.name}调整角度，使{penis_s}在站在众人面前的{target.name}的{armpit_s}深处用力抽送。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "隐藏在阴影中的{character.name}加快挺动频率，{penis_s}在人前的{target.name}的{armpit_s}间快速摩擦，享受着偷情快感。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "躲在柜内的{character.name}悄悄挺动腰部，{penis_s}在{target.name}的{armpit_s}中不断抽插，而{target.name}正与他人交谈。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}藏身于隐蔽处，用力将{penis_s}在{target.name}的{armpit_s}间抽送，汗液和前液混合增加了润滑度。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "躲在墙后的{character.name}快速挺动腰身，让{penis_s}在{target.name}的{armpit_s}处来回磨蹭，享受公开场合的秘密快感。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "隐身在阴暗处的{character.name}用力抽送，{penis_s}在{target.name}的{armpit_s}间激烈摩擦，其他人对此浑然不觉。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}藏在掩体后，加快腰部挺动，让{penis_s}在{target.name}的{armpit_s}深处快速进出，享受隐奸的快感。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "躲在暗处的{character.name}调整节奏，使{penis_s}在{target.name}的{armpit_s}间忽快忽慢地摩擦，增加刺激感。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "隐蔽处的{character.name}用力挺动下身，让{penis_s}在{target.name}的{armpit_s}中高频率抽插，周围人对此一无所知。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "躲在桌下的{character.name}和{target.name}偷情，{character.name}快速挺动腰部，让{penis_s}在{target.name}的{armpit_s}间来回摩擦，周围人来回走动。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "藏在帘后的二人，{character.name}加快抽送速度，{penis_s}在{target.name}的{armpit_s}间高频率摩擦，外面的人疑惑地寻找声音来源。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "隐藏在柜内的{character.name}用力挺胯，让{penis_s}在{target.name}的{armpit_s}深处抽送，他们能听到外面的脚步声。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "躲在角落的二人，{character.name}快速挺动腰身，{penis_s}在{target.name}的{armpit_s}间激烈摩擦，门外的人似乎听到了声响。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "藏在隐蔽处的{character.name}控制着节奏，让{penis_s}在{target.name}的{armpit_s}间深浅交替摩擦，外面传来脚步的声音。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "隐身于暗处的二人，{character.name}用力抽送，使{penis_s}在{target.name}的{armpit_s}处快速摩擦，同时注意控制发出的声音。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "躲在物品后的{character.name}调整角度，让{penis_s}在{target.name}的{armpit_s}中深入浅出，周围的动静让他们更加兴奋。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "藏在杂物间的二人，{character.name}加快腰部动作，{penis_s}在{target.name}的{armpit_s}间高速摩擦，外面的谈话声清晰可闻。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "隐藏处的{character.name}用力挺动，让{penis_s}在{target.name}的{armpit_s}深处反复磨蹭，二人都屏住呼吸不敢出声。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&place_someone_not_in_hidden_and_conscious"
+conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
 context = "躲避在隐蔽位置的{character.name}调整节奏，使{penis_s}在{target.name}的{armpit_s}间快速抽插，外面有人似乎在寻找什么。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
 context = "{character.name}挺动腰部，让{penis_s}在未成年且无知的{target.name}的{armpit_s}间缓慢摩擦，告诉她这是一种特殊的游戏。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
 context = "{character.name}加快腰部动作，使{penis_s}在懵懂的{target.name}的{armpit_s}处快速抽送，年幼的她不明白这意味着什么。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
 context = "{character.name}调整角度，让{penis_s}在未成年{target.name}稚嫩的{armpit_s}间深入浅出，她只是按照指示夹紧双臂。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
 context = "{character.name}轻轻挺动腰部，{penis_s}在性无知的{target.name}青涩的{armpit_s}处来回磨蹭，她不知这是性行为。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
 context = "{character.name}用力挺胯，使{penis_s}在未成年{target.name}的{armpit_s}间快速摩擦，告诉她这是特殊的健康检查。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
 context = "{character.name}控制节奏，让{penis_s}在年幼无知{target.name}的{armpit_s}深处反复抽送，她天真地配合着这“游戏”。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
 context = "{character.name}加快腰部挺动，{penis_s}在未成年{target.name}稚嫩的{armpit_s}间高速摩擦，她懵懂地保持姿势。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
 context = "{character.name}用力抽送，使{penis_s}在性无知{target.name}的{armpit_s}间深入浅出，谎称这是一种特殊的按摩方式。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
 context = "{character.name}调整角度和力度，让{penis_s}在未成年{target.name}的{armpit_s}处快速磨蹭，她不懂这淫秽行为的含义。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
 context = "{character.name}快速挺动腰身，{penis_s}在年幼{target.name}的{armpit_s}间激烈摩擦，前液沾湿了她稚嫩的皮肤。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_0"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
 context = "{character.name}挺动腰部，让{penis_s}在未成年但性知识丰富的{target.name}的{armpit_s}间来回摩擦，她好奇地配合着。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_0"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
 context = "{character.name}加快腰部动作，{penis_s}在未成年{target.name}的{armpit_s}间快速抽送，她虽年幼但了解这种性行为叫做腋交。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_0"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
 context = "{character.name}调整角度，使{penis_s}在好奇的未成年{target.name}的{armpit_s}处深入浅出，她尝试提供更多快感。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_0"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
 context = "{character.name}快速挺胯，让{penis_s}在未成年{target.name}的{armpit_s}间高频率摩擦，她好奇地观察着反应。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_0"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
 context = "{character.name}用力抽送，{penis_s}在未成年但懂性事的{target.name}的{armpit_s}深处反复磨蹭，前液增加了润滑。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_0"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
 context = "{character.name}控制节奏，让{penis_s}在未成年{target.name}的{armpit_s}间忽快忽慢地摩擦，她知道这会让{character.name}觉得舒服。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_0"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
 context = "{character.name}加大力度挺动，{penis_s}在未成年{target.name}青涩但知情的{armpit_s}处激烈抽送，前液飞溅。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_0"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
 context = "{character.name}快速抽送，使{penis_s}在好奇的未成年{target.name}的{armpit_s}间高速摩擦，她熟知这性行为。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_0"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
 context = "{character.name}调整角度和速度，让{penis_s}在未成年{target.name}的{armpit_s}处深浅交替摩擦，满足她的好奇心。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|6_E_0&CVP_A2_T|7_E_1&CVP_A2_T|222_E_0"
+conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
 context = "{character.name}用力挺动腰身，{penis_s}在未成年但性知识丰富的{target.name}的{armpit_s}间快速抽插，她专注地配合。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|7_E_0&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}缓慢挺动腰部，让{penis_s}在成年但性无知的{target.name}的{armpit_s}间来回摩擦，谎称这是一种特殊治疗。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|7_E_0&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}加快腰部动作，{penis_s}在成熟却无知的{target.name}的{armpit_s}处快速抽送，她疑惑但也并不反抗。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|7_E_0&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}调整角度，使{penis_s}在成年但懵懂的{target.name}的{armpit_s}间深入浅出，告诉她这能改善身体。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|7_E_0&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}用力挺胯，让{penis_s}在性无知的成年{target.name}的{armpit_s}深处反复磨蹭，她配合但不理解。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|7_E_0&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}快速抽送，{penis_s}在成熟身体却无性知识的{target.name}的{armpit_s}间高频率摩擦，前液沾湿皮肤。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|7_E_0&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}控制节奏，让{penis_s}在成年但性无知{target.name}的{armpit_s}处忽快忽慢地抽插，她不明白在干什么，但也只能顺从地夹紧手臂。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|7_E_0&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}加大力度挺动，{penis_s}在成熟却懵懂无知的{target.name}的{armpit_s}间激烈摩擦，谎称这是特殊按摩。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|7_E_0&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}快速挺动腰身，使{penis_s}在成年无知{target.name}的{armpit_s}处来回抽送，她困惑地服从指示。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|7_E_0&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}调整角度和速度，让{penis_s}在成熟但性无知的{target.name}的{armpit_s}间深浅交替摩擦，利用她的无知来处理自己的性欲。"
 
 [[entries]]
-conditions = "premises:CVP_A2_T|7_E_0&CVP_A2_T|222_E_1"
+conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}用力抽送，{penis_s}在成年却不懂性事的{target.name}的{armpit_s}深处快速进出，她按指示夹紧双臂。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}以稳定的节奏让{penis_s}在{target.name}的{armpit_s}中抽送，腋下的皮肤被摩擦得泛起红晕，柔软的腋肉紧紧夹住短小的肉棒。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}双手按住{target.name}的手臂，使{armpit_s}紧紧包裹住{penis_s}，适中的节奏摩擦着敏感的龟头，使得腋窝渗出细密的汗珠。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}调整着抽插的角度，让{penis_s}在{armpit_s}的褶皱中寻找最佳的刺激点，前液蹭满了{target.name}腋下的每一寸肌肤。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}用手挤压{target.name}的手臂，使{armpit_s}更紧地包裹{penis_s}，短小的尺寸在腋窝中进出，每次抽送都带出湿润的水声。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}有节奏地挺动腰部，让{penis_s}在{armpit_s}中来回摩擦，腋窝的温热与汗水为肉棒提供了润滑，龟头时隐时现。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}加快抽送速度，{penis_s}被{armpit_s}紧紧包裹，短小的肉棒在腋窝的软肉中进出，摩擦生热使得汗水越来越多。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}用手指挤压{target.name}的腋窝两侧，让{armpit_s}形成更深的沟壑，{penis_s}在其中抽插，每次都带出腋下的湿滑液体。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}将{target.name}的手臂压向胸口，使{armpit_s}的空间变小，{penis_s}在狭窄的腋窝中快速摩擦，发出黏腻的水声。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}握住{target.name}的肩膀，让{penis_s}深入{armpit_s}的最深处，龟头刮蹭着敏感的腋窝，前液混合着汗水流下腋下。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}调整{target.name}的姿势，让{armpit_s}形成一个完美的夹角，{penis_s}在湿润的腋窝中进出，摩擦的热度使得两人的皮肤都泛起红晕。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以精准的节奏控制{penis_s}在{target.name}的{armpit_s}中抽送，短小的尺寸反而使得龟头能够精确刺激每一处腋窝褶皱。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}熟练地挤压{target.name}的手臂，使{armpit_s}形成完美的夹道，{penis_s}在润滑的腋窝中快慢交替抽送，每一下都精确无比。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以高超技巧让{penis_s}在{armpit_s}中旋转摩擦，龟头精确地刮过每一寸敏感带，带出腋窝里的湿润体液。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}双手控制着{target.name}的肩膀和手臂，使{armpit_s}紧缩收放，{penis_s}在变化的压力下进出，摩擦出淫靡的水声。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}精确控制力道，让{penis_s}在{armpit_s}中时深时浅地抽送，龟头每次都精准擦过最敏感的腋窝根部。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}腰部灵活扭动，使{penis_s}在{armpit_s}中画圈般摩擦，短小的阴茎借助技巧在腋窝里制造出多角度的刺激。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以完美的韵律让{penis_s}在{armpit_s}中进出，每次抽送都恰到好处地刺激龟头最敏感的部位，前液涂满腋窝。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}精妙地调整{target.name}手臂角度，使{armpit_s}形成最佳夹角，{penis_s}在精确控制下进出，摩擦得腋窝一片湿润。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}手指灵活地揉捏{target.name}的腋窝周围，同时{penis_s}在{armpit_s}中快慢交替抽送，每次深入都精准到位。"
 
 [[entries]]
-conditions = "premises:jj_0&CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以娴熟的技巧控制着抽送节奏，让{penis_s}在{armpit_s}的每一寸肌肤上都留下湿润的痕迹，腋窝的皱褶被撑开又收紧。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}有节奏地挺动腰部，让{penis_s}在{target.name}的{armpit_s}中进出，适中的尺寸刚好填满腋窝的空间，摩擦出淫靡的水声。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}双手按压{target.name}的胳膊，使{armpit_s}紧紧包裹住{penis_s}，龟头在腋窝中进出，每次摩擦都带出湿润的汗液。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}调整抽送的角度，让{penis_s}更深入{armpit_s}的褶皱中，温热的腋窝紧紧包裹着肉棒，摩擦生热。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}略微加快速度，{penis_s}在{armpit_s}的软肉中来回摩擦，适中的硬度和长度使得每次抽送都恰到好处。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}让{target.name}的手臂压向胸口，使{armpit_s}形成一个紧致的通道，{penis_s}在其中抽插，发出黏腻的声响。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}稳定地挺动腰部，让{penis_s}在{armpit_s}中进出，龟头时而露出，时而埋入腋窝的深处，带出湿滑的液体。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}用手挤压{target.name}的腋窝两侧，使{armpit_s}更紧地包裹{penis_s}，每次抽送都让腋窝的嫩肉变形，摩擦得发红。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}控制着{target.name}的姿势，让{armpit_s}形成完美的夹角，{penis_s}在湿润的腋窝中抽送，前液混合着汗水流下。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}双手固定{target.name}的上臂，使{armpit_s}的空间保持稳定，{penis_s}在其中快速进出，每次都带出腋下的湿滑液体。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}调整抽送的频率，让{penis_s}在{armpit_s}中时快时慢地摩擦，龟头蹭过腋窝的每一处褶皱，留下湿润的痕迹。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以精妙的技巧控制腰部，让{penis_s}在{target.name}的{armpit_s}中划出完美的弧线，每次抽送都精确刺激腋窝最敏感的部位。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}双手熟练地调整{target.name}的手臂角度，使{armpit_s}形成最佳夹角，{penis_s}在精确控制下进出，摩擦出淫靡的水声。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}腰部灵活扭动，让{penis_s}在{armpit_s}中画圈般摩擦，中等尺寸的肉棒借助高超技巧在腋窝里制造多层次快感。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以完美的韵律控制{penis_s}在{armpit_s}中的节奏，快慢交替的抽送让腋窝的每一寸皮肤都被充分摩擦。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}精确掌握力道，让{penis_s}在{armpit_s}中时深时浅，龟头每次都精准刮过腋窝最敏感的褶皱，带出湿润的液体。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}手指灵活地揉捏{target.name}的腋窝周围，同时{penis_s}在{armpit_s}中快速进出，每一次抽送都精准到位。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以娴熟的技巧变换角度，让{penis_s}在{armpit_s}中旋转摩擦，中等尺寸的肉棒被完美运用，刺激腋窝每一处敏感点。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}精确控制着抽送的深度和力度，使{penis_s}在{armpit_s}中进出自如，每次都恰到好处地擦过最敏感的腋窝深处。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}巧妙地调整{target.name}的体位，让{armpit_s}以最佳角度包裹{penis_s}，高超的腰技使得每次抽送都精准无比。"
 
 [[entries]]
-conditions = "premises:jj_1&CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}熟练地控制着{target.name}的上臂，使{armpit_s}时紧时松，{penis_s}在变化的压力下进出，龟头精确刺激着每一寸腋肉。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}稳健地挺动腰部，让{penis_s}在{target.name}的{armpit_s}中进出，腋窝被撑开到极限，肉棒的轮廓清晰可见。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}双手压住{target.name}的胳膊，使{armpit_s}紧紧包裹住{penis_s}，粗壮的肉棒撑满了整个腋窝，摩擦得皮肤泛红。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}调整抽送的角度，让{penis_s}更深地楔入{armpit_s}，粗大的龟头将腋窝的褶皱撑平，每次摩擦都带出汗水。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}有力地挺动，{penis_s}在{armpit_s}中来回摩擦，粗壮的柱身将腋窝完全填满，每次抽送都让皮肤变形。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}按压{target.name}的手臂，使{armpit_s}形成一个紧致的通道，{penis_s}在其中艰难进出，发出湿润的摩擦声。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}控制着抽送的力度，让{penis_s}在{armpit_s}中进出，粗壮的肉棒将腋窝撑得满满当当，摩擦生热使得汗水直流。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}双手固定{target.name}的上臂，使{armpit_s}的空间保持稳定，{penis_s}在其中抽插，将腋窝撑得变形。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}略微加快节奏，让{penis_s}在{armpit_s}中快速摩擦，粗壮的柱身每次都从腋窝中挤出大量汗水和前液的混合物。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}调整{target.name}的姿势，让{armpit_s}以最佳角度包裹{penis_s}，粗大的肉棒在湿润的腋窝中进出，带出淫靡的水声。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}稳定地挺动腰部，让{penis_s}在{armpit_s}中抽送，粗壮的龟头每次都将腋窝撑开到极限，留下湿润的痕迹。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以精湛的技巧控制腰部，让{penis_s}在{target.name}的{armpit_s}中划出完美的弧线，粗壮的柱身被精确操控，刺激腋窝的每一寸。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}熟练地调整{target.name}的手臂角度，使{armpit_s}形成最佳夹角，{penis_s}在高超技巧的控制下进出自如。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}腰部灵活扭动，让{penis_s}在{armpit_s}中画圈般摩擦，粗壮的肉棒借助高超技巧在腋窝里制造出多层次的刺激。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以完美的韵律控制{penis_s}在{armpit_s}中的节奏，粗大的龟头精确刮过每一处敏感带，将腋窝撑满又抽出。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}精确掌握力道，让{penis_s}在{armpit_s}中时深时浅，每次抽送都恰到好处地刺激最敏感的腋窝深处。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}手指灵活地揉捏{target.name}的腋窝周围，同时{penis_s}在{armpit_s}中快慢交替抽送，每一次都精准到位。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以娴熟的技巧变换角度，让{penis_s}在{armpit_s}中旋转摩擦，粗壮的柱身将腋窝撑开，精确刺激每一处敏感点。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}精确控制着抽送的深度和力度，使{penis_s}在{armpit_s}中进出自如，每次都带出湿润的体液混合物。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}巧妙地调整{target.name}的体位，让{armpit_s}以最佳状态包裹{penis_s}，高超的腰技使得每次抽送都精准无比。"
 
 [[entries]]
-conditions = "premises:jj_2&CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}熟练地控制着{target.name}的上臂，使{armpit_s}时紧时松，{penis_s}在变化的压力下进出，龟头精确刺激着腋窝每一寸。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}稳健地挺动腰部，让{penis_s}在{target.name}的{armpit_s}中艰难进出，腋窝被完全撑开，肉棒的粗壮轮廓清晰可见。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}双手用力压住{target.name}的胳膊，使{armpit_s}勉强包裹住{penis_s}，惊人的尺寸使得腋窝的皮肤被撑到极限。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}调整抽送的角度，让{penis_s}在{armpit_s}中摩擦，粗壮的龟头将腋窝的每一寸皮肤都撑开，摩擦得通红。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}有力地挺动，{penis_s}在{armpit_s}中进出，过于粗壮的尺寸使得腋窝的皮肤被拉伸到极限，发出湿润的摩擦声。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}按压{target.name}的手臂，使{armpit_s}尽可能紧密地包裹{penis_s}，惊人的尺寸使得每次抽送都带出大量的汗水和前液。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}控制着抽送的力度，让{penis_s}在{armpit_s}中进出，每次摩擦都让腋窝的皮肤变形，无法完全包裹住粗壮的柱身。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}双手固定{target.name}的上臂，使{armpit_s}尽量形成一个通道，{penis_s}在其中艰难抽插，将腋窝撑得几乎变形。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}调整{target.name}的姿势，让{armpit_s}以最大限度包裹{penis_s}，巨大的肉棒在腋窝中进出，每次都带出混合的体液。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}稳定地挺动腰部，让{penis_s}在{armpit_s}中抽送，惊人的尺寸使得每次进出都将腋窝撑到极限，皮肤泛起红晕。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_3&CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
 context = "{character.name}用力按压{target.name}的肩膀，使{armpit_s}形成最大的空间，{penis_s}依然难以完全容纳，每次抽送都让腋窝变形。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以精湛的技巧控制腰部，让{penis_s}在{target.name}的{armpit_s}中进出自如，惊人的尺寸在高超技巧下被完美操控。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}熟练地调整{target.name}的手臂角度，使{armpit_s}以最佳状态容纳{penis_s}，高超的技巧使得腋窝能够适应惊人的尺寸。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}腰部灵活扭动，让{penis_s}在{armpit_s}中画圈般摩擦，惊人的尺寸借助高超技巧在腋窝里制造出多层次的刺激。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以完美的韵律控制{penis_s}在{armpit_s}中的节奏，粗壮的龟头精确刮过每一处腋窝皮肤，带出湿润的液体。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}精确掌握力道，让{penis_s}在{armpit_s}中时深时浅，惊人的尺寸被高超技巧驾驭，每次抽送都恰到好处。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}手指灵活地揉捏{target.name}的腋窝周围，同时{penis_s}在{armpit_s}中快慢交替抽送，技巧精湛得令人难以置信。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}以娴熟的技巧变换角度，让{penis_s}在{armpit_s}中旋转摩擦，惊人的尺寸在精确控制下刺激腋窝的每一处敏感带。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}精确控制着抽送的深度和力度，使{penis_s}在{armpit_s}中进出自如，高超技巧使得过大的尺寸变成完美的工具。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}巧妙地调整{target.name}的体位，让{armpit_s}以最佳状态包裹{penis_s}，高超的腰技使腋窝适应了惊人的尺寸。"
 
 [[entries]]
-conditions = "premises:jj_3&CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
 context = "{character.name}熟练地控制着{target.name}的上臂，使{armpit_s}时紧时松，{penis_s}在变化的压力下进出，精确刺激着腋窝的每一寸。"

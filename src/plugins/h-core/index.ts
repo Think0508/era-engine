@@ -42,7 +42,7 @@ export function onLoad(_ctx: PluginContext): void {
       const char = entitySystem.get('character', id) as any
       const f = char?.base?.好感度 ?? 0
       const t = char?.base?.信赖度 ?? 0
-      const r = calcJudge(judgeBase + bonus, f, t)
+      const r = calcJudge(judgeBase + bonus, f, t, id)
       execCtx._judgeResult = r
       if (r.retreated) {
         narrativeLog.write(`${char?.name ?? id} 退缩了`, 'dialogue', 'h-core')

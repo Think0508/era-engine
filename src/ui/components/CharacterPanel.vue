@@ -84,39 +84,41 @@ const markAttrs = computed(() => {
   return result
 })
 
-// 性技术（已知技术名列表）
-const TECHNIQUE_NAMES = new Set(['指技', '舌技', '足技', '胸技', '膣技', '肛技', '腰技', '榨精', '隐蔽'])
-
-// 性技术（从 char.abilities 中读取）
-const techniqueAttrs = computed(() => {
-  const char = character.value
-  if (!char?.abilities) return []
-  const result: { label: string; level: number }[] = []
-  for (const [name, val] of Object.entries(char.abilities as Record<string, any>)) {
-    if (!TECHNIQUE_NAMES.has(name)) continue
-    const level = typeof val === 'number' ? val : (val?.level ?? 0)
-    if (level > 0) result.push({ label: name, level })
-  }
-  return result
-})
-
-// 其他技能（从 char.abilities 中读取，排除 ABL 和性技术）
-const skillAttrs = computed(() => {
-  const char = character.value
+// 性技术（从 abilities.toml 中读取带 technique tag 的能力）
+// 其他技能（排除 ABL 和性技术后的剩余能力）
+const techniqueNames = computed(() => {
   const mod = modLoader.getMod()
-  if (!char || !mod) return []
-  const ablNames = new Set(Object.entries(mod.attributes)
-    .filter(([, d]) => d.category === 'ability')
-    .map(([n]) => n))
-  if (!char.abilities) return []
-  const result: { label: string; level: number }[] = []
-  for (const [name, val] of Object.entries(char.abilities as Record<string, any>)) {
-    if (ablNames.has(name) || TECHNIQUE_NAMES.has(name)) continue
-    const level = typeof val === 'number' ? val : (val?.level ?? 0)
-    result.push({ label: name, level })
+  if (!mod?.abilities) return new Set<string>()
+  const names = new Set<string>()
+  for (const [name, def] of Object.entries(mod.abilities)) {
+    if (Array.isArray(def.tags) && def.tags.includes('technique')) names.add(name)
   }
-  return result
+  return names
 })
+
+function filterAbilities(isTechnique: boolean) {
+  return computed(() => {
+    const char = character.value
+    const mod = modLoader.getMod()
+    if (!char?.abilities || !mod) return []
+    const ablNames = new Set(Object.entries(mod.attributes)
+      .filter(([, d]) => d.category === 'ability').map(([n]) => n))
+    const tech = techniqueNames.value
+    const result: { label: string; level: number }[] = []
+    for (const [name, val] of Object.entries(char.abilities as Record<string, any>)) {
+      if (ablNames.has(name)) continue
+      const isTech = tech.has(name)
+      if (isTech !== isTechnique) continue
+      const level = typeof val === 'number' ? val : (val?.level ?? 0)
+      if (isTechnique && level === 0) continue
+      result.push({ label: name, level })
+    }
+    return result
+  })
+}
+
+const techniqueAttrs = filterAbilities(true)
+const skillAttrs = filterAbilities(false)
 </script>
 
 <template>

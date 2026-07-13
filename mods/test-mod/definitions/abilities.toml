@@ -110,10 +110,59 @@ type = "passive"
 max_level = 10
 tags = ["h_passive"]
 
-# 注释：ability[70] = 指技——影响捆绑等级上限
+# 注释：ability[70] = 指技
 [abilities."指技"]
 name = "指技"
-description = "手指技巧，影响绳艺捆绑的最高等级（level × 2）"
+description = "手指技巧"
 type = "passive"
 max_level = 10
-tags = ["h_passive"]
+tags = ["technique"]
+
+[abilities."舌技"]
+name = "舌技"
+description = "舌上技巧"
+type = "passive"
+max_level = 10
+tags = ["technique"]
+
+[abilities."足技"]
+name = "足技"
+description = "足部技巧"
+type = "passive"
+max_level = 10
+tags = ["technique"]
+
+[abilities."胸技"]
+name = "胸技"
+description = "胸部技巧"
+type = "passive"
+max_level = 10
+tags = ["technique"]
+
+[abilities."膣技"]
+name = "膣技"
+description = "阴道技巧"
+type = "passive"
+max_level = 10
+tags = ["technique"]
+
+[abilities."肛技"]
+name = "肛技"
+description = "肛门技巧"
+type = "passive"
+max_level = 10
+tags = ["technique"]
+
+[abilities."腰技"]
+name = "腰技"
+description = "腰部技巧"
+type = "passive"
+max_level = 10
+tags = ["technique"]
+
+[abilities."榨精"]
+name = "榨精"
+description = "榨取精液的技巧"
+type = "passive"
+max_level = 10
+tags = ["technique"]

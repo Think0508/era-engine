@@ -391,11 +391,12 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     hInstructions: [],
   }
 
-  const attrPath = `/mods/${modName}/definitions/attributes.toml`
-  if (attrPath in rawTomlMap) {
-    const data = parseFile(attrPath, rawTomlMap[attrPath])
-    mod.attributes =
-      (data.attributes as Record<string, AttributeDefinition>) ?? {}
+  // 注释：合并插件默认 + mod 定义的属性
+  // Layer 1: /src/plugins/*/data/default/attributes.toml
+  // Layer 3: /mods/${modName}/definitions/attributes.toml
+  for (const path of Object.keys(rawTomlMap).filter(p => p.endsWith('/attributes.toml') && (p.startsWith('/src/plugins/') || p === `/mods/${modName}/definitions/attributes.toml`))) {
+    const data = parseFile(path, rawTomlMap[path])
+    mod.attributes = deepMerge(mod.attributes, (data.attributes as Record<string, AttributeDefinition>) ?? {}) as Record<string, AttributeDefinition>
   }
 
   const bindPath = `/mods/${modName}/bindings.toml`
@@ -748,12 +749,23 @@ const tomlModules = import.meta.glob('/mods/**/*.toml', {
   eager: false,
 })
 
+const pluginDefaultModules = import.meta.glob('/src/plugins/*/data/default/**/*.toml', {
+  query: '?raw',
+  import: 'default',
+  eager: false,
+})
+
 export class ModLoader {
   private loadedMod: LoadedMod | null = null
 
   async loadMod(modName: string): Promise<LoadedMod> {
-    const prefix = `/mods/${modName}/`
     const rawTomlMap: RawTomlMap = {}
+    // 注释：Layer 1——插件默认数据（优先级最低）
+    for (const [path, loader] of Object.entries(pluginDefaultModules)) {
+      rawTomlMap[path] = await loader()
+    }
+    // 注释：Layer 3——mod 定义数据（优先级最高，同名覆盖 plugin defaults）
+    const prefix = `/mods/${modName}/`
     for (const [path, loader] of Object.entries(tomlModules)) {
       if (path.startsWith(prefix)) {
         rawTomlMap[path] = await loader()

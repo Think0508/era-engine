@@ -12631,7 +12631,7 @@ context = "{character.name}看似无意地将手搭在{target.name}腰上，实�
 
 [[entries]]
 conditions = "premises:dr_position_back_lie&premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
-context = "侧卧的{character.name}装作查看手机，下身却悄悄挺动，{penis}在{target.name}的{vagina}里温柔抽送，引来周围人狐疑的目光。"
+context = "侧卧的{character.name}装作查看书本，下身却悄悄挺动，{penis}在{target.name}的{vagina}里温柔抽送，引来周围人狐疑的目光。"
 
 [[entries]]
 conditions = "premises:dr_position_back_lie&premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"

@@ -18267,7 +18267,7 @@ context = "{character.name}藏身遮挡物后，{penis_s}在{target.name}的{vag
 
 [[entries]]
 conditions = "premises:dr_position_face_lie&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
-context = "{character.name}隐藏起来，{penis_s}在{target.name}的{vagina_s}中进出，{target.name}侧躺装作无事地看着手机掩饰颤抖。"
+context = "{character.name}隐藏起来，{penis_s}在{target.name}的{vagina_s}中进出，{target.name}侧躺装作无事地看着书本掩饰颤抖。"
 
 [[entries]]
 conditions = "premises:dr_position_face_lie&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"

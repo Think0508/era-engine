@@ -2959,7 +2959,7 @@ context = "{character.name}藏在窗帘后面，{penis}从缝隙中伸出塞满�
 
 [[entries]]
 conditions = "selected.talents.処女 == 1&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
-context = "缩在暗处的{character.name}抓住{target.name}的马尾，让年轻少女的{mouth}不断吞吐着自己的{penis}，而女孩则强忍着干呕假装在低头看手机。"
+context = "缩在暗处的{character.name}抓住{target.name}的马尾，让年轻少女的{mouth}不断吞吐着自己的{penis}，而女孩则强忍着干呕假装在低头看书本。"
 
 [[entries]]
 conditions = "selected.talents.処女 == 1&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"

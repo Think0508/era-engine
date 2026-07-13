@@ -823,7 +823,7 @@ context = "{target.name}微笑着与他人交谈，同时手掌在隐蔽处绕�
 
 [[entries]]
 conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
-context = "{target.name}佯装低头看手机，{hands_s}却灵活地上下撸动{penis_s}，在有人接近时故意加快速度刺激马眼处。"
+context = "{target.name}佯装低头看书本，{hands_s}却灵活地上下撸动{penis_s}，在有人接近时故意加快速度刺激马眼处。"
 
 [[entries]]
 conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
@@ -1851,7 +1851,7 @@ context = "{target.name}勉强服从着上司的命令，{hands_s}生硬地套�
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
-context = "{target.name}小手机械地上下移动，敷衍地摩擦着{penis_s}，眼神中满是抵触，但碍于上下级关系不得不继续。"
+context = "{target.name}小书本械地上下移动，敷衍地摩擦着{penis_s}，眼神中满是抵触，但碍于上下级关系不得不继续。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
@@ -1975,7 +1975,7 @@ context = "{target.name}用奴隶的身份全心全意地服务主人，{hands_s
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
-context = "{target.name}彻底放弃了自我意识，小手机械而热情地套弄着主人的{penis_s}，动作中流露出绝对的臣服和奉献精神。"
+context = "{target.name}彻底放弃了自我意识，小书本械而热情地套弄着主人的{penis_s}，动作中流露出绝对的臣服和奉献精神。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"

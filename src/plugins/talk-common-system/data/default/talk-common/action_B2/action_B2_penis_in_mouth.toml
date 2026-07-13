@@ -8871,7 +8871,7 @@ context = "{target.name}脸上保持着镇定的微笑，口中的{penis}却被�
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
-context = "假装查看手机的{target.name}悄悄加深了口交的深度，{penis}顶入{mouth}深处时她的咽喉轻轻收缩，带来更强的压迫感。"
+context = "假装查看书本的{target.name}悄悄加深了口交的深度，{penis}顶入{mouth}深处时她的咽喉轻轻收缩，带来更强的压迫感。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"

@@ -12787,7 +12787,7 @@ context = "{character.name}的{penis}被{target.name}的{anal}紧紧包裹，她
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_5&premises:dr_position_face_ride"
-context = "{target.name}跨骑在仰卧的{character.name}身上，{anal}随着动作吞入{penis}又吐出，她的目光却始终聚焦在平板电脑上，仿佛身下的{character.name}不存在。"
+context = "{target.name}跨骑在仰卧的{character.name}身上，{anal}随着动作吞入{penis}又吐出，她的目光却始终聚焦在书本上，仿佛身下的{character.name}不存在。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_5&premises:dr_position_face_ride"

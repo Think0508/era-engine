@@ -7939,7 +7939,7 @@ context = "{character.name}把{target.name}从背后抱离地面，{penis}深深
 
 [[entries]]
 conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious&premises:dr_position_back_hug"
-context = "隐藏身形的{character.name}用背面抱位将{target.name}完全控制住，{penis}在{target.name}紧窄的{urethra}中研磨着，{target.name}则假装看着手机来分散旁人的注意。"
+context = "隐藏身形的{character.name}用背面抱位将{target.name}完全控制住，{penis}在{target.name}紧窄的{urethra}中研磨着，{target.name}则假装看着书本来分散旁人的注意。"
 
 [[entries]]
 conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious&premises:dr_position_back_hug"

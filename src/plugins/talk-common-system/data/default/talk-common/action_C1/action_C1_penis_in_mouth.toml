@@ -639,7 +639,7 @@ context = "{character.name}感受着{target.name}的{mouth_s}带来的湿热与�
 
 [[entries]]
 conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
-context = "{target.name}的{mouth_s}包裹着{character.name}的{penis_s}，舌头绕着龟头打转，{character.name}背靠着墙壁，假装若无其事地看着手机，实际上快感早已让他头皮发麻。"
+context = "{target.name}的{mouth_s}包裹着{character.name}的{penis_s}，舌头绕着龟头打转，{character.name}背靠着墙壁，假装若无其事地看着书本，实际上快感早已让他头皮发麻。"
 
 [[entries]]
 conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"

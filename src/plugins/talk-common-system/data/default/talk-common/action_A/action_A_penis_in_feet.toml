@@ -1015,7 +1015,7 @@ context = "{character.name}藏在角落里，将滚烫的{penis}夹在{target.na
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
-context = "隐蔽处的{character.name}享受着{target.name}修长{feet}带来的淫靡快感，{target.name}正装作若无其事地品着咖啡。"
+context = "隐蔽处的{character.name}享受着{target.name}修长{feet}带来的淫靡快感，{target.name}正装作若无其事地品着茶。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"

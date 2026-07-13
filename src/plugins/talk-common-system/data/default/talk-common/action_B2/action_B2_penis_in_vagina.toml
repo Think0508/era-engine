@@ -2411,7 +2411,7 @@ context = "受术影响的{target.name}对面坐姿，眼神透过对方看向�
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&premises:t_unconscious_flag_5"
-context = "被催眠的{target.name}对坐着，专注地玩着手机，{vagina_s}却在无意识状态下吞吐着{penis_s}，如同本能反应。"
+context = "被催眠的{target.name}对坐着，专注地玩着书本，{vagina_s}却在无意识状态下吞吐着{penis_s}，如同本能反应。"
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&premises:t_unconscious_flag_5"
@@ -2423,7 +2423,7 @@ context = "催眠中的{target.name}对面座位，自顾自地看着窗外风�
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&premises:t_unconscious_flag_5"
-context = "被催眠的{target.name}坐在对面，喝着咖啡细细品味，腰部却无自觉地摇摆，{vagina_s}空洞地吞吐着{penis_s}。"
+context = "被催眠的{target.name}坐在对面，喝着茶细细品味，腰部却无自觉地摇摆，{vagina_s}空洞地吞吐着{penis_s}。"
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
@@ -20035,7 +20035,7 @@ context = "{target.name}躲在遮蔽处跨坐着律动，{penis_s}在{vagina_s}�
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
-context = "隐藏的{target.name}坐在{character.name}身上前后摇摆，{vagina_s}吞吐{penis_s}发出水声，{character.name}一脸淡然地看着手机。"
+context = "隐藏的{target.name}坐在{character.name}身上前后摇摆，{vagina_s}吞吐{penis_s}发出水声，{character.name}一脸淡然地看着书本。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
@@ -20079,7 +20079,7 @@ context = "{target.name}跨坐在隐蔽的{character.name}身上轻轻律动，{
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
-context = "{target.name}骑在躲藏的{character.name}身上扭动腰肢，{vagina_s}紧紧绞着{penis_s}，臀部一下下往下坐，面无表情地看着手机。"
+context = "{target.name}骑在躲藏的{character.name}身上扭动腰肢，{vagina_s}紧紧绞着{penis_s}，臀部一下下往下坐，面无表情地看着书本。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
@@ -20351,7 +20351,7 @@ context = "{target.name}躲在障碍物后背向{character.name}骑乘，疯狂�
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
-context = "{target.name}在隐蔽处背对着{character.name}跨坐，大幅度地前后摆动，{vagina_s}狠狠摩擦着{penis_s}的每一寸，{character.name}假装专注地看着手机。"
+context = "{target.name}在隐蔽处背对着{character.name}跨坐，大幅度地前后摆动，{vagina_s}狠狠摩擦着{penis_s}的每一寸，{character.name}假装专注地看着书本。"
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
@@ -20395,7 +20395,7 @@ context = "{target.name}以背面骑乘姿势坐在隐藏的{character.name}身�
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
-context = "{target.name}背对着躲起来的{character.name}跨坐，装作看手机的样子缓慢起伏，{vagina_s}吞吐着{penis_s}，{character.name}在暗处努力保持静止。"
+context = "{target.name}背对着躲起来的{character.name}跨坐，装作看书本的样子缓慢起伏，{vagina_s}吞吐着{penis_s}，{character.name}在暗处努力保持静止。"
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"

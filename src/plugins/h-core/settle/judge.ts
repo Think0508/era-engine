@@ -80,22 +80,25 @@ export function calcJudge(
       total += markPleasure * 50 + markSubmit * 50 + markPain * 10 + markVoid * 25
       total -= Math.min(markFear - markTimestop, 0) * 50 + markRebel * 100
 
-      // 注释：5. 心情修正——愤怒值
+      // 注释：5. 心情修正——erArk: get_angry_level(angry_point) * 20
+      // 愤怒≤5→Lv1(+20), 5<≤30→Lv0, 30<≤50→Lv-1(-20), >50→Lv-3(-60)
       const anger = (char.base?.['愤怒'] ?? 0) as number
-      total += anger * 20
+      let angryLevel = 0
+      if (anger <= 5) angryLevel = 1
+      else if (anger <= 30) angryLevel = 0
+      else if (anger <= 50) angryLevel = -1
+      else angryLevel = -3
+      total += angryLevel * 20
 
-      // 注释：6. 陷落修正——爱情链(思慕→爱侣)和隶属链(屈从→奴隶)各自累加
-      const loveChain = ['思慕', '恋慕', '恋人', '爱侣']
-      const subChain = ['屈从', '驯服', '宠物', '奴隶']
-      const fallValues = [0, 30, 50, 80, 100]
-      let fallAdd = 0
-      for (let i = 0; i < loveChain.length; i++) {
-        if (getTalent(char, loveChain[i])) fallAdd = Math.max(fallAdd, fallValues[i + 1])
+      // 注释：6. 陷落修正——erArk: 累加所有活跃层（非取最高）
+      // 思慕30+恋慕50+恋人80+爱侣100 + 屈从30+驯服50+宠物80+奴隶100
+      const chainMap: Record<string, number> = {
+        '思慕': 30, '恋慕': 50, '恋人': 80, '爱侣': 100,
+        '屈从': 30, '驯服': 50, '宠物': 80, '奴隶': 100,
       }
-      for (let i = 0; i < subChain.length; i++) {
-        if (getTalent(char, subChain[i])) fallAdd = Math.max(fallAdd, fallValues[i + 1])
+      for (const [talentId, value] of Object.entries(chainMap)) {
+        if (getTalent(char, talentId)) total += value
       }
-      total += fallAdd
 
       // 注释：7. 天赋个性修正
       if (getTalent(char, '淫乱')) total += 50

@@ -25,10 +25,13 @@ export interface BondageType {
 
 let bondageTypes: BondageType[] = []
 
-// 注释：加载 bondage.toml
+// 注释：加载 bondage types（插件默认 + mod 覆盖）
 function loadBondageTypes(): void {
-  const files = import.meta.glob('/mods/**/bondage/types.toml', { as: 'raw', eager: true })
-  for (const content of Object.values(files)) {
+  const pluginFiles = import.meta.glob('/src/plugins/*/data/default/bondage/types.toml', { as: 'raw', eager: true })
+  const modFiles = import.meta.glob('/mods/**/bondage/types.toml', { as: 'raw', eager: true })
+  // 注释：先加载插件默认（Layer 1），再加载 mod 数据（Layer 3，覆盖）
+  const allFiles = { ...pluginFiles, ...modFiles }
+  for (const content of Object.values(allFiles)) {
     if (content) {
       const data = JSON.parse(JSON.stringify((globalThis as any).TOML?.parse?.(content) ?? {}))
       if (data?.types) { bondageTypes = data.types as BondageType[]; return }

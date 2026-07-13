@@ -49,6 +49,31 @@ mods/武侠/
 "快C" = { type = "number", default = 0, display = true, display_group = "身体快感", daily_reset = true }
 ```
 
+**`display_group` 决定属性在面板中显示的位置**：
+
+| display_group | 面板分组 | 示例属性 |
+|-------------|---------|---------|
+| `"感觉"` | 角色面板 → 属性 → 感觉 | `皮肤感度`、`胸部感度`、`后穴扩张` |
+| `"性能力"` | 角色面板 → 属性 → 能力 | `技巧`、`顺从`、`亲密`、`欲望` |
+| `"status"` | 主界面 → Status 栏 | `体力`、`气力`、`精力` |
+| `"身体快感"` | Parameter 区（每日重置） | `皮肤`、`胸部`、`阴蒂`、`欲情` |
+| `"行为参数"` | Parameter 区（每日重置） | `恭顺`、`好意`、`屈服`、`羞耻` |
+
+添加强的感度属性——在 `attributes.toml` 加一行：
+```toml
+# mod 新增的自定义感度
+"触手感度" = { type = "number", default = 0, category = "ability", display_group = "感觉" }
+```
+角色面板的"感觉"分组自动显示它，无需改代码。Mod 专属插件 Layer 2 或 definitions Layer 3 覆盖规则见 `docs/mod-override.md`。
+
+给角色设初始感度值：
+```toml
+# roster.toml 或 named/base.toml
+[[roster]]
+id = "令狐冲"
+base = { "皮肤感度" = 30, "胸部感度" = 10 }
+```
+
 **绑定系统**——插件用通用名（hp），你在 bindings.toml 映射到你的属性名：
 ```toml
 [bindings.combat-wuxia]

@@ -75,13 +75,57 @@ tags = ["sensation"]
 | `technique` | 角色面板 → 属性 → 性技术 | `指技`、`舌技`、`腰技` |
 | 其他 | 角色面板 → 属性 → 其他技能 | `华山剑法`、`混元功` |
 
-给角色设初始能力值：
+## 能力管理工作流
+
+### 新增一个能力
+
 ```toml
-# roster.toml 或 named/base.toml
-[[roster]]
-id = "令狐冲"
-abilities = { "华山剑法" = 3, "技巧" = 2 }
+# definitions/abilities.toml（Layer 3，覆盖插件默认或新增）
+[abilities."暗器精通"]
+name = "暗器精通"
+description = "暗器使用技巧"
+type = "passive"
+max_level = 10
+tags = ["combat_active"]      # 面板分组由 tag 决定（此处显示在「其他技能」）
 ```
+
+### 改名一个能力
+
+能力不走绑定系统，改名直接改配置文件两处：
+
+```toml
+# 1. definitions/abilities.toml——改 key 名
+[abilities."投掷精通"]        # 原来叫"暗器精通"
+name = "投掷精通"
+
+# 2. 所有角色数据中引用了旧名的位置
+# roster.toml、named/base.toml、templates/ 里
+abilities = { "投掷精通" = 3 }  # 原来写"暗器精通"
+```
+
+### 给角色设初始能力等级
+
+两种格式等价，`{level, xp}` 展开由引擎自动处理：
+
+```toml
+# 简写（推荐）——只写等级，xp 自动为 0
+abilities = { "华山剑法" = 3, "技巧" = 2 }
+
+# 完整写法（手动指定 xp）
+abilities = { "华山剑法" = { level = 3, xp = 45 }, "技巧" = { level = 2, xp = 0 } }
+```
+
+### 在模板中设默认值
+
+```toml
+# templates/character/huashan_disciple.toml
+extends = "base-human"
+name = "华山弟子"
+abilities = { "华山剑法" = 1, "技巧" = 1 }
+abilities = { "华山剑法" = { level = 1, xp = 0 }, "技巧" = { level = 1, xp = 0 } }
+```
+
+引擎合并顺序：模板 → roster → named，后加载覆盖前加载。
 
 **绑定系统**——插件用通用名（hp），你在 bindings.toml 映射到你的属性名：
 ```toml

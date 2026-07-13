@@ -135,10 +135,12 @@ function resolveLineDisplay(line: ReactiveLine): Record<string, any> | undefined
   return resolved
 }
 
-// 注释：triggerScene 内部实现——三层口上匹配
+// 注释：triggerScene 内部实现——三层口上匹配 + 纸娃娃兜底
 async function triggerSceneInternal(scene: string, charId?: string): Promise<void> {
   const mod = modLoader.getMod()
   if (!mod) return
+
+  let hasOutput = false
 
   // 注释：1. 场景通用口上——独立输出
   const sceneLines = mod.sceneDialogue.filter(line => line.scene === scene)
@@ -148,6 +150,7 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
     const display = resolveLineDisplay(matchedSceneLine)
     narrativeLog.write(interpolated, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
     await executeLineEffects(matchedSceneLine)
+    hasOutput = true
   }
 
   // 注释：2. 角色口上——有 charId 时才查
@@ -163,6 +166,7 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
       const display = resolveLineDisplay(matchedSpecific)
       narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
       await executeLineEffects(matchedSpecific)
+      hasOutput = true
     } else {
       // 注释：角色通用 fallback
       const genericLines = mod.characterDialogue.filter(l => l.scene === scene)
@@ -174,7 +178,27 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
         const display = resolveLineDisplay(matchedGeneric)
         narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
         await executeLineEffects(matchedGeneric)
+        hasOutput = true
       }
+    }
+  }
+
+  // 注释：3. 纸娃娃兜底——三层都无对口上时用 talk-common 生成通用描述
+  if (!hasOutput) {
+    try {
+      const fallback = await apiSystem.call('talk-common', 'getText', scene, charId ?? null)
+      if (fallback) {
+        const interpolated = await interpolateLine(fallback, charId)
+        if (charId) {
+          const char = entitySystem.get('character', charId) as any
+          const speakerName = char?.name ?? charId
+          narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system')
+        } else {
+          narrativeLog.write(interpolated, 'dialogue', 'dialogue-system')
+        }
+      }
+    } catch {
+      // 注释：talk-common 未就绪或无此场景文本，静默跳过
     }
   }
 }

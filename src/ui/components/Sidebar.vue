@@ -20,7 +20,7 @@ const uiStore = useUIStore()
 
 // 注释：侧栏显示对象——选中角色或主角
 type DisplayTarget = 'selected' | 'player'
-const displayTarget = ref<DisplayTarget>('player')
+const displayTarget = ref<DisplayTarget>('selected')
 
 // 注释：当前显示的角色
 const displayCharacter = computed(() => {
@@ -92,14 +92,14 @@ function clickButton(buttonId: string) {
       <div v-if="hasSelection" class="target-tabs">
         <button
           class="target-tab"
-          :class="{ active: displayTarget === 'player' }"
-          @click="displayTarget = 'player'"
-        >主角</button>
-        <button
-          class="target-tab"
           :class="{ active: displayTarget === 'selected' }"
           @click="displayTarget = 'selected'"
         >选中角色</button>
+        <button
+          class="target-tab"
+          :class="{ active: displayTarget === 'player' }"
+          @click="displayTarget = 'player'"
+        >主角</button>
       </div>
     </div>
 

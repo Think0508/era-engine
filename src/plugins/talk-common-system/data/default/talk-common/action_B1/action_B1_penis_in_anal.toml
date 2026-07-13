@@ -22151,7 +22151,7 @@ context = "{character.name}把{target.name}的一条腿抬起扛在臂弯，调�
 
 [[entries]]
 conditions = "premises:dr_position_back_stand&selected.abilities.后穴感度.level > 6"
-context = "{character.name}叼住{target.name}的兽耳，双手握紧她的髋骨，{penis}在{anal}中有节奏地进出，将肠肉翻出又带入。"
+context = "{character.name}叼住{target.name}的耳朵，双手握紧她的髋骨，{penis}在{anal}中有节奏地进出，将肠肉翻出又带入。"
 
 [[entries]]
 conditions = "premises:dr_position_back_stand&selected.abilities.后穴感度.level > 6"

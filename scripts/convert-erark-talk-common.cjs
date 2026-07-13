@@ -212,6 +212,8 @@ const VAR_MAP = [
   ['博士', '{player.name}'],
   // 罗德岛 → 移除（方舟世界观专属）
   ['罗德岛', ''],
+  // 兽耳 → 耳朵（方舟种族特征→通用）
+  ['兽耳', '耳朵'],
 ]
 
 function convertContextVars(text) {

@@ -588,105 +588,105 @@ context = "默契"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-1"
+conditions = "premises:FALL_LEVEL_E_-1"
 context = "勉强"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-1"
+conditions = "premises:FALL_LEVEL_E_-1"
 context = "不情愿"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-1"
+conditions = "premises:FALL_LEVEL_E_-1"
 context = "不满"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-1"
+conditions = "premises:FALL_LEVEL_E_-1"
 context = "顺从"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-1"
+conditions = "premises:FALL_LEVEL_E_-1"
 context = "抵触"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-1"
+conditions = "premises:FALL_LEVEL_E_-1"
 context = "僵硬"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-2"
+conditions = "premises:FALL_LEVEL_E_-2"
 context = "驯顺"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-2"
+conditions = "premises:FALL_LEVEL_E_-2"
 context = "听话"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-2"
+conditions = "premises:FALL_LEVEL_E_-2"
 context = "温顺"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-2"
+conditions = "premises:FALL_LEVEL_E_-2"
 context = "屈服"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-2"
+conditions = "premises:FALL_LEVEL_E_-2"
 context = "认命"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-3"
+conditions = "premises:FALL_LEVEL_E_-3"
 context = "宠物"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-3"
+conditions = "premises:FALL_LEVEL_E_-3"
 context = "依恋"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-3"
+conditions = "premises:FALL_LEVEL_E_-3"
 context = "渴望"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-3"
+conditions = "premises:FALL_LEVEL_E_-3"
 context = "服从"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-3"
+conditions = "premises:FALL_LEVEL_E_-3"
 context = "讨好"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-4"
+conditions = "premises:FALL_LEVEL_E_-4"
 context = "臣服"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-4"
+conditions = "premises:FALL_LEVEL_E_-4"
 context = "奴性"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-4"
+conditions = "premises:FALL_LEVEL_E_-4"
 context = "献身"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-4"
+conditions = "premises:FALL_LEVEL_E_-4"
 context = "奴隶"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-4"
+conditions = "premises:FALL_LEVEL_E_-4"
 context = "卑微"

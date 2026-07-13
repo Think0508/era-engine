@@ -606,123 +606,123 @@ conditions = "premises:t_npc_active_h"
 context = "{target.name}用{armpit_s}夹住{penis_s}做出各种花样的摩擦，她的脸上满是自信和骄傲，享受着{character.name}在她技巧下完全臣服的快感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}被迫抬起手臂，{armpit_s}被强行用来摩擦{penis_s}，她眼中充满屈辱和厌恶，却因为脖子上的锁链而无法反抗这种侮辱性的对待。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}绝望地感受着{penis_s}在她敏感的{armpit_s}间滑动，镣铐限制了她的反抗，被迫承受这种羞辱让她的眼泪不自觉地流下。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}紧闭双眼试图逃避现实，却能清晰感觉到{penis_s}在{armpit_s}处摩擦的每一下，监禁中的她除了忍受这种屈辱外别无选择。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}因为手腕上的锁链而不得不保持双臂抬起，{armpit_s}被迫暴露出来供{penis_s}摩擦，她愤恨的目光中充满了不甘和屈辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}的{armpit_s}被{penis_s}反复摩擦，汗水混合着泪水滑落，被囚禁的她只能用怨恨的眼神表达抗议，身体却不由自主地颤抖。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}被迫感受{penis_s}在{armpit_s}的摩擦，每一次接触都让她感到恶心和愤怒，监禁的镣铐限制了她的行动，只能被动承受这种侵犯。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}厌恶地别过脸，不愿看到{penis_s}在她{armpit_s}间进出的画面，锁链的声音提醒着她作为囚犯的处境，被迫承受着不想要的刺激。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}感到{penis_s}在{armpit_s}处的摩擦带来的陌生快感，这让她更加痛恨自己的处境，咬紧嘴唇抑制着身体本能的反应。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}在{penis_s}摩擦{armpit_s}时感到一阵阵厌恶，她试图挣扎却被锁链拉扯得更紧，无力反抗的事实让她感到更加绝望。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}的身体因为{penis_s}在{armpit_s}的摩擦而微微颤抖，她恨自己无法控制身体的反应，被囚禁的屈辱感和不请自来的快感让她痛苦不堪。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}麻木地配合着抬起双臂，{armpit_s}被{penis_s}摩擦已成为她囚禁生活的一部分，表情虽然不再激烈抗拒，但眼神依然透露着无奈。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}习惯性地保持姿势让{penis_s}在{armpit_s}间滑动，心中虽有厌恶但已学会接受现实，偶尔身体会不由自主地产生反应。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}的{armpit_s}因长期被{penis_s}摩擦而变得敏感，她不再强烈反抗，只是沉默地承受，偶尔闭上眼睛假装自己在别处。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}感受着{penis_s}在{armpit_s}的进出，锁链的重量早已习惯，对这种屈辱的适应让她既感到自我厌弃又有一丝隐秘的解脱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}木然地配合着调整姿势，让{penis_s}能更顺畅地摩擦{armpit_s}，长期的囚禁让她学会了妥协，身体偶尔会出现一丝快感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}的{armpit_s}被{penis_s}摩擦时会微微颤抖，她不再激烈反抗这种接触，监禁的日子让她学会了顺从，以换取稍微好一点的对待。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}默默承受着{penis_s}在{armpit_s}间的滑动，曾经的抗拒已变成消极的接受，她开始习惯这种被迫的亲密，心中五味杂陈。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}配合地调整着{armpit_s}的角度，让{penis_s}能更舒适地摩擦，长期的调教让她明白反抗只会带来更多痛苦，不如消极地顺从。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}感受到{penis_s}在{armpit_s}处的摩擦带来的微妙快感，这让她感到一丝羞耻，但长期的监禁已经磨灭了她大部分的抵抗意志。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}的呼吸随着{penis_s}在{armpit_s}的摩擦节奏而变化，她不再抗拒这种感觉，被囚禁的生活让她学会了接受身体的本能反应，尽管内心复杂。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}兴奋地挺起胸膛，让{armpit_s}更紧密地包裹住{penis_s}，尽管身上带着锁链，她却早已将自己视为主人的专属玩物，享受着被使用的快感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}主动调整角度让{penis_s}在她的{armpit_s}间滑动得更顺畅，监禁的日子让她完全顺从于主人的欲望，甚至从中获得了变态的满足感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}用{armpit_s}热情地服侍着{penis_s}，感谢主人赐予她服务的机会，镣铐在她心中已成为主人赐予的标记，让她倍感荣幸。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}虔诚地让{armpit_s}夹紧{penis_s}，感受每一次摩擦带来的愉悦，她已完全崩坏，将服侍主人视为最高使命，从中获得异常的快感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}在囚禁中学会了用{armpit_s}取悦{penis_s}的最佳方式，她感谢锁链的存在，让她能够专心致志地服务主人，满足对方的每一个欲望。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}兴奋地让{penis_s}在{armpit_s}间进出，每一次接触都让她浑身颤抖，她感谢主人的调教让她成为了如此淫荡的性奴，心甘情愿地取悦对方。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}自豪地用{armpit_s}服侍着{penis_s}，锁链的声音提醒着她作为专属性奴的身份，这让她感到前所未有的安全感和存在价值。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}将{armpit_s}夹紧又放松，用最娴熟的技巧取悦{penis_s}，监禁生活让她明白了自己存在的唯一价值就是满足主人的欲望。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}感受着{penis_s}在{armpit_s}的摩擦，欣喜若狂地承受着主人的恩赐，完全沉浸在被奴役的快感中，甚至希望锁链能再紧一些。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}的{armpit_s}热情地包裹着{penis_s}，她崇拜地看着主人，感谢对方让她这个卑微的奴隶有机会用身体各处服侍，满脸都是病态的幸福感。"
 
 [[entries]]
@@ -1046,323 +1046,323 @@ conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "性无知的成年{target.name}好奇地承受着{armpit_s}中{penis_s}的摩擦，她不懂这是什么，只知道身体变得敏感，乳头挺立，下体湿润，一种从未体验过的快感让她想要更多。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}感受到{penis_s}在{armpit_s}间轻柔摩擦，虽然体积不大，却能精准地刺激着敏感的腋窝，带来一阵阵酥麻感，她的乳头不自觉地硬了起来。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}来回磨蹭，小巧的肉棒带来的快感虽不强烈却异常集中，她轻咬下唇，享受着这种别样的刺激。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}的嫩肉间滑动，每一次摩擦都让{target.name}发出轻微的喘息，这种不同于下体的刺激方式带给她新奇的快感。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}完全包裹住{penis_s}，龟头的摩擦让她敏感的腋下皮肤传来阵阵快感，她的呼吸变得急促，脸颊泛起潮红。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}夹紧双臂，让{penis_s}在{armpit_s}的窄缝中抽送，她能感受到肉棒的每一次跳动，这种亲密接触让她下体不由自主地湿润。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}反复摩擦着{target.name}的{armpit_s}，尽管尺寸不大，却恰好能刺激到她最敏感的部位，让她浑身颤抖，快感如电流般扩散。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}紧闭双臂，让{armpit_s}紧紧包裹{penis_s}，细腻的皮肤感受着肉棒的温度和形状，这种温热的摩擦让她忍不住呻吟出声。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}不断摩擦，龟头时而蹭过敏感的神经末梢，引起她一阵阵战栗，她感到一种奇特的快感正在腋下积累。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}的细嫩皮肤上滑动，每次擦过敏感点都让{target.name}颤抖不已，这种特殊的性爱方式带给她难以言喻的刺激。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}不断抽插，她能感觉到自己的腋窝变得湿润而敏感，每一次摩擦都引发她全身的欲望，双乳因兴奋而挺立。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}被{penis_s}以绝妙的节奏摩擦着，尽管尺寸小巧，却以惊人的精准度刺激着每一个敏感神经，让她全身战栗，快感直冲大脑。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{penis_s}在{armpit_s}间高超地穿梭，变换的角度和节奏让{target.name}惊叹不已，她从未想过腋下能产生如此强烈的快感，娇喘连连。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}被{penis_s}完美地开发着，每一次精准的摩擦都让她惊呼出声，腋下的敏感度被激发到极致，快感如潮水般涌来。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{penis_s}以令人惊叹的技巧在{armpit_s}间游走，精准刺激着{target.name}每一处敏感点，她全身酥软，腋下传来的快感甚至让她的下体不断流出爱液。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}被{penis_s}以无与伦比的技巧摩擦，小巧的肉棒却带来强烈的刺激，她甚至感到一阵阵接近高潮的快感从腋下蔓延全身。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{penis_s}在{armpit_s}的嫩肉间展现出惊人的控制力，每一次摩擦都恰到好处，{target.name}浑身颤抖，腋下的快感竟让她的阴蒂也跟着兴奋起来。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{target.name}惊讶于{penis_s}在{armpit_s}间带来的强烈快感，尺寸虽小却技巧精湛，每一次摩擦都精准击中她的敏感神经，让她忍不住扭动身体索求更多。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{penis_s}以完美的节奏在{armpit_s}滑动，龟头精准地刺激着敏感点，{target.name}发出难耐的呻吟，从未想过腋交也能带来如此强烈的性快感。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}被{penis_s}以高超技巧开发着，细腻的皮肤感受着每一次精准的摩擦，她的乳头和阴蒂都因这种刺激而硬挺，全身处于高度兴奋状态。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{penis_s}在{armpit_s}间的每一次运动都精确到位，小巧的尺寸反而让敏感度更强，{target.name}感到腋下传来的快感甚至超过了阴道，让她不住地颤抖呻吟。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}稳定地摩擦着，恰到好处的尺寸让她感受到适中的压力和温度，腋下敏感的皮肤传来一阵阵酥麻的快感。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间有节奏地抽送，每一次摩擦都让{target.name}感到一股奇特的快感，她的呼吸变得急促，双颊泛起红晕。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}夹紧{armpit_s}，让{penis_s}在细嫩的皮肤间滑动，这种不同于阴道的皮肤刺激让她感到既新奇又兴奋，腋下的敏感神经被不断刺激。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}的窄缝中抽插，摩擦的热度让{target.name}的腋下变得敏感而湿润，她忍不住收紧双臂，增加摩擦的强度。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}不断磨蹭，这种特殊的性爱方式让她感到既羞耻又刺激，腋下传来的快感让她全身发热，下体不由自主地湿润。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间进出的频率逐渐加快，{target.name}能清晰感受到肉棒的形状和热度，每次摩擦都让她的神经末梢传来阵阵酥麻。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}反复刺激，她发现腋下的敏感度远超想象，每一次摩擦都让她浑身战栗，乳头因兴奋而挺立。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}的嫩肉间来回滑动，摩擦带来的热度和快感让{target.name}娇喘连连，她从未想过腋交也能如此享受。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}紧闭双臂，让{armpit_s}完全包裹住{penis_s}，她能感受到肉棒的每一次跳动，这种亲密接触让她既害羞又兴奋。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间的摩擦让{target.name}全身发热，她从未体验过如此独特的快感，腋下的敏感度被完全激发，让她忍不住呻吟出声。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}被{penis_s}以完美的技巧摩擦着，她感受到前所未有的快感，腋下的每一个神经末梢都被精准刺激，让她全身颤抖，淫叫连连。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{penis_s}在{armpit_s}间展现出惊人的控制力，变换的角度和节奏让{target.name}欲仙欲死，她的腋下仿佛变成了新的性感带，快感直冲大脑。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{target.name}惊叹于{penis_s}在{armpit_s}间带来的极致快感，每一次精准的摩擦都让她娇喘连连，腋下传来的刺激甚至让她的下体喷出一股爱液。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{penis_s}以无与伦比的技巧在{armpit_s}滑动，{target.name}从未想过腋下也能产生如此强烈的性快感，她全身酥软，沉醉在这种特殊的性爱中。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}被{penis_s}完美地开发着，恰到好处的力度和节奏让她浑身战栗，她甚至感到一阵阵接近高潮的快感从腋下蔓延全身。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{penis_s}在{armpit_s}间的每一次运动都精确到位，{target.name}感到自己的腋下变成了一个极度敏感的性器官，快感甚至超过了阴道，让她忍不住呻吟浪叫。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}在{penis_s}的高超技巧下变得异常敏感，每一次摩擦都精准刺激着神经末梢，她的双乳和阴蒂都因这种刺激而挺立，全身处于高度兴奋状态。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{penis_s}以令人惊叹的技巧在{armpit_s}间游走，{target.name}从未体验过如此强烈的腋下快感，她的呼吸急促，全身颤抖，甚至有可能仅靠腋交就达到高潮。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{target.name}感受到{penis_s}在{armpit_s}的完美律动，每一下都恰到好处地刺激着她的敏感带，这种精准的技巧让她欲罢不能，甚至主动收紧腋下肌肉增加摩擦。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{penis_s}以完美的节奏在{armpit_s}抽送，{target.name}从未想过自己的腋下竟如此敏感，这种特殊的性爱方式带给她的快感几乎让她尖叫出声，全身颤抖不已。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}撑开，粗大的肉棒摩擦着敏感的腋窝，带来一种既痛苦又刺激的感觉，她的呼吸变得急促，夹紧手臂增加刺激。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间艰难地抽送，{target.name}能清晰感受到肉棒的粗壮和热度，每一次摩擦都带来强烈的刺激，让她忍不住呻吟出声。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}感受到{penis_s}在{armpit_s}的挤压感，粗大的尺寸让她的腋窝被完全填满，这种紧致的摩擦带来的快感让她全身发热。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间的每一次摩擦都让{target.name}感到既紧张又兴奋，粗壮的肉棒强烈刺激着腋下的神经末梢，让她娇喘连连。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}撑到极限，她能感受到肉棒上每一根青筋的形状，这种饱满的摩擦让她的腋下变得异常敏感。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间艰难进出，粗大的尺寸让{target.name}不得不完全张开手臂，这种被征服的感觉和强烈的摩擦让她既羞耻又兴奋。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}摩擦得发热发红，粗壮的肉棒每次抽送都带来强烈的刺激，她从未想过腋交也能如此刺激，全身颤抖。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}的嫩肉间强力摩擦，{target.name}既感到些许不适又感到强烈的快感，她的乳头因兴奋而挺立，呻吟声越来越大。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}努力夹紧{armpit_s}，让{penis_s}在狭窄的空间中抽送，粗壮的肉棒带来的强烈刺激让她忍不住扭动身体，寻求更多的快感。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间的摩擦让{target.name}体验到一种新的性快感，粗大的尺寸让每一次抽送都成为一种挑战，她的腋下变得越来越敏感。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}被{penis_s}以令人窒息的技巧摩擦着，粗壮的肉棒每一次运动都精准刺激着敏感神经，让她全身痉挛，几乎要尖叫出声。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{penis_s}在{armpit_s}间展现出惊人的控制力，尽管尺寸粗大却能完美掌握力度和节奏，{target.name}感到腋下传来的快感如电流般席卷全身。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{target.name}惊讶于{penis_s}在{armpit_s}间带来的极致快感，粗壮的肉棒以完美的技巧摩擦着每一寸敏感带，让她浑身颤抖，淫水泛滥。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{penis_s}以无与伦比的技巧在{armpit_s}抽送，粗大的尺寸和精湛的控制力让{target.name}体验到前所未有的腋下快感，她几乎要昏厥过去。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}被{penis_s}完美地开发着，粗壮的肉棒每一次运动都恰到好处，她从未想过腋交能带来如此强烈的快感，甚至超过了阴道性交。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{penis_s}在{armpit_s}间的每一次精准抽送都让{target.name}欲仙欲死，粗大的尺寸和高超的技巧完美结合，她的腋下变得比阴道还要敏感，快感如潮水般涌来。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}在{penis_s}的高超技巧下完全臣服，粗壮的肉棒精准刺激着每一处敏感点，她的全身都在颤抖，甚至有可能仅靠腋交就达到高潮。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{penis_s}以令人惊叹的技巧在{armpit_s}间游走，尽管尺寸粗大却能精确控制每一次摩擦的力度和角度，{target.name}完全沉醉在这种特殊的性爱中。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{target.name}感受到{penis_s}在{armpit_s}的完美律动，粗壮的肉棒和高超的技巧带来的快感让她呻吟不断，甚至主动夹紧双臂增加刺激。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{penis_s}以精湛的技巧在{armpit_s}抽送，粗大的尺寸被完美控制，{target.name}从未体验过如此强烈的腋下快感，她的呼吸急促，浑身燥热，欲望高涨。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}完全撑开，巨大的肉棒几乎无法容纳，每一次摩擦都带来既痛苦又刺激的感觉，她咬紧嘴唇忍受着这种强烈的刺激。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间艰难地挤压着，{target.name}感到腋下的皮肤被撑到极限，这种被征服和填满的感觉让她既紧张又兴奋，呼吸急促。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}惊讶于{penis_s}的尺寸，她的{armpit_s}几乎无法完全容纳，每一次摩擦都让她感到既不适又刺激，这种被征服的感觉让她下体湿润。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间的摩擦让{target.name}感到一种前所未有的压迫感，巨大的肉棒几乎要将她的手臂撑开，这种强烈的刺激让她全身发热。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}撑到极限，她能感受到肉棒上每一根青筋的形状和跳动，这种被完全填满的感觉让她既恐惧又兴奋。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间的每一次抽送都让{target.name}呻吟出声，巨大的尺寸带来的强烈摩擦使她的腋下变得异常敏感，快感和痛感交织在一起。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}努力适应{penis_s}在{armpit_s}的摩擦，巨大的肉棒让她感到有些不适，但同时也带来了一种被完全征服的快感，让她欲罢不能。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}的嫩肉间艰难地摩擦着，{target.name}感到一种前所未有的压迫感和刺激，她的乳头因兴奋而硬挺，全身颤抖。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{target.name}的{armpit_s}被{penis_s}强行撑开，她既感到不适又感到一种奇特的满足感，这种被巨物摩擦的感觉让她的下体不断分泌爱液。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{penis_s}在{armpit_s}间的粗暴摩擦让{target.name}感受到一种痛并快乐着的感觉，巨大的尺寸带来的强烈刺激让她的腋下变得异常敏感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}被{penis_s}以惊人的技巧开发着，尽管尺寸巨大却能完美控制力度，每一次摩擦都精准刺激敏感点，让她全身痉挛，淫叫不断。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{penis_s}在{armpit_s}间展现出无与伦比的控制力，巨大的肉棒以精准的角度和节奏摩擦着每一处敏感带，{target.name}感到快感如潮水般涌来。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{target.name}惊叹于{penis_s}在{armpit_s}间带来的极致体验，巨大的尺寸和高超的技巧完美结合，她从未想过腋交能带来如此强烈的快感，几乎要晕厥过去。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{penis_s}以令人窒息的技巧在{armpit_s}抽送，巨大的肉棒被完美控制，{target.name}的腋下仿佛变成了新的性器官，快感直冲大脑，让她欲仙欲死。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}被{penis_s}完美地征服，巨大的尺寸和精湛的技巧让她体验到前所未有的快感，腋下的敏感度被激发到极致，她浑身颤抖。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{penis_s}在{armpit_s}间的每一次精准抽送都让{target.name}尖叫连连，巨大的肉棒和高超的技巧带来的刺激让她的腋下比阴道还要敏感，快感无法抑制。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{target.name}的{armpit_s}在{penis_s}的高超技巧下完全臣服，尽管尺寸巨大却能以完美的节奏和力度刺激每一个敏感点，她甚至可能仅靠腋交就达到高潮。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{penis_s}以精湛的技巧在{armpit_s}间游走，巨大的尺寸被完美控制，每一次摩擦都恰到好处，{target.name}从未体验过如此强烈的快感，浑身酥软。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{target.name}感受到{penis_s}在{armpit_s}的完美律动，巨大的肉棒以令人惊叹的精准度刺激着每一处敏感神经，她的呻吟越来越放荡，全身都在为这种快感而颤抖。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{penis_s}以无与伦比的技巧在{armpit_s}抽送，巨大的尺寸和精湛的控制力让{target.name}体验到前所未有的腋下快感，她的乳头和阴蒂同时挺立，全身处于极度兴奋状态。"
 
 [[entries]]

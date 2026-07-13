@@ -606,123 +606,123 @@ conditions = "premises:t_npc_active_h"
 context = "{target.name}用{hands_s}紧握住{penis_s}底部，另一只手则快速套弄顶端，两只手配合默契，展现出高超的技巧。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "被锁链束缚的{target.name}被迫用{hands_s}机械地撸动{penis_s}，脸上写满厌恶与屈辱，眼中充满恨意，动作僵硬而不情愿。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}颤抖的{hands_s}被强制握住{penis_s}，勉强进行着上下摩擦，全身肌肉因抗拒而紧绷，眼神中透露着深深的憎恨。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "戴着镣铐的{target.name}无力地用{hands_s}套弄着{penis_s}，动作毫无热情可言，眼神空洞地看向远方，仿佛在逃避现实。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}被迫跪在地上，冰冷的锁链限制着她的行动，{hands_s}生硬地上下移动，服务着{penis_s}，脸上满是屈辱的泪水。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "囚禁中的{target.name}用仇恨的眼神盯着{character.name}，{hands_s}被迫撸动着{penis_s}，每一个动作都充满了不情愿和抵抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}的手腕被锁链磨出血痕，却仍被强迫用{hands_s}为{penis_s}服务，身体因厌恶而微微发抖，咬紧牙关忍受着耻辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "束缚中的{target.name}眼神中透着怨恨，{hands_s}被迫快速撸动着{penis_s}，全身散发着强烈的抵抗情绪，动作迟缓而僵硬。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}被镣铐牵制着勉强活动，{hands_s}生硬地摩擦着{penis_s}，眼睛紧闭不愿面对现实，嘴角因厌恶而微微抽搐。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}被迫用{hands_s}上下套弄{penis_s}，眼中含着不甘的泪水，身体因屈辱而颤抖，头扭向一边试图逃避现实。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "被囚禁的{target.name}双眼无神，{hands_s}在命令下机械地撸动{penis_s}，动作完全没有感情可言，只是被迫执行的任务。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}麻木地用{hands_s}套弄着{penis_s}，眼神空洞，动作虽然不再有明显抵抗，但依旧缺乏热情，像是接受了现实的奴役。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "戴着锁链的{target.name}低着头，{hands_s}按照要求撸动{penis_s}，表情虽然不再充满仇恨，但仍然透露出无奈与顺从。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}跪在地上，镣铐限制着她的行动，{hands_s}熟练但无感情地为{penis_s}服务，表情已由反抗变为习惯性的服从。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "监禁中的{target.name}不再挣扎，机械地用{hands_s}摩擦{penis_s}，偶尔还会根据指示调整节奏，眼神中透露出麻木与认命。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}的{hands_s}上下滑动服务着{penis_s}，动作虽然流畅但缺乏热情，她的表情平静，已经接受了自己性奴的身份。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "被驯服的{target.name}乖顺地用{hands_s}套弄{penis_s}，虽然不再有抵抗，却也没有享受，只是尽职尽责地完成任务。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}微微低头，锁链随着她的动作轻响，{hands_s}熟练地撸动{penis_s}，曾经的反抗已变成了平静的接受。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "囚禁状态下的{target.name}已经习惯用{hands_s}为{penis_s}服务，动作规律而标准，眼神虽然空洞但不再有反抗的火花。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}温顺地跪在地上，镣铐已成为她身体的一部分，{hands_s}无意识地摩擦着{penis_s}，心理已屈服于现实。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "被长期监禁的{target.name}用{hands_s}机械性地套弄{penis_s}，不再抗拒也不再哭泣，只是默默执行着自己的职责。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "完全顺从的{target.name}跪在地上，虽戴着镣铐却满脸崇拜，{hands_s}热情地撸动{penis_s}，眼神中充满对主人的渴望和感激。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}尽管被锁链束缚，却主动用{hands_s}卖力服务{penis_s}，表情陶醉，不时舔舐嘴唇，期待着取悦主人的机会。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "监禁中的{target.name}已成为完美的性奴，{hands_s}熟练地抚弄{penis_s}，眼神崇拜地望着{character.name}，乞求着更多的宠幸和使用。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}跪姿标准，锁链叮当作响却不影响她对{penis_s}的热情服务，{hands_s}技巧纯熟，嘴里不停感谢主人的恩赐。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "被驯化的{target.name}在镣铐中找到了存在的意义，{hands_s}充满爱意地抚摸{penis_s}，眼神迷醉，享受着自己的奴隶身份。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}虔诚地跪在主人面前，尽管身上的锁链限制着行动，{hands_s}仍然无比灵活地服务着{penis_s}，脸上洋溢着幸福的微笑。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "囚禁的{target.name}已经堕落成完美的性奴，{hands_s}富有技巧地撸动{penis_s}，眼中满是期待，渴望着主人的精液作为奖励。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}沉浸在服侍主人的喜悦中，即使锁链勒紧了她的皮肤，{hands_s}依然毫不懈怠地套弄着{penis_s}，嘴里念叨着感谢的话语。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "彻底顺从的{target.name}以标准的奴隶姿势跪着，眼神崇拜地盯着{penis_s}，{hands_s}快速而有力地撸动，希望能让主人尽快得到满足。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}不再把锁链视为束缚，而是主人恩赐的装饰，{hands_s}卖力地服务着{penis_s}，眼神中满是渴望被使用的热切期盼。"
 
 [[entries]]
@@ -1046,323 +1046,323 @@ conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{target.name}虽已成年却对性事一无所知，她用成熟的{hands_s}生涩地摩擦{penis_s}，不明白为何它会变得更热更硬，只是继续着这陌生的动作。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}以适中的力道握住{penis_s}上下套弄，灵巧的指尖时而轻抚过敏感的龟头，时而轻柔地刮过马眼，每一次动作都引起{character.name}轻微的颤抖。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}双手交替着撸动{penis_s}，一只手照顾着柱身，另一只手则在囊袋处打着圈，手法娴熟而有节奏，让{character.name}的呼吸越来越急促。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}用{hands_s}包裹住整根{penis_s}，手掌与手指形成的空间刚好容纳，随着节奏加快，{character.name}的前液开始渗出，润滑了她的每一次套弄。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}轻握{penis_s}，指腹沿着冠状沟来回摩擦，不时用指尖搔刮马眼周围，每当{character.name}微微挺腰时就稍稍加快速度，掌控着快感的节奏。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}将{penis_s}夹在两根手指之间来回磨蹭，指尖灵巧地刺激着每一个敏感点，偶尔用拇指按压顶端，让{character.name}不由自主地绷紧大腿。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}一手轻柔地握住{penis_s}上下滑动，另一只手则在马眼处打转，小巧的尺寸让她能完全掌控，每次动作都带来一阵颤栗。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}用拇指和食指形成环状，紧紧包裹住{penis_s}从根部到头部来回撸动，偶尔在敏感的龟头处略微停留，让{character.name}忍不住发出呻吟。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}握住{penis_s}做着旋转式的套弄，手腕灵活转动，带动整个手掌摩擦柱身，时快时慢的节奏让{character.name}腰部不住地抽动。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}用{hands_s}轻揉{penis_s}，掌心的温度和湿润让每一次摩擦都格外舒适，手指偶尔擦过冠状沟，引得{character.name}全身微微颤抖。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}用指腹轻轻擦过{penis_s}的每一寸，从根部到铃口，小巧的尺寸让她能够仔细照顾到每一处，让{character.name}全身绷紧，无法控制地抽搐。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 6"
 context = "{target.name}手指灵巧地在{penis_s}上舞动，完美掌控每一个敏感点，精准地在冠状沟和系带处施加恰到好处的压力，让{character.name}几乎立刻就硬到极限。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 6"
 context = "{target.name}以令人难以置信的技巧变换着手部动作，时而轻抚时而紧握，每次触碰都精确到毫厘，让{penis_s}在她手中颤抖不止，前液不断涌出。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 6"
 context = "{target.name}双手配合无间，一手以完美的力道套弄{penis_s}，另一手则精确地刺激着囊袋和会阴，引发一阵阵令人窒息的快感浪潮。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 6"
 context = "{target.name}以高超技巧轻柔地握住{penis_s}，每一次动作都带着精准的节奏和力度，时不时用指尖刺激马眼，让{character.name}濒临高潮却又巧妙地延缓。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 6"
 context = "{target.name}用{hands_s}在{penis_s}上施展着令人叹为观止的技巧，每一个动作都精确地刺激着最敏感的神经末梢，让{character.name}全身痉挛，几乎失去控制。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 6"
 context = "{target.name}指尖在{penis_s}上跳跃如舞，精确地掌握每一处敏感带的反应，完美地控制着力道和速度，使{character.name}在极致快感中不停颤抖。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 6"
 context = "{target.name}用拇指和食指形成的环状套弄{penis_s}，同时其余手指以难以置信的灵活度刺激着周围每一寸皮肤，让{character.name}眼前发白，呻吟不断。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 6"
 context = "{target.name}熟练地将{penis_s}握在掌中，指腹精确地找到每一个神经密集处，以变换莫测的节奏和力度刺激着，让{character.name}在持续的快感中无法自已。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 6"
 context = "{target.name}用{hands_s}展现出令人窒息的技巧，将{penis_s}完全掌控在手中，每一次轻柔的摩擦都能引发全身的电流，让{character.name}不由自主地抽搐。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_0&selected.abilities.指技.level > 6"
 context = "{target.name}五指交替着刺激{penis_s}的每一寸，完美地掌握着力道与节奏，小巧的尺寸在她精湛技巧下展现出惊人的敏感度，让{character.name}很快达到高潮边缘。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}以适中的节奏套弄着{penis_s}，指尖不时划过敏感的冠状沟，熟练地掌握着力道，让{character.name}的呼吸逐渐加重，身体微微紧绷。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}一手握住{penis_s}上下滑动，另一手轻抚囊袋，双手配合的节奏让{character.name}不住地挺腰，{penis_s}在她手中变得更加坚硬。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}用{hands_s}以螺旋式的动作摩擦{penis_s}，手掌与手指形成的压力恰到好处，让{character.name}的前液开始渗出，湿润了每一次滑动。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}握住{penis_s}做着上下套弄的动作，偶尔用拇指擦过敏感的龟头，每当{character.name}呻吟加重时就略微加快速度，掌控着节奏。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}双手交替着抚弄{penis_s}，一只手照顾柱身，一只手刺激顶端，不紧不慢的节奏和恰到好处的力道让{character.name}全身发热。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}将{penis_s}握在手中，指腹沿着血管的纹路来回摩擦，时轻时重的力道变化让{character.name}不断颤抖，呼吸变得急促。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}用{hands_s}有节奏地套弄着{penis_s}，每次上下动作都带着微妙的旋转，恰到好处的摩擦让{character.name}难以控制地挺动腰部。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}一手轻握{penis_s}根部，另一手则集中刺激敏感的头部，双手配合的节奏让{character.name}全身肌肉绷紧，忍不住低吟出声。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}用掌心包裹住{penis_s}，手指轻轻收紧形成恰到好处的压力，上下移动的同时微微扭转手腕，让{character.name}的快感不断累积。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}五指灵活地在{penis_s}上游走，时而轻抚时而紧握，变化多端的刺激让{character.name}的腹肌不断收缩，腰部不由自主地挺动。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 6"
 context = "{target.name}手指如蝴蝶般在{penis_s}上翩翩起舞，每一次触碰都精确地找到最敏感的神经末梢，完美的力道和节奏让{character.name}全身颤抖不已。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 6"
 context = "{target.name}以令人窒息的技巧套弄着{penis_s}，指尖精确地掌握每一处敏感点的反应，时轻时重、忽快忽慢的变化让{character.name}几乎立刻濒临高潮。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 6"
 context = "{target.name}用{hands_s}展现出惊人的技巧，一手完美地握住{penis_s}上下滑动，另一手则精确地按摩着会阴和囊袋，引发一阵阵令人眩晕的快感。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 6"
 context = "{target.name}双手配合无间，拇指在龟头上画着小圈，同时其余手指以完美的压力和速度套弄着柱身，让{character.name}在极致快感中失去对身体的控制。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 6"
 context = "{target.name}以高超技巧将{penis_s}掌控在手中，指腹精确地沿着每一条血管滑动，时而加重时而轻柔，让{character.name}在持续攀升的快感中无法自拔。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 6"
 context = "{target.name}手指灵活地变换着不同的刺激方式，从轻柔的抚触到有力的挤压，每一个动作都恰到好处，让{character.name}在连续不断的快感浪潮中喘息不已。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 6"
 context = "{target.name}用{hands_s}展现出让人叹为观止的控制力，完美地掌握{penis_s}的每一个反应，精确地调整力道和速度，让{character.name}在极乐边缘徘徊。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 6"
 context = "{target.name}五指交替着刺激{penis_s}的每一寸，时而集中于冠状沟，时而照顾整个柱身，复杂多变的技巧让{character.name}全身紧绷，随时可能爆发。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 6"
 context = "{target.name}熟练地掌握着{penis_s}的每一处敏感带，手指像弹奏乐器般精确地施加不同的压力和频率，让{character.name}在持续的快感电流中无法自持。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_1&selected.abilities.指技.level > 6"
 context = "{target.name}将{penis_s}完全掌控在手中，每一次动作都带着完美的力道和精确的节奏，前液在她高超技巧的刺激下不断涌出，为每一次滑动增添润滑。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}双手握住{penis_s}上下套弄，虽然技巧尚显生疏，但她还是找到了合适的节奏，让{character.name}的呼吸变得粗重，{penis_s}在她手中跳动。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}努力用{hands_s}包裹住{penis_s}，虽然无法完全握住，但她灵活地变换着角度，确保每一寸都得到照顾，让{character.name}不住地颤抖。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}一手握住{penis_s}的头部，另一手套弄着粗壮的柱身，双手配合的节奏让{character.name}忍不住挺腰，前液开始渗出润湿她的手指。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}双手交替着抚弄{penis_s}，尽管完全张开的手掌也难以完全包裹，但她依然熟练地上下滑动，让{character.name}全身紧绷。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}用手掌包裹住{penis_s}的头部轻轻揉搓，同时另一只手上下套弄着柱身，娴熟的配合让{character.name}不断发出低沉的呻吟。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}努力用{hands_s}环绕{penis_s}，手指无法完全合拢，但她灵活地变换着角度和力道，让{character.name}的快感不断累积。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}双手并用，一手握住{penis_s}的根部提供稳定的压力，另一手则集中于敏感的头部，让{character.name}的腹肌不断收缩，呼吸越发急促。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}以螺旋式的动作套弄着{penis_s}，虽然单手难以完全包裹，但她巧妙地运用双手，确保每一次动作都带来充分的刺激。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}一手上下滑动照顾{penis_s}的柱身，另一手则轻柔地按摩着沉甸甸的囊袋，双手的配合让{character.name}全身颤抖，快感不断累积。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}尝试用{hands_s}完全包裹住{penis_s}，虽然技巧尚显不足，但她依然找到了合适的节奏和力道，让{character.name}的前液不断溢出。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 6"
 context = "{target.name}以令人叹为观止的技巧同时运用双手，完美地包裹住{penis_s}，指尖精确地找到每一个敏感点，让{character.name}几乎立刻就濒临高潮边缘。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 6"
 context = "{target.name}展现出惊人的控制力，双手如蛇般缠绕在{penis_s}上，每一次移动都带着精确的力道和完美的节奏，让{character.name}在强烈的快感中失去理智。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 6"
 context = "{target.name}用{hands_s}演示着高超的技巧，尽管{penis_s}十分粗大，她仍能精确地掌控每一寸，指腹的压力和速度变化让{character.name}全身痉挛，快感如电流般蔓延。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 6"
 context = "{target.name}双手配合无间，一手专注于龟头和冠状沟的敏感区域，另一手则完美地套弄着粗壮的柱身，引发一波又一波令人窒息的快感浪潮。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 6"
 context = "{target.name}以高超技巧将{penis_s}完全掌控，手指如钢琴师般在每一处敏感带上舞动，精确地施加变化多端的压力和频率，让{character.name}在极乐中不住颤抖。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 6"
 context = "{target.name}熟练地用手指在{penis_s}上编织着快感的网络，每一次触碰都恰到好处，粗壮的尺寸在她精湛技巧下展现出惊人的敏感度，让{character.name}无法控制地呻吟。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 6"
 context = "{target.name}十指灵活地在{penis_s}上游走，完美地掌握着每一处敏感带的反应，时而集中刺激，时而全面照顾，让{character.name}在持续的快感中几乎窒息。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 6"
 context = "{target.name}用{hands_s}展现出令人难以置信的技巧，虽然{penis_s}粗壮，但在她手中仿佛成了精密的乐器，每一次触碰都能引发强烈的快感电流。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 6"
 context = "{target.name}以精湛的手法将{penis_s}玩弄于股掌之间，指尖精确地掌握每一个敏感点的反应，复杂多变的刺激让{character.name}在极乐中失去对身体的控制。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_2&selected.abilities.指技.level > 6"
 context = "{target.name}双手交替着施展着高超技巧，时而集中于龟头的敏感带，时而照顾整个粗壮的柱身，让{character.name}在连续不断的快感浪潮中全身颤抖，前液不断涌出。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}努力用双手握住{penis_s}，尽管如此仍有一部分露在外面，她尝试上下套弄，手掌无法完全环绕的情况下还是找到了合适的节奏。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}用{hands_s}努力包裹住惊人尺寸的{penis_s}，双手交替上下滑动，虽然技巧不够精湛，但巨大的体积本身就带来强烈的视觉冲击和摩擦快感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}一手专注于{penis_s}的巨大头部，另一手则尽可能地照顾着粗壮的柱身，虽然无法完全掌控，但双手的配合依然带给{character.name}阵阵快感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}双手并用却仍难以完全包裹住{penis_s}，她尝试着变换角度和姿势，确保每一部分都得到照顾，让{character.name}的呼吸越发粗重。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}努力用掌心包裹住{penis_s}的头部，同时另一只手上下套弄着能够触及的部分，巨大的体积让她的动作显得有些吃力，但依然引发{character.name}的阵阵颤抖。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}尝试用双手交替摩擦{penis_s}，虽然技巧尚显不足，但她专注的表情和不断调整的手法，还是让{character.name}感受到阵阵快感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}用{hands_s}在{penis_s}上来回滑动，尽管无法一次照顾到全部，但她依然找到了有效的方式，让{character.name}的前液开始渗出，润湿了她的手指。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}双手握住{penis_s}的不同部位交替刺激，虽然面对惊人的尺寸显得有些吃力，但她还是凭借持续的节奏和变化的力道，让{character.name}的快感不断累积。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}一手套弄{penis_s}的头部，另一手则尽可能地上下滑动照顾柱身，虽然技巧不够纯熟，但面对如此巨物的认真态度和努力，让{character.name}全身发热。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_G_3&premises:CVP_A2_A|70_LE_6&premises:CVP_A2_A|70_LE_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 3&selected.abilities.指技.level <= 6"
 context = "{target.name}努力用双手环绕{penis_s}，手指难以合拢的情况下尝试着变换不同的刺激方式，让{character.name}的腹肌不断收缩，呼吸越发急促。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 6"
 context = "{target.name}展现出惊人的技巧，双手完美配合地掌控着{penis_s}，即使无法完全包裹，她依然精确地找到每一个敏感点，让{character.name}在极致快感中浑身颤抖。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 6"
 context = "{target.name}双手在{penis_s}上如蝴蝶般飞舞，指尖精确地掌握每一处敏感带的反应，复杂多变的刺激让{character.name}几乎立刻就濒临爆发边缘。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 6"
 context = "{target.name}用{hands_s}展现出令人窒息的控制力，尽管{penis_s}尺寸惊人，她仍能完美地协调双手动作，精确地调整力道和频率，让{character.name}在极乐中失去理智。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 6"
 context = "{target.name}以高超技巧同时刺激着{penis_s}的多个部位，手指如钢琴师般在每一处敏感带上跳跃，引发一波又一波令人窒息的快感浪潮。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 6"
 context = "{target.name}熟练地在{penis_s}上施展着复杂的技巧，双手配合无间，从龟头到柱身再到囊袋，每一处都得到精确的照顾，让{character.name}在持续的快感中几乎晕厥。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 6"
 context = "{target.name}十指灵活地在{penis_s}上编织着快感的网络，完美地掌握着每一处敏感带的反应，精确地施加变化多端的压力和频率，让{character.name}全身痉挛。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 6"
 context = "{target.name}以令人难以置信的技巧将{penis_s}玩弄于股掌之间，指尖精确地找到每一个神经密集处，时而集中刺激，时而全面照顾，让{character.name}在极致快感中无法自持。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 6"
 context = "{target.name}用{hands_s}展现出高超的协调能力，面对惊人尺寸的{penis_s}毫不畏惧，反而利用其巨大的表面积施展更加复杂的技巧，让{character.name}在连续不断的快感中全身颤抖。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 6"
 context = "{target.name}双手交替着施展着令人眩晕的技巧，完美地掌控着{penis_s}的每一寸，从敏感的冠状沟到粗壮的柱身，每一次触碰都引发强烈的快感电流。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A2_A|70_G_6&premises:CVP_A2_A|70_G_6"
+conditions = "premises:jj_3&selected.abilities.指技.level > 6"
 context = "{target.name}以精湛的手法让{penis_s}在她手中变成极致快感的源泉，双手的每一个动作都带着完美的力道和精确的节奏，让{character.name}的前液不断涌出，濒临爆发边缘。"
 
 [[entries]]
@@ -1526,163 +1526,163 @@ conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_4"
 context = "年幼的{target.name}用{hands_s}以令人惊讶的熟练度爱抚{penis_s}，小手的每一次套弄都恰到好处，展现出爱侣间无需言语的默契与亲密。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}勉强用她的{hands_s}套弄着{penis_s}，小手因为不情愿而动作生硬，但出于服从还是尽力完成着上司的命令。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-1"
 context = "年幼的{target.name}用{hands_s}不情愿地摩擦{penis_s}，小手生硬地上下移动，动作中带着明显的抵触和被迫服从的意味。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}的{hands_s}在{penis_s}上敷衍地滑动，稚嫩的手指虽然动作着但明显缺乏热情，仅仅是被迫执行上司过分的命令。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-1"
 context = "小小的{target.name}用她的{hands_s}机械地套弄着{penis_s}，动作生硬而不连贯，透露出内心的不满和勉强的服从。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}心不在焉地抚弄{penis_s}，幼小的手掌时而用力过猛时而几乎停滞，显示出对这项任务的抵触与不满。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-1"
 context = "年幼的{target.name}被迫用{hands_s}套弄{penis_s}，小手动作僵硬且缓慢，偶尔因不专心而力道失控，显示出对上司命令的勉强服从。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}的{hands_s}敷衍地摩擦着{penis_s}，幼嫩的手指几乎不愿意碰触，动作中透露出对这种越界行为的抵触和无奈的服从。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-1"
 context = "小小的{target.name}用{hands_s}不熟练地套弄{penis_s}，动作僵硬且不连贯，明显是被迫服从命令却内心充满抵触的表现。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用她的{hands_s}极不情愿地摩擦{penis_s}，小手时快时慢没有节奏，透露出对上司越界命令的不满与勉强的服从。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-1"
 context = "年幼的{target.name}用{hands_s}机械地上下滑动着{penis_s}，小手的每一次动作都充满了抵触，却又因对上司的服从而不得不继续。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用她的{hands_s}认真地套弄着{penis_s}，虽然对这项任务有些迟疑，但出于对上司的信任还是尽职地完成着，小手有条不紊地上下滑动。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-2"
 context = "年幼的{target.name}专注地用{hands_s}服务着{penis_s}，将这视为一种特殊任务，小手按照指示的方式来回摩擦，展现出对上司的信任与服从。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{hands_s}在{penis_s}上有节奏地滑动，娇小的手指偶尔轻抚顶端，像完成其他工作一样认真地执行着这项特殊任务。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-2"
 context = "小小的{target.name}用她的{hands_s}按照指示套弄{penis_s}，虽然动作还不够熟练，但充满了想要正确完成任务的专注与服从。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}专心致志地爱抚{penis_s}，将其视为一项需要认真对待的工作，小手虽然稚嫩但动作流畅而有条理。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-2"
 context = "年幼的{target.name}驯服地用{hands_s}套弄着{penis_s}，稚嫩的手指遵循着上司的指示变换着节奏和力道，展现出对指令的理解与执行能力。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{hands_s}按照要求抚弄着{penis_s}，小手的动作虽然因年幼而略显生涩，但充满了对上司信任与执行任务的认真态度。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-2"
 context = "小小的{target.name}用她的{hands_s}服务着{penis_s}，像对待一项重要工作一样认真，小手按照指示的方式变换着速度和力道。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}熟练地套弄着{penis_s}，虽然年幼但表现出色，小手的每一次动作都展现出对上司指令的准确理解与执行。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-2"
 context = "年幼的{target.name}驯服地用{hands_s}按摩着{penis_s}，稚嫩的手指遵循着指示轻重交替，表现出对上司交代任务的重视与专业态度。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}像忠诚的小宠物一样用她的{hands_s}热情地套弄{penis_s}，幼嫩的手指灵活地滑动，眼中流露出能够服务主人的满足感。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "年幼的宠物{target.name}用{hands_s}卖力地侍奉着{penis_s}，小手以各种角度和力道摩擦着茎身，迫切希望能够取悦主人。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}的{hands_s}在{penis_s}上来回滑动，像小宠物讨好主人一样热情而专注，稚嫩的手指不断变换着花样，渴望获得主人的认可。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "小小的{target.name}用她的{hands_s}献媚地爱抚{penis_s}，幼嫩的手掌和手指轻柔而灵活，展现出宠物般的忠诚与讨好。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}热切地服务着主人的{penis_s}，小手熟练地上下套弄，偶尔轻轻挤压，像训练有素的宠物一样渴望主人的满意。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "年幼的{target.name}用她的{hands_s}乖巧地抚慰{penis_s}，手法虽稚拙但充满热情，像宠物渴望主人抚摸一样迫切地寻求认可。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}的{hands_s}在{penis_s}上殷勤地摩擦，小手的每一次动作都充满了讨好与依恋，宠物般的眼神中流露出服务主人的喜悦。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "小小的{target.name}像训练有素的宠物一样用{hands_s}侍奉着{penis_s}，稚嫩的手指灵活地变换着角度和力道，渴望得到主人的夸奖。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用她的{hands_s}殷勤地套弄{penis_s}，像小宠物一样专注而投入，每一个动作都是为了取悦主人的本能反应。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "年幼的{target.name}用{hands_s}乖巧地服务着{penis_s}，小手的节奏和力道都恰到好处，展现出被驯养的宠物对主人需求的敏锐理解。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}虔诚地用她的{hands_s}膜拜着主人的{penis_s}，小手套弄的每一个动作都充满了绝对的服从与狂热的忠诚。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "年幼的奴隶{target.name}用{hands_s}全心全意地侍奉{penis_s}，娇小的手指灵活地按摩着每一寸肌肤，眼中只有对主人的崇拜与臣服。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}的{hands_s}在{penis_s}上狂热地摩擦，幼小的身躯投入地服务着主人，每一个动作都带着奴隶对主人的绝对忠诚。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "小小的{target.name}用她的{hands_s}虔诚地爱抚{penis_s}，稚嫩的手指带着近乎宗教般的狂热，把服侍主人视为生命的唯一意义。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}无比专注地服务着主人的{penis_s}，幼小的手掌和手指展现出令人惊讶的技巧，全身心投入到取悦主人的使命中。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "年幼的{target.name}用她的{hands_s}以奴隶的身份侍奉{penis_s}，每一次套弄都精准而投入，眼中只有对主人的无上崇拜。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}的{hands_s}在{penis_s}上投入地滑动，像献祭一般地奉献自己的服务，幼小的身体里蕴含着对主人的绝对忠诚。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "小小的{target.name}用{hands_s}近乎疯狂地侍奉着{penis_s}，稚嫩的手指不知疲倦地变换着花样，眼中只有取悦主人的狂热与臣服。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用她的{hands_s}虔诚地套弄{penis_s}，每一个动作都带着奴隶对主人的绝对服从和无条件的付出。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "年幼的{target.name}用{hands_s}以无比的专注和技巧服务着{penis_s}，小手的每一次抚触都体现着奴隶对主人的完全臣服与狂热忠诚。"
 
 [[entries]]
@@ -1846,163 +1846,163 @@ conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_4"
 context = "{target.name}用只有爱侣才知道的独特节奏套弄着{penis_s}，小手虽然稚嫩却能准确捕捉到每一个微妙的反应，并据此调整动作。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}勉强服从着上司的命令，{hands_s}生硬地套弄着{penis_s}，动作中透露出明显的不情愿和勉强。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}小手机械地上下移动，敷衍地摩擦着{penis_s}，眼神中满是抵触，但碍于上下级关系不得不继续。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}的{hands_s}僵硬地握住{penis_s}，虽然动作生疏且缺乏热情，但出于对上司的服从仍在继续手上的工作。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}咬着嘴唇，不情愿地加快了手上的动作，虽然小手的技巧不佳，但还是服从了上司加速的命令。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}被迫用双手握住{penis_s}，动作明显不自然且生硬，每一下撸动都透露出内心的抵触和被迫服从的无奈。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}按照上司的指示改变手法，小手虽然照做但动作中带着明显的不满和勉强，眼神避开与上司的直接接触。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}的{hands_s}因厌恶而微微颤抖，却不得不继续为上司服务，套弄{penis_s}的动作既不熟练也不热情。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}小手时快时慢地撸动着{penis_s}，技巧的生疏与内心的抵触让她的动作显得尤为笨拙，但职位的压力让她不敢停下。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}被命令加大力度套弄{penis_s}，尽管内心极度不愿，但{hands_s}还是机械地执行了命令，眼中满是屈服的耻辱。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}忍受着上司的淫秽要求，{hands_s}被迫在{penis_s}上摩擦，虽然动作缓慢且敷衍，但还是在职位压力下不得不继续。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}认真执行着上司的指令，{hands_s}专注地套弄着{penis_s}，虽然这超出了工作范围，但她仍然专业地完成这项“特殊任务”。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}像对待重要工作一样认真地撸动着{penis_s}，{hands_s}有条不紊地上下移动，动作中带着对上司的信任与服从。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}按照上司的指示调整手法，小手虽然稚嫩却努力做到最好，眼神中透露出对上司决定的理解和接受。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}毫不犹豫地执行上司的命令，{hands_s}有节奏地套弄着{penis_s}，虽然动作中略显青涩，但对上司的服从是毫无保留的。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}小手灵活地变换着不同的手法，尽管年幼却认真对待上司的每一个指示，动作中透露出对上司的信赖和尊重。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}根据上司的反应调整着手上的力道和速度，尽管动作不甚熟练，但她专注的神情显示着对“任务”的高度重视。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}努力记住上司喜欢的每一种手法，{hands_s}越来越熟练地套弄着{penis_s}，表现出超越年龄的责任感和专业性。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}不厌其烦地重复着上司喜欢的动作，幼小的手指因长时间摩擦而发红，但她仍保持着对“工作”的专注。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}双手配合默契地服务着上司，一只手套弄{penis_s}，另一只手则按照指示照顾其他部位，表现出对上司全面的服从和理解。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{hands_s}因反复摩擦{penis_s}而微微发热，但她没有丝毫抱怨，反而更加卖力地执行上司的每一个指令，眼神中满是信任。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}像忠诚的宠物一样跪在主人面前，小手熟练地套弄着{penis_s}，眼中流露出服务主人的喜悦，动作中带着明显的依恋。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}主动用{hands_s}服务主人的{penis_s}，稚嫩的手指灵活地上下滑动，时而发出轻微的呜咽声表达对主人的依赖。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}娇小的身体前倾，双手卖力地为主人撸动{penis_s}，动作中透露出对能取悦主人的满足感和幸福感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}像训练有素的宠物一样，准确地掌握着主人喜欢的节奏，{hands_s}在{penis_s}上的每一次撸动都带着讨好的意味。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}一边套弄{penis_s}一边发出类似宠物的呜咽声，{hands_s}灵活地变换着不同的手法，希望能博得主人的夸奖。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}小手因长时间撸动{penis_s}而变得通红，但她没有丝毫怨言，反而因能够服务主人而显得格外兴奋和专注。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用宠物般的热情服务着主人，{hands_s}以娴熟的技巧套弄着{penis_s}，动作中满是对主人的依恋和取悦欲望。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}小手在{penis_s}上摩擦的同时轻轻晃动着身体，像宠物一样渴望着主人的爱抚，每个动作都带着明显的讨好意味。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}双手交替为主人服务，一会儿轻柔地抚摸，一会儿快速地套弄，年幼的身体里蕴含着对主人无限的依恋和服从。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用宠物特有的专注力套弄着主人的{penis_s}，{hands_s}虽然稚嫩却异常灵活，每一个动作都是为了取悦她唯一的主人。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}跪伏在主人脚边，小手虔诚地服务着{penis_s}，每一个动作都充满了对主人的崇拜和绝对的服从。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用奴隶的身份全心全意地服务主人，{hands_s}以最大的热情撸动着{penis_s}，眼中只有对主人的狂热崇拜。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}彻底放弃了自我意识，小手机械而热情地套弄着主人的{penis_s}，动作中流露出绝对的臣服和奉献精神。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}双膝跪地，低垂着头，手上却以最大的热情服务着主人的{penis_s}，动作精准而富有技巧，展现出奴隶的绝对忠诚。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}将奉献主人视为最高荣耀，{hands_s}以惊人的耐力不知疲倦地套弄着{penis_s}，眼中闪烁着狂热的崇拜光芒。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}完全忘记了自己的年幼，全身心投入到服务主人的使命中，{hands_s}在{penis_s}上的每一次撸动都带着奴隶特有的狂热。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}在主人面前完全展现出奴隶的一面，稚嫩的手指熟练地刺激着{penis_s}的每一个敏感点，动作中透露出对主人的绝对服从。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}沉浸在服务主人的喜悦中，小手以超越年龄的技巧撸动着{penis_s}，脸上流露出为主人奉献一切的幸福感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}的每一个动作都经过精心计算，为的是给主人带来最大的快感，{hands_s}以惊人的专注力服务着{penis_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}将自己完全定义为主人的性奴隶，娇小的身体里爆发出惊人的服务热情，{hands_s}在{penis_s}上的动作既精准又充满奉献精神。"
 
 [[entries]]
@@ -2166,163 +2166,163 @@ conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_4"
 context = "年轻的爱侣{target.name}双手交替摩擦{penis_s}，掌心与指尖的配合天衣无缝，每一个动作都体现了对{character.name}的深刻了解与爱意。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}勉强用{hands_s}套弄着{penis_s}，少女的动作虽然生涩但不得不继续，表情中透露出明显的不满与屈从。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-1"
 context = "作为部下的{target.name}不情愿地加快手上动作，{hands_s}机械地撸动着{penis_s}，少女咬着嘴唇表达着无声的抗议。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}服从命令用{hands_s}抚弄{penis_s}，年轻的手指僵硬地上下移动，眼神中流露出对这种越界行为的不满。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-1"
 context = "屈从于上司命令的{target.name}用{hands_s}勉强套弄着{penis_s}，少女的动作虽然执行了，却明显带着敷衍和抵触。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}紧绷着脸，{hands_s}被迫撸动{penis_s}，少女的每一个动作都透露出对这种强制服务的不情愿。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-1"
 context = "年轻的部下{target.name}用{hands_s}机械地套弄{penis_s}，眼神中的不满与身体的配合形成鲜明对比，彰显着屈从的无奈。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}别过脸去，{hands_s}被动地上下摩擦着{penis_s}，少女的动作虽然执行但每一下都透露着不情愿与抵触。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-1"
 context = "被迫服从的{target.name}勉强用{hands_s}套弄着{penis_s}，年轻的手指毫无技巧可言，动作中充满着敷衍与抗拒。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}皱着眉头，不情愿地用{hands_s}摩擦{penis_s}，少女的表情与动作都明确表达着她对这种越界行为的厌恶。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-1"
 context = "屈从于权力的{target.name}用{hands_s}敷衍地套弄{penis_s}，少女的眼神中带着不满与委屈，但作为部下不得不执行这样的命令。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}认真地用{hands_s}套弄着{penis_s}，虽然超出了正常工作范围，但驯服的少女仍专注于完成这项“特殊任务”。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-2"
 context = "作为驯服部下的{target.name}用{hands_s}有条不紊地撸动{penis_s}，少女虽内心有些犹豫，但仍以专业态度完成上司交代的每一项“工作”。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}微微皱眉却依然认真地用{hands_s}抚弄{penis_s}，少女将这视为一种特殊信任，手上动作既专业又卖力。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-2"
 context = "信赖上司的{target.name}用{hands_s}规律性地套弄着{penis_s}，少女的手法虽不娴熟，但专注的态度弥补了技巧上的不足。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}面无表情地完成着“工作”，{hands_s}机械但有效地摩擦着{penis_s}，驯服的少女将满足上司需求视为己任。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-2"
 context = "年轻的{target.name}严肃地用{hands_s}上下撸动{penis_s}，将这项任务当作考验自己忠诚度的测试，每一个动作都尽心尽力。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}有规律地套弄着{penis_s}，少女的表情虽有些不自然，但作为驯服的部下，她专注于完成上司的每一个要求。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-2"
 context = "驯服的部下{target.name}一丝不苟地用{hands_s}抚弄{penis_s}，少女虽然年轻却能以专业的态度面对这种特殊的“工作内容”。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}保持着职业化的表情，{hands_s}稳定地摩擦着{penis_s}，少女将这视为上司交代的特殊任务，尽职尽责地完成着。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-2"
 context = "信任上司的{target.name}用{hands_s}持续套弄着{penis_s}，虽然内心有些抵触，但驯服的少女还是认真执行着每一个动作。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}跪在{character.name}面前，像宠物一样用{hands_s}欢快地套弄着{penis_s}，少女的眼中流露出取悦主人的喜悦与期待。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "作为宠物的{target.name}主动用{hands_s}摩擦{penis_s}，少女的动作既轻柔又热情，不时发出小动物般的呜咽声表达依恋。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}像驯养的宠物般用{hands_s}熟练地抚弄{penis_s}，少女的脸上带着期待主人表扬的表情，手上动作又快又热情。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "人类宠物{target.name}跪坐在{character.name}腿间，{hands_s}卖力地套弄着{penis_s}，少女的眼神中充满了讨好与服从，渴望着主人的认可。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}俯身舔了舔主人的手指，随后用{hands_s}热情地撸动{penis_s}，少女的每一个动作都充满了宠物般的依恋与服从。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "宠物少女{target.name}用{hands_s}急切地套弄着{penis_s}，时不时抬头用湿润的眼神看向主人，渴望得到肯定与爱抚。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}像忠诚的宠物一样用{hands_s}努力服务着{penis_s}，少女的手法虽然简单但充满热情，眼中满是对主人的依赖与喜悦。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "年轻的宠物{target.name}双手并用地套弄着{penis_s}，一边发出满足的轻哼声，一边用崇拜的眼神注视着自己的主人。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}跪趴着用{hands_s}卖力地摩擦{penis_s}，少女的姿态宛如宠物献宝，渴望通过服务获得主人的疼爱与奖励。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "驯养的宠物{target.name}用{hands_s}温顺地套弄着{penis_s}，少女的动作充满了讨好与依恋，将取悦主人视为自己最大的快乐。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}跪伏在地，虔诚地用{hands_s}侍奉着{penis_s}，少女的眼神中只有对主人的绝对崇拜和服从，每一个动作都充满了狂热的奉献精神。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "完全臣服的奴隶{target.name}用{hands_s}卑微地套弄着{penis_s}，少女的一举一动都在表达对主人的绝对忠诚，手法熟练且充满虔诚。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}跪地俯首，用{hands_s}全心全意地服务着{penis_s}，少女的身体因狂热的服从而微微颤抖，眼中只有主人的存在。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "彻底臣服的{target.name}用{hands_s}急切地撸动{penis_s}，少女的表情虔诚而狂热，仿佛这是她生命中唯一的意义和使命。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}作为奴隶用{hands_s}熟练地套弄着{penis_s}，少女的每一个动作都经过精心训练，只为给主人带来最极致的快感。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "奴隶{target.name}匍匐在地，用{hands_s}狂热地侍奉着{penis_s}，少女的眼神中只有对主人的崇拜和感恩，将服务视为最高荣耀。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}以奴隶的姿态用{hands_s}卖力地摩擦{penis_s}，少女的每一个动作都充满了对主人的臣服与奉献，眼神中只有狂热的崇拜。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "彻底沦为奴隶的{target.name}用{hands_s}虔诚地套弄着{penis_s}，少女的表情既享受又狂热，将服侍主人视为自己存在的唯一价值。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}跪在主人脚下，{hands_s}毫无保留地服务着{penis_s}，少女的眼神、表情和身体姿态都在表达着她对主人的绝对忠诚。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "完全臣服的奴隶{target.name}用{hands_s}疯狂地撸动{penis_s}，少女的眼中闪烁着狂热的光芒，将取悦主人视为自己生命中最神圣的使命。"
 
 [[entries]]
@@ -2486,163 +2486,163 @@ conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_4"
 context = "{target.name}一手套弄{penis_s}，一手轻抚{character.name}的脸庞，眼神中流露出岁月沉淀后的深爱，每个动作都展现着稳固的爱情基础。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}表面平静地套弄着{penis_s}，眉头微皱，虽然动作娴熟但眼神中透露着明显的不情愿，仅因上下级关系而勉强服从。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}机械地摩擦着{penis_s}，动作虽然正确但毫无热情，脸上的表情显示她内心的抵触，只是碍于职位才执行命令。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}生硬地撸动着{penis_s}，眼神始终避开接触，不时咬紧嘴唇，内心的不满与抗拒显而易见，但作为部下不得不执行。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}握住{penis_s}敷衍地上下移动，动作中透露着明显的勉强，时而紧皱眉头，暗示着她对这种越界行为的不认同。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用指尖轻触{penis_s}，动作迟疑而不情愿，只在{character.name}提醒后才勉强加大力度，脸上写满了屈从的无奈。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}双手僵硬地刺激着{penis_s}，努力掩饰自己的不满，但紧绷的嘴角和僵硬的动作仍然暴露了她内心的抵触。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}快速摩擦{penis_s}，动作虽然高效但毫无感情，似乎只想尽快结束这个让她感到耻辱的命令。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}一边套弄{penis_s}一边暗自叹息，眼中流露出职场屈从的无奈，动作虽然精确但冷漠，仅仅是在完成一项任务。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}表面顺从地握住{penis_s}撸动，却时不时用指甲轻刮，在上司的皱眉下才勉强调整，眼中闪过一丝隐忍的不满。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}机械地重复着套弄{penis_s}的动作，脸上的表情冷淡而疏离，显然只是将这视为一种不得不执行的职场命令。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}认真地套弄着{penis_s}，眼神中虽有疑虑但更多的是对上司的信任，每个动作都像是在执行一项特殊但重要的任务。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}有条不紊地摩擦着{penis_s}，专业而投入，虽然这超出了正常工作范围，但她同样专注地完成上司交代的每一个细节。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}双手配合默契地刺激着{penis_s}，动作熟练而精准，就像处理其他工作一样，展现出对上司的绝对信赖与执行力。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}握住{penis_s}快速撸动，眼神中流露出专注与理解，似乎已将这种特殊服务视为对上司的一种支持与配合。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用指腹灵活地刺激着{penis_s}的敏感处，动作中略带试探但更多是配合，时而询问这样可不可以，展现出对上司决定的尊重。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}有条不紊地变换着手法套弄{penis_s}，每一个动作都经过计算，像完成任何一项工作任务一样，展现出驯服的专业态度。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}细致地照顾着{penis_s}的每一处，眼神中流露出对上司的信任与尊重，将这特殊任务视为对自己能力的考验。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}一边套弄{penis_s}一边观察{character.name}的反应，根据反馈及时调整力度与速度，展现出优秀部下的适应能力与服从精神。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}有节奏地撸动着{penis_s}，表情专注而认真，偶尔在{character.name}的指导下调整动作，展现出对上司的绝对信任与服从。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}熟练地揉搓着{penis_s}，动作流畅而有效率，仿佛这只是她工作的自然延伸，眼神中透露着对上司的忠诚与配合。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}跪坐在{character.name}身前，像忠诚的宠物一样热情地套弄着{penis_s}，眼中流露出能为主人服务的满足与喜悦。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}温顺地摩擦着{penis_s}，不时发出轻柔的呜咽声，表达着对主人的依恋，每一个动作都充满了讨好与服从。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}双手交替刺激着{penis_s}，时而用脸颊轻蹭，眼神中满是对主人的崇拜与渴望，希望自己的服务能获得认可。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}握着{penis_s}快速撸动，眼神中充满期待与依恋，主动询问主人的喜好，渴望得到肯定的回应与奖励。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用指尖灵活地挑逗{penis_s}的每一处敏感点，像训练有素的宠物一样，察言观色地根据主人的反应调整自己的动作。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}跪姿优美地为主人服务，一边套弄{penis_s}一边轻舔自己的嘴唇，眼神中流露出对主人的绝对服从与渴望被需要的满足。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}温柔而热情地爱抚着{penis_s}，眼神始终追随着主人的反应，在得到认可时露出幸福的微笑，仿佛找到了存在的意义。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}一边套弄{penis_s}一边轻声呜咽，表达着对主人的依恋和取悦的渴望，每一个动作都充满了宠物的忠诚与讨好。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}熟练地变换着手法刺激{penis_s}，在主人的每一次反应中寻找着存在的价值，眼神中满是对主人的依赖与崇拜。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}跪姿优雅地套弄着{penis_s}，时而用脸颊磨蹭，时而轻声询问主人还要{target.name}怎么做，完全沉浸在服务主人的喜悦中。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}匍匐在{character.name}脚边，一边虔诚地念诵着感激的话语，一边用{hands_s}握住{penis_s}套弄，眼神中充满了对主人的绝对崇拜与臣服。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}以最完美的技巧服务着{penis_s}，每一个动作都渗透着对主人的狂热忠诚，脸上表情虔诚如同执行神圣仪式。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}双手高效地刺激着{penis_s}的每一处敏感点，眼中含着崇拜的泪水，感谢主人赐予她服务的机会，展现出奴隶的极度忠诚。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}握着{penis_s}撸动的同时不断重复她作为主人的奴隶感到无上荣幸，完全放弃了自我意识，眼中只有对主人的绝对服从。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用指尖精准地刺激{penis_s}上的每一根血管，表情专注而狂热，宛如朝圣者般全身心投入到服务主人的神圣使命中。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}跪姿完美地为主人服务，一边套弄{penis_s}一边不断请求指导，希望主人告诉奴隶怎样做才能让{character.name}更满意，彻底沦为{character.name}的性爱工具。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}如膜拜圣物般爱抚着{penis_s}，眼神中充满狂热的崇拜，每一个动作都精确到位，展现出对主人的绝对服从与专注。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}一边套弄{penis_s}一边感谢主人的恩赐，眼中流露出成为主人奴隶的无上荣耀与幸福，完全臣服于主人的每一个意愿。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}熟练地变换着手法刺激{penis_s}，表情虔诚而专注，仿佛这是她存在的唯一意义，展现出彻底沦为性奴的绝对服从。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}跪姿优雅地为主人服务，套弄{penis_s}的同时诚恳请求允许奴隶取悦主人到最后，眼中只有对主人的无限崇拜与臣服。"
 
 [[entries]]
@@ -2806,163 +2806,163 @@ conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_4"
 context = "{target.name}用{hands_s}富有技巧地上下滑动，指尖不时轻刮敏感处，熟女爱侣的脸上带着舒适的微笑，动作中流露出对伴侣的珍视与了解。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}机械地上下撸动{penis_s}，熟女的脸上带着明显的不情愿，动作虽然专业但缺乏热情，眼神中透露着屈从的无奈。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}的{hands_s}勉强套弄着{penis_s}，成熟女性的表情冷淡，动作虽然熟练但毫无感情，偶尔皱眉显示出内心的抵触。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}以公事公办的态度摩擦{penis_s}，熟女的动作有条不紊但生硬，眼神避开直视，手上的力道时轻时重显示出内心的不满。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}按照指示套弄{penis_s}，成熟部下的脸上隐藏着不悦，丰满的身体绷紧，动作虽然到位但充满抗拒。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}的{hands_s}生硬地撸动着{penis_s}，熟女虽然用专业手法但每一个动作都透露出被迫的无奈，眼神中满是隐忍的不满。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}勉强加快了{hands_s}的速度，对{penis_s}进行基础的刺激，成熟女性的表情冷漠，动作中满是被上司强制的不甘。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}应付性地套弄{penis_s}，熟女的眼中闪烁着隐忍的怒火，动作虽然合格但最低限度，显示出对这种越界行为的抵触。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}的{hands_s}僵硬地上下移动，力道控制得刚好及格，熟女的表情疏离，成熟的面容上写满了对上司越界行为的不认同。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}被迫用{hands_s}服务{penis_s}，成熟部下的每个动作都透露出职业性的服从与个人的不满，眼神中充满隐忍的抗议。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}匆忙地套弄{penis_s}，试图尽快结束这不情愿的服务，熟女的成熟面容上写满了对这种上下级越界的无奈屈从。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}认真地套弄{penis_s}，成熟部下的动作专业而规范，虽然略显犹豫但仍尽职尽责，眼神中带着对上司的信任。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{hands_s}有条不紊地上下撸动，熟女脸上带着专业的表情，动作虽然超出工作范围但同样认真细致，展现出驯服的一面。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}以专业的手法摩擦{penis_s}的每一寸，成熟的部下虽然偶有迟疑但仍投入工作，丰满的身体略微前倾以便更好地完成任务。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}灵活地刺激{penis_s}敏感部位，熟女的动作细致而专注，虽然是特殊任务但同样保持着她一贯的专业水准。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{hands_s}有节奏地上下套弄，不时转动手腕增加刺激，成熟部下将这视为一项需要完美执行的特殊任务，动作既专业又细致。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}熟练地变换着手法，{hands_s}时而快速时而缓慢地套弄{penis_s}，熟女的表情认真，将上司的满足视为工作的一部分。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}精确地掌握力道和速度，成熟部下的每个动作都经过计算，努力以专业的态度满足上司的特殊要求。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{hands_s}以均匀的节奏套弄着{penis_s}，熟女驯服的一面体现在她对细节的关注上，动作虽超出工作范围但同样一丝不苟。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}双手配合着服务{penis_s}，一手照顾柱身一手轻抚顶端，成熟部下的专业素养使她能够高效地完成上司交代的任何任务。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}温和但坚定地撸动{penis_s}，熟女的眼中带着对上司的信任与尊重，动作专业而有效，展现出对上司决策的无条件执行。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}热情地套弄{penis_s}，熟女宠物的眼中闪烁着讨好的光芒，丰满的身体随着手部动作摇晃，满脸期待主人的夸奖。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}的{hands_s}以娴熟的技巧服务{penis_s}，成熟宠物的动作既大胆又富有技巧，不时抬头用渴望的眼神寻求主人的认可。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}以宠物般的热情摩擦{penis_s}的每一寸，熟女的丰腴身体微微颤抖，手上动作不停，眼中满是能够服务主人的喜悦。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}快速地上下撸动，偶尔低头轻抚{penis_s}顶端，熟女宠物的眼中充满依恋，动作既热情又讨好。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}的{hands_s}灵活地变换着角度刺激{penis_s}，成熟宠物的每一个动作都流露出取悦主人的欲望，脸上洋溢着被需要的满足感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}双手协同工作，熟练地套弄{penis_s}，熟女宠物的成熟经验与讨好心态完美结合，眼神中充满着希望获得主人认可的渴望。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}卖力地服务{penis_s}，成熟宠物的丰满胸部随动作晃动，脸上带着愉悦的表情，全心全意地取悦着她的主人。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}的{hands_s}以精准的节奏摩擦着{penis_s}的敏感部位，熟女宠物的眼中闪烁着渴望被夸奖的光芒，动作既热情又熟练。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}像忠诚的宠物一样用{hands_s}细心地照顾{penis_s}的每一处，成熟女性的经验使她的服务更加出色，眼中满是对主人的依恋。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}以主人喜欢的方式套弄{penis_s}，熟女宠物的成熟面容上满是服务的喜悦，动作中流露出对取悦主人的无上满足感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}虔诚地用{hands_s}服务{penis_s}，成熟奴隶的眼中满是崇拜，整个人跪姿标准，丰满的身体因狂热的服务而微微颤抖。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}的{hands_s}狂热地摩擦着{penis_s}的每一寸，熟女奴隶的脸上带着近乎宗教般的狂热，双眼充满对主人的绝对崇拜。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}以完美的技巧套弄{penis_s}，成熟奴隶的每一个动作都精确到位，眼中满是能够服侍主人的无上光荣和绝对服从。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}以近乎疯狂的热情服务{penis_s}，熟女奴隶的丰满身体因激动而微微发抖，眼中只有对主人的无条件忠诚。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}的{hands_s}以精湛的技巧取悦{penis_s}，成熟奴隶的脸上写满了对主人的狂热崇拜，动作中流露出为主人服务的至高荣耀感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}双手配合着为{penis_s}提供极致服务，熟女奴隶的经验与对主人的绝对服从结合，创造出无与伦比的快感体验。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}虔诚地套弄{penis_s}，同时低声念诵着对主人的忠诚誓言，成熟奴隶的眼中只有对主人的无上崇敬。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}的{hands_s}精确地刺激{penis_s}的每一个敏感点，熟女奴隶的动作如同精心编排的仪式，眼神中满是对主人的狂热信仰。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}以奴隶的身份用{hands_s}全心全意地服务{penis_s}，成熟女性的身体因能够取悦主人而兴奋颤抖，眼中只有绝对的忠诚。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}以最完美的技巧侍奉{penis_s}，熟女奴隶的脸上带着近乎宗教般的狂热与满足，为能服务主人而感到无上的荣耀。"
 
 [[entries]]
@@ -3126,163 +3126,163 @@ conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_4"
 context = "{target.name}用{hands_s}上下套弄{penis_s}，时而加快时而放慢，她的每一个动作都展现出对爱人的了解，这种灵魂的契合远超过表面的婚姻关系。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-1"
 context = "屈从于上司的人妻{target.name}勉强套弄着{penis_s}，她的{hands_s}动作僵硬且缺乏热情，眼神中透露着不满与屈辱，却因工作关系不得不继续这羞辱的行为。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}机械地上下撸动{penis_s}，她的动作明显带着抵触情绪，眼神时不时飘向别处，思考着如何向丈夫解释这种屈辱的处境。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-1"
 context = "已婚的{target.name}面无表情地用{hands_s}套弄着{penis_s}，她的动作敷衍且生硬，眼中闪烁着对上司强制行为的怨恨与不满。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}不情愿地摩擦着{penis_s}，她的嘴角微微下垂，眼神中充满了对这种不公平对待的愤怒，却又无力反抗。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-1"
 context = "人妻{target.name}心不在焉地套弄着{penis_s}，她的动作缓慢且敷衍，明显是在敷衍了事，内心充满了对上司滥用职权的厌恶。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}强忍屈辱用{hands_s}上下摩擦{penis_s}，她的手腕僵硬，眼神中既有对上司的不满，又有对自己背叛婚姻的自责。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-1"
 context = "已为人妻的{target.name}无奈地套弄着{penis_s}，她的动作虽然服从但明显缺乏热情，眼中的冷漠表明她只是被迫执行上司的命令。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}草草地撸动着{penis_s}，她的动作既粗鲁又敷衍，内心对这种被迫服务上司的行为充满了抵触和厌恶。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-1"
 context = "人妻{target.name}勉强用指尖触碰{penis_s}，她的动作明显带着厌恶和勉强，内心对这种屈辱的处境充满了愤怒和不甘。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}不情愿地用{hands_s}套弄{penis_s}，她的眼神中充满了屈辱和愤怒，嘴唇紧抿着，显然是被迫服从上司的命令而非出于自愿。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-2"
 context = "作为信任上司的人妻{target.name}专注地套弄着{penis_s}，她的{hands_s}动作虽不热情但相当专业，眼神中带着一丝理解与服从，仿佛这只是工作的一部分。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}认真地用{hands_s}上下撸动{penis_s}，她的动作像是在完成一项重要任务，眼神中既有对婚姻的愧疚，又有对上司的服从。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-2"
 context = "已婚的{target.name}以一种公事公办的态度套弄着{penis_s}，她的动作干净利落，像是在处理一项特殊的工作任务，没有过多的情感卷入。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}有条不紊地摩擦着{penis_s}，她的动作精准而专业，眼神中有着对上司的信任，尽管这已经超出了正常的工作范畴。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-2"
 context = "人妻{target.name}熟练地握住{penis_s}根部，另一只手则在顶端轻轻摩擦，她的动作冷静而专注，像是在完成一项重要的任务。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用指腹在{penis_s}上下滑动，她的动作既不热情也不排斥，而是带着一种专业的认真，眼神中是对上司决定的接受。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-2"
 context = "已为人妻的{target.name}双手交替撸动{penis_s}，她的动作流畅而有效率，表情平静，似乎已经接受了这种特殊的工作关系。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用拇指按摩{penis_s}的敏感带，同时手掌上下套弄，她的动作专业而高效，眼神中既有对上司的尊重，又有对自己能力的自信。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-2"
 context = "人妻{target.name}有条不紊地套弄着{penis_s}，她的动作既不草率也不拖沓，而是带着一种认真负责的态度，仿佛这也是工作的一部分。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}稳定地撸动{penis_s}，她的眼神中带着一丝理解与包容，对于上司的特殊要求，她选择以专业的态度去完成。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-3"
 context = "作为{character.name}宠物的人妻{target.name}跪在地上热情套弄着{penis_s}，她的{hands_s}动作既温顺又热情，眼神中充满了对主人的依恋，完全忘记了自己还有丈夫这一事实。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}像忠诚的宠物一样用{hands_s}上下撸动{penis_s}，她的动作充满渴望与讨好，眼睛紧盯着主人的反应，希望能得到赞赏。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-3"
 context = "已婚的{target.name}忘却了自己的身份，像宠物一样专注地用{hands_s}服务着{penis_s}，她的动作既娴熟又充满热情，眼中只有主人的喜好。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}跪在{character.name}面前，温顺地套弄着{penis_s}，她的动作充满了讨好与渴望，仿佛主人的满足就是她最大的幸福。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-3"
 context = "人妻{target.name}以宠物的姿态用{hands_s}套弄{penis_s}，她的动作既热情又服从，时不时发出轻微的呜咽声，渴望得到主人的爱抚与认可。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用灵活的指尖在{penis_s}上下滑动，她的眼神中充满了对主人的崇拜与依恋，婚姻的约束早已被抛在脑后。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-3"
 context = "已为人妻的{target.name}像被驯服的宠物一样套弄着{penis_s}，她的动作既顺从又热情，眼神中满是对主人的渴望与服从。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用双手交替摩擦{penis_s}，她的动作充满了讨好与渴望，时而抬头用恳求的眼神看向主人，希望自己的服务能够得到认可。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-3"
 context = "人妻{target.name}一边套弄{penis_s}一边发出满足的轻哼，她的动作既温顺又热情，完全沉浸在宠物的角色中，享受着服务主人的喜悦。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}像忠诚的宠物一样用{hands_s}仔细地抚慰每一寸{penis_s}，她的动作充满了渴望与依恋，眼中只有对主人的无限崇拜。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-4"
 context = "完全臣服的人妻{target.name}跪在地上虔诚地套弄着{penis_s}，她的{hands_s}动作既热情又顺从，眼神中充满了对主人的狂热崇拜，早已抛弃了作为人妻的身份。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}如同忠诚的奴隶一般，用{hands_s}卖力地撸动{penis_s}，她的动作充满了无条件的服从与热情，眼中只有取悦主人的欲望。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-4"
 context = "已婚的{target.name}完全沉浸在奴隶的角色中，用{hands_s}狂热地套弄着{penis_s}，她的动作既迅速又充满技巧，眼神中是对主人的无比崇拜。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}以奴隶的姿态跪在{character.name}面前，双手卖力地套弄{penis_s}，她的动作既迅速又充满激情，仿佛这是她生命中最重要的使命。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-4"
 context = "人妻{target.name}完全无视了婚姻，像奴隶一样用{hands_s}疯狂套弄{penis_s}，她的动作既狂热又顺从，眼中闪烁着对主人的绝对忠诚。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用颤抖的{hands_s}服务着{penis_s}，她的动作既虔诚又热情，眼神中充满了对主人的疯狂崇拜，丈夫的存在早已被她抛诸脑后。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-4"
 context = "已为人妻的{target.name}放弃了所有尊严，以奴隶的身份用{hands_s}疯狂撸动{penis_s}，她的动作既快速又充满技巧，眼神中只有对主人的无限服从。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用舌尖舔湿{hands_s}后套弄{penis_s}，她的动作既放荡又顺从，眼神中充满了对主人的病态迷恋，完全忘记了自己是一个已婚女性。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-4"
 context = "人妻{target.name}疯狂地用{hands_s}摩擦{penis_s}的每一寸，她的动作既激烈又充满技巧，眼神中是对主人的绝对忠诚与疯狂崇拜。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.人妻 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}如同受到洗脑的奴隶，用{hands_s}疯狂地服务着{penis_s}，她的动作既狂热又精准，眼中只有对主人的盲目崇拜，婚姻对她而言已经毫无意义。"
 
 [[entries]]
@@ -3446,161 +3446,161 @@ conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_4"
 context = "{target.name}用{hands_s}充满深情地套弄着{penis_s}，作为父亲忠贞的爱侣，她的每一个动作都饱含着无尽的爱意，指尖的每一次触碰都准确地带来最强烈的快感。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "屈从于父亲的{target.name}用{hands_s}勉强套弄着{penis_s}，她的动作虽然生硬但尽职尽责，表情中带着隐忍的不情愿，却不得不完成这项“任务”。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}被迫摩擦着{penis_s}，作为不情愿的部下，她的动作机械而缺乏热情，但还是按照父亲的要求调整着速度和力度。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "不情愿的女儿{target.name}用{hands_s}生硬地套弄着{penis_s}，她的动作透露出明显的抵触，但出于对父亲的服从，仍然坚持着完成手上的动作。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}勉为其难地抚弄着{penis_s}，她的表情显示出内心的不满，动作虽然规律但明显敷衍，只是应付性地完成父亲的命令。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "屈服于父亲权威的{target.name}用{hands_s}不情不愿地摩擦着{penis_s}，她的动作虽然缺乏热情但尚算认真，眼神中流露出被迫服从的无奈。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}reluctantly套弄着{penis_s}，作为反抗无效的部下，她的动作带着压抑的不满，但技术上还算合格，尽力完成父亲交代的“工作”。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "服从命令的女儿{target.name}用{hands_s}生疏地摩擦着{penis_s}，她的动作虽然规律但缺乏感情，眼神中带着隐约的抗拒，却不得不继续手上的动作。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}冷淡地套弄着{penis_s}，作为屈从的部下，她的动作专业但不带感情，机械地执行着父亲的指示，眼神中透露出无言的抵触。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "被迫服从的{target.name}用{hands_s}应付性地抚弄着{penis_s}，她的动作虽然达标但明显敷衍，眼神中透露出对这种越界行为的不认同。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{hands_s}勉强地摩擦着{penis_s}，作为不情愿的部下，她的动作虽然规矩但显得僵硬，只是被迫遵从父亲的命令而非出于自愿。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "驯服的女儿{target.name}用{hands_s}认真地套弄着{penis_s}，她的动作虽然不带感情但十分专业，如同执行一项重要任务般一丝不苟。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}熟练地摩擦着{penis_s}，作为信任父亲的部下，她的动作干净利落，准确地刺激着敏感部位，展现出高度的专业素养。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "被驯化的{target.name}用{hands_s}专注地套弄着{penis_s}，她的动作像完成工作任务一样有条不紊，手指灵活地上下滑动，均匀地照顾到每一寸皮肤。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}尽职尽责地抚弄着{penis_s}，作为父亲的可靠部下，她的动作既精准又高效，毫不拖泥带水地完成这项“特殊任务”。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "听命于父亲的{target.name}用{hands_s}有条不紊地摩擦着{penis_s}，她的动作虽然不带个人情感但充满技巧，如同完成一项重要工作般认真负责。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}一丝不苟地套弄着{penis_s}，作为驯服的部下，她的动作带着明显的责任感，均匀而有力地刺激着每一处敏感点。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "训练有素的女儿{target.name}用{hands_s}专业地摩擦着{penis_s}，她的动作精确而有效，时快时慢地变换着节奏，以最高效的方式提供服务。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}高效地套弄着{penis_s}，作为父亲信赖的部下，她的动作干脆利落，每一次触碰都精准地落在最敏感的部位。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "服从性高的{target.name}用{hands_s}有技巧地爱抚着{penis_s}，她的动作如同执行一项精密任务，指尖灵活地变换着力度和角度，确保最佳的刺激效果。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{hands_s}认真负责地摩擦着{penis_s}，作为父亲的得力部下，她的动作既有效率又有技巧，如同完成一项重要使命般专注投入。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-3"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-3"
 context = "宠物女儿{target.name}用{hands_s}热情洋溢地套弄着{penis_s}，她的动作充满了讨好与喜悦，眼神中流露出被主人需要的满足感，手指灵活地变换着花样。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-3"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}欣喜若狂地摩擦着{penis_s}，作为父亲的宠物，她的动作既大胆又谄媚，时不时发出愉悦的轻哼，展现出被使用的喜悦。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-3"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-3"
 context = "甘愿成为宠物的{target.name}用{hands_s}满怀喜悦地套弄着{penis_s}，她的动作既卖力又充满技巧，表情中流露出能够服务主人的幸福与满足。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-3"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}殷勤地爱抚着{penis_s}，作为父亲忠诚的宠物，她的动作充满了讨好与依恋，手指灵活地刺激着每一处敏感带，希望带给主人最大的愉悦。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-3"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-3"
 context = "驯养良好的女儿{target.name}用{hands_s}兴高采烈地摩擦着{penis_s}，她的动作既卖力又富有变化，眼神中透露出渴望得到主人认可的热切期望。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-3"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}殷切地套弄着{penis_s}，作为乖巧的宠物，她的动作带着明显的讨好意味，指尖时不时轻挠敏感部位，希望博得父亲的欢心。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-3"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-3"
 context = "甘之如饴的宠物{target.name}用{hands_s}欢快地摩擦着{penis_s}，她的动作中流露出被需要的满足感，手指灵活地变换着角度和力度，全心全意地取悦着父亲。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-3"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}甘愿地爱抚着{penis_s}，作为父亲的专属宠物，她的动作充满了依恋与服从，热情地刺激着每一处敏感点，脸上洋溢着被使用的喜悦。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-3"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-3"
 context = "乐于服务的{target.name}用{hands_s}热切地套弄着{penis_s}，她的动作既有技巧又充满热情，眼神中流露出对父亲的依赖和被需要时的幸福感。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-3"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{hands_s}积极地摩擦着{penis_s}，作为温顺的宠物，她的每一个动作都充满了讨好的意味，时不时抬头观察父亲的反应，以便调整力道和速度。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-4"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-4"
 context = "奴隶女儿{target.name}用{hands_s}无比虔诚地套弄着{penis_s}，她的动作充满了狂热的崇拜与绝对的服从，眼神中只有对主人的无上忠诚。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-4"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}全心全意地摩擦着{penis_s}，作为父亲的性奴，她的动作既卑微又热切，每一次触碰都带着对主人的无限崇敬和感恩。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-4"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-4"
 context = "彻底臣服的{target.name}用{hands_s}极尽卑微地爱抚着{penis_s}，她的动作流露出对主人的狂热崇拜，手指技巧性地刺激着每一处敏感带，全身心投入于服务。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-4"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}无比专注地套弄着{penis_s}，作为父亲的专属奴隶，她的动作中只有绝对的服从与奉献，眼神中充满了对主人的盲目崇拜和依赖。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-4"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-4"
 context = "完全沦为奴隶的女儿{target.name}用{hands_s}狂热地摩擦着{penis_s}，她的动作充满了对主人的绝对服从，每一次触碰都像是一次神圣的仪式。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-4"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}近乎痴迷地爱抚着{penis_s}，作为彻底忠诚的奴隶，她的动作既熟练又充满崇敬，脸上流露出能够服侍主人的无上荣光。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-4"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-4"
 context = "绝对臣服的奴隶{target.name}用{hands_s}无比投入地套弄着{penis_s}，她的动作中只有对主人的狂热崇拜，指尖灵活地刺激着每一处敏感点，希望带给主人最极致的快感。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-4"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}全心全意地摩擦着{penis_s}，作为父亲的专属性器，她的动作中没有丝毫自我，只有对主人的绝对忠诚和取悦主人的渴望。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-4"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-4"
 context = "完全沦为工具的{target.name}用{hands_s}狂热地套弄着{penis_s}，她的动作充满了对主人的盲目崇拜，眼神中只有服从和奉献，没有任何个人意志。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-4"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用{hands_s}近乎宗教般虔诚地爱抚着{penis_s}，作为彻底归属于父亲的奴隶，她的每一个动作都带着对主人的无限敬畏与感恩，全身心地投入于服务主人的神圣使命。"

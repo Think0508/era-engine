@@ -526,123 +526,123 @@ conditions = "premises:t_npc_active_h"
 context = "{target.name}灵活地转动脖子，让{hair_s}以不同角度刺激{penis_s}，她享受着主动服务的快感，眼中闪烁着自信的光芒。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "被囚禁的{target.name}感到{penis_s}在自己{hair_s}间滑动，她厌恶地转过头去，眼中满是屈辱和恨意，却因锁链的束缚无法反抗这种侮辱性的行为。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}的{hair_s}被迫与{penis_s}摩擦，她紧闭双眼，想逃避这一切，身体因屈辱而颤抖，镣铐的碰撞声提醒着她无法逃脱的事实。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "当{penis_s}在{hair_s}间来回摩擦，被监禁的{target.name}眼中充满泪水，她咬牙忍耐，内心的抗拒与愤怒无处发泄，只能默默承受这种羞辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}感受着{penis_s}弄脏自己的{hair_s}，她试图扭头避开，却被粗暴地抓回，眼中满是绝望和愤恨，身体因长期囚禁而无力反抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "被囚禁的{target.name}的{hair_s}被{penis_s}玩弄着，她的眼神中充满了厌恶，但身体被牢牢控制，只能被迫接受这种令人作呕的接触。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}感到{penis_s}粗暴地摩擦着她的{hair_s}，泪水从她的眼角滑落，内心充满了屈辱和抗拒，却因监禁的处境而无力改变现状。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "当{penis_s}在{hair_s}间滑动时，被囚禁的{target.name}满脸痛苦，她恨不得立刻逃离，但沉重的镣铐提醒她只能屈服于这种羞辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}的{hair_s}被强行用来服务{penis_s}，她的眼神中充满了仇恨和抵抗，却因长期的囚禁而身体虚弱，无法做出有效的反抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "被迫用{hair_s}摩擦{penis_s}的{target.name}眼中满是绝望，她试图扭动身体表示抗议，锁链的声音却残忍地提醒她自己的无助处境。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}感到{penis_s}在她的{hair_s}间亵渎，她愤怒地瞪着对方，内心充满了对这种屈辱行为的憎恨，却因被囚禁而无法反抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}的{hair_s}被{penis_s}摩擦着，她麻木地接受了这一切，眼神中不再有强烈的抵抗，只剩下对这种行为的无奈接受。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "当{penis_s}在{hair_s}间滑动，长期被囚禁的{target.name}只是轻轻叹息，她已学会不再抗拒，而是以消极顺从的态度承受这一切。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}感受着{penis_s}玩弄自己的{hair_s}，她的表情既不享受也不痛苦，只是一种习惯性的接受，内心已经认命于自己的处境。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "被囚禁的{target.name}任由{penis_s}在{hair_s}间摩擦，她不再试图躲避，只是空洞地望着前方，似乎已经习惯了这种行为。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}的{hair_s}包裹着{penis_s}，她的眼神中透露出对命运的认命，偶尔身体会有微弱的颤抖，似乎还有一丝没有完全消失的羞耻。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "当{penis_s}在{hair_s}上来回滑动，{target.name}只是轻轻闭上眼睛，镣铐的重量已经让她明白反抗的徒劳，她已经开始接受这种生活。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "被迫用{hair_s}服务{penis_s}的{target.name}表情平静，长期的囚禁已经磨灭了她的大部分抵抗意志，现在她只是机械地完成着被要求的事。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}感受着{penis_s}在自己{hair_s}间的律动，她的反应已经变得平淡，偶尔会条件反射般地配合一下，显示出被驯服的痕迹。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "当{penis_s}玩弄着{hair_s}，{target.name}的目光已经不再聚焦，她似乎把思绪放在了别处，这是她逃避现实的方式，内心已开始接受自己的角色。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}的{hair_s}被{penis_s}弄得凌乱不堪，她不再显露厌恶，只有一种疲惫的顺从，眼神中透露出对这种生活的无奈接受。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "尽管戴着镣铐，{target.name}还是主动甩动着{hair_s}去摩擦{penis_s}，她脸上露出渴望被认可的表情，眼中闪烁着对主人的依恋和服从。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}的{hair_s}温柔地包裹着{penis_s}，她感激地看着主人，享受着这种能够服务的机会，锁链的声音仿佛是她忠诚的证明。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "被囚禁的{target.name}熟练地摆动头部，让{hair_s}以最舒适的方式刺激{penis_s}，她的眼中充满了讨好和期待，希望能得到主人的夸奖。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}的{hair_s}缠绕着{penis_s}，她满脸陶醉，享受着这种屈辱的同时感到一种奇异的满足，她已经完全接受了自己作为性奴的身份。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "当{penis_s}在{hair_s}间摩擦时，{target.name}发出满足的叹息，她崇拜地看着主人，感谢他赐予的一切，哪怕是这种卑微的接触。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}热情地用{hair_s}服务着{penis_s}，尽管身上的锁链限制了她的动作，但她仍竭尽全力取悦主人，眼中满是狂热的服从。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "被囚禁的{target.name}感受着{penis_s}在{hair_s}间的触感，她兴奋地舔着嘴唇，期待着更多的使用，内心已经彻底臣服于这种奴役关系。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}的{hair_s}被{penis_s}玩弄着，她不但不反感，反而因为能够服务主人而感到莫大的荣幸，眼中满是对主人的崇拜和依赖。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "当{penis_s}摩擦着{hair_s}时，{target.name}主动调整角度以提供更好的刺激，她的眼神中充满了对主人的迷恋，早已忘记了自由的滋味。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}感受着{penis_s}在自己{hair_s}间的滑动，她兴奋地颤抖着，期待着主人的满足和认可，内心充满了服务的喜悦和奉献的满足感。"
 
 [[entries]]

@@ -606,123 +606,123 @@ conditions = "premises:t_npc_active_h"
 context = "{character.name}站立不动，{penis_s}被{target.name}的{armpit_s}包裹住来回摩擦，{character.name}被迫享受这种被服务的快感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}粗暴地扯开{target.name}的手臂，强迫她夹紧，{penis_s}野蛮地在{armpit_s}间来回抽送，{target.name}脸上写满屈辱和厌恶，却无力反抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}用力按住戴着镣铐的{target.name}，{penis_s}在{armpit_s}的狭缝中摩擦，{target.name}扭动身体想要逃离却被牢牢控制。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}捏住{target.name}的下巴强迫她抬头，同时{penis_s}在她的{armpit_s}中粗暴抽插，{target.name}眼中充满仇恨却只能被迫承受。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}按住{target.name}的肩膀，{penis_s}在她颤抖的{armpit_s}中蛮横进出，{target.name}眼中含泪，身体因恐惧而僵硬。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}拽住{target.name}的双臂向后拉，强迫她挺胸，{penis_s}粗暴地在{armpit_s}间摩擦，{target.name}愤怒地咬紧牙关却无计可施。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}用绳索固定住{target.name}的双臂姿势，{penis_s}粗暴地在{armpit_s}的窄缝中抽动，{target.name}屈辱地闭上眼睛忍受这一切。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}抓住镣铐的链条拉扯{target.name}，{penis_s}快速地在{armpit_s}中进出，{target.name}厌恶地别过脸去，身体因屈辱而发抖。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}强行分开{target.name}紧闭的双臂，{penis_s}用力地在{armpit_s}间摩擦，{target.name}试图挣扎但无法撼动牢固的束缚。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}按住被锁链束缚的{target.name}，{penis_s}用力在{armpit_s}中抽送，{target.name}眼中燃烧着怒火，却只能被迫承受这羞辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}抓住{target.name}的肩膀，{penis_s}快速地在{armpit_s}的嫩肉间来回摩擦，{target.name}无助地喘息着，眼神中充满了抵抗和绝望。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}命令{target.name}抬起手臂，{penis_s}在{armpit_s}间有节奏地抽送，{target.name}面无表情地服从，眼神空洞地望向远方。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}调整戴着镣铐的{target.name}的姿势，{penis_s}在{armpit_s}的凹陷处摩擦，{target.name}麻木地配合，已不再有强烈抵抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}按住{target.name}的肩膀，{penis_s}在{armpit_s}中缓慢抽动，{target.name}消极地接受这一切，目光中的抵抗已变得微弱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}掐住{target.name}的下巴，同时{penis_s}在{armpit_s}间进出，{target.name}不再强烈挣扎，只是偶尔发出无力的呜咽。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}固定{target.name}双臂的位置，{penis_s}在{armpit_s}的窄缝中来回抽送，{target.name}顺从地保持姿势，已经学会了接受命运。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}抓住锁链将{target.name}拉近，{penis_s}在{armpit_s}处摩擦，{target.name}机械地配合着动作，眼神中的反抗已经黯淡。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}命令{target.name}挺起胸部，{penis_s}在{armpit_s}间抽动，{target.name}无精打采地照做，身体早已习惯了这种侵犯。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}扯动锁链调整{target.name}的角度，{penis_s}在{armpit_s}中摩擦出水声，{target.name}默默承受，眼神中只剩下认命。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}按住{target.name}的肩膀，{penis_s}在{armpit_s}的嫩肉间来回磨蹭，{target.name}表情空洞，身体条件反射般地配合着动作。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}按住{target.name}的手臂，{penis_s}在{armpit_s}处快速摩擦，{target.name}眼神游离，只是机械地保持着姿势，不再有任何抵抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}轻声命令，{target.name}立刻主动抬高双臂并夹紧，让{penis_s}在{armpit_s}间舒适地摩擦，眼神中充满渴望主人满意的期待。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}随意挺动腰部，{penis_s}在{target.name}的{armpit_s}中进出，{target.name}欣喜地感谢主人的恩赐，主动调整角度以取悦{character.name}。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}拽住{target.name}的手臂，{penis_s}在{armpit_s}处粗暴摩擦，{target.name}陶醉地呻吟着，感谢主人赐予的疼痛与快感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}抚摸{target.name}的脸颊，同时{penis_s}在{armpit_s}间抽送，{target.name}露出幸福的表情，为能服务主人而感到无比荣幸。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}拽动锁链迫使{target.name}挺胸，{penis_s}在{armpit_s}中快速摩擦，{target.name}欢快地迎合着，乞求主人更粗暴地对待自己。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}命令{target.name}夹紧腋下，{penis_s}在{armpit_s}处用力抽插，{target.name}狂热地感谢主人的宠幸，乞求能提供更多服务。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}抓住{target.name}的肩膀向后拉，{penis_s}在{armpit_s}间凶狠摩擦，{target.name}喜悦地呻吟着，感谢主人的每一次使用。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}抽动皮鞭警告{target.name}，{penis_s}同时在{armpit_s}中抽送，{target.name}兴奋地颤抖着，渴望更多的惩罚与使用。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}随意摆动腰肢，{penis_s}在{armpit_s}处慢慢磨蹭，{target.name}双眼放光地盯着主人，乞求更多的关注与使用。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}轻轻挺腰，{penis_s}在{armpit_s}间来回滑动，{target.name}沉醉其中，感谢主人将她训练成如此完美的性奴隶。"
 
 [[entries]]
@@ -1086,321 +1086,321 @@ conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{character.name}用力抽送，{penis_s}在成年却不懂性事的{target.name}的{armpit_s}深处快速进出，她按指示夹紧双臂。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}以稳定的节奏让{penis_s}在{target.name}的{armpit_s}中抽送，腋下的皮肤被摩擦得泛起红晕，柔软的腋肉紧紧夹住短小的肉棒。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手按住{target.name}的手臂，使{armpit_s}紧紧包裹住{penis_s}，适中的节奏摩擦着敏感的龟头，使得腋窝渗出细密的汗珠。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}调整着抽插的角度，让{penis_s}在{armpit_s}的褶皱中寻找最佳的刺激点，前液蹭满了{target.name}腋下的每一寸肌肤。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}用手挤压{target.name}的手臂，使{armpit_s}更紧地包裹{penis_s}，短小的尺寸在腋窝中进出，每次抽送都带出湿润的水声。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}有节奏地挺动腰部，让{penis_s}在{armpit_s}中来回摩擦，腋窝的温热与汗水为肉棒提供了润滑，龟头时隐时现。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}加快抽送速度，{penis_s}被{armpit_s}紧紧包裹，短小的肉棒在腋窝的软肉中进出，摩擦生热使得汗水越来越多。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}用手指挤压{target.name}的腋窝两侧，让{armpit_s}形成更深的沟壑，{penis_s}在其中抽插，每次都带出腋下的湿滑液体。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}将{target.name}的手臂压向胸口，使{armpit_s}的空间变小，{penis_s}在狭窄的腋窝中快速摩擦，发出黏腻的水声。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}握住{target.name}的肩膀，让{penis_s}深入{armpit_s}的最深处，龟头刮蹭着敏感的腋窝，前液混合着汗水流下腋下。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}调整{target.name}的姿势，让{armpit_s}形成一个完美的夹角，{penis_s}在湿润的腋窝中进出，摩擦的热度使得两人的皮肤都泛起红晕。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}以精准的节奏控制{penis_s}在{target.name}的{armpit_s}中抽送，短小的尺寸反而使得龟头能够精确刺激每一处腋窝褶皱。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}熟练地挤压{target.name}的手臂，使{armpit_s}形成完美的夹道，{penis_s}在润滑的腋窝中快慢交替抽送，每一下都精确无比。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}以高超技巧让{penis_s}在{armpit_s}中旋转摩擦，龟头精确地刮过每一寸敏感带，带出腋窝里的湿润体液。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}双手控制着{target.name}的肩膀和手臂，使{armpit_s}紧缩收放，{penis_s}在变化的压力下进出，摩擦出淫靡的水声。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}精确控制力道，让{penis_s}在{armpit_s}中时深时浅地抽送，龟头每次都精准擦过最敏感的腋窝根部。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}腰部灵活扭动，使{penis_s}在{armpit_s}中画圈般摩擦，短小的阴茎借助技巧在腋窝里制造出多角度的刺激。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}以完美的韵律让{penis_s}在{armpit_s}中进出，每次抽送都恰到好处地刺激龟头最敏感的部位，前液涂满腋窝。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}精妙地调整{target.name}手臂角度，使{armpit_s}形成最佳夹角，{penis_s}在精确控制下进出，摩擦得腋窝一片湿润。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}手指灵活地揉捏{target.name}的腋窝周围，同时{penis_s}在{armpit_s}中快慢交替抽送，每次深入都精准到位。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}以娴熟的技巧控制着抽送节奏，让{penis_s}在{armpit_s}的每一寸肌肤上都留下湿润的痕迹，腋窝的皱褶被撑开又收紧。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}有节奏地挺动腰部，让{penis_s}在{target.name}的{armpit_s}中进出，适中的尺寸刚好填满腋窝的空间，摩擦出淫靡的水声。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手按压{target.name}的胳膊，使{armpit_s}紧紧包裹住{penis_s}，龟头在腋窝中进出，每次摩擦都带出湿润的汗液。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}调整抽送的角度，让{penis_s}更深入{armpit_s}的褶皱中，温热的腋窝紧紧包裹着肉棒，摩擦生热。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}略微加快速度，{penis_s}在{armpit_s}的软肉中来回摩擦，适中的硬度和长度使得每次抽送都恰到好处。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}让{target.name}的手臂压向胸口，使{armpit_s}形成一个紧致的通道，{penis_s}在其中抽插，发出黏腻的声响。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}稳定地挺动腰部，让{penis_s}在{armpit_s}中进出，龟头时而露出，时而埋入腋窝的深处，带出湿滑的液体。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}用手挤压{target.name}的腋窝两侧，使{armpit_s}更紧地包裹{penis_s}，每次抽送都让腋窝的嫩肉变形，摩擦得发红。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}控制着{target.name}的姿势，让{armpit_s}形成完美的夹角，{penis_s}在湿润的腋窝中抽送，前液混合着汗水流下。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手固定{target.name}的上臂，使{armpit_s}的空间保持稳定，{penis_s}在其中快速进出，每次都带出腋下的湿滑液体。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}调整抽送的频率，让{penis_s}在{armpit_s}中时快时慢地摩擦，龟头蹭过腋窝的每一处褶皱，留下湿润的痕迹。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}以精妙的技巧控制腰部，让{penis_s}在{target.name}的{armpit_s}中划出完美的弧线，每次抽送都精确刺激腋窝最敏感的部位。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}双手熟练地调整{target.name}的手臂角度，使{armpit_s}形成最佳夹角，{penis_s}在精确控制下进出，摩擦出淫靡的水声。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}腰部灵活扭动，让{penis_s}在{armpit_s}中画圈般摩擦，中等尺寸的肉棒借助高超技巧在腋窝里制造多层次快感。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}以完美的韵律控制{penis_s}在{armpit_s}中的节奏，快慢交替的抽送让腋窝的每一寸皮肤都被充分摩擦。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}精确掌握力道，让{penis_s}在{armpit_s}中时深时浅，龟头每次都精准刮过腋窝最敏感的褶皱，带出湿润的液体。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}手指灵活地揉捏{target.name}的腋窝周围，同时{penis_s}在{armpit_s}中快速进出，每一次抽送都精准到位。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}以娴熟的技巧变换角度，让{penis_s}在{armpit_s}中旋转摩擦，中等尺寸的肉棒被完美运用，刺激腋窝每一处敏感点。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}精确控制着抽送的深度和力度，使{penis_s}在{armpit_s}中进出自如，每次都恰到好处地擦过最敏感的腋窝深处。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}巧妙地调整{target.name}的体位，让{armpit_s}以最佳角度包裹{penis_s}，高超的腰技使得每次抽送都精准无比。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}熟练地控制着{target.name}的上臂，使{armpit_s}时紧时松，{penis_s}在变化的压力下进出，龟头精确刺激着每一寸腋肉。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}稳健地挺动腰部，让{penis_s}在{target.name}的{armpit_s}中进出，腋窝被撑开到极限，肉棒的轮廓清晰可见。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手压住{target.name}的胳膊，使{armpit_s}紧紧包裹住{penis_s}，粗壮的肉棒撑满了整个腋窝，摩擦得皮肤泛红。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}调整抽送的角度，让{penis_s}更深地楔入{armpit_s}，粗大的龟头将腋窝的褶皱撑平，每次摩擦都带出汗水。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}有力地挺动，{penis_s}在{armpit_s}中来回摩擦，粗壮的柱身将腋窝完全填满，每次抽送都让皮肤变形。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}按压{target.name}的手臂，使{armpit_s}形成一个紧致的通道，{penis_s}在其中艰难进出，发出湿润的摩擦声。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}控制着抽送的力度，让{penis_s}在{armpit_s}中进出，粗壮的肉棒将腋窝撑得满满当当，摩擦生热使得汗水直流。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手固定{target.name}的上臂，使{armpit_s}的空间保持稳定，{penis_s}在其中抽插，将腋窝撑得变形。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}略微加快节奏，让{penis_s}在{armpit_s}中快速摩擦，粗壮的柱身每次都从腋窝中挤出大量汗水和前液的混合物。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}调整{target.name}的姿势，让{armpit_s}以最佳角度包裹{penis_s}，粗大的肉棒在湿润的腋窝中进出，带出淫靡的水声。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}稳定地挺动腰部，让{penis_s}在{armpit_s}中抽送，粗壮的龟头每次都将腋窝撑开到极限，留下湿润的痕迹。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}以精湛的技巧控制腰部，让{penis_s}在{target.name}的{armpit_s}中划出完美的弧线，粗壮的柱身被精确操控，刺激腋窝的每一寸。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}熟练地调整{target.name}的手臂角度，使{armpit_s}形成最佳夹角，{penis_s}在高超技巧的控制下进出自如。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}腰部灵活扭动，让{penis_s}在{armpit_s}中画圈般摩擦，粗壮的肉棒借助高超技巧在腋窝里制造出多层次的刺激。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}以完美的韵律控制{penis_s}在{armpit_s}中的节奏，粗大的龟头精确刮过每一处敏感带，将腋窝撑满又抽出。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}精确掌握力道，让{penis_s}在{armpit_s}中时深时浅，每次抽送都恰到好处地刺激最敏感的腋窝深处。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}手指灵活地揉捏{target.name}的腋窝周围，同时{penis_s}在{armpit_s}中快慢交替抽送，每一次都精准到位。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}以娴熟的技巧变换角度，让{penis_s}在{armpit_s}中旋转摩擦，粗壮的柱身将腋窝撑开，精确刺激每一处敏感点。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}精确控制着抽送的深度和力度，使{penis_s}在{armpit_s}中进出自如，每次都带出湿润的体液混合物。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}巧妙地调整{target.name}的体位，让{armpit_s}以最佳状态包裹{penis_s}，高超的腰技使得每次抽送都精准无比。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}熟练地控制着{target.name}的上臂，使{armpit_s}时紧时松，{penis_s}在变化的压力下进出，龟头精确刺激着腋窝每一寸。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}稳健地挺动腰部，让{penis_s}在{target.name}的{armpit_s}中艰难进出，腋窝被完全撑开，肉棒的粗壮轮廓清晰可见。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手用力压住{target.name}的胳膊，使{armpit_s}勉强包裹住{penis_s}，惊人的尺寸使得腋窝的皮肤被撑到极限。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}调整抽送的角度，让{penis_s}在{armpit_s}中摩擦，粗壮的龟头将腋窝的每一寸皮肤都撑开，摩擦得通红。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}有力地挺动，{penis_s}在{armpit_s}中进出，过于粗壮的尺寸使得腋窝的皮肤被拉伸到极限，发出湿润的摩擦声。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}按压{target.name}的手臂，使{armpit_s}尽可能紧密地包裹{penis_s}，惊人的尺寸使得每次抽送都带出大量的汗水和前液。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}控制着抽送的力度，让{penis_s}在{armpit_s}中进出，每次摩擦都让腋窝的皮肤变形，无法完全包裹住粗壮的柱身。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手固定{target.name}的上臂，使{armpit_s}尽量形成一个通道，{penis_s}在其中艰难抽插，将腋窝撑得几乎变形。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}调整{target.name}的姿势，让{armpit_s}以最大限度包裹{penis_s}，巨大的肉棒在腋窝中进出，每次都带出混合的体液。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}稳定地挺动腰部，让{penis_s}在{armpit_s}中抽送，惊人的尺寸使得每次进出都将腋窝撑到极限，皮肤泛起红晕。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}用力按压{target.name}的肩膀，使{armpit_s}形成最大的空间，{penis_s}依然难以完全容纳，每次抽送都让腋窝变形。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}以精湛的技巧控制腰部，让{penis_s}在{target.name}的{armpit_s}中进出自如，惊人的尺寸在高超技巧下被完美操控。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}熟练地调整{target.name}的手臂角度，使{armpit_s}以最佳状态容纳{penis_s}，高超的技巧使得腋窝能够适应惊人的尺寸。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}腰部灵活扭动，让{penis_s}在{armpit_s}中画圈般摩擦，惊人的尺寸借助高超技巧在腋窝里制造出多层次的刺激。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}以完美的韵律控制{penis_s}在{armpit_s}中的节奏，粗壮的龟头精确刮过每一处腋窝皮肤，带出湿润的液体。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}精确掌握力道，让{penis_s}在{armpit_s}中时深时浅，惊人的尺寸被高超技巧驾驭，每次抽送都恰到好处。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}手指灵活地揉捏{target.name}的腋窝周围，同时{penis_s}在{armpit_s}中快慢交替抽送，技巧精湛得令人难以置信。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}以娴熟的技巧变换角度，让{penis_s}在{armpit_s}中旋转摩擦，惊人的尺寸在精确控制下刺激腋窝的每一处敏感带。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}精确控制着抽送的深度和力度，使{penis_s}在{armpit_s}中进出自如，高超技巧使得过大的尺寸变成完美的工具。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}巧妙地调整{target.name}的体位，让{armpit_s}以最佳状态包裹{penis_s}，高超的腰技使腋窝适应了惊人的尺寸。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}熟练地控制着{target.name}的上臂，使{armpit_s}时紧时松，{penis_s}在变化的压力下进出，精确刺激着腋窝的每一寸。"

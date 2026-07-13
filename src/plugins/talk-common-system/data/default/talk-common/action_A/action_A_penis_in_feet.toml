@@ -1686,43 +1686,43 @@ conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FA
 context = "被锁链限制行动的{target.name}依旧用她那线条优美的{feet}殷勤地侍奉着{character.name}的{penis}，将足弓紧贴肉棒上下滑动，在监禁中享受与恋人的亲密时光。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_-1"
 context = "被监禁的{target.name}勉强用精致娇小的{feet}夹住{character.name}的{penis}，娇嫩的脚掌不情不愿地摩擦着，在抵触中缓缓动作。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_-1"
 context = "困于牢笼的{target.name}虽然表面服从地用细腻的{feet}伺候着{character.name}的{penis}，但神情中藏着无法掩饰的不满与反感。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_-1"
 context = "身陷囹圄的{target.name}用她纤小的{feet}勉强包裹着{character.name}的{penis}，动作僵硬迟疑，透露出内心深处的抵触与屈辱。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_-1"
 context = "被锁链束缚的{target.name}强忍着屈辱，用那双玲珑的{feet}夹紧{character.name}的{penis}上下滑动，眼眸中满是隐忍的不甘。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}被迫用自己小巧柔嫩的{feet}夹住{character.name}的{penis}不停摩擦，神情中充满勉强与不情愿的服从。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_-2"
 context = "已被驯服的{target.name}乖顺地用灵巧的{feet}环住{character.name}的{penis}，纤细的脚趾认真地揉捏着，如同执行一项专业任务。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_-2"
 context = "囚笼中的{target.name}主动用精致的{feet}贴上{character.name}的{penis}，柔软的足心温顺地贴合着，态度已然顺从。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_-2"
 context = "作为俘虏的{target.name}已完全接受现状，用她细嫩的{feet}熟练地夹住{character.name}的{penis}，动作带着认命后的配合。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_-2"
 context = "被关押的{target.name}听话地伸出纤巧的{feet}，将{character.name}的{penis}温柔地夹在其中，以信赖之心专注地侍奉着。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_-2"
 context = "监牢中的{target.name}用她玲珑剔透的{feet}紧贴{character.name}的{penis}轻轻揉弄，娇小的脚掌带着服从者的觉悟缓缓移动。"
 
 [[entries]]
@@ -1846,43 +1846,43 @@ conditions = "selected.talents.长足 == 1&premises:hidden_sex_mode_4&premises:p
 context = "掩体后{target.name}优美的{feet}一刻不停地伺候着{character.name}的{penis}，匀称修长的脚趾缠绕着龟头，粘液沾满了她的足背。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}命令跪在监牢地面的{target.name}用她那修长优雅的{feet}夹紧肿胀的{penis}，她满怀崇拜地望着主人，纤长灵活的脚趾热情地侍奉着主人的肉棒。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "身为奴隶的{target.name}用她那双修长而优美的{feet}温柔地包裹住{character.name}的{penis}上下套弄，脸上洋溢着能够服侍主人的幸福与感激。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "被囚禁的{target.name}跪伏在地将她纤长流畅的{feet}熟练地缠上{character.name}的{penis}摩擦，口中不停呢喃着感谢主人降下恩宠。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "监牢里的{target.name}用她修长的{feet}紧紧夹住{character.name}的{penis}来回搓动，恳切地祈求主人多多使用她这具专属的性奴肉体。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "被囚禁在牢房的{target.name}用那双修长优雅的{feet}将{character.name}的{penis}包裹得严严实实，她狂喜地扭动纤长脚趾按摩侍奉着主人。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "完全臣服的{target.name}用她那纤长线条优美的{feet}殷勤讨好地夹弄着{penis}，满心渴望用自己的身体令监禁她的主人满意。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}跪在自己的牢房中将那双修长优雅的{feet}缠绕上{character.name}的{penis}仔细套弄，嘴里虔诚低喃着对主人的崇拜。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "被监禁的{target.name}用她那双修长的{feet}紧紧裹住{character.name}的{penis}来回摩擦，她满心欢喜地履行着作为肉便器的本分。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}悠然享受着{target.name}那双纤长优美的{feet}的热情侍奉，她虔诚地用灵活的脚趾细细描绘着{penis}的形状。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "沦为奴隶的{target.name}恭敬地跪着用她优雅修长的{feet}夹住{character.name}的{penis}卖力摩擦，迫切渴望得到主人更多的恩赐与宠幸。"
 
 [[entries]]
@@ -2246,323 +2246,323 @@ conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_4"
 context = "{character.name}的{penis}被{target.name}那双线条优美的{feet}夹紧反复蹂躏，修长的脚趾与柔嫩的足心相互配合，以爱侣之姿奉献最淫荡的足交侍奉。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}勉强用自己那双玲珑小巧的{feet}夹住{character.name}的{penis}，表面顺从地上下摩擦着，眼神中却带着隐忍的不情愿。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-1"
 context = "作为部下的{target.name}不得不用她精致的{feet}服侍{character.name}的{penis}，娇小的足弓被迫贴合着滚烫的肉棒，神情中透着一丝勉强。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}纤小的{feet}包裹着{character.name}的{penis}缓慢套弄，虽然动作不断，但她紧抿的嘴唇显示出内心的不满与抵触。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}的{penis}在{target.name}柔嫩小巧的{feet}间滑动，她咬着下唇迫于上司的命令继续这淫靡的足交服务。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用敏感的{feet}细腻地摩擦着{character.name}的{penis}，娇小的脚趾不由自主地蜷缩，面上却强忍着不甘与屈辱。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}的{penis}被{target.name}那双精巧的{feet}夹住揉弄，她虽然服从着命令，眼底却藏着一抹难以掩饰的抵触。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}纤细的{feet}无奈地侍奉着{character.name}的{penis}，光滑的足心被迫来回滑动，嘴角微微下撇透出隐忍。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}的{penis}在{target.name}小巧玲珑的{feet}间肆意摩擦，她面带勉强地完成这羞耻的任务，身体微微僵硬。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}被迫用她敏感柔软的{feet}夹紧{character.name}的{penis}，脚心的细嫩肌肤摩擦着肉棒，表情中满是压抑的不情愿。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}的{penis}被{target.name}精致的{feet}包覆套弄着，她作为下属勉强服从，却无法掩饰眉宇间的隐忍与不甘。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}勉强用她那双修长的{feet}将{character.name}的{penis}夹住，有节奏地来回摩擦着，眼神中透露着不情愿与隐忍的复杂神色。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}的{penis}被{target.name}那双修长优雅的{feet}紧紧夹住，她虽然表面服从但脸上的表情带着明显的抵触与不甘。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用她那双线条流畅的{feet}包裹着{character.name}的{penis}缓缓摩擦着，动作虽然配合却透出满满的勉强与无奈。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}享受着{target.name}用修长的{feet}服侍{penis}的柔软触感，而她只是咬着嘴唇面无表情地执行着上司的命令。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}那双纤长的{feet}有节奏地套弄着{character.name}的{penis}上下滑动，动作虽然顺从但美丽的眼眸中写满了不甘。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}的{penis}深深陷入{target.name}那双修长而纤细的{feet}之间，她不得不用灵巧的脚趾配合着摩擦动作。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}强忍着羞耻用她那双优美修长的{feet}紧紧夹着{character.name}的{penis}缓缓摩擦着，表面顺从内心却满是挣扎。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}命令{target.name}继续用那双纤长的{feet}玩弄着{penis}，她只能勉强照做，每一个动作中都透出抗拒与无奈。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{target.name}修长的{feet}紧贴着{character.name}粗硬的{penis}缓缓滑动着，虽然服从指令但她的眼神始终躲避着不敢对视。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}的{penis}被{target.name}那双线条优美的{feet}紧紧夹住缓缓摩擦着，她迫于上司命令不得不勉强服从这淫靡的要求。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
 context = "驯服的部下{target.name}用她那双精致娇小的{feet}夹着{character.name}的{penis}卖力地上下摩擦，虽超出工作范围却仍认真执行着。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}以顺从的态度用她那双小巧玲珑的{feet}服务着{character.name}的{penis}，如同完成任务般专注而投入。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
 context = "信赖{character.name}的{target.name}用纤细的{feet}包裹着{penis}不停摩擦，小脚虽无法完全覆盖却更显淫靡。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}驯服地用她敏感的{feet}夹住{character.name}的{penis}缓缓撸动，精巧的足弓贴合着柱身滑动。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
 context = "作为值得信任的部下，{target.name}用她娇小光滑的{feet}认真地侍奉着{character.name}的{penis}，脚趾灵活地揉捏着。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}的{penis}在{target.name}细嫩的{feet}间滑动，驯服的少女专注地用小脚服务着上司的欲望。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}对{character.name}展现出完全的服从，用她那双敏感的{feet}紧紧夹住{penis}，足心贴着肉棒摩挲不止。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
 context = "顺从的{target.name}用精致的{feet}勤奋地伺候着{character.name}的{penis}，像执行特殊任务一样一丝不苟。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}那双小巧的{feet}被{character.name}的{penis}撑开，驯服的她仍卖力地用脚趾和足弓夹紧摩擦着。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
 context = "对上司十分信赖的{target.name}用她娇嫩敏感的{feet}包裹着{character.name}的{penis}揉搓，柔软的足肉滑腻地套弄着。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
 context = "驯服的部下{target.name}认真地用她那双修长的{feet}夹住{character.name}的{penis}，如同执行任务般专注地上下摩擦着，优雅的足弓完美贴合着柱身。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}顺从地将她修长的{feet}贴在{character.name}的{penis}两侧，纤长的脚趾灵活地按揉着龟头，用这双优美的脚为上司提供着服务。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
 context = "信赖{character.name}的部下{target.name}用她的{feet}熟练地包裹住{penis}，修长的足弓有节奏地摩擦着肉棒，认真执行着这项特殊的指令。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}那双纤长的{feet}温柔地夹住{character.name}的{penis}，她的脚趾灵巧地撩拨着敏感部位，驯服的眼神中透着对上司的信任。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}的{penis}被{target.name}修长柔软的{feet}牢牢夹住，她专业地控制着摩擦的力度和节奏，如同完成一项工作任务般尽职尽责。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
 context = "驯服的{target.name}用她优雅的{feet}服侍着{character.name}的{penis}，流畅的足部线条随着动作不断变化，纤长的脚趾时而夹紧时而放松。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{feet}在{character.name}的{penis}上滑动着，修长的脚背蹭过柱身，柔嫩的足心裹住龟头，用这种方式表达着对上司的服从与信赖。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}的{penis}在{target.name}那双修长的{feet}间被充分地照料着，她的脚趾灵活地揉捏着，足弓有节奏地摩擦，宛如在执行重要差事。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
 context = "信赖上司的{target.name}用她纤细修长的{feet}紧贴着{character.name}的{penis}，温热的足心上下套弄着肉棒，动作中透露着专业与顺从。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
 context = "{target.name}那双优雅的{feet}将{character.name}的{penis}包覆其中，修长的脚趾缠绕着龟头，驯服的她认真地用足部取悦着自己信赖的上司。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}乖巧地用她精致小巧的{feet}夹住{character.name}的{penis}，宠物般温顺地上下摩擦着主人的肉棒，眼神中满是渴望被使用的喜悦。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}的{penis}被{target.name}娇小的{feet}轻柔地包裹着，她忠诚的宠物主动献上自己纤细的小脚为主人服务，带着满足与依恋。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}玲珑的{feet}细腻地按摩着{character.name}的{penis}，作为宠物的她十分享受用自己的小脚取悦主人的时光，脸颊泛起淫靡的红晕。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}的{penis}在{target.name}那双精巧{feet}的摩挲下变得更加坚硬，她的宠物用小巧脚趾灵活地揉捏着，带着服侍主人的甘愿与欢喜。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}作为主人的宠物，用她敏感的{feet}紧紧贴合着{character.name}的{penis}，娇小的脚掌上下滑动，为能让主人舒服而感到幸福满足。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}命令{target.name}用脚服侍自己，宠物欣然照办，纤巧的{feet}温柔地搓揉着主人的{penis}，小脚丫努力地夹紧肉棒进行摩擦。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用她嫩白娇小的{feet}侍奉着{character.name}粗壮的{penis}，身为宠物的她眼中满是对主人的依恋，小脚的每一次摩擦都充满了讨好的心意。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}的{penis}被{target.name}光滑细嫩的{feet}仔细伺候着，她的宠物用精致的小脚不断揉搓，淫荡的表情显露着被主人需要时的满足感。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}那双小巧可爱的{feet}熟练地套弄着{character.name}的{penis}，宠物已经十分习惯用足交来取悦她的主人，脚趾微微勾起，带来别样的刺激。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}享受着{target.name}用精致{feet}进行的足交服务，她的宠物将肉棒夹在娇嫩的小脚之间，温顺地摩擦着{penis}，双眸含春地仰望着主人。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{feet}熟练地夹住{character.name}的{penis}上下套弄，像乖巧的宠物一样专心服务着主人的肉棒，修长的脚趾灵活地挑逗着敏感的龟头。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}的{penis}被{target.name}那双修长的{feet}紧紧包裹着，她用脚心前后摩擦着粗硬的柱身，眼中满是讨好主人的喜悦神情。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-3"
 context = "宠物{target.name}将{character.name}的{penis}牢牢夹在{feet}间，柔软的足弓贴合着肉棒的形状有节奏地摩擦，她修长的美足在淫靡的服务中流露出被驯养的顺从。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用她那双线条优美的{feet}轻柔地撸动{character.name}的{penis}，她像忠诚的宠物般侍奉着主人，纤长的脚趾偶尔轻夹住敏感的铃口。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}享受着{target.name}用{feet}进行的淫荡足交服务，她修长的双脚娴熟地夹住{penis}来回套弄，展现着宠物对主人的全身心奉献。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}以宠物的姿态用{feet}服侍{character.name}的{penis}，她流畅优雅的修长美足配合着主人的节奏滑动，足弓完美贴合着硬挺的肉棒反复摩擦。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}的{penis}在{target.name}那双修长的{feet}间来回抽动，她像听话的宠物一样专注地用脚掌挤压着炙热的肉棒，湿滑的足心发出淫靡的水声。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}用{feet}将主人的{penis}夹在双足之间不断撸动，她修长纤细的脚趾勾住龟头研磨，宠物般满足地享受着服务主人的快乐。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}的{penis}被{target.name}的{feet}牢牢掌控，她用修长优雅的美足前后滑动搓揉着粗大的肉棒，每一下都带着宠物讨好主人的虔诚。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-3"
 context = "{target.name}将{feet}交叠夹紧{character.name}的{penis}进行足交，她修长的脚掌包裹着整根肉棒滑动，像乖顺的宠物般用身体的每一寸服务着自己的主人。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-4"
 context = "彻底沦为奴隶的{target.name}用她精致娇小的{feet}虔诚地夹住{character.name}的{penis}，如同侍奉神明般上下摩擦着，小巧的脚趾不断蜷缩舒展。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}跪伏在主人面前，用那双纤小柔嫩的{feet}包裹着{character.name}的{penis}卖力揉搓，眼中满是对主人的崇拜与渴望。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-4"
 context = "作为性奴的{target.name}将玲珑剔透的{feet}紧贴{character.name}的{penis}，娴熟地以足心和脚趾侍奉着主人的肉棒，浑身散发着臣服的喜悦。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}的{penis}在忠诚奴隶{target.name}那娇小敏感的{feet}间摩擦，她用足弓和脚心配合夹弄，全身心沉浸在服侍主人的喜悦中。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-4"
 context = "已成为奴隶的{target.name}跪坐着用小巧光滑的{feet}缠绕住{character.name}的{penis}，虔诚地揉捏摩擦，每一个动作都充满对主人的绝对服从。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}用她那细腻柔软的{feet}贴着{character.name}的{penis}卖力搓动，作为奴隶的她以能够用双足侍奉主人为至高荣耀。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-4"
 context = "心甘情愿沦为性奴的{target.name}将精巧的{feet}紧紧夹着{character.name}的{penis}来回滑动，脚趾灵活地拨弄着顶端，眼神中满是狂热的忠诚。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}的{penis}被奴隶{target.name}那双娇嫩纤细的{feet}温柔包裹着持续摩擦，她小巧的脚背和足心交替伺候着主人的肉棒。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-4"
 context = "绝对臣服的{target.name}用娇小玲珑的{feet}套弄着{character.name}的{penis}，细嫩的脚趾头不停蠕动着按摩龟头，每一下都饱含对主人的敬仰。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}匍匐着用她敏感精致的{feet}侍奉{character.name}的{penis}，作为奴隶她将足交视为神圣仪式，柔软的足心和脚趾竭力取悦主人。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-4"
 context = "作为主人忠诚奴隶的{target.name}跪伏在地，用她那双修长优雅的{feet}虔诚地侍奉着{character.name}的{penis}，柔软的足心上下摩擦着肉棒，眼中满是对主人的崇拜与服从。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}的{feet}纤长而灵巧，完全包裹住{character.name}的{penis}，她像献祭般将自己的双足献给主人，享受着能为主人提供性服务的无上喜悦。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-4"
 context = "身为奴隶的{target.name}用她那线条优美的{feet}夹紧{character.name}的{penis}，修长的脚趾轻轻揉捏着龟头，每一个动作都饱含着对主人的绝对臣服与狂热忠诚。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}的{penis}被{target.name}那双高贵修长的{feet}殷勤服侍着，她匍匐于主人脚下，将足交视为对主人最虔诚的供奉，浑身散发着淫靡的气息。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-4"
 context = "完全臣服的{target.name}抬起她优雅纤长的{feet}夹住{character.name}的{penis}，用柔嫩的足心有节奏地摩擦着，为能以双足取悦主人而感到发自内心的满足与喜悦。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}那双修长美丽的{feet}紧贴着{character.name}的{penis}，她以奴隶的身份侍奉主人，灵活的脚趾在肉棒上游走，眼神中燃烧着对主人狂信般的崇拜。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}享受着{target.name}用那双线条流畅的{feet}进行的足交服侍，她的{penis}被柔软足心温柔包裹，而跪伏的奴隶眼中只有对主人无尽的顺从与爱慕。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-4"
 context = "甘愿为奴的{target.name}用她纤细优雅的{feet}侍奉着{character.name}的{penis}，修长的足弓完美贴合肉棒形状，她将为主人足交视作生命中最神圣的仪式。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{target.name}的{feet}曲线优美，此刻正虔诚地包裹着{character.name}的{penis}上下套弄，她作为奴隶全身心投入对主人的性服务，每一次摩擦都是对主人的忠诚宣誓。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}看着{target.name}用那双修长的{feet}恭敬地服侍着自己的{penis}，她彻底沦为奴隶的表情上写满了幸福，为能以双足取悦主人而感到无上荣耀。"
 
 [[entries]]
@@ -3446,483 +3446,483 @@ conditions = "selected.talents.小足 == 1&selected.皮肤 >= 1000&selected.皮�
 context = "{character.name}感受着{target.name}那双格外敏感的{feet}轻柔包裹着自己的{penis}，她娇小的足部正上下灵活地套弄着他的肉棒。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
 context = "{target.name}笨拙地用{feet}夹住{character.name}的{penis}，她娇小的脚掌生涩地摩擦着，试图取悦博士却不知该如何发力"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
 context = "{character.name}的{penis}被{target.name}精致的{feet}紧张地包裹着，她缺乏经验的动作反而带来别样的刺激与征服快感"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
 context = "{target.name}用她纤细的{feet}生涩地摩挲着{character.name}的{penis}，她小巧的脚趾因紧张而微微蜷缩着"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
 context = "{character.name}引导着{target.name}的{feet}在{penis}上缓缓移动，她娇小的足弓笨拙地贴合着柱身，茫然地等待指示"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
 context = "{target.name}颤抖着用精巧的{feet}夹紧{character.name}的{penis}，她不知所措地尝试着摩擦，脸颊羞得通红"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
 context = "{character.name}的{penis}在{target.name}小巧的{feet}间缓慢抽动着，她生涩的配合和紧张的神情令博士欲望大增"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
 context = "{target.name}玲珑的{feet}笨拙地套弄着{character.name}的{penis}，她柔嫩的脚心试探性地磨蹭着灼热的肉棒"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
 context = "{character.name}感受着{target.name}的{feet}在{penis}上生涩地滑动，她娇小敏感的脚掌每一次触碰都带着青涩的颤栗"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
 context = "{target.name}用纤巧的{feet}紧紧夹住{character.name}的{penis}，她毫无技巧的动作显得笨拙而羞涩，却更加激起征服欲"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
 context = "{character.name}的{penis}被{target.name}稚嫩的{feet}包裹摩擦着，她不熟练地扭动小巧的脚趾，努力学习着如何取悦博士"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
 context = "{character.name}扶着{target.name}的脚踝，让{feet}以稳定的节奏夹住{penis}不断摩擦，那修长的足弓紧贴柱身，脚趾轻轻勾弄着敏感的前端。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
 context = "{target.name}的{feet}流畅地套弄着{character.name}的{penis}，那灵巧的脚趾缠绕顶端，配合着纤长的足心有节律地上下滑动，带来持续的快感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
 context = "{character.name}挺动腰部，让{penis}在{target.name}的{feet}间反复穿梭，那修长的双脚紧紧夹住肉棒，柔软的肌肤摩擦着敏感的茎身。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
 context = "{target.name}用{feet}熟练地服侍着{character.name}的{penis}，她纤细的脚趾灵活地刺激着龟头，足心紧密贴合柱身进行有规律的套弄。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
 context = "{character.name}的{penis}被{target.name}的{feet}包裹住不断摩擦着，她那优美的足弓和灵活的脚趾配合得恰到好处，节奏稳定而流畅。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
 context = "{target.name}修长的{feet}在{character.name}的{penis}上来回滑动，足心的柔嫩肌肤紧贴炽热的肉棒，脚趾偶尔轻捏顶端带来阵阵酥麻。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
 context = "{character.name}握住{target.name}的脚腕控制节奏，让她的{feet}以平稳的速度套弄{penis}，那细长的脚趾和柔滑的足底带来独特的刺激。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
 context = "{target.name}的{feet}紧紧夹住{character.name}的{penis}不断搓揉，她那修长的双足灵活地上下移动，足弓深深压入肉棒表面。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
 context = "{character.name}的{penis}在{target.name}那双纤长的{feet}间不断抽动，她灵巧的脚趾玩弄着膨胀的龟头，柔软的足底摩擦着涨硬的茎身。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
 context = "{target.name}用{feet}有节奏地伺候着{character.name}的{penis}，她修长的脚掌完美包覆住粗壮的肉棒，以流畅的动作持续带来快感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}精准地摆动腰部，让{penis}在{target.name}那双精致小巧的{feet}间有节奏地来回摩擦，引得她娇躯轻颤。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.小足 == 1"
 context = "{target.name}的{feet}虽然娇小却极度敏感，{character.name}凭借高超的腰技让{penis}在她柔嫩的足心间精确研磨。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}被{target.name}细腻的{feet}紧紧夹住，精湛的腰部动作让每一下摩擦都恰到好处地刺激着敏感点。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}熟练地控制着腰部的力度和频率，让{penis}在{target.name}玲珑的{feet}间滑动，快感层层叠加。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.小足 == 1"
 context = "{target.name}娇小的{feet}包裹着{character.name}的{penis}，精妙的腰技让抽送的节奏变化多端，刺激着她不断颤抖。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}在{target.name}那双光滑细嫩的{feet}间来回研磨，完美的力度把控让她沉浸在淫靡的快感中。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}以精准的腰部动作驱动{penis}在{target.name}精巧的{feet}间有节律地进出，带来阵阵酥麻的快感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.小足 == 1"
 context = "{target.name}敏感的{feet}被{character.name}的{penis}撑开，高超的腰技让摩擦的角度恰好刺激着每一处敏感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}凭借纯熟的腰部技巧，让{penis}在{target.name}那双娇嫩小巧的{feet}间快慢交替地研磨着。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}与{target.name}精致的{feet}紧密贴合，精湛的腰技让每一次律动都带来强烈的刺激感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.长足 == 1"
 context = "{character.name}精准地摆动腰部，让{penis}在{target.name}那双修长的{feet}间有节奏地磨蹭着，每一次律动都恰到好处地刺激着敏感部位。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}纤长的{feet}紧紧夹住{character.name}的{penis}，而{character.name}则以精湛的腰技控制着节奏，让肉棒在那优美的足弓间来回滑动。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.长足 == 1"
 context = "{character.name}灵活地变换着抽送角度，将{penis}贴合在{target.name}修长的{feet}上反复厮磨，技巧精准地让双方都沉浸在淫靡的快感之中。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.长足 == 1"
 context = "{character.name}以老练的腰部动作驱使{penis}在{target.name}那双线条优美的{feet}间持续蹂躏着，每一下都精准有力。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}颀长的{feet}被{character.name}的{penis}撑开，{character.name}用炉火纯青的技巧操控着抽插的深浅快慢，让肉棒尽情享受那柔嫩足肉的包裹。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.长足 == 1"
 context = "{character.name}的腰肢有力地摆动，让{penis}在{target.name}修长而柔软的{feet}间来回研磨，变化莫测的节奏让快感不断攀升。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}纤细修长的{feet}将{character.name}的{penis}牢牢夹住，{character.name}则以精妙的腰部技巧在那光洁如玉的足心间持续律动。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.长足 == 1"
 context = "{character.name}精准把握着深浅和力度，让{penis}在{target.name}那双匀称修长的{feet}上下滑动，淫糜的声响回荡在空气中。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.长足 == 1"
 context = "{character.name}的腰部动作流畅而有力，{penis}被{target.name}优雅颀长的{feet}紧紧包裹着，在其间不断进出抽送。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}那双曲线优美的{feet}将{character.name}的{penis}夹在中间，{character.name}以精湛的技巧控制着摩擦的节奏和力度，让快感层层叠加。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}那双修长的{feet}生涩地夹住{character.name}的{penis}，笨拙地上下移动着，她不知所措的茫然反应反而激起了强烈的征服欲。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}优美的{feet}在{character.name}的引导下缓缓摩擦着{penis}，她纤长的脚趾因紧张而微微蜷缩，脸颊泛红地望向博士期待认可。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
 context = "{character.name}的{penis}被{target.name}那双修长却不得要领的{feet}夹着，她咬着嘴唇努力配合却依然显得生涩可爱，让人更想亲手调教。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}用她纤长优雅的{feet}笨拙地侍奉着{character.name}的{penis}，不知该如何掌握力度的忐忑模样别有一番风味，令人想要一步步教导她沉沦。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
 context = "{character.name}的{penis}在{target.name}修长的{feet}间摩擦着，她生涩的动作虽然缺乏技巧，但这份纯真的试探却比任何娴熟服侍都更让人心动。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}那双优美的{feet}紧张地贴合着{character.name}的{penis}，她困惑的眼神中满是想要讨好却不得其法的茫然，引人怜爱又令人冲动。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
 context = "{character.name}引导着{target.name}用她修长的{feet}夹住自己的{penis}，看着她战战兢兢地尝试取悦自己，这种污染纯洁之物的满足感无比强烈。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}纤长的{feet}怯怯地包裹着{character.name}的{penis}上下撸动，她对自己动作毫无自信的青涩模样，反而激发了博士想要彻底征服她的欲望。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
 context = "{character.name}的{penis}在{target.name}那双修长优雅却青涩笨拙的{feet}间享受着别样的快感，看着她小心翼翼的服侍姿态，支配感油然而生。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_LE_3&premises:CVP_A2_A|72_LE_3&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}用她修长的{feet}羞怯地摩擦着{character.name}的{penis}，她动作虽然生涩迟钝，但那双优美的脚和茫然的表情却构成了令人难以抗拒的淫靡画面。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.小足 == 1"
 context = "{target.name}娇小的{feet}灵巧地夹住{character.name}的{penis}，柔软的足心有节奏地上下摩擦着，温热的触感让人沉醉。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}被{target.name}精致的{feet}温柔包裹，细嫩的脚趾灵活地挑逗着敏感的龟头，每一次滑动都带来阵阵酥麻。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.小足 == 1"
 context = "{target.name}用玲珑的{feet}夹紧{character.name}的{penis}，熟练地套弄着，足弓的弧度恰好贴合柱身的形状，带来独特的快感。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}在{target.name}小巧的{feet}间滑动，她灵活地控制着力度和节奏，光滑的足心不断摩擦着敏感的肉棒。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.小足 == 1"
 context = "{target.name}精巧的{feet}将{character.name}的{penis}紧紧包夹，纤细的脚趾时而轻轻蜷起，时而撩拨着龟头，熟练的技巧令人难以抗拒。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.小足 == 1"
 context = "{character.name}感受着{target.name}娇嫩的{feet}在{penis}上滑动，她的足心柔软细腻，每一次摩擦都让快感层层叠加。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.小足 == 1"
 context = "{target.name}用小巧玲珑的{feet}服侍着{character.name}的{penis}，柔滑的脚背和敏感的足心交替摩擦，淫靡的水声在空气中回荡。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}被{target.name}纤巧的{feet}牢牢夹住，她有条不紊地套弄着，光滑的肌肤贴合着跳动的肉棒，带来极致的刺激。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.小足 == 1"
 context = "{target.name}娇小的{feet}在{character.name}的{penis}上来回滑动，脚趾灵活地勾弄着冠状沟，熟练的动作印证着她的技巧。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}在{target.name}精致的{feet}间抽动，她柔嫩的足心紧贴着火热的柱身，用稳定的节奏持续摩擦着。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.长足 == 1"
 context = "{target.name}用她那双修长的{feet}熟练地夹住{character.name}的{penis}，纤长的脚趾灵活地勾动着，有节奏地上下套弄。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.长足 == 1"
 context = "{character.name}的{penis}被{target.name}优美的{feet}温柔地包裹着，她掌握着恰到好处的力度，流畅地摩擦着柱身。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.长足 == 1"
 context = "{target.name}的{feet}沿着{character.name}的{penis}滑动，修长的足弓完美贴合着肉棒的形状，技巧娴熟地撩拨着每一寸敏感。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.长足 == 1"
 context = "{character.name}感受着{target.name}那双纤细的{feet}在{penis}上摩挲，她娴熟的足技让快感一波接一波地涌来。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.长足 == 1"
 context = "{target.name}用她修长优雅的{feet}夹紧{character.name}的{penis}，柔嫩的脚心贴着柱身，脚趾轻轻碾过敏感的龟头。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.长足 == 1"
 context = "{character.name}的{penis}在{target.name}那双修长{feet}的套弄下不断胀大，她稳定的节奏和适中的力度让快感持续累积。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.长足 == 1"
 context = "{target.name}双脚交叠着包裹住{character.name}的{penis}，她优美的{feet}线条流畅地上下滑动，熟练地挤压着硬挺的肉棒。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.长足 == 1"
 context = "{character.name}的{penis}被{target.name}纤长的{feet}温柔地服侍着，她的脚趾灵巧地刺激着铃口，足心则紧贴着柱身揉搓。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.长足 == 1"
 context = "{target.name}用她那双高贵修长的{feet}夹住{character.name}的{penis}进行足交，动作流畅有序，熟练的技巧带来阵阵淫靡的快感。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_G_3&premises:CVP_A2_A|72_LE_6&premises:CVP_A2_A|72_LE_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 3&selected.abilities.足技.level <= 6&selected.talents.长足 == 1"
 context = "{character.name}看着{target.name}修长的{feet}在自己的{penis}上滑动，她柔软而有力的脚掌摩擦着每一寸肌肤，带来独特的享受。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.小足 == 1"
 context = "{target.name}那双精致娇小的{feet}灵活地夹住{character.name}的{penis}，技巧纯熟地上下套弄着，带来难以言喻的酥麻快感。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}被{target.name}纤巧的{feet}精准地包裹摩擦，她熟练的足技让每一次滑动都恰到好处，直击最敏感的部位。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.小足 == 1"
 context = "{target.name}用她玲珑的{feet}娴熟地伺候着{character.name}的{penis}，每一个动作都展现出精湛的技巧，让快感不断攀升。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}沉醉于{target.name}小巧{feet}带来的极致快感中，她精湛的足技让{penis}被柔嫩的足心温柔地玩弄着。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.小足 == 1"
 context = "{target.name}那对纤细的{feet}熟练地缠绕在{character.name}的{penis}上，以完美的节奏和力度持续摩擦着，引发阵阵酥麻战栗。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}在{target.name}娇小玲珑的{feet}间不断滑动，她高超的技巧让每一寸肌肤都被温柔地照顾到。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.小足 == 1"
 context = "{target.name}用精巧的{feet}将{character.name}的{penis}牢牢夹住，灵活的脚趾配合柔软的足弓，以纯熟的手法持续刺激着敏感处。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}感受着{target.name}细嫩小巧的{feet}在{penis}上熟练地游走摩擦，精湛的技艺让快感如潮水般涌来。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.小足 == 1"
 context = "{target.name}娴熟地操控着她那双精致的{feet}，以完美的角度和力度套弄着{character.name}的{penis}，淫靡的触感让人沉沦。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.小足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}被{target.name}灵巧的{feet}巧妙地玩弄着，她丰富的足交经验让每一次摩擦都精准地撩拨着欲望的神经。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}修长的{feet}灵活地夹住{character.name}的{penis}，纤长的脚趾精准地套弄着敏感的龟头，淫靡的摩擦声不绝于耳。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}用那双优雅的{feet}娴熟地包裹着{character.name}的{penis}，柔嫩的足心以完美的力度上下滑动，带来令人沉醉的快感。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}纤长的{feet}技巧性地缠绕着{character.name}的{penis}，脚趾如同灵活的手指般揉捏着肉棒的每一寸，动作精准而淫荡。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.长足 == 1"
 context = "{character.name}的{penis}被{target.name}那双修长的{feet}熟练地伺候着，她精湛的足技让肉棒沉浸在绵密的快感之中。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}优美的{feet}以精妙的节奏摩擦着{character.name}的{penis}，流畅的足弓贴合着柱身，脚趾轻挑着龟头顶端。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}用她那双修长的{feet}将{character.name}的{penis}牢牢夹住，娴熟地前后滑动，每一下都恰到好处地刺激着敏感处。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.长足 == 1"
 context = "{character.name}的{penis}在{target.name}纤细的{feet}间被来回揉搓，她高超的足交技巧让肉棒不停地渗出淫液。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}纤长灵活的{feet}巧妙地夹弄着{character.name}的{penis}，优雅的脚背和柔滑的足心轮番碾压着硬挺的肉棒。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.长足 == 1"
 context = "{character.name}的{penis}被{target.name}那双漂亮修长的{feet}以精湛手法玩弄着，每一寸肌肤都被柔嫩的足肉温柔抚慰。"
 
 [[entries]]
-conditions = "premises:CVP_A2_A|72_G_6&premises:CVP_A2_A|72_G_6&selected.talents.长足 == 1"
+conditions = "selected.abilities.足技.level > 6&selected.talents.长足 == 1"
 context = "{target.name}用她那双修长的{feet}熟练地套弄着{character.name}的{penis}，脚趾配合足心以变化的节奏摩擦着滚烫的肉棒。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.小足 == 1"
 context = "{character.name}将{penis}夹在{target.name}精致的{feet}之间，虽然动作不够熟练，但看着对方娇小的脚丫努力包裹着自己，心中涌起强烈的支配欲。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.小足 == 1"
 context = "{target.name}小巧玲珑的{feet}在{character.name}的{penis}上缓慢摩擦，尽管节奏生涩，但每次摩擦都能让她纤嫩的脚趾因敏感而微微蜷曲。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.小足 == 1"
 context = "{character.name}握着{target.name}精巧的{feet}包夹自己的{penis}，动作虽然笨拙，但看到对方娇小的脚掌被肉棒撑开的画面让他兴奋不已。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.小足 == 1"
 context = "{target.name}纤细的{feet}轻轻夹住{character.name}的{penis}，虽然她的脚太小无法完全包裹，但这种不完整的触感反而刺激着双方的神经。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.小足 == 1"
 context = "{character.name}看着{target.name}精致的{feet}在{penis}上生涩地滑动，虽然技巧生疏，但征服这双洁白小脚的快感让他感到前所未有的满足。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.小足 == 1"
 context = "娇小的{feet}艰难地夹住{character.name}的{penis}，{target.name}努力配合的样子和她敏感的脚趾不时颤抖的模样让{character.name}心中涌起强烈的占有欲。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.小足 == 1"
 context = "{character.name}引导{target.name}用她玲珑的{feet}包裹{penis}，动作虽然缓慢生涩，但看到她小巧脚掌被肉棒顶着的淫靡画面令人心跳加速。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.小足 == 1"
 context = "{target.name}用精巧的{feet}服侍着{character.name}的{penis}，虽然她的小脚无法熟练地给予刺激，但那种被支配的娇羞表情让{character.name}更加兴奋。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.小足 == 1"
 context = "{character.name}的{penis}在{target.name}娇小的{feet}间缓慢抽动，她光滑细腻的脚心每次触碰都让他感受到征服这双嫩足的满足感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.小足 == 1"
 context = "{target.name}纤嫩的{feet}紧紧夹住{character.name}的{penis}，尽管动作生疏且节奏不稳，但她努力服侍的样子让{character.name}感到强烈的支配快感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.长足 == 1"
 context = "{character.name}生涩地扭动腰部，让{penis}在{target.name}那双修长优雅的{feet}间来回摩擦，虽然节奏不够稳定，但那柔嫩脚心的触感依然让{character.name}沉醉不已。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}纤长的{feet}夹住{character.name}的{penis}上下滑动，{character.name}笨拙地配合着摆腰，看着对方优美的足弓轻轻颤动，一股征服的快感油然而生。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.长足 == 1"
 context = "{character.name}的{penis}被{target.name}那双线条优美的{feet}紧紧包裹着，{character.name}虽腰技生疏却努力地前后摆动，感受着那光滑足心带来的淫靡触感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}修长的{feet}轻柔地摩擦着{character.name}的{penis}，{character.name}动作虽然不够娴熟，但将这双高贵的玉足玩弄于股掌之间的满足感让{character.name}愈发兴奋。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.长足 == 1"
 context = "{character.name}抓住{target.name}纤细的脚踝，让{penis}在那双比例匀称的{feet}间缓慢抽动，生涩的节奏却让这份禁忌的快感更加强烈鲜明。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}那双优雅修长的{feet}被{character.name}紧贴在{penis}两侧，{character.name}笨拙地摆动腰肢，用对方柔嫩的足心持续刺激着敏感的肉棒。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.长足 == 1"
 context = "{character.name}的{penis}在{target.name}那双曲线流畅的{feet}间来回磨蹭，虽然动作生涩，但玷污这双高贵玉足的背德感让{character.name}浑身战栗。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}纤长灵活的{feet}包裹住{character.name}的{penis}缓缓揉搓，{character.name}虽腰技不精却兴奋地挺动着，享受着这双美足带来的独特快感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.长足 == 1"
 context = "{character.name}握住{target.name}那双优美修长的{feet}夹紧{penis}上下滑动，动作虽然青涩，却让{character.name}感受到了与众不同的支配欲望的满足。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3&selected.talents.长足 == 1"
+conditions = "player.abilities.腰技.level <= 3&selected.talents.长足 == 1"
 context = "{target.name}线条优雅的{feet}轻柔地摩挲着{character.name}的{penis}，{character.name}笨拙地配合扭腰，将对方高贵的玉足作为泄欲工具的快感让{character.name}欲罢不能。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.小足 == 1"
 context = "{target.name}的{feet}夹住{character.name}的{penis}，用稳定的节奏有规律地上下套弄着，娇小的脚掌带来精致而细腻的摩擦快感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}被{target.name}玲珑的{feet}轻巧地包夹着，她用流畅的动作上下摩挲，脚趾不时蜷缩着刺激敏感的龟头。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.小足 == 1"
 context = "{target.name}纤巧的{feet}以适中的力道紧贴着{character.name}挺立的{penis}，用平稳的节奏持续研磨着，柔嫩细腻的足心带来阵阵酥麻。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}在{target.name}精致小巧的{feet}间被有规律地揉搓着，她灵活的脚趾熟练地在柱身上下游走，技巧颇为流畅。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.小足 == 1"
 context = "{target.name}把{character.name}的{penis}夹在自己娇嫩的{feet}之间，稳健地前后滑动着，细腻光滑的足弓紧贴着炽热的肉柱不断摩擦。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}被{target.name}柔软的{feet}温柔地包裹着，她以恰到好处的力道和节奏搓揉着，精小的玉足带来难以言喻的舒爽。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.小足 == 1"
 context = "{target.name}用自己袖珍可爱的{feet}夹住{character.name}粗热的{penis}，以流畅的动作持续摩挲着，敏感的足心因快感而微微颤抖。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}在{target.name}娇小的{feet}间被熟练地套弄着，她用两只玲珑玉足交替摩擦，带来持续而稳定的刺激快感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.小足 == 1"
 context = "{target.name}以中规中矩的节奏用{feet}揉搓着{character.name}的{penis}，精巧细嫩的脚掌让肉棒在滑腻的触感中不断胀大跳动着。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6&selected.talents.小足 == 1"
+conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.小足 == 1"
 context = "{character.name}的{penis}被{target.name}小巧敏感的{feet}稳定地夹持摩擦着，她用纤细的脚趾灵巧地拨弄着敏感的龟头，动作平稳而流畅。"
 
 [[entries]]

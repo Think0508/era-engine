@@ -606,123 +606,123 @@ conditions = "premises:t_npc_active_h"
 context = "主动服务的{target.name}用{hands}灵巧地把玩着{penis}，偶尔故意放慢速度逗弄{character.name}，享受着对方难耐的表情。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "被囚禁的{target.name}被迫用{hands}机械地撸动着{penis}，眼神中充满厌恶与屈辱，身体因恐惧而微微发抖。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "戴着镣铐的{target.name}勉强用{hands}套弄着{penis}，脸上写满了痛苦和抗拒，每一个动作都显得极为不情愿。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}在{character.name}的威胁下，被迫用{hands}服务着{penis}，眼泪不断滑落，动作因反抗心理而显得生硬无力。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}满脸怨恨地用{hands}粗暴地撸动着{penis}，身体因囚禁而虚弱，却仍试图通过消极配合表达抵抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "被关在笼子里的{target.name}被迫伸出{hands}套弄{penis}，眼神中充满绝望和仇恨，身体尽可能地远离{character.name}。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}咬着嘴唇，眼含泪水，被强制用{hands}摩擦着{penis}，手腕上的锁链随着不情愿的动作发出刺耳的声响。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}被迫跪在地上，不甘心地用{hands}敷衍地套弄着{penis}，眼中闪烁着无助与反抗的火花。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "监禁中的{target.name}被迫用{hands}服务{penis}，眼神空洞却透露着深深的厌恶，动作僵硬而缓慢。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{target.name}被迫屈服，颤抖的{hands}违背意愿地撸动着{penis}，眼神中满是愤怒与无助，身体因抗拒而绷紧。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "囚禁中的{target.name}强忍着屈辱，用{hands}草草地套弄着{penis}，脸上的表情介于恐惧与愤怒之间，动作显得极不协调。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "长期被囚禁的{target.name}麻木地用{hands}套弄着{penis}，眼神已经失去了最初的抵抗，动作机械而熟练。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}低垂着头，认命般用{hands}撸动着{penis}，脸上的表情已从愤怒变为了无奈的顺从。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "戴着镣铐的{target.name}用{hands}机械地服务着{penis}，眼神空洞，仿佛已经接受了作为性奴的命运。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}不再试图反抗，只是顺从地用{hands}套弄着{penis}，表情平静却带着一丝内心深处的不甘。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "长时间监禁的{target.name}用{hands}有条不紊地撸动着{penis}，动作熟练却缺乏热情，仅仅是在完成任务。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}用{hands}摩擦着{penis}的动作已经变得纯熟，脸上写满了妥协，眼神却偶尔闪过一丝抗拒。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "从初始的抵抗到现在的顺从，{target.name}安静地用{hands}服务着{penis}，表情中的羞辱感已逐渐被麻木取代。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "被驯服的{target.name}不再挣扎，只是沉默地用{hands}揉搓着{penis}，偶尔身体会因内心残存的抵触而轻微颤抖。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{target.name}已经习惯了囚禁的生活，用{hands}熟练地套弄着{penis}，脸上的表情既不抗拒也不享受，只有纯粹的服从。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "失去反抗意志的{target.name}乖顺地用{hands}服务着{penis}，动作虽然熟练，但眼神中依然透露出一丝悲哀。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "完全被调教的{target.name}跪在地上，虔诚地用{hands}服务着主人的{penis}，脸上洋溢着取悦主人的喜悦。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}热切地用{hands}套弄着{penis}，尽管身上带着锁链，眼神中却充满了崇拜与渴望，完全忘记了自己曾经的抵抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "彻底驯服的{target.name}用{hands}卖力地撸动着{penis}，眼中闪烁着痴迷的光芒，嘴里不停地感谢主人的恩赐。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}主动俯身用{hands}熟练地服务着{penis}，即使身上的镣铐发出声响，也掩饰不住她取悦主人的渴望。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}如同训练有素的奴隶，用{hands}狂热地摩擦着{penis}，眼神中充满了对主人的依赖和崇拜。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "完全沦为性奴的{target.name}跪伏在地，热情地用{hands}服务着{penis}，不断请求主人的夸奖和惩罚。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}感恩地望着{character.name}的眼睛，同时用{hands}狂热地套弄着{penis}，脸上写满了对被囚禁生活的满足。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "监禁中的{target.name}已完全崩坏，痴迷地用{hands}撸动着{penis}，眼神迷离，嘴里不断重复着对主人的忠诚。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{target.name}喜悦地接受了自己的奴隶身份，用{hands}极尽所能地取悦着{penis}，渴望得到主人的精液作为奖励。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "彻底臣服的{target.name}虔诚地用{hands}侍奉着{penis}，眼神中充满崇拜，仿佛这是她生命中最重要的使命。"
 
 [[entries]]

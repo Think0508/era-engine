@@ -66,483 +66,483 @@ conditions = "premises:high_1"
 context = "{character.name}轻柔地捏住{target.name}的下巴，控制着对方的动作，{target.name}的眼神中混合着顺从与迷离，口中发出含糊不清的呜咽声。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_0&player.abilities.腰技.level <= 3"
 context = "{character.name}生涩地挺动腰部，将{penis_s}在{target.name}的{mouth_s}内缓慢抽送，尽管技巧不足，但是{target.name}也只能眉头微皱，口中被迫含住{penis_s}。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_0&player.abilities.腰技.level <= 3"
 context = "{character.name}按住{target.name}的头部，笨拙地将{penis_s}在对方{mouth_s}中进出，虽然节奏不稳但小巧的尺寸让{target.name}能够完全吞入，引起内心一阵淫秽的快感。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_0&player.abilities.腰技.level <= 3"
 context = "{character.name}抓着{target.name}的下巴，毫无章法地让{penis_s}在{mouth_s}内戳刺，短小的阴茎让动作显得有些滑稽，却也让{character.name}享受着对{target.name}口腔的完全占有。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_0&player.abilities.腰技.level <= 3"
 context = "{character.name}扶着{target.name}的下巴，粗暴地抽动{penis_s}，技巧虽差但看到{target.name}被迫吞吐的模样，心中涌起一阵征服和蹂躏的快感。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_0&player.abilities.腰技.level <= 3"
 context = "{character.name}手按着{target.name}的后脑，不熟练地将{penis_s}往{mouth_s}深处送，尽管动作生硬但小巧的尺寸使{target.name}不至于太难受，这种支配感令{character.name}兴奋不已。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}轻握{target.name}的下巴，以稳定的节奏让{penis_s}在{mouth_s}内进出，短小的尺寸配合中等技巧，让{target.name}能轻松吞吐的同时体验到被掌控的快感。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手捧着{target.name}的脸颊，有规律地将{penis_s}送入{mouth_s}深处，虽然阴茎不大但娴熟的节奏让每次进入都能触碰到敏感的喉咙入口。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}扶着{target.name}的下颌，以平稳的速度让{penis_s}在{mouth_s}内抽送，小巧的龟头精准地摩擦着口腔上颚，引发{target.name}一阵阵轻微的吞咽反射。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}引导{target.name}的头部，让{penis_s}在{mouth_s}中保持适中的进出频率，短小的阴茎在熟练的技巧下被完全吞入喉咙，带来意想不到的深度快感。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}轻抚{target.name}的头发，以均匀的节奏将{penis_s}插入{mouth_s}，虽然尺寸有限但配合得当的动作让龟头能够恰到好处地抵达喉咙深处。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}以娴熟的腰技控制{penis_s}在{target.name}的{mouth_s}中进出，精确把握着每一次抽送的深度和速度，让短小的阴茎在口腔内部发挥最大的刺激效果。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}手指轻抚{target.name}的脖子，同时以精湛技巧让{penis_s}在{mouth_s}深浅交替，巧妙利用短小尺寸在喉咙入口处快速抖动，引发一连串强烈的吞咽反射。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}轻握{target.name}的头发，腰部动作如行云流水般让{penis_s}在{mouth_s}中快进慢出，尽管阴茎不大但高超的技巧使每一下都精准刺激到口腔敏感点。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}双手轻扶{target.name}的脸颊，以令人叹服的节奏控制{penis_s}在{mouth_s}内的律动，短小的阴茎在完美技巧下变成极致快感的源泉，龟头准确擦过上颚每一处敏感区域。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}微微扬起下巴，以精确的腰部控制让{penis_s}深入{target.name}的{mouth_s}，短小的尺寸配合完美的节奏变化，使得每次抽送都如艺术般优雅而淫靡。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_1&player.abilities.腰技.level <= 3"
 context = "{character.name}抚摸{target.name}的头发，毫无规律地将{penis_s}往{mouth_s}里送，中等尺寸的阴茎让{target.name}不时发出呜咽声，这种生涩却充满掌控的快感让{character.name}更加兴奋。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_1&player.abilities.腰技.level <= 3"
 context = "{character.name}扶住{target.name}的后脑，笨拙地让{penis_s}在{mouth_s}中抽动，虽然技巧不足但适中的尺寸足以撑满对方口腔，带来强烈的视觉刺激和征服感。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_1&player.abilities.腰技.level <= 3"
 context = "{character.name}按着{target.name}的头部，生硬地挺动腰肢使{penis_s}进出{mouth_s}，动作虽然不连贯但中等尺寸的阴茎每次都能让{target.name}的脸颊鼓起，显出被塞满的淫靡模样。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_1&player.abilities.腰技.level <= 3"
 context = "{character.name}粗暴地抓住{target.name}的后脑勺，让{penis_s}在{mouth_s}中毫无章法地抽插，技巧虽然欠佳但{target.name}被迫张大嘴巴承受的样子激发了{character.name}内心最原始的欲望。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_1&player.abilities.腰技.level <= 3"
 context = "{character.name}单手固定{target.name}的下巴，缺乏技巧地将{penis_s}塞进{mouth_s}深处，中等的阴茎尺寸让{target.name}的颈部微微鼓起，这种强制感让{character.name}体验到前所未有的控制快感。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}扶着{target.name}的头部，以稳定的节奏让{penis_s}在{mouth_s}内有规律地进出，适中的尺寸和娴熟的技巧相结合，让每次抽送都带来显著的快感。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}轻按{target.name}的后脑，腰部以平稳频率挺动，让{penis_s}在{mouth_s}中深浅交替，龟头时而擦过上颚，时而触碰喉咙入口，引发一阵阵吞咽反射。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手固定{target.name}的头部，以熟练的动作将{penis_s}送入{mouth_s}深处，适中的尺寸恰好能让龟头抵达喉咙入口，带来强烈而不过分的刺激。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}控制着{target.name}的下颌，让{penis_s}在{mouth_s}中保持均匀的抽送节奏，中等尺寸的阴茎被完全包裹，每次进出都带出晶莹的唾液。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}引导{target.name}的头部前后移动，同时腰部配合着挺动，让{penis_s}在{mouth_s}内形成流畅的抽插节奏，龟头每次都能精准地触碰到敏感区域。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}以精湛的技巧控制{penis_s}在{target.name}的{mouth_s}中律动，腰部动作如同精密仪器般运作，每一次抽送都恰到好处地刺激口腔每个敏感点。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}轻抚{target.name}的脖子，同时以完美的节奏让{penis_s}在{mouth_s}内深浅交替，中等尺寸的阴茎在高超技巧下，龟头精确地擦过上颚的每一处敏感区域。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}手指穿过{target.name}的头发，以令人叹服的腰技将{penis_s}送入{mouth_s}深处，快慢结合的频率变化让{target.name}来不及反应，只能被动承受这极致的口腔刺激。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}双手轻扶{target.name}的脸颊，腰部动作如舞蹈般优雅，让{penis_s}在{mouth_s}中形成完美的进出节奏，每一次都能引发{target.name}无法控制的吞咽反射。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}微调{target.name}头部的角度，同时以精确无比的腰技控制{penis_s}在{mouth_s}内的每一下抽送，中等尺寸配合完美技巧，使龟头每次都能触及最敏感的喉咙入口。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_2&player.abilities.腰技.level <= 3"
 context = "{character.name}用力按住{target.name}的头部，笨拙地将{penis_s}往{mouth_s}内塞，粗大的尺寸使{target.name}的嘴唇被撑到极限，眼角因吃力而泛红，这种征服感让{character.name}更加兴奋。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_2&player.abilities.腰技.level <= 3"
 context = "{character.name}抓着{target.name}的头发，毫无技巧地让{penis_s}在{mouth_s}入口处进出，粗壮的阴茎让{target.name}无法完全吞入，只能勉强含住龟头部分，唾液从嘴角不断溢出。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_2&player.abilities.腰技.level <= 3"
 context = "{character.name}扶着{target.name}的下巴，生硬地尝试将{penis_s}塞进{mouth_s}深处，但过粗的尺寸让{target.name}不时发出呜咽声，这种勉强承受的模样却让{character.name}获得强烈的支配快感。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_2&player.abilities.腰技.level <= 3"
 context = "{character.name}按压{target.name}的后脑，粗暴地让{penis_s}往{mouth_s}里送，虽然技巧欠佳但粗大的阴茎带来的视觉冲击和被紧紧包裹的感觉足以弥补这一点。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_2&player.abilities.腰技.level <= 3"
 context = "{character.name}双手固定{target.name}的头部，缺乏节奏地将{penis_s}往{mouth_s}深处顶，粗壮的肉棒使{target.name}的脸颊被迫鼓起，这种被塞满的视觉享受让{character.name}无比满足。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}扶着{target.name}的头部，以稳定的频率让{penis_s}在{mouth_s}中进出，粗大的尺寸让{target.name}的口腔被完全撑开，唾液随着抽送的动作从嘴角溢出。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}轻按{target.name}的后脑，有节奏地将{penis_s}送入{mouth_s}，让粗壮的龟头在喉咙入口处浅浅戳刺，引发一阵阵吞咽反射和轻微的呕吐感。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}引导{target.name}的头部，控制着让{penis_s}在{mouth_s}中保持平稳的抽送，粗大的阴茎让{target.name}的嘴巴难以完全容纳，但熟练的动作减轻了不适感。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手捧着{target.name}的脸颊，以均匀的节奏让{penis_s}在{mouth_s}内进出，粗壮的柱身被紧紧包裹，每次抽送都伴随着湿润的水声。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}控制着{target.name}的下颌，让{penis_s}保持适中速度在{mouth_s}中抽动，粗大的尺寸和熟练的节奏相结合，让{target.name}的脸庞呈现出被塞满的淫靡表情。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}以精湛的技巧控制{penis_s}在{target.name}的{mouth_s}中进出，精确把握每一次抽送的深度，粗大的阴茎被完美运用，让{target.name}在窒息的边缘体验极致快感。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}手指轻抚{target.name}的脖子，同时以令人叹服的腰技让{penis_s}在{mouth_s}内快进慢出，粗壮的龟头精准地刺激口腔各处敏感点，引发一连串强烈的生理反应。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}轻握{target.name}的头发，腰部动作如行云流水般让{penis_s}在{mouth_s}中形成完美的律动，粗大的尺寸在高超技巧下变成极致快感的源泉。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}双手扶着{target.name}的脸颊，以精确的频率控制{penis_s}在{mouth_s}内的深浅变化，粗壮的阴茎被完美操控，每次都恰到好处地触及喉咙敏感区域。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}微调{target.name}头部的角度，以完美的腰技将{penis_s}送入{mouth_s}深处，巧妙地利用粗大尺寸在喉咙入口处快速抖动，带来难以言喻的强烈刺激。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_3&player.abilities.腰技.level <= 3"
 context = "{character.name}用力按着{target.name}的头部，笨拙地想将{penis_s}塞进{mouth_s}，但惊人的尺寸让{target.name}只能勉强含住龟头，脸色因吃力而涨红，这种视觉冲击让{character.name}无比兴奋。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_3&player.abilities.腰技.level <= 3"
 context = "{character.name}双手固定{target.name}的头部，毫无技巧地让{penis_s}在{mouth_s}入口处磨蹭，巨大的阴茎根本无法完全进入，只能浅浅地插入一小部分，却带来强烈的征服快感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_3&player.abilities.腰技.level <= 3"
 context = "{character.name}抓着{target.name}的脑袋，生硬地尝试将{penis_s}往{mouth_s}深处送，巨大的阴茎让{target.name}的嘴角被撑到极限，眼泪不受控制地流出，这种勉强的模样激发了{character.name}的支配欲。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_3&player.abilities.腰技.level <= 3"
 context = "{character.name}扶着{target.name}的下巴，缺乏节奏地用{penis_s}抽插{mouth_s}入口，巨根的尺寸让深入变得几乎不可能，但这种视觉上的强烈对比让{character.name}获得前所未有的满足感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_3&player.abilities.腰技.level <= 3"
 context = "{character.name}按住{target.name}的后脑，粗暴地让{penis_s}在{mouth_s}浅处进出，虽然技巧生疏但恐怖的尺寸已经足以让{target.name}的脸颊鼓起，呈现出被完全支配的淫靡画面。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}扶着{target.name}的头部，以稳定的节奏让{penis_s}浅浅地进出{mouth_s}，巨大的尺寸让{target.name}无法完全吞入，但有规律的动作减轻了不适感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}轻按{target.name}的后脑，控制着让{penis_s}在{mouth_s}入口处有节奏地抽送，巨根的龟头部分已经足以让{target.name}的口腔被完全撑满。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}引导{target.name}的头部，让{penis_s}保持适中速度在{mouth_s}浅处进出，惊人的尺寸带来的视觉冲击和部分进入的紧致感相结合，产生强烈的性快感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手捧着{target.name}的脸颊，以均匀的频率让{penis_s}在{mouth_s}中浅入深出，巨大的阴茎让{target.name}的脸部肌肉绷紧，唾液不断从嘴角流出。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}控制着{target.name}的下颌，让{penis_s}有规律地在{mouth_s}入口处磨蹭，熟练的技巧弥补了无法完全进入的缺憾，每次浅插都带来独特的快感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}以精湛的技巧控制{penis_s}在{target.name}的{mouth_s}入口处进出，巧妙地利用巨大尺寸的龟头刺激口腔各处敏感区域，带来难以形容的强烈快感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}手指轻抚{target.name}的脖子，同时以令人叹服的腰技让{penis_s}在{mouth_s}浅处快速抽送，巨根虽然无法完全进入但在完美控制下成为极致的快感工具。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}轻握{target.name}的头发，腰部动作如精密仪器般控制{penis_s}在{mouth_s}入口的进出深度，惊人的尺寸在高超技巧下被发挥到极致，每一下都精准刺激。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}双手扶着{target.name}的脸颊，以完美的节奏让{penis_s}浅浅地刺入{mouth_s}，巨大的龟头在精确控制下刚好触及最敏感的区域，引发{target.name}不断的吞咽反射。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}微调{target.name}头部的角度，以精确无比的腰技让{penis_s}在{mouth_s}入口处形成完美的律动，虽然只有部分进入但高超的技巧使每一次接触都如电流般刺激。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_0&player.abilities.腰技.level <= 3"
 context = "{character.name}笨拙地前后晃动着腰部，{penis_s}在{target.name}的{mouth_s}中进出，动作虽然生疏但{target.name}被迫吞吐的模样让{character.name}体验到了前所未有的征服快感。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_0&player.abilities.腰技.level <= 3"
 context = "{character.name}按住{target.name}的头，毫无技巧地将{penis_s}塞进{mouth_s}深处，虽然尺寸短小但看到{target.name}被迫服从的样子，内心的征服欲得到极大满足。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_0&player.abilities.腰技.level <= 3"
 context = "{character.name}抓着{target.name}的后脑勺，毫无节奏地将{penis_s}插入{mouth_s}，虽然动作不连贯但{target.name}的嘴唇包裹着阴茎的视觉刺激让{character.name}兴奋不已。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_0&player.abilities.腰技.level <= 3"
 context = "{character.name}握住{target.name}的下巴，缓慢而笨拙地将{penis_s}在{target.name}的{mouth_s}中抽插，技巧虽差但支配感带来的心理快感弥补了一切。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_0&player.abilities.腰技.level <= 3"
 context = "{character.name}手扶着{target.name}的头部，粗鲁地将{penis_s}往{mouth_s}里送，虽然动作缺乏技巧，却在{target.name}被迫吞吐的画面中获得了强烈的心理满足。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}抚摸着{target.name}的头发，以稳定的节奏让{penis_s}在{mouth_s}中浅入深出，短小的尺寸使{target.name}能轻松吞吐，舌头细致地舔舐着每一处敏感点。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}轻轻按住{target.name}的后脑，有节奏地让{penis_s}在{mouth_s}中抽送，小巧的阴茎被灵活的舌头包裹，带来均匀而持久的刺激。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}扶着{target.name}的脸颊，让{penis_s}在{mouth_s}里进进出出，虽然尺寸不大但流畅的动作和恰当的力度让{target.name}的吮吸更加有效。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手捧着{target.name}的脸，以适中的速度让{penis_s}在{mouth_s}内抽送，技巧虽不精湛但足够连贯，小巧的阴茎完全被温热的口腔包裹。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}引导着{target.name}的头部，让{penis_s}在{mouth_s}中保持平稳的抽插频率，短小的尺寸正好让{target.name}能轻松地用舌尖刺激龟头最敏感的部位。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}以精湛的技巧控制着{penis_s}在{target.name}的{mouth_s}中的每一次律动，短小的尺寸在完美的节奏下被充分利用，引发{target.name}喉咙一阵阵愉悦的收缩。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}手指轻抚{target.name}的脖子，同时以娴熟的腰技让{penis_s}在{mouth_s}内快慢交替，短小的阴茎在高超技巧下精准刺激着每一处敏感点。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}轻握{target.name}的后颈，腰部动作如行云流水般让{penis_s}在{mouth_s}中进出，小巧的尺寸在完美技巧下成为了极致快感的来源。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}以令人叹服的控制力让{penis_s}在{target.name}的{mouth_s}中缓进急出，龟头精确地擦过敏感的上颚，引发{target.name}一阵阵情不自禁的吮吸。"
 
 [[entries]]
-conditions = "premises:jj_0&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_0&player.abilities.腰技.level > 6"
 context = "{character.name}轻抚着{target.name}的发丝，以超凡的技巧让{penis_s}在{mouth_s}中以变化无穷的角度和节奏抽送，每一次动作都让{target.name}的舌头无法抵抗地缠绕上来。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_1&player.abilities.腰技.level <= 3"
 context = "{character.name}笨拙地握住{target.name}的头发，将{penis_s}塞进{mouth_s}深处，虽然技巧生疏但中等尺寸已足以让{target.name}的嘴巴被撑开，喉咙发出吃力的呜咽声。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_1&player.abilities.腰技.level <= 3"
 context = "{character.name}按住{target.name}的肩膀，毫无章法地将{penis_s}往{mouth_s}里送，动作虽然生涩但{target.name}被迫张大嘴巴吞吐的样子让{character.name}感到强烈的征服快感。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_1&player.abilities.腰技.level <= 3"
 context = "{character.name}抓着{target.name}的头部，毫无节奏地让{penis_s}在{mouth_s}中进出，技巧虽差但{target.name}被撑满的嘴唇和通红的脸颊带来极大的视觉刺激。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_1&player.abilities.腰技.level <= 3"
 context = "{character.name}扶着{target.name}的脸，粗鲁地将{penis_s}往{mouth_s}深处顶，虽然动作生疏但{target.name}被中等尺寸的阴茎填满口腔的样子让{character.name}兴奋不已。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_1&player.abilities.腰技.level <= 3"
 context = "{character.name}双手捧着{target.name}的头，毫无技巧地让{penis_s}在{mouth_s}中抽送，虽然动作不连贯但{target.name}吃力吞吐的模样带来强烈的精神满足感。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}以适中的节奏让{penis_s}在{target.name}的{mouth_s}中进出，恰到好处的尺寸使每一次抽送都能带来充实的满足感，{target.name}的舌头不断舔舐着柱身。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}轻按{target.name}的后颈，有规律地让{penis_s}在{mouth_s}内抽送，龟头时而顶到喉咙入口，引发{target.name}一阵阵轻微的吞咽反射。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}扶着{target.name}的头部，让{penis_s}在{mouth_s}中有节奏地抽插，中等的尺寸正好填满口腔，每次抽出都带出一丝暧昧的银丝。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手轻扶{target.name}的脸颊，以稳定的频率让{penis_s}在{mouth_s}中进退，阴茎表面的青筋被柔软的舌头细细描绘，带来持久的刺激。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}轻按{target.name}的头顶，以平稳的节奏让{penis_s}在{mouth_s}中浅进深出，适中的尺寸让每一次抽送都能带来均匀的快感，{target.name}的嘴唇紧紧包裹着柱身。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}以出神入化的技巧控制着{penis_s}在{target.name}的{mouth_s}中的每一次动作，完美的节奏让{target.name}的舌头和喉咙不由自主地配合着吞吐，带来双重的快感。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}手指轻抚{target.name}的脸颊，同时以精湛的腰技让{penis_s}在{mouth_s}内深浅交替，龟头精准地擦过喉咙入口的敏感点，引发一阵阵紧缩。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}以惊人的控制力让{penis_s}在{target.name}的{mouth_s}中进行各种角度的刺激，中等尺寸在高超技巧下变成了完美的快感工具，{target.name}的眼神逐渐迷离。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}轻握{target.name}的发丝，腰部动作如同精密机器般让{penis_s}在{mouth_s}中有规律地律动，每一次抽送都恰到好处地刺激最敏感的区域。"
 
 [[entries]]
-conditions = "premises:jj_1&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_1&player.abilities.腰技.level > 6"
 context = "{character.name}以令人叹服的节奏感让{penis_s}在{target.name}的{mouth_s}中快慢交替，适中的尺寸在完美掌控下被发挥到极致，{target.name}不自觉地吮吸着，沉醉于这种技巧中。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_2&player.abilities.腰技.level <= 3"
 context = "{character.name}粗鲁地将{penis_s}往{target.name}的{mouth_s}里塞，粗大的尺寸让{target.name}的嘴唇被撑到极限，眼角因为吃力而泛红，唾液不受控制地从嘴角溢出。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_2&player.abilities.腰技.level <= 3"
 context = "{character.name}抓着{target.name}的头发，毫无技巧地让{penis_s}在{mouth_s}中进进出出，虽然动作生疏但粗大的尺寸已让{target.name}的脸颊鼓起，喉咙发出难受的呜咽声。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_2&player.abilities.腰技.level <= 3"
 context = "{character.name}按住{target.name}的肩膀，笨拙地将{penis_s}塞进{mouth_s}深处，粗壮的尺寸让{target.name}不得不张大嘴巴，泪水在眼眶中打转。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_2&player.abilities.腰技.level <= 3"
 context = "{character.name}扶着{target.name}的脸，毫无章法地将{penis_s}往{mouth_s}里送，{target.name}的嘴唇被撑得发白，粗大的龟头几乎抵到了喉咙深处。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_2&player.abilities.腰技.level <= 3"
 context = "{character.name}双手固定住{target.name}的头部，生硬地让{penis_s}在{mouth_s}中抽送，粗壮的阴茎让{target.name}的下颚酸痛，但{character.name}只顾着满足自己的欲望。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}以稳定的节奏让{penis_s}在{target.name}的{mouth_s}中进出，粗大的尺寸让{target.name}的嘴唇被完全撑开，每次深入都引发一阵轻微的干呕反射。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}轻按{target.name}的后脑，有节奏地让{penis_s}在{mouth_s}中浅进深出，粗壮的阴茎让{target.name}的脸颊鼓起，唾液顺着下巴流淌。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}扶着{target.name}的头部，让{penis_s}在{mouth_s}中有规律地抽插，粗大的龟头每次都顶到喉咙入口，引发{target.name}一阵阵条件反射的吞咽。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手轻扶{target.name}的脸，以平稳的速度让{penis_s}在{mouth_s}中抽送，粗壮的尺寸让{target.name}的嘴巴酸痛，但有节奏的动作让她逐渐适应。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}控制着抽送的力度，让{penis_s}在{target.name}的{mouth_s}中进进出出，粗大的阴茎让{target.name}只能含住一部分，剩余部分由手辅助套弄着。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}以精湛的技巧控制着{penis_s}在{target.name}的{mouth_s}中的律动，粗大的尺寸在高超技巧下变成了极致快感的源泉，{target.name}的喉咙不自觉地做着吞咽动作。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}手指轻抚{target.name}的脖子，同时以娴熟的腰技让{penis_s}在{mouth_s}内快慢交替，粗壮的龟头精准地刺激着喉咙敏感区域，引发一阵阵紧缩。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}以令人叹服的控制力让{penis_s}在{target.name}的{mouth_s}中进行各种角度的刺激，粗大的阴茎在完美技巧下每一次抽送都带来极致的视觉和身体双重刺激。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}轻握{target.name}的发丝，腰部动作如行云流水般让{penis_s}在{mouth_s}中深浅交替，粗壮的尺寸虽然让{target.name}吃力但精湛的技巧让她逐渐沉醉其中。"
 
 [[entries]]
-conditions = "premises:jj_2&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_2&player.abilities.腰技.level > 6"
 context = "{character.name}以出神入化的节奏感让{penis_s}在{target.name}的{mouth_s}中有规律地进出，粗大的阴茎被完美控制，每次抽送都精准刺激最敏感的区域，引发{target.name}一阵阵急促的呼吸。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_3&player.abilities.腰技.level <= 3"
 context = "{character.name}强硬地将{penis_s}往{target.name}的{mouth_s}里塞，巨大的尺寸让{target.name}只能勉强含住龟头部分，嘴唇被撑到极限，眼泪不受控制地流下。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_3&player.abilities.腰技.level <= 3"
 context = "{character.name}抓着{target.name}的头发，笨拙地试图让{penis_s}进入{mouth_s}深处，但惊人的尺寸让{target.name}无法吞咽，只能用手辅助套弄着剩余部分。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_3&player.abilities.腰技.level <= 3"
 context = "{character.name}按住{target.name}的肩膀，毫无章法地将{penis_s}往{target.name}的{mouth_s}里送，巨大的龟头撑满了整个口腔，让{target.name}的下颚酸痛不已。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_3&player.abilities.腰技.level <= 3"
 context = "{character.name}扶着{target.name}的脸，粗鲁地让{penis_s}在{mouth_s}入口处摩擦，惊人的尺寸让深入变得困难，但视觉上的冲击让{character.name}兴奋不已。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_LE_3&premises:CVP_A1_A|76_LE_3"
+conditions = "premises:jj_3&player.abilities.腰技.level <= 3"
 context = "{character.name}双手固定住{target.name}的头部，生硬地尝试让{penis_s}深入{mouth_s}，但只能进入一小部分，{target.name}的嘴角已经因为过度拉伸而被扯痛。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}以平稳的节奏让{penis_s}在{target.name}的{mouth_s}入口处进出，巨大的尺寸让深入变得困难，但{character.name}还是有节奏地让龟头部分在口腔内浅浅抽送。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}轻按{target.name}的后脑，有规律地让{penis_s}的前端在{mouth_s}中抽送，惊人的粗细让{target.name}的嘴唇被撑到极限，双手还需要配合套弄着露在外面的大部分。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}扶着{target.name}的头部，让{penis_s}在{mouth_s}入口处有节奏地摩擦，龟头偶尔浅浅进入，引发{target.name}一阵阵吃力的吞咽反应。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}双手轻扶{target.name}的脸，以稳定的频率让{penis_s}的顶端在{mouth_s}中进出，巨大的尺寸形成强烈的视觉冲击，{target.name}的下颚因长时间张开而酸痛。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_G_3&premises:CVP_A1_A|76_LE_6&premises:CVP_A1_A|76_LE_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6"
 context = "{character.name}控制着力度和深度，让{penis_s}在{target.name}的{mouth_s}外部和入口处交替摩擦，巨大的龟头偶尔进入口腔，带来强烈的占有感和视觉刺激。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}以精湛的技巧控制着{penis_s}在{target.name}的{mouth_s}入口处的每一次动作，龟头精准地在唇部和口腔浅部来回刺激，带来极致的视觉和身体双重快感。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}手指轻抚{target.name}的脸颊，同时以娴熟的腰技让{penis_s}的前端在{mouth_s}中浅浅进出，巨大的尺寸成为了视觉冲击的完美来源，配合高超技巧更是锦上添花。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}以令人叹服的控制力让{penis_s}在{target.name}的{mouth_s}入口处进行精准刺激，龟头时而浅入时而在唇上摩擦，每一次动作都恰到好处。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}轻握{target.name}的发丝，腰部动作如同精密机器般让{penis_s}的顶端在{mouth_s}中有节奏地律动，巨大的尺寸在高超技巧下反而成为了极致快感的催化剂。"
 
 [[entries]]
-conditions = "premises:jj_3&premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6"
+conditions = "premises:jj_3&player.abilities.腰技.level > 6"
 context = "{character.name}以出神入化的节奏感让{penis_s}在{target.name}的{mouth_s}周围和入口处交替刺激，完美的控制力让这种尺寸的阴茎也能带给{target.name}舒适而强烈的口腔体验。"
 
 [[entries]]
@@ -1026,123 +1026,123 @@ conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_an
 context = "{character.name}和{target.name}躲在障碍物后方，{penis_s}在{target.name}的{mouth_s}中冲刺，外面的人群毫不知情，两人在偷情的刺激中更加兴奋。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}按住{target.name}的下巴强迫她含住{penis_s}，粗暴地在她的{mouth_s}里抽插，无视她痛苦的呜咽和眼中的泪水，享受着她被迫服务的屈辱感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}扣住被囚禁的{target.name}的后脑勺，将{penis_s}深深顶入她的{mouth_s}，强迫她吞咽，欣赏着她被迫吞吐时眼中闪烁的怨恨与无力反抗的屈辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}捏住{target.name}的脸颊强迫她张开嘴，{penis_s}毫不留情地在她的{mouth_s}内进出，每次深入都让她发出痛苦的干呕声，眼睛里充满了怨恨。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}掐住{target.name}的下巴，{penis_s}在她被迫张开的{mouth_s}中肆意进出，享受着她因恐惧而颤抖的舌头无意识带来的刺激，无视她试图后撤的挣扎。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}用铁链拉扯着{target.name}的脖颈，迫使她吞入{penis_s}，在她的{mouth_s}里残忍地抽送，每一次深入都伴随着她痛苦的呜咽和被迫流下的口水。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}将{target.name}的头按在墙上，{penis_s}狠狠地撞击着她的{mouth_s}深处，每次抽插都让她发出窒息般的声音，眼神中充满了无声的抗议和绝望。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}强行将{penis_s}塞入抵抗的{target.name}的{mouth_s}中，粗暴地来回抽动，无视她因呕吐反射而痉挛的喉咙，只顾自己的快感和征服欲。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}压着{target.name}的后脑勺控制节奏，{penis_s}毫不怜惜地在她的{mouth_s}中横冲直撞，她的眼角流下痛苦的泪水，却无法摆脱这种被强迫的耻辱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}扣住{target.name}的后颈，强硬地将{penis_s}送入她紧闭的{mouth_s}，享受着她因抵抗而颤抖的嘴唇被迫包裹住茎身时的屈服感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}用力掰开{target.name}的嘴，{penis_s}蛮横地插入她的{mouth_s}深处，当她因窒息感而挣扎时，{character.name}反而更加兴奋地加快了抽送的频率。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}轻推{target.name}的头部，{penis_s}缓慢地在她的{mouth_s}中进出，她麻木地配合着，眼神空洞，已经对这种日常的服务感到习以为常。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}扶着{target.name}的后脑，{penis_s}在她的{mouth_s}里有节奏地抽送，她顺从地吞吐着，偶尔因喉咙不适而皱眉，但不再有明显的反抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}抚摸着{target.name}的头发，{penis_s}深入她的{mouth_s}，她已经学会了如何在不引起自己不适的情况下接纳，眼中流露出一种认命的顺从。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}握住{target.name}的下颌，引导{penis_s}在她的{mouth_s}中浅浅抽动，她不再抗拒，而是以一种机械的方式配合着动作，内心的抵触已被日复一日的监禁消磨殆尽。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}轻轻拉扯{target.name}的头发控制节奏，{penis_s}在她的{mouth_s}中缓缓抽送，她顺从地调整呼吸配合着，已经适应了这种被支配的日常。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}扶着墙壁，将{penis_s}插入{target.name}的{mouth_s}，她顺从地含住，虽然不情愿但也不再表现出明显抗拒，只是机械地完成着她被期待的服务。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}捧着{target.name}的脸，{penis_s}在她的{mouth_s}内慢慢抽动，她木然地接受着，内心的挣扎已经被长期的服从训练所淡化。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}轻按{target.name}的后脑，{penis_s}在她的{mouth_s}中来回滑动，她闭着眼配合着，脸上的表情既不是痛苦也不是享受，只是一种对现实的妥协。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}轻拍{target.name}的脸颊，示意她继续吞吐{penis_s}，她无声地服从，早已接受了自己作为囚徒的身份和随之而来的义务。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}抓住{target.name}的肩膀稳定自己，{penis_s}在她的{mouth_s}中缓慢抽送，她习惯性地调整角度减轻不适，眼神中流露出一丝麻木与顺从。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}轻抚{target.name}的头发，{penis_s}在她的{mouth_s}中轻柔抽动，而她热情地回应着，眼中充满对主人的崇拜与渴望取悦的欲望。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}抓住{target.name}项圈上的链子，{penis_s}深入她的{mouth_s}，她欣喜地接纳着，甚至主动用舌头舔舐茎身，感谢主人赐予的恩惠。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}轻轻拉扯{target.name}的发丝，{penis_s}在她的{mouth_s}中进出，她热烈地吮吸着，眼神中流露出对主人的无限依恋和希望被更粗暴对待的渴望。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}捧着{target.name}的脸，{penis_s}在她的{mouth_s}里缓缓抽送，她陶醉地闭上眼享受这个过程，喉咙深处发出满足的呜咽声。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}轻按{target.name}的后脑，{penis_s}在她的{mouth_s}内快速抽动，她贪婪地吞咽着，不时发出愉悦的呻吟，彷佛品尝着世间最美味的食物。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}拽着{target.name}的项圈，{penis_s}深深插入她的{mouth_s}，她忘情地舔弄着，对这种被控制的感觉上瘾，眼中闪烁着病态的快乐。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}抚摸着{target.name}的脸颊，{penis_s}在她的{mouth_s}中抽送，她如饥似渴地服务着，内心感激主人给予她存在的意义。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}握住{target.name}的下巴，{penis_s}在她的{mouth_s}中狂热抽动，她亢奋地配合着，眼神中充满了对主人的狂热崇拜和被占有的满足感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}玩弄着{target.name}的头发，{penis_s}在她的{mouth_s}中缓慢进出，她虔诚地服侍着每一寸肌肤，仿佛这是她生命中最神圣的仪式。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}掐住{target.name}的下颌，强制她吞下{penis_s}，而她欣然接受这种粗暴对待，双眼中闪烁着渴望被蹂躏的变态快感。"
 
 [[entries]]
@@ -6346,563 +6346,563 @@ conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FA
 context = "{character.name}托起萝莉小巧的下巴，将{penis}缓缓送入她稚嫩的{mouth}深处，肉棒在温热的口腔里来回抽动，每一次都顶得萝莉发出呜咽。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.talents.幼女 == 1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.talents.幼女 == 1"
 context = "{character.name}粗暴地握住小小的脑袋，将{penis}塞入幼女稚嫩的{mouth}中反复抽送，由于尺寸差异巨大，幼小的嘴只能勉强含住龟头部分。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.talents.幼女 == 1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.talents.幼女 == 1"
 context = "{character.name}毫不怜惜地挺动腰肢，{penis}在幼女窄小的{mouth}内来回摩擦，被撑到极限的小嘴无法闭合，嘴角不断溢出透明的唾液。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.talents.幼女 == 1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.talents.幼女 == 1"
 context = "{character.name}按住幼女的后脑勺，让{penis}在她柔软的{mouth}中浅浅进出，饶是浅尝辄止也让小小的嘴被塞得满满当当。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.talents.幼女 == 1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.talents.幼女 == 1"
 context = "{character.name}俯视着被监禁的幼女，腰部有节奏地摆动，让{penis}在她稚嫩的{mouth}内反复摩擦，龟头时不时顶到柔嫩的上颚。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.talents.幼女 == 1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.talents.幼女 == 1"
 context = "{character.name}捏着幼女的下巴强迫她张大嘴，将{penis}送入那窄小的{mouth}有规律地抽动，由于口腔太小只有前端能够进入。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.talents.幼女 == 1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.talents.幼女 == 1"
 context = "{character.name}按住小小的头颅前后摆动，让{penis}在幼女温热的{mouth}中有规律地抽插，极限张开的小嘴已经完全无法合拢。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.talents.幼女 == 1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.talents.幼女 == 1"
 context = "{character.name}握着幼女圆润的双颊，强行将{penis}塞入她稚嫩的{mouth}中来回抽动，脸颊被巨大的龟头顶得鼓起。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.talents.幼女 == 1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.talents.幼女 == 1"
 context = "{character.name}按着幼女柔软的后颈，腰部用力将{penis}往她湿润的{mouth}深处顶送，小小的喉咙发出呜咽般的声响。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.talents.幼女 == 1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.talents.幼女 == 1"
 context = "{character.name}扶着被囚禁的幼女的脑袋左右摇晃，让{penis}在她紧窄的{mouth}中搅动，过大的尺寸让小嘴完全裹不住肉棒。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.talents.幼女 == 1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.talents.幼女 == 1"
 context = "{character.name}挺腰将{penis}挤入幼女狭小的{mouth}中抽送，因为尺寸差异巨大，小小的嘴唇被撑成一个圆圈紧紧包裹着龟头。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}扶住少女宠物的后脑勺，将{penis}缓缓送入她年轻的{mouth}深处，手指穿过她柔顺的发丝，控制着抽送的节奏和深度。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}托起少女宠物的下巴，让{penis}在她温软的{mouth}中来回抽动，拇指轻抚着她被撑开的嘴角，感受唇瓣紧紧裹住的触感。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}双手捧住宠物少女的脸颊，将{penis}一寸寸推入她的{mouth}，用身体的律动带动她的头部前后摇摆，唾液从她嘴角淌落。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}轻按住少女宠物的兽耳，腰胯挺动着将{penis}送入她柔嫩的{mouth}内，龟头顶到喉咙入口时稍作停留，感受喉头的收缩。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}握住宠物少女的后颈，引导她吞吐着{penis}，在她的{mouth}中进进出出，肉棒碾过舌面时带出黏腻的水声。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}粗暴地攥住奴隶少女的头发，将{penis}狠狠插入她的{mouth}，不顾她的呜咽声大幅度抽送，把她的嘴当作泄欲的肉穴使用。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}按住奴隶少女的后脑，{penis}在她的{mouth}中粗暴地进出，顶到深喉让她干呕，却不给她喘息的机会继续挺腰抽插。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}双手钳住少女奴隶的头部固定不动，腰胯快速抽动着将{penis}捅入她的{mouth}深处，把她当成一个没有意识的肉便器使用。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}扣住奴隶少女的下颌使她无法合拢嘴巴，{penis}在她被撑满的{mouth}中长驱直入，每次抽出都带出大量的涎液和前液混合物。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.処女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}拽着少女奴隶的兽耳让她仰起头，将{penis}从上方插入她张开的{mouth}中，以俯冲的角度不断撞击她的喉咙，发出肉体碰撞的淫靡声响。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}握住宠物{target.name}的后脑，缓缓将{penis}送入她温顺张开的{mouth}中，成熟的女人努力配合着主人的抽送节奏，时不时仰起眼睛看向自己的主人。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}按住{target.name}的头部，将{penis}在她顺从的{mouth}中缓慢进出，大姐姐略显青涩地调整着嘴唇的吮吸力度，唾液沿着嘴角淌落。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}掐着{target.name}的下巴，让{penis}在她乖顺的{mouth}内规律地抽动，成熟又依赖的眼神始终仰望着主人，喉咙深处传来讨好的呜咽。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}双手扶住宠物{target.name}的脸颊，将{penis}压入她温驯的{mouth}深处，大姐姐的嘴唇紧紧包裹着柱身，发出渴望被使用的呜咽。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}托起{target.name}的下巴，让{penis}在她服从的{mouth}中反复冲刺，成熟的面容显出被主人使用时的喜悦，口腔肌肉努力服务着主人。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}抓住奴隶{target.name}的头发，将{penis}粗暴地在她虔诚张开的{mouth}中进出，成熟的大姐姐眼中满是对主人的崇拜与狂信。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}把{penis}深深顶入臣服的{target.name}的{mouth}中，奴隶的喉咙不断舔舐吞咽着龟头，成熟的身体颤抖着表达对主人绝对的忠诚。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}随意地将{penis}在{target.name}的{mouth}内肆意抽插，完全沦陷的大姐姐努力用舌头配合着服务主人，嘴角溢出的涎水滴落到胸口。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}压着奴隶{target.name}的后脑，让{penis}在她恭顺的{mouth}中反复冲撞，成熟女性的面庞因极度的顺从而绯红，喉间发出呜咽。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.成人 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}将{penis}完全推入{target.name}的{mouth}深处，已成为奴隶的大姐姐喉间发出虔诚的呜咽，舌头不停舔舐着柱身以表达忠诚。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}按住成熟宠物的后脑，腰部以有力的节奏顶入，让{penis}在{target.name}的{mouth}中深入浅出，控制着她丰腴嘴唇的吞吐频率。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}掌控着自己的宠物，将{penis}缓缓推入{target.name}柔软的双唇之间，进入{mouth}深处有规律地抽送，享受着成熟雌性的侍奉。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}扶着忠诚宠物的头颅，规律地摆动腰身让{penis}在{target.name}温热的{mouth}内抽插，将她成熟丰腴的嘴当作泄欲的容器使用。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}抓住宠物柔软的发丝，缓慢而坚定地将{penis}塞满{target.name}成熟的{mouth}，一下下地顶入她肉感丰腴的喉咙深处。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}摆动着腰肢操控服帖的宠物，让{penis}在{target.name}的{mouth}内有规律地进出，手指摩挲着她成熟女人特有的肉感脸颊。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}随心所欲地操控着臣服的奴隶，将{penis}粗暴地捅入{target.name}的{mouth}深处，用她成熟丰腴的喉咙满足自己的欲望。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}握住奴隶的下颔，让{penis}在{target.name}丰润的{mouth}中快速抽送，将这具成熟的肉体当作专属的泄欲道具肆意使用。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}按住奴隶的头颅，以主人的姿态将{penis}深入{target.name}的{mouth}中反复侵入，享受着成熟女奴咽喉的紧致包裹。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}用力抓着奴隶的头发，让{penis}在{target.name}成熟柔软的{mouth}中大幅度地顶弄，强迫她吞下整根粗硬的性器。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}掌控着彻底臣服的奴隶，将{penis}塞入{target.name}丰腴的{mouth}内猛烈抽插，毫无顾忌地使用她成熟的身体泄欲。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扣住被囚禁的人妻{target.name}的后脑勺，粗暴地驱动腰部让{penis}在她的{mouth}深处猛烈抽插，唾液从嘴角不断溢出。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}双手固定住监牢里这位人妻奴隶的头部，有节奏地挺动胯部让{penis}在{mouth}内进出，龟头摩擦着她的上颚。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}攥紧被监禁人妻{target.name}的头发，大幅度前后摆动腰肢让{penis}在她的{mouth}中深入浅出，每次都顶到喉咙入口。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}用力按住沦为奴隶的人妻的脑袋，肆意地将{penis}送入她的{mouth}最深处，囊袋拍打着她的下巴发出啪啪声响。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}掌控着跪在监牢地面上的人妻{target.name}的后脑，以稳定的频率让{penis}在她张开的{mouth}中来回抽送，涎水沾满她的嘴角和下颌。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扶住已沦为宠物的人妻的下颚，缓慢而深入地将{penis}塞进她的{mouth}，龟头抵住喉咙使她产生轻微的呕吐反射。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}捏住被囚禁人妻{target.name}的脸颊，加快腰部的律动频率让{penis}在她的{mouth}内高速进出，唾液被搅打成泡沫溢出嘴角。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}按压住这位奴化人妻的头顶，肆无忌惮地驱使{penis}贯穿她的{mouth}，龟头反复碾磨着柔软的舌根和喉咙口。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}牢牢扣住监牢中跪伏的人妻{target.name}的后颈，大开大合地抽动胯部让{penis}在她的{mouth}里深深抽插，粗硬的柱身撑开她的双唇。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.人妻 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}握住沦为性奴隶的人妻两侧耳朵，以凶猛的节奏摆动腰身让{penis}在她的{mouth}中激烈冲刺，大量唾液顺着嘴角流淌到胸口。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}握住被囚女儿的后脑勺，将{penis}缓缓送入她的{mouth}中，手指轻轻抚摸着她柔软的发丝，宛如在奖励自己忠诚的小宠物。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扶住监牢中女儿的脸颊，将{penis}在她的{mouth}里有规律地进出，手掌摩挲着她温热的面庞，享受她驯服后的乖巧。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}抓住女儿奴隶的头发，将{penis}抽送进她温热的{mouth}深处，腰部有力地前后摆动，将龟头顶到她的喉咙入口。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}双手捧住监禁中女儿的下巴，让{penis}在她的{mouth}内缓慢而深入地抽插，拇指擦拭着她嘴角溢出的涎水。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}按住已沦为性奴的女儿后脑，{penis}在她柔软的{mouth}中大幅度抽送，每次前冲都让龟头撞击着她的软腭深处。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}将手掌轻拍被囚女儿的脸蛋，{penis}在她的{mouth}里慢进快出，嘴角微微上扬享受着女儿彻底沦为肉便器后的服侍。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}托起跪在监牢地板上女儿的下颚，让{penis}在她的{mouth}中旋转研磨，龟头缓慢地刺激着她口腔内壁的每一处敏感。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}揉捏着沦为宠物的女儿耳朵，同时悠然将{penis}抽送入她的{mouth}，控制着进出的节奏，如同主人在调教自己的玩物。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}掐住被监禁女儿的脸颊使其嘴巴张到最大，让{penis}畅通无阻地在她的{mouth}里快速抽插，唾液从她嘴角大量溢出。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "premises:target_is_player_daughter&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扣住已是奴隶的女儿后脑勺往自己胯下按压，{penis}深深埋入她的{mouth}，龟头顶入喉咙口后缓缓磨蹭再抽出。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}握着{target.name}娇小的下巴，将{penis}强势地在{mouth}中抽送，萝莉的脸颊被撑得微微鼓起，虽然有些粗暴但{target.name}只能勉强忍受着上司的动作。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}按住{target.name}的后脑勺，不顾萝莉的挣扎将{penis}送入{mouth}深处，强硬地来回抽插，小巧的嘴巴被撑到极限却无力反抗。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}扶着{target.name}稚嫩的脸庞，有节奏地将{penis}在{mouth}中进出，萝莉的喉咙不时发出呜咽声，泪水从眼角滑落却只能被迫承受。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}捏住{target.name}的下颌，无视萝莉脸上的勉强表情，将{penis}粗暴地在{mouth}中来回冲撞，唾液不断从撑大的嘴角溢出。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}拽着{target.name}的头发，让{penis}在萝莉狭窄的{mouth}中快速进出，稚嫩的嘴唇被摩擦得发红，却只能含着泪水继续服从命令。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}轻抚着{target.name}的发顶，将{penis}有规律地在{mouth}中缓缓抽送，萝莉顺从地张大嘴巴配合着上司的动作，尽管动作生涩却努力完成任务。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}抚摸着{target.name}稚嫩的脸颊，将{penis}慢慢送入{mouth}中再退出，萝莉虽然有些吃力但依然信任地接受，小巧的舌头努力地配合着舔舐。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}轻扶{target.name}的后脑勺，让{penis}在萝莉狭窄的{mouth}中浅浅进出，小巧的嘴巴被撑满却毫无怨言，眼中满是对上司的信赖与顺从。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}温柔地捧着{target.name}的小脸，将{penis}在{mouth}中有节奏地抽送，萝莉努力张大嘴巴承受，即使嘴角溢出唾液也坚持配合着每一下动作。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.少女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}一手托着{target.name}的下巴，让{penis}在萝莉稚嫩的{mouth}中来回摩擦，小巧的口腔被完全占据却老实地含着，以专注的态度执行着上司的命令。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}按住少女的后脑勺，将{penis}强硬地捅进她的{mouth}深处，在狭窄的牢房里肆意抽送顶弄，唾液顺着嘴角淌落。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}粗暴地扯住囚笼中少女的头发，掌控着她的脑袋前后摆动，让{penis}在{mouth}里快速抽插，龟头不断撞向柔软的喉咙口。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}双手钳住少女的下颌，将{penis}塞满她的{mouth}后大幅度挺腰，每一下都深顶到咽喉，粗暴的动作让她的脸颊被撑得鼓起。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}按着被囚禁少女的肩膀，腰胯有力地前后摆动，{penis}在{mouth}中大开大合地进出，混合着唾液的淫靡水声回荡在狭小的牢房里。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}把跪在牢房地板上的少女脑袋固定住，{penis}在她的{mouth}中蛮横地来回穿刺，龟头碾过舌面反复摩擦着娇嫩的口腔内壁。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}强硬地挺动胯部，{penis}在少女的{mouth}中快进快出，凶狠的抽送让她的嘴唇被撑成淫荡的圆形，涎液沿着下巴滴落到锁骨上。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}扣紧少女的后颈把她的脸按向胯间，{penis}深深地捣入{mouth}的最深处，龟头顶住喉咙入口后还在用力往里戳刺。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}掐住少女的两颊迫使她张大嘴巴，{penis}毫无怜惜地在{mouth}中猛烈冲撞，粗蛮的抽插动作让她的舌头被压得无法动弹。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}一手摁住囚禁中少女的额头，一手托着她的下巴，将{penis}塞入{mouth}后有节奏地抽送，每次都顶到上颚再缓缓拔出。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.処女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}揪着少女的头发控制抽插的频率，{penis}在{mouth}中浅出深入，龟头反复碾磨着柔嫩的口腔黏膜，淫靡的黏液声不断传出。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}扶住被囚禁的大姐姐的头部，不紧不慢地将{penis}送入她的{mouth}中，抽送的动作带着上位者的从容。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}握住牢笼中成熟女性的下巴，{penis}有节奏地在{mouth}内深浅交替地律动，动作沉稳而富有掌控力。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}按住囚犯的后脑勺，缓慢但强势地将{penis}推入她温热的{mouth}深处，龟头抵住喉咙口又缓缓抽回。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}抚摸着被关押的大姐姐柔软的头发，腰部平稳地前后摆动，让{penis}在她顺从张开的{mouth}内有规律地进出。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}的双手固定住牢中女人的脸颊，{penis}在她麻木张开的{mouth}里稳定地抽插，唾液顺着嘴角滴落。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}扣住监禁中成熟女性的下颌，让{penis}沿着她滑腻的舌面滑入{mouth}，快慢有致地摩擦着敏感的口腔内壁。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}托着被囚禁的大姐姐的后颈，{penis}以稳定的频率在她的{mouth}内深深浅浅地抽送，柱身蹭过柔软的舌根。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}用拇指按开囚犯丰润的嘴唇，将{penis}塞入她的{mouth}后开始有力地前后挺腰，动作果断而不留余地。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}抬起被关押的成熟女性的下巴，{penis}在她配合打开的{mouth}中做着柔缓又深入的顶弄，龟头碾压着上颚。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.talents.成人 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}掐住监牢中大姐姐的两颊，强迫她维持嘴部张开的姿势，{penis}在她湿热的{mouth}内缓慢而强势地抽送。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}握住{target.name}成熟的后脑勺，强势地将{penis}推入她的{mouth}深处，使她丰润的嘴唇紧紧贴住根部。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}一手按住{target.name}丰腴的肩头，腰部用力挺动，{penis}在她{mouth}中快速抽插，带出大量黏稠的唾液。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}双手扣紧{target.name}的头部，不容抗拒地将{penis}送入{mouth}最深处，撑得她成熟的双颊鼓起。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}抬起{target.name}的下巴，居高临下地挺腰，将{penis}塞满她饱满的{mouth}，迫使她丰润的嘴唇被撑开。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-1"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-1"
 context = "{character.name}按住{target.name}成熟饱满的脸颊，粗暴地来回挺动，{penis}不断冲击她{mouth}的深处，带起淫靡的啧啧水声。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}轻抚{target.name}成熟的面庞，舒缓地让{penis}在她的{mouth}中有节奏地进出，带出细密湿润的水渍。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}一手扶着{target.name}丰腴的下巴，以稳定的节奏将{penis}送入她的{mouth}，龟头抵在喉咙入口处。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}双手轻托{target.name}的头部，{penis}在她张开的{mouth}中缓缓抽送，唾液沿着成熟的嘴角淌下。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}有条不紊地挺动腰肢，将{penis}送入{target.name}的{mouth}深处，使她成熟的喉咙微微起伏吞咽。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:CVP_A2_G_E_-2"
+conditions = "selected.talents.淑女 == 1&premises:FALL_LEVEL_E_-2"
 context = "{character.name}抚摸着{target.name}成熟的长发，有规律地将{penis}在她的{mouth}中进出，丰润的双唇紧贴住柱身。"
 
 [[entries]]
-conditions = "premises:CVP_A2_G_E_-1&selected.talents.人妻 == 1"
+conditions = "premises:FALL_LEVEL_E_-1&selected.talents.人妻 == 1"
 context = "{character.name}粗暴地掐住人妻{target.name}的下巴，强迫她张开{mouth}，{penis}毫不留情地在她口腔深处来回抽送，唾液从嘴角溢出顺着下巴滴落。"
 
 [[entries]]
-conditions = "premises:CVP_A2_G_E_-1&selected.talents.人妻 == 1"
+conditions = "premises:FALL_LEVEL_E_-1&selected.talents.人妻 == 1"
 context = "{character.name}双手按住已婚{target.name}的后脑，将{penis}顶入{mouth}最深处，龟头反复碾压着她的喉咙入口，激起阵阵干呕反射，泪水滑落她的脸颊。"
 
 [[entries]]
-conditions = "premises:CVP_A2_G_E_-1&selected.talents.人妻 == 1"
+conditions = "premises:FALL_LEVEL_E_-1&selected.talents.人妻 == 1"
 context = "{character.name}握住人妻{target.name}的头发，将她的脸庞来回拉动，让{penis}在她的{mouth}里快速进出，每一次深入都让她娇躯微微颤动。"
 
 [[entries]]
-conditions = "premises:CVP_A2_G_E_-1&selected.talents.人妻 == 1"
+conditions = "premises:FALL_LEVEL_E_-1&selected.talents.人妻 == 1"
 context = "{character.name}扣住{target.name}有夫之身的后颈，挺动腰部将{penis}送入她温热的{mouth}，一边抽插一边用拇指抹去她眼角的泪痕。"
 
 [[entries]]
-conditions = "premises:CVP_A2_G_E_-1&selected.talents.人妻 == 1"
+conditions = "premises:FALL_LEVEL_E_-1&selected.talents.人妻 == 1"
 context = "{character.name}把着人妻{target.name}的双颊，将{penis}缓缓推入她被迫张开的{mouth}中，肉棒在口腔内有节奏地捣弄，她的嘴唇被撑成淫靡的圆环。"
 
 [[entries]]
-conditions = "premises:CVP_A2_G_E_-2&selected.talents.人妻 == 1"
+conditions = "premises:FALL_LEVEL_E_-2&selected.talents.人妻 == 1"
 context = "{character.name}抚摸着已婚{target.name}的面颊，稳定地挺动腰肢让{penis}在她服从的{mouth}中抽送，龟头反复蹭过她柔软的舌面，唾液将肉棒浸润得水光潋滟。"
 
 [[entries]]
-conditions = "premises:CVP_A2_G_E_-2&selected.talents.人妻 == 1"
+conditions = "premises:FALL_LEVEL_E_-2&selected.talents.人妻 == 1"
 context = "{character.name}将手指插入人妻{target.name}的发间，以流畅的动作控制着{penis}在她{mouth}中的节奏，每一次深入都让她的喉结轻轻滑动，腮帮因吮吸而凹陷。"
 
 [[entries]]
-conditions = "premises:CVP_A2_G_E_-2&selected.talents.人妻 == 1"
+conditions = "premises:FALL_LEVEL_E_-2&selected.talents.人妻 == 1"
 context = "{character.name}托起驯服的人妻{target.name}的下颌，让{penis}在她湿润的{mouth}内快进慢出，柱身摩擦着她柔嫩的口腔内壁，唇舌间发出淫靡的水声。"
 
 [[entries]]
-conditions = "premises:CVP_A2_G_E_-2&selected.talents.人妻 == 1"
+conditions = "premises:FALL_LEVEL_E_-2&selected.talents.人妻 == 1"
 context = "{character.name}扶住已婚{target.name}的后脑勺，有规律地摆动胯部让{penis}在她顺从的{mouth}中进出，龟头时而顶到上颚时而滑入喉口，搅动出滋滋的淫水声。"
 
 [[entries]]
-conditions = "premises:CVP_A2_G_E_-2&selected.talents.人妻 == 1"
+conditions = "premises:FALL_LEVEL_E_-2&selected.talents.人妻 == 1"
 context = "{character.name}轻拍人妻{target.name}的脸蛋以示满意，同时挺腰将{penis}送入她配合张开的{mouth}深处，肉棒在口腔中搅弄，她的舌尖殷勤地缠绕着敏感的冠状沟。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "{character.name}双手紧按住女儿{target.name}的头部，粗暴地摆动腰胯，让{penis}在{mouth}中来回抽送，唾液从嘴角不断流淌而下。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "{character.name}揪紧女儿的头发将她往下压，用力挺腰把{penis}送入{mouth}最深处，龟头几乎顶到喉咙壁。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "{character.name}掐住女儿{target.name}的下巴强迫她张大嘴巴，{penis}在{mouth}中粗暴地抽插，每次都狠狠戳刺着喉咙入口。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "{character.name}按着女儿的头顶不许她往后退缩，大力摆动腰部，让{penis}在{mouth}中快速进出，水声淫靡下流。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-1"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-1"
 context = "{character.name}抓住女儿{target.name}的两边耳朵当把手，强行控制她头部的节奏，{penis}在{mouth}中狠狠抽送捅弄。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "{character.name}轻抚着女儿{target.name}的头发，温柔但坚定地前后摆动腰肢，{penis}在{mouth}中有节奏地律动，每次抽出都带着晶亮的唾液丝。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "{character.name}托着女儿的下巴抬起她的脸，让{penis}缓缓在{mouth}中进出，龟头时而浅尝时而深入到底。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "{character.name}双手捧着女儿{target.name}的脸颊，拇指轻抚她的嘴角，有节奏地摆腰让{penis}在{mouth}中抽插。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "{character.name}扶着女儿的后脑勺引导她配合的节奏，腰胯前后律动，{penis}在{mouth}中深浅交替地抽送。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:CVP_A2_G_E_-2"
+conditions = "premises:target_is_player_daughter&premises:FALL_LEVEL_E_-2"
 context = "{character.name}抚摸着女儿{target.name}的头顶，稳定地摆动腰肢，让{penis}在{mouth}中持续进出，龟头每次都顶到柔软的喉头处。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}扶住幼小宠物的脑袋，温柔地挺动腰部，让{penis}在{target.name}娇小的{mouth}内浅浅进出，小小的嘴巴被撑得满满当当，稚嫩的脸颊微微鼓起。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}抚摸着小宠物细软的发丝，控制着力道让{penis}在{target.name}稚嫩的{mouth}中有节奏地抽送，幼女的小嘴被成人的性器撑得紧绑绑的，唾液不断从嘴角溢出。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}轻握住宠物{target.name}稚嫩的下巴，腰部轻缓地前后挺动，将{penis}送入{mouth}深处，龟头抵在小小的喉咙入口，幼小的身体微微颤抖。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}托着幼小宠物的后脑勺，让{penis}在{target.name}狭窄的{mouth}内前后律动，稚嫩的嘴唇被紧紧撑开，小巧的舌头被迫贴在粗壮的肉棒下方。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-3"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-3"
 context = "{character.name}俯视着跪在身前的小宠物，稳定地挺腰将{penis}送入{target.name}小巧的{mouth}，幼女的口腔实在太过狭小，只能勉强含住龟头和一小截茎身。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}捏住幼奴稚嫩的脸颊，强势地将{penis}送入{target.name}小小的{mouth}，幼小的嘴巴被撑到极限，大量唾液沿着嘴角不断滴落。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}扣住幼奴的后脑，让{penis}在{target.name}狭窄的{mouth}中深深浅浅地律动，成人的尺寸让小小的喉咙微微鼓起，稚嫩的脖颈线条清晰可见。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}按住臣服幼奴的后脑勺，控制着{penis}在{target.name}小巧的{mouth}内进出的幅度，稚嫩的小舌被迫缠绕着粗大的性器，口水糊满了整根肉棒。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}掐住小奴隶柔嫩的下颌，支配性地将{penis}塞满{target.name}幼小的{mouth}，粗壮的龟头抵在狭窄的喉口，让幼女的小脸被撑得微微变形。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:CVP_A2_G_E_-4"
+conditions = "selected.talents.幼女 == 1&premises:FALL_LEVEL_E_-4"
 context = "{character.name}掌控着幼奴的头部，有规律地将{penis}在{target.name}稚嫩的{mouth}中缓缓律动，小小的嘴唇紧紧包裹着粗大的肉茎，因尺寸差距而被撑得通红。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扶着{target.name}娇小的脑袋，将{penis}缓缓送入她的{mouth}，龟头抵着她稚嫩的舌尖，唾液顺着嘴角不断滴落到监牢的地面上。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}掐住{target.name}的下巴强迫她张大嘴巴，{penis}在她的{mouth}中抽送着，粗硬的肉棒撑开她尚未发育完全的口腔内壁。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}按住{target.name}的后脑勺往前顶胯，{penis}捅进她的{mouth}深处，龟头撞击着喉咙口，让她发出呜咽的干呕声。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}揪着{target.name}的头发用力挺腰，{penis}在她小巧的{mouth}里凶猛进出，每次抽插都让她的脸颊鼓起明显的肉棒形状。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}捏着{target.name}稚嫩的双颊来回摆动腰肢，{penis}在她的{mouth}中肆意抽送，透明的涎水混着腥液从她的唇瓣边缘溢出。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}掰开{target.name}的嘴唇将{penis}塞进她的{mouth}，大力挺动的肉棒将她的舌头压在口腔底部，她只能发出含糊的呜呜声。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}托住{target.name}的下颌让她仰起小脸，{penis}顺着角度直插入她的{mouth}，粗壮的柱身撑开她柔嫩的口腔，唾液混着前液淌落她的下巴。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扣住{target.name}的后颈向前挺身，{penis}撑满她稚嫩的{mouth}，龟头在喉口处研磨摩擦，她的喉结随着抽插频率不断颤动。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}双手捧着{target.name}的脑袋当作肉便器使用，{penis}在她的{mouth}中快速捅刺，每一下都顶得她的小脸上下晃动。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.talents.少女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}卡住{target.name}的下巴猛烈抽动腰部，{penis}在她被迫张开的{mouth}里剧烈进出，黏腻的水声在监牢中回荡。"
 
 [[entries]]
@@ -9386,43 +9386,43 @@ conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.leve
 context = "藏于暗处的{character.name}小幅度地前后耸动，{penis}在{target.name}柔滑的{mouth}中徐徐吞吐，每一次抵达喉口时他都会稍作停顿，细细体味那紧致的包裹感。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "player.abilities.腰技.level > 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "藏在桌下的{character.name}以精准的技巧控制住髋部，悄无声息地将{penis}深深送入{target.name}的{mouth}，时刻留意着周围的动静，确保自己不被发现。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "player.abilities.腰技.level > 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}蜷缩在隐蔽的角落，娴熟地操纵着腰肢的起伏，让{penis}在{target.name}温热的{mouth}中有节奏地抽送，同时竖起耳朵警惕着旁人的脚步声。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "player.abilities.腰技.level > 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "躲在遮挡物后的{character.name}一手捂住自己的嘴防止发出声音，另一手扶着{target.name}的后脑勺，以老练的手法让{penis}精确地在{mouth}中进出。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "player.abilities.腰技.level > 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}压低身形藏好自己，以高超的技巧掌控着抽送的幅度和节奏，{penis}在{target.name}的{mouth}中细腻地摩擦着每一处敏感部位，动作轻柔却极具侵略性。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "player.abilities.腰技.level > 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "隐匿在暗处的{character.name}屏住呼吸，凭借丰富的经验精准地控制着{penis}在{target.name}{mouth}中的律动，龟头时而浅探时而深入，整个过程悄然无声。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "player.abilities.腰技.level > 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}蹲伏在死角处，娴熟地摆动胯部，{penis}以恰到好处的力道在{target.name}的{mouth}内来回穿梭，每一次抽插都精确地避开会发出声响的动作幅度。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "player.abilities.腰技.level > 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "藏身于隐蔽处的{character.name}以炉火纯青的技法操控着进出的韵律，{penis}在{target.name}的{mouth}中流畅地滑动，同时警觉地观察着四周的环境变化。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "player.abilities.腰技.level > 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}缩在别人视线之外，以精湛的控制力让{penis}在{target.name}的{mouth}内缓缓抽动，即便动作再激烈也能保持绝对的静默，不引起任何人的注意。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "player.abilities.腰技.level > 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "躲在掩护物下的{character.name}熟练地把握着抽送的深浅和速度，{penis}精确地顶入{target.name}的{mouth}深处又迅速抽回，整套动作如行云流水般静谧无声。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "player.abilities.腰技.level > 6&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
 context = "{character.name}匿身于他人看不见的位置，以纯熟的技艺驾驭着髋部的摆动，{penis}贪婪地侵占着{target.name}的{mouth}，每一下抽插既猛烈又克制，丝毫不会暴露自己的存在。"
 
 [[entries]]
@@ -10506,243 +10506,243 @@ conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&pre
 context = "{character.name}攥住{target.name}的发根，将{penis}蛮横地捅入她紧绷的{mouth}深处，以快速凶狠的动作在她毫无防备的口腔内横冲直撞，龟头每次都顶到她的喉咙入口，迫使她发出痛苦的呜咽。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}抓住{target.name}的头发，强硬地将{penis}送入她的{mouth}中，被囚久的她已学会顺从，麻木地承受着口腔被粗暴贯穿的支配与蹂躏。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}按住{target.name}的后脑勺，让{penis}在她的{mouth}内反复抽送，监禁生活磨灭了她的反抗意识，只能被动地吞吐这入侵的肉棒。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}扶住{target.name}的面颊，将{penis}深深捅入她的{mouth}，被囚禁的她已彻底屈从，空洞的眼神中只剩下对命令的服从。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}托起{target.name}的下巴，强迫她仰头让{penis}插入{mouth}，隶属的本能让她乖顺地张开嘴，任由喉咙深处被反复冲撞。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}双手扣住{target.name}的脑袋，将{penis}强行塞满她的{mouth}，她的身体已被调教成服从的容器，只能机械地承受着一切侵犯。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}掐住{target.name}的两腮使她嘴巴张开，用{penis}捅入她的{mouth}，被囚禁而驯服的她失去了反抗的念头，任由口腔被肆意玩弄。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}抬起{target.name}的脸庞，缓慢而强硬地用{penis}填满她的{mouth}，监禁的日子让她习惯了被使用，顺从地含住那根粗硬的肉棒。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}攥紧{target.name}的发根，用{penis}在她的{mouth}中来回进出，屈从的本性让她放弃了挣扎，只能被动接受唾液与前液混合的侮辱。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}压着{target.name}的头颅，将{penis}狠狠顶入她的{mouth}深处，被长期囚禁的她已沦为泄欲的工具，默默忍受着喉咙被贯穿的不适。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}捏住{target.name}的下颌骨迫使她张嘴，用{penis}粗暴地进入她的{mouth}，驯服状态的她眼神空洞，任由口腔沦为男人发泄欲望的容器。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}扣住{target.name}的后脑勺，强势地将{penis}塞入她的{mouth}深处，粗暴地前后抽动着腰部，完全无视她的承受能力，将她当做泄欲的工具般使用。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}双手捧着{target.name}的脸颊，以稳定的节奏让{penis}在她的{mouth}中进出，龟头不断顶触着她的上颚和喉咙入口，唾液从嘴角溢出滴落在地面上。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}揪住{target.name}的头发，粗野地将{penis}贯入她的{mouth}，快速而猛烈地抽插，黏腻的水声不断响起，她的下巴被迫大张着承受着这粗暴的侵犯。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}握住{target.name}的双耳，把她的头固定住，让{penis}在她的{mouth}内随心所欲地抽送，深入时龟头直抵喉头，浅出时只留冠状沟被嘴唇紧裹。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}按住{target.name}的肩膀将她固定，腰部有力地挺动让{penis}深深捣入{mouth}，每一次抽出都带着银丝，再狠狠贯入引发她喉咙的干呕反应。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}扳着{target.name}的下巴迫使她仰头张嘴，将{penis}直插入{mouth}最深处，缓慢而深沉地碾磨她的喉咙，让龟头在喉管入口处来回研磨。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}掐住{target.name}的后颈将她压向胯间，让{penis}完全没入她的{mouth}，用急促的节奏抽插着，她的鼻尖被迫反复撞击他的小腹，脸颊因缺氧而泛起潮红。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}托起{target.name}的脸让她与自己对视，然后将{penis}缓缓推入她的{mouth}，用沉稳的频率在口腔中抽动，龟头擦过舌面和上颚带出淫靡的水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}叉开双腿站稳身形，一手按住{target.name}的头顶，让{penis}在她的{mouth}中来回律动，每次深入都带着掠夺性的力度，将她的嘴唇撑得紧紧贴合茎身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}用拇指撬开{target.name}的嘴角确保她无法闭合，将{penis}毫无阻碍地插入{mouth}，以逐渐加快的速度抽送，唾液混着前液在她的下巴上蜿蜒滴落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}握住被囚禁的{target.name}的后脑勺，掌控着节奏将{penis}缓缓推入她的{mouth}深处，然后又整根抽出，重复着这种不紧不慢的深喉动作。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}双手扣住{target.name}的头部两侧，固定住她的位置，腰部有规律地挺动，让{penis}在她温软的{mouth}中精准地来回抽送，龟头每次都擦过舌根。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}用拇指按住{target.name}的下巴，强迫她张大嘴巴，然后将{penis}送入她湿热的{mouth}，以娴熟的角度刺入喉咙入口处，享受着那里紧窄的挤压感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}抓住{target.name}的头发，迫使她仰起脸，{penis}在她被撑满的{mouth}中快速抽插，每一次顶入都精准地碾过上颚的敏感区域，龟头被吞吐得水光淋漓。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}托起{target.name}的下颌，控制着她无法后退，腰肢稳定地挺动，将{penis}送入她柔软的{mouth}最深处，龟头在喉咙口反复进出，引发阵阵干呕。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}一手按在{target.name}后脑，一手掐住她的脸颊，让她的{mouth}被迫嘟起，{penis}在被挤压得更紧致的口腔中来回捅弄，肉棒被双颊紧紧包裹着。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}捏住{target.name}的下巴将她的脸抬起，然后缓缓地将{penis}整根没入她的{mouth}，停顿片刻后再慢慢抽离，反复进行着这种深喉吞吐的动作。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}扣着{target.name}的后颈向前按压，让她被迫深含住{penis}，同时挺腰向前顶送，龟头在她的{mouth}最深处来回碾磨，唾液顺着嘴角不断溢出。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}用手指穿入{target.name}的发丝中攥紧，掌控着她的头部前后移动，{penis}在她被迫张开的{mouth}中快进慢出，每一次抽送都伴随着淫靡的水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{character.name}双手捧住{target.name}的脸颊固定住她，腰部以稳定的频率摆动，将{penis}送入她温暖的{mouth}中抽插吞吐，龟头时而浅尝辄止，时而直抵喉咙。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}握住被囚禁少女的后脑勺，强势地将{penis_s}顶入她的{mouth_s}深处，看着她因缺乏经验而笨拙地吞咽着，眼角泛起的泪光中却闪烁着对主人的崇拜。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扶着牢笼中奴隶的脸颊，缓慢而坚定地将{penis_s}在她的{mouth_s}内抽送，感受着她生涩的吮吸和努力讨好主人的顺从舌尖的触碰。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}拽着狱中宠物的头发，有节奏地挺动胯部，让{penis_s}反复碾过她稚嫩的{mouth_s}内壁，她虽然技巧生疏，却仍乖顺地张大嘴巴迎合主人。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}双手捧住监牢中少女的头颅，粗暴地将{penis_s}捅入她毫无防备的{mouth_s}，她被呛得不住干呕，却依然虔诚地用生涩的舌头舔舐着主人的龟头。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}按住跪在铁栏前的奴隶的后脑，强迫她含住{penis_s}并在她笨拙的{mouth_s}中来回抽插，她因缺乏技巧而不时咬到，但依旧努力地张着嘴学习侍奉主人。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扣住监禁中宠物的下巴，以支配者的姿态将{penis_s}探入她温暖的{mouth_s}，她青涩地吸吮着，口水沿着嘴角滑落，尽管生涩但仍满心欢喜地服务主人。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}攥着狱中少女的脖颈，将{penis_s}一寸寸送入她的{mouth_s}深处，她被动地承受着主人的侵犯，嘴唇因生疏而颤抖，却努力收紧嘴唇讨好着主人。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}掰开牢笼中奴隶的嘴巴，将{penis_s}强硬地塞入她的{mouth_s}内搅动，她生涩的舌头不知所措地被{penis_s}碾压，却仍甘愿被主人使用。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}托起监禁宠物的下颌，让{penis_s}在她稚嫩的{mouth_s}中缓缓律动，她缺乏经验的舌头笨拙地缠绕着柱身，眼中满含着对主人的感激与依赖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}拉着狱中少女的耳朵，让她的{mouth_s}被迫吞吐着{penis_s}，她因不熟练而牙齿偶尔磕碰着龟头，却依然虔诚地用稚嫩口腔努力服务着主人。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}握住被囚禁的{target.name}的脑袋，强势地挺动腰肢，让{penis}在她温顺张开的{mouth}里肆意进出，龟头反复碾压她柔软的舌根。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扶着铁栏加快下身抽送的速度，{penis}在奴隶{target.name}乖顺的{mouth}中深入浅出，每次挺进都让她的喉咙发出顺从的呜咽声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}按住{target.name}的后脑勺，将{penis}狠狠地塞入她跪在牢房里主动张开的{mouth}深处，囊袋反复拍打她甘愿侍奉的脸颊。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}挺着腰肢，让{penis}在宠物{target.name}渴望被使用的{mouth}中有节奏地抽插，茎身摩擦着她柔软的口腔内壁，唾液被挤出嘴角顺着下巴滴落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}双手捧住{target.name}驯服的脸庞，用{penis}大力操弄她卑微讨好的{mouth}，龟头不时顶入喉口，引来几声满足的干呕。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}粗暴地提起{target.name}的下巴，将{penis}送进她如同肉便器般乖顺张开的{mouth}里，反复进出间青筋在她舌面上磨蹭着。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}掐着被囚禁奴隶的下颌骨施力，让{penis}撑满{target.name}甘愿侍奉主人的{mouth}，腰部快速挺动着操干她湿滑的喉咙入口。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}抓住{target.name}的头发将她的脸按向自己胯下，{penis}在这只牢笼里的小宠物的{mouth}中深深抽送，龟头碾过她温热的上颚。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扣住{target.name}的后脑，让{penis}在她这个已完全驯化的性奴的{mouth}里快速抽插，茎身被她熟练的舌头缠绕吸吮着。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}挺腰将{penis}塞满{target.name}乖巧张开的{mouth}，在她这个被囚禁的肉便器口中肆意操弄，粗壮的茎身撑开她柔嫩的双唇来回进出。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}猛然挺腰将{penis_s}顶入{target.name}的{mouth_s}深处，龟头直抵喉咙入口，感受到对方精妙的舌技缠绕柱身，不禁加大力度反复冲撞对方被囚禁已久的渴求小嘴。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}双手按住{target.name}的后脑勺，将{penis_s}强硬地送入{mouth_s}深处，任由被监禁的奴隶用熟练的舌头服侍着自己的肉棒，享受着专属肉便器的侍奉。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}紧握{target.name}的发丝，有节奏地前后摇动腰身，让{penis_s}在{mouth_s}内有规律地抽插，被囚禁的宠物用高超舌技缠绕着主人的阴茎，舌尖精准刺激着敏感处。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}挺身将{penis_s}整根没入{target.name}的{mouth_s}，单手捏住对方下巴迫使她张得更大，让自己的肉棒能够更加深入地侵犯这个被监禁的性奴的喉咙深处。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}一手扶墙一手按着{target.name}的头顶，反复将{penis_s}送入{mouth_s}中抽插，享用着被囚禁宠物精妙舌技带来的销魂快感，粗鲁地使用着专属奴隶的嘴巴。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}捏住{target.name}的双颊使其嘟起嘴唇，将{penis_s}强行挤入{mouth_s}内快速抽送，被监禁的奴隶用精湛舌技配合着主人的侵犯，舌尖灵巧地舔舐着龟头冠状沟。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}俯视着跪在牢房中的{target.name}，将{penis_s}塞进她的{mouth_s}里深深浅浅地抽动，享受着被囚禁奴隶用娴熟的舌头裹挟吸吮的淫荡服侍，不时用力顶撞喉头。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}扣住{target.name}的下颚往上提，{penis_s}毫不留情地贯穿{mouth_s}，被关押的宠物用高超舌技不断刺激着主人的茎身和龟头，舌尖精准地绕着敏感带打转。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}掐住{target.name}的后颈将她固定在原地，腰部发力将{penis_s}往{mouth_s}里猛烈冲撞，被监禁已久的肉便器用精妙舌技包裹着主人的阴茎，唾液从嘴角不断溢出。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{character.name}抓住{target.name}两边的耳朵用力拉扯，{penis_s}粗暴地在{mouth_s}内来回抽送，被囚禁的奴隶用灵活的舌头全力服务着主人，每次顶入都让舌尖缠上柱身。"
 
 [[entries]]
@@ -11106,243 +11106,243 @@ conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&pre
 context = "{target.name}被锁链禁锢着上身，只能用{mouth}含住{penis}缓慢地前后移动，她生涩的舌头艰难地在口腔狭窄的空间里扭动着，唾液不断从嘴角流淌而出。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{target.name}不情愿地张开嘴巴含住{penis}，舌头僵硬地抵在柱身上，{mouth}勉强接纳着这根肉棒，生涩的动作里透着明显的抗拒，口腔内的唾液因紧张而难以分泌，干涩的摩擦让她眉头微皱。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{target.name}被迫吞吐着{penis}，笨拙的舌头不知该如何动作，{mouth}机械地一进一出，牙齿偶尔轻轻磕碰到龟头，她的嘴角溢出些许唾液，勉强服从着却动作僵硬。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{target.name}含着{penis}浅浅吮吸，{mouth}紧绷着无法放松，舌尖只是干巴巴地舔过柱身表面，生疏的口交动作带着明显的不适应，她的脸颊因为强忍不满而微微抽动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{target.name}用{mouth}勉强包裹着{penis}，舌头如木头般呆滞地搅动，唾液顺着嘴角流下却无暇顾及，动作间透着生涩与抵触，只是机械地执行着口交的动作。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{target.name}张着{mouth}努力吞咽着{penis}，舌头笨拙地绕着龟头打转，不熟练的吮吸动作让唾液沾满了嘴唇和下巴，她的眼角因强忍不适而泛红，却仍旧勉强配合着。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{target.name}顺从地含住{penis}，虽然舌头动作生涩，却认真地舔舐着柱身，{mouth}努力配合着吞吐的节奏，唾液渐渐将肉棒润湿，她专注于完成这个任务。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用{mouth}包裹着{penis}仔细吮吸，舌尖虽然笨拙却努力探索着每一寸敏感的皮肤，她的脸颊因用力而微微凹陷，唾液从嘴角滴落在下巴，动作中带着尽职的态度。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{target.name}低下头认真地含着{penis}，{mouth}的吞吐动作虽然缺乏技巧但十分卖力，舌头生疏地卷着龟头，嘴唇紧紧箍住柱身，唇瓣被撑得发红却依然专注。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{target.name}用自己的{mouth}服务着{penis}，生涩的舌头努力模仿着正确的动作，吮吸时偶尔会用力过猛，但她很快调整过来继续卖力地舔弄，唾液顺着柱身流淌。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{target.name}把{penis}含入{mouth}深处，虽然不熟练的舌头只能僵硬地搅动，却尽力用吸吮来弥补技巧的不足，她的喉咙因深入而轻微作呕，但仍然专心致志地继续着。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "被监禁的{target.name}跪在地上，机械地将{mouth}包裹住{penis}，舌头麻木地沿着柱身来回舔舐，维持着平稳的吞吐节奏，眼神却空洞无神。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}认命般地将{penis}含入{mouth}深处，舌尖有技巧地缠绕刺激着龟头，双手撑在地上，整个身体随着吞吐动作前后晃动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "囚室中的{target.name}低垂着头，嘴唇紧贴{penis}上下滑动，舌面拖过柱身时缓缓裹紧，{mouth}的温热包围着每一寸敏感的皮肤。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}消极地将{penis}纳入{mouth}中，舌头流畅地扫过冠状沟，脸颊凹陷着吸吮柱身，口水从嘴角溢出滴落到地面。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "被囚禁的{target.name}顺从地含住{penis}，她的{mouth}以稳定的频率裹吸着柱身，舌尖轻触马眼处后又沿着冠状沟打转。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}麻木地将{mouth}贴上{penis}，舌头娴熟地绕着龟头画圈舔舐，嘴唇收紧时吸力恰到好处，唾液润滑着每一次的吞吐。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "牢房中的{target.name}将{penis}深深吞入{mouth}，喉咙口轻轻收缩挤压着龟头，她的下巴规律地起伏着，如同执行例行任务一般。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}用{mouth}服侍着{penis}，舌头贴着柱身底面来回滑动，不时卷起舔过系带处，嘴唇在抽送间发出淫靡的水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "被监禁的{target.name}驯顺地张开{mouth}吞进{penis}，她的舌面湿润地裹住柱身，脑袋前后摆动着配合吸吮动作，唇瓣被撑得紧绷。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}漠然地用{mouth}含住{penis}前端，舌尖反复舔弄着敏感的龟头边缘，同时双唇紧闭着向根部推进，喉间发出低沉的吞咽声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "被囚禁的{target.name}机械地张嘴含住{penis}，灵活的舌尖却下意识地缠绕吮吸，舌头娴熟地沿着柱身滑动，在{mouth}中精准地刺激着每一处敏感带。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}眼神空洞地将{penis}深深吞入{mouth}，喉咙肌肉却本能地收缩按摩着龟头，舌面有节奏地上下舔舐柱身，技艺精湛得令人窒息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "麻木的{target.name}用{mouth}包裹住{penis}，舌尖如同精密仪器般绕着冠状沟打转，时而轻柔扫过系带，时而用力按压马眼，每个动作都精准无比。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "被监禁多日的{target.name}面无表情地吞吐着{penis}，{mouth}内的舌头却异常活跃，灵巧地在龟头下方打着旋儿，同时双唇紧紧收缩制造出强烈的真空吸力。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}如同被驯养的玩物般默默含住{penis}，但{mouth}内的舌技却无可挑剔，舌尖灵活地探入每一道褶皱，将铃口处的前液仔细舔净。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "屈从的{target.name}用{mouth}缓缓吞入{penis}，舌面紧贴柱身底部上下滑动，嘴唇配合舌头的节奏有规律地收紧放松，技术娴熟得像是精于此道的淫娃。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "被囚禁的{target.name}将{penis}深深纳入{mouth}，喉头有技巧地一张一合吮吸着龟头，同时舌尖灵活地扫过冠状沟下缘的敏感区域，带来阵阵酥麻快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}以认命的姿态将{penis}含进{mouth}，舌头却不受控制地施展精湛技艺，舌尖与舌面交替舔弄着柱身各处，双颊内壁挤压摩擦着侧面。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "驯服的{target.name}用湿润的{mouth}包裹着{penis}吞吐，舌头灵活地绕着龟头画圈，时不时用力吮吸尿道口，唾液混合前液顺着嘴角滑落下巴。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}面无表情地将{penis}吞至{mouth}深处，喉咙肌肉有节奏地收缩吮吸，舌根抵住柱身根部左右摆动，精湛舌技让龟头不断被温热的肉壁挤压包裹。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "被囚禁的{target.name}跪在监牢中，迫不及待地将{penis}含入{mouth}，笨拙生涩地扭动舌头，眼中满是对主人的崇拜与感激。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}将{penis}深深吞入{mouth}，不知所措地蠕动着舌尖试图取悦主人，唾液沿着嘴角滴落，浑身散发着奴隶的顺从气息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "已完全沦为宠物的{target.name}贪婪地舔舐着{penis}，然后将其整根吞入{mouth}，生涩的动作中透露着急切讨好主人的渴望。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}像饥渴的母狗般前后晃动脑袋，用{mouth}吞吐着{penis}，虽然舌技生疏但充满热情，眼角泛着幸福的泪光。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "沦为奴隶的{target.name}用{mouth}紧紧包裹住{penis}，笨拙地来回吸吮着，每次深入时都发出满足的呜咽，仿佛这是她最大的幸福。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}将脸颊埋入主人的胯间，虔诚地用{mouth}含住{penis}，生涩地吞吐着，嘴唇被撑得微微发红，却甘之如饴。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "被监禁的{target.name}主动将头凑上前去，把{penis}含入{mouth}，舌头笨拙地绕着柱身打转，发出淫靡的啧啧水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}像是终于获得奖赏的宠物，急切地用{mouth}套弄着{penis}，虽然技巧稚嫩但充满狂热，唾液混着前液沿下巴滴落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "完全堕落为肉便器的{target.name}用{mouth}亲吻舔舐着{penis}，然后整根吞入，生涩的舌头努力地讨好着主人，喉咙深处传出满足的呻吟。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}跪伏在监牢地面上，将{penis}深深吞入温热的{mouth}，前后摆动脑袋努力吸吮着，虽然动作生疏却饱含作为奴隶的虔诚。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "被囚禁的{target.name}如同饥渴的母狗般主动含住{penis}，用灵活的舌头在{mouth}内熟练地舔舐吸吮，边发出淫荡的呜咽声边卖力地取悦主人的肉棒。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}将{penis}深深吞入{mouth}，如同对待珍馐般虔诚地用舌头缠绕吸吮，眼中流露出宠物对主人的崇拜与感激，喉咙发出满足的呻吟。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "牢笼里的{target.name}跪伏在地，用{mouth}贪婪地吞吐{penis}，舌尖娴熟地在龟头处打圈舔弄，每一次吮吸都在表达身为奴隶的卑微与渴望。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}主动将{penis}含入{mouth}深处，用柔软的舌头有节奏地摩擦柱身，口中发出淫靡的水声，眼神充满被驯服后的顺从与狂喜。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "被监禁的{target.name}迫不及待地用{mouth}包裹{penis}，舌头熟练地绕着龟头画圈，双唇紧贴肉棒上下吞吐，如同专属肉便器般卖力地服侍主人。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}将{penis}吞入{mouth}，舌头灵巧地舔过冠状沟的同时用力吮吸，脸颊凹陷出淫荡的弧度，发出呜咽的鼻音表达着身为奴隶的喜悦。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "笼中的{target.name}用粉嫩的舌头将{penis}卷入{mouth}，吞吐间发出啧啧的淫靡水声，如同饥渴的宠物舔舐甜点，每一下都充满对主人的感恩。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}双手攥紧铁栏，用{mouth}主动迎合{penis}的抽送，舌头配合地舔弄龟头的每一处敏感部位，眼角泛着被宠幸的泪光。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "被囚禁的{target.name}用{mouth}虔诚地含住{penis}，舌尖熟练地在马眼处轻轻刺探，双唇紧吸柱身来回套弄，发出满足的呜咽声讨好着主人。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}将{penis}深深纳入{mouth}，用灵活的舌头从根部舔到顶端，边吮吸边发出贪婪的吞咽声，如同专属性奴般狂热地服侍着主人的肉棒。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}用灵巧的舌头缠绕着{penis}，在{mouth}深处熟练地吞吐律动，舌尖精准地扫过每一处敏感的沟壑褶皱，唇齿配合间如同最虔诚的侍奉仪式。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}将{penis}深深吸入{mouth}，喉头有节奏地收缩挤压龟头，舌面同时用力舔舐柱身侧面，面颊微陷形成真空般的吮吸快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}将{penis}含至喉咙深处又缓缓退出，{mouth}内的舌头螺旋状缠绕着肉棒，精湛的吞咽技巧使唾液与前液混合成一片淫靡的水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}脑袋前后摆动，{mouth}紧紧包裹{penis}快速套弄，舌尖时而轻挑马眼时而滑过系带，眼角泛起生理性的泪花却丝毫不减动作的热情。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}用{mouth}深深含住{penis}根部，喉咙肌肉有技巧地蠕动按摩着龟头，舌根发力将整根肉棒顶向口腔上颚反复摩擦挤压。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}嘴唇收紧成圆环状套弄{penis}，{mouth}内的舌头灵活地在龟头与柱身间来回游走，每一次吞咽都伴随着喉头精准的挤压收缩。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}用{mouth}将{penis}吸得啧啧作响，舌面熟练地裹卷着柱身旋转舔舐，嘴角溢出的涎液顺着下巴滴落在裸露的胸口上。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}含住{penis}的双唇用力收缩形成销魂的真空吮吸，{mouth}深处喉头配合着做出吞咽动作，舌头则在口中翻搅出淫荡的水渍声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}摇晃着脑袋让{penis}在{mouth}中左右摆动，舌尖灵巧地拨弄着敏感的冠状沟，嘴唇则一圈圈收紧按摩着充血的柱身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}把{penis}深深吞入{mouth}直到唇瓣贴上根部，喉咙痉挛般地反复收紧放松，嘴里发出被填满的呜咽声同时舌根剧烈地舔舐着整根肉棒。"
 
 [[entries]]
@@ -13306,43 +13306,43 @@ conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.leve
 context = "{character.name}揽着{target.name}的后脑勺，控制着力道将{penis}送入她湿热的{mouth}深处，缓缓拔出至只剩头部再重重顶入。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:FALL_LEVEL_E_1"
+conditions = "player.abilities.腰技.level > 6&premises:FALL_LEVEL_E_1"
 context = "{character.name}轻扶着{target.name}的后脑，娴熟地调整着腰胯的角度，让{penis}在{mouth}内以变幻的节奏抽送，龟头时而浅探舌面，时而深入直抵喉口，带起阵阵黏腻的水声。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:FALL_LEVEL_E_1"
+conditions = "player.abilities.腰技.level > 6&premises:FALL_LEVEL_E_1"
 context = "{character.name}双手捧住{target.name}的脸颊，腰部以圆润的弧度缓缓画圈研磨，{penis}在{mouth}中旋转搅动，龟头蹭过柔软的内壁与舌根，动作老练而富有技巧性。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:FALL_LEVEL_E_1"
+conditions = "player.abilities.腰技.level > 6&premises:FALL_LEVEL_E_1"
 context = "{character.name}以行家的节奏控制着深浅，{penis}在{mouth}里快速浅顶数下后突然深入，压着舌面碾磨片刻再抽出，让唾液和前液混合拉出淫靡的银丝。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:FALL_LEVEL_E_1"
+conditions = "player.abilities.腰技.level > 6&premises:FALL_LEVEL_E_1"
 context = "{character.name}微微仰起下巴，腰身以稳定的频率挺动，让{penis}在{mouth}中匀速进出，每一次都精准地擦过敏感的上颚与口腔内壁，龟头冠状沟与嘴唇摩擦出阵阵快意。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:FALL_LEVEL_E_1"
+conditions = "player.abilities.腰技.level > 6&premises:FALL_LEVEL_E_1"
 context = "{character.name}手指缠入{target.name}的发丝间，腰部以忽快忽慢的节拍抽插，{penis}在{mouth}内时而大开大合冲撞，时而细密研磨搅弄，驾轻就熟地榨取着口腔的柔软服侍。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:FALL_LEVEL_E_1"
+conditions = "player.abilities.腰技.level > 6&premises:FALL_LEVEL_E_1"
 context = "{character.name}收拢指尖摩挲着{target.name}的耳后，腰胯以画八字的轨迹摆动，{penis}在{mouth}中旋磨抽送，龟头研过舌尖后又深顶入喉，淫猥的吞吐声不断响起。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:FALL_LEVEL_E_1"
+conditions = "player.abilities.腰技.level > 6&premises:FALL_LEVEL_E_1"
 context = "{character.name}以娴熟的技法掌控着韵律，腰身时而浅探慢退，时而深顶急抽，{penis}在{mouth}里翻搅出黏稠的水泽，将口腔深处搅弄得一片狼藉，满溢的唾液顺唇角淌落。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:FALL_LEVEL_E_1"
+conditions = "player.abilities.腰技.level > 6&premises:FALL_LEVEL_E_1"
 context = "{character.name}拇指轻抚着{target.name}泛红的脸颊，腰部不疾不徐地抽送，{penis}以游刃有余的姿态在{mouth}中进出，每次前顶都准确地蹭过舌根与上腭的交界处。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:FALL_LEVEL_E_1"
+conditions = "player.abilities.腰技.level > 6&premises:FALL_LEVEL_E_1"
 context = "{character.name}以老练的手法固定住{target.name}的头部角度，腰身稳健地挺进，让{penis}在{mouth}深处规律地戳刺，龟头反复顶弄着柔软的喉口，带出阵阵黏糊的吞咽声。"
 
 [[entries]]
-conditions = "premises:CVP_A1_A|76_G_6&premises:CVP_A1_A|76_G_6&premises:FALL_LEVEL_E_1"
+conditions = "player.abilities.腰技.level > 6&premises:FALL_LEVEL_E_1"
 context = "{character.name}扣住{target.name}的下颌引导着角度，腰间以圆滑的弧线律动，{penis}在{mouth}内由浅及深地碾磨抽插，将每一寸口腔内壁都仔细擦蹭过，尽享湿热紧致的包裹。"
 
 [[entries]]
@@ -13546,243 +13546,243 @@ conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感�
 context = "{character.name}握着{target.name}的双肩固定住她的身体，沉稳地摆动腰部，{penis}在那反应迟钝的{mouth}中前后律动，龟头不断撞击着柔软的上颚。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{character.name}双手扶着{target.name}的头部，将{penis}缓缓抽出又推入{mouth}中，浅浅的抽送带着主人的耐心和引导，龟头反复摩擦着舌面。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{character.name}拇指抚过{target.name}的脸颊，腰部有节奏地挺动，{penis}在{mouth}中缓慢进出，每次抽插都刻意放轻力道，让宠物慢慢适应主人的形状。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{character.name}轻轻托起{target.name}的下巴，腰肢微微摆动，让{penis}在{mouth}内前后滑动，柱身擦过嫩滑的口腔内壁，舌根处被龟头反复顶触。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{character.name}以浅入浅出的动作，让{penis}停留在{mouth}前端，龟头轻轻抵着柔软的舌尖，主人的手指穿过她的发丝，引导着自己宠物的节奏。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{character.name}微微前倾上身，手掌按住{target.name}的后脑，{penis}在{mouth}深处轻柔地抽送，每一次顶入都控制在让宠物能够承受的幅度，唾液从嘴角滑落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{character.name}捏住{target.name}的双颊，让{mouth}微微嘟起，{penis}在其中缓缓抽动，龟头在口腔内画着小圈，嘴唇被撑开的弧度随着抽插起伏变化。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{character.name}一只手扶住{target.name}的下颌，另一只手抚摸着她的耳后，腰部轻轻晃动，让{penis}在{mouth}中浅浅进出，享受着宠物柔嫩口腔的包裹。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{character.name}用指腹擦去{target.name}嘴角的唾液，腰肢前后摆动，{penis}在{mouth}内持续抽插，龟头时而顶向上颚，时而擦过舌面，节奏缓慢而有规律。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{character.name}握住{target.name}的后颈，小幅度地挺动胯部，{penis}在{mouth}中来回滑动，柱身被温热的舌头包裹，嘴唇紧密地贴合着根部。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{character.name}放慢了抽送的频率，让{penis}在{mouth}中慢慢吞吐，每次深入都稍作停顿，龟头抵在柔软的喉口处，主人的呼吸逐渐变得粗重。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}用手托住{target.name}的后脑勺，将{penis}缓缓推入她的{mouth}深处，然后慢慢抽出，如此反复地使用着属于自己的小宠物。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}双手按住{target.name}的头部，让{penis}在她的{mouth}中有节奏地进出，把她当作专属的肉便器般肆意使用。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}抓着{target.name}的头发，控制着她的头部前后移动，让{penis}在{mouth}里抽插吞吐，将她作为发泄性欲的小母狗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}轻扶{target.name}的下巴，以稳定的频率挺动腰部，让{penis}深入浅出地在{mouth}中律动，享受着宠物乖顺的服务。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}用拇指轻抚{target.name}被撑开的嘴角，同时腰部持续前挺，让{penis}在{mouth}内来回抽送，把她的嘴当作专用的泄欲工具。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}单手扣住{target.name}的后脑，腰部发力将{penis}顶入{mouth}深处，龟头抵住喉口后又缓缓退出，反复操弄着这张淫荡的小嘴。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}捏住{target.name}的脸颊使她张大嘴巴，然后将{penis}送入{mouth}中快速抽插，唾液从嘴角溢出，把她当作自己的专属口交宠物。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}轻拍{target.name}的脸颊以示赞许，同时继续挺动腰部让{penis}在{mouth}里来回律动，把她训练成称职的泄欲宠物。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}双手固定住{target.name}的头部位置，腰部有力地前后摆动，让{penis}深入{mouth}后又整根抽出，不断重复着这淫靡的动作。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}揉捏着{target.name}的耳朵以示亲昵，同时将{penis}在她的{mouth}中缓慢而深入地抽送，享受着主人驾驭宠物时的征服快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}双手扶住{target.name}的后脑勺，有节奏地挺动腰肢，让{penis}在她的{mouth}里缓慢而有力地来回摩擦，龟头时不时地蹭过上颚的软组织。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}用指腹轻轻抚过{target.name}的发丝，腰部以稳定的频率前后律动，{penis}在{mouth}中深入浅出，柱身摩擦着唇瓣的内侧。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}把着{target.name}的下巴，慢慢加大挺送的幅度，{penis}一次比一次更深地埋入{mouth}中，唾液被带出后沿着柱身滴落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}轻轻揉捏着{target.name}的脸颊，{penis}在{mouth}中快速抽送，龟头反复碾过柔软的舌面，激起阵阵水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}双手环住{target.name}的头部，以逐渐加快的节奏操弄着她的小嘴，让{penis}在{mouth}里进出，每一次前顶都将龟头送至喉咙入口。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}微微前倾身子，{penis}沿着{target.name}的舌头滑入{mouth}深处，龟头擦过敏感的喉头软组织，带出一连串的黏糊水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}拽住{target.name}的头发，迫使她仰起小脸，然后将{penis}重重地顶入{mouth}，柱身与口腔内壁紧密贴合，摩擦出淫靡的声响。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}慢条斯理地挪动腰胯，让{penis}在{target.name}的{mouth}中浅进深出，龟头轮流蹭过牙床和内颊，唾液在摩擦中泛起细小的泡沫。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}抬起{target.name}的下巴，居高临下地将{penis}塞入她的{mouth}，龟头撞击着喉咙深处，带动她的脸颊因填充而微微鼓起。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{character.name}大力握住{target.name}的双肩，下身贪婪地在她的{mouth}中快速冲撞，{penis}每一次深入都使得她的嘴唇被撑开，浊液从嘴角溢出。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{character.name}随意地握住{target.name}的后脑勺，不紧不慢地挺动腰胯，让{penis}在奴隶生涩的{mouth}中来回磨蹭，柱身擦过笨拙的舌面，津液顺着嘴角淌落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{character.name}漫不经心地按住{target.name}的头顶，缓缓将{penis}推入她顺从张开的{mouth}，龟头蹭过不懂配合的舌尖，黏稠的涎水沾湿整根肉棒。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{character.name}捏着{target.name}的下巴抬起她的脸，将{penis}塞入奴隶笨拙的{mouth}中浅浅抽送，龟头碾过生疏的口腔内壁，唾液被带出后沿着柱身滴落在地。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{character.name}扣住{target.name}的后脑向前按压，下身以主人的姿态挺入她乖顺的{mouth}，{penis}在生涩紧窄的口腔里抽动，推挤出一连串淫靡的水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{character.name}双手托住{target.name}臣服的面庞，用{penis}轻慢地操弄着她无措的{mouth}，龟头反复顶撞着不知如何吞咽的喉口，涎液混着前列腺液打湿她的嘴唇。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{character.name}拽着{target.name}的发丝固定她的脑袋，肆意把{penis}送进奴隶驯服的{mouth}深处，粗粝的柱身擦过稚嫩的舌面，透明的唾液从被撑开的嘴角溢出。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{character.name}居高临下地俯视着，单手按住{target.name}的头，让{penis}在奴仆生涩的{mouth}中缓缓进出，龟头蹭过笨拙僵硬的舌头，拉扯出一道道透明黏丝。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{character.name}抚摸着{target.name}顺从的脸颊，腰部带着主人特权般的悠然挺动，让{penis}在她不谙技巧的{mouth}里来回碾磨，龟头将笨拙的舌尖压进口腔深处。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{character.name}把着{target.name}的双肩向下压，迫使她跪得更低，然后将{penis}塞入奴隶乖巧的{mouth}中来回抽送，龟头撞击着生涩的喉咙浅处，激起呜呜的闷响。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{character.name}搂住{target.name}的后脑将她固定在胯间，随心所欲地操弄着{penis}在奴仆驯顺的{mouth}中，柱身摩擦过无力配合的内壁，唇瓣被撑成淫秽的圆形。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}随意地扶住{target.name}的后脑勺，腰部悠然摆动，她驯顺地将{penis}含入{mouth}中，舌头尚算熟练地沿着柱身轻舔，唾液顺着嘴角淌落在地。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}捏着{target.name}的下巴抬起奴隶驯服的脸庞，将{penis}深入她乖顺张开的{mouth}，感受她中等熟练的舌面绕着龟头打转，黏腻的前液被舔舐得干干净净。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}抓着{target.name}的马尾向前拉扯，将{penis}送入奴仆恭顺的{mouth}深处，她的舌头有条不紊地缠绕刺激着青筋暴起的肉棒，涎水被搅动发出淫秽的咕啾声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}双手托住{target.name}臣服的面庞挺腰抽送，她配合地用{mouth}吞吐{penis}，舌尖卷过敏感的龟头冠沟，虽有些生涩但已颇具技巧，唇舌裹挟着肉棒律动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}按住{target.name}的头顶将她固定在胯间，奴隶乖巧地用{mouth}侍奉着{penis}，舌头有节奏地在柱身上来回舔弄，口腔内壁紧紧包裹住粗硬的肉棒吮吸。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}居高临下地俯视着驯顺的{target.name}，随意挺动腰肢，她用{mouth}温顺地迎合着{penis}的进入，舌尖不时舔过铃口，中规中矩的侍奉带来稳定的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}将双手插入{target.name}的发间控制她的头部，奴仆驯服的{mouth}任由{penis}在口腔内抽送，舌头勤勉地舔舐着柱身每一寸褶皱，透明的涎液挂满整根肉棒。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}漫不经心地操弄着{target.name}温顺的小嘴，{penis}在她{mouth}中来回进出，她用习得的技巧努力侍奉着主人的肉棒，舌根卷着龟头吞咽入喉，呜咽着承受撞击。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}扣住{target.name}的后脑勺向前按压，她恭敬地张开{mouth}接纳{penis}的侵入，舌面有技巧地贴着肉棒上下滑动，口腔深处传来被顶弄的闷哼，唾液湿透了嘴唇。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}搂住{target.name}驯服的后颈将她拉向胯间，{penis}深深没入奴隶柔顺的{mouth}，她的舌头娴熟地卷缠着粗长的肉棒反复吮吸，浓稠的涎水从被撑开的嘴角淋漓滴落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}掐着自己奴隶的后颈，将{penis}毫不怜惜地送入{mouth}深处，配合着腰部有力的挺动，让龟头一次次撞击喉咙深处的软肉。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}双手扣住性奴的头颅，以主人支配奴隶的傲然姿态，让{penis}在那张乖顺的{mouth}中肆意进出，抽插的频率由慢渐快。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}拽住奴隶的发丝迫使其仰起头，方便{penis}以刁钻的角度贯入{mouth}，龟头精准地碾过上颚最敏感的区域。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}居高临下地俯视着跪伏的奴隶，腰胯有节奏地前后摆动，让{penis}在那柔软湿热的{mouth}中长驱直入又缓缓退出。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}以主人特有的蛮横将{penis}顶入{mouth}最深处，感受着喉头温热的包裹，同时手指揉捏着奴隶的耳廓以示嘉奖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}将手掌覆在奴隶的脸颊上，以娴熟的技巧控制着{penis}在{mouth}内的抽送深浅，时而浅尝辄止，时而深入喉咙。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}突然加快腰部挺送的速度，让{penis}在那臣服于自己的{mouth}中激烈进出，发出淫靡的水声回荡在空气中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}以稳健的节奏操弄着奴隶的口腔，{penis}在{mouth}中长距离地抽送，柱身上的青筋摩擦着柔嫩的口腔内壁。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}捏住奴隶的下巴将其嘴巴掰得更开，让{penis}能够以更大的幅度在{mouth}中肆意抽插，唾液顺着嘴角不断溢出。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{character.name}以主人调教奴隶的姿态挺动腰身，{penis}在那温顺张开的{mouth}内有规律地律动，每一次深入都带着支配者的威严与快意。"
 
 [[entries]]
@@ -13866,243 +13866,243 @@ conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_0"
 context = "{character.name}轻轻摁住{target.name}的后脑，配合腰部的摆动让{penis_s}在{mouth_s}中有规律地进出，透明的唾液顺着嘴角不断淌落，在下巴上形成水痕。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{character.name}抓住{target.name}的头发，强硬地将{penis}送入她生涩的{mouth}中，无视她嘴角溢出的唾液，保持着浅浅的抽插节奏，直到她勉强适应这个深度。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{character.name}双手捧住{target.name}的脸颊，缓缓挺动腰肢，让{penis}在她紧绷的{mouth}内来回摩擦，龟头时而顶向上颚，时而抵住湿软的舌根。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{character.name}按住{target.name}的后脑，将{penis}强行塞入她僵硬的{mouth}深处，感受她喉头不由自主的收缩，随后略微退出，再次挺腰顶入。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{character.name}掐住{target.name}的下巴迫使她张大嘴，粗暴地将{penis}塞进她温热的{mouth}，开始快速的抽送，唾液和前液从她唇边滑落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{character.name}轻扯{target.name}的发丝，腰部有节奏地晃动，让{penis}在她笨拙的{mouth}中浅进浅出，偶尔故意顶得更深一些，逼出她的呜咽声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{character.name}一手托住{target.name}的后颈，将{penis}稳稳送入她狭窄的{mouth}内，缓慢而坚定地抽插，龟头每次都碾过她敏感的舌面。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{character.name}控制着{target.name}的头部角度，调整好位置后开始挺腰，让{penis}在她紧致的{mouth}中快速进出，透明的涎水不断从嘴角滴落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{character.name}粗暴地扯着{target.name}的头发，将{penis}顶入她柔软的{mouth}最深处，随后快速抽出再猛地贯入，反复碾压着她的喉咙入口。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{character.name}扶住{target.name}的两侧太阳穴，强迫她固定姿势，然后开始将{penis}在她湿滑的{mouth}中大幅度抽送，肉棒与口腔摩擦出淫靡的水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{character.name}拽住{target.name}的耳朵，迫使她抬起头来，然后将{penis}强行塞进她微张的{mouth}中，开始剧烈地挺动腰部，龟头反复捅入她的喉咙深处。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}粗暴地挺动着腰部，{penis}在{target.name}的{mouth}中大力抽送，强硬的动作让她的喉咙发出呜咽，唾液顺着嘴角不断流下。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}双手扣住{target.name}的后脑，强势地将{penis}送入{mouth}深处，不顾她的挣扎持续挺腰，让龟头反复顶撞着柔软的上颚。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}握着{target.name}的头发，有节奏地前后摆动腰肢，{penis}在{mouth}内快速进出，每次抽出都带出一丝黏腻的银丝，再深深捅入。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}按住{target.name}的肩膀，居高临下地挺动下身，{penis}在{mouth}中肆意搅动，狰狞的肉棒擦过她的舌面，撑满她的口腔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}捏着{target.name}的下巴强迫她张大嘴巴，{penis}蛮横地在{mouth}里抽插，猛烈的撞击让她的脸颊鼓起，眼角泛起生理性泪水。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}扶着{target.name}的脑袋，以稳定的节奏操弄着她的小嘴，{penis}在{mouth}内顶弄，龟头时而抵住喉咙入口，引发她一阵干呕。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}低头俯视着{target.name}，腰部用力挺送，{penis}在{mouth}中横冲直撞，青筋暴起的柱身擦过她颤抖的舌尖，唾液四溅。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}抓着{target.name}的双耳，将她的头部固定住，{penis}凶狠地贯穿{mouth}，每一次深入都让她的喉咙发出难耐的呜咽，面颊被撑得通红。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}挺胯将{penis}深深埋入{target.name}的{mouth}，然后缓缓抽出只留龟头在嘴唇间，再猛然顶入，反复玩弄着她湿润的口腔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}双手托住{target.name}的下颚，粗暴地摆动腰肢，{penis}在{mouth}内疯狂抽送，浓稠的前列腺液混着唾液从她嘴角淌落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}双手扶住{target.name}的后脑勺，有规律地将{penis}送入{mouth}深处，肉棒撑开对方的嘴唇，迫使这位不情愿的部下发出难耐的呜咽声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}掌控着抽插的节奏，{penis}在{mouth}中快速进出，龟头擦过对方的上颚和舌面，唾液随着动作从{target.name}嘴角溢出，打湿了她的下巴。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}将{target.name}的头部按向自己胯间，{penis}一下子顶到{mouth}深处的喉咙入口，勉强服从的部下被迫张大嘴巴承受这粗暴的抽送。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}俯视着跪在身前的{target.name}，腰部有力地挺动，{penis}在{mouth}内来回抽插，龟头不时抵住对方的喉咙，引起一阵阵干呕反应。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}抓住{target.name}的头发控制她的动作幅度，{penis}有节奏地在{mouth}中抽送，柱身碾过舌面时带起淫靡的水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}双手捧住{target.name}的脸颊迫使她仰头，{penis}更深地插入{mouth}，龟头顶开喉咙入口，脖颈处能看到明显的隆起。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}用拇指揉按{target.name}被撑胀的脸颊，同时{penis}有规律地在{mouth}中进进出出，柱身上沾满了对方的唾液。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}将{penis}抽出到只剩龟头留在{mouth}里，随后猛然向前一顶，整根肉棒没入对方口中，{target.name}的眼眶被呛出泪水。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}有节奏地挺动胯部，{penis}在{mouth}内反复进出，龟头时而擦过舌根时而抵入喉咙，黏腻的水声在房间内回响。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{character.name}按住{target.name}的后脑勺强迫她深喉，{penis}完全没入{mouth}直达喉咙深处，对方的嘴唇紧贴着肉棒根部，鼻尖埋入耻毛中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{character.name}扶着驯服部下的头部，缓缓将{penis}送入她生涩的{mouth}，感受着她不知所措却顺从的配合，龟头擦过柔嫩的舌面，带来青涩却真实的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{character.name}轻轻托起信赖自己的部下的下巴，让{penis}在她紧张颤抖的{mouth}中浅浅抽送，享受着她笨拙吞吐时舌头无意间的摩擦，唾液沾湿了整根阴茎。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{character.name}双手捧住驯服下属的脸颊，将{penis}送入她努力张大的{mouth}，龟头顶弄着口腔深处，感受她生涩却卖力的舌头舔舐着柱身每一寸肌肤。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{character.name}抚摸着忠诚部下的后脑，有节奏地让{penis}在她温热的{mouth}进出，每次深入都能感受到她不熟练却认真配合的吮吸，舌尖笨拙地缠绕着敏感的龟头。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{character.name}轻按住顺从下属的头顶，让{penis}在她柔软湿润的{mouth}内缓慢律动，感受她生涩的舌头试探性地舔过阴茎表面，带来独特的征服满足感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{character.name}扣住驯服部下的后颈，将{penis}挺入她紧致的{mouth}，龟头碾过上颚和舌面，享受着她虽然不得要领却努力执行的吞吐动作带来的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{character.name}抓住信任自己的下属的发丝，控制着{penis}在她温暖潮湿的{mouth}中抽插的节奏，每次进出都能感受到她青涩的舌头无措地迎合着入侵。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{character.name}用拇指轻抚顺从部下的脸颊，同时将{penis}送入她努力撑开的{mouth}，在她生疏的口腔内进行抽送，龟头时不时擦过柔软的内壁。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{character.name}握住驯服下属的后脑勺，引导{penis}在她湿热的{mouth}中进出，感受她笨拙的舌头尝试包裹住粗壮的柱身，唾液顺着嘴角流淌而下。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{character.name}轻托起忠诚部下的下颌，让{penis}在她温顺张开的{mouth}内有规律地抽送，龟头磨蹭着她不知所措却湿润柔软的舌面，带来别样的刺激快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}握住{target.name}的后脑勺，有节奏地挺动腰肢，将{penis}在{target.name}的{mouth}中稳定地抽送，龟头时而顶到喉咙入口，引发轻微的吞咽反射。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}双手扶着{target.name}的头部两侧，控制着前后摆动的幅度，让{penis}在{mouth}内规律地进出，柱身被温热的口腔紧紧包裹，唾液沿着嘴角滑落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}加快了腰部挺动的频率，{penis}在{target.name}的{mouth}中快速抽插，龟头反复摩擦着柔软的上颚，带出黏稠的银丝挂在嘴唇边缘。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}放慢了抽送的速度，让{penis}在{mouth}中缓缓进出，每一次深入都刻意停顿片刻，感受着舌面在柱身上滑过的触感，{target.name}的呼吸变得紊乱起来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}轻轻按住{target.name}的额头，调整着角度让{penis}能够更深地进入{mouth}，龟头顶入喉咙浅处，迫使对方发出呜咽的声音，眼角泛起生理性的泪光。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}一手抓住{target.name}的头发，控制着节奏将{penis}送入{mouth}深处，柱身撑开柔软的口腔内壁，龟头在舌根处来回碾磨，溢出的唾液打湿了下巴。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}挺腰将{penis}整根没入{target.name}的{mouth}中，停留数秒后又缓缓抽出至龟头处，如此反复抽送，{target.name}的嘴唇被撑成圆形紧贴着肉棒表面。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}双手捧住{target.name}的脸颊，拇指抵着嘴角的位置，有力地摆动胯部让{penis}在{mouth}中大幅度进出，每次抽出都带出淫靡的水声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}托起{target.name}的下巴，稳定地挺动腰身，让{penis}沿着舌面滑入{mouth}深处，柱身上的青筋摩擦着柔嫩的口腔内膜，刺激得对方眉头紧蹙。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}猛然加速冲刺，将{penis}粗暴地在{target.name}的{mouth}中抽送，龟头反复撞击着柔软的喉咙入口，黏腻的呕吐声和水声交织在一起。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}双手托住{target.name}的后脑勺，将{penis}缓缓推入她的{mouth}深处，龟头抵着柔软的喉头轻轻顶弄，唾液顺着嘴角滑落下来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}握住{target.name}的下巴控制着角度，让{penis}在她的{mouth}中有节奏地抽送，每一次深入都让龟头刮过敏感的上颚，津液随之流出。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}按住{target.name}的头部，用力挺腰将{penis}捅入{mouth}最深处，柱身被喉肉紧紧包裹，抽出时拖带出一条条粘稠的涎丝。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}抓住{target.name}的头发控制着节奏，让{penis}反复碾磨过她的{mouth}内壁，龟头在喉咙口进出研磨，唇瓣被撑得紧紧贴合。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}挺动腰肢将{penis}送入{target.name}的{mouth}，让粗壮的肉棒撑满她的口腔，每次抽插都带出湿润的水声和混杂的涎液。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}扶住{target.name}的脸颊调整好角度，将{penis}整根没入她的{mouth}中，饱满的龟头卡进喉头，脸颊被顶出明显的弧度。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}用力按压{target.name}的后脑，让{penis}在她的{mouth}内大幅度抽送，柱身的青筋刮蹭过舌面，涎水顺着下巴不断滴落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}控制着{target.name}的头部前后摆动，使{penis}在{mouth}中进出不停，口腔被肉棒塞得满满当当，唇角都被撑开撕拉。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}捏住{target.name}的下颌固定住她，将{penis}捅入{mouth}反复抽插，滚烫的肉棒碾过柔软的舌头，混合着涎液发出淫靡的声响。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{character.name}抓着{target.name}的耳朵作为把手，让{penis}在她的{mouth}里用力抽送，每次深插都能让龟头顶到喉咙深处，逼出阵阵干呕声。"
 
 [[entries]]

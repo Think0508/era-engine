@@ -473,7 +473,7 @@ context = "幸福"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-2"
+conditions = "premises:FALL_LEVEL_E_-2"
 context = "乖巧"
 
 [[entries]]

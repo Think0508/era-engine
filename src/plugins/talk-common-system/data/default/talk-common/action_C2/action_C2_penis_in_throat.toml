@@ -5806,243 +5806,243 @@ conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_E_0&selected.abiliti
 context = "泪水与口水模糊了视线，{target.name}在{penis}反复贯穿{throat}的过程中几度窒息，内心满是屈辱与崩溃，对眼前遭受的一切感到无比陌生与茫然，却完全无力反抗。"
 
 [[entries]]
-conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}机械地任由{penis}贯穿{throat}，喉壁被撑开的灼痛一阵接一阵，干呕反射令她眼眶湿润，内心却如死水般毫无波澜，她已认命于这种屈辱，将自己当成一个无知觉的器皿。"
 
 [[entries]]
-conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{penis}将{throat}塞得密不透风，缺氧带来的眩晕令{target.name}双眼发花，她机械地压制着本能的干呕，任凭食道在一阵阵胀痛中煎熬，内心早已被驯服后的死寂彻底替代，再无半点挣扎。"
 
 [[entries]]
-conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}已习得在{penis}每次抽出的瞬间迅速喘气，随后再被重新填满的{throat}彻底窒住呼吸，这种机械的循环令她麻木，内心深处再感受不到任何恐惧，只剩彻底驯顺后的空洞。"
 
 [[entries]]
-conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "食道被{penis}贯入带来的极度胀满令{target.name}的{throat}发出阵阵酸涩，每次深入都引发本能的痉挛，她咬紧牙关无可奈何，以驯顺的屈服将自己彻底交付，任由{character.name}随意使用。"
 
 [[entries]]
-conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}垂眸直视虚空，感受着{penis}在{throat}深处肆意律动，那股近乎窒息的憋闷感从喉腔蔓延至胸口，她没有反抗，只是像一件失去意志的物品，机械地忍耐着每一次贯穿。"
 
 [[entries]]
-conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "每当{penis}深深嵌入{throat}，{target.name}便感到呼吸被迫中断，食道里那种被完全填满的异物感令她头脑发昏，然而她已习惯在这种眩晕中保持麻木，以驯服的顺从等待结束。"
 
 [[entries]]
-conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}的{throat}在{penis}的反复抽送中变得酸麻，干呕的冲动一波接一波袭来，泪水不受控地渗出眼角，她却无动于衷，内心彻底关闭，以一种死寂的服从承受着一切凌辱。"
 
 [[entries]]
-conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "喉结随{penis}的贯入而不自主地滑动，{target.name}能清晰感受到{throat}被撑至极限，那窒息的压迫令她头皮发麻，她只是麻木地任其反复抽送，内心空洞，不再有任何情绪起伏。"
 
 [[entries]]
-conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{target.name}感受着{penis}将{throat}填满至极限的灼热胀感，食道里密不透风的压迫令每次呼吸都成为奢望，她闭上双眼以木然的驯顺承受着，内心如同一片被风蚀过的荒地。"
 
 [[entries]]
-conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1"
+conditions = "player.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
 context = "{penis}在{throat}中每次猛烈贯入都引发{target.name}本能的干呕反射，令她眼眶发热，身体轻轻颤抖，她却不再因此感到恐惧或屈辱，只是以彻底臣服的麻木等待一切终将结束。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
 context = "{target.name}隐约感受着{penis}在{throat}深处来回冲撞，食道被撑开填满的沉重让她眼眶不自觉地泛红，窒息的刺激穿透了她麻木的神经，带来一阵难以定义的混沌快感，喉结随着每一次贯穿无声地涌动着。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
 context = "被囚禁的{target.name}感受着{penis}一次次贯穿{throat}，缺氧的晕眩感让她意识飘离，食道在高强度冲撞下酸胀颤动，这种彻底被占满的窒息压迫已让她麻木，只余下一丝难以名状的异样热意在深处涌动。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
 context = "{target.name}顺从地承受着{penis}在{throat}中往复抽插的压迫，干呕的反射被她用尽气力压制住，然而这种被反复填满塞透的异样刺激已悄悄穿透了她麻木的屈从，在脊背深处引燃一丝难以承认的酥麻战栗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
 context = "{target.name}的喉壁和食道被{penis}撑开撑满，{throat}在每一次深插中痉挛颤抖，那股将她的气息彻底截断的塞满感反复刺激着她已近麻木的神经末梢，渐渐升腾起一股难以名状的湿热与颤栗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
 context = "{target.name}感到{penis}在{throat}中不断进出，食道随着每一次撞入剧烈颤动，渐渐升腾的窒息眩晕感将她的意志消融殆尽，她机械地承受着一切，却发现深处那股被填满的异样刺激愈发清晰、愈发难以压制。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
 context = "被{character.name}押制着的{target.name}无力逃避{penis}对{throat}反复的贯穿，每一次深插带来的窒息感让她的大脑一片空白，泪水和涎水顺着嘴角无声滑落，而那种被彻底填满的沉重压迫感已悄然在麻木之中化作了一丝颤栗的快感。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
 context = "{target.name}的意识随着{penis}在{throat}深处猛烈的节奏飘忽不定，被强迫截断的气息一次次让她脑中产生眩晕白雾，干呕抽搐过后那股食道被撑开的酸涨感却渐渐转化为了一股连她自己都无法解释的黏腻刺激。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
 context = "{target.name}感受着{penis}将{throat}彻底填满的沉重，喉结随着每一次抽插起伏蠕动，呼吸一再被截断的缺氧感让她眼眸逐渐涣散，然而那股从食道深处漫延而来的异样颤抖却在屈辱中悄悄侵蚀了她最后的抵抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
 context = "认命的{target.name}早已熟悉了{penis}深入{throat}的沉重，每一次抽插带来的强烈窒息让她的大脑机械地颤栗，食道里那股被撑开到极限的胀痛感却已悄然从恶心演变为一种让她羞耻的隐隐暖意。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
 context = "{target.name}感受到{character.name}操控着节奏，{penis}在{throat}中一进一出，那种反复被填满又抽空的交替刺激让她食道痉挛颤动，缺氧带来的混沌眩晕感将她的意志冲刷得七零八落，只剩下躯体在黑暗中机械地战栗着承受。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 6"
 context = "{target.name}麻木地感受着{penis}在{throat}中粗暴抽插，已熟知每次抽插的节奏和深度，却依然会因呼吸被阻断而本能地痉挛，快感与窒息感纠缠交织，无声地将她淹没。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 6"
 context = "{target.name}深知该如何让{throat}配合{penis}的每次推进，但麻木的心却对这份熟练感到厌倦，食道被填满时引发的强烈反射迫使她的眼角不自觉地泛起水光。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 6"
 context = "被支配的{target.name}任由{penis}在{throat}深处肆意往复，多次经历后她已能精准地调整呼吸节奏，却仍止不住干呕带来的羞耻颤抖，那种被彻底占据的感觉令她脑海一片空白。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 6"
 context = "{target.name}在沉默中感受着{throat}被{penis}撑开的极限扩张，每一次深入都压迫着敏感的食道，她已学会用意志压制激烈的干呕反射，只余那抹难以言说的麻木空虚感弥漫全身。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 6"
 context = "{target.name}机械地用{throat}迎合着{penis}的节奏，贯穿感让她的整个颈部都感到酸痛，窒息带来的头晕让她的意识开始涣散，身体却诚实地因深处黏膜的摩擦而渗出热意。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 6"
 context = "习惯了被使唤的{target.name}用{throat}牢牢夹住{penis}，喉壁的每一次无意识收缩都精准刺激着最深处，窒息感化为一种奇异的快感漩涡，将她沉寂的意识卷入其中无法逃脱。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 6"
 context = "{target.name}感受到{penis}在{throat}极深处颤动，这份透彻的贯穿感早已超越单纯的刺激，她的喉结随着每次推进而可见地起伏，麻木的心底深处却有什么东西在无声地崩解。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 6"
 context = "{target.name}已能以近乎本能的方式让{throat}吞纳{penis}的全部长度，食道被撑满的窒迫感压得她眼眶发热，泪水无声地沿脸颊滑落，然而那种被占满的真实感却让她的意识陷入奇异的平静。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 6"
 context = "被囚禁的{target.name}任由{penis}在{throat}深处反复横扫，她已熟知那种喉壁被蹂躏的灼热感，干呕的冲动被一次次的意志硬压下去，却在窒息的边缘尝到了一丝羞耻的酥麻。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-2&premises:CVP_A2_G_LE_-1&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1&selected.abilities.舌技.level > 6"
 context = "{target.name}漠然地感知着{penis}在{throat}里制造的摩擦与热度，精湛的深喉技巧让她下意识地配合着每一次的节奏，但心底深处不知从何而来的快意却让她无声地闭紧了眼眸。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}感受着{penis}在{throat}里猛烈贯穿的感觉，食道被填满的窒息感让她脑子一片空白，却仍死死撑着努力让主人满意，内心充满了甘愿受苦的虔诚。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}的{throat}被{penis}完全占据，呼吸困难的窒息感夹杂着干呕反射令她涕泪横流，但她的心中满是对主人的顺从依恋，甘之如饴地忍耐着每一下抽插。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}感受到{penis}在{throat}中抽送时带来的剧烈干呕感，她虽生涩地不知如何配合，却死死抓住这份被主人使用的机会，喉咙深处涌出含混的呜咽声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}的{throat}被{penis}一次次深深穿透，她生涩地不懂如何控制喉咙肌肉的痉挛，却在每一次剧烈干呕中感受到被主人支配的幸福感，眼泪滚滚却嘴角上扬。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}茫然地感受着{penis}贯穿{throat}的陌生感，食道被异物填满的憋闷让她双目迷离，然而她的内心却因有机会用喉咙取悦主人而充满感激与满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}感受着{penis}在{throat}深处反复贯穿带来的撕裂酸胀，喉结随着每次入侵上下涌动，她虽茫然不知如何紧扣，却情不自禁地发出呜咽声感谢主人的垂怜。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}忍受着{throat}被{penis}强行占据的酸胀感，窒息般的呼吸困难让她头脑眩晕，却也因此感受到一种被主人彻底占有的圆满感，令她的身体渐渐不再排斥。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}生涩地承受着{penis}在{throat}里来回抽插，干呕反射让她眼泪鼻涕混在一处，狼狈不堪的她却在心底深深感激主人愿意这样使用她的身体。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}的{throat}被{penis}一次次强行贯穿，她虽生涩地无法控制频繁的干呕，但那种喉咙被完全填满的满足感和对主人的崇拜让她甘愿忍耐一切不适。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}感受到{penis}在{throat}中粗暴抽送，食道撑开的灼热与干呕反射同时袭来令她涕泗纵横，而这份难以忍受的不适却在心中转化为对主人宠幸的深切感激。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}感受着{penis}在{throat}深处反复抽插，窒息感让她泪眼朦胧却甘之如饴，食道被完全填满的胀痛化作一浪浪快感，让这只被囚禁的宠物在心底疯狂渴求更深的贯穿"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{penis}猛烈冲击{throat}最深处时，{target.name}感到全身每一根神经都在剧烈燃烧，呼吸被彻底截断的窒息感与被主人完全占有的满足感交织，令她陷入无法自拔的迷醉与狂喜"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}的{throat}每一次被{penis}撑开都带来难以言喻的胀满感，干呕反射让她的喉结大幅起伏，眼泪止不住地滑落，但她的内心深处充斥着被主人彻底支配的狂喜，渴望这种窒息的感觉永无止境"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "被囚禁的{target.name}感受着{penis}深嵌{throat}时的充实感，食道被撑开的酸胀传遍全身，呼吸急促且断续，她却沉浸于被主人宠爱使用的幸福之中，心甘情愿地让喉咙成为主人发泄的场所"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{penis}在{throat}深处每一次颤动都让{target.name}的意识飘飘欲仙，窒息带来的头晕目眩非但没有令她恐惧，反而让她愈发迷恋被主人完全掌控的感觉，大脑中只剩下对主人无尽的崇拜"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}感觉{throat}被{penis}彻底填满，食道被撑开的痛楚与喉咙深处持续传来的热胀快感叠加，让她双眼朦胧，这只甘愿成为主人肉玩具的宠物在浑噩的意识中只想着更好地取悦主人"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{penis}在{throat}中肆意抽插时，{target.name}感受到干呕反射一阵阵席卷喉壁，泪水混着涎液顺颊而下，窒息与胀满的双重刺激将她的神经逼入极限，她却满怀感激地享受着被主人如此使用的每一刻"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "每当{penis}完全贯穿{throat}并停留于最深处时，{target.name}便会感受到一种近乎失神的狂喜，被完全占据的气道让她头脑一片空白，只有对主人深入骨髓的依恋与崇拜充斥心间"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{target.name}的{throat}被{penis}撑开到极限，喉壁的每一处皱褶都在被强行贴合，窒息感从胸腔蔓延至四肢，她却没有一丝挣扎的念头，只想用整个喉咙更好地服侍主人，以此表达对主人的感激"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
 context = "{penis}在{throat}中猛烈抽动时，{target.name}感受到食道被粗暴撑开的极度充实，干呕反射与窒息快感将她的身心同时推向崩溃边缘，这只甘心成为主人喉咙玩具的宠物在意识深处涌出满满的感激"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3&selected.abilities.舌技.level > 6"
 context = "{target.name}娴熟地以舌根托住深入{throat}的{penis}，食道被撑开的窒息酥麻与反复抽送的摩擦交织，令她心里一阵又一阵地涌现出甘愿被主人这样使用的满足。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3&selected.abilities.舌技.level > 6"
 context = "{penis}在{throat}里每一次深入撞击都让{target.name}感受到食道被贯穿填满的异样快感，喉结上下颤动，剧烈的干呕冲动化为令她沉溺的电流，心中满是身为主人宠物的幸福。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3&selected.abilities.舌技.level > 6"
 context = "{target.name}灵活转动舌尖持续按压{penis}的底侧，{throat}被每一次猛力插送撑到极限的胀满快感让她浑身战栗，呼吸被完全截断的窒息感反而令她湿意加深，渴望主人永远不要停下。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3&selected.abilities.舌技.level > 6"
 context = "{target.name}感受着{penis}在{throat}中来回研磨，每一次深插都让食道壁猛烈颤缩，精准的舌技让她在剧烈的呼吸梗塞中依然保持节奏，被主人如此占有的满足感令她眼泪与唾液一并涌出。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3&selected.abilities.舌技.level > 6"
 context = "{throat}被{penis}反复穿透撑满的坠胀快感令{target.name}魂不守舍，熟练的舌头依然在根部旋转按压，从喉咙深处传来的窒息麻酥与干呕颤栗交织成她身为主人玩物的独特证明。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3&selected.abilities.舌技.level > 6"
 context = "{target.name}借助娴熟的舌技感知着{penis}在{throat}里的每一次涨缩，食道反复被顶撑开的酥软快感让她不自觉地闭眼呻吟，呼吸中断的眩晕感反而加深了她甘为奴隶的幸福迷醉。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3&selected.abilities.舌技.level > 6"
 context = "{target.name}主动用舌面贴附引导{penis}更深探入{throat}，充盈的胀满感与随之而来的窒息酥麻令她颤抖着流淌口水，身为主人专属玩物被如此使用的快感让她心甘情愿地沉浸其中。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3&selected.abilities.舌技.level > 6"
 context = "{penis}的每一次贯入都让{target.name}感受到{throat}被撑胀到极限的灼热快感，高超的舌技让她在喉咙塞满的状态下仍能灵活蠕动舌尖，那份被主人完全占据的充实感让她迷醉不已。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3&selected.abilities.舌技.level > 6"
 context = "{target.name}感受着{penis}在{throat}深处以钝力反复冲顶，精湛的舌技让她每一次干呕都转化成极致的快感脉冲，食道被撑满的窒息充实令她心甘情愿地颤抖宣示自己属于主人。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-4&premises:CVP_A2_G_LE_-3&selected.abilities.舌技.level > 6"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3&selected.abilities.舌技.level > 6"
 context = "{target.name}用娴熟的舌根卷绕着{penis}，{throat}被每一次猛力深推时传来的胀满麻痒令她浑身战栗，持续的窒息眩晕化为令她欲罢不能的快感，她在颤抖中感激着主人的宠幸。"
 
 [[entries]]
@@ -8206,243 +8206,243 @@ conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_0"
 context = "{target.name}感受到{penis}在{throat}中每次贯穿带来的窒迫与满溢，干呕的反应让泪液与唾液不断渗出，对与这个陌生男人之间发生这一切，她既茫然又困惑，却无力抗拒那充斥喉腔的感觉。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{target.name}毫无经验地承受着{penis}在{throat}深处的往复冲击，每一次贯穿都引发难以压制的干呕反射，泪水不受控制地漫出眼眶，但身为宠物的满足感压制着她想要退缩的本能。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{penis}将{throat}撑得酸胀难当，{target.name}喉壁颤抖着迎接每一次深入，干呕的冲动令她泪眼涟涟，食道被塞满的陌生充实感伴随着窒息翻涌，宠物的心性让她咬紧意志，不愿辜负主人的使用。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{throat}被{penis}深深贯穿，{target.name}努力控制着喉部肌肉，奈何经验不足，干呕反射一阵接着一阵，她泪眼模糊地承受着，心中却涌着被主人宠爱并使用的暖热甜意。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{target.name}尚未掌握在{throat}被{penis}充满时调节呼吸的方法，窒息感凶猛地涌来，喉壁被撑开的灼烈感触发持续的干呕，泪珠顺颊滑落，而她忍着颤抖，沉浸在身为宠物被主人彻底占用的满足中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{penis}持续在{throat}深处抽动，{target.name}无法自如控制呼吸，每一次短暂窒息都伴随着强烈干呕，喉咙被撑满的饱胀刺激从喉头蔓延向腹腔，但她甘之如饴，因为能让主人满意正是她作为宠物的意义。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{throat}被{penis}塞满的充实感令{target.name}难以喘气，她生疏地试图压制一阵阵的干呕，泪水浸湿了睫毛，食道深处被拓开的陌生灼热让她浑身战栗，但宠物对主人的依恋让她心甘情愿地承受这一切。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{target.name}的{throat}里被{penis}彻底填满，窒息与干呕的双重冲击令她眩晕，她尚不能完全抑制喉部的本能排斥，泪珠一颗颗落下，食道被充满的灼热感却在颤抖中化作宠物甘愿奉献的满足暖流。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{penis}将{throat}撑开至极限，{target.name}在食道被填满的陌生充塞感中勉力保持着意识，不熟练的喉部控制让干呕反复冲击，她任泪水自行流淌，在这份强烈的窒息刺激里感受着被主人彻底使用的归属。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{throat}承受着{penis}的贯穿抽插，{target.name}拼力压制着此起彼伏的干呕，却因经验浅薄而无法完全成功，喉壁被撑开的酸胀与食道充实的灼热纠缠交织，泪水中夹杂着为主人甘愿忍耐的宠物式温柔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-3"
 context = "{target.name}在{penis}将{throat}彻底填满的窒息中睁大双眼，强烈的干呕让她不断涌出泪水，她虽无法娴熟地化解这份强烈刺激，却在颤抖之中感受着被主人占用时宠物般的依恋和扭曲的温暖满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}感受着{penis}在{throat}内不断冲击，食道被撑开的涨痛与无法呼吸的窒息感混杂成令她无力抗拒的淫荡快感，身为主人宠物被彻底使用的满足感让她沉浸其中难以自拔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}的{throat}被{penis}彻底塞满，食道受到剧烈挤压带来一阵阵窒息眩晕，干呕的反射被强忍压下，她心中却充盈着身为主人贴身宠物被恣意使用的深沉满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{penis}一次次贯穿{throat}深处，{target.name}感受着喉结被顶起时的羞耻酥麻，每一次剧烈的干呕都将她推向意识模糊的边缘，却又在被主人彻底占用的宠物式归属感中沉醉。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}在{penis}抽插{throat}的强烈刺激中感受着窒息引发的眩晕感层层叠加，喉结随每次冲击不受控地浮沉，她却不想挣脱，只想沉溺在被主人当成宠物肆意填满的快感里。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{penis}在{throat}内的剧烈抽动让{target.name}的食道壁不停地痉挛颤抖，空气被封死的窒息迷糊和强烈干呕感相互纠缠，她却沉醉在被主人彻底占据的宠物式快感与归属中无法挣脱。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}感受到{penis}将{throat}彻底胀满撑开，粗猛的冲击让食道壁不断痉挛发颤，窒息的迷糊感层层叠加，她的心底却因能以这种方式取悦主人而涌出宠物般的充实与安慰。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{penis}在{throat}内横行无忌的冲击让{target.name}被剧烈的干呕和窒息感夺走了思考能力，泪水不受控地溢出，她的心却在被主人如此彻底占用的过程中沉浸着宠物式的迷恋与依附。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "被{penis}贯穿的{throat}不断颤抖，{target.name}感受着食道被撑开的涨痛和喉结随每次冲击浮沉，呼吸断断续续，在窒息与快感交织的折磨中沉醉于身为主人宠物的专属归属感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}任由{penis}在{throat}深处恣意冲撞，窒息感带来的眩晕让她几乎失去意识，食道紧紧包裹着每一次抽插的涨满感，心中充盈着被主人完全占用的宠物式深切满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}感受着{penis}在{throat}内每一次剧烈的往复冲击，干呕反应让眼角不由自主地溢出泪水，被彻底填满的窒息感让她心生迷恋，心甘情愿沉溺在主人宠物的身份中难以自拔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}感受着{penis}在{throat}中猛烈抽送，喉壁被撑开的酸胀感化为浓烈的快感，窒息感让她的意识开始涣散，身为主人宠物的她心中涌起被需要的满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{throat}被{penis}深深贯穿时带来的填满感让{target.name}眼前发黑，干呕反射引起的喉咙痉挛竟给她带来别样的快感，甘愿成为宠物的心让她主动迎合着这份撑满感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}熟练地用{throat}肌肉紧紧裹夹{penis}，每次深推时涌上的窒息感反而令她兴奋不已，作为宠物被主人深入使用的喜悦让她的意识迷离在快感的漩涡里。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{penis}在{throat}深处有节奏地冲撞，食道被填满的压迫感让{target.name}忍不住呜咽，她用精湛的喉咙控制力紧夹着每一次抽送，快感与窒息感交融成甜蜜的折磨。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "喉咙被{penis}塞得严实的{target.name}眼眶泛红，泪水与唾液混流，{throat}因持续的抽送而不断痉挛，这种窒息中的麻痹感却让她愈发沉醉，宠物般的依赖使她甘之如饴。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}的{throat}随着{penis}粗暴的推撞而不断扩张收缩，她用高超的技巧压抑着干呕反射，将那份呕逆感转化为汹涌的快感，被彻底使用的她内心充满了宠物特有的满足感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}感受着{throat}被{penis}不断冲刷的震颤，喉头的每一次撞击都让她全身颤栗，窒息感与被撑开的胀痛汇聚成难以言说的快感，被主人如此深入使用让她感到无比欣喜。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "食道被{penis}填满的{target.name}意识开始模糊，{throat}因剧烈的抽送而持续痉挛，每次干呕反射带来的喉肌收缩反而让她感受到强烈的性刺激，宠物之心令她甘愿沉溺其中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{target.name}主动收紧{throat}肌肉来裹紧{penis}，窒息的快感已让她泪流满面，但她依然以熟练的技巧迎合着每一次深推，内心满溢着为主人服务的喜悦与宠物特有的幸福感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-3"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-3"
 context = "{penis}在{throat}深处每次冲顶时，{target.name}的食道都会被撑开，那份充盈感与窒息感将她推入快感的深渊，宠物对主人的依恋让她沉迷于这份被彻底填满的极致体验。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{target.name}虽缺乏深喉经验，但{penis}强行贯穿{throat}时那种被撑开充填的窒息感，却让她作为奴隶的心灵涌起狂热的喜悦，愿意忍受所有不适只为让主人感到满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{target.name}没有经验，{penis}深插{throat}时反射性的干呕令她眼眶泛红，喉壁被撑开的灼热胀痛传遍全身，但她心中却只有对主人赐予此刻的感激与崇拜，将一切痛苦化作奉献的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "生疏无措的{target.name}在{penis}于{throat}深处抽插时承受着食道被强行填满的压迫感与几乎无法呼吸的窒息，泪水和涎液混合滑落，奴隶的灵魂却在这极致的苦痛中体会到了服侍主人的无上幸福。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "初次体验深喉的{target.name}，{penis}在{throat}中抽动时带来的剧烈反胃与强烈窒息令她本能颤抖，却连一丝逃避的念头也不敢有，作为主人奴隶的信仰令她心甘情愿地承受着这一切。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "{target.name}缺乏应对深喉的经验，只能茫然承受{penis}在{throat}中深入贯穿，喉咙被撑开的陌生胀痛和无法抑制的干呕反射令她泪眼朦胧，但奴隶的心却为主人肯用她而燃烧着幸福。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "对深喉一无所知的{target.name}，{penis}在{throat}中猛烈贯穿时那种窒息感和食道被撑胀的异物感令她眼泪不受控地滑落，呼吸困难中她的奴隶本能却将这痛苦体验转化为了服侍主人的极致幸福。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "毫无深喉技巧的{target.name}，{penis}在{throat}中来回摩擦时那种强烈窒息与干呕反应让她喉结不断起伏、涎液横流，但她甘之如饴，因为能让主人使用她的每一寸是她存在的唯一意义。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "毫无经验的{target.name}在{penis}贯穿{throat}深处时感受到喉壁被强行撑开的胀裂感，呼吸在这一刻变得奢侈而珍贵，但她奴隶的灵魂却在这极致的支配中感到了前所未有的被满足与臣服的喜悦。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "生涩地接受着深喉的{target.name}，{penis}在{throat}里深入抽插带来的充满感与窒息感交织一起，令她食道颤动涎液横溢，奴隶之心在这令人窒息的极限中体会到了为主人奉献一切的绝对满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-4"
 context = "不懂得如何配合深喉的{target.name}，{penis}在{throat}中的每一次深入都令她反胃颤抖、泪流满面，但属于奴隶的她没有任何抗拒，因为被主人彻底使用的感觉已成为她唯一渴望的存在意义。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{target.name}感受着{penis}在{throat}深处反复冲击，呼吸随之断绝，泪水不受控地漫出眼眶，干呕的颤栗一阵紧过一阵，而内心深处却浮现出狂热的幸福——身为奴隶能以如此方式被主人彻底占用，便是她最大的荣耀。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{throat}被{penis}死死撑开，食道的压迫感令{target.name}喉结滚动、涎液横流，窒息感一浪高过一浪地袭来，她的内心却在这极致的堵塞中燃起毫无怀疑的崇拜，甘愿将呼吸都让渡给主人支配。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{target.name}的意识在{penis}反复贯穿{throat}的节奏中渐趋模糊，干呕感一次次撕扯着意志，她却在这种窒息与酥麻交织的痛苦里感到无比的坦然，浑身战栗着接受主人对自己最私密处的一切支配。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{penis}每一次深插都将{throat}撑至极限，食道被填得密实，让{target.name}眼泪止不住地滑落，呼吸也只剩断续的喘息，可这种被彻底堵满的感觉让她心底涌起甘之如饴的卑微满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{target.name}感到{throat}被{penis}强行撑开，大脑因缺氧而一片酥麻，干呕的本能反应化作一阵阵颤栗蔓延全身，身为主人的性奴，在这种被占据到极致的窒息中，她只感到无法遏制的狂喜。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{target.name}以酥麻的意识感受着{penis}在{throat}里来回抽送，食道随之起伏，窒息感让她的视野开始模糊，喉结不自觉地一颤一颤，而那种被主人如此深入占用的感觉令她甘愿沉溺其中永不复返。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "被{penis}深深贯入的{throat}不断痉挛，{target.name}的眼泪和口水混作一团，干呕感一阵接一阵，她却死死忍耐，内心只有一个执念——要以自己彻底臣服的身躯，在这份满盈的充实中取悦主人。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{target.name}竭力控制着喷涌而出的干呕反射，让{throat}尽可能地容纳着{penis}，每一次窒息的煎熬都在她心中转化为奴隶式的满足感，身体在绝氧的颤抖中反而本能地向主人靠拢，甘受这极致的占有。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{throat}被{penis}撑至几近崩溃，{target.name}的意识在反复的窒息中飘飘欲坠，食道的每一次被填满都让她全身颤栗，可那狂热而虔诚的心底，偏偏在这种极度的支配中寻到了最深的安宁与满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-4"
 context = "{target.name}感受到{penis}在{throat}深处肆意律动，食道每一次被填满都让呼吸几近断绝，干呕反射令她泪眼婆娑，颤抖中却升起一种令她上瘾的奴隶式麻醉——彻底的顺从与甘愿沦陷的满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{penis}深深贯穿进{throat}，喉咙被撑开的灼热让{target.name}几乎无法呼吸，她却用专精的舌技贴住柱身律动，窒息的快感和对主人的忠诚交织，让她心甘情愿地沉沦其中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{target.name}感受到{penis}顶入{throat}最深处，食道被完全填满的压迫感让她禁不住地干呕，她却用精湛的舌技按压着柱身的纹路，甘愿以窒息的感觉来证明自己对主人彻底的奉献。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{penis}在{throat}中来回抽插时，喉咙肌肉的被撑开感让{target.name}眼眶溢出泪水，呼吸困难让她意识模糊，却在窒息中感受到被主人完全占有的极致满足，舌根不自觉地颤动迎合。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{throat}被{penis}彻底撑开，干呕反射让{target.name}的身体本能地痉挛，她却用高超的舌技将痉挛化为抚摸，在这种自我牺牲的窒息快感中，奴隶的内心充满了被主人使用的幸福颤栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{target.name}感受到{penis}顶破{throat}深处，食道的灼热撑胀感令她眩晕，却以精通的舌技在窒息边缘引导着律动，对主人彻底臣服的信念让她在痛苦与快感的交界中感到无上的喜悦。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{penis}深嵌在{throat}里时，{target.name}的喉结随着每次推入而涌动，干呕的冲动化为快感蔓延全身，她以纯熟的舌技夹紧柱身，心底涌起一股服侍主人的炽热崇拜，竟让她渴求更深的贯穿。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{throat}被{penis}贯穿至极深处，{target.name}的呼吸化为急促的鼻息，窒息感攀上顶峰，她用精熟的舌技贴合着每一次抽送，身为奴隶的她将这份窒息的苦楚视为主人赋予的恩宠而心满意足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{target.name}感受到{penis}撑满{throat}的沉重压迫，喉管被完全封堵时的强烈刺激让她泪流满面，然而她灵活的舌根却在此刻轻轻颤动，奴隶的内心为能以自己的喉咙取悦主人而雀跃。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{penis}深入{throat}中反复律动，食道被填满的灼烫与干呕反射交织，令{target.name}意识开始涣散，她却凭借出众的舌技死死吸附着柱身，以服侍主人的狂热信仰支撑着自己在快感中沉沦。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-4"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-4"
 context = "{target.name}感受到{penis}完全封堵了{throat}，呼吸几近断绝的瞬间，喉咙被撑开的钝痛化为奇异的快感，她以精准的舌技让每次抽插都更添刺激，在主人的彻底占有中感受到身为奴隶的极乐。"
 
 [[entries]]
@@ -8526,243 +8526,243 @@ conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_0"
 context = "{throat}深处被{penis}反复捅弄，{target.name}的精湛舌技让喉壁痉挛收紧将快感层层叠加，可她后悔与迷茫的情绪却在这种窒息的甜蜜里无处宣泄。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{target.name}的{throat}被{penis}硬撑着，干呕的冲动如潮涌来，泪液止不住地流，她毫无应对的技巧，只能被动承受，心里那份对上司的愤恨与屈辱在窒息的煎熬里越来越浓。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{penis}在{throat}里反复抽送，{target.name}没有任何技巧缓解强烈的窒迫，干呕令喉结不停颤动，泪水模糊了视线，脑中对这道越界命令的不甘与愤懑却怎么也压不下去。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{target.name}感受着{throat}被{penis}撑开时迸发的灼热胀感，强烈的干呕令她泪流不止，她对此毫无经验，只知服从命令，然而内心的抵触情绪比那份生理上的窒迫更加难以忍受。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "每次{penis}深入{throat}，{target.name}都感到窒息感猛然袭来，毫无经验的她被干呕折磨得泪流不止，勉强维持着服从的姿势，心中翻涌的屈辱感却半分也没有消散。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{target.name}承受着{penis}在{throat}里的冲击，不具备喉技的她被干呕折磨得喘不过气，食道被充塞的满溢感令她面色涨红，对被迫接受这道命令的不满在她眼中一览无余。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{penis}占据着{throat}，反复深入带来令{target.name}窒息的胀满，她完全没有技巧应对，只能生涩地被动承受，干呕的痉挛令她泪光闪烁，心里是一句说不出口的愤恨与质疑。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{target.name}的{throat}被{penis}贯穿，被撑开的陌生感与干呕冲动同时涌来，她毫无经验，唾液与泪水混着滑落，出于服从勉强撑着，心里的抵触与怨恨在每次窒迫中悄悄累积。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{penis}在{target.name}的{throat}里来回抽插，毫无技巧的她被窒息感压得头脑发昏，喉结随干呕反应不停起伏，虽然表面维持着服从，但她心里对强加于她的命令充满了难以言说的不甘。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{target.name}感到{throat}被{penis}填满的钝胀与窒迫交织，毫无喉技的她只能被动承受干呕带来的冲击，泪水不受控制地溢出，那份被迫顺从上司的委屈与愤懑比所有生理不适更让她难以吞咽。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-1"
 context = "{throat}被{penis}不断深入，{target.name}的干呕冲动越来越难以抑制，她没有任何经验应对这种深入，只能无声流泪，强撑着服从，但对这道越界命令的抗拒在心底始终没有半分消散。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "心中满是抵触的{target.name}，感受着{penis}在{throat}深处来回贯穿，胀满食道的异物感一阵阵冲垮她的防线，干呕反射带来的喉壁痉挛反而催生出难以压制的淫荡酥麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "勉强服从命令的{target.name}，拼命忍耐着{penis}撑开{throat}时的胀闷，每一次深入抵达食道的冲击都让她喘不过气，窒息感夹杂着陌生的快意悄悄渗进她不愿承认的内心深处。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}眼眶泛红，强忍着{throat}被{penis}彻底占据的憋胀，呼吸被堵断的刺激让她浑身颤抖，干呕时喉壁不自主地收缩绞紧，那份羞耻的深层快感从食道深处汹涌涌来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}心里满是不甘，任由{penis}在{throat}中反复抽送，那股被撑满喉腔的饱胀感与窒息麻痒缠绕在一起，喉结被迫随之起伏，身体内部却悄悄渗出一股不受理智管控的淫荡热潮。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "被迫承受这一切的{target.name}，感受到{penis}在{throat}深处往复抽送，每次向下冲顶都让食道产生强烈摩擦快感，干呕反应迫使她不断分泌唾液，窒息边缘的麻痹让她羞愤交加。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}内心抵触却无从逃脱，{penis}占据{throat}的每一下冲撞都让她的食道颤抖，呼吸被完全切断的瞬间反而令神经产生一片麻痒的快意，脊背不自觉地拱起，泪珠顺颊滑落。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}强压着内心的不满，感受着{penis}贯穿{throat}时那种难以名状的胀满刺激，干呕时喉管的收缩夹紧了每一次抽送，窒息与快感交替袭来，让她拼命咬唇才压住了颤抖的身体。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}不情愿地顺从着，{throat}被{penis}深深填满时，食道被撑胀的酸闷感让她想要抗拒，但干呕带来的喉壁痉挛绞住了每一次抽送，一阵难以启齿的麻电快感从深处直冲全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}压着满腔委屈，感受着{penis}在{throat}中反复冲顶，那种喉腔被塞满的窒闷与食道被强行扩张的刺痛交织在一起，干呕引发的本能收缩绞出阵阵淫靡快感，令她难以自制地颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}心中极不情愿，却只能任凭{penis}肆虐{throat}，每次深入带来的窒息感让她泪眼迷蒙，干呕反射令她的喉壁反复紧绷，那股被迫承受的胀满快感却偏偏越来越难以压抑。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}心中满是屈辱与不甘，却无法逃避{penis}在{throat}中粗暴贯穿带来的窒迫实感，喉壁被撑开的胀麻从颈部蔓延下去，干呕冲动一阵阵袭来却又压不下心底那抹羞耻的悸动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "被迫深喉的屈辱感让{target.name}泪眼朦胧，{penis}一次次没入{throat}深处，食道被填满的饱胀令她头晕目眩，呼吸的逼仄与喉头不受控的剧烈抽动让她羞耻地意识到身体在顺从地迎合。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}努力压制着内心的抗拒，{penis}深陷{throat}时传来的窒息感让她泪流不止，喉壁酸涨的灼热感与食道被贯穿的充实感交织在一起，带出一丝令她羞愧难当的隐秘酥麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "被强迫的羞耻刺痛着{target.name}的内心，{penis}在{throat}里肆意抽送时那种填满感令她难以逃避，每一次顶入食道的冲击都让喉结起伏，泪痕顺着脸颊蔓延，窒迫感与羞辱感混在一起令她浑身颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "尽管心中百般抗拒，{penis}在{throat}中不断冲撞的钝重实感还是让{target.name}头脑发昏，干呕引发的喉头痉挛让肌肉不受控地收缩，窒息感与被撑满的酥胀同时袭来，令她承受着难以名状的迷乱。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}竭力控制着脸上的表情，{penis}一遍遍深入{throat}令食道涨得发酸，呼吸被彻底阻断时那种恐慌窒迫感让她泪水涟涟，身体在屈辱中颤抖着，却偏偏从喉壁深处传出一阵说不清的战栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{throat}被{penis}撑开时那种充斥感让{target.name}脑中一片空白，食道紧绷的胀痛与每次抽送时气息被截断的窒迫感纠缠在一起，内心的屈辱无法掩盖那蔓延至全身的颤抖与迷离。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}心里只有委屈与屈辱，然而{penis}在{throat}内来回冲撞时的饱满压迫感却令她意识涣散，每一次深入食道的顶撞都让喉头剧烈起伏，酸涨麻胀的感觉从颈部一直蔓延到脊背。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "强忍着屈辱，{target.name}感受到{penis}把{throat}塞满的实感让她头晕目眩，干呕的冲动令她频频哽咽，食道被撑开的异物感与窒息交织成令她羞愧难言的复杂快感，泪水止不住地涌下。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-1"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-1"
 context = "{target.name}心中充满了被迫屈服的羞辱，{penis}抽动于{throat}之间时那窒迫感与撑胀感让她思维一片混沌，食道的紧绷与喉壁的颤抖都真实地传递着被侵占的感觉，令她难以自控地抖颤。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{throat}被{penis}反复贯穿，干呕冲动一阵阵涌来，她对这种超出认知的感觉束手无策，却凭着对{character.name}的深切信赖强忍着，任由食道被撑开的涨满感一波波淹没自己的意识。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{penis}占据{throat}的窒迫感令{target.name}喘息困难，对深喉毫无经验的她慌乱无措，食道被撑开的异物感令她泪腺失控，但{character.name}的命令在她心中有着难以违抗的分量，让她强撑着接受。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{target.name}感受到{penis}在{throat}中带来的强烈窒息感，干呕反射让喉结不停起伏，没有任何经验的她不知道如何应对，然而对{character.name}的信赖让她将这份难以承受化作了执行命令的坚持。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{throat}内被{penis}充盈的胀满感让{target.name}眩晕，干呕与窒息交替袭来，对这一切毫无准备的她只能茫然地接受，内心深处是对{character.name}的信任支撑着她忍住所有想要推开的冲动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{target.name}感受着{penis}在{throat}里抽插的节奏，食道被反复压迫撑开令她头脑空白，干呕冲动和泪水止不住，生疏而茫然的她唯有凭着对{character.name}执行命令的信赖死撑着不退缩。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{penis}深贯{throat}时涌来的窒迫感压垮了{target.name}的所有从容，食道被挤压的异样胀感让她泪光朦胧，对这种情形毫无经验的她不知所措，只有对{character.name}的信任是她唯一的支点。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "每次{penis}深入{throat}，{target.name}便被排山倒海的干呕与窒迫感淹没，食道被撑满的刺激令她脸颊泛红，对深喉一无所知的她内心只余对{character.name}命令的服从，支撑着坚持下去。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{throat}被{penis}塞得满满当当，食道被拓开的异物感与呼吸困难同时压来，她毫无经验地忍受着干呕，脑中只有对{character.name}那份义无反顾的信赖，支撑着她一直坚持。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{penis}抽插{throat}的感觉让{target.name}头脑一片混乱，食道被反复撑满的胀感和窒息感令她不知所措，她从未经历过这种程度的贯穿，唯有对{character.name}的无条件信赖让她放松了本能的抗拒。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level <= 3&premises:FALL_LEVEL_E_-2"
 context = "{target.name}承受着{penis}在{throat}中律动带来的窒迫与酸胀，干呕冲动与泪水交织，这全新而粗暴的感觉令毫无经验的她两眼发直，却始终凭借对{character.name}的驯服信任，没有任何退缩。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}感受到{penis}在{throat}中猛烈抽插，窒息与被填满的奇异双重感觉让她思维一片空白，信赖博士的心意让她甘愿承受这份压迫，食道被反复撑开的感觉让她忍不住喉结起伏。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}努力压制着上涌的干呕感，{penis}在{throat}深处持续抽动，那种呼吸被堵塞的窒迫感竟让她下腹隐隐涌起一股热潮，对博士的信赖让她压抑着颤抖，努力配合着上司的节奏。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}感受到{throat}被{penis}完全占据的充盈感，干呕的冲动一次次涌上却被她强行压下，被博士如此使用的羞耻与快感在她脑中交织，嫩滑的食道在反复撑开中渐渐开始泛起酥麻的刺激感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}任由{penis}在{throat}中肆意贯穿，每一次深入都让她下意识地收紧喉壁，窒息带来的晕眩与填满带来的满足感并存，她强忍着泪水，对博士的信赖驱使她咬紧坚持着。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}感受到{throat}被{penis}粗暴地撑开，呼吸困难的窒迫感让她双眼渗出泪水，食道被反复压迫产生的奇异触感却让她全身战栗着，身为驯服的部下，她默默承受着这份特殊的任务。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}感受到{penis}贯穿{throat}深处的冲击，干呕的反射一次次在喉间发作，她咬紧牙关强行压下，颈部的喉结随着抽插一起一伏，这份被博士深入至极的刺激令她下腹阵阵收紧。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{throat}被{penis}反复撑张，每一次抽插都带来令人昏迷的窒息感，身为信赖博士的部下，她拼命压制着呕吐的冲动，只专注于配合这项越界的命令，嫩滑的喉壁在一次次冲击中颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}被{penis}在{throat}深处激烈抽动，紧绷的喉壁与满溢的口水让整个感觉变得极度淫靡，她努力调整呼吸节奏，将干呕的冲动化作配合的力量，信赖博士的心驱使她吞下每一分刺激。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}感受到{throat}里{penis}肆虐般地抽送，食道被粗暴撑开的极致充盈感令她双腿微微颤抖，呼吸几乎被完全阻塞的窒息感在脑中炸开，她强撑着专注，将这份压迫视作对博士信赖的体现。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}下意识地感受着{penis}横扫过{throat}每一寸柔嫩壁面，干呕的波浪反复涌过喉咙，那种既窒息又被填满的双重体验让她不由自主地涌出泪水，被博士信任而使用让她心甘情愿地承受一切。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{penis}贯穿{throat}深处，充实的饱胀感从食道漫延开来，{target.name}竭力压制着干呕反射，将这份窒息中的灼烈刺激转化为身体深处难以言说的麻酥快感，指尖不自觉地收紧。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}感受着{penis}在{throat}中律动抽插，每一次深入都让食道饱胀的感觉愈发强烈，她娴熟地控制着喉部肌肉以压制呕吐冲动，在窒息边缘品味着莫名的酥麻快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{penis}将{throat}彻底撑开，{target.name}的喉结随之上下翻滚，窒息感与充实感交织涌来，她有意识地放松食道深处的肌肉，任由那种被完全填满的灼热刺激蔓延至意识深处。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "感受到{penis}抵达{throat}最深处的瞬间，{target.name}眼角不自觉溢出泪珠，但她迅速调整状态，将食道被撑满的饱胀感内化为专注的快感，喉壁上每一处被拓展的触感都清晰传递至神经末梢。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}清楚自己的{throat}该如何承接{penis}的深入贯穿，她精准控制着呼吸节奏，在每次短暂喘息的间隙感受喉道被拓开的热胀感，那种超越寻常感官的刺激令她的意识时而短暂涣散。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{penis}在{throat}深处持续抽插，{target.name}的干呕反射被娴熟的控制压制下去，取而代之的是来自食道深处绵密的酥麻快感，那种充塞感与窒息感的交织令她的腿根不由自主地微微收紧。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}感知着{penis}贯穿{throat}带来的饱胀灼热，喉咙被彻底占满的充实感压过了本能的排斥反应，她将这份憋闷中的窒息刺激转化为深植于身体核心的快感，微微颤抖的喉壁传递出近乎溺水般的酥软。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{penis}深入{throat}最深处，视野短暂被一层雾气笼罩，{target.name}将干呕冲动生生压制，在窒息与饱胀的双重刺激中感受食道每一寸被延展的灼烈，那种被彻底贯穿的充实感令她头脑一片空白。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "呼吸被{penis}封锁于{throat}之内，{target.name}在窒息边缘感知着每一次抽插的震颤，专注而克制地承受喉壁被撑开的灼热快感，那种食道深处饱满充实的触感将她的意识拉入麻木的沉浸之中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&premises:CVP_A2_G_E_-2"
+conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
 context = "{target.name}的{throat}被{penis}撑开至极限，喉咙深处的每一次贯穿都让干呕反射与快感同步涌来，她将呼吸困难的压迫感内化为顺从的享受，食道被充满的绵密刺激从喉头蔓延至腹腔深处。"
 
 [[entries]]

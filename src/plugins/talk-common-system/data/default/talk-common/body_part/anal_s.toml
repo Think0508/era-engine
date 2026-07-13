@@ -328,7 +328,7 @@ context = "展示"
 
 [[entries]]
 part = "A"
-conditions = "premises:CVP_A2_G_E_-1"
+conditions = "premises:FALL_LEVEL_E_-1"
 context = "紧绷"
 
 [[entries]]

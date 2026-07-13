@@ -606,123 +606,123 @@ conditions = "premises:t_npc_active_h"
 context = "{character.name}控制{target.name}的{hands_s}在{penis_s}上下滑动同时绕圈，力道时轻时重，完全控制着刺激的节奏与方式。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}强硬地抓住被囚禁的{target.name}的{hands_s}，强迫其摩擦{penis_s}，{target.name}的手指僵硬地抵抗，却无法挣脱镣铐的束缚。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}捉住被铁链束缚的{target.name}的{hands_s}，粗暴地压在{penis_s}上强制揉搓，{target.name}的手指不配合地颤抖着。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}抓着监禁中的{target.name}的{hands_s}强行上下摩擦{penis_s}，不理会{target.name}的抵抗，手指关节因挣扎而发白。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}紧握被束缚的{target.name}的{hands_s}，残忍地按压在{penis_s}上下撸动，尽管{target.name}拼命试图蜷缩手指拒绝。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}扭住{target.name}被锁链限制的{hands_s}，强迫其握紧{penis_s}快速摩擦，{target.name}的手腕因反抗而与铁链摩擦出红痕。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}压制着囚禁中的{target.name}的{hands_s}，迫使其对{penis_s}进行不情愿的服务，手指在束缚下只能机械地动作。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}拉扯着被囚的{target.name}的{hands_s}，强行引导沿着{penis_s}从上到下滑动，无视{target.name}试图缩回手的抵抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}紧控{target.name}戴着镣铐的{hands_s}，野蛮地按在{penis_s}上揉搓刺激，{target.name}手指僵硬地抗拒着每一个动作。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}抓紧被束缚的{target.name}的{hands_s}，不容反抗地操控其套弄{penis_s}，镣铐随着{target.name}微弱的抵抗发出声响。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_GE_-1"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-1"
 context = "{character.name}扣住监禁中的{target.name}的{hands_s}，强硬地拖动其在{penis_s}上下移动，{target.name}被迫服务的手指因抗拒而变得僵硬。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}捉住被囚禁已久的{target.name}的{hands_s}，引导其套弄{penis_s}，{target.name}虽面无表情，但手指已不再强烈抵抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}操控着长期监禁的{target.name}的{hands_s}摩擦{penis_s}，{target.name}麻木地配合着动作，眼神空洞地盯着墙壁。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}拉着戴镣铐的{target.name}的{hands_s}围绕{penis_s}打转，{target.name}不再挣扎，只是机械地执行命令。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}握住认命的{target.name}的{hands_s}上下撸动{penis_s}，{target.name}低垂着头，手指的动作因长期调教而变得熟练却机械。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}引导被囚禁的{target.name}的{hands_s}沿着{penis_s}滑动，{target.name}顺从地执行，已失去了最初的抵抗意志。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}抓着长期调教的{target.name}的{hands_s}对{penis_s}进行刺激，{target.name}的手指配合着动作，不再有抵触的颤抖。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}控制着已驯服一半的{target.name}的{hands_s}揉搓{penis_s}，{target.name}虽然眼中还有一丝抗拒，但动作已经相当配合。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}指引戴着镣铐的{target.name}的{hands_s}套弄{penis_s}，{target.name}消极地接受着任务，不再浪费力气反抗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}按住被囚已久的{target.name}的{hands_s}在{penis_s}根部到顶端间反复摩擦，{target.name}表情麻木，但手上动作变得平稳。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-1&premises:CVP_A2_G_GE_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-1&premises:FALL_LEVEL_GE_-3"
 context = "{character.name}掌控着被长期调教的{target.name}的{hands_s}上下套弄{penis_s}，{target.name}已经习惯了这种行为，眼神呆滞地看向远方。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}轻触完全顺从的{target.name}的{hands_s}，{target.name}立刻热情地握住{penis_s}快速撸动，镣铐随着她刻意夸张的动作发出声响。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}只需简单示意，戴着项圈的{target.name}的{hands_s}就热切地包裹住{penis_s}，主动变换各种角度和力度进行服侍。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}引导彻底崩坏的{target.name}的{hands_s}在{penis_s}上套弄，{target.name}露出陶醉的表情，主动加快手上的动作。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}示意被囚禁的{target.name}的{hands_s}对{penis_s}进行特殊技巧服务，{target.name}眼中闪烁着讨好的光芒，立即执行命令。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}轻轻按压完全顺从的{target.name}的{hands_s}，引导其对{penis_s}根部进行按摩，{target.name}热情地加入了自己的技巧。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}拍了拍调教完成的{target.name}的{hands_s}，{target.name}立刻明白主人的意图，双手交替撸动{penis_s}，神情专注而陶醉。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}指引完全服从的{target.name}的{hands_s}围绕{penis_s}打转，{target.name}卖力地展示着长期训练的成果，眼中满是渴望得到认可。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}轻抚彻底臣服的{target.name}的{hands_s}，{target.name}立即以熟练的技巧揉搓{penis_s}，像展示宝物一样骄傲地服侍主人。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}暗示已被调教成性奴的{target.name}的{hands_s}，{target.name}立刻主动上下套弄{penis_s}，期待主人的每一个反应和指示。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:CVP_A2_G_L_-3"
+conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_L_-3"
 context = "{character.name}引导戴着镣铐却无比顺从的{target.name}的{hands_s}沿着{penis_s}慢慢滑动，{target.name}投入地执行着每一个细节，表情陶醉。"
 
 [[entries]]

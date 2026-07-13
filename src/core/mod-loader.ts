@@ -335,7 +335,8 @@ function applyAttributeDefaults(
         entity.abilities[attrName] = { level: defaultValue as number, xp: 0 }
       }
     } else {
-      const ns = def.category === 'parameter' ? 'params' : def.category
+      const nsMap: Record<string, string> = { parameter: 'params', mark: 'marks', ability: 'abilities' }
+      const ns = nsMap[def.category] ?? def.category
       if (!entity[ns]) entity[ns] = {}
       if (entity[ns][attrName] === undefined) {
         entity[ns][attrName] = defaultValue

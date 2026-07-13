@@ -1,124 +1,213 @@
-# 注释：H 能力（erArk 映射，对齐 ability ID 顺序）
+# 插件默认能力定义（h-core 提供）
+# 感觉/扩张/ABL/刻印/技术——所有带等级的东西
 
 [abilities]
 
-# ── 性技术 ──
+# ═══ 感觉 — 永久感度 ═══
+[abilities."皮肤感度"]
+name = "皮肤感度"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+[abilities."胸部感度"]
+name = "胸部感度"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+[abilities."阴蒂感度"]
+name = "阴蒂感度"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+[abilities."阴茎感度"]
+name = "阴茎感度"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+[abilities."阴道感度"]
+name = "阴道感度"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+[abilities."后穴感度"]
+name = "后穴感度"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+[abilities."子宫感度"]
+name = "子宫感度"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+[abilities."口喉感度"]
+name = "口喉感度"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+[abilities."心理感度"]
+name = "心理感度"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+# ═══ 扩张 ═══
+[abilities."阴道扩张"]
+name = "阴道扩张"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+[abilities."后穴扩张"]
+name = "后穴扩张"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+[abilities."子宫扩张"]
+name = "子宫扩张"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
+
+# ═══ ABL — 性能力 ═══
+[abilities."技巧"]
+name = "技巧"
+type = "passive"
+max_level = 10
+tags = ["abl"]
+
+[abilities."顺从"]
+name = "顺从"
+type = "passive"
+max_level = 10
+tags = ["abl"]
+
+[abilities."亲密"]
+name = "亲密"
+type = "passive"
+max_level = 10
+tags = ["abl"]
+
+[abilities."欲望"]
+name = "欲望"
+type = "passive"
+max_level = 10
+tags = ["abl"]
+
+[abilities."施虐"]
+name = "施虐"
+type = "passive"
+max_level = 10
+tags = ["abl"]
+
+[abilities."受虐"]
+name = "受虐"
+type = "passive"
+max_level = 10
+tags = ["abl"]
+
+[abilities."露出"]
+name = "露出"
+type = "passive"
+max_level = 10
+tags = ["abl"]
+
+# ═══ 刻印 ═══
+[abilities."快乐刻印"]
+name = "快乐刻印"
+type = "passive"
+max_level = 5
+tags = ["h_mark"]
+
+[abilities."屈服刻印"]
+name = "屈服刻印"
+type = "passive"
+max_level = 5
+tags = ["h_mark"]
+
+[abilities."苦痛刻印"]
+name = "苦痛刻印"
+type = "passive"
+max_level = 5
+tags = ["h_mark"]
+
+[abilities."恐怖刻印"]
+name = "恐怖刻印"
+type = "passive"
+max_level = 5
+tags = ["h_mark"]
+
+[abilities."反发刻印"]
+name = "反发刻印"
+type = "passive"
+max_level = 5
+tags = ["h_mark"]
+
+[abilities."时姦刻印"]
+name = "时姦刻印"
+type = "passive"
+max_level = 5
+tags = ["h_mark"]
+
+[abilities."无觉刻印"]
+name = "无觉刻印"
+type = "passive"
+max_level = 5
+tags = ["h_mark"]
+
+# ═══ 性技术 ═══
 [abilities."指技"]
 name = "指技"
-description = "手指技巧"
 type = "passive"
 max_level = 10
 tags = ["technique"]
 
 [abilities."舌技"]
 name = "舌技"
-description = "舌上技巧"
 type = "passive"
 max_level = 10
 tags = ["technique"]
 
 [abilities."足技"]
 name = "足技"
-description = "足部技巧"
 type = "passive"
 max_level = 10
 tags = ["technique"]
 
 [abilities."胸技"]
 name = "胸技"
-description = "胸部技巧"
 type = "passive"
 max_level = 10
 tags = ["technique"]
 
 [abilities."膣技"]
 name = "膣技"
-description = "阴道技巧"
 type = "passive"
 max_level = 10
 tags = ["technique"]
 
 [abilities."肛技"]
 name = "肛技"
-description = "肛门技巧"
 type = "passive"
 max_level = 10
 tags = ["technique"]
 
 [abilities."腰技"]
 name = "腰技"
-description = "腰部技巧"
 type = "passive"
 max_level = 10
 tags = ["technique"]
 
 [abilities."榨精"]
 name = "榨精"
-description = "榨取精液的技巧"
 type = "passive"
 max_level = 10
 tags = ["technique"]
-
-# ── H 能力 ──
-[abilities."B感觉"]
-name = "B感觉"
-description = "胸部敏感度，影响震动棒等产生的胸部快感"
-type = "passive"
-max_level = 10
-tags = ["h_passive"]
-
-[abilities."C感觉"]
-name = "C感觉"
-description = "阴蒂敏感度"
-type = "passive"
-max_level = 10
-tags = ["h_passive"]
-
-[abilities."V感觉"]
-name = "V感觉"
-description = "阴道敏感度"
-type = "passive"
-max_level = 10
-tags = ["h_passive"]
-
-[abilities."A感觉"]
-name = "A感觉"
-description = "后穴敏感度"
-type = "passive"
-max_level = 10
-tags = ["h_passive"]
-
-[abilities."扩张"]
-name = "扩张"
-description = "身体对插入的适应能力，等级越高苦痛越少"
-type = "passive"
-max_level = 10
-tags = ["h_passive"]
-
-[abilities."苦痛刻印"]
-name = "苦痛刻印"
-description = "苦痛相关的刻印等级"
-type = "passive"
-max_level = 5
-tags = ["h_mark"]
-
-[abilities."受虐"]
-name = "受虐"
-description = "受虐倾向，>=5 级后触发苦痛→快感转换"
-type = "passive"
-max_level = 10
-tags = ["h_passive"]
-
-[abilities."欲情"]
-name = "欲情"
-description = "欲望/欲情能力"
-type = "passive"
-max_level = 10
-tags = ["h_passive"]
-
-[abilities."露出"]
-name = "露出"
-description = "露出倾向"
-type = "passive"
-max_level = 10
-tags = ["h_passive"]

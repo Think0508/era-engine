@@ -46,50 +46,26 @@ const coreAttrs = computed(() => {
     .map(([k, v]) => ({ label: k, value: v }))
 })
 
-// 按 display_group 分组的属性
-function resolveAttrValue(name: string): number {
-  const v = getEntityAttr(character.value, name)
-  if (typeof v === 'number') return v
-  if (v && typeof v.level === 'number') return v.level
-  return 0
-}
-
-function groupedAttrs(group: string) {
+// 从 abilities.toml 按标签读取分组
+function groupedByTag(tag: string) {
   return computed(() => {
     const char = character.value
     const mod = modLoader.getMod()
-    if (!char || !mod) return []
-    const result: { label: string; value: number; level: number }[] = []
-    for (const [name, def] of Object.entries(mod.attributes)) {
-      if (def.display_group !== group) continue
-      if (def.sex && def.sex !== (charSex.value === 1 ? 'male' : 'female')) continue
-      const v = resolveAttrValue(name)
-      if (v === 0 && !(name in (char.base ?? {})) && !(name in (char.params ?? {})) && !(name in (char.abilities ?? {})) && !(name in (char.marks ?? {}))) continue
-      let level = 0
-      if (def.level_thresholds) level = getLevel(v, def.level_thresholds)
-      result.push({ label: name, value: v, level })
+    if (!char?.abilities || !mod?.abilities) return []
+    const result: { label: string; level: number }[] = []
+    for (const [name, val] of Object.entries(char.abilities as Record<string, any>)) {
+      const def = mod.abilities[name]
+      if (!def?.tags?.includes(tag)) continue
+      const level = typeof val === 'number' ? val : (val?.level ?? 0)
+      result.push({ label: name, level })
     }
     return result
   })
 }
 
-const senseAttrs = groupedAttrs('感觉')
-const abilAttrs = groupedAttrs('性能力')
-
-// 刻印（category=mark）
-const markAttrs = computed(() => {
-  const char = character.value
-  const mod = modLoader.getMod()
-  if (!char || !mod) return []
-  const result: { label: string; value: number }[] = []
-  for (const [name, def] of Object.entries(mod.attributes)) {
-    if (def.category !== 'mark') continue
-    const v = getEntityAttr(char, name)
-    if (typeof v !== 'number') continue
-    result.push({ label: name, value: v })
-  }
-  return result
-})
+const senseAttrs = groupedByTag('sensation')     // 感觉
+const abilAttrs = groupedByTag('abl')             // 能力
+const markAttrs = groupedByTag('h_mark')           // 刻印
 
 // 性技术（从 abilities.toml 中读取带 technique tag 的能力）
 // 其他技能（排除 ABL 和性技术后的剩余能力）

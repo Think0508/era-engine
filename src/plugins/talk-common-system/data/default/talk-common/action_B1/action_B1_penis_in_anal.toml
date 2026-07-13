@@ -18355,7 +18355,7 @@ context = "{character.name}伸手捏住{target.name}的下巴将她的头扭向�
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-4&premises:dr_position_back_stand"
-context = "{character.name}抓住{target.name}的尾巴根部向上提起，令{anal}完全暴露在眼前，{penis}在肉穴中肆意进出，肠液被搅出泡沫黏连在穴口边缘。"
+context = "{character.name}抓住{target.name}的腰肢向上提起，令{anal}完全暴露在眼前，{penis}在肉穴中肆意进出，肠液被搅出泡沫黏连在穴口边缘。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-4&premises:dr_position_back_stand"
@@ -19175,7 +19175,7 @@ context = "{character.name}俯身贴近{target.name}的背部，双手撑在她�
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 1&premises:dr_position_back"
-context = "{character.name}一手抓住{target.name}的尾巴根部，另一手按着她的后腰，{penis}在生涩的{anal}里反复摩擦，温热的肠壁紧紧吸附着每一寸。"
+context = "{character.name}一手抓住{target.name}的腰肢，另一手按着她的后腰，{penis}在生涩的{anal}里反复摩擦，温热的肠壁紧紧吸附着每一寸。"
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 1&premises:dr_position_back"
@@ -21411,7 +21411,7 @@ context = "{character.name}扶着{target.name}的大腿根部，从下方发力�
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&selected.abilities.后穴感度.level > 3&selected.abilities.后穴感度.level <= 6"
-context = "{character.name}一手攥住{target.name}的尾巴根部，另一手按住她的腰窝，{penis}凶狠地捅进{anal}，肉体碰撞声在房间里回荡。"
+context = "{character.name}一手攥住{target.name}的腰肢，另一手按住她的腰窝，{penis}凶狠地捅进{anal}，肉体碰撞声在房间里回荡。"
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&selected.abilities.后穴感度.level > 3&selected.abilities.后穴感度.level <= 6"
@@ -21587,7 +21587,7 @@ context = "{character.name}将{target.name}的双臀掰开，俯视着{penis}进
 
 [[entries]]
 conditions = "premises:dr_position_back&selected.abilities.后穴感度.level <= 3"
-context = "{character.name}抓住{target.name}的尾巴根部向上提起，空出的另一只手扶着她的腰，让{penis}能更顺畅地在{anal}中律动，反复贯穿着紧窒的后穴。"
+context = "{character.name}抓住{target.name}的腰肢向上提起，空出的另一只手扶着她的腰，让{penis}能更顺畅地在{anal}中律动，反复贯穿着紧窒的后穴。"
 
 [[entries]]
 conditions = "premises:dr_position_back&selected.abilities.后穴感度.level <= 3"
@@ -22127,7 +22127,7 @@ context = "{character.name}将{target.name}的双臂向后拉住，腰胯猛烈�
 
 [[entries]]
 conditions = "premises:dr_position_back_stand&selected.abilities.后穴感度.level > 6"
-context = "{character.name}一手攥住{target.name}的尾巴根部，一手扶着她的腰，{penis}在{anal}内快速抽插，将她娇小的身躯钉在原地。"
+context = "{character.name}一手攥住{target.name}的腰肢，一手扶着她的腰，{penis}在{anal}内快速抽插，将她娇小的身躯钉在原地。"
 
 [[entries]]
 conditions = "premises:dr_position_back_stand&selected.abilities.后穴感度.level > 6"
@@ -22459,7 +22459,7 @@ context = "{character.name}双手攀上{target.name}的腰侧，借着她下压�
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&selected.abilities.后穴感度.level <= 3"
-context = "{character.name}抓住{target.name}的尾巴根部轻轻拉扯，腰部挺动将{penis}一次次楔入{anal}，她的肠道包裹着柱身，但反应并不强烈，只是被动承受着填充感。"
+context = "{character.name}抓住{target.name}的腰肢轻轻拉扯，腰部挺动将{penis}一次次楔入{anal}，她的肠道包裹着柱身，但反应并不强烈，只是被动承受着填充感。"
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&selected.abilities.后穴感度.level <= 3"
@@ -23655,7 +23655,7 @@ context = "{character.name}一只手臂枕在{target.name}颈下，腰部稳稳�
 
 [[entries]]
 conditions = "selected.后穴 >= 12000&selected.后穴 < 90000&premises:dr_position_back_lie"
-context = "{character.name}胸膛贴着{target.name}的后背，腰臀慵懒地摆动，{penis}在温热的{anal}里缓缓抽插，手指漫不经心地拨弄着她的尾巴根部。"
+context = "{character.name}胸膛贴着{target.name}的后背，腰臀慵懒地摆动，{penis}在温热的{anal}里缓缓抽插，手指漫不经心地拨弄着她的腰肢。"
 
 [[entries]]
 conditions = "selected.后穴 >= 12000&selected.后穴 < 90000&premises:dr_position_back_lie"
@@ -23731,7 +23731,7 @@ context = "{character.name}将{target.name}的双臂向后反剪，腰胯剧烈�
 
 [[entries]]
 conditions = "premises:dr_position_back&selected.后穴 >= 90000"
-context = "{character.name}拽住{target.name}的尾巴向后拉扯，同时向前挺胯，{penis}深入{anal}反复研磨肠壁，激烈的刺激令她四肢难以支撑身体，不住地颤栗。"
+context = "{character.name}拽住{target.name}的腰身向后拉扯，同时向前挺胯，{penis}深入{anal}反复研磨肠壁，激烈的刺激令她四肢难以支撑身体，不住地颤栗。"
 
 [[entries]]
 conditions = "premises:dr_position_back&selected.后穴 >= 90000"

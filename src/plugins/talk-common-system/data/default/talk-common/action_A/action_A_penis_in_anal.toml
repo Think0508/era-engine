@@ -17995,7 +17995,7 @@ context = "{character.name}一手环过{target.name}的腰肢，{penis}在{anal}
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-3&premises:dr_position_back_lie"
-context = "{target.name}蜷缩在主人怀中，{anal}紧紧包裹着{penis}，她的尾巴缠绕上主人的大腿，表达着对这份亲密的渴望。"
+context = "{target.name}蜷缩在主人怀中，{anal}紧紧包裹着{penis}，她的双腿缠绕上主人的大腿，表达着对这份亲密的渴望。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-3&premises:dr_position_back_lie"

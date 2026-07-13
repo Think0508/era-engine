@@ -675,7 +675,7 @@ context = "{character.name}拥着{target.name}娇小的身躯，{penis}深埋在
 
 [[entries]]
 conditions = "premises:dr_position_back_lie&selected.talents.少女 == 1"
-context = "{target.name}蜷在{character.name}怀中，{urethra}被{penis}撑开，每一次浅浅的抽动都让萝莉的尾巴不受控制地绷紧又放松。"
+context = "{target.name}蜷在{character.name}怀中，{urethra}被{penis}撑开，每一次浅浅的抽动都让萝莉的身体不受控制地绷紧又放松。"
 
 [[entries]]
 conditions = "premises:dr_position_back_lie&selected.talents.少女 == 1"
@@ -5643,7 +5643,7 @@ context = "{character.name}的{penis}进入了{target.name}的{urethra}中，以
 
 [[entries]]
 conditions = "premises:high_1&premises:dr_position_back_seat"
-context = "{target.name}被{character.name}抱坐在腿上，背对着他感受{penis}在{urethra}内摩擦的异样快感，{target.name}的尾巴无意识地轻轻摇晃。"
+context = "{target.name}被{character.name}抱坐在腿上，背对着他感受{penis}在{urethra}内摩擦的异样快感，{target.name}的身体无意识地轻轻摇晃。"
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_back_lie"
@@ -20275,7 +20275,7 @@ context = "{target.name}用已经开发好的{urethra}牢牢包裹住{character.
 
 [[entries]]
 conditions = "premises:dr_position_back_seat&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
-context = "{character.name}的{penis}在{target.name}服帖的{urethra}里持续抽动，她的尾巴不自觉地缠上他的手臂。"
+context = "{character.name}的{penis}在{target.name}服帖的{urethra}里持续抽动，她的身体不自觉地缠上他的手臂。"
 
 [[entries]]
 conditions = "premises:dr_position_back_seat&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
@@ -20943,7 +20943,7 @@ context = "{character.name}从后方掐住{target.name}的腰肢，{penis}在{ur
 
 [[entries]]
 conditions = "premises:dr_position_back&selected.abilities.尿道感度.level <= 3"
-context = "{target.name}四肢撑地，臀瓣高高翘起，{character.name}的{penis}一次次顶入{urethra}深处，陌生的酥麻感让她的尾巴微微晃动。"
+context = "{target.name}四肢撑地，臀瓣高高翘起，{character.name}的{penis}一次次顶入{urethra}深处，陌生的酥麻感让她的腰身微微晃动。"
 
 [[entries]]
 conditions = "premises:dr_position_back&selected.abilities.尿道感度.level <= 3"

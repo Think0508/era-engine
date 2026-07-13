@@ -3843,7 +3843,7 @@ context = "{character.name}扣住{target.name}的肩膀将她固定，{penis}大
 
 [[entries]]
 conditions = "premises:high_1&premises:dr_position_back"
-context = "{character.name}单手抓住{target.name}的尾巴根部，腰部猛烈挺动，{penis}在{urethra}中疯狂律动，每一次都顶到尿道深处再整根抽出。"
+context = "{character.name}单手抓住{target.name}的腰肢，腰部猛烈挺动，{penis}在{urethra}中疯狂律动，每一次都顶到尿道深处再整根抽出。"
 
 [[entries]]
 conditions = "premises:t_imprisonment_1&premises:dr_position_back_stand"
@@ -18203,7 +18203,7 @@ context = "{character.name}突然挺腰向上顶弄，{penis}猛然贯入{target
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-4&premises:dr_position_back_ride"
-context = "{character.name}一手抓住奴隶的尾巴根部，一手揉搓着她的臀肉，{penis}在{target.name}温热的{urethra}中来回抽插，让{urethra}完全适应自己的形状。"
+context = "{character.name}一手抓住奴隶的腰肢，一手揉搓着她的臀肉，{penis}在{target.name}温热的{urethra}中来回抽插，让{urethra}完全适应自己的形状。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-4&premises:dr_position_back_ride"
@@ -19207,7 +19207,7 @@ context = "{character.name}按住{target.name}的后腰，{penis}在青涩的{ur
 
 [[entries]]
 conditions = "premises:dr_position_back&selected.talents.尿道处女 == 1"
-context = "{character.name}一只手拉起{target.name}的尾巴根部，另一只手扶腰配合冲刺，{penis}贯穿着处女{urethra}，每一次抽送都搅动起淫靡的水声。"
+context = "{character.name}一只手拉起{target.name}的腰肢，另一只手扶腰配合冲刺，{penis}贯穿着处女{urethra}，每一次抽送都搅动起淫靡的水声。"
 
 [[entries]]
 conditions = "premises:dr_position_back&selected.talents.尿道处女 == 1"
@@ -19471,7 +19471,7 @@ context = "{character.name}俯身贴近{target.name}的背脊，双手绕到前�
 
 [[entries]]
 conditions = "premises:dr_position_back&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
-context = "{character.name}抓住{target.name}的尾巴根部向后拉扯，借着这股力道让{penis}更深地捅入她的{urethra}，尚未完全开发的{urethra}被迫接纳着异物的侵犯。"
+context = "{character.name}抓住{target.name}的腰肢向后拉扯，借着这股力道让{penis}更深地捅入她的{urethra}，尚未完全开发的{urethra}被迫接纳着异物的侵犯。"
 
 [[entries]]
 conditions = "premises:dr_position_back&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
@@ -23951,7 +23951,7 @@ context = "{character.name}仰面躺着欣赏{target.name}的背影，缓慢而�
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&selected.尿道 >= 90000"
-context = "{character.name}伸手抓住{target.name}的尾巴根部，用力下压的同时抬腰，让{penis}狠狠顶入那已经失控的{urethra}深处，龟头抵在膀胱入口处碾磨。"
+context = "{character.name}伸手抓住{target.name}的腰肢，用力下压的同时抬腰，让{penis}狠狠顶入那已经失控的{urethra}深处，龟头抵在膀胱入口处碾磨。"
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&selected.尿道 >= 90000"

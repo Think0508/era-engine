@@ -9,8 +9,22 @@
 import { onMounted, onUnmounted } from 'vue'
 import { useUIStore } from '../stores/ui-store'
 import OptionsPanel from './OptionsPanel.vue'
+import SaveSlotList from './SaveSlotList.vue'
 
 const uiStore = useUIStore()
+
+async function handleLoadSave(slotId: string) {
+  try {
+    const { loadGame, restoreFromSave } = await import('../../core/save-system')
+    const data = await loadGame(slotId)
+    if (data) {
+      restoreFromSave(data)
+      closePanel()
+    }
+  } catch (e: any) {
+    alert(`读档失败：${e.message}`)
+  }
+}
 
 // 注释：面板标题映射
 const panelTitles: Record<string, string> = {
@@ -66,10 +80,14 @@ onUnmounted(() => {
       <div class="panel-content">
         <!-- 注释：选项面板 -->
         <OptionsPanel v-if="uiStore.activePanel === 'options'" />
+        <!-- 注释：存档面板 -->
+        <div v-else-if="uiStore.activePanel === 'save'" class="save-panel">
+          <SaveSlotList @load="handleLoadSave" @back="closePanel" />
+        </div>
         <!-- 注释：其他面板占位 -->
         <div v-else>
           <p>面板内容：{{ uiStore.activePanel }}</p>
-          <p>TODO: 面板选项卡 + 折叠项</p>
+          <p class="panel-todo">TODO: 面板内容待实现</p>
         </div>
       </div>
     </div>

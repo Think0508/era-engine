@@ -7,8 +7,26 @@
 
 ## 第 0 步：建立骨架
 
-创建 `mods/你的mod名/` 目录，写 `meta.toml`、`definitions/attributes.toml`、
-`bindings.toml`、`theme.toml`。完成 0 步意味着游戏能启动、能看到玩家角色。
+创建 `mods/你的mod名/` 目录，写 `meta.toml`、`bindings.toml`、`theme.toml`。
+
+**插件提供全套默认属性/能力/装备/状态/关系**（h-core 的 `data/default/`），
+所以你不需要从头写 `attributes.toml`。只在想修改默认值时写对应文件。
+
+```
+你的 mod 目录初始只需：
+  meta.toml          ← 模组元信息（必需）
+  bindings.toml      ← 属性绑定（需要时才写）
+  theme.toml         ← 颜色字体（必需）
+
+插件已提供（你不写就自动用这些默认值）：
+  attributes.toml    ← 体力/好感度/每日重置参数
+  abilities.toml     ← 感觉/ABL/刻印/性技术
+  equipment.toml     ← 9 个基础装备槽
+  status-effects.toml ← 中毒/醉意等通用状态
+  relations.toml     ← 好感度关系类型
+```
+
+完成 0 步意味着游戏能启动、能看到玩家角色。
 
 参考：`docs/mod-author-guide.md`、`mods/test-mod/`
 

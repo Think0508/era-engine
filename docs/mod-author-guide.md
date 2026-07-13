@@ -183,18 +183,21 @@ condition = "premises:IN_SWORD_VALLEY"
 
 ## 对接什么
 
-| 你要做的 | 对接哪里 |
-|----------|----------|
-| 定义属性 | `definitions/attributes.toml` |
-| 绑定插件属性 | `bindings.toml` |
-| 创建角色 | `roster.toml`（次要）或 `templates/`+`roster`（重要） |
-| 角色口上 | `characters/dialogue/{ID}/dialogue.toml` |
-| 角色对话 | `characters/dialogue/{ID}/conversations/*.toml` |
-| 地点 | `maps/locations/*.toml`（平铺+parent） |
-| 装备槽 | `definitions/equipment.toml` |
-| 日历显示 | `definitions/calendar.toml` |
-| 主题 | `theme.toml`（CSS变量） |
-| 依赖插件 | `meta.toml` 的 dependencies |
+| 你要做的 | 对接哪里 | 是否有插件默认？ |
+|----------|----------|------------------|
+| 定义属性 | `definitions/attributes.toml` | ✅ h-core 提供全套 |
+| 定义能力 | `definitions/abilities.toml` | ✅ h-core 提供全套 |
+| 绑定插件属性 | `bindings.toml` | — |
+| 创建角色 | `roster.toml`（次要）或 `templates/`+`roster`（重要） | — |
+| 装备槽 | `definitions/equipment.toml` | ✅ h-core 提供 9 槽 |
+| 状态效果 | `definitions/status-effects.toml` | ✅ h-core 提供通用 |
+| 关系类型 | `definitions/relations.toml` | ✅ h-core 提供好感度 |
+| 角色口上 | `characters/dialogue/{ID}/dialogue.toml` | — |
+| 角色对话 | `characters/dialogue/{ID}/conversations/*.toml` | — |
+| 地点 | `maps/locations/*.toml`（平铺+parent） | — |
+| 日历显示 | `definitions/calendar.toml` | — |
+| 主题 | `theme.toml`（CSS变量） | — |
+| 依赖插件 | `meta.toml` 的 dependencies | — |
 
 ## TOML 注意事项
 

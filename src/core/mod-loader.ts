@@ -603,12 +603,9 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   const statusData = loadMerged<Record<string, StatusEffectDef>>('status-effects.toml', 'status-effects')
   if (statusData) mod.statusEffects = statusData
 
-  // 注释：加载 abilities.toml（扩展字段）
-  const abilitiesPath = `/mods/${modName}/definitions/abilities.toml`
-  if (abilitiesPath in rawTomlMap) {
-    const data = parseFile(abilitiesPath, rawTomlMap[abilitiesPath])
-    mod.abilities = (data.abilities as Record<string, AbilityDef>) ?? {}
-  }
+  // 注释：加载 abilities.toml（插件默认 + mod 定义 deepMerge）
+  const ablData = loadMerged<Record<string, AbilityDef>>('abilities.toml', 'abilities')
+  if (ablData) mod.abilities = ablData
 
   // 注释：加载 relations.toml
   const relData = loadMerged<Record<string, any>>('relations.toml', 'types')

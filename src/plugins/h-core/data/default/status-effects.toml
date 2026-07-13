@@ -1,0 +1,28 @@
+[status-effects]
+[status-effects."中毒"]
+name = "中毒"
+description = "持续受到毒素伤害"
+category = "debuff"
+duration = 360
+tick_interval = 60
+stackable = false
+max_stack = 1
+tick_effects = [
+  { type = "modify_attribute", params = { attr = "hp", value = -5, target = "self" } }
+]
+
+[status-effects."醉意"]
+name = "醉意"
+description = "喝醉了，对话好感度加成"
+category = "buff"
+duration = 120
+tick_interval = 0
+stackable = true
+max_stack = 3
+
+[status-effects."攻击增益"]
+name = "攻击增益"
+description = "攻击力提升"
+category = "buff"
+duration = 180
+tick_interval = 0

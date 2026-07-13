@@ -252,6 +252,8 @@ export interface LoadedMod {
   talentDefs: Record<string, TalentDef>
   // 注释：命名样式——[styles] 注册表
   styles: Record<string, Record<string, any>>
+  // 注释：关系类型定义
+  relationTypes: Record<string, { min: number; max: number; default: number; name: string }>
   // 注释：Phase H — H 系统
   hConfig: HConfig
   hInstructions: HInstruction[]
@@ -386,6 +388,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     quests: new Map(),
     talentDefs: {},
     styles: {},
+    relationTypes: {},
     // 注释：Phase H
     hConfig: {},
     hInstructions: [],
@@ -490,13 +493,27 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     >
   }
 
-  // 注释：equipment.toml 和 calendar.toml 是 mod 文化/显示层定义，
-  // 非实体数据，不进存档。engine UI 读取它们用于渲染装备槽和日期显示。
-  const equipmentPath = `/mods/${modName}/definitions/equipment.toml`
-  if (equipmentPath in rawTomlMap) {
-    const data = parseFile(equipmentPath, rawTomlMap[equipmentPath])
-    mod.equipmentSlots = (data.slots as EquipmentSlot[]) ?? []
+  // 注释：加载定义数据——插件默认（Layer 1）+ mod 定义（Layer 3）
+  // 插件默认在 /src/plugins/*/data/default/ 下，mod 定义在 /mods/${modName}/definitions/
+  // 同名字段：mod 覆盖插件默认
+  function loadMerged<T>(file: string, key: string, skipDeepMerge?: boolean): T | undefined {
+    const paths = Object.keys(rawTomlMap).filter(p => p.endsWith('/' + file) || p === `/mods/${modName}/definitions/${file}`)
+    if (paths.length === 0) return undefined
+    let result: any = {}
+    for (const path of paths) {
+      const data = parseFile(path, rawTomlMap[path])
+      if (skipDeepMerge) {
+        result[key] = data[key] ?? result[key]
+      } else {
+        result = deepMerge(result, (data as any)[key] ?? {})
+      }
+    }
+    return result as T
   }
+
+  // 注释：equipment.toml 和 calendar.toml 是 mod 文化/显示层定义
+  const equipmentData = loadMerged<{ slots: EquipmentSlot[] }>('equipment.toml', 'slots', true)
+  if (equipmentData?.slots) mod.equipmentSlots = equipmentData.slots
 
   const calendarPath = `/mods/${modName}/definitions/calendar.toml`
   if (calendarPath in rawTomlMap) {
@@ -583,12 +600,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   }
 
   // 注释：加载 status-effects.toml
-  const statusPath = `/mods/${modName}/definitions/status-effects.toml`
-  if (statusPath in rawTomlMap) {
-    const data = parseFile(statusPath, rawTomlMap[statusPath])
-    // 注释：status-effects.toml 格式 [status-effects.中毒] → Record<string, StatusEffectDef>
-    mod.statusEffects = (data['status-effects'] as Record<string, StatusEffectDef>) ?? data.statusEffects ?? {}
-  }
+  const statusData = loadMerged<Record<string, StatusEffectDef>>('status-effects.toml', 'status-effects')
+  if (statusData) mod.statusEffects = statusData
 
   // 注释：加载 abilities.toml（扩展字段）
   const abilitiesPath = `/mods/${modName}/definitions/abilities.toml`
@@ -596,6 +609,10 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     const data = parseFile(abilitiesPath, rawTomlMap[abilitiesPath])
     mod.abilities = (data.abilities as Record<string, AbilityDef>) ?? {}
   }
+
+  // 注释：加载 relations.toml
+  const relData = loadMerged<Record<string, any>>('relations.toml', 'types')
+  if (relData) mod.relationTypes = relData
 
   // 注释：加载 talents.toml
   const talentsPath = `/mods/${modName}/definitions/talents.toml`

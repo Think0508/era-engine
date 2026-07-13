@@ -1,0 +1,2 @@
+[types]
+"好感度" = { min = 0, max = 100, default = 30, name = "好感度" }

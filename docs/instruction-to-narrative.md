@@ -33,6 +33,27 @@
 | `start_conversation` | 有——玩家选分支 | 1 段对话 | 跟特定角色深聊（令狐冲讲独孤九剑）|
 | `start_quest` | 有——可跨场景 | 多步 | 完整剧情线（找师父→打怪→交任务）|
 
+### 场景口上 vs 角色口上 vs 剧情链
+
+同一个指令可以同时触发场景口上和角色口上，两者互不排斥：
+
+```
+"采集"指令执行 → triggerScene('gather', 令狐冲)
+  ├── scene-dialogue.toml  scene=gather
+  │   → 旁白描述环境：你蹲下身，在草丛中仔细搜寻。
+  └── character-dialogue.toml  scene=gather
+      → 角色反应：令狐冲在一旁抱臂看着你。
+```
+
+**长段剧情（多步、有分支、跨场景）**不走口上文件——用 quest/event 系统：
+
+```
+quests/events/first_meeting.toml
+  → 步骤 1: 场景口上触发 → 步骤 2: 对话树 → 步骤 3: 战斗 → 步骤 4: 奖励
+```
+
+一句话原则：**口上 = 一句话反应，剧情链 = 多步组织器**。
+
 **三者可以串联**：口上可以带 `effects`（包括 `start_conversation` 和 `start_quest`），
 对话节点也可以带 `effects`（包括 `start_quest` 和 `trigger_dialogue`），
 任务步也可以带 `effects`（包括 `start_conversation`）。

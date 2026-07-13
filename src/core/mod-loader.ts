@@ -686,16 +686,20 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
 function expandCharacterAbilities(mod: LoadedMod): void {
   const characters = mod.entities.get('character')
   if (!characters) return
+  // 注释：给所有角色初始化 abilities.toml 中定义的默认能力（level=0, xp=0）
   for (const [, char] of characters) {
     const c = char as any
-    if (!c.abilities) continue
+    if (!c.abilities) c.abilities = {}
     const expanded: Record<string, { level: number; xp: number | null }> = {}
+    // 注释：先填入 abilities.toml 中定义的所有能力默认值
+    for (const abilityId of Object.keys(mod.abilities)) {
+      expanded[abilityId] = { level: 0, xp: 0 }
+    }
+    // 注释：再用角色已有数据覆盖（roster 简写 → {level, xp}）
     for (const [abilityId, value] of Object.entries(c.abilities)) {
       if (typeof value === 'number') {
-        // 注释：简写数字 → { level: 数字, xp: 0 }
         expanded[abilityId] = { level: value, xp: 0 }
       } else if (typeof value === 'object' && value !== null) {
-        // 注释：已是 { level, xp } 对象 → 保持
         expanded[abilityId] = value as { level: number; xp: number | null }
       }
     }

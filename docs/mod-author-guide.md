@@ -40,38 +40,47 @@ mods/武侠/
 
 ## 核心概念
 
-**属性系统**——你定义所有属性名，引擎不认识任何属性：
+**属性系统**有两个文件，分工不同：
+
 ```toml
-# definitions/attributes.toml
+# definitions/attributes.toml —— 纯数值属性（体力/好感度/每日重置参数等）
 [attributes]
 "气血" = { type = "number", default = 100, display = true, display_group = "status" }
 "好感度" = { type = "number", default = 30, display = true, display_group = "social" }
-"快C" = { type = "number", default = 0, display = true, display_group = "身体快感", daily_reset = true }
+
+# definitions/abilities.toml —— 带等级的能力（感觉/ABL/刻印/技能/技术）
+[abilities]
+[abilities."皮肤感度"]
+name = "皮肤感度"
+type = "passive"
+max_level = 10
+tags = ["sensation"]
 ```
 
-**`display_group` 决定属性在面板中显示的位置**：
+**`attributes.toml` display_group 决定面板位置**：
 
-| display_group | 面板分组 | 示例属性 | 值域约定 |
-|-------------|---------|---------|---------|
-| `"感觉"` | 角色面板 → 属性 → 感觉 | `皮肤感度`、`胸部感度`、`后穴扩张` | 0~∞，通过游戏逐渐增长 |
-| `"性能力"` | 角色面板 → 属性 → 能力 | `技巧`、`顺从`、`亲密`、`欲望` | 建议 0~10（数值自定义） |
-| `"status"` | 主界面 → Status 栏 | `体力`、`气力`、`精力` | 具体上限由对应系统决定 |
-| `"身体快感"` | Parameter 区（每日重置） | `皮肤`、`胸部`、`阴蒂`、`欲情` | 0~100000（配合 level_thresholds） |
-| `"行为参数"` | Parameter 区（每日重置） | `恭顺`、`好意`、`屈服`、`羞耻` | 0~∞，每天重置为 0 |
+| display_group | 面板位置 | 示例 |
+|-------------|---------|------|
+| `"status"` | 主界面 Status 栏 | `体力`、`气力`、`精力` |
+| `"身体快感"` | Parameter 区（每日重置） | `皮肤`、`胸部`、`阴蒂` |
+| `"行为参数"` | Parameter 区（每日重置） | `恭顺`、`好意`、`屈服`、`羞耻` |
 
-添加强的感度属性——在 `attributes.toml` 加一行：
-```toml
-# mod 新增的自定义感度
-"触手感度" = { type = "number", default = 0, category = "ability", display_group = "感觉" }
-```
-角色面板的"感觉"分组自动显示它，无需改代码。Mod 专属插件 Layer 2 或 definitions Layer 3 覆盖规则见 `docs/mod-override.md`。
+**`abilities.toml` tags 决定面板分组**：
 
-给角色设初始感度值：
+| tag | 面板分组 | 示例 |
+|-----|---------|------|
+| `sensation` | 角色面板 → 属性 → 感觉 | `皮肤感度`、`胸部感度`、`后穴扩张` |
+| `abl` | 角色面板 → 属性 → 能力 | `技巧`、`顺从`、`亲密`、`欲望` |
+| `h_mark` | 角色面板 → 属性 → 刻印 | `快乐刻印`、`屈服刻印` |
+| `technique` | 角色面板 → 属性 → 性技术 | `指技`、`舌技`、`腰技` |
+| 其他 | 角色面板 → 属性 → 其他技能 | `华山剑法`、`混元功` |
+
+给角色设初始能力值：
 ```toml
 # roster.toml 或 named/base.toml
 [[roster]]
 id = "令狐冲"
-base = { "皮肤感度" = 30, "胸部感度" = 10 }
+abilities = { "华山剑法" = 3, "技巧" = 2 }
 ```
 
 **绑定系统**——插件用通用名（hp），你在 bindings.toml 映射到你的属性名：

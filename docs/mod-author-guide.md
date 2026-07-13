@@ -134,6 +134,22 @@ hp = "气血"
 attack = "攻击力"
 ```
 
+**H 公式系数（h-config.toml）**——插件提供默认值，你可以覆写：
+
+```toml
+# h-config.toml
+# 每当 settle_state 修改角色的参数（恭顺/好意/屈服等），
+# 用对应能力的等级计算倍数。此映射决定"改恭顺时用顺从的能力等级"。
+
+[state_ability]
+"恭顺" = "顺从"
+"好意" = "亲密"
+"欲情" = "欲望"
+"屈服" = "顺从"
+"羞耻" = "露出"
+# ...可在你的 h-config.toml 中覆写或新增
+```
+
 **口上 = 演出**——几乎所有指令执行后触发口上。三层优先级：
 1. 场景通用（`scene-dialogue.toml`）——地点/环境描述
 2. 角色通用（`character-dialogue.toml`）——无专属时的 fallback
@@ -198,6 +214,7 @@ condition = "premises:IN_SWORD_VALLEY"
 | 日历显示 | `definitions/calendar.toml` | — |
 | 主题 | `theme.toml`（CSS变量） | — |
 | 依赖插件 | `meta.toml` 的 dependencies | — |
+| H 公式系数 | `h-config.toml` | ✅ h-core 提供默认（含 state_ability 映射） |
 
 ## TOML 注意事项
 

@@ -755,7 +755,7 @@ context = "在爱情旅馆豪华套房的按摩浴缸旁，{character.name}用{p
 
 [[entries]]
 conditions = "premises:h_in_love_hotel"
-context = "爱情旅馆柔软的沙发上，{character.name}将{penis_s}贴在{target.name}的{face_s}上蹭动，旁边播放着限制级影片，似乎在为两人提供参考示范。"
+context = "爱情旅馆柔软的沙发上，{character.name}将{penis_s}贴在{target.name}的{face_s}上蹭动，旁边电视屏幕播放着限制级影片，似乎在为两人提供参考示范。"
 
 [[entries]]
 conditions = "premises:h_in_love_hotel"

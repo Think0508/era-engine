@@ -8067,7 +8067,7 @@ context = "在爱情旅馆的主题房间里，{character.name}将{target.name}�
 
 [[entries]]
 conditions = "premises:dr_position_back_hug&premises:h_in_love_hotel"
-context = "{character.name}在爱情旅馆放着情色影片的前，从背后抱起{target.name}，{penis}激烈地在她颤抖的{vagina}中进出，两人的呻吟声盖过了影片的声音。"
+context = "{character.name}在爱情旅馆放着情色影片，从背后抱起{target.name}，{penis}激烈地在她颤抖的{vagina}中进出，两人的呻吟声盖过了影片的声音。"
 
 [[entries]]
 conditions = "premises:dr_position_back_hug&premises:h_in_love_hotel"

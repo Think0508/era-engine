@@ -37,7 +37,7 @@ export const ATTR = {
 
 // 命名空间搜索顺序
 const SEARCH_ORDER = [
-  'base', 'params', 'flags', 'talents', 'marks',
+  'base', 'params', 'flags', 'talents', 'marks', 'abilities',
   'first_record', 'experience', 'social', 'economy', 'combat',
 ]
 

@@ -47,6 +47,13 @@ const coreAttrs = computed(() => {
 })
 
 // 按 display_group 分组的属性
+function resolveAttrValue(name: string): number {
+  const v = getEntityAttr(character.value, name)
+  if (typeof v === 'number') return v
+  if (v && typeof v.level === 'number') return v.level
+  return 0
+}
+
 function groupedAttrs(group: string) {
   return computed(() => {
     const char = character.value
@@ -56,8 +63,8 @@ function groupedAttrs(group: string) {
     for (const [name, def] of Object.entries(mod.attributes)) {
       if (def.display_group !== group) continue
       if (def.sex && def.sex !== (charSex.value === 1 ? 'male' : 'female')) continue
-      const v = getEntityAttr(char, name)
-      if (typeof v !== 'number') continue
+      const v = resolveAttrValue(name)
+      if (v === 0 && !(name in (char.base ?? {})) && !(name in (char.params ?? {})) && !(name in (char.abilities ?? {})) && !(name in (char.marks ?? {}))) continue
       let level = 0
       if (def.level_thresholds) level = getLevel(v, def.level_thresholds)
       result.push({ label: name, value: v, level })

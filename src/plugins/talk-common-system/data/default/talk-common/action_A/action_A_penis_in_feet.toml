@@ -339,11 +339,11 @@ context = "{target.name}用她那双还未完全发育却线条优美的{feet}�
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.talents.长足 == 1"
-context = "{character.name}的{penis}在{target.name}稚嫩修长的{feet}间来回摩擦，萝莉紧张却认真地扭动着双足，青涩地服侍着博士。"
+context = "{character.name}的{penis}在{target.name}稚嫩修长的{feet}间来回摩擦，萝莉紧张却认真地扭动着双足，青涩地服侍着{player.name}。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.talents.长足 == 1"
-context = "{target.name}那双纤细柔软的{feet}将{character.name}的{penis}牢牢夹住，娇小的身躯微微颤抖着，用稚嫩的脚心取悦博士的肉棒。"
+context = "{target.name}那双纤细柔软的{feet}将{character.name}的{penis}牢牢夹住，娇小的身躯微微颤抖着，用稚嫩的脚心取悦{player.name}的肉棒。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.talents.长足 == 1"
@@ -379,7 +379,7 @@ context = "{target.name}以她娇小可爱的{feet}夹紧{character.name}的{pen
 
 [[entries]]
 conditions = "selected.talents.処女 == 1&selected.talents.小足 == 1"
-context = "{character.name}的{penis}被{target.name}那双光滑细嫩的{feet}包裹住，少女稚嫩的脚掌虽小，却努力地夹紧摩擦，用柔软的足心讨好着博士。"
+context = "{character.name}的{penis}被{target.name}那双光滑细嫩的{feet}包裹住，少女稚嫩的脚掌虽小，却努力地夹紧摩擦，用柔软的足心讨好着{player.name}。"
 
 [[entries]]
 conditions = "selected.talents.処女 == 1&selected.talents.小足 == 1"
@@ -403,7 +403,7 @@ context = "{target.name}青春洋溢的{feet}灵巧地夹住{character.name}的{
 
 [[entries]]
 conditions = "selected.talents.処女 == 1&selected.talents.小足 == 1"
-context = "{character.name}的{penis}被{target.name}那双娇小嫩滑的{feet}紧紧包裹着，少女羞怯而讨好地上下揉捏套弄，用她敏感的足心全力侍奉着博士。"
+context = "{character.name}的{penis}被{target.name}那双娇小嫩滑的{feet}紧紧包裹着，少女羞怯而讨好地上下揉捏套弄，用她敏感的足心全力侍奉着{player.name}。"
 
 [[entries]]
 conditions = "selected.talents.処女 == 1&selected.talents.长足 == 1"
@@ -419,7 +419,7 @@ context = "{target.name}用她那纤细修长的{feet}服侍着{character.name}�
 
 [[entries]]
 conditions = "selected.talents.処女 == 1&selected.talents.长足 == 1"
-context = "{character.name}的{penis}在{target.name}那双线条优美的{feet}间抽动，少女羞涩地低着头，用柔嫩的脚心努力取悦着博士。"
+context = "{character.name}的{penis}在{target.name}那双线条优美的{feet}间抽动，少女羞涩地低着头，用柔嫩的脚心努力取悦着{player.name}。"
 
 [[entries]]
 conditions = "selected.talents.処女 == 1&selected.talents.长足 == 1"
@@ -607,7 +607,7 @@ context = "{target.name}用她那双精巧娇嫩的{feet}夹住{character.name}�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{target.name}修长的{feet}夹住{character.name}的{penis}上下套弄，故意在众人面前扭动腰肢，让所有人都能看清她是如何用双脚取悦博士的。"
+context = "{target.name}修长的{feet}夹住{character.name}的{penis}上下套弄，故意在众人面前扭动腰肢，让所有人都能看清她是如何用双脚取悦{player.name}的。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -627,7 +627,7 @@ context = "{target.name}纤长的{feet}缠绕着{character.name}的{penis}有节
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{character.name}的{penis}在{target.name}修长的{feet}间肆意抽动，她故意发出娇媚的呻吟，向围观的女性炫耀自己能让博士如此沉迷。"
+context = "{character.name}的{penis}在{target.name}修长的{feet}间肆意抽动，她故意发出娇媚的呻吟，向围观的女性炫耀自己能让{player.name}如此沉迷。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -635,7 +635,7 @@ context = "{target.name}用优美的{feet}夹紧{character.name}的{penis}来回
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{character.name}的{penis}被{target.name}那双修长的{feet}服侍得舒爽无比，她挺起胸膛故作骄傲，让其他女性看看她是如何独占博士的宠爱。"
+context = "{character.name}的{penis}被{target.name}那双修长的{feet}服侍得舒爽无比，她挺起胸膛故作骄傲，让其他女性看看她是如何独占{player.name}的宠爱。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -943,7 +943,7 @@ context = "{character.name}粗壮的{penis}被{target.name}柔嫩的{feet}夹紧
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{target.name}那双纤巧的{feet}在{character.name}的{penis}上来回滑动，她挑逗地望向其他女性，仿佛在炫耀自己独占博士的特权，小脚用力地伺候着滚烫的肉棒。"
+context = "{target.name}那双纤巧的{feet}在{character.name}的{penis}上来回滑动，她挑逗地望向其他女性，仿佛在炫耀自己独占{player.name}的特权，小脚用力地伺候着滚烫的肉棒。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -2619,7 +2619,7 @@ context = "{target.name}纤小精致的{feet}轻柔地夹着{character.name}的{
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_1"
-context = "{character.name}的{penis}在{target.name}柔软光滑的{feet}间律动，她娇小的脚背被磨得泛红，自己也说不清为什么要如此尽心地侍奉博士的肉棒。"
+context = "{character.name}的{penis}在{target.name}柔软光滑的{feet}间律动，她娇小的脚背被磨得泛红，自己也说不清为什么要如此尽心地侍奉{player.name}的肉棒。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_1"
@@ -2639,7 +2639,7 @@ context = "{character.name}的{penis}被{target.name}娇小的{feet}用力搓揉
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_1"
-context = "{target.name}小巧的{feet}在{character.name}的{penis}上滑动按摩，她敏感的脚趾夹紧肉棒根部反复撸弄，不明所以地想要让博士感到舒服。"
+context = "{target.name}小巧的{feet}在{character.name}的{penis}上滑动按摩，她敏感的脚趾夹紧肉棒根部反复撸弄，不明所以地想要让{player.name}感到舒服。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_1"
@@ -2647,7 +2647,7 @@ context = "{character.name}的{penis}被{target.name}细嫩柔软的{feet}紧紧
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_1"
-context = "{target.name}修长的{feet}夹住{character.name}的{penis}上下摩擦着，她自己也不明白为何会主动服侍博士，只是本能地用优美的足弓贴合着柱身。"
+context = "{target.name}修长的{feet}夹住{character.name}的{penis}上下摩擦着，她自己也不明白为何会主动服侍{player.name}，只是本能地用优美的足弓贴合着柱身。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_1"
@@ -2655,19 +2655,19 @@ context = "{character.name}的{penis}被{target.name}那双纤长的{feet}紧紧
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_1"
-context = "{target.name}用她优雅修长的{feet}熟练地套弄着{character.name}的{penis}，明明还不理解这份感情，却忍不住想要靠近博士，用自己的双脚服侍他。"
+context = "{target.name}用她优雅修长的{feet}熟练地套弄着{character.name}的{penis}，明明还不理解这份感情，却忍不住想要靠近{player.name}，用自己的双脚服侍他。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_1"
-context = "{character.name}握住{target.name}那双线条优美的{feet}，让它们紧贴自己的{penis}来回滑动，她茫然地看着博士沉醉的表情，内心深处生出一丝隐秘的满足感。"
+context = "{character.name}握住{target.name}那双线条优美的{feet}，让它们紧贴自己的{penis}来回滑动，她茫然地看着{player.name}沉醉的表情，内心深处生出一丝隐秘的满足感。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_1"
-context = "{target.name}修长柔软的{feet}包裹着{character.name}的{penis}，纤长的脚趾不自觉地轻轻蜷缩，她困惑于自己为何会如此顺从，却莫名不想让博士失望。"
+context = "{target.name}修长柔软的{feet}包裹着{character.name}的{penis}，纤长的脚趾不自觉地轻轻蜷缩，她困惑于自己为何会如此顺从，却莫名不想让{player.name}失望。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_1"
-context = "{character.name}将{penis}顶在{target.name}优雅的{feet}间来回摩擦，她低垂着眼帘，用那双修长的美足侍奉着博士，心中涌起难以名状的酥麻感觉。"
+context = "{character.name}将{penis}顶在{target.name}优雅的{feet}间来回摩擦，她低垂着眼帘，用那双修长的美足侍奉着{player.name}，心中涌起难以名状的酥麻感觉。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_1"
@@ -2675,15 +2675,15 @@ context = "{target.name}那双比例完美的{feet}温柔地夹住{character.nam
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_1"
-context = "{character.name}的{penis}在{target.name}修长的{feet}间滑动，她双颊绯红，懵懂地感受着博士的热度，足心贴着柱身上下摩擦，内心隐约生出一份想要更加靠近的渴望。"
+context = "{character.name}的{penis}在{target.name}修长的{feet}间滑动，她双颊绯红，懵懂地感受着{player.name}的热度，足心贴着柱身上下摩擦，内心隐约生出一份想要更加靠近的渴望。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_1"
-context = "{target.name}用她流畅线条的{feet}侍奉着{character.name}的{penis}，纤细的脚踝轻轻摆动，她迷茫地抬眸望向博士，不明白自己为何如此期待他的目光。"
+context = "{target.name}用她流畅线条的{feet}侍奉着{character.name}的{penis}，纤细的脚踝轻轻摆动，她迷茫地抬眸望向{player.name}，不明白自己为何如此期待他的目光。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_1"
-context = "{character.name}感受着{target.name}那双修长{feet}带来的快感，她的{penis}被优美的足弓完美包裹，{target.name}羞涩地垂下眼睫，心底却莫名期待着博士满足的表情。"
+context = "{character.name}感受着{target.name}那双修长{feet}带来的快感，她的{penis}被优美的足弓完美包裹，{target.name}羞涩地垂下眼睫，心底却莫名期待着{player.name}满足的表情。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_2"
@@ -2887,7 +2887,7 @@ context = "{character.name}的{penis}被{target.name}精致小巧的{feet}熟练
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "{target.name}用她那双精致小巧的{feet}夹住{character.name}的{penis}缓缓摩擦着，虽然脚掌的皮肤感觉并不强烈，但看着博士沉迷的表情让她内心火热。"
+context = "{target.name}用她那双精致小巧的{feet}夹住{character.name}的{penis}缓缓摩擦着，虽然脚掌的皮肤感觉并不强烈，但看着{player.name}沉迷的表情让她内心火热。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
@@ -2899,7 +2899,7 @@ context = "{target.name}玲珑可爱的{feet}灵巧地上下撸动着{character.
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "{character.name}的{penis}在{target.name}袖珍般细嫩的{feet}间滑动摩擦，她的足心虽然触感迟钝，但为博士服务的羞耻感让她满脸通红。"
+context = "{character.name}的{penis}在{target.name}袖珍般细嫩的{feet}间滑动摩擦，她的足心虽然触感迟钝，但为{player.name}服务的羞耻感让她满脸通红。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
@@ -2907,7 +2907,7 @@ context = "{target.name}那双小巧白嫩的{feet}紧紧夹着{character.name}�
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "{character.name}享受着{target.name}精巧的{feet}带来的足交快感，她纤柔的脚掌虽感度较低，但专注侍奉博士的样子充满了诱惑。"
+context = "{character.name}享受着{target.name}精巧的{feet}带来的足交快感，她纤柔的脚掌虽感度较低，但专注侍奉{player.name}的样子充满了诱惑。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
@@ -2919,7 +2919,7 @@ context = "{character.name}的{penis}被{target.name}柔软细腻的{feet}温柔
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "{target.name}小巧玲珑的{feet}灵活地包裹住{character.name}的{penis}上下套动，虽然她的皮肤感受有限，但看着博士享受的模样让她心满意足。"
+context = "{target.name}小巧玲珑的{feet}灵活地包裹住{character.name}的{penis}上下套动，虽然她的皮肤感受有限，但看着{player.name}享受的模样让她心满意足。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
@@ -3415,11 +3415,11 @@ context = "{character.name}滚烫的{penis}被{target.name}纤细柔软的{feet}
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.皮肤 >= 1000&selected.皮肤 < 12000"
-context = "{target.name}柔嫩的{feet}紧贴着{character.name}胯下鼓胀的{penis}，小巧玲珑的脚掌灵活地随着节奏缓缓移动服侍着博士。"
+context = "{target.name}柔嫩的{feet}紧贴着{character.name}胯下鼓胀的{penis}，小巧玲珑的脚掌灵活地随着节奏缓缓移动服侍着{player.name}。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.皮肤 >= 1000&selected.皮肤 < 12000"
-context = "{character.name}的{penis}在{target.name}那双敏感的{feet}间被她细腻的脚心和灵活的脚趾温柔地包裹，她正细细地上下伺候着博士。"
+context = "{character.name}的{penis}在{target.name}那双敏感的{feet}间被她细腻的脚心和灵活的脚趾温柔地包裹，她正细细地上下伺候着{player.name}。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.皮肤 >= 1000&selected.皮肤 < 12000"
@@ -3447,7 +3447,7 @@ context = "{character.name}感受着{target.name}那双格外敏感的{feet}轻�
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
-context = "{target.name}笨拙地用{feet}夹住{character.name}的{penis}，她娇小的脚掌生涩地摩擦着，试图取悦博士却不知该如何发力"
+context = "{target.name}笨拙地用{feet}夹住{character.name}的{penis}，她娇小的脚掌生涩地摩擦着，试图取悦{player.name}却不知该如何发力"
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
@@ -3467,7 +3467,7 @@ context = "{target.name}颤抖着用精巧的{feet}夹紧{character.name}的{pen
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
-context = "{character.name}的{penis}在{target.name}小巧的{feet}间缓慢抽动着，她生涩的配合和紧张的神情令博士欲望大增"
+context = "{character.name}的{penis}在{target.name}小巧的{feet}间缓慢抽动着，她生涩的配合和紧张的神情令{player.name}欲望大增"
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
@@ -3483,7 +3483,7 @@ context = "{target.name}用纤巧的{feet}紧紧夹住{character.name}的{penis}
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.小足 == 1"
-context = "{character.name}的{penis}被{target.name}稚嫩的{feet}包裹摩擦着，她不熟练地扭动小巧的脚趾，努力学习着如何取悦博士"
+context = "{character.name}的{penis}被{target.name}稚嫩的{feet}包裹摩擦着，她不熟练地扭动小巧的脚趾，努力学习着如何取悦{player.name}"
 
 [[entries]]
 conditions = "player.abilities.腰技.level > 3&player.abilities.腰技.level <= 6&selected.talents.长足 == 1"
@@ -3611,7 +3611,7 @@ context = "{target.name}那双修长的{feet}生涩地夹住{character.name}的{
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
-context = "{target.name}优美的{feet}在{character.name}的引导下缓缓摩擦着{penis}，她纤长的脚趾因紧张而微微蜷缩，脸颊泛红地望向博士期待认可。"
+context = "{target.name}优美的{feet}在{character.name}的引导下缓缓摩擦着{penis}，她纤长的脚趾因紧张而微微蜷缩，脸颊泛红地望向{player.name}期待认可。"
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
@@ -3635,7 +3635,7 @@ context = "{character.name}引导着{target.name}用她修长的{feet}夹住自�
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
-context = "{target.name}纤长的{feet}怯怯地包裹着{character.name}的{penis}上下撸动，她对自己动作毫无自信的青涩模样，反而激发了博士想要彻底征服她的欲望。"
+context = "{target.name}纤长的{feet}怯怯地包裹着{character.name}的{penis}上下撸动，她对自己动作毫无自信的青涩模样，反而激发了{player.name}想要彻底征服她的欲望。"
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
@@ -4163,7 +4163,7 @@ context = "{target.name}那修长的{feet}被强迫裹住{character.name}的{pen
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
-context = "{character.name}抓住{target.name}僵直的{feet}包住自己的{penis}，她那优雅的脚掌成了博士发泄的工具，而她只能清醒地感受着一切。"
+context = "{character.name}抓住{target.name}僵直的{feet}包住自己的{penis}，她那优雅的脚掌成了{player.name}发泄的工具，而她只能清醒地感受着一切。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
@@ -4191,7 +4191,7 @@ context = "被精神控制的{target.name}主动用自己玲珑的{feet}夹着{c
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
-context = "{target.name}那双小巧敏感的{feet}热情地包裹着{character.name}的{penis}，虽然心里万般不愿，身体却积极地取悦着博士。"
+context = "{target.name}那双小巧敏感的{feet}热情地包裹着{character.name}的{penis}，虽然心里万般不愿，身体却积极地取悦着{player.name}。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"

@@ -575,7 +575,7 @@ context = "凹陷柔嫩微微泛红，等待玩弄的{armpit_s}"
 
 [[entries]]
 conditions = "premises:t_is_assistant"
-context = "细腻敏感因情欲泛汗，服务博士的{armpit_s}"
+context = "细腻敏感因情欲泛汗，服务{player.name}的{armpit_s}"
 
 [[entries]]
 conditions = "premises:t_is_assistant"
@@ -587,7 +587,7 @@ context = "粉嫩敏感因摩擦微红，听话助理的{armpit_s}"
 
 [[entries]]
 conditions = "premises:t_is_assistant"
-context = "温暖湿润充满体香，专为博士准备的{armpit_s}"
+context = "温暖湿润充满体香，专为{player.name}准备的{armpit_s}"
 
 [[entries]]
 conditions = "premises:t_is_assistant"
@@ -599,7 +599,7 @@ context = "香汗淋漓微微颤抖，等待蹂躏的{armpit_s}"
 
 [[entries]]
 conditions = "premises:t_is_assistant"
-context = "柔软顺滑散发体香，为博士敞开的{armpit_s}"
+context = "柔软顺滑散发体香，为{player.name}敞开的{armpit_s}"
 
 [[entries]]
 conditions = "premises:t_is_assistant"
@@ -615,7 +615,7 @@ context = "滑腻温热微微颤动，尽责助理的{armpit_s}"
 
 [[entries]]
 conditions = "premises:t_is_assistant"
-context = "香气浓郁光洁细腻，供博士享乐的{armpit_s}"
+context = "香气浓郁光洁细腻，供{player.name}享乐的{armpit_s}"
 
 [[entries]]
 conditions = "premises:t_is_assistant"
@@ -627,7 +627,7 @@ context = "微湿嫩滑充满欲望，职责所在的{armpit_s}"
 
 [[entries]]
 conditions = "premises:t_is_assistant"
-context = "湿滑敏感因情欲潮红，博士专属的{armpit_s}"
+context = "湿滑敏感因情欲潮红，{player.name}专属的{armpit_s}"
 
 [[entries]]
 conditions = "premises:t_is_assistant"

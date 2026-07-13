@@ -307,7 +307,7 @@ context = "娇小玲珑的{target.name}主动加深了吞咽幅度，{throat}顺
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
-context = "{target.name}稚嫩的小手扶住博士的腰际，用尚未发育成熟的{throat}反复吞吐{penis}，幼小的颌骨被撑到极限，下巴肌肉因长时间张大而微微颤抖。"
+context = "{target.name}稚嫩的小手扶住{player.name}的腰际，用尚未发育成熟的{throat}反复吞吐{penis}，幼小的颌骨被撑到极限，下巴肌肉因长时间张大而微微颤抖。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
@@ -3067,7 +3067,7 @@ context = "青涩的{target.name}主动晃了晃小脑袋，让{penis}在{throat
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
-context = "{target.name}小手紧紧攥住博士衣摆，{throat}沉醉地反复吞咽{penis}根部，娇小喉头迅速起伏，红润的小脸蹭着小腹，发出连绵不绝的鼻腔甜糯呻吟。"
+context = "{target.name}小手紧紧攥住{player.name}衣摆，{throat}沉醉地反复吞咽{penis}根部，娇小喉头迅速起伏，红润的小脸蹭着小腹，发出连绵不绝的鼻腔甜糯呻吟。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
@@ -3075,7 +3075,7 @@ context = "萝莉湿润的眼睛微微泛光，{target.name}用敏感的{throat}
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
-context = "{target.name}的稚气小脸贴紧博士小腹，{throat}充满热情地缩紧又放松挤压{penis}，娇小脖颈轻轻颤抖，喉口反复挤吐，鼻间满是黏甜的甜糯哼吟声响。"
+context = "{target.name}的稚气小脸贴紧{player.name}小腹，{throat}充满热情地缩紧又放松挤压{penis}，娇小脖颈轻轻颤抖，喉口反复挤吐，鼻间满是黏甜的甜糯哼吟声响。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
@@ -3223,7 +3223,7 @@ context = "{target.name}小脸潮红得几乎滴血，{throat}沉沦地剧烈缩
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.皮肤 >= 12000&selected.皮肤 < 90000"
-context = "青涩的{target.name}小手痉挛地抓紧博士大腿，娇小{throat}失神地剧烈吞吮{penis}根部，纤细颈侧颤动不止，小喉结疯狂涌动，鼻腔深处尽是极致的甜美痴叫。"
+context = "青涩的{target.name}小手痉挛地抓紧{player.name}大腿，娇小{throat}失神地剧烈吞吮{penis}根部，纤细颈侧颤动不止，小喉结疯狂涌动，鼻腔深处尽是极致的甜美痴叫。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.皮肤 >= 12000&selected.皮肤 < 90000"

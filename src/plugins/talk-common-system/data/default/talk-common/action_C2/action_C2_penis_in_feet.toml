@@ -927,7 +927,7 @@ context = "{target.name}用修长的{feet}紧紧夹住{penis}，她羞于让其�
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{target.name}感受着{penis}在{feet}间摩擦的淫靡触感，她故意把小巧的脚抬高，让周围的女性都能看到她正用娇小的脚掌侍奉着博士，这种被注视的快感让她浑身发烫。"
+context = "{target.name}感受着{penis}在{feet}间摩擦的淫靡触感，她故意把小巧的脚抬高，让周围的女性都能看到她正用娇小的脚掌侍奉着{player.name}，这种被注视的快感让她浑身发烫。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -947,7 +947,7 @@ context = "{target.name}的{feet}灵活地摩擦着{penis}，每次蹭过龟头�
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{target.name}用{feet}缠绕着{penis}上下套弄，她小巧敏感的足心感受着肉棒的跳动，同时得意地看向其他女性，仿佛在宣示自己独占博士的主权与快感。"
+context = "{target.name}用{feet}缠绕着{penis}上下套弄，她小巧敏感的足心感受着肉棒的跳动，同时得意地看向其他女性，仿佛在宣示自己独占{player.name}的主权与快感。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -959,7 +959,7 @@ context = "{target.name}玲珑的{feet}贴在{penis}上感受着蓬勃的热意�
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{target.name}精致小巧的{feet}被{penis}的热度烫得发烫，她一边用脚掌摩擦着柱身，一边向周围的女性投去挑衅的眼神，享受着独占博士宠爱时那令人沉醉的优越感。"
+context = "{target.name}精致小巧的{feet}被{penis}的热度烫得发烫，她一边用脚掌摩擦着柱身，一边向周围的女性投去挑衅的眼神，享受着独占{player.name}宠爱时那令人沉醉的优越感。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -1023,7 +1023,7 @@ context = "{penis}的灼热和搏动透过{feet}传递而来，{target.name}感�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
-context = "{target.name}用纤长的脚趾轻轻夹弄着{penis}的冠状沟，酥麻的触感让她几乎压抑不住呻吟，{feet}不由自主地绷紧，在隐秘处为博士服务着。"
+context = "{target.name}用纤长的脚趾轻轻夹弄着{penis}的冠状沟，酥麻的触感让她几乎压抑不住呻吟，{feet}不由自主地绷紧，在隐秘处为{player.name}服务着。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
@@ -1035,7 +1035,7 @@ context = "{target.name}感觉{penis}在{feet}间跳动得愈发剧烈，滑腻�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
-context = "藏在桌下的{penis}在{feet}间肆意滑动，{target.name}竭力克制颤抖的双腿，脸上装出平静的模样，内心却沉浸在被博士玩弄的淫靡快感中无法自拔。"
+context = "藏在桌下的{penis}在{feet}间肆意滑动，{target.name}竭力克制颤抖的双腿，脸上装出平静的模样，内心却沉浸在被{player.name}玩弄的淫靡快感中无法自拔。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
@@ -1571,7 +1571,7 @@ context = "被囚禁的{target.name}感受着{feet}夹住{penis}时传来的炽�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_1"
-context = "牢笼中的{target.name}用{feet}摩擦着{penis}，纤长的足弓因肉棒的跳动而微微颤抖，她茫然地感受着从脚心传来的酥麻快感，不明白自己为何会对博士产生隐约的亲近感。"
+context = "牢笼中的{target.name}用{feet}摩擦着{penis}，纤长的足弓因肉棒的跳动而微微颤抖，她茫然地感受着从脚心传来的酥麻快感，不明白自己为何会对{player.name}产生隐约的亲近感。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_1"
@@ -1579,7 +1579,7 @@ context = "{target.name}被锁链束缚着，却用修长的{feet}轻轻夹紧{p
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_1"
-context = "监禁中的{target.name}以{feet}包裹着{penis}上下摩擦，纤细的脚背被前液沾湿，她羞耻地感受着从足心蔓延全身的酥麻感，不解为何面对博士时心跳会莫名加速。"
+context = "监禁中的{target.name}以{feet}包裹着{penis}上下摩擦，纤细的脚背被前液沾湿，她羞耻地感受着从足心蔓延全身的酥麻感，不解为何面对{player.name}时心跳会莫名加速。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_1"
@@ -1587,19 +1587,19 @@ context = "牢房里的{target.name}用她修长的{feet}侍奉着{penis}，感�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_2"
-context = "被囚禁的{target.name}用{feet}夹住{penis}摩擦时，修长的脚趾因紧张而微微颤抖，她暗恋博士的心思让每一次触碰都充满羞涩，却不敢抬头直视他的眼神。"
+context = "被囚禁的{target.name}用{feet}夹住{penis}摩擦时，修长的脚趾因紧张而微微颤抖，她暗恋{player.name}的心思让每一次触碰都充满羞涩，却不敢抬头直视他的眼神。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_2"
-context = "牢笼中的{target.name}以纤长的{feet}包裹着{penis}上下套弄，感受着那灼热的温度从足心传来，她红着脸努力侍奉，期盼这份亲密能让博士察觉她未说出口的爱意。"
+context = "牢笼中的{target.name}以纤长的{feet}包裹着{penis}上下套弄，感受着那灼热的温度从足心传来，她红着脸努力侍奉，期盼这份亲密能让{player.name}察觉她未说出口的爱意。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_2"
-context = "被监禁的{target.name}用修长的{feet}夹紧{penis}来回摩擦，她的脚背被前液沾湿变得滑腻，心中既羞涩又忐忑，害怕自己过于炽热的情感会吓跑博士。"
+context = "被监禁的{target.name}用修长的{feet}夹紧{penis}来回摩擦，她的脚背被前液沾湿变得滑腻，心中既羞涩又忐忑，害怕自己过于炽热的情感会吓跑{player.name}。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_2"
-context = "牢房里的{target.name}以{feet}侍奉着{penis}，纤细的脚趾因快感而舒展蜷曲，她感受着肉棒的跳动，在足心传来的酥麻中默默祈祷博士能读懂她藏在心底的告白。"
+context = "牢房里的{target.name}以{feet}侍奉着{penis}，纤细的脚趾因快感而舒展蜷曲，她感受着肉棒的跳动，在足心传来的酥麻中默默祈祷{player.name}能读懂她藏在心底的告白。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_E_2"
@@ -1727,7 +1727,7 @@ context = "{target.name}小巧玲珑的{feet}被{penis}填满了每一处缝隙�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
-context = "{target.name}默然地用{feet}摩擦着{penis}，修长的脚趾夹住茎身上下套弄，她的心早已麻木，只是机械地服从着博士的命令，任由淫靡的快感从足心蔓延开来。"
+context = "{target.name}默然地用{feet}摩擦着{penis}，修长的脚趾夹住茎身上下套弄，她的心早已麻木，只是机械地服从着{player.name}的命令，任由淫靡的快感从足心蔓延开来。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
@@ -1739,7 +1739,7 @@ context = "{target.name}的{feet}夹着{penis}缓缓套弄，修长优雅的双�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
-context = "{target.name}用{feet}包裹住博士的{penis}，柔软的足心与滚烫的肉棒紧密贴合，尽管已认命于被支配的命运，从脚底蔓延至全身的淫糜快感仍让她难以自抑地喘息。"
+context = "{target.name}用{feet}包裹住{player.name}的{penis}，柔软的足心与滚烫的肉棒紧密贴合，尽管已认命于被支配的命运，从脚底蔓延至全身的淫糜快感仍让她难以自抑地喘息。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
@@ -1751,7 +1751,7 @@ context = "{target.name}的{feet}熟练地套弄着{penis}，她以消极的姿�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
-context = "{target.name}用{feet}贴合着博士的{penis}上下摩擦，她眸光黯淡地服从着命令，纤细优美的双脚贴着肉柱滑动，淫靡的快感从足心直窜脊椎令她低声呻吟。"
+context = "{target.name}用{feet}贴合着{player.name}的{penis}上下摩擦，她眸光黯淡地服从着命令，纤细优美的双脚贴着肉柱滑动，淫靡的快感从足心直窜脊椎令她低声呻吟。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
@@ -1843,7 +1843,7 @@ context = "{target.name}用柔软的{feet}紧贴着{penis}缓缓摩擦，炽热�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
-context = "{penis}的热度透过{target.name}敏感的{feet}传遍全身，她修长的脚趾微微抽搐着夹紧肉棒，在压抑声音的同时努力为博士服务，心跳因紧张和快感而加速。"
+context = "{penis}的热度透过{target.name}敏感的{feet}传遍全身，她修长的脚趾微微抽搐着夹紧肉棒，在压抑声音的同时努力为{player.name}服务，心跳因紧张和快感而加速。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_imprisonment_1"
@@ -2359,7 +2359,7 @@ context = "小巧可爱的{feet}被{penis}的热度熏得通红，{target.name}�
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
-context = "{target.name}细嫩的{feet}夹着{penis}不断搓动，每次接触都让她的脚趾蜷起，作为驯服的部下她将全部注意力放在如何用小脚讨好博士身上。"
+context = "{target.name}细嫩的{feet}夹着{penis}不断搓动，每次接触都让她的脚趾蜷起，作为驯服的部下她将全部注意力放在如何用小脚讨好{player.name}身上。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&premises:FALL_LEVEL_E_-2"
@@ -2379,7 +2379,7 @@ context = "{target.name}感受着{penis}在{feet}间胀大跳动，那股灼热�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
-context = "{target.name}的{feet}被{penis}的热度烫得发麻，纤长脚趾因异样的酥痒而蜷缩，她在心中告诉自己这只是对博士信任的回应。"
+context = "{target.name}的{feet}被{penis}的热度烫得发麻，纤长脚趾因异样的酥痒而蜷缩，她在心中告诉自己这只是对{player.name}信任的回应。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:FALL_LEVEL_E_-2"
@@ -2895,7 +2895,7 @@ context = "看着{penis}在自己精致的{feet}间滑动，{target.name}皮肤�
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "{target.name}用纤小的{feet}轻轻夹紧{penis}，尽管她感受到的肉体刺激有限，但被博士玩弄的背德快感让她下体微微湿润。"
+context = "{target.name}用纤小的{feet}轻轻夹紧{penis}，尽管她感受到的肉体刺激有限，但被{player.name}玩弄的背德快感让她下体微微湿润。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
@@ -2907,11 +2907,11 @@ context = "{penis}在{target.name}小巧的{feet}间摩擦，她的脚趾因紧�
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "{target.name}看着{penis}在自己玲珑的{feet}上肆意摩擦，皮肤传来的淡淡压迫感配合博士粗重的喘息，令她心神荡漾。"
+context = "{target.name}看着{penis}在自己玲珑的{feet}上肆意摩擦，皮肤传来的淡淡压迫感配合{player.name}粗重的喘息，令她心神荡漾。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "用精巧的{feet}夹住{penis}服侍着，{target.name}的皮肤虽无太多感觉，但想到自己在用双脚给博士带来快感，便羞得满脸潮红。"
+context = "用精巧的{feet}夹住{penis}服侍着，{target.name}的皮肤虽无太多感觉，但想到自己在用双脚给{player.name}带来快感，便羞得满脸潮红。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
@@ -2919,11 +2919,11 @@ context = "{target.name}感受着{penis}的热度隔着迟钝的皮肤传来，�
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "{penis}被{target.name}纤小的{feet}灵巧地按摩着，她的足底虽然感度不高，但每次博士发出满足的低吟都让她的小穴微微收缩。"
+context = "{penis}被{target.name}纤小的{feet}灵巧地按摩着，她的足底虽然感度不高，但每次{player.name}发出满足的低吟都让她的小穴微微收缩。"
 
 [[entries]]
 conditions = "selected.talents.小足 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "{target.name}的{feet}紧贴着{penis}上下滑动，尽管皮肤的快感有限，被博士贪婪目光注视着的羞耻感却让她浑身发烫，腿根潮湿。"
+context = "{target.name}的{feet}紧贴着{penis}上下滑动，尽管皮肤的快感有限，被{player.name}贪婪目光注视着的羞耻感却让她浑身发烫，腿根潮湿。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&selected.皮肤 >= 1000&selected.皮肤 < 12000"
@@ -3615,7 +3615,7 @@ context = "{target.name}感受到{penis}在{feet}间炽热地脉动着，那根�
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
-context = "{target.name}生涩地用{feet}摩擦着{penis}，那根滚烫粗硬的东西紧贴着她柔嫩足心让她又羞又怕，她纤长的脚趾不自觉地绷紧，不知该用多大力度才能让博士满意。"
+context = "{target.name}生涩地用{feet}摩擦着{penis}，那根滚烫粗硬的东西紧贴着她柔嫩足心让她又羞又怕，她纤长的脚趾不自觉地绷紧，不知该用多大力度才能让{player.name}满意。"
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
@@ -3627,7 +3627,7 @@ context = "{target.name}用{feet}生疏地夹紧{penis}，她能清晰感受到�
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
-context = "{target.name}感受着{penis}在{feet}间摩擦带来的奇异快感，那根粗热肉棒蹭过她细腻的足心让她浑身酥麻，她茫然地望着博士，不明白为何自己的身体会有这样淫荡的反应。"
+context = "{target.name}感受着{penis}在{feet}间摩擦带来的奇异快感，那根粗热肉棒蹭过她细腻的足心让她浑身酥麻，她茫然地望着{player.name}，不明白为何自己的身体会有这样淫荡的反应。"
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
@@ -3639,7 +3639,7 @@ context = "{target.name}紧张地感受着{penis}被{feet}夹住的触感，那�
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
-context = "{target.name}用{feet}生涩地摩擦{penis}，那根滚烫肉棒紧贴着她柔软足心的淫靡感让她又羞又怕，她修长的脚趾无措地蜷缩着，任由博士引导着她笨拙地服侍。"
+context = "{target.name}用{feet}生涩地摩擦{penis}，那根滚烫肉棒紧贴着她柔软足心的淫靡感让她又羞又怕，她修长的脚趾无措地蜷缩着，任由{player.name}引导着她笨拙地服侍。"
 
 [[entries]]
 conditions = "selected.abilities.足技.level <= 3&selected.talents.长足 == 1"
@@ -3967,7 +3967,7 @@ context = "{target.name}的{feet}正无意识地感受着{penis}的侵犯，她�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_unconscious_flag_4"
-context = "{target.name}平静地感受着{penis}在自己{feet}间来回摩擦的感觉，修长的脚趾随着滑动而微微颤动，这种服务博士的行为在她心中再自然不过。"
+context = "{target.name}平静地感受着{penis}在自己{feet}间来回摩擦的感觉，修长的脚趾随着滑动而微微颤动，这种服务{player.name}的行为在她心中再自然不过。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_unconscious_flag_4"
@@ -3979,7 +3979,7 @@ context = "{target.name}神色平常地用{feet}摩擦着{penis}，柔嫩的足�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_unconscious_flag_4"
-context = "随着{penis}在{feet}间持续磨蹭，{target.name}心中只觉得用双脚服侍博士是再正常不过的事情，纤长的脚趾夹紧龟头时涌起的酥麻感让她微微眯眼。"
+context = "随着{penis}在{feet}间持续磨蹭，{target.name}心中只觉得用双脚服侍{player.name}是再正常不过的事情，纤长的脚趾夹紧龟头时涌起的酥麻感让她微微眯眼。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_unconscious_flag_4"
@@ -3987,11 +3987,11 @@ context = "{target.name}的{feet}被{penis}摩得微微发热，她平静地感�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_unconscious_flag_4"
-context = "{target.name}用{feet}细致地服务着{penis}，修长的脚背被肉棒蹭得一阵阵发痒，她心里毫无波澜地接受着这份快感，仿佛给博士足交只是普通的问候方式。"
+context = "{target.name}用{feet}细致地服务着{penis}，修长的脚背被肉棒蹭得一阵阵发痒，她心里毫无波澜地接受着这份快感，仿佛给{player.name}足交只是普通的问候方式。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_unconscious_flag_4"
-context = "{penis}在{feet}的柔嫩脚心上反复摩擦，{target.name}平淡地享受着从足底涌来的阵阵酥痒，她对此毫不抗拒，只是安静地配合着博士的动作。"
+context = "{penis}在{feet}的柔嫩脚心上反复摩擦，{target.name}平淡地享受着从足底涌来的阵阵酥痒，她对此毫不抗拒，只是安静地配合着{player.name}的动作。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_unconscious_flag_4"
@@ -3999,7 +3999,7 @@ context = "{target.name}感受着{penis}顶弄着{feet}的脚趾缝隙，灼热�
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_unconscious_flag_4"
-context = "{feet}被{penis}夹在修长的足弓间不断摩擦，{target.name}呼吸微微急促却神态平静，她的身体诚实地感受着快感，心里只认为用双脚伺候博士是天经地义的事。"
+context = "{feet}被{penis}夹在修长的足弓间不断摩擦，{target.name}呼吸微微急促却神态平静，她的身体诚实地感受着快感，心里只认为用双脚伺候{player.name}是天经地义的事。"
 
 [[entries]]
 conditions = "selected.talents.长足 == 1&premises:t_unconscious_flag_4"

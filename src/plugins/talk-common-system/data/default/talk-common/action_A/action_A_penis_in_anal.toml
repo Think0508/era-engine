@@ -335,7 +335,7 @@ context = "萝莉纤细的双腿环住{character.name}的腰，{penis}在她紧�
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&premises:dr_position_face_seat"
-context = "{character.name}托着{target.name}娇小的臀部，让{penis}在萝莉紧致的{anal}中有节奏地研磨，她紧紧抱住博士的脖颈。"
+context = "{character.name}托着{target.name}娇小的臀部，让{penis}在萝莉紧致的{anal}中有节奏地研磨，她紧紧抱住{player.name}的脖颈。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&premises:dr_position_face_seat"
@@ -343,11 +343,11 @@ context = "面对面的姿势让{target.name}的稚嫩身体与{character.name}�
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&premises:dr_position_face_seat"
-context = "{target.name}坐在{character.name}腿上轻轻起伏，{penis}撑开她还在发育中的{anal}，小女孩的双臂紧紧环抱着博士。"
+context = "{target.name}坐在{character.name}腿上轻轻起伏，{penis}撑开她还在发育中的{anal}，小女孩的双臂紧紧环抱着{player.name}。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&premises:dr_position_face_seat"
-context = "{character.name}扶着萝莉纤细的腰肢，{penis}在{target.name}青涩的{anal}中缓慢摩擦，她的小脸埋在博士胸口。"
+context = "{character.name}扶着萝莉纤细的腰肢，{penis}在{target.name}青涩的{anal}中缓慢摩擦，她的小脸埋在{player.name}胸口。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&premises:dr_position_face_seat"
@@ -1407,7 +1407,7 @@ context = "{character.name}握住{target.name}柔软的腰间赘肉，配合她�
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_face_seat"
-context = "{target.name}面对面坐在{character.name}腿上，成熟的身体紧贴着博士，{penis}深埋在{anal}中缓缓研磨，她试图主动摆腰配合却显得有些生涩。"
+context = "{target.name}面对面坐在{character.name}腿上，成熟的身体紧贴着{player.name}，{penis}深埋在{anal}中缓缓研磨，她试图主动摆腰配合却显得有些生涩。"
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_face_seat"
@@ -1415,11 +1415,11 @@ context = "{character.name}搂住{target.name}的腰，{penis}在{anal}中缓慢
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_face_seat"
-context = "{target.name}双腿环住{character.name}的腰，丰满的胸脯贴在博士胸膛上，{anal}紧紧吸附着{penis}，一边想主导节奏一边又不自觉地颤抖。"
+context = "{target.name}双腿环住{character.name}的腰，丰满的胸脯贴在{player.name}胸膛上，{anal}紧紧吸附着{penis}，一边想主导节奏一边又不自觉地颤抖。"
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_face_seat"
-context = "{character.name}的{penis}在{anal}中浅浅律动，{target.name}双臂环抱住博士的脖颈，成熟的嘴唇微张，神情中夹杂着想要掩饰青涩的努力。"
+context = "{character.name}的{penis}在{anal}中浅浅律动，{target.name}双臂环抱住{player.name}的脖颈，成熟的嘴唇微张，神情中夹杂着想要掩饰青涩的努力。"
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_face_seat"
@@ -1427,15 +1427,15 @@ context = "{target.name}坐在{character.name}身上缓缓起伏，{penis}在她
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_face_seat"
-context = "{character.name}托住{target.name}浑圆的臀瓣，{penis}在{anal}中温柔地进出，大姐姐的身体已完全成熟却仍带着些许腼腆，紧贴着博士小幅摆动。"
+context = "{character.name}托住{target.name}浑圆的臀瓣，{penis}在{anal}中温柔地进出，大姐姐的身体已完全成熟却仍带着些许腼腆，紧贴着{player.name}小幅摆动。"
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_face_seat"
-context = "{target.name}紧紧搂住{character.name}，她发育成熟的躯体贴合着博士，{anal}缓缓吞吐着{penis}，试图驾驭节奏的动作中流露出一丝稚嫩。"
+context = "{target.name}紧紧搂住{character.name}，她发育成熟的躯体贴合着{player.name}，{anal}缓缓吞吐着{penis}，试图驾驭节奏的动作中流露出一丝稚嫩。"
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_face_seat"
-context = "{character.name}的{penis}深入{target.name}的{anal}中缓缓研磨，她面对面坐着，成熟的曲线贴着博士，想要主动摇晃却又显得不够从容。"
+context = "{character.name}的{penis}深入{target.name}的{anal}中缓缓研磨，她面对面坐着，成熟的曲线贴着{player.name}，想要主动摇晃却又显得不够从容。"
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_face_seat"
@@ -1443,7 +1443,7 @@ context = "{target.name}轻扭腰肢，让{character.name}的{penis}在她{anal}
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_face_seat"
-context = "{character.name}双手抚摸{target.name}的后背，{penis}在{anal}中轻柔律动，她紧紧贴着博士，成熟的眼眸中偶尔闪过青涩与羞怯交织的神色。"
+context = "{character.name}双手抚摸{target.name}的后背，{penis}在{anal}中轻柔律动，她紧紧贴着{player.name}，成熟的眼眸中偶尔闪过青涩与羞怯交织的神色。"
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&premises:dr_position_back_seat"
@@ -7371,15 +7371,15 @@ context = "{target.name}趴伏着身体，双手撑地，主动扭动着翘臀�
 
 [[entries]]
 conditions = "premises:t_npc_active_h&premises:dr_position_back"
-context = "{target.name}以跪趴姿势主动向后撞击，用紧致的{anal}来回套弄着{character.name}的{penis}，努力服务着博士的肉棒。"
+context = "{target.name}以跪趴姿势主动向后撞击，用紧致的{anal}来回套弄着{character.name}的{penis}，努力服务着{player.name}的肉棒。"
 
 [[entries]]
 conditions = "premises:t_npc_active_h&premises:dr_position_back"
-context = "{target.name}四肢着地，主动将翘臀往后送去，{anal}贪婪地吞入{character.name}的{penis}，卖力地扭腰让博士享受肛交的快感。"
+context = "{target.name}四肢着地，主动将翘臀往后送去，{anal}贪婪地吞入{character.name}的{penis}，卖力地扭腰让{player.name}享受肛交的快感。"
 
 [[entries]]
 conditions = "premises:t_npc_active_h&premises:dr_position_back"
-context = "{target.name}趴跪在博士身前，翘起的浑圆臀瓣主动前后晃动，用{anal}热情地蠕动吸吮着{character.name}的{penis}。"
+context = "{target.name}趴跪在{player.name}身前，翘起的浑圆臀瓣主动前后晃动，用{anal}热情地蠕动吸吮着{character.name}的{penis}。"
 
 [[entries]]
 conditions = "premises:t_npc_active_h&premises:dr_position_back"
@@ -7391,7 +7391,7 @@ context = "{target.name}保持着跪趴的姿势，主动把肥美的翘臀向�
 
 [[entries]]
 conditions = "premises:t_npc_active_h&premises:dr_position_back"
-context = "{target.name}趴伏在地上，双腿大开，主动扭动臀部让{anal}一下下吞入{character.name}的{penis}，卖力地用后穴伺候着博士。"
+context = "{target.name}趴伏在地上，双腿大开，主动扭动臀部让{anal}一下下吞入{character.name}的{penis}，卖力地用后穴伺候着{player.name}。"
 
 [[entries]]
 conditions = "premises:t_npc_active_h&premises:dr_position_back"
@@ -7399,7 +7399,7 @@ context = "{target.name}跪趴着高翘着白嫩的屁股，{anal}主动吮吸�
 
 [[entries]]
 conditions = "premises:t_npc_active_h&premises:dr_position_back"
-context = "{target.name}保持跪姿将上身压低，主动用抬高的翘臀迎向{character.name}的{penis}，用紧窄的{anal}包裹吞吐着博士的肉棒。"
+context = "{target.name}保持跪姿将上身压低，主动用抬高的翘臀迎向{character.name}的{penis}，用紧窄的{anal}包裹吞吐着{player.name}的肉棒。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:t_npc_active_h"
@@ -7431,7 +7431,7 @@ context = "面对{character.name}骑坐着的{target.name}主动压下腰身，{
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:t_npc_active_h"
-context = "{target.name}掌握着主动权，用{anal}紧紧绞住{character.name}的{penis}，熟练地扭动腰肢取悦着身下的博士。"
+context = "{target.name}掌握着主动权，用{anal}紧紧绞住{character.name}的{penis}，熟练地扭动腰肢取悦着身下的{player.name}。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:t_npc_active_h"
@@ -8719,7 +8719,7 @@ context = "{target.name}双手撑着桌沿站立，{character.name}的{penis}从
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_back_stand"
-context = "{character.name}挺腰将{penis}插入{target.name}站立着的{anal}中，她背对着博士微微弯腰，故意在他人注视下发出淫荡的浪叫，炫耀着自己被狠狠肏干的事实。"
+context = "{character.name}挺腰将{penis}插入{target.name}站立着的{anal}中，她背对着{player.name}微微弯腰，故意在他人注视下发出淫荡的浪叫，炫耀着自己被狠狠肏干的事实。"
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_face_hug"
@@ -8759,7 +8759,7 @@ context = "{character.name}抱住{target.name}的身体，{penis}深深嵌入她
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_face_hug"
-context = "{target.name}被{character.name}抱着站立肏弄，{penis}来回贯穿她的{anal}，她一边浪叫着一边向其他女性投去挑衅的目光，炫耀自己正在被博士宠幸。"
+context = "{target.name}被{character.name}抱着站立肏弄，{penis}来回贯穿她的{anal}，她一边浪叫着一边向其他女性投去挑衅的目光，炫耀自己正在被{player.name}宠幸。"
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_back_hug"
@@ -8827,7 +8827,7 @@ context = "面朝彼此侧躺的两人交缠着下半身，{character.name}的{p
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_face_lie"
-context = "{character.name}与{target.name}亲密相拥着侧卧，{penis}深埋在温热的{anal}中慢慢磨蹭，{target.name}得意地瞥向其他女性，故意挺起胸膛展示自己正被博士宠幸的模样。"
+context = "{character.name}与{target.name}亲密相拥着侧卧，{penis}深埋在温热的{anal}中慢慢磨蹭，{target.name}得意地瞥向其他女性，故意挺起胸膛展示自己正被{player.name}宠幸的模样。"
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_face_lie"
@@ -11295,7 +11295,7 @@ context = "意识朦胧的{target.name}躺在身下，{anal}被{character.name}�
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_normal"
-context = "{character.name}分开醉酒{target.name}的双腿，{penis}深入{anal}中肆意进出，少女醉眼迷离地任由博士享用后穴。"
+context = "{character.name}分开醉酒{target.name}的双腿，{penis}深入{anal}中肆意进出，少女醉眼迷离地任由{player.name}享用后穴。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_normal"
@@ -14603,7 +14603,7 @@ context = "{target.name}双腿分开，任由{character.name}的{penis}在自己
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_1"
-context = "{character.name}俯身压在{target.name}身上，将{penis}深埋进她的{anal}，她茫然地望着博士的脸庞，心跳莫名加速。"
+context = "{character.name}俯身压在{target.name}身上，将{penis}深埋进她的{anal}，她茫然地望着{player.name}的脸庞，心跳莫名加速。"
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_1"
@@ -14615,7 +14615,7 @@ context = "{character.name}扶着{target.name}的腰，让{penis}在她{anal}里
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_1"
-context = "{target.name}的双腿抬起，迎合着{character.name}的{penis}侵入{anal}的动作，她不明所以地想要靠近博士更多。"
+context = "{target.name}的双腿抬起，迎合着{character.name}的{penis}侵入{anal}的动作，她不明所以地想要靠近{player.name}更多。"
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_1"
@@ -14623,7 +14623,7 @@ context = "{character.name}面对面地将{penis}埋入{target.name}的{anal}深
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_1"
-context = "{target.name}躺在身下承受着{character.name}的{penis}在{anal}中的摩擦，她懵懂地抬手环住博士的脖颈，动作自然而不自知。"
+context = "{target.name}躺在身下承受着{character.name}的{penis}在{anal}中的摩擦，她懵懂地抬手环住{player.name}的脖颈，动作自然而不自知。"
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_1"
@@ -17387,7 +17387,7 @@ context = "{character.name}从背后将{target.name}抱起悬空，{penis}深埋
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2&premises:dr_position_back_hug"
-context = "被从身后抱举起来的{target.name}双腿悬空，{character.name}的{penis}在她的{anal}内缓缓抽插，信赖的干员将此视为对博士的特殊服务。"
+context = "被从身后抱举起来的{target.name}双腿悬空，{character.name}的{penis}在她的{anal}内缓缓抽插，信赖的干员将此视为对{player.name}的特殊服务。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2&premises:dr_position_back_hug"
@@ -19067,7 +19067,7 @@ context = "{target.name}面对面坐在{character.name}腿上，双腿环住他�
 
 [[entries]]
 conditions = "premises:t_first_a_sex_in_today&premises:dr_position_face_seat"
-context = "{character.name}的{penis}在{target.name}今天初次开拓的{anal}里温柔律动着，她的双臂环绕着博士的脖颈，身体因再次体验后穴被填满的异样感而微微颤抖。"
+context = "{character.name}的{penis}在{target.name}今天初次开拓的{anal}里温柔律动着，她的双臂环绕着{player.name}的脖颈，身体因再次体验后穴被填满的异样感而微微颤抖。"
 
 [[entries]]
 conditions = "premises:t_first_a_sex_in_today&premises:dr_position_face_seat"
@@ -20579,7 +20579,7 @@ context = "{character.name}拍打着{target.name}高翘的臀瓣，{penis}在她
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6&premises:dr_position_back"
-context = "{target.name}完全臣服于后背位的淫靡姿态，{penis}在她滚烫的{anal}中恣意冲撞，她熟练地用肠肉绞紧伺候着博士的肉棒。"
+context = "{target.name}完全臣服于后背位的淫靡姿态，{penis}在她滚烫的{anal}中恣意冲撞，她熟练地用肠肉绞紧伺候着{player.name}的肉棒。"
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6&premises:dr_position_face_ride"
@@ -24263,7 +24263,7 @@ context = "{character.name}俯视着身下的{target.name}，{penis}在她紧致
 
 [[entries]]
 conditions = "premises:t_npc_active_h&premises:dr_position_back"
-context = "{target.name}跪趴在地上，主动将臀部高高翘起，用{anal}吞吐着{character.name}的{penis}，不断前后摆动腰肢来服侍着身后的博士。"
+context = "{target.name}跪趴在地上，主动将臀部高高翘起，用{anal}吞吐着{character.name}的{penis}，不断前后摆动腰肢来服侍着身后的{player.name}。"
 
 [[entries]]
 conditions = "selected.abilities.肛技.level <= 3&premises:dr_position_back"

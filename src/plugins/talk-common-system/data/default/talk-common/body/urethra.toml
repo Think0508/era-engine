@@ -1287,7 +1287,7 @@ context = "今天刚失去处女的成熟柔嫩肉道，此刻正努力适应被
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
-context = "虽已被博士初步开发却依然保持着紧致细嫩，成熟女体上带着青涩羞怯的{urethra_s}。"
+context = "虽已被{player.name}初步开发却依然保持着紧致细嫩，成熟女体上带着青涩羞怯的{urethra_s}。"
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
@@ -2343,11 +2343,11 @@ context = "已婚女子今天首次体验被肉棒贯穿的娇嫩管道，紧致
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
-context = "作为人妻今日刚被博士开发的敏感肉壁，残留着初次体验余韵而微微颤动的{urethra_s}。"
+context = "作为人妻今日刚被{player.name}开发的敏感肉壁，残留着初次体验余韵而微微颤动的{urethra_s}。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
-context = "有丈夫却今天首次被博士征服的柔嫩通道，因背德刺激而兴奋地不停收缩的{urethra_s}。"
+context = "有丈夫却今天首次被{player.name}征服的柔嫩通道，因背德刺激而兴奋地不停收缩的{urethra_s}。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
@@ -2363,11 +2363,11 @@ context = "有夫之妇今日初尝被贯穿的娇小孔径，因禁忌快感而
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
-context = "作为人妻今天才首次被博士开发的窄小肉道，内壁余韵未消带着微微热意的{urethra_s}。"
+context = "作为人妻今天才首次被{player.name}开发的窄小肉道，内壁余韵未消带着微微热意的{urethra_s}。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
-context = "已为人妻却被博士初次开发的稚嫩穴口微微颤抖，紧窄敏感而充满背德快感的{urethra_s}。"
+context = "已为人妻却被{player.name}初次开发的稚嫩穴口微微颤抖，紧窄敏感而充满背德快感的{urethra_s}。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"

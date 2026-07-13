@@ -435,7 +435,7 @@ context = "{character.name}感受着{penis}在{target.name}的{legs}间滑动的
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.talents.细腿 == 1"
-context = "{character.name}的{penis}在{target.name}纤瘦的{legs}间持续摩擦，柔嫩的大腿内侧紧贴着敏感的肉棒，人妻用自己的身体伺候博士的场景让{character.name}的征服感与快感交织升腾。"
+context = "{character.name}的{penis}在{target.name}纤瘦的{legs}间持续摩擦，柔嫩的大腿内侧紧贴着敏感的肉棒，人妻用自己的身体伺候{player.name}的场景让{character.name}的征服感与快感交织升腾。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.talents.细腿 == 1"

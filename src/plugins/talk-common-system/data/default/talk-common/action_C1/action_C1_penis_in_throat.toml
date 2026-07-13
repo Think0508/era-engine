@@ -87,7 +87,7 @@ context = "{target.name}的{throat}笨拙地配合着{character.name}的节奏�
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.成人 == 1"
-context = "{character.name}的{penis}整根捅入{target.name}的{throat}深处，喉壁规律地收缩绞紧着柱身，那种被完全吞没的征服感让博士头皮发麻，每一次抽送都激起难以言喻的酥爽快感。"
+context = "{character.name}的{penis}整根捅入{target.name}的{throat}深处，喉壁规律地收缩绞紧着柱身，那种被完全吞没的征服感让{player.name}头皮发麻，每一次抽送都激起难以言喻的酥爽快感。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.成人 == 1"
@@ -2287,11 +2287,11 @@ context = "{character.name}将{penis}在{target.name}的{throat}里一次次彻�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
-context = "{character.name}将{penis}深深没入女儿的喉道，{throat}主动地一阵阵收缩迎合，那份恰到好处的回应让博士在乱伦快感中难以自持。"
+context = "{character.name}将{penis}深深没入女儿的喉道，{throat}主动地一阵阵收缩迎合，那份恰到好处的回应让{player.name}在乱伦快感中难以自持。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
-context = "{character.name}感受着{penis}在女儿{throat}里被规律地揉吸，咽喉肌肉的协调起伏让博士的腰部不自觉地加快了贯穿的节奏。"
+context = "{character.name}感受着{penis}在女儿{throat}里被规律地揉吸，咽喉肌肉的协调起伏让{player.name}的腰部不自觉地加快了贯穿的节奏。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
@@ -2299,11 +2299,11 @@ context = "{throat}对{penis}的每一次进出都给予明显的回应，{chara
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
-context = "{character.name}的{penis}在女儿{throat}深处感受到温热绵软的吸附，那份适中的敏感让博士每一次顶弄都换来咽喉肌酥麻的紧缚。"
+context = "{character.name}的{penis}在女儿{throat}深处感受到温热绵软的吸附，那份适中的敏感让{player.name}每一次顶弄都换来咽喉肌酥麻的紧缚。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
-context = "{character.name}低吼着深插贯穿，{penis}被{throat}一波波收缩着挽留，女儿主动的吞咽让博士的快感如细浪般层层堆叠攀升。"
+context = "{character.name}低吼着深插贯穿，{penis}被{throat}一波波收缩着挽留，女儿主动的吞咽让{player.name}的快感如细浪般层层堆叠攀升。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
@@ -2315,7 +2315,7 @@ context = "{character.name}享受着女儿{throat}里有意识的吞吐节奏，
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
-context = "{character.name}的腰胯狠狠下沉，{penis}贯入女儿{throat}最深处，那份适度敏感的咽肌随着抽插一阵阵收缩，让博士爽得头皮发麻。"
+context = "{character.name}的腰胯狠狠下沉，{penis}贯入女儿{throat}最深处，那份适度敏感的咽肌随着抽插一阵阵收缩，让{player.name}爽得头皮发麻。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
@@ -2323,11 +2323,11 @@ context = "{throat}传来温柔而稳定的揉压，{character.name}的{penis}�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
-context = "{character.name}加重抽送的力道，{penis}与女儿{throat}紧密贴合摩擦，咽喉肌恰到好处的反应让博士沉醉于这份禁忌的鱼水之欢。"
+context = "{character.name}加重抽送的力道，{penis}与女儿{throat}紧密贴合摩擦，咽喉肌恰到好处的反应让{player.name}沉醉于这份禁忌的鱼水之欢。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
-context = "{character.name}将{penis}贯入女儿过分敏感的{throat}，咽喉肌剧烈痉挛吸吮，那份强烈的绞缠让博士几乎当场缴械投降。"
+context = "{character.name}将{penis}贯入女儿过分敏感的{throat}，咽喉肌剧烈痉挛吸吮，那份强烈的绞缠让{player.name}几乎当场缴械投降。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
@@ -2335,7 +2335,7 @@ context = "{throat}因极度敏感而不断剧烈收缩，{character.name}的{pe
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
-context = "{character.name}的{penis}在女儿{throat}里享受着电流般的痉挛吸咬，咽喉过敏的反应让博士的快感如雷霆般直冲脑髓。"
+context = "{character.name}的{penis}在女儿{throat}里享受着电流般的痉挛吸咬，咽喉过敏的反应让{player.name}的快感如雷霆般直冲脑髓。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
@@ -2343,19 +2343,19 @@ context = "{character.name}每一次抽送都换来{throat}剧烈的颤栗收缩
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
-context = "{throat}神经过敏地反复痉挛，{character.name}的{penis}在女儿喉腔深处被疯狂吸吮按摩，乱伦与超敏的双重刺激让博士接近失神。"
+context = "{throat}神经过敏地反复痉挛，{character.name}的{penis}在女儿喉腔深处被疯狂吸吮按摩，乱伦与超敏的双重刺激让{player.name}接近失神。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
-context = "{character.name}低吼着深深贯穿，{penis}被女儿过分敏感的{throat}剧烈绞咬，那份近乎疼痛的紧缚让博士的快感达到难以承受的高度。"
+context = "{character.name}低吼着深深贯穿，{penis}被女儿过分敏感的{throat}剧烈绞咬，那份近乎疼痛的紧缚让{player.name}的快感达到难以承受的高度。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
-context = "{throat}对{penis}的存在过激反应，{character.name}感受到女儿喉腔失控的吸吮颤动，那份强烈快感让博士险些立刻缴出腰间的精液。"
+context = "{throat}对{penis}的存在过激反应，{character.name}感受到女儿喉腔失控的吸吮颤动，那份强烈快感让{player.name}险些立刻缴出腰间的精液。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
-context = "{character.name}的{penis}在女儿过敏的{throat}里被剧烈痉挛包裹，每一次贯入都换来咽喉肌爆发性的收缩，让博士爽得意识恍惚。"
+context = "{character.name}的{penis}在女儿过敏的{throat}里被剧烈痉挛包裹，每一次贯入都换来咽喉肌爆发性的收缩，让{player.name}爽得意识恍惚。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
@@ -2367,15 +2367,15 @@ context = "{character.name}加快贯穿的节奏，{penis}被女儿{throat}过�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
-context = "{character.name}将{penis}缓缓没入女儿的喉道深处，{throat}才刚开始随抽插轻颤，乱伦的禁断快感却已让博士的腰部止不住战栗。"
+context = "{character.name}将{penis}缓缓没入女儿的喉道深处，{throat}才刚开始随抽插轻颤，乱伦的禁断快感却已让{player.name}的腰部止不住战栗。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
-context = "{throat}尚处于初步开发阶段，{character.name}的{penis}在女儿喉腔深处感受着青涩的紧绷，那份新鲜的快感让博士忍不住加快了顶弄。"
+context = "{throat}尚处于初步开发阶段，{character.name}的{penis}在女儿喉腔深处感受着青涩的紧绷，那份新鲜的快感让{player.name}忍不住加快了顶弄。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
-context = "{character.name}的{penis}在女儿{throat}里享受着初次贯穿的温柔吸附，咽喉刚刚被点燃的微弱反应反而让博士的快感更加浓烈难抑。"
+context = "{character.name}的{penis}在女儿{throat}里享受着初次贯穿的温柔吸附，咽喉刚刚被点燃的微弱反应反而让{player.name}的快感更加浓烈难抑。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
@@ -2383,11 +2383,11 @@ context = "{throat}才微微有了反应，{character.name}的{penis}就被女�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
-context = "{character.name}耐心地反复贯入，{penis}逐渐让女儿的{throat}产生轻微的颤抖收缩，那份初尝禁果般的青涩让博士爽到无以复加。"
+context = "{character.name}耐心地反复贯入，{penis}逐渐让女儿的{throat}产生轻微的颤抖收缩，那份初尝禁果般的青涩让{player.name}爽到无以复加。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
-context = "{throat}传来微弱却真实的痉挛，{character.name}的{penis}享受着女儿喉道初露端倪的吸吮，乱伦的视觉冲击让博士兴奋得呼吸急促。"
+context = "{throat}传来微弱却真实的痉挛，{character.name}的{penis}享受着女儿喉道初露端倪的吸吮，乱伦的视觉冲击让{player.name}兴奋得呼吸急促。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
@@ -2395,7 +2395,7 @@ context = "{character.name}加深抽送的角度，{penis}在女儿{throat}里�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
-context = "{throat}的反应才刚起步，{character.name}的{penis}就被女儿喉肉羞怯地包裹，那份初尝快感的纯净反应让博士彻底沦陷其中。"
+context = "{throat}的反应才刚起步，{character.name}的{penis}就被女儿喉肉羞怯地包裹，那份初尝快感的纯净反应让{player.name}彻底沦陷其中。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
@@ -2407,7 +2407,7 @@ context = "{throat}才被点亮了第一丝快感，{character.name}的{penis}�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
-context = "{character.name}将{penis}贯入已被开发数次的女儿{throat}，咽喉肌主动地收缩吸啜，那份熟练的迎合让博士爽得头皮发麻。"
+context = "{character.name}将{penis}贯入已被开发数次的女儿{throat}，咽喉肌主动地收缩吸啜，那份熟练的迎合让{player.name}爽得头皮发麻。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
@@ -2415,7 +2415,7 @@ context = "{throat}已能熟练应对{penis}的贯穿，{character.name}享受�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
-context = "{character.name}的{penis}在女儿{throat}里被有节奏地揉吸，咽喉肌已习得吞吐技巧，让博士的快感如浪涛般层层叠加。"
+context = "{character.name}的{penis}在女儿{throat}里被有节奏地揉吸，咽喉肌已习得吞吐技巧，让{player.name}的快感如浪涛般层层叠加。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
@@ -2423,7 +2423,7 @@ context = "{throat}经过数次开发后已能配合贯穿的节奏，{character
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
-context = "{character.name}加重抽送的力道，{penis}被女儿{throat}熟练的肌肉绞紧吸咬，那份越来越驾轻就熟的反应让博士爽得忘乎所以。"
+context = "{character.name}加重抽送的力道，{penis}被女儿{throat}熟练的肌肉绞紧吸咬，那份越来越驾轻就熟的反应让{player.name}爽得忘乎所以。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
@@ -2431,7 +2431,7 @@ context = "{throat}已能主动配合{penis}的进出节奏，{character.name}�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
-context = "{character.name}的{penis}在女儿{throat}深处被规律绵密地吸吮，咽喉肌已熟悉这份贯穿的节奏，让博士的快感层层累积达到新的高度。"
+context = "{character.name}的{penis}在女儿{throat}深处被规律绵密地吸吮，咽喉肌已熟悉这份贯穿的节奏，让{player.name}的快感层层累积达到新的高度。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
@@ -2443,11 +2443,11 @@ context = "{character.name}深深贯入，{penis}被女儿{throat}熟络的肌�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
-context = "{throat}带着已积攒的高潮余韵，{character.name}的{penis}享受着女儿熟练的吸吮按摩，那份越来越成熟的反应让博士爽得意识开始模糊。"
+context = "{throat}带着已积攒的高潮余韵，{character.name}的{penis}享受着女儿熟练的吸吮按摩，那份越来越成熟的反应让{player.name}爽得意识开始模糊。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
-context = "{character.name}将{penis}深深贯入已极致开发的女儿{throat}，咽喉肌剧烈痉挛吸咬，那份高潮中的疯狂收缩让博士爽得险些缴械。"
+context = "{character.name}将{penis}深深贯入已极致开发的女儿{throat}，咽喉肌剧烈痉挛吸咬，那份高潮中的疯狂收缩让{player.name}爽得险些缴械。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
@@ -2455,7 +2455,7 @@ context = "{throat}已陷入持续高潮的痉挛状态，{character.name}的{pe
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
-context = "{character.name}的{penis}在女儿{throat}里被疯狂收缩的咽肌死死锁紧，那份高潮中失控的反应让博士的快感如雷霆般直冲脑髓。"
+context = "{character.name}的{penis}在女儿{throat}里被疯狂收缩的咽肌死死锁紧，那份高潮中失控的反应让{player.name}的快感如雷霆般直冲脑髓。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
@@ -2463,7 +2463,7 @@ context = "{throat}剧烈痉挛吞吐着{penis}，{character.name}沉沦于女�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
-context = "{character.name}加快贯穿的频率，{penis}被女儿{throat}疯狂的痉挛肌肉一波波绞紧，那份高潮叠加的强烈快感让博士险些失神。"
+context = "{character.name}加快贯穿的频率，{penis}被女儿{throat}疯狂的痉挛肌肉一波波绞紧，那份高潮叠加的强烈快感让{player.name}险些失神。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
@@ -2471,7 +2471,7 @@ context = "{throat}已完全沦陷于持续高潮，{character.name}的{penis}�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
-context = "{character.name}的{penis}在女儿{throat}深处被高潮中的咽肌剧烈绞缠，那份近乎窒息的紧缚让博士爽到双腿发软。"
+context = "{character.name}的{penis}在女儿{throat}深处被高潮中的咽肌剧烈绞缠，那份近乎窒息的紧缚让{player.name}爽到双腿发软。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
@@ -2479,7 +2479,7 @@ context = "{throat}失控般疯狂痉挛着，{character.name}的{penis}被女�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
-context = "{character.name}低吼着深深顶弄，{penis}在女儿{throat}里被高潮中失控的肌肉狠狠绞咬，乱伦的禁忌快感冲击着博士的每一寸神经。"
+context = "{character.name}低吼着深深顶弄，{penis}在女儿{throat}里被高潮中失控的肌肉狠狠绞咬，乱伦的禁忌快感冲击着{player.name}的每一寸神经。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
@@ -2487,15 +2487,15 @@ context = "{throat}的痉挛吸咬已达极致，{character.name}的{penis}享�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
-context = "{character.name}将{penis}贯入已超出极限的女儿{throat}，咽喉肌以不可思议的频率剧烈痉挛，那份疯狂的吸吮让博士险些立刻射出。"
+context = "{character.name}将{penis}贯入已超出极限的女儿{throat}，咽喉肌以不可思议的频率剧烈痉挛，那份疯狂的吸吮让{player.name}险些立刻射出。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
-context = "{throat}陷入意识崩溃般的持续痉挛，{character.name}的{penis}被女儿喉腔超人极限的力量死死绞缠，那份强烈快感几乎要将博士的神经烧断。"
+context = "{throat}陷入意识崩溃般的持续痉挛，{character.name}的{penis}被女儿喉腔超人极限的力量死死绞缠，那份强烈快感几乎要将{player.name}的神经烧断。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
-context = "{character.name}的{penis}在女儿{throat}里被超越想象的剧烈痉挛吸咬，那份失控到极致的反应让博士的快感如惊雷般直撼灵魂。"
+context = "{character.name}的{penis}在女儿{throat}里被超越想象的剧烈痉挛吸咬，那份失控到极致的反应让{player.name}的快感如惊雷般直撼灵魂。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
@@ -2503,7 +2503,7 @@ context = "{throat}以近乎机械的频率疯狂收缩吞吐{penis}，{characte
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
-context = "{character.name}加深贯穿的角度，{penis}被女儿{throat}超载的肌肉狠狠绞紧，那份意识涣散后的本能痉挛让博士爽到几近失神。"
+context = "{character.name}加深贯穿的角度，{penis}被女儿{throat}超载的肌肉狠狠绞紧，那份意识涣散后的本能痉挛让{player.name}爽到几近失神。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
@@ -2511,7 +2511,7 @@ context = "{throat}已完全脱离意识控制，{character.name}的{penis}享�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
-context = "{character.name}的{penis}在女儿{throat}深处被超越人类极限的强烈痉挛包裹，那份失控的快感让博士的视野都开始模糊不清。"
+context = "{character.name}的{penis}在女儿{throat}深处被超越人类极限的强烈痉挛包裹，那份失控的快感让{player.name}的视野都开始模糊不清。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
@@ -2523,11 +2523,11 @@ context = "{character.name}低吼着深深贯入，{penis}被女儿{throat}意�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
-context = "{throat}的疯狂痉挛已突破生理极限，{character.name}的{penis}享受着女儿喉道无止境失控的吸吮，那份强烈快感即将让博士的理智彻底瓦解。"
+context = "{throat}的疯狂痉挛已突破生理极限，{character.name}的{penis}享受着女儿喉道无止境失控的吸吮，那份强烈快感即将让{player.name}的理智彻底瓦解。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
-context = "{character.name}将{penis}贯入女儿生涩的{throat}，那份茫然无措的紧勒反而带来纯粹的征服快感，让博士的腰部不自觉地加重了力道。"
+context = "{character.name}将{penis}贯入女儿生涩的{throat}，那份茫然无措的紧勒反而带来纯粹的征服快感，让{player.name}的腰部不自觉地加重了力道。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
@@ -2535,7 +2535,7 @@ context = "{throat}里只能僵硬地承受{penis}的进出，{character.name}�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
-context = "{character.name}的{penis}在女儿{throat}里感受到生涩到可爱的吞咽反射，那份未经雕琢的本能反应让博士的快感如野火般蔓延。"
+context = "{character.name}的{penis}在女儿{throat}里感受到生涩到可爱的吞咽反射，那份未经雕琢的本能反应让{player.name}的快感如野火般蔓延。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
@@ -2543,7 +2543,7 @@ context = "{throat}没有任何技巧只是被动迎合，{character.name}的{pe
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
-context = "{character.name}耐心地引导贯穿，{penis}被女儿{throat}生疏的肌肉笨拙地包裹，那份纯净到极致的反应让博士爽得心头发烫。"
+context = "{character.name}耐心地引导贯穿，{penis}被女儿{throat}生疏的肌肉笨拙地包裹，那份纯净到极致的反应让{player.name}爽得心头发烫。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
@@ -2551,7 +2551,7 @@ context = "{throat}传来生硬的痉挛回应，{character.name}的{penis}享�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
-context = "{character.name}的{penis}在女儿{throat}里被笨拙地咽肌挤压，那份毫无章法却充满纯真的反应反而让博士的快感成倍叠加。"
+context = "{character.name}的{penis}在女儿{throat}里被笨拙地咽肌挤压，那份毫无章法却充满纯真的反应反而让{player.name}的快感成倍叠加。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
@@ -2559,7 +2559,7 @@ context = "{throat}只是本能地随贯穿轻颤，{character.name}享受着女
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
-context = "{character.name}加深抽送的角度，{penis}被女儿{throat}生疏到可爱的肌肉夹紧，那份纯真的服从感让博士爽得几乎失神。"
+context = "{character.name}加深抽送的角度，{penis}被女儿{throat}生疏到可爱的肌肉夹紧，那份纯真的服从感让{player.name}爽得几乎失神。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
@@ -2567,7 +2567,7 @@ context = "{throat}里没有任何熟练的吞吐技巧，{character.name}的{pe
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "{character.name}将{penis}贯入女儿{throat}深处，咽喉肌已能熟练配合贯穿节奏，那份恰到好处的迎合让博士的快感稳步累积。"
+context = "{character.name}将{penis}贯入女儿{throat}深处，咽喉肌已能熟练配合贯穿节奏，那份恰到好处的迎合让{player.name}的快感稳步累积。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -2575,7 +2575,7 @@ context = "{throat}已掌握基本的吞吐技巧，{character.name}的{penis}�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "{character.name}的{penis}在女儿{throat}里被规律有序地揉压，咽喉肌已能流畅应对贯穿，让博士的快感如细浪般层层叠加。"
+context = "{character.name}的{penis}在女儿{throat}里被规律有序地揉压，咽喉肌已能流畅应对贯穿，让{player.name}的快感如细浪般层层叠加。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -2583,7 +2583,7 @@ context = "{throat}熟练地随{penis}进出而舒展收缩，{character.name}�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "{character.name}加重抽送的力道，{penis}被女儿{throat}稳定的吞咽节奏紧紧迎合，那份娴熟的反应让博士爽得心头发烫。"
+context = "{character.name}加重抽送的力道，{penis}被女儿{throat}稳定的吞咽节奏紧紧迎合，那份娴熟的反应让{player.name}爽得心头发烫。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -2591,7 +2591,7 @@ context = "{throat}的肌肉已能配合贯穿展开规律的吸吮，{character
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "{character.name}的{penis}在女儿{throat}深处被熟练的吞咽节奏一波波绞紧，那份恰到好处的反应让博士的快感堆积如山。"
+context = "{character.name}的{penis}在女儿{throat}深处被熟练的吞咽节奏一波波绞紧，那份恰到好处的反应让{player.name}的快感堆积如山。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -2603,11 +2603,11 @@ context = "{character.name}低喘着深深贯穿，{penis}被女儿{throat}流�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "{throat}已能熟练吞咽{penis}的贯穿节奏，{character.name}享受着女儿喉道协调的吸吮回应，那份稳定的快感让博士爽得几乎沦陷。"
+context = "{throat}已能熟练吞咽{penis}的贯穿节奏，{character.name}享受着女儿喉道协调的吸吮回应，那份稳定的快感让{player.name}爽得几乎沦陷。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
-context = "{character.name}将{penis}贯入女儿{throat}最深处，咽喉肌精湛地痉挛吸咬，那份艺术家般的迎合让博士的快感被推至前所未有的高度。"
+context = "{character.name}将{penis}贯入女儿{throat}最深处，咽喉肌精湛地痉挛吸咬，那份艺术家般的迎合让{player.name}的快感被推至前所未有的高度。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
@@ -2615,7 +2615,7 @@ context = "{throat}以惊人的精准度按摩着{penis}，{character.name}沉�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
-context = "{character.name}的{penis}在女儿{throat}里被精湛的咽肌完美吸吮，那份对敏感点的精准刺激让博士爽到双腿发软。"
+context = "{character.name}的{penis}在女儿{throat}里被精湛的咽肌完美吸吮，那份对敏感点的精准刺激让{player.name}爽到双腿发软。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
@@ -2623,7 +2623,7 @@ context = "{throat}熟练地以多变节奏吞吐{penis}，{character.name}享�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
-context = "{character.name}加深贯穿的角度，{penis}被女儿{throat}精准到惊人的肌肉控制层层吸吮，那份极致的快感让博士爽得头皮发麻。"
+context = "{character.name}加深贯穿的角度，{penis}被女儿{throat}精准到惊人的肌肉控制层层吸吮，那份极致的快感让{player.name}爽得头皮发麻。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
@@ -2631,7 +2631,7 @@ context = "{throat}的每一次收缩都精确刺激{penis}的敏感带，{chara
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
-context = "{character.name}的{penis}在女儿{throat}深处被娴熟到极致的咽肌完美包裹，那份精湛的按摩让博士的快感被推至难以承受的极限。"
+context = "{character.name}的{penis}在女儿{throat}深处被娴熟到极致的咽肌完美包裹，那份精湛的按摩让{player.name}的快感被推至难以承受的极限。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
@@ -2639,7 +2639,7 @@ context = "{throat}以精确无比的节奏揉吸{penis}，{character.name}享�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
-context = "{character.name}低吼着深深顶弄，{penis}被女儿{throat}艺术家般的肌肉控制完美迎合，那份极致快感让博士爽到几乎失神。"
+context = "{character.name}低吼着深深顶弄，{penis}被女儿{throat}艺术家般的肌肉控制完美迎合，那份极致快感让{player.name}爽到几乎失神。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"

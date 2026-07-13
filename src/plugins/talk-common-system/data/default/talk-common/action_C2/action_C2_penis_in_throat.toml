@@ -2259,7 +2259,7 @@ context = "人妻的{target.name}感到{penis}在{throat}里深浅有致地抽�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
-context = "{penis}的反复贯穿让{target.name}的{throat}泛起明显的酥麻浪潮，作为别人妻子的羞耻心被这股快感不断撕扯，她又惊又怕地任由喉腔被博士尽情享用。"
+context = "{penis}的反复贯穿让{target.name}的{throat}泛起明显的酥麻浪潮，作为别人妻子的羞耻心被这股快感不断撕扯，她又惊又怕地任由喉腔被{player.name}尽情享用。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
@@ -2443,7 +2443,7 @@ context = "{penis}在{target.name}的{throat}里粗暴抽送，多次强烈的�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.皮肤 >= 12000&selected.皮肤 < 90000"
-context = "作为人妻的{target.name}承受{penis}对{throat}的疯狂贯穿，连续高潮把咽腔训练成淫荡的肉鞘，她哭着颤抖着，喉口的快感令她彻底沦为博士的玩物。"
+context = "作为人妻的{target.name}承受{penis}对{throat}的疯狂贯穿，连续高潮把咽腔训练成淫荡的肉鞘，她哭着颤抖着，喉口的快感令她彻底沦为{player.name}的玩物。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.皮肤 >= 90000"
@@ -2475,7 +2475,7 @@ context = "{target.name}的{throat}被{penis}毫不怜惜地反复操弄，连�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.皮肤 >= 90000"
-context = "人妻{target.name}的{throat}承受{penis}的疯狂蹂躏，超越人体极限的快感像潮水一波接一波撕裂她的理智，她只能用湿润的咽肉无意识地侍奉博士。"
+context = "人妻{target.name}的{throat}承受{penis}的疯狂蹂躏，超越人体极限的快感像潮水一波接一波撕裂她的理智，她只能用湿润的咽肉无意识地侍奉{player.name}。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.皮肤 >= 90000"
@@ -2491,7 +2491,7 @@ context = "已为人妻的{target.name}笨拙地承受{penis}贯穿{throat}，�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level <= 3"
-context = "{target.name}的{throat}被{penis}强行贯通，毫无经验的她只能努力放松喉腔，茫然的眼神带着人妻特有的羞涩，让博士涌起强烈的支配欲。"
+context = "{target.name}的{throat}被{penis}强行贯通，毫无经验的她只能努力放松喉腔，茫然的眼神带着人妻特有的羞涩，让{player.name}涌起强烈的支配欲。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level <= 3"
@@ -2503,15 +2503,15 @@ context = "{penis}在{target.name}的{throat}里横冲直撞，缺乏经验的�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level <= 3"
-context = "{target.name}的{throat}被{penis}深深贯穿，她生硬地张大嘴巴，舌头不知所措地僵在一边，那种生涩与人妻身份的反差激起博士更深的征服快感。"
+context = "{target.name}的{throat}被{penis}深深贯穿，她生硬地张大嘴巴，舌头不知所措地僵在一边，那种生涩与人妻身份的反差激起{player.name}更深的征服快感。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level <= 3"
-context = "被{penis}贯通{throat}的人妻{target.name}手足无措，喉腔的咽反射不断打断节奏，她羞红着脸努力承受，每一份生涩的反应都像是对博士的纯洁献礼。"
+context = "被{penis}贯通{throat}的人妻{target.name}手足无措，喉腔的咽反射不断打断节奏，她羞红着脸努力承受，每一份生涩的反应都像是对{player.name}的纯洁献礼。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level <= 3"
-context = "{target.name}感到{penis}持续操弄{throat}深处，缺乏技巧的她只能僵硬承受，可那双带着人妻成熟却又流露惊恐的眼睛，正是博士最沉迷的画面。"
+context = "{target.name}感到{penis}持续操弄{throat}深处，缺乏技巧的她只能僵硬承受，可那双带着人妻成熟却又流露惊恐的眼睛，正是{player.name}最沉迷的画面。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level <= 3"
@@ -2519,11 +2519,11 @@ context = "人妻{target.name}的{throat}被{penis}粗暴贯穿，她不会取�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level <= 3"
-context = "{penis}在{target.name}的{throat}里来回贯通，毫无经验的她不知如何收紧喉肉，只能呜咽着任由博士主宰，纯真与人妻身份的反差令空气都炽热起来。"
+context = "{penis}在{target.name}的{throat}里来回贯通，毫无经验的她不知如何收紧喉肉，只能呜咽着任由{player.name}主宰，纯真与人妻身份的反差令空气都炽热起来。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level <= 3"
-context = "作为人妻的{target.name}笨拙地张着嘴承受{penis}对{throat}的贯穿，她不懂讨好，却用生涩的反应满足了博士对人妻被污染的所有幻想。"
+context = "作为人妻的{target.name}笨拙地张着嘴承受{penis}对{throat}的贯穿，她不懂讨好，却用生涩的反应满足了{player.name}对人妻被污染的所有幻想。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -2531,15 +2531,15 @@ context = "已为人妻的{target.name}熟练地配合{penis}贯穿{throat}的�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "{target.name}的{throat}稳稳承受{penis}的抽插，她已掌握基本技巧，懂得放松咽喉，让博士在背德的氛围里享受到稳定流畅的快感。"
+context = "{target.name}的{throat}稳稳承受{penis}的抽插，她已掌握基本技巧，懂得放松咽喉，让{player.name}在背德的氛围里享受到稳定流畅的快感。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "人妻的{target.name}有节奏地用{throat}吞吐{penis}，咽肉适度收紧释放，她虽羞愧自己的纯熟却仍专注地为博士提供合格的快感。"
+context = "人妻的{target.name}有节奏地用{throat}吞吐{penis}，咽肉适度收紧释放，她虽羞愧自己的纯熟却仍专注地为{player.name}提供合格的快感。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "{penis}在{target.name}的{throat}里平稳抽送，她已能控制咽反射，懂得在抽插间隙微微绞动喉肉，让博士在背叛她丈夫的同时尽享熟练侍奉。"
+context = "{penis}在{target.name}的{throat}里平稳抽送，她已能控制咽反射，懂得在抽插间隙微微绞动喉肉，让{player.name}在背叛她丈夫的同时尽享熟练侍奉。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -2547,7 +2547,7 @@ context = "{target.name}的{throat}熟练地贴合{penis}的形状，她有意�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "被{penis}贯通{throat}的人妻{target.name}稳稳吞吐，喉壁懂得在何处用力，咽腔节奏分明，让博士的快感稳步攀升。"
+context = "被{penis}贯通{throat}的人妻{target.name}稳稳吞吐，喉壁懂得在何处用力，咽腔节奏分明，让{player.name}的快感稳步攀升。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -2555,7 +2555,7 @@ context = "{target.name}感到{penis}持续操弄{throat}，她已能将干呕�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "人妻{target.name}的{throat}有规律地包裹{penis}，她懂得调整呼吸与吞咽节奏，让博士的每一次贯穿都获得熟练而持续的舒爽。"
+context = "人妻{target.name}的{throat}有规律地包裹{penis}，她懂得调整呼吸与吞咽节奏，让{player.name}的每一次贯穿都获得熟练而持续的舒爽。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -2567,7 +2567,7 @@ context = "作为人妻的{target.name}熟练地用{throat}迎合{penis}的进�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 6"
-context = "已为人妻的{target.name}以精湛的技巧迎合{penis}对{throat}的贯穿，喉肉如灵巧的乐器演奏着极致快感，让博士彻底沉沦于这背德的享受。"
+context = "已为人妻的{target.name}以精湛的技巧迎合{penis}对{throat}的贯穿，喉肉如灵巧的乐器演奏着极致快感，让{player.name}彻底沉沦于这背德的享受。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 6"
@@ -2575,7 +2575,7 @@ context = "{target.name}的{throat}用近乎艺术的手法包裹{penis}，咽�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 6"
-context = "人妻的{target.name}用{throat}对{penis}施以高超的吞吐绞磨，喉壁的每一次收紧都精准刺激敏感处，让博士在背叛她家庭的同时体验到极乐之巅。"
+context = "人妻的{target.name}用{throat}对{penis}施以高超的吞吐绞磨，喉壁的每一次收紧都精准刺激敏感处，让{player.name}在背叛她家庭的同时体验到极乐之巅。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 6"
@@ -2587,19 +2587,19 @@ context = "{target.name}的{throat}以神乎其技的节奏吞咽{penis}，喉�
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 6"
-context = "被{penis}深深贯穿{throat}的人妻{target.name}施展绝技，喉肉精准收紧释放，她令博士几乎瞬间濒临极限的本事，竟也是丈夫从未见识过的一面。"
+context = "被{penis}深深贯穿{throat}的人妻{target.name}施展绝技，喉肉精准收紧释放，她令{player.name}几乎瞬间濒临极限的本事，竟也是丈夫从未见识过的一面。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 6"
-context = "{target.name}感到{penis}操弄{throat}的同时，她以高超技艺让喉腔变成最舒适的极乐肉具，每一次吞吐都把博士的快感推上新高峰。"
+context = "{target.name}感到{penis}操弄{throat}的同时，她以高超技艺让喉腔变成最舒适的极乐肉具，每一次吞吐都把{player.name}的快感推上新高峰。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 6"
-context = "人妻{target.name}的{throat}用顶级技巧绞磨{penis}，咽肉的颤动如海浪般持续刺激，让博士在背德的禁忌里享尽身心皆爽的极致。"
+context = "人妻{target.name}的{throat}用顶级技巧绞磨{penis}，咽肉的颤动如海浪般持续刺激，让{player.name}在背德的禁忌里享尽身心皆爽的极致。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 6"
-context = "{penis}在{target.name}的{throat}里被娴熟地伺候，她以细密的喉肉震动精准刺激每一处敏感带，博士几乎要在她身上栽倒在背德的泥沼中。"
+context = "{penis}在{target.name}的{throat}里被娴熟地伺候，她以细密的喉肉震动精准刺激每一处敏感带，{player.name}几乎要在她身上栽倒在背德的泥沼中。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 6"
@@ -2615,15 +2615,15 @@ context = "{penis}在{target.name}的{throat}内来回抽动，喉腔传来持�
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
-context = "{target.name}的{throat}被{penis}完全占据，喉壁肌肉徒劳地试图收缩排出异物，喉结随每次贯穿而上下浮动，眼角渗出生理性泪水，心中满是对父亲博士的复杂情感。"
+context = "{target.name}的{throat}被{penis}完全占据，喉壁肌肉徒劳地试图收缩排出异物，喉结随每次贯穿而上下浮动，眼角渗出生理性泪水，心中满是对父亲{player.name}的复杂情感。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
-context = "{target.name}感受着{penis}将{throat}一点点撑开，喉腔被填满的滞涩感与窒息感交织在一起，她压制住阵阵干呕，心中明白正在贯穿自己的是父亲博士，这份认知令她全身僵住。"
+context = "{target.name}感受着{penis}将{throat}一点点撑开，喉腔被填满的滞涩感与窒息感交织在一起，她压制住阵阵干呕，心中明白正在贯穿自己的是父亲{player.name}，这份认知令她全身僵住。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
-context = "{throat}被{penis}抵至深处，{target.name}的喉道肌肉被迫扩张，食道承受着异物的重压感，呼吸困难令鼻腔发胀，她压制着生理反应，心中对父亲博士的情感纷乱难以言说。"
+context = "{throat}被{penis}抵至深处，{target.name}的喉道肌肉被迫扩张，食道承受着异物的重压感，呼吸困难令鼻腔发胀，她压制着生理反应，心中对父亲{player.name}的情感纷乱难以言说。"
 
 [[entries]]
 conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
@@ -7375,7 +7375,7 @@ context = "{penis}在{target.name}的{throat}里往复冲撞，窒息感和充�
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_4&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "{target.name}感受着{penis}贯穿{throat}时的撑胀，喉咙深处被填满的感觉让她有些缺氧，每一次呼吸都那么艰难，可她却平静地享受着这种窒息，认为自己本就该这样满足博士。"
+context = "{target.name}感受着{penis}贯穿{throat}时的撑胀，喉咙深处被填满的感觉让她有些缺氧，每一次呼吸都那么艰难，可她却平静地享受着这种窒息，认为自己本就该这样满足{player.name}。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_4&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -7391,7 +7391,7 @@ context = "{target.name}感受着{throat}深处被{penis}填满的灼热，干�
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_4&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "{penis}深深埋进{target.name}的{throat}，食道撑胀的感觉从喉间蔓延下去，窒息的压迫令全身发麻，她却心平气和地接受一切，觉得博士的满足比自己的呼吸更为重要。"
+context = "{penis}深深埋进{target.name}的{throat}，食道撑胀的感觉从喉间蔓延下去，窒息的压迫令全身发麻，她却心平气和地接受一切，觉得{player.name}的满足比自己的呼吸更为重要。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_4&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -7399,7 +7399,7 @@ context = "{target.name}的{throat}包裹着{penis}，每次深入都让她干�
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_4&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
-context = "{penis}在{target.name}的{throat}深处冲撞，她的食道被撑得满满当当，呼吸受阻带来的缺氧感令全身战栗，干呕反射让喉咙本能收缩，她却神情淡然，认为让博士尽情享受是本分。"
+context = "{penis}在{target.name}的{throat}深处冲撞，她的食道被撑得满满当当，呼吸受阻带来的缺氧感令全身战栗，干呕反射让喉咙本能收缩，她却神情淡然，认为让{player.name}尽情享受是本分。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_4&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
@@ -8687,19 +8687,19 @@ context = "{target.name}承受着{penis}在{throat}中律动带来的窒迫与�
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
-context = "{target.name}感受到{penis}在{throat}中猛烈抽插，窒息与被填满的奇异双重感觉让她思维一片空白，信赖博士的心意让她甘愿承受这份压迫，食道被反复撑开的感觉让她忍不住喉结起伏。"
+context = "{target.name}感受到{penis}在{throat}中猛烈抽插，窒息与被填满的奇异双重感觉让她思维一片空白，信赖{player.name}的心意让她甘愿承受这份压迫，食道被反复撑开的感觉让她忍不住喉结起伏。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
-context = "{target.name}努力压制着上涌的干呕感，{penis}在{throat}深处持续抽动，那种呼吸被堵塞的窒迫感竟让她下腹隐隐涌起一股热潮，对博士的信赖让她压抑着颤抖，努力配合着上司的节奏。"
+context = "{target.name}努力压制着上涌的干呕感，{penis}在{throat}深处持续抽动，那种呼吸被堵塞的窒迫感竟让她下腹隐隐涌起一股热潮，对{player.name}的信赖让她压抑着颤抖，努力配合着上司的节奏。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
-context = "{target.name}感受到{throat}被{penis}完全占据的充盈感，干呕的冲动一次次涌上却被她强行压下，被博士如此使用的羞耻与快感在她脑中交织，嫩滑的食道在反复撑开中渐渐开始泛起酥麻的刺激感。"
+context = "{target.name}感受到{throat}被{penis}完全占据的充盈感，干呕的冲动一次次涌上却被她强行压下，被{player.name}如此使用的羞耻与快感在她脑中交织，嫩滑的食道在反复撑开中渐渐开始泛起酥麻的刺激感。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
-context = "{target.name}任由{penis}在{throat}中肆意贯穿，每一次深入都让她下意识地收紧喉壁，窒息带来的晕眩与填满带来的满足感并存，她强忍着泪水，对博士的信赖驱使她咬紧坚持着。"
+context = "{target.name}任由{penis}在{throat}中肆意贯穿，每一次深入都让她下意识地收紧喉壁，窒息带来的晕眩与填满带来的满足感并存，她强忍着泪水，对{player.name}的信赖驱使她咬紧坚持着。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
@@ -8707,23 +8707,23 @@ context = "{target.name}感受到{throat}被{penis}粗暴地撑开，呼吸困�
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
-context = "{target.name}感受到{penis}贯穿{throat}深处的冲击，干呕的反射一次次在喉间发作，她咬紧牙关强行压下，颈部的喉结随着抽插一起一伏，这份被博士深入至极的刺激令她下腹阵阵收紧。"
+context = "{target.name}感受到{penis}贯穿{throat}深处的冲击，干呕的反射一次次在喉间发作，她咬紧牙关强行压下，颈部的喉结随着抽插一起一伏，这份被{player.name}深入至极的刺激令她下腹阵阵收紧。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
-context = "{target.name}的{throat}被{penis}反复撑张，每一次抽插都带来令人昏迷的窒息感，身为信赖博士的部下，她拼命压制着呕吐的冲动，只专注于配合这项越界的命令，嫩滑的喉壁在一次次冲击中颤抖。"
+context = "{target.name}的{throat}被{penis}反复撑张，每一次抽插都带来令人昏迷的窒息感，身为信赖{player.name}的部下，她拼命压制着呕吐的冲动，只专注于配合这项越界的命令，嫩滑的喉壁在一次次冲击中颤抖。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
-context = "{target.name}被{penis}在{throat}深处激烈抽动，紧绷的喉壁与满溢的口水让整个感觉变得极度淫靡，她努力调整呼吸节奏，将干呕的冲动化作配合的力量，信赖博士的心驱使她吞下每一分刺激。"
+context = "{target.name}被{penis}在{throat}深处激烈抽动，紧绷的喉壁与满溢的口水让整个感觉变得极度淫靡，她努力调整呼吸节奏，将干呕的冲动化作配合的力量，信赖{player.name}的心驱使她吞下每一分刺激。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
-context = "{target.name}感受到{throat}里{penis}肆虐般地抽送，食道被粗暴撑开的极致充盈感令她双腿微微颤抖，呼吸几乎被完全阻塞的窒息感在脑中炸开，她强撑着专注，将这份压迫视作对博士信赖的体现。"
+context = "{target.name}感受到{throat}里{penis}肆虐般地抽送，食道被粗暴撑开的极致充盈感令她双腿微微颤抖，呼吸几乎被完全阻塞的窒息感在脑中炸开，她强撑着专注，将这份压迫视作对{player.name}信赖的体现。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:FALL_LEVEL_E_-2"
-context = "{target.name}下意识地感受着{penis}横扫过{throat}每一寸柔嫩壁面，干呕的波浪反复涌过喉咙，那种既窒息又被填满的双重体验让她不由自主地涌出泪水，被博士信任而使用让她心甘情愿地承受一切。"
+context = "{target.name}下意识地感受着{penis}横扫过{throat}每一寸柔嫩壁面，干呕的波浪反复涌过喉咙，那种既窒息又被填满的双重体验让她不由自主地涌出泪水，被{player.name}信任而使用让她心甘情愿地承受一切。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 6&premises:FALL_LEVEL_E_-2"
@@ -10963,7 +10963,7 @@ context = "{throat}被{penis}一次次撑开时的干呕反射被{target.name}�
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_4&selected.abilities.口喉感度.level <= 3"
-context = "{penis}在{throat}中每一次推送令{target.name}感受到食道被热而粗实的异物填胀，喉部黏膜与之紧贴摩擦，颈部肌肉因承受压力而微微绷紧，她平静地认为这是博士的正常需求，理当配合。"
+context = "{penis}在{throat}中每一次推送令{target.name}感受到食道被热而粗实的异物填胀，喉部黏膜与之紧贴摩擦，颈部肌肉因承受压力而微微绷紧，她平静地认为这是{player.name}的正常需求，理当配合。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_4&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"

@@ -1043,4 +1043,4 @@ context = "{character.name}挺送胯部，让{penis_s}在已成年却对性毫�
 
 [[entries]]
 conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
-context = "{character.name}引导着成年却性无知的{target.name}，让{penis_s}在她的{hands_s}中滑动，告诉她这是“为博士按摩的正常步骤”。"
+context = "{character.name}引导着成年却性无知的{target.name}，让{penis_s}在她的{hands_s}中滑动，告诉她这是“为{player.name}按摩的正常步骤”。"

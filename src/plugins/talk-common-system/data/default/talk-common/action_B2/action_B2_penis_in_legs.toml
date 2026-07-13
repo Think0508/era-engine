@@ -855,7 +855,7 @@ context = "{target.name}红着脸将{legs}并拢，把{penis}夹在修长的大�
 
 [[entries]]
 conditions = "selected.talents.细腿 == 1&premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
-context = "{target.name}侧躺着收紧{legs}，让{penis}在紧致的腿缝中来回抽送，纤细的身躯尽量蜷缩起来，试图用自己的姿势遮挡住与博士交合的画面。"
+context = "{target.name}侧躺着收紧{legs}，让{penis}在紧致的腿缝中来回抽送，纤细的身躯尽量蜷缩起来，试图用自己的姿势遮挡住与{player.name}交合的画面。"
 
 [[entries]]
 conditions = "selected.talents.细腿 == 1&premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
@@ -883,7 +883,7 @@ context = "{target.name}屈起{legs}把{penis}夹在腿弯处，修长的小腿�
 
 [[entries]]
 conditions = "selected.talents.细腿 == 1&premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
-context = "{target.name}将{legs}交叉绞紧{penis}，用纤细柔韧的大腿内侧肌肤反复磨蹭着粗热的肉棒，同时把脸埋进博士的胸口，不想让其他女性看到自己正在腿交的淫靡姿态。"
+context = "{target.name}将{legs}交叉绞紧{penis}，用纤细柔韧的大腿内侧肌肤反复磨蹭着粗热的肉棒，同时把脸埋进{player.name}的胸口，不想让其他女性看到自己正在腿交的淫靡姿态。"
 
 [[entries]]
 conditions = "selected.talents.肉腿 == 1&premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
@@ -2939,7 +2939,7 @@ context = "{target.name}熟练地收紧{legs}，让丰满的腿肉完全包裹�
 
 [[entries]]
 conditions = "selected.talents.肉腿 == 1&premises:FALL_LEVEL_E_-2"
-context = "信赖博士的{target.name}将{penis}夹在她丰润柔软的{legs}之间，肉感的大腿紧紧贴合着肉棒，她摆动着腰肢让滑腻的腿肉来回摩擦着铃口。"
+context = "信赖{player.name}的{target.name}将{penis}夹在她丰润柔软的{legs}之间，肉感的大腿紧紧贴合着肉棒，她摆动着腰肢让滑腻的腿肉来回摩擦着铃口。"
 
 [[entries]]
 conditions = "selected.talents.肉腿 == 1&premises:FALL_LEVEL_E_-2"
@@ -2959,7 +2959,7 @@ context = "{target.name}用她丰润柔软的{legs}夹紧{penis}，富有弹性�
 
 [[entries]]
 conditions = "selected.talents.肉腿 == 1&premises:FALL_LEVEL_E_-2"
-context = "信任博士的{target.name}主动用{legs}包裹住{penis}，丰满的腿肉紧贴着肉棒的每一处，她扭动着腰部让柔软富有肉感的大腿内侧持续刺激着敏感的龟头。"
+context = "信任{player.name}的{target.name}主动用{legs}包裹住{penis}，丰满的腿肉紧贴着肉棒的每一处，她扭动着腰部让柔软富有肉感的大腿内侧持续刺激着敏感的龟头。"
 
 [[entries]]
 conditions = "selected.talents.肉腿 == 1&premises:FALL_LEVEL_E_-2"

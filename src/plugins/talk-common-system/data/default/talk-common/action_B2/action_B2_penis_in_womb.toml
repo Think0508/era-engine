@@ -10287,7 +10287,7 @@ context = "{target.name}用稚嫩的双腿夹紧腰部，{penis_s}被{womb_s}深
 
 [[entries]]
 conditions = "premises:dr_womb_position_sex&selected.talents.幼女 == 1&premises:FALL_LEVEL_E_2"
-context = "暗恋着博士的幼女{target.name}羞红着脸扭动腰肢，{womb_s}紧紧包裹住完全插入的{penis_s}，稚嫩的子宫努力吸附着整根肉棒，希望用这种方式传达无法说出口的爱意。"
+context = "暗恋着{player.name}的幼女{target.name}羞红着脸扭动腰肢，{womb_s}紧紧包裹住完全插入的{penis_s}，稚嫩的子宫努力吸附着整根肉棒，希望用这种方式传达无法说出口的爱意。"
 
 [[entries]]
 conditions = "premises:dr_womb_position_sex&selected.talents.幼女 == 1&premises:FALL_LEVEL_E_2"

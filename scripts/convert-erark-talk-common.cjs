@@ -208,6 +208,8 @@ const VAR_MAP = [
   ['{chest_s}', '{breast_s}'],
   ['{womsb_s}', '{womb_s}'],
   ['{name}', '{character.name}'],
+  // 博士 → {player.name}（erArk 对主角的称呼）
+  ['博士', '{player.name}'],
 ]
 
 function convertContextVars(text) {

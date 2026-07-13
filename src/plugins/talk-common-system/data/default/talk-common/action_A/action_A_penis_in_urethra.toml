@@ -247,7 +247,7 @@ context = "{character.name}扣紧{target.name}稚嫩的腰胯，{penis}在萝莉
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&selected.talents.少女 == 1"
-context = "娇小的萝莉跨坐在博士身上，{character.name}的{penis}正埋在{target.name}紧致的{urethra}里，随着她青涩地扭动臀部，带来异样的快感。"
+context = "娇小的萝莉跨坐在{player.name}身上，{character.name}的{penis}正埋在{target.name}紧致的{urethra}里，随着她青涩地扭动臀部，带来异样的快感。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&selected.talents.少女 == 1"
@@ -255,7 +255,7 @@ context = "{target.name}稚嫩的身体骑在{character.name}的腰间，小穴�
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&selected.talents.少女 == 1"
-context = "萝莉面对着博士跨坐着，{character.name}的{penis}被她狭窄的{urethra}紧紧绞住，小小的身躯在尝试着摇摆时显得格外青涩。"
+context = "萝莉面对着{player.name}跨坐着，{character.name}的{penis}被她狭窄的{urethra}紧紧绞住，小小的身躯在尝试着摇摆时显得格外青涩。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&selected.talents.少女 == 1"
@@ -267,15 +267,15 @@ context = "发育中的萝莉支撑着娇小的身体，用{urethra}吞吐着{ch
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&selected.talents.少女 == 1"
-context = "{target.name}的小小身躯跨坐在博士腰间，{penis}被她紧窄的{urethra}包裹着，随着她懵懂地扭动而带来阵阵快意。"
+context = "{target.name}的小小身躯跨坐在{player.name}腰间，{penis}被她紧窄的{urethra}包裹着，随着她懵懂地扭动而带来阵阵快意。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&selected.talents.少女 == 1"
-context = "萝莉骑在{character.name}身上，用那发育未全的{urethra}夹着{penis}，小腿在博士身体两侧发颤地试图掌控节奏。"
+context = "萝莉骑在{character.name}身上，用那发育未全的{urethra}夹着{penis}，小腿在{player.name}身体两侧发颤地试图掌控节奏。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&selected.talents.少女 == 1"
-context = "{target.name}的稚嫩躯体面朝博士跨坐着，{character.name}的{penis}埋在她青涩的{urethra}深处，小萝莉笨手笨脚地学着前后摆腰。"
+context = "{target.name}的稚嫩躯体面朝{player.name}跨坐着，{character.name}的{penis}埋在她青涩的{urethra}深处，小萝莉笨手笨脚地学着前后摆腰。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&selected.talents.少女 == 1"
@@ -283,7 +283,7 @@ context = "娇小的{target.name}双膝跪在{character.name}身体两侧，用�
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&selected.talents.少女 == 1"
-context = "萝莉用稚嫩的{urethra}吃着博士的{penis}，跨坐在他身上轻轻摇晃，还在发育的身体在摸索中带来懵懂的快感。"
+context = "萝莉用稚嫩的{urethra}吃着{player.name}的{penis}，跨坐在他身上轻轻摇晃，还在发育的身体在摸索中带来懵懂的快感。"
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&selected.talents.少女 == 1"
@@ -859,7 +859,7 @@ context = "{target.name}羞涩地将脸埋在{character.name}肩头，稚嫩的{
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&selected.talents.処女 == 1"
-context = "{character.name}扶着少女纤细的腰，{penis}在那青涩的{urethra}中缓慢摩擦着，{target.name}的双腿紧缠着博士的腰身。"
+context = "{character.name}扶着少女纤细的腰，{penis}在那青涩的{urethra}中缓慢摩擦着，{target.name}的双腿紧缠着{player.name}的腰身。"
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&selected.talents.処女 == 1"
@@ -867,15 +867,15 @@ context = "坐在{character.name}怀中的{target.name}身体微微发颤，年�
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&selected.talents.処女 == 1"
-context = "{target.name}面对着{character.name}坐在他腿上，稚嫩的身躯随着{penis}在{urethra}中的抽送而微微颤抖，双手攥紧博士的衣襟。"
+context = "{target.name}面对着{character.name}坐在他腿上，稚嫩的身躯随着{penis}在{urethra}中的抽送而微微颤抖，双手攥紧{player.name}的衣襟。"
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&selected.talents.処女 == 1"
-context = "少女的{urethra}紧紧含着{character.name}的{penis}，{target.name}环绕着博士脖颈的双臂因快感而收紧，青涩的喘息洒在耳畔。"
+context = "少女的{urethra}紧紧含着{character.name}的{penis}，{target.name}环绕着{player.name}脖颈的双臂因快感而收紧，青涩的喘息洒在耳畔。"
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&selected.talents.処女 == 1"
-context = "{character.name}托住{target.name}年轻的臀部，让{penis}在她窄小的{urethra}中缓缓研磨，少女羞红着脸贴紧博士的胸膛。"
+context = "{character.name}托住{target.name}年轻的臀部，让{penis}在她窄小的{urethra}中缓缓研磨，少女羞红着脸贴紧{player.name}的胸膛。"
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&selected.talents.処女 == 1"
@@ -971,11 +971,11 @@ context = "{character.name}站着将{penis}埋入{target.name}的{urethra}中，
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.処女 == 1"
-context = "对面站立的姿势让{character.name}的{penis}能够轻易顶入{target.name}稚嫩的{urethra}，少女双臂环绕着博士的脖子，身体微微颤抖。"
+context = "对面站立的姿势让{character.name}的{penis}能够轻易顶入{target.name}稚嫩的{urethra}，少女双臂环绕着{player.name}的脖子，身体微微颤抖。"
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.処女 == 1"
-context = "{character.name}扶着{target.name}的腰肢，面对面地将{penis}嵌入她狭窄的{urethra}内，少女羞怯地将脸埋在博士胸口。"
+context = "{character.name}扶着{target.name}的腰肢，面对面地将{penis}嵌入她狭窄的{urethra}内，少女羞怯地将脸埋在{player.name}胸口。"
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.処女 == 1"
@@ -995,7 +995,7 @@ context = "{character.name}抵着{target.name}，站姿使{penis}能以独特的
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.処女 == 1"
-context = "{target.name}被抵在角落，{character.name}的{penis}在她青涩的{urethra}中缓缓律动，少女只能紧紧攀附着博士以维持站姿。"
+context = "{target.name}被抵在角落，{character.name}的{penis}在她青涩的{urethra}中缓缓律动，少女只能紧紧攀附着{player.name}以维持站姿。"
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.処女 == 1"
@@ -1167,7 +1167,7 @@ context = "{penis}在{urethra}中缓慢摩擦的感觉让{target.name}的神经�
 
 [[entries]]
 conditions = "premises:dr_position_back_lie&selected.talents.処女 == 1"
-context = "{target.name}感受着{penis}在{urethra}中缓缓摩擦，那从未被触及过的内壁传来阵阵酥麻，让少女的身体不由自主地颤抖，背对着博士的姿势让她羞耻又兴奋。"
+context = "{target.name}感受着{penis}在{urethra}中缓缓摩擦，那从未被触及过的内壁传来阵阵酥麻，让少女的身体不由自主地颤抖，背对着{player.name}的姿势让她羞耻又兴奋。"
 
 [[entries]]
 conditions = "premises:dr_position_back_lie&selected.talents.処女 == 1"
@@ -5243,7 +5243,7 @@ context = "{target.name}跪趴着让{character.name}从后方用{penis}填满她
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_back"
-context = "{character.name}扶住{target.name}的肩膀，将{penis}顶入她窄小的{urethra}中进出，她故意面朝其他女性，炫耀着自己正在被博士宠幸的事实。"
+context = "{character.name}扶住{target.name}的肩膀，将{penis}顶入她窄小的{urethra}中进出，她故意面朝其他女性，炫耀着自己正在被{player.name}宠幸的事实。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -5395,7 +5395,7 @@ context = "{character.name}的{penis}在{target.name}的{urethra}中深入浅出
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_back_seat"
-context = "{target.name}挺着腰让{penis}更深地插入{urethra}，同时面向其他女性，炫耀着自己独享博士宠爱的特权。"
+context = "{target.name}挺着腰让{penis}更深地插入{urethra}，同时面向其他女性，炫耀着自己独享{player.name}宠爱的特权。"
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_back_seat"
@@ -5671,7 +5671,7 @@ context = "{target.name}蜷缩着身体靠在{character.name}怀中，{penis}在
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_back_lie"
-context = "{character.name}从后方紧贴{target.name}的身体，{penis}在{urethra}的狭窄甬道中反复摩擦，她挑衅地看向其他女性，炫耀着自己独占博士的事实。"
+context = "{character.name}从后方紧贴{target.name}的身体，{penis}在{urethra}的狭窄甬道中反复摩擦，她挑衅地看向其他女性，炫耀着自己独占{player.name}的事实。"
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_back_lie"
@@ -11447,7 +11447,7 @@ context = "{target.name}醉得不省人事，却仍在背面骑乘中以{urethra
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_face_seat"
-context = "醉意朦胧的{target.name}面对着{character.name}坐在其腿上，{penis}在她的{urethra}内缓缓抽动着，干员迷糊地搂着博士的脖子随之起伏。"
+context = "醉意朦胧的{target.name}面对着{character.name}坐在其腿上，{penis}在她的{urethra}内缓缓抽动着，干员迷糊地搂着{player.name}的脖子随之起伏。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_face_seat"
@@ -11455,7 +11455,7 @@ context = "{target.name}因酒精而脸颊绯红，面朝{character.name}坐着�
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_face_seat"
-context = "{character.name}搂住醉酒的{target.name}的腰肢，{penis}在她的{urethra}内持续研磨，而干员只能软绵绵地靠在博士怀里轻声呢喃。"
+context = "{character.name}搂住醉酒的{target.name}的腰肢，{penis}在她的{urethra}内持续研磨，而干员只能软绵绵地靠在{player.name}怀里轻声呢喃。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_face_seat"
@@ -11463,7 +11463,7 @@ context = "面对面坐在{character.name}腿上的{target.name}醉眼迷离，{
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_face_seat"
-context = "{character.name}托住醉意熏熏的{target.name}的臀部，让她面对面坐着接受{penis}在{urethra}里的律动，干员迷迷糊糊地环抱着博士。"
+context = "{character.name}托住醉意熏熏的{target.name}的臀部，让她面对面坐着接受{penis}在{urethra}里的律动，干员迷迷糊糊地环抱着{player.name}。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_face_seat"
@@ -11475,7 +11475,7 @@ context = "{target.name}双腿环绕着{character.name}的腰，面对面承受�
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_face_seat"
-context = "{character.name}扶着醉酒的{target.name}让她面朝自己坐好，{penis}在她的{urethra}中持续抽送，干员只能无力地趴伏在博士肩头。"
+context = "{character.name}扶着醉酒的{target.name}让她面朝自己坐好，{penis}在她的{urethra}中持续抽送，干员只能无力地趴伏在{player.name}肩头。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_face_seat"
@@ -11587,7 +11587,7 @@ context = "{character.name}托住{target.name}摇晃的身躯，{penis}在她紧
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_face_stand"
-context = "面对面站立着，{character.name}的{penis}贯穿着醉醺醺的{target.name}的{urethra}，干员双腿发软地依偎在博士怀中。"
+context = "面对面站立着，{character.name}的{penis}贯穿着醉醺醺的{target.name}的{urethra}，干员双腿发软地依偎在{player.name}怀中。"
 
 [[entries]]
 conditions = "premises:t_unconscious_flag_2&premises:dr_position_face_stand"
@@ -15127,11 +15127,11 @@ context = "{target.name}蜷缩着身体背靠{character.name}，感受着{penis}
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_2"
-context = "{character.name}的{penis}在{target.name}的{urethra}中缓缓摩擦，面对面的姿势让她不敢直视博士的双眼，羞涩地侧过脸去，内心暗藏的爱意让身体不自觉地迎合着抽插的节奏。"
+context = "{character.name}的{penis}在{target.name}的{urethra}中缓缓摩擦，面对面的姿势让她不敢直视{player.name}的双眼，羞涩地侧过脸去，内心暗藏的爱意让身体不自觉地迎合着抽插的节奏。"
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_2"
-context = "仰躺着的{target.name}感受着博士的{penis}在自己{urethra}中蹭动，她紧咬下唇，既想要开口诉说爱意，又害怕事后关系变得尴尬，只能将柔情藏在微微颤抖的身躯里。"
+context = "仰躺着的{target.name}感受着{player.name}的{penis}在自己{urethra}中蹭动，她紧咬下唇，既想要开口诉说爱意，又害怕事后关系变得尴尬，只能将柔情藏在微微颤抖的身躯里。"
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_2"
@@ -15139,7 +15139,7 @@ context = "{character.name}压在{target.name}身上，{penis}在她紧致的{ur
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_2"
-context = "{target.name}双腿环住博士的腰，任由{penis}在自己的{urethra}中不断进出，她偷偷注视着{character.name}的侧脸，内心的爱慕随着快感一同翻涌却无法倾诉。"
+context = "{target.name}双腿环住{player.name}的腰，任由{penis}在自己的{urethra}中不断进出，她偷偷注视着{character.name}的侧脸，内心的爱慕随着快感一同翻涌却无法倾诉。"
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_2"
@@ -15151,7 +15151,7 @@ context = "{character.name}的{penis}在{target.name}的{urethra}中有规律地
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_2"
-context = "{target.name}仰面承受着博士{penis}对{urethra}的刺激，这特殊的性交方式让她羞耻又迷醉，明明喜欢他却不敢说出口，只能用身体默默传达自己的心意。"
+context = "{target.name}仰面承受着{player.name}{penis}对{urethra}的刺激，这特殊的性交方式让她羞耻又迷醉，明明喜欢他却不敢说出口，只能用身体默默传达自己的心意。"
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_2"
@@ -15159,11 +15159,11 @@ context = "在正常位的姿势下，{character.name}的{penis}深深嵌入{tar
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_2"
-context = "{target.name}与{character.name}面对面相连，{penis}在{urethra}中不断蹭弄，暗恋着博士的她借着这份亲密贪婪地汲取温存，却羞于将真心和盘托出。"
+context = "{target.name}与{character.name}面对面相连，{penis}在{urethra}中不断蹭弄，暗恋着{player.name}的她借着这份亲密贪婪地汲取温存，却羞于将真心和盘托出。"
 
 [[entries]]
 conditions = "premises:dr_position_normal&premises:FALL_LEVEL_E_2"
-context = "博士的{penis}在{target.name}敏感的{urethra}中律动，被压在身下的她眼角泛红，内心充斥着对{character.name}的爱慕与患得患失，在这背德的快感中悄悄珍藏着未曾告白的情愫。"
+context = "{player.name}的{penis}在{target.name}敏感的{urethra}中律动，被压在身下的她眼角泛红，内心充斥着对{character.name}的爱慕与患得患失，在这背德的快感中悄悄珍藏着未曾告白的情愫。"
 
 [[entries]]
 conditions = "premises:dr_position_back&premises:FALL_LEVEL_E_2"
@@ -15207,7 +15207,7 @@ context = "从后方覆上来的{character.name}将{penis}深深楔入{target.na
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:FALL_LEVEL_E_2"
-context = "暗恋着博士的{target.name}跨坐在他身上，用{urethra}小心翼翼地吞吐着{penis}，羞涩的眼神不敢与博士对视。"
+context = "暗恋着{player.name}的{target.name}跨坐在他身上，用{urethra}小心翼翼地吞吐着{penis}，羞涩的眼神不敢与{player.name}对视。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:FALL_LEVEL_E_2"
@@ -15223,7 +15223,7 @@ context = "{target.name}面对着仰卧的{character.name}上下律动，{urethr
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:FALL_LEVEL_E_2"
-context = "跨坐在{character.name}身上的{target.name}羞涩地晃动着臀部，{penis}在她{urethra}中进出，她多想借此让博士注意到自己的心意。"
+context = "跨坐在{character.name}身上的{target.name}羞涩地晃动着臀部，{penis}在她{urethra}中进出，她多想借此让{player.name}注意到自己的心意。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:FALL_LEVEL_E_2"
@@ -15231,11 +15231,11 @@ context = "{target.name}双膝跪在{character.name}腰侧，用{urethra}含着{
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:FALL_LEVEL_E_2"
-context = "面向博士骑乘的{target.name}掌控着节奏，{penis}深深陷入她的{urethra}，她渴望却又羞于表白的心情融入每一次挺腰中。"
+context = "面向{player.name}骑乘的{target.name}掌控着节奏，{penis}深深陷入她的{urethra}，她渴望却又羞于表白的心情融入每一次挺腰中。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:FALL_LEVEL_E_2"
-context = "{target.name}坐在{character.name}身上前后摆动，{urethra}吮吸着{penis}，暗恋着博士的她用这异常的紧致讨好着心上人。"
+context = "{target.name}坐在{character.name}身上前后摆动，{urethra}吮吸着{penis}，暗恋着{player.name}的她用这异常的紧致讨好着心上人。"
 
 [[entries]]
 conditions = "premises:dr_position_face_ride&premises:FALL_LEVEL_E_2"
@@ -15247,7 +15247,7 @@ context = "骑在{character.name}身上的{target.name}主动摆腰，用{urethr
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&premises:FALL_LEVEL_E_2"
-context = "暗恋着博士的{target.name}背对着{character.name}骑坐在他身上，{penis}深深埋在她的{urethra}里，她扭动着腰肢却不敢回头，生怕目光中的爱意被察觉。"
+context = "暗恋着{player.name}的{target.name}背对着{character.name}骑坐在他身上，{penis}深深埋在她的{urethra}里，她扭动着腰肢却不敢回头，生怕目光中的爱意被察觉。"
 
 [[entries]]
 conditions = "premises:dr_position_back_ride&premises:FALL_LEVEL_E_2"
@@ -15295,7 +15295,7 @@ context = "{character.name}的{penis}在{target.name}的{urethra}里缓缓研磨
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&premises:FALL_LEVEL_E_2"
-context = "{target.name}双腿紧夹着{character.name}的腰，{urethra}被{penis}撑开的异样快感让她忍不住把脸埋进博士胸口，藏起满面羞红。"
+context = "{target.name}双腿紧夹着{character.name}的腰，{urethra}被{penis}撑开的异样快感让她忍不住把脸埋进{player.name}胸口，藏起满面羞红。"
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&premises:FALL_LEVEL_E_2"
@@ -15383,7 +15383,7 @@ context = "{target.name}坐在{character.name}身上背对着他，{penis}撑开
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_2&premises:dr_position_back_seat"
-context = "暗恋博士的{target.name}害羞地背过身去，{character.name}的{penis}正抵在她湿润的{urethra}深处反复碾磨，她的小穴不由自主地收缩着，仿佛想要留住爱人的一切。"
+context = "暗恋{player.name}的{target.name}害羞地背过身去，{character.name}的{penis}正抵在她湿润的{urethra}深处反复碾磨，她的小穴不由自主地收缩着，仿佛想要留住爱人的一切。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_2&premises:dr_position_back_seat"
@@ -17511,7 +17511,7 @@ context = "{target.name}依偎在{character.name}怀中，任由{penis}在自己
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2&premises:dr_position_back_lie"
-context = "{character.name}的{penis}研磨着侧躺的{target.name}的{urethra}，从后紧贴住她温软的身躯，她顺从地扭动腰肢配合着博士的索取。"
+context = "{character.name}的{penis}研磨着侧躺的{target.name}的{urethra}，从后紧贴住她温软的身躯，她顺从地扭动腰肢配合着{player.name}的索取。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2&premises:dr_position_back_lie"
@@ -20287,7 +20287,7 @@ context = "{character.name}从后方搂住{target.name}，{penis}在她驯服好
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
-context = "{character.name}站着将{penis}深埋在{target.name}的{urethra}中，她已经习惯了这种特殊的性交方式，站立时身体紧紧贴着博士。"
+context = "{character.name}站着将{penis}深埋在{target.name}的{urethra}中，她已经习惯了这种特殊的性交方式，站立时身体紧紧贴着{player.name}。"
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
@@ -20299,7 +20299,7 @@ context = "{target.name}靠在墙上站立着，{character.name}的{penis}在她
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
-context = "两人站立相拥，{character.name}的{penis}持续侵入{target.name}的{urethra}中，这条被开发过的通道已能顺畅地接纳博士的进入。"
+context = "两人站立相拥，{character.name}的{penis}持续侵入{target.name}的{urethra}中，这条被开发过的通道已能顺畅地接纳{player.name}的进入。"
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
@@ -20307,7 +20307,7 @@ context = "{character.name}托住{target.name}的臀部，在站立的姿势下�
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
-context = "{target.name}双腿发软地站着，{character.name}的{penis}在她的{urethra}中抽动，有经验的她已能熟练地配合博士的节奏。"
+context = "{target.name}双腿发软地站着，{character.name}的{penis}在她的{urethra}中抽动，有经验的她已能熟练地配合{player.name}的节奏。"
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
@@ -20319,7 +20319,7 @@ context = "{character.name}扶着{target.name}的腰肢让她站稳，同时将{
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
-context = "{target.name}被抵在墙边站立着，{character.name}的{penis}在她的{urethra}中律动，被开发过的尿道紧紧吸附着博士的肉棒。"
+context = "{target.name}被抵在墙边站立着，{character.name}的{penis}在她的{urethra}中律动，被开发过的尿道紧紧吸附着{player.name}的肉棒。"
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
@@ -21723,7 +21723,7 @@ context = "{target.name}双腿打颤却努力站稳，她的{urethra}被{charact
 
 [[entries]]
 conditions = "premises:dr_position_face_stand&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
-context = "面贴着面相拥的姿势下，{character.name}的{penis}在{target.name}敏感的{urethra}中缓缓抽送，快感令她紧紧攀住博士的肩膀。"
+context = "面贴着面相拥的姿势下，{character.name}的{penis}在{target.name}敏感的{urethra}中缓缓抽送，快感令她紧紧攀住{player.name}的肩膀。"
 
 [[entries]]
 conditions = "premises:dr_position_back_stand&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
@@ -22479,7 +22479,7 @@ context = "{target.name}双臂环抱着{character.name}的脖颈，{urethra}有�
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
-context = "{character.name}的{penis}在{target.name}柔嫩的{urethra}中温柔地进出，她用丰富的经验配合着博士的每一次顶弄。"
+context = "{character.name}的{penis}在{target.name}柔嫩的{urethra}中温柔地进出，她用丰富的经验配合着{player.name}的每一次顶弄。"
 
 [[entries]]
 conditions = "premises:dr_position_face_seat&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"

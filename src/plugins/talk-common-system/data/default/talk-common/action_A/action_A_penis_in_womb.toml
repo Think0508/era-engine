@@ -1983,7 +1983,7 @@ context = "{target.name}跪趴在床上，主动抬高臀部，让在场所有�
 
 [[entries]]
 conditions = "premises:dr_womb_position_insert&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{character.name}的{penis}顶开了{target.name}的宫口，她不但不遮掩，反而刻意发出浪叫，向周围所有女性炫耀自己的{womb}正被博士独占。"
+context = "{character.name}的{penis}顶开了{target.name}的宫口，她不但不遮掩，反而刻意发出浪叫，向周围所有女性炫耀自己的{womb}正被{player.name}独占。"
 
 [[entries]]
 conditions = "premises:dr_womb_position_insert&premises:group_sex_mode_on&selected.abilities.露出.level > 4"

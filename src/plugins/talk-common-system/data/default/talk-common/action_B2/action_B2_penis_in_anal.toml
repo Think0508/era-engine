@@ -7695,7 +7695,7 @@ context = "{target.name}双手向后攀住{character.name}的脖颈，屁股用�
 
 [[entries]]
 conditions = "premises:dr_position_back_hug&premises:t_npc_active_h"
-context = "{target.name}主动挺起臀部，让{anal}一次次狠狠地吞咽着{penis}，她的后穴紧致地夹紧那根肉棒，肠肉蠕动着榨取博士的精华。"
+context = "{target.name}主动挺起臀部，让{anal}一次次狠狠地吞咽着{penis}，她的后穴紧致地夹紧那根肉棒，肠肉蠕动着榨取{player.name}的精华。"
 
 [[entries]]
 conditions = "premises:dr_position_back_hug&premises:t_npc_active_h"
@@ -8775,7 +8775,7 @@ context = "面对面侧躺的{target.name}用手臂环住{character.name}的脖�
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_face_lie"
-context = "{target.name}将抬起的腿用力勾住{character.name}的腰，主动用{anal}吞吐{penis}，同时扭头向周围的人露出得意的表情，炫耀着独占博士的特权。"
+context = "{target.name}将抬起的腿用力勾住{character.name}的腰，主动用{anal}吞吐{penis}，同时扭头向周围的人露出得意的表情，炫耀着独占{player.name}的特权。"
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_face_lie"
@@ -8787,7 +8787,7 @@ context = "{target.name}面对{character.name}侧躺，一条腿架在他腰上�
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_face_lie"
-context = "与{character.name}相拥侧躺的{target.name}用腿缠住他的腰，主动摇摆臀部让{penis}搅动着{anal}内壁，向旁观者炫耀自己正在被博士狠狠肏干的样子。"
+context = "与{character.name}相拥侧躺的{target.name}用腿缠住他的腰，主动摇摆臀部让{penis}搅动着{anal}内壁，向旁观者炫耀自己正在被{player.name}狠狠肏干的样子。"
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_face_lie"
@@ -8871,7 +8871,7 @@ context = "{target.name}背靠着{character.name}侧卧，故意放大动作让{
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_back_lie"
-context = "{target.name}以侧卧姿势让{penis}深埋在{anal}中，一边有规律地收缩后穴一边摆动臀部，脸上带着沉醉的表情向围观者炫耀自己是如何用后穴侍奉博士的。"
+context = "{target.name}以侧卧姿势让{penis}深埋在{anal}中，一边有规律地收缩后穴一边摆动臀部，脸上带着沉醉的表情向围观者炫耀自己是如何用后穴侍奉{player.name}的。"
 
 [[entries]]
 conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4&premises:dr_position_back_lie"
@@ -15491,7 +15491,7 @@ context = "{target.name}双脚悬空却努力晃动臀部，让{penis}在{anal}�
 
 [[entries]]
 conditions = "premises:dr_position_back_hug&premises:FALL_LEVEL_E_2"
-context = "暗恋着博士的{target.name}红着脸扭腰迎合，{anal}贪婪地吞吐着{penis}，每一次律动都像是无声的告白。"
+context = "暗恋着{player.name}的{target.name}红着脸扭腰迎合，{anal}贪婪地吞吐着{penis}，每一次律动都像是无声的告白。"
 
 [[entries]]
 conditions = "premises:dr_position_back_hug&premises:FALL_LEVEL_E_2"
@@ -15499,7 +15499,7 @@ context = "{target.name}攥紧{character.name}的手臂，主动上下摆动身�
 
 [[entries]]
 conditions = "premises:dr_position_back_hug&premises:FALL_LEVEL_E_2"
-context = "被抱起悬空的{target.name}拼命收缩{anal}夹紧{penis}，同时扭动腰身套弄，想用身体的热情让博士明白自己的心意。"
+context = "被抱起悬空的{target.name}拼命收缩{anal}夹紧{penis}，同时扭动腰身套弄，想用身体的热情让{player.name}明白自己的心意。"
 
 [[entries]]
 conditions = "premises:dr_position_back_hug&premises:FALL_LEVEL_E_2"
@@ -15515,7 +15515,7 @@ context = "{target.name}夹紧双腿用力收缩{anal}，同时上下摆动让{p
 
 [[entries]]
 conditions = "premises:dr_position_back_hug&premises:FALL_LEVEL_E_2"
-context = "暗恋博士的{target.name}拱起腰肢，让{anal}深吸{penis}后又缓缓吐出，再狠狠吞入，用肉穴传递着无法言说的爱慕。"
+context = "暗恋{player.name}的{target.name}拱起腰肢，让{anal}深吸{penis}后又缓缓吐出，再狠狠吞入，用肉穴传递着无法言说的爱慕。"
 
 [[entries]]
 conditions = "premises:dr_position_back_hug&premises:FALL_LEVEL_E_2"
@@ -17475,7 +17475,7 @@ context = "{target.name}用臀部画着小圈，{anal}柔软的内壁按摩着{p
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2&premises:dr_position_back_lie"
-context = "{target.name}有条不紊地摆动翘臀，{penis}在{anal}中反复抽送，她用流畅的动作表达着对博士命令的高度配合。"
+context = "{target.name}有条不紊地摆动翘臀，{penis}在{anal}中反复抽送，她用流畅的动作表达着对{player.name}命令的高度配合。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-3&premises:dr_position_normal"
@@ -18399,7 +18399,7 @@ context = "完全沦为奴隶的{target.name}挂在{character.name}身上扭腰�
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-4&premises:dr_position_back_hug"
-context = "{target.name}双手紧抓前方支撑点，主动用{anal}吞吐着{penis}，每一次后仰都带着讨好主人的虔诚，腰肢卖力扭动着取悦身后的博士。"
+context = "{target.name}双手紧抓前方支撑点，主动用{anal}吞吐着{penis}，每一次后仰都带着讨好主人的虔诚，腰肢卖力扭动着取悦身后的{player.name}。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-4&premises:dr_position_back_hug"
@@ -18419,7 +18419,7 @@ context = "{target.name}完全放弃自尊地摆动身躯，{anal}用力地吮�
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-4&premises:dr_position_back_hug"
-context = "双腿悬空的{target.name}奋力挺动腰部让{penis}深入{anal}最深处，肠肉蠕动着按摩主人的阴茎，羞耻的姿态中满是对博士的绝对服从。"
+context = "双腿悬空的{target.name}奋力挺动腰部让{penis}深入{anal}最深处，肠肉蠕动着按摩主人的阴茎，羞耻的姿态中满是对{player.name}的绝对服从。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-4&premises:dr_position_back_hug"
@@ -20643,7 +20643,7 @@ context = "{target.name}熟练地扭动丰腴的臀部，让{anal}紧紧吸附�
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6&premises:dr_position_face_seat"
-context = "{target.name}双手搭在博士肩上，腰肢灵活地画着圆圈，让{penis}在{anal}深处旋转搅动，熟练的菊穴热情地回应着这份刺激。"
+context = "{target.name}双手搭在{player.name}肩上，腰肢灵活地画着圆圈，让{penis}在{anal}深处旋转搅动，熟练的菊穴热情地回应着这份刺激。"
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6&premises:dr_position_face_seat"
@@ -20655,7 +20655,7 @@ context = "{target.name}娴熟地控制着{anal}的收缩节奏，让{penis}在�
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6&premises:dr_position_face_seat"
-context = "{target.name}用力按住博士的肩膀，开始快速地上下摆腰，让{penis}在{anal}内快速抽插，经验老道的后穴轻松配合着激烈的动作。"
+context = "{target.name}用力按住{player.name}的肩膀，开始快速地上下摆腰，让{penis}在{anal}内快速抽插，经验老道的后穴轻松配合着激烈的动作。"
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6&premises:dr_position_face_seat"
@@ -20671,11 +20671,11 @@ context = "{target.name}主动加快扭腰的频率，让{penis}在{anal}内快�
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6&premises:dr_position_face_seat"
-context = "{target.name}双腿环紧博士的腰际，娴熟地摆动臀部让{penis}在{anal}中深深抽送，充分开发的后穴热情地吮吸着每一寸肉棒。"
+context = "{target.name}双腿环紧{player.name}的腰际，娴熟地摆动臀部让{penis}在{anal}中深深抽送，充分开发的后穴热情地吮吸着每一寸肉棒。"
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6&premises:dr_position_face_seat"
-context = "{target.name}腰肢灵活地扭动，让{anal}紧致地包裹着{penis}上下套弄，经验丰富的菊穴熟练地收缩蠕动，榨取着博士的快感。"
+context = "{target.name}腰肢灵活地扭动，让{anal}紧致地包裹着{penis}上下套弄，经验丰富的菊穴熟练地收缩蠕动，榨取着{player.name}的快感。"
 
 [[entries]]
 conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6&premises:dr_position_back_seat"

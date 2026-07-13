@@ -571,7 +571,7 @@ context = "{character.name}的{penis}在{target.name}纤细光滑的{legs}间有
 
 [[entries]]
 conditions = "premises:high_1&selected.talents.细腿 == 1"
-context = "{target.name}用她修长的{legs}紧紧夹住{character.name}的{penis}，配合着博士的抽动不断收紧大腿。"
+context = "{target.name}用她修长的{legs}紧紧夹住{character.name}的{penis}，配合着{player.name}的抽动不断收紧大腿。"
 
 [[entries]]
 conditions = "premises:high_1&selected.talents.细腿 == 1"
@@ -943,7 +943,7 @@ context = "{character.name}的{penis}被{target.name}修长的{legs}包裹着来
 
 [[entries]]
 conditions = "selected.talents.细腿 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{target.name}的{legs}夹着{character.name}的{penis}缓缓律动，她炫耀般地向周围的女性展示自己与博士亲密的性爱姿态。"
+context = "{target.name}的{legs}夹着{character.name}的{penis}缓缓律动，她炫耀般地向周围的女性展示自己与{player.name}亲密的性爱姿态。"
 
 [[entries]]
 conditions = "selected.talents.细腿 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -2811,7 +2811,7 @@ context = "{character.name}的{penis}在勉强服从命令的部下{target.name}
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1&selected.talents.细腿 == 1"
-context = "{target.name}用她纤细的{legs}夹住博士的{penis}进行腿交，面无表情地执行着这个过分的命令，内心却充满了隐忍的不满。"
+context = "{target.name}用她纤细的{legs}夹住{player.name}的{penis}进行腿交，面无表情地执行着这个过分的命令，内心却充满了隐忍的不满。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1&selected.talents.细腿 == 1"
@@ -2831,7 +2831,7 @@ context = "{character.name}的{penis}在{target.name}修长的{legs}间抽插着
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1&selected.talents.细腿 == 1"
-context = "{target.name}用纤细的{legs}包裹着博士的{penis}，她修长的双腿因命令而不得不交叠摩擦，眼神中满是对上司的不认同与勉强服从。"
+context = "{target.name}用纤细的{legs}包裹着{player.name}的{penis}，她修长的双腿因命令而不得不交叠摩擦，眼神中满是对上司的不认同与勉强服从。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1&selected.talents.细腿 == 1"
@@ -3131,7 +3131,7 @@ context = "{character.name}的{penis}在{target.name}纤长的{legs}间缓缓摩
 
 [[entries]]
 conditions = "selected.talents.细腿 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "{target.name}修长的{legs}紧紧夹住{character.name}的{penis}，虽然皮肤的快感并不强烈，但看着博士沉醉的表情，她的内心涌起一股难言的满足。"
+context = "{target.name}修长的{legs}紧紧夹住{character.name}的{penis}，虽然皮肤的快感并不强烈，但看着{player.name}沉醉的表情，她的内心涌起一股难言的满足。"
 
 [[entries]]
 conditions = "selected.talents.细腿 == 1&selected.abilities.皮肤感度.level <= 3"
@@ -3151,7 +3151,7 @@ context = "{target.name}修长的{legs}间夹着{character.name}粗硬的{penis}
 
 [[entries]]
 conditions = "selected.talents.细腿 == 1&selected.abilities.皮肤感度.level <= 3"
-context = "{character.name}的{penis}在{target.name}纤细的{legs}间不断挺动，她的大腿内侧皮肤虽不敏感，但那淫靡的水声和博士的喘息让她羞得想逃开。"
+context = "{character.name}的{penis}在{target.name}纤细的{legs}间不断挺动，她的大腿内侧皮肤虽不敏感，但那淫靡的水声和{player.name}的喘息让她羞得想逃开。"
 
 [[entries]]
 conditions = "selected.talents.细腿 == 1&selected.abilities.皮肤感度.level <= 3"

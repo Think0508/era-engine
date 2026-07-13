@@ -1207,11 +1207,11 @@ context = "{target.name}身体微微颤抖，却仍然坚持用{armpit_s}服务�
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1"
-context = "{target.name}勉强挤压着双臂，让{armpit_s}夹住{penis_s}，虽然动作生涩但还是按照博士的命令上下摩擦，眼神中透露着不情愿的屈从。"
+context = "{target.name}勉强挤压着双臂，让{armpit_s}夹住{penis_s}，虽然动作生涩但还是按照{player.name}的命令上下摩擦，眼神中透露着不情愿的屈从。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1"
-context = "作为部下的{target.name}不情愿地用{armpit_s}夹紧{penis_s}，机械地上下摆动身体，脸上写满了勉强与不满，却不敢违抗博士的命令。"
+context = "作为部下的{target.name}不情愿地用{armpit_s}夹紧{penis_s}，机械地上下摆动身体，脸上写满了勉强与不满，却不敢违抗{player.name}的命令。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1"
@@ -1219,7 +1219,7 @@ context = "{target.name}僵硬地挤压双臂，让{armpit_s}摩擦着{penis_s}�
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1"
-context = "屈从于博士的{target.name}压紧双臂，用{armpit_s}上下摩擦{penis_s}，眼中的不情愿与表面服从形成鲜明对比，动作中透露着职场压力。"
+context = "屈从于{player.name}的{target.name}压紧双臂，用{armpit_s}上下摩擦{penis_s}，眼中的不情愿与表面服从形成鲜明对比，动作中透露着职场压力。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1"
@@ -1227,7 +1227,7 @@ context = "{target.name}强忍着不适，让{armpit_s}反复摩擦{penis_s}，�
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1"
-context = "迫于博士压力的{target.name}用{armpit_s}夹住{penis_s}上下移动，每次动作都透露出内心的抵触，却因职场关系不得不服从。"
+context = "迫于{player.name}压力的{target.name}用{armpit_s}夹住{penis_s}上下移动，每次动作都透露出内心的抵触，却因职场关系不得不服从。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1"
@@ -1243,11 +1243,11 @@ context = "{target.name}僵硬地挤压着{armpit_s}，机械性地摩擦着{pen
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-1"
-context = "屈从于博士命令的{target.name}不情愿地用{armpit_s}夹紧{penis_s}摩擦，每个动作都透露出她的勉强与内心的抵触，却不敢拒绝。"
+context = "屈从于{player.name}命令的{target.name}不情愿地用{armpit_s}夹紧{penis_s}摩擦，每个动作都透露出她的勉强与内心的抵触，却不敢拒绝。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2"
-context = "信任博士的{target.name}专注地夹紧双臂，让{armpit_s}有节奏地摩擦{penis_s}，像执行任何工作任务一样认真对待这特殊的要求。"
+context = "信任{player.name}的{target.name}专注地夹紧双臂，让{armpit_s}有节奏地摩擦{penis_s}，像执行任何工作任务一样认真对待这特殊的要求。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2"
@@ -1255,11 +1255,11 @@ context = "{target.name}熟练地挤压{armpit_s}，上下摩擦着{penis_s}，�
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2"
-context = "驯服的{target.name}有条不紊地用{armpit_s}夹紧{penis_s}摩擦，眼神中透露出对博士的信任，将这视为另一种需要完美执行的任务。"
+context = "驯服的{target.name}有条不紊地用{armpit_s}夹紧{penis_s}摩擦，眼神中透露出对{player.name}的信任，将这视为另一种需要完美执行的任务。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2"
-context = "{target.name}压紧双臂，让{armpit_s}紧密包裹{penis_s}，每一次摩擦都显示出她对博士要求的理解与接受，动作流畅而专业。"
+context = "{target.name}压紧双臂，让{armpit_s}紧密包裹{penis_s}，每一次摩擦都显示出她对{player.name}要求的理解与接受，动作流畅而专业。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2"
@@ -1267,11 +1267,11 @@ context = "驯服的{target.name}认真地调整姿势，让{armpit_s}更好地�
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2"
-context = "{target.name}以专业的态度挤压{armpit_s}，有节奏地摩擦着{penis_s}，眼神中流露出对博士决定的尊重与理解，尽力配合着对方的节奏。"
+context = "{target.name}以专业的态度挤压{armpit_s}，有节奏地摩擦着{penis_s}，眼神中流露出对{player.name}决定的尊重与理解，尽力配合着对方的节奏。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2"
-context = "接受了特殊任务的{target.name}用{armpit_s}夹紧{penis_s}，每一次摩擦都充满了对博士的信赖，将这种亲密视为一种特殊的职场关系。"
+context = "接受了特殊任务的{target.name}用{armpit_s}夹紧{penis_s}，每一次摩擦都充满了对{player.name}的信赖，将这种亲密视为一种特殊的职场关系。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2"
@@ -1279,11 +1279,11 @@ context = "{target.name}熟练地扭动身体，让{armpit_s}以最合适的压�
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2"
-context = "驯服的{target.name}专注地用{armpit_s}夹住{penis_s}摩擦，像执行任何工作指令一样认真，将博士的满足视为自己的责任。"
+context = "驯服的{target.name}专注地用{armpit_s}夹住{penis_s}摩擦，像执行任何工作指令一样认真，将{player.name}的满足视为自己的责任。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-2"
-context = "{target.name}自然地挤压双臂，让{armpit_s}紧贴着{penis_s}摩擦，虽然这超出了正常工作范围，但她依然以专业的态度执行着博士的每一个要求。"
+context = "{target.name}自然地挤压双臂，让{armpit_s}紧贴着{penis_s}摩擦，虽然这超出了正常工作范围，但她依然以专业的态度执行着{player.name}的每一个要求。"
 
 [[entries]]
 conditions = "premises:FALL_LEVEL_E_-3"

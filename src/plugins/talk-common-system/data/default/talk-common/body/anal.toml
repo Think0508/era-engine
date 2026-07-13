@@ -1639,7 +1639,7 @@ context = "已能从后穴感受到快乐的少女，嫩肉正紧紧吸绞蠕动
 
 [[entries]]
 conditions = "selected.talents.処女 == 1&selected.后穴 >= 12000&selected.后穴 < 90000"
-context = "已经被玩弄调教得极度敏感，只要博士轻轻触碰就会剧烈痉挛收缩的{anal_s}。"
+context = "已经被玩弄调教得极度敏感，只要{player.name}轻轻触碰就会剧烈痉挛收缩的{anal_s}。"
 
 [[entries]]
 conditions = "selected.talents.処女 == 1&selected.后穴 >= 12000&selected.后穴 < 90000"
@@ -2043,7 +2043,7 @@ context = "温热柔软且收放自如，肠壁紧密包裹肉棒又能主动蠕
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6"
-context = "被博士的肉棒调教成熟，括约肌熟练地一张一合配合插入的{anal_s}。"
+context = "被{player.name}的肉棒调教成熟，括约肌熟练地一张一合配合插入的{anal_s}。"
 
 [[entries]]
 conditions = "selected.talents.成人 == 1&selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6"
@@ -3547,7 +3547,7 @@ context = "因禁忌外遇的刺激而变得湿热柔软，括约肌不由自主
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.后穴 < 1000"
-context = "开始适应博士肉棒形状并产生轻微快感，嫩肉内壁颤抖着的{anal_s}。"
+context = "开始适应{player.name}肉棒形状并产生轻微快感，嫩肉内壁颤抖着的{anal_s}。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.后穴 < 1000"
@@ -3807,7 +3807,7 @@ context = "有夫之妇因精湛肛技而异常紧致，温热后穴随着动作
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.肛技.level > 6"
-context = "人妻熟练地操控着括约肌节奏收缩，让博士的肉棒被肉壁层层包裹的{anal_s}。"
+context = "人妻熟练地操控着括约肌节奏收缩，让{player.name}的肉棒被肉壁层层包裹的{anal_s}。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.肛技.level > 6"
@@ -3815,7 +3815,7 @@ context = "已婚熟女精湛的肛门技巧使肠道如有灵性，贪婪吸吮
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.肛技.level > 6"
-context = "背德人妻用高超的技巧控制后穴，括约肌时松时紧地伺候着博士的{anal_s}。"
+context = "背德人妻用高超的技巧控制后穴，括约肌时松时紧地伺候着{player.name}的{anal_s}。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&selected.abilities.肛技.level > 6"

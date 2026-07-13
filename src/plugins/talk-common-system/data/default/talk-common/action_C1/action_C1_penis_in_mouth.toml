@@ -1835,7 +1835,7 @@ context = "{character.name}感受着已为人妻的{target.name}用{mouth}含住
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{character.name}的{penis}被{target.name}的{mouth}温热地包裹着，她面向其他女性跪下口交，仿佛在炫耀自己对博士的忠诚，{character.name}从这背叛婚姻的禁忌场面中获得了强烈的征服快感。"
+context = "{character.name}的{penis}被{target.name}的{mouth}温热地包裹着，她面向其他女性跪下口交，仿佛在炫耀自己对{player.name}的忠诚，{character.name}从这背叛婚姻的禁忌场面中获得了强烈的征服快感。"
 
 [[entries]]
 conditions = "selected.talents.人妻 == 1&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -5915,7 +5915,7 @@ context = "{target.name}的{mouth}只能勉强含住{penis}的龟头，她抬起
 
 [[entries]]
 conditions = "selected.talents.幼女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_3&premises:FALL_LEVEL_LE_4"
-context = "被锁链束缚的小小{target.name}用{mouth}温柔地含吮{penis}，她努力取悦着自己爱着的博士，即使在监牢中也甘之如饴，让{character.name}的快感直冲头顶。"
+context = "被锁链束缚的小小{target.name}用{mouth}温柔地含吮{penis}，她努力取悦着自己爱着的{player.name}，即使在监牢中也甘之如饴，让{character.name}的快感直冲头顶。"
 
 [[entries]]
 conditions = "selected.talents.幼女 == 1&premises:t_imprisonment_1&premises:FALL_LEVEL_GE_3&premises:FALL_LEVEL_LE_4"
@@ -7791,7 +7791,7 @@ context = "{character.name}感受着助理{target.name}的{mouth_s}紧紧包裹�
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_is_assistant"
-context = "助理{target.name}用{mouth_s}熟练地吞吐着{penis_s}，她流畅的口交技巧让{character.name}的快感一波波涌来，作为博士独享下属的肉体侍奉令人欲罢不能。"
+context = "助理{target.name}用{mouth_s}熟练地吞吐着{penis_s}，她流畅的口交技巧让{character.name}的快感一波波涌来，作为{player.name}独享下属的肉体侍奉令人欲罢不能。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_is_assistant"
@@ -7815,7 +7815,7 @@ context = "{character.name}感受到{penis_s}在助理{target.name}的{mouth_s}�
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_is_assistant"
-context = "助理{target.name}用{mouth_s}有技巧地侍奉着{character.name}的{penis_s}，她流畅的吞吐节奏让快感不断攀升，这份独属于博士的福利令{character.name}沉醉其中。"
+context = "助理{target.name}用{mouth_s}有技巧地侍奉着{character.name}的{penis_s}，她流畅的吞吐节奏让快感不断攀升，这份独属于{player.name}的福利令{character.name}沉醉其中。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:t_is_assistant"
@@ -8375,7 +8375,7 @@ context = "{target.name}用稚嫩的{mouth_s}笨拙地吞吐着{penis_s}，不�
 
 [[entries]]
 conditions = "selected.abilities.舌技.level <= 3&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
-context = "{character.name}的{penis_s}被{target.name}生涩的{mouth_s}努力容纳着，她时不时看向旁观者仿佛在炫耀能为博士服务的资格，这稚嫩却骄傲的态度令{character.name}更加亢奋。"
+context = "{character.name}的{penis_s}被{target.name}生涩的{mouth_s}努力容纳着，她时不时看向旁观者仿佛在炫耀能为{player.name}服务的资格，这稚嫩却骄傲的态度令{character.name}更加亢奋。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level <= 3&premises:group_sex_mode_on&selected.abilities.露出.level > 4"
@@ -8507,11 +8507,11 @@ context = "爱情旅馆的私密空间里，{character.name}感受着{target.nam
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:h_in_love_hotel"
-context = "爱情旅馆暖色灯光映照下，{character.name}的{penis}被{target.name}的{mouth}熟练地含住吞吐，舌头沿着冠状沟有节奏地画着圈，让博士的脑海一片空白，只余酥麻快感在神经末梢不断炸开。"
+context = "爱情旅馆暖色灯光映照下，{character.name}的{penis}被{target.name}的{mouth}熟练地含住吞吐，舌头沿着冠状沟有节奏地画着圈，让{player.name}的脑海一片空白，只余酥麻快感在神经末梢不断炸开。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:h_in_love_hotel"
-context = "在旅馆柔软的大床上，{character.name}享受着{target.name}用{mouth}包裹{penis}带来的温热与湿润，她的唇舌配合得愈发默契，那稳定的吮吸节奏让博士腰身微颤，快感如潮水般持续涌来。"
+context = "在旅馆柔软的大床上，{character.name}享受着{target.name}用{mouth}包裹{penis}带来的温热与湿润，她的唇舌配合得愈发默契，那稳定的吮吸节奏让{player.name}腰身微颤，快感如潮水般持续涌来。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:h_in_love_hotel"
@@ -8519,31 +8519,31 @@ context = "旅馆天花板的镜子映出{target.name}埋首吞咽的画面，�
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:h_in_love_hotel"
-context = "爱情旅馆私密的空间里，{character.name}放任呻吟溢出喉间，{target.name}的{mouth}紧紧裹着{penis}上下套弄，脸颊内侧挤压柱身的触感让博士头皮发麻，几欲沉沦于这份淫靡快感中。"
+context = "爱情旅馆私密的空间里，{character.name}放任呻吟溢出喉间，{target.name}的{mouth}紧紧裹着{penis}上下套弄，脸颊内侧挤压柱身的触感让{player.name}头皮发麻，几欲沉沦于这份淫靡快感中。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:h_in_love_hotel"
-context = "借着旅馆暧昧的红光，{character.name}看着{target.name}卖力地用{mouth}服侍着自己的{penis}，她的舌头灵活地在龟头周围打转舔舐，每一下都精准地撩拨着博士敏感的神经，快感层层叠加令人沉醉。"
+context = "借着旅馆暧昧的红光，{character.name}看着{target.name}卖力地用{mouth}服侍着自己的{penis}，她的舌头灵活地在龟头周围打转舔舐，每一下都精准地撩拨着{player.name}敏感的神经，快感层层叠加令人沉醉。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:h_in_love_hotel"
-context = "旅馆隔音良好的房间内，{character.name}尽情享受{target.name}的侍奉，她的{mouth}吞吐着{penis}的同时舌面还在柱身上来回摩擦，那熟练的技巧让博士的快感节节攀升，粗重的喘息声回荡不止。"
+context = "旅馆隔音良好的房间内，{character.name}尽情享受{target.name}的侍奉，她的{mouth}吞吐着{penis}的同时舌面还在柱身上来回摩擦，那熟练的技巧让{player.name}的快感节节攀升，粗重的喘息声回荡不止。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:h_in_love_hotel"
-context = "爱情旅馆的圆床上，{character.name}抚着{target.name}的发顶感受她的服务，{mouth}的温热紧致包裹着{penis}深深浅浅地套弄，唇瓣吮吸与舌尖挑逗配合得恰到好处，让博士舒爽得眯起双眼。"
+context = "爱情旅馆的圆床上，{character.name}抚着{target.name}的发顶感受她的服务，{mouth}的温热紧致包裹着{penis}深深浅浅地套弄，唇瓣吮吸与舌尖挑逗配合得恰到好处，让{player.name}舒爽得眯起双眼。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:h_in_love_hotel"
-context = "在旅馆暧昧气氛的催化下，{character.name}感到{target.name}的{mouth}比平日更加火热，她含着{penis}有节律地吞吐，嫩滑的舌肉贴紧柱身不断摩挲，令博士下腹酸胀，快感愈发汹涌难挡。"
+context = "在旅馆暧昧气氛的催化下，{character.name}感到{target.name}的{mouth}比平日更加火热，她含着{penis}有节律地吞吐，嫩滑的舌肉贴紧柱身不断摩挲，令{player.name}下腹酸胀，快感愈发汹涌难挡。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:h_in_love_hotel"
-context = "房间内的暖气让空气都带着几分旖旎，{character.name}的{penis}被{target.name}的{mouth}热情地吮弄着，她的脸颊内凹用力吸吮的触感让博士浑身酥软，粗喘声在静谧的旅馆房间里格外清晰。"
+context = "房间内的暖气让空气都带着几分旖旎，{character.name}的{penis}被{target.name}的{mouth}热情地吮弄着，她的脸颊内凹用力吸吮的触感让{player.name}浑身酥软，粗喘声在静谧的旅馆房间里格外清晰。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&premises:h_in_love_hotel"
-context = "爱情旅馆柔软的床铺承托着两人交缠的身躯，{target.name}跪在{character.name}腿间用{mouth}卖力地服侍着{penis}，她娴熟地用舌尖扫过敏感带，每一下都令博士从尾椎窜起一阵酥麻电流。"
+context = "爱情旅馆柔软的床铺承托着两人交缠的身躯，{target.name}跪在{character.name}腿间用{mouth}卖力地服侍着{penis}，她娴熟地用舌尖扫过敏感带，每一下都令{player.name}从尾椎窜起一阵酥麻电流。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 6&premises:h_in_love_hotel"
@@ -10979,7 +10979,7 @@ context = "在{target.name}的{mouth}中，{character.name}的{penis}被那条�
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 6&premises:t_unconscious_flag_4"
-context = "{target.name}吞吐着{character.name}的{penis}，她的{mouth}内的舌头如活物般灵活地按摩着肉棒的每一寸肌肤，那种仿佛服务博士是理所当然的态度让{character.name}从脊椎骨深处涌起快感。"
+context = "{target.name}吞吐着{character.name}的{penis}，她的{mouth}内的舌头如活物般灵活地按摩着肉棒的每一寸肌肤，那种仿佛服务{player.name}是理所当然的态度让{character.name}从脊椎骨深处涌起快感。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level > 6&premises:t_unconscious_flag_4"

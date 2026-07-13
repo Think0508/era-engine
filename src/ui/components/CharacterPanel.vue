@@ -1,13 +1,9 @@
-// 注释：CharacterPanel 角色详情面板（多页签，区分 player/npc）
-// 入口：每日菜单"能力显示"→ player / 指令栏"能力显示"→ npc / 长按角色名后也可入口
-// 页签（由 mod 定义哪些页签显示，引擎提供机制）：
-//   服装&能力 / 经验&宝珠 / 个人情报 / 个人好恶 / 身体情报 / 陷落状态 / 技能习得
-// player 模式与 npc 模式有小区别（如 player 无"陷落状态"）
-
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
+import { modLoader } from '../../core/mod-loader'
+import { getEntityAttr, getLevel } from '../../core/entity-utils'
 import CollapsibleSection from './CollapsibleSection.vue'
 
 const props = withDefaults(defineProps<{
@@ -20,159 +16,188 @@ const props = withDefaults(defineProps<{
 const gameStore = useGameStore()
 const uiStore = useUIStore()
 
-// 注释：当前显示的角色
 const character = computed(() => {
   if (props.target === 'player') return gameStore.player
-  if (props.characterId) {
-    return gameStore.charactersAtLocation.find(c => c.id === props.characterId) ?? null
-  }
-  if (uiStore.selectedCharacterId) {
-    return gameStore.charactersAtLocation.find(c => c.id === uiStore.selectedCharacterId) ?? null
-  }
+  if (props.characterId) return gameStore.charactersAtLocation.find(c => c.id === props.characterId) ?? null
+  if (uiStore.selectedCharacterId) return gameStore.charactersAtLocation.find(c => c.id === uiStore.selectedCharacterId) ?? null
   return null
 })
 
-// 注释：页签列表（player 和 npc 有区别）
-const tabs = computed(() => {
-  const base = ['服装&能力', '经验&宝珠', '个人情报', '个人好恶', '身体情报', '技能习得']
-  // 注释：player 无"陷落状态"
-  if (props.target === 'npc') {
-    return [...base.slice(0, 5), '陷落状态', base[5]]
-  }
-  return base
-})
+const tabs = ['属性', '特质']
+const activeTab = ref('属性')
 
-const activeTab = ref('服装&能力')
+const charSex = computed(() => (character.value?.base?.['性别'] ?? 0) as number)
 
-// 注释：装备列表
+// 装备
 const equipmentList = computed(() => {
   const char = character.value
   if (!char?.equipment || !gameStore.equipmentSlots) return []
   const equip = char.equipment as Record<string, string>
-  return gameStore.equipmentSlots
-    .filter(slot => slot.id in equip)
-    .map(slot => ({ slotName: slot.name, itemName: equip[slot.id] }))
+  return gameStore.equipmentSlots.filter(s => s.id in equip).map(s => ({ slotName: s.name, itemName: equip[s.id] }))
 })
 
-// 注释：基础属性列表
-const baseAttributes = computed(() => {
+// 核心属性（base 命名空间中除性别外的所有数值属性）
+const coreAttrs = computed(() => {
   const char = character.value
   if (!char?.base) return []
-  const base = char.base as Record<string, number>
-  return Object.entries(base)
-    .filter(([key]) => !['体力', '气力', '精力'].includes(key))
-    .map(([key, value]) => ({ label: key, value }))
+  const skip = ['性别']
+  return Object.entries(char.base as Record<string, number>)
+    .filter(([k]) => !skip.includes(k))
+    .map(([k, v]) => ({ label: k, value: v }))
+})
+
+// 按 display_group 分组的属性
+function groupedAttrs(group: string) {
+  return computed(() => {
+    const char = character.value
+    const mod = modLoader.getMod()
+    if (!char || !mod) return []
+    const result: { label: string; value: number; level: number }[] = []
+    for (const [name, def] of Object.entries(mod.attributes)) {
+      if (def.display_group !== group) continue
+      if (def.sex && def.sex !== (charSex.value === 1 ? 'male' : 'female')) continue
+      const v = getEntityAttr(char, name)
+      if (typeof v !== 'number') continue
+      let level = 0
+      if (def.level_thresholds) level = getLevel(v, def.level_thresholds)
+      result.push({ label: name, value: v, level })
+    }
+    return result
+  })
+}
+
+const senseAttrs = groupedAttrs('感觉')
+const abilAttrs = groupedAttrs('性能力')
+
+// 刻印（category=mark）
+const markAttrs = computed(() => {
+  const char = character.value
+  const mod = modLoader.getMod()
+  if (!char || !mod) return []
+  const result: { label: string; value: number }[] = []
+  for (const [name, def] of Object.entries(mod.attributes)) {
+    if (def.category !== 'mark') continue
+    const v = getEntityAttr(char, name)
+    if (typeof v !== 'number') continue
+    result.push({ label: name, value: v })
+  }
+  return result
+})
+
+// 技能（从 char.abilities 中读取，排除 ABL）
+const skillAttrs = computed(() => {
+  const char = character.value
+  const mod = modLoader.getMod()
+  if (!char || !mod) return []
+  const ablNames = new Set(Object.entries(mod.attributes)
+    .filter(([, d]) => d.category === 'ability')
+    .map(([n]) => n))
+  if (!char.abilities) return []
+  const result: { label: string; level: number }[] = []
+  for (const [name, val] of Object.entries(char.abilities as Record<string, any>)) {
+    if (ablNames.has(name)) continue
+    const level = typeof val === 'number' ? val : (val?.level ?? 0)
+    result.push({ label: name, level })
+  }
+  return result
 })
 </script>
 
 <template>
   <div class="character-panel">
-    <!-- 注释：角色名标题 -->
     <h3 class="panel-character-name">{{ character?.name ?? '未知角色' }}</h3>
-
-    <!-- 注释：页签切换 -->
     <div class="tab-bar">
-      <button
-        v-for="tab in tabs"
-        :key="tab"
-        class="tab-button"
-        :class="{ active: activeTab === tab }"
-        @click="activeTab = tab"
-      >{{ tab }}</button>
+      <button v-for="tab in tabs" :key="tab" class="tab-button"
+        :class="{ active: activeTab === tab }" @click="activeTab = tab">{{ tab }}</button>
     </div>
-
-    <!-- 注释：页签内容 -->
     <div class="tab-content">
-      <!-- 注释：服装&能力 -->
-      <div v-if="activeTab === '服装&能力'">
-        <CollapsibleSection title="装备" fold-key="panel-equipment">
-          <div class="equipment-list">
-            <div v-for="item in equipmentList" :key="item.slotName" class="equipment-item">
-              <span class="equip-slot">{{ item.slotName }}:</span>
-              <span class="equip-name">{{ item.itemName }}</span>
+      <!-- ═══ 属性页签 ═══ -->
+      <div v-if="activeTab === '属性'">
+        <CollapsibleSection title="装备" fold-key="panel-equip">
+          <div v-if="equipmentList.length > 0" class="attr-list">
+            <div v-for="item in equipmentList" :key="item.slotName" class="attr-row">
+              <span class="attr-label">{{ item.slotName }}</span>
+              <span class="attr-val">{{ item.itemName }}</span>
+            </div>
+          </div>
+          <p v-else class="text-dim">（无装备）</p>
+        </CollapsibleSection>
+
+        <CollapsibleSection title="核心属性" fold-key="panel-core">
+          <div class="attr-list">
+            <div v-for="a in coreAttrs" :key="a.label" class="attr-row">
+              <span class="attr-label">{{ a.label }}</span>
+              <span class="attr-val">{{ a.value }}</span>
             </div>
           </div>
         </CollapsibleSection>
-        <CollapsibleSection title="基础属性" fold-key="panel-attributes">
-          <div class="attr-grid">
-            <div v-for="attr in baseAttributes" :key="attr.label" class="attr-item">
-              <span class="attr-label">{{ attr.label }}</span>
-              <span class="attr-value">{{ attr.value }}</span>
+
+        <CollapsibleSection title="感觉" fold-key="panel-sense">
+          <div v-if="senseAttrs.length > 0" class="attr-list">
+            <div v-for="a in senseAttrs" :key="a.label" class="attr-row">
+              <span class="attr-label">{{ a.label }}</span>
+              <span class="attr-val">
+                {{ a.value }}
+                <span v-if="a.level > 0" class="attr-level">Lv{{ a.level }}</span>
+              </span>
             </div>
           </div>
+          <p v-else class="text-dim">（无数据）</p>
+        </CollapsibleSection>
+
+        <CollapsibleSection title="能力" fold-key="panel-abil">
+          <div v-if="abilAttrs.length > 0" class="attr-list">
+            <div v-for="a in abilAttrs" :key="a.label" class="attr-row">
+              <span class="attr-label">{{ a.label }}</span>
+              <span class="attr-val">
+                {{ a.value }}
+                <span v-if="a.level > 0" class="attr-level">Lv{{ a.level }}</span>
+              </span>
+            </div>
+          </div>
+          <p v-else class="text-dim">（无数据）</p>
+        </CollapsibleSection>
+
+        <CollapsibleSection title="刻印" fold-key="panel-mark">
+          <div v-if="markAttrs.length > 0" class="attr-list">
+            <div v-for="a in markAttrs" :key="a.label" class="attr-row">
+              <span class="attr-label">{{ a.label }}</span>
+              <span class="attr-val">{{ a.value }}</span>
+            </div>
+          </div>
+          <p v-else class="text-dim">（无刻印）</p>
+        </CollapsibleSection>
+
+        <CollapsibleSection title="技能" fold-key="panel-skill">
+          <div v-if="skillAttrs.length > 0" class="attr-list">
+            <div v-for="a in skillAttrs" :key="a.label" class="attr-row">
+              <span class="attr-label">{{ a.label }}</span>
+              <span class="attr-val">Lv{{ a.level }}</span>
+            </div>
+          </div>
+          <p v-else class="text-dim">（无技能）</p>
         </CollapsibleSection>
       </div>
 
-      <!-- 注释：其他页签占位 -->
-      <div v-else>
-        <p class="tab-placeholder">{{ activeTab }} 内容（TODO: 插件注册 character-panel-tab 插槽）</p>
+      <!-- ═══ 特质页签 ═══ -->
+      <div v-else-if="activeTab === '特质'">
+        <p class="text-dim">特质内容（TODO）</p>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.character-panel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-small);
-}
-
-.panel-character-name {
-  font-family: var(--font-title);
-  color: var(--color-primary);
-  text-align: center;
-}
-
-.tab-bar {
-  display: flex;
-  gap: 2px;
-  flex-wrap: wrap;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.tab-button {
-  padding: var(--gap-small);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-button) var(--radius-button) 0 0;
-  color: var(--color-text);
-  cursor: pointer;
-  font-size: 0.75rem;
-  min-height: 44px;
-}
-
-.tab-button.active {
-  background-color: var(--color-primary);
-  color: var(--color-surface);
-}
-
-.tab-content {
-  padding: var(--gap-small);
-}
-
-.equipment-list,
-.attr-grid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-small);
-}
-
-.equipment-item,
-.attr-item {
-  display: flex;
-  gap: var(--gap-small);
-  font-size: 0.875rem;
-}
-
-.equip-slot,
-.attr-label {
-  color: var(--color-text-secondary);
-  min-width: 5em;
-}
-
-.tab-placeholder {
-  color: var(--color-text-secondary);
-  font-size: 0.875rem;
-}
+.character-panel { display: flex; flex-direction: column; gap: var(--gap-small); }
+.panel-character-name { font-family: var(--font-title); color: var(--color-primary); text-align: center; }
+.tab-bar { display: flex; gap: 2px; flex-wrap: wrap; border-bottom: 1px solid var(--color-border); }
+.tab-button { padding: var(--gap-small); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-button) var(--radius-button) 0 0; color: var(--color-text); cursor: pointer; font-size: 0.75rem; min-height: 44px; }
+.tab-button.active { background: var(--color-primary); color: var(--color-surface); }
+.tab-content { padding: var(--gap-small); }
+.attr-list { display: flex; flex-direction: column; gap: 2px; }
+.attr-row { display: flex; justify-content: space-between; font-size: 0.875rem; padding: 2px 0; }
+.attr-label { color: var(--color-text-secondary); }
+.attr-val { color: var(--color-text); font-weight: bold; }
+.attr-level { color: var(--color-primary); font-size: 0.75rem; margin-left: 4px; }
+.text-dim { color: var(--color-text-secondary); font-size: 0.875rem; }
 </style>

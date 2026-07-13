@@ -96,6 +96,22 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "受虐" = { type = "number", default = 0, category = "ability", display = true, display_group = "性能力" }
 
 # ════════════════════════════════════════
+# SENSE — 永久感度（显示在角色面板「感觉」分组）
+# ════════════════════════════════════════
+"皮肤感度" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉" }
+"胸部感度" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉" }
+"阴蒂感度" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉", sex = "female" }
+"阴茎感度" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉", sex = "male" }
+"阴道感度" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉", sex = "female" }
+"后穴感度" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉" }
+"子宫感度" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉", sex = "female" }
+"口喉感度" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉" }
+"心理感度" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉" }
+"阴道扩张" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉", sex = "female" }
+"后穴扩张" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉" }
+"子宫扩张" = { type = "number", default = 0, category = "ability", display = true, display_group = "感觉", sex = "female" }
+
+# ════════════════════════════════════════
 # 社会/经济
 # ════════════════════════════════════════
 "金钱" = { type = "number", default = 0, category = "economy", display = true, display_group = "economy" }

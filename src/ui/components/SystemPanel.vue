@@ -10,6 +10,7 @@ import { onMounted, onUnmounted } from 'vue'
 import { useUIStore } from '../stores/ui-store'
 import OptionsPanel from './OptionsPanel.vue'
 import SaveSlotList from './SaveSlotList.vue'
+import CharacterPanel from './CharacterPanel.vue'
 
 const uiStore = useUIStore()
 
@@ -84,6 +85,13 @@ onUnmounted(() => {
         <div v-else-if="uiStore.activePanel === 'save'" class="save-panel">
           <SaveSlotList @load="handleLoadSave" @back="closePanel" />
         </div>
+        <!-- 注释：角色属性面板 -->
+        <CharacterPanel v-else-if="uiStore.activePanel === 'character-player'" target="player" />
+        <CharacterPanel
+          v-else-if="uiStore.activePanel === 'character-npc'"
+          target="npc"
+          :character-id="uiStore.selectedCharacterId ?? undefined"
+        />
         <!-- 注释：其他面板占位 -->
         <div v-else>
           <p>面板内容：{{ uiStore.activePanel }}</p>

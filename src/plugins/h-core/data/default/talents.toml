@@ -559,6 +559,102 @@ max = 1
 description = ""
 tags = ["身体素质"]
 
+[talents."嗜睡"]
+name = "嗜睡"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."高温体质"]
+name = "高温体质"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."低温体质"]
+name = "低温体质"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."带电体质"]
+name = "带电体质"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."带毒体质"]
+name = "带毒体质"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."视力障碍"]
+name = "视力障碍"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."听力障碍"]
+name = "听力障碍"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."失忆"]
+name = "失忆"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."人格障碍"]
+name = "人格障碍"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."行动不便"]
+name = "行动不便"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."低存在感"]
+name = "低存在感"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."义肢"]
+name = "义肢"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."毒抗性"]
+name = "毒抗性"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."大胃王"]
+name = "大胃王"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."昼伏夜出"]
+name = "昼伏夜出"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."猫舌"]
+name = "猫舌"
+max = 1
+description = ""
+tags = ["身体素质"]
+
 [talents."思慕"]
 name = "思慕"
 max = 1
@@ -805,6 +901,42 @@ max = 1
 description = ""
 tags = ["精神素质"]
 
+[talents."内衣透视"]
+name = "内衣透视"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."腔内透视"]
+name = "腔内透视"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."生理透视"]
+name = "生理透视"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."隔衣触摸"]
+name = "隔衣触摸"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."透衣触摸"]
+name = "透衣触摸"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."隔空插入"]
+name = "隔空插入"
+max = 1
+description = ""
+tags = ["技术素质"]
+
 [talents."窄域时停"]
 name = "窄域时停"
 max = 1
@@ -900,6 +1032,18 @@ name = "厨艺"
 max = 1
 description = ""
 tags = ["技术素质"]
+
+[talents."持有博士把柄"]
+name = "持有博士把柄"
+max = 1
+description = ""
+tags = ["其他素质"]
+
+[talents."被博士持有把柄"]
+name = "被博士持有把柄"
+max = 1
+description = ""
+tags = ["其他素质"]
 
 [talents."信物"]
 name = "信物"

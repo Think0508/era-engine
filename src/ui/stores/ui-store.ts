@@ -40,6 +40,7 @@ interface UIPreferences {
   commandPopoverMode: boolean
   cheatCommands: boolean
   sidebarShowParameter: boolean
+  mainShowParameter: boolean
   splitSections: boolean
   favorites: string[]
 }
@@ -65,6 +66,8 @@ export const useUIStore = defineStore('ui', () => {
   const sidebarWidth = ref(300)
   // 注释：现代主题侧栏是否显示 Parameter 区
   const sidebarShowParameter = ref(true)
+  // 注释：主界面是否显示 Parameter 区（独立于侧栏）
+  const mainShowParameter = ref(true)
   // 注释：屏幕小键盘
   const numpadVisible = ref(false)
   const numpadNumbers = ref(false)
@@ -163,6 +166,9 @@ export const useUIStore = defineStore('ui', () => {
   function toggleSidebarParameter() {
     sidebarShowParameter.value = !sidebarShowParameter.value
   }
+  function toggleMainParameter() {
+    mainShowParameter.value = !mainShowParameter.value
+  }
 
   // 注释：localStorage 持久化——saveToLocalStorage/loadFromLocalStorage
   // 键 era-engine:ui-preferences（不加 mod 前缀，设备级跨 mod 共享）
@@ -184,6 +190,7 @@ export const useUIStore = defineStore('ui', () => {
       commandPopoverMode: commandPopoverMode.value,
       cheatCommands: cheatCommands.value,
       sidebarShowParameter: sidebarShowParameter.value,
+      mainShowParameter: mainShowParameter.value,
       splitSections: splitSections.value,
       favorites: favorites.value,
     }
@@ -218,6 +225,7 @@ export const useUIStore = defineStore('ui', () => {
       commandPopoverMode.value = prefs.commandPopoverMode
       cheatCommands.value = prefs.cheatCommands ?? false
       sidebarShowParameter.value = prefs.sidebarShowParameter ?? true
+      mainShowParameter.value = prefs.mainShowParameter ?? true
       splitSections.value = prefs.splitSections ?? false
       favorites.value = prefs.favorites ?? []
     } catch {
@@ -256,6 +264,8 @@ export const useUIStore = defineStore('ui', () => {
     toggleCheatCommands,
     sidebarShowParameter,
     toggleSidebarParameter,
+    mainShowParameter,
+    toggleMainParameter,
     favorites,
     activePanel,
     commandCategories,

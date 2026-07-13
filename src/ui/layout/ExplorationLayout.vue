@@ -24,7 +24,7 @@ const uiStore = useUIStore()
       <div v-if="uiStore.splitSections" class="split-row">
         <div class="split-left">
           <StatusSection />
-          <ParameterSection />
+          <ParameterSection v-if="uiStore.mainShowParameter" />
         </div>
         <div class="split-right">
           <LookSection />
@@ -32,7 +32,7 @@ const uiStore = useUIStore()
       </div>
       <template v-else>
         <StatusSection />
-        <ParameterSection />
+        <ParameterSection v-if="uiStore.mainShowParameter" />
         <LookSection />
       </template>
       <div class="narrative-log-container">

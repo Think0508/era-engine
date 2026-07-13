@@ -58,7 +58,7 @@ function openSidebar() {
         <div v-if="uiStore.splitSections" class="split-row">
           <div class="split-left">
             <StatusSection />
-            <ParameterSection />
+            <ParameterSection v-if="uiStore.mainShowParameter" />
           </div>
           <div class="split-right">
             <LookSection />
@@ -66,7 +66,7 @@ function openSidebar() {
         </div>
         <template v-else>
           <StatusSection />
-          <ParameterSection />
+          <ParameterSection v-if="uiStore.mainShowParameter" />
           <LookSection />
         </template>
       </div>

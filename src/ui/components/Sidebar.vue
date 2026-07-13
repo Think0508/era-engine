@@ -101,7 +101,7 @@ function clickButton(buttonId: string) {
     </div>
 
     <!-- 注释：Parameter 区（多栏） -->
-    <div class="sidebar-parameters">
+    <div v-if="uiStore.sidebarShowParameter" class="sidebar-parameters">
       <div class="parameter-grid">
         <div v-for="bar in parameterBars" :key="bar.label" class="parameter-item">
           <span class="param-label">{{ bar.label }}</span>

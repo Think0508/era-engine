@@ -84,10 +84,17 @@ const FONT_SIZES = ['small', 'medium', 'large', 'xlarge'] as const
         <span class="option-value">{{ uiStore.sidebarWidth }}px</span>
       </div>
       <div class="option-row">
-        <span class="option-label">Parameter显示</span>
+        <span class="option-label">Parameter—侧栏</span>
         <button class="option-toggle" :class="{ on: uiStore.sidebarShowParameter }"
           @click="uiStore.toggleSidebarParameter()">
-          {{ uiStore.sidebarShowParameter ? '侧栏' : '主体' }}
+          {{ uiStore.sidebarShowParameter ? '显示' : '隐藏' }}
+        </button>
+      </div>
+      <div class="option-row">
+        <span class="option-label">Parameter—主界面</span>
+        <button class="option-toggle" :class="{ on: uiStore.mainShowParameter }"
+          @click="uiStore.toggleMainParameter()">
+          {{ uiStore.mainShowParameter ? '显示' : '隐藏' }}
         </button>
       </div>
       <div class="option-row">

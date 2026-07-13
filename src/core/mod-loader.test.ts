@@ -118,8 +118,8 @@ describe('parseModData', () => {
     // 注释：template 继承正确
     expect(named!.base.hp).toBe(999)
     expect(named!.base.mp).toBe(50)
-    // 注释：talents 正确
-    expect(named!.talents).toEqual({ '剑骨': 1 })
+    // 注释：talents 正确（named 设定值 + 插件默认初始化为 0）
+    expect(named!.talents['剑骨']).toBe(1)
     // 注释：named 不增加 counts（只覆盖已存在的 ID，或新增不存在的 ID）
     expect(characters.size).toBe(6)  // 5 roster + 1 named（test_named 在 roster 中没有，而是新增）
   })

@@ -1,0 +1,915 @@
+# 插件默认天赋（由 erArk Talent.csv 自动转换）
+# 排除：源石病相关/博士信息素/透视等 Arknights 世界观专属
+
+[talents."阴道处女"]
+name = "阴道处女"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."肛门处女"]
+name = "肛门处女"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."尿道处女"]
+name = "尿道处女"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."子宫处女"]
+name = "子宫处女"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."无接吻经验"]
+name = "无接吻经验"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."童贞"]
+name = "童贞"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."未初潮"]
+name = "未初潮"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."未成年"]
+name = "未成年"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."亲吻合意"]
+name = "亲吻合意"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."本番合意"]
+name = "本番合意"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."避孕中出合意"]
+name = "避孕中出合意"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."妊娠合意"]
+name = "妊娠合意"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."肛门性交合意"]
+name = "肛门性交合意"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."尿道性交合意"]
+name = "尿道性交合意"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."受精"]
+name = "受精"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."妊娠"]
+name = "妊娠"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."临盆"]
+name = "临盆"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."产后"]
+name = "产后"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."育儿"]
+name = "育儿"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."孕肚"]
+name = "孕肚"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."泌乳"]
+name = "泌乳"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."精爱味觉"]
+name = "精爱味觉"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."精液膨腹"]
+name = "精液膨腹"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."浓厚精液"]
+name = "浓厚精液"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."漏尿"]
+name = "漏尿"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."无意识妊娠"]
+name = "无意识妊娠"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."淫乱"]
+name = "淫乱"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."淫体"]
+name = "淫体"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."淫乳"]
+name = "淫乳"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."淫核"]
+name = "淫核"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."淫茎"]
+name = "淫茎"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."淫膣"]
+name = "淫膣"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."淫肛"]
+name = "淫肛"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."淫胱"]
+name = "淫胱"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."淫宫"]
+name = "淫宫"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."真·淫魔"]
+name = "真·淫魔"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."精液中毒"]
+name = "精液中毒"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."自慰中毒"]
+name = "自慰中毒"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."膣射中毒"]
+name = "膣射中毒"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."肛射中毒"]
+name = "肛射中毒"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."饮精中毒"]
+name = "饮精中毒"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."周期性发情"]
+name = "周期性发情"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."发情期中"]
+name = "发情期中"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."不易湿"]
+name = "不易湿"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."容易湿"]
+name = "容易湿"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."已催眠·浅"]
+name = "已催眠·浅"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."已催眠·深"]
+name = "已催眠·深"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."已催眠·极"]
+name = "已催眠·极"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."皮肤钝感"]
+name = "皮肤钝感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."皮肤敏感"]
+name = "皮肤敏感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."乳房钝感"]
+name = "乳房钝感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."乳房敏感"]
+name = "乳房敏感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."阴蒂钝感"]
+name = "阴蒂钝感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."阴蒂敏感"]
+name = "阴蒂敏感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."阴茎钝感"]
+name = "阴茎钝感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."阴茎敏感"]
+name = "阴茎敏感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."阴道钝感"]
+name = "阴道钝感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."阴道敏感"]
+name = "阴道敏感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."肛门钝感"]
+name = "肛门钝感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."肛门敏感"]
+name = "肛门敏感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."尿道钝感"]
+name = "尿道钝感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."尿道敏感"]
+name = "尿道敏感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."子宫钝感"]
+name = "子宫钝感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."子宫敏感"]
+name = "子宫敏感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."兽部钝感"]
+name = "兽部钝感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."兽部敏感"]
+name = "兽部敏感"
+max = 1
+description = ""
+tags = ["性素质"]
+
+[talents."婴儿"]
+name = "婴儿"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."幼女"]
+name = "幼女"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."萝莉"]
+name = "萝莉"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."少女"]
+name = "少女"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."大姐姐"]
+name = "大姐姐"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."熟女"]
+name = "熟女"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."人妻"]
+name = "人妻"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."长生者"]
+name = "长生者"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."兽耳"]
+name = "兽耳"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."兽角"]
+name = "兽角"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."兽尾"]
+name = "兽尾"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."光环"]
+name = "光环"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."翅膀"]
+name = "翅膀"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."触手"]
+name = "触手"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."小车"]
+name = "小车"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."绝壁"]
+name = "绝壁"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."贫乳"]
+name = "贫乳"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."普乳"]
+name = "普乳"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."巨乳"]
+name = "巨乳"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."爆乳"]
+name = "爆乳"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."小臀"]
+name = "小臀"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."普臀"]
+name = "普臀"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."巨臀"]
+name = "巨臀"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."细腿"]
+name = "细腿"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."肉腿"]
+name = "肉腿"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."小足"]
+name = "小足"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."长足"]
+name = "长足"
+max = 1
+description = ""
+tags = ["身体素质"]
+
+[talents."思慕"]
+name = "思慕"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."恋慕"]
+name = "恋慕"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."恋人"]
+name = "恋人"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."爱侣"]
+name = "爱侣"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."戒指"]
+name = "戒指"
+max = 1
+description = ""
+tags = ["其他素质"]
+
+[talents."屈从"]
+name = "屈从"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."驯服"]
+name = "驯服"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."宠物"]
+name = "宠物"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."奴隶"]
+name = "奴隶"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."项圈"]
+name = "项圈"
+max = 1
+description = ""
+tags = ["其他素质"]
+
+[talents."性好奇"]
+name = "性好奇"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."性冷漠"]
+name = "性冷漠"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."性无知"]
+name = "性无知"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."感情缺乏"]
+name = "感情缺乏"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."难以越过的底线"]
+name = "难以越过的底线"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."献身"]
+name = "献身"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."倒错"]
+name = "倒错"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."讨厌男性"]
+name = "讨厌男性"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."讨厌女性"]
+name = "讨厌女性"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."施虐狂"]
+name = "施虐狂"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."受虐狂"]
+name = "受虐狂"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."正常位喜好"]
+name = "正常位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."背后位喜好"]
+name = "背后位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."对面骑乘位喜好"]
+name = "对面骑乘位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."背面骑乘位喜好"]
+name = "背面骑乘位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."对面座位喜好"]
+name = "对面座位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."背面座位喜好"]
+name = "背面座位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."对面立位喜好"]
+name = "对面立位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."背面立位喜好"]
+name = "背面立位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."对面抱位喜好"]
+name = "对面抱位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."背面抱位喜好"]
+name = "背面抱位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."对面卧位喜好"]
+name = "对面卧位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."背面卧位喜好"]
+name = "背面卧位喜好"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."勤劳"]
+name = "勤劳"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."懒散"]
+name = "懒散"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."脆弱"]
+name = "脆弱"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."坚强"]
+name = "坚强"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."热情"]
+name = "热情"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."孤僻"]
+name = "孤僻"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."羞耻"]
+name = "羞耻"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."开放"]
+name = "开放"
+max = 1
+description = ""
+tags = ["精神素质"]
+
+[talents."窄域时停"]
+name = "窄域时停"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."广域时停"]
+name = "广域时停"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."精确时停"]
+name = "精确时停"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."猥亵催眠"]
+name = "猥亵催眠"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."性爱催眠"]
+name = "性爱催眠"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."集体催眠"]
+name = "集体催眠"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."心体催眠"]
+name = "心体催眠"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."回复慢"]
+name = "回复慢"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."回复快"]
+name = "回复快"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."酒量差"]
+name = "酒量差"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."酒量好"]
+name = "酒量好"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."千杯不醉"]
+name = "千杯不醉"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."灵活手指"]
+name = "灵活手指"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."灵活舌头"]
+name = "灵活舌头"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."教官"]
+name = "教官"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."厨艺"]
+name = "厨艺"
+max = 1
+description = ""
+tags = ["技术素质"]
+
+[talents."信物"]
+name = "信物"
+max = 1
+description = ""
+tags = ["其他素质"]
+
+[talents."女儿"]
+name = "女儿"
+max = 1
+description = ""
+tags = ["其他素质"]
+

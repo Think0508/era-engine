@@ -611,12 +611,9 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   const relData = loadMerged<Record<string, any>>('relations.toml', 'types')
   if (relData) mod.relationTypes = relData
 
-  // 注释：加载 talents.toml
-  const talentsPath = `/mods/${modName}/definitions/talents.toml`
-  if (talentsPath in rawTomlMap) {
-    const data = parseFile(talentsPath, rawTomlMap[talentsPath])
-    mod.talentDefs = (data.talents as Record<string, TalentDef>) ?? {}
-  }
+  // 注释：加载 talents.toml（插件默认 + mod 定义 deepMerge）
+  const talentData = loadMerged<Record<string, TalentDef>>('talents.toml', 'talents')
+  if (talentData) mod.talentDefs = talentData
 
   // 注释：加载 styles.toml（命名样式注册表）
   const stylesPath = `/mods/${modName}/definitions/talk/styles.toml`
@@ -642,6 +639,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   // 注释：展开角色 abilities 简写——数字 → { level, xp: 0 }
   // TODO(phase-6): ability-progression 插件 onEnable 时用 max_level 做升级逻辑，不用于展开
   expandCharacterAbilities(mod)
+  initializeTalents(mod)
 
   // 注释：加载 h-config.toml（H 系数表，mod 可配）
   const hConfigPath = `/mods/${modName}/h-config.toml`
@@ -739,6 +737,22 @@ function validateLocations(mod: LoadedMod, modName: string): void {
       console.warn(
         `mods/${modName}/maps/locations/: 地点 '${id}' 不可达（无其他地点的 exit 指向它，也无 parent）——可能是设计遗漏`,
       )
+    }
+  }
+}
+
+function initializeTalents(mod: LoadedMod): void {
+  const defs = mod.talentDefs
+  if (Object.keys(defs).length === 0) return
+  const characters = mod.entities.get('character')
+  if (!characters) return
+  for (const [, char] of characters) {
+    const c = char as any
+    if (!c.talents) c.talents = {}
+    for (const talentId of Object.keys(defs)) {
+      if (c.talents[talentId] === undefined) {
+        c.talents[talentId] = 0
+      }
     }
   }
 }

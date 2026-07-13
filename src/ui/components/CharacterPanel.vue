@@ -84,7 +84,23 @@ const markAttrs = computed(() => {
   return result
 })
 
-// 技能（从 char.abilities 中读取，排除 ABL）
+// 性技术（已知技术名列表）
+const TECHNIQUE_NAMES = new Set(['指技', '舌技', '足技', '胸技', '膣技', '肛技', '腰技', '榨精', '隐蔽'])
+
+// 性技术（从 char.abilities 中读取）
+const techniqueAttrs = computed(() => {
+  const char = character.value
+  if (!char?.abilities) return []
+  const result: { label: string; level: number }[] = []
+  for (const [name, val] of Object.entries(char.abilities as Record<string, any>)) {
+    if (!TECHNIQUE_NAMES.has(name)) continue
+    const level = typeof val === 'number' ? val : (val?.level ?? 0)
+    if (level > 0) result.push({ label: name, level })
+  }
+  return result
+})
+
+// 其他技能（从 char.abilities 中读取，排除 ABL 和性技术）
 const skillAttrs = computed(() => {
   const char = character.value
   const mod = modLoader.getMod()
@@ -95,7 +111,7 @@ const skillAttrs = computed(() => {
   if (!char.abilities) return []
   const result: { label: string; level: number }[] = []
   for (const [name, val] of Object.entries(char.abilities as Record<string, any>)) {
-    if (ablNames.has(name)) continue
+    if (ablNames.has(name) || TECHNIQUE_NAMES.has(name)) continue
     const level = typeof val === 'number' ? val : (val?.level ?? 0)
     result.push({ label: name, level })
   }
@@ -168,7 +184,17 @@ const skillAttrs = computed(() => {
           <p v-else class="text-dim">（无刻印）</p>
         </CollapsibleSection>
 
-        <CollapsibleSection title="技能" fold-key="panel-skill">
+        <CollapsibleSection title="性技术" fold-key="panel-tech">
+          <div v-if="techniqueAttrs.length > 0" class="attr-list">
+            <div v-for="a in techniqueAttrs" :key="a.label" class="attr-row">
+              <span class="attr-label">{{ a.label }}</span>
+              <span class="attr-val">Lv{{ a.level }}</span>
+            </div>
+          </div>
+          <p v-else class="text-dim">（无性技术）</p>
+        </CollapsibleSection>
+
+        <CollapsibleSection title="其他技能" fold-key="panel-skill">
           <div v-if="skillAttrs.length > 0" class="attr-list">
             <div v-for="a in skillAttrs" :key="a.label" class="attr-row">
               <span class="attr-label">{{ a.label }}</span>

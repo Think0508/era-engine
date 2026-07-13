@@ -641,10 +641,10 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   expandCharacterAbilities(mod)
   initializeTalents(mod)
 
-  // 注释：加载 h-config.toml（插件默认 + mod 覆盖）
+  // 注释：加载 h-config.toml（插件默认 + mod 覆盖，字段级 deepMerge）
   for (const path of Object.keys(rawTomlMap).filter(p => p.endsWith('/h-config.toml'))) {
     const data = parseFile(path, rawTomlMap[path])
-    mod.hConfig = { ...mod.hConfig, ...data }
+    mod.hConfig = deepMerge(mod.hConfig, data) as HConfig
   }
 
   // 注释：加载 h-instructions/ 目录下所有 TOML

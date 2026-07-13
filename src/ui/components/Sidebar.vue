@@ -12,6 +12,8 @@ import { computed, ref } from 'vue'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { resolveAsset } from '../utils/asset-resolver'
+import { modLoader } from '../../core/mod-loader'
+import { getEntityAttr } from '../../core/entity-utils'
 
 const gameStore = useGameStore()
 const uiStore = useUIStore()
@@ -58,14 +60,22 @@ const sidebarButtons = [
   { id: 'save', label: '存档', icon: '💾' },
 ]
 
-// 注释：Parameter 属性列表（多栏）
+// 注释：Parameter 属性列表（从 attribute definitions 动态读取）
 const parameterBars = computed(() => {
   const char = displayCharacter.value
-  if (!char?.base) return []
-  const base = char.base as Record<string, number>
-  // 注释：Parameter 属性（display_group 含 身体快感/情绪心理/特殊）
-  const paramKeys = ['快C', '快V', '润滑', '恭顺', '情欲', '羞耻', '眠奸']
-  return paramKeys.filter(k => k in base).map(k => ({ label: k, value: base[k], max: 100 }))
+  if (!char) return []
+  const mod = modLoader.getMod()
+  if (!mod) return []
+  const charSex = (char.base?.['性别'] ?? 0) as number
+  const bars: { label: string; value: number; level: number }[] = []
+  for (const [attrName, def] of Object.entries(mod.attributes)) {
+    if (!def.daily_reset) continue
+    if (def.sex && def.sex !== (charSex === 1 ? 'male' : 'female')) continue
+    const v = getEntityAttr(char, attrName)
+    if (typeof v !== 'number') continue
+    bars.push({ label: attrName, value: v, level: 0 })
+  }
+  return bars
 })
 
 // 注释：点击侧栏按钮
@@ -106,7 +116,7 @@ function clickButton(buttonId: string) {
         <div v-for="bar in parameterBars" :key="bar.label" class="parameter-item">
           <span class="param-label">{{ bar.label }}</span>
           <div class="param-track">
-            <div class="param-fill" :style="{ width: (bar.value / bar.max * 100) + '%' }" />
+            <div class="param-fill" :style="{ width: Math.min(bar.value / 1000, 100) + '%' }" />
           </div>
         </div>
       </div>

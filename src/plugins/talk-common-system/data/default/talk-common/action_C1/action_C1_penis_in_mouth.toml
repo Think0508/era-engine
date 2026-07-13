@@ -7871,7 +7871,7 @@ context = "{character.name}的{penis}被{target.name}生涩地含入{mouth}中�
 
 [[entries]]
 conditions = "selected.abilities.舌技.level <= 3&premises:target_visitor_flag_1"
-context = "{target.name}的{mouth}湿润温热地包裹着{character.name}的{penis}，她不知该如何吞吐的茫然神情令{character.name}心生怜爱，趁着她还在罗德岛，一定要让她学会如何用嘴侍奉男人。"
+context = "{target.name}的{mouth}湿润温热地包裹着{character.name}的{penis}，她不知该如何吞吐的茫然神情令{character.name}心生怜爱，趁着她还在，一定要让她学会如何用嘴侍奉男人。"
 
 [[entries]]
 conditions = "selected.abilities.舌技.level <= 3&premises:target_visitor_flag_1"

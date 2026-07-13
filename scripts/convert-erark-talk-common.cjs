@@ -210,6 +210,8 @@ const VAR_MAP = [
   ['{name}', '{character.name}'],
   // 博士 → {player.name}（erArk 对主角的称呼）
   ['博士', '{player.name}'],
+  // 罗德岛 → 移除（方舟世界观专属）
+  ['罗德岛', ''],
 ]
 
 function convertContextVars(text) {

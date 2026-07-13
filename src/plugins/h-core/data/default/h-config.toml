@@ -1,0 +1,18 @@
+# h-core 默认配置
+# state_ability: settle_state 计算时，用哪个能力等级作为系数
+# key = 状态名（attributes.toml 中 category=parameter 的属性）
+# value = 能力名（abilities.toml 中定义的带等级的能力）
+
+[state_ability]
+"润滑" = "欲望"
+"习得" = "技巧"
+"恭顺" = "顺从"
+"好意" = "亲密"
+"欲情" = "欲望"
+"快乐" = "快乐刻印"
+"先导" = "施虐"
+"屈服" = "屈服刻印"
+"羞耻" = "露出"
+"苦痛" = "苦痛刻印"
+"恐怖" = "恐怖刻印"
+"反感" = "反发刻印"

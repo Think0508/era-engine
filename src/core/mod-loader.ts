@@ -641,10 +641,10 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   expandCharacterAbilities(mod)
   initializeTalents(mod)
 
-  // 注释：加载 h-config.toml（H 系数表，mod 可配）
-  const hConfigPath = `/mods/${modName}/h-config.toml`
-  if (hConfigPath in rawTomlMap) {
-    mod.hConfig = parseFile(hConfigPath, rawTomlMap[hConfigPath]) as HConfig
+  // 注释：加载 h-config.toml（插件默认 + mod 覆盖）
+  for (const path of Object.keys(rawTomlMap).filter(p => p.endsWith('/h-config.toml'))) {
+    const data = parseFile(path, rawTomlMap[path])
+    mod.hConfig = { ...mod.hConfig, ...data }
   }
 
   // 注释：加载 h-instructions/ 目录下所有 TOML

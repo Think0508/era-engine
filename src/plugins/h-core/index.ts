@@ -86,9 +86,12 @@ export function onLoad(_ctx: PluginContext): void {
     const tc = execCtx._timeCost ?? 10
     const bv = _p.baseValue ?? 30
     const base = tc + bv
+    // 注释：确定使用哪个能力等级——优先 _p.ability_level，其次查 hConfig.state_ability 映射，最后使用 state 同名
+    const stateAbility = (hc.state_ability as Record<string, string>) ?? {}
+    const abilityKey = _p.ability_level ?? stateAbility[_p.state] ?? _p.state
     for (const id of ids) {
       const ch = entitySystem.get('character', id) as any
-      const al = ch?.abilities?.[_p.state]?.level ?? 0
+      const al = ch?.abilities?.[abilityKey]?.level ?? 0
       const raw = calcStateChange(base, al, tbl)
       const fv = _p.negate ? -raw : raw
       if (fv !== 0) execCtx.settlement.applyChange(id, _p.state, fv)

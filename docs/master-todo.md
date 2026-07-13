@@ -190,7 +190,45 @@ text = "你给这柄剑起了个名字：{{input var='sword_name'}}。"
 - [ ] `scene.has_character()` 条件函数——当前 condition 系统不支持
 - [ ] `"talk_to"` objective 类型监听 `dialogue:end` 已实现，但缺少 `"use_instruction"`、`"character_present"` 等类型
 - [ ] 已完成的任务状态持久化（当前 `getQuestStatus` 对已完成任务返回 `'not_started'`）
-- 脚本报错仅影响自身
+
+### L2.12 talk-common 天赋条件迁移
+
+> talk-common 纸娃娃数据中引用了 23 个 erArk 天赋 ID（CVP_A2_T|{id}），
+> 当前被静默跳过。必须注册为条件捷径才能精准匹配纸娃娃描述。
+
+**体质类（搬进 talents.toml 插件默认）**：
+
+| ID | 含义 | 条件捷径 |
+|----|------|---------|
+| 0 | 阴道处女 | `selected.阴道处女 == 1` |
+| 1 | 肛门处女 | `selected.肛门处女 == 1` |
+| 2 | 尿道处女 | `selected.尿道处女 == 1` |
+| 3 | 子宫处女 | `selected.子宫处女 == 1` |
+| 6 | 未初潮 | `selected.未初潮 == 1` |
+| 20 | 受精 | `selected.受精 == 1` |
+| 21 | 妊娠 | `selected.妊娠 == 1` |
+| 24 | 育儿 | `selected.育儿 == 1` |
+| 102 | 幼女(体型) | `selected.体型 == '幼女'` |
+| 103 | 少女(体型) | `selected.体型 == '少女'` |
+| 104 | 処女(体型) | `selected.体型 == '処女'` |
+| 105 | 成人(体型) | `selected.体型 == '成人'` |
+| 106 | 淑女(体型) | `selected.体型 == '淑女'` |
+| 107 | 夫人(体型) | `selected.体型 == '夫人'` |
+| 121 | 贫乳(胸围) | `selected.胸围 == '贫乳'` |
+| 122 | 微乳(胸围) | `selected.胸围 == '微乳'` |
+| 123 | 普乳(胸围) | `selected.胸围 == '普乳'` |
+| 124 | 巨乳(胸围) | `selected.胸围 == '巨乳'` |
+| 125 | 爆乳(胸围) | `selected.胸围 == '爆乳'` |
+| 129 | 细腿(腿型) | `selected.腿型 == '细腿'` |
+| 130 | 肉腿(腿型) | `selected.腿型 == '肉腿'` |
+| 131 | 小足(足型) | `selected.足型 == '小足'` |
+| 132 | 大足(足型) | `selected.足型 == '大足'` |
+
+**实现**：
+1. 将体质类（体型/胸围/腿型）定义为 `talents.toml` 插件默认，有 `modifier` 影响公式
+2. 状态标记类（处女/妊娠/育儿）不作为天赋，而是注册条件捷径到 `premiseRegistry`
+3. 两者都注册一个"条件捷径"（shorthand），让 `CVP_A2_T|102_E_1` 等价于对应条件表达式
+4. 全部注册完毕后，talk-common 的 `pickEntry` 才能在非 strict 模式下正确匹配
 
 ### L2.3 角色创建流程（Phase 13.1）
 

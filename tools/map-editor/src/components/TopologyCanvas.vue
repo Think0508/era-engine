@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { VueFlow, type Node, type Edge, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
+import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { useMapStore } from '../stores/mapStore'
@@ -42,6 +42,7 @@ const flowEdges = computed<Edge[]>(() =>
 const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
 let nodeCounter = 0
+let edgeCounter = 0
 let paneClickTimer: ReturnType<typeof setTimeout> | null = null
 
 function onNodeClick({ node }: { node: Node }) {
@@ -109,6 +110,30 @@ function onKeyDown(event: KeyboardEvent) {
   }
 }
 
+function onConnect(connection: Connection) {
+  if (!connection.source || !connection.target) return
+  edgeCounter++
+  mapStore.addEdge({
+    id: `edge_${edgeCounter}`,
+    from: connection.source,
+    to: connection.target,
+    timeCost: 10,
+    direction: 'bidirectional',
+  })
+}
+
+function onEdgeDoubleClick(payload: EdgeMouseEvent) {
+  payload.event.preventDefault()
+  const current = mapStore.edges.find(e => e.id === payload.edge.id)
+  const val = prompt('耗时（分钟）:', String(current?.timeCost ?? 10))
+  if (val !== null) {
+    const cost = parseInt(val, 10)
+    if (!isNaN(cost) && cost >= 0) {
+      mapStore.updateEdge(payload.edge.id, { timeCost: cost })
+    }
+  }
+}
+
 function onNodeContextMenu(payload: NodeMouseEvent) {
   payload.event.preventDefault()
   const me = payload.event as MouseEvent
@@ -155,6 +180,8 @@ function onNodesChange(changes: NodeChange[]) {
       @nodes-change="onNodesChange"
       @node-click="onNodeClick"
       @edge-click="onEdgeClick"
+      @connect="onConnect"
+      @edge-double-click="onEdgeDoubleClick"
       @pane-click="onPaneClick"
       @pane-ready="onPaneReady"
       @node-context-menu="onNodeContextMenu"

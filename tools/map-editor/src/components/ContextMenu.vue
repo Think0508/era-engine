@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useMapStore } from '../stores/mapStore'
 import { useUiStore } from '../stores/uiStore'
+import type { EdgeDirection } from '../types/edge'
 
 const mapStore = useMapStore()
 const ui = useUiStore()
@@ -41,6 +42,20 @@ function rename() {
   }
   emit('close')
 }
+
+function toggleDirection() {
+  if (props.edgeId) {
+    const edge = mapStore.edges.find(e => e.id === props.edgeId)
+    if (!edge) return
+    const next: Record<string, EdgeDirection> = {
+      bidirectional: 'directed',
+      directed: 'reverse',
+      reverse: 'bidirectional',
+    }
+    mapStore.updateEdge(props.edgeId, { direction: next[edge.direction] })
+  }
+  emit('close')
+}
 </script>
 
 <template>
@@ -51,7 +66,8 @@ function rename() {
       <div class="menu-item danger" @click="deleteNode">删除节点</div>
     </template>
     <template v-if="edgeId">
-      <div class="menu-item" @click="deleteEdge">删除边</div>
+      <div class="menu-item" @click="toggleDirection">切换方向</div>
+      <div class="menu-item danger" @click="deleteEdge">删除边</div>
     </template>
   </div>
 </template>

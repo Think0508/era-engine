@@ -79,31 +79,17 @@ class GameContextManager {
   }
 
   // 注释：移动到目标地点——command-executor 的 move 指令调用
-  // TODO(phase-6): time_cost 详细规则由 mod 驱动，当前最小化
-  async moveTo(targetLocationId: string): Promise<void> {
+  // 注释：可达性检查由 map-system 插件的 getReachable() 完成
+  // 注释：此方法只做移动 + 时间推进 + 事件发射
+  async moveTo(targetLocationId: string, timeCost?: number): Promise<void> {
     if (!this.location) {
       throw new Error('moveTo 失败：当前地点未设置')
     }
-    // 注释：查 exit 可达性
-    const exit = this.location.exits.find(e => e.target === targetLocationId)
-    if (!exit) {
-      // 注释：也可能是 parent→child 的自动可达
-      // TODO(phase-6): map-system 实现完整的可达性检查
-      throw new Error(
-        `moveTo 失败：从 '${this.location.id}' 无法到达 '${targetLocationId}'（无对应 exit）`,
-      )
-    }
-    // 注释：计算 time_cost——最小化：同 parent=5min，跨 parent=60min
-    // exit.time_cost 优先，否则用默认值
-    let timeCost = exit.time_cost
-    if (timeCost === undefined) {
-      // TODO(phase-6): time_cost 详细规则由 mod 驱动
-      timeCost = 5
-    }
+    // 注释：timeCost 默认 5 分钟
+    const cost = timeCost ?? 5
     // 注释：先 leave 后 enter，符合"离开→到达"直觉
-    const oldLocation = this.location
-    await eventBus.emit('location:leave', { from: oldLocation.id })
-    await this.advanceTime(timeCost)
+    await eventBus.emit('location:leave', { from: this.location.id })
+    await this.advanceTime(cost)
     // 注释：从 entity-system 获取目标地点数据
     const targetEntity = entitySystem.get('location', targetLocationId)
     if (targetEntity) {

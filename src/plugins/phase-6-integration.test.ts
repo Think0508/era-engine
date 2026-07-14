@@ -61,6 +61,7 @@ describe('Phase 6 集成测试', () => {
     conditionRegistry.clear()
     commandRegistry.clear()
     eventBus.clear()
+    apiSystem.clear()
     gameContext.reset()
 
     // 注释：加载 test-mod（loadMod 自动注册 locations/characters 到 entity-system）

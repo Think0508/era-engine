@@ -11,14 +11,27 @@ import ContextMenu from './ContextMenu.vue'
 const mapStore = useMapStore()
 const ui = useUiStore()
 
-const flowNodes = computed<Node[]>(() =>
-  mapStore.nodes.map(n => ({
+const flowNodes = computed<Node[]>(() => {
+  // Calculate hierarchy level for each node
+  const levelCache = new Map<string, number>()
+  function calcLevel(id: string): number {
+    const cached = levelCache.get(id)
+    if (cached !== undefined) return cached
+    const node = mapStore.nodes.find(n => n.id === id)
+    if (!node || !node.parent) return 1
+    const lv = calcLevel(node.parent) + 1
+    levelCache.set(id, lv)
+    return lv
+  }
+  for (const n of mapStore.nodes) calcLevel(n.id)
+
+  return mapStore.nodes.map(n => ({
     id: n.id,
     type: 'location',
     position: n.position,
-    data: n,
+    data: { ...n, level: levelCache.get(n.id) ?? 1 },
   }))
-)
+})
 
 const flowEdges = computed<Edge[]>(() =>
   mapStore.edges.map(e => {

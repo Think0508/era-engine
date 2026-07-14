@@ -28,13 +28,15 @@ function getReachable(
   graph: Edge[],
 ): ReachableLocation[] {
   const results: ReachableLocation[] = []
+  const seen = new Set<string>()
   const fromLoc = entitySystem.get('location', fromId) as any as LocationData
   if (!fromLoc) return results
 
   // 1. Parent chain: up to parent
   if (fromLoc.parent) {
     const parent = entitySystem.get('location', fromLoc.parent) as any as LocationData
-    if (parent) {
+    if (parent && !seen.has(parent.id)) {
+      seen.add(parent.id)
       results.push({ target: parent.id, name: parent.name, time_cost: 10, via: 'parent' })
     }
   }
@@ -43,17 +45,19 @@ function getReachable(
   const allLocations = entitySystem.getAll('location')
   for (const loc of allLocations) {
     const l = loc as any as LocationData
-    if (l.parent === fromId) {
+    if (l.parent === fromId && !seen.has(l.id)) {
+      seen.add(l.id)
       results.push({ target: l.id, name: l.name, time_cost: 5, via: 'child' })
     }
   }
 
   // 3. Graph edges
   for (const edge of graph) {
-    if (edge.from === fromId) {
+    if (edge.from === fromId && !seen.has(edge.to)) {
       if (!edge.condition || evaluateCondition(edge.condition, gc)) {
         const target = entitySystem.get('location', edge.to) as any as LocationData
         if (target) {
+          seen.add(edge.to)
           results.push({ target: edge.to, name: target.name, time_cost: edge.time_cost, via: 'graph' })
         }
       }

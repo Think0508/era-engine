@@ -1,4 +1,5 @@
 import { parse } from '@iarna/toml'
+import { readDir, readTextFile } from '@tauri-apps/plugin-fs'
 import type { MapNode } from '../types/node'
 import type { MapEdge, EdgeDirection } from '../types/edge'
 
@@ -49,4 +50,39 @@ export function edgesToMapEdges(raw: RawEdge[]): MapEdge[] {
     direction: 'bidirectional' as EdgeDirection,
     condition: e.condition,
   }))
+}
+
+export async function importFromDir(mapsDir: string): Promise<ImportResult> {
+  const allNodes: MapNode[] = []
+  const allEdges: MapEdge[] = []
+
+  async function readTomlFiles(dir: string): Promise<{ content: string }[]> {
+    const results: { content: string }[] = []
+    const entries = await readDir(dir)
+    for (const entry of entries) {
+      const fullPath = `${dir}/${entry.name}`
+      if (entry.isDirectory) {
+        results.push(...await readTomlFiles(fullPath))
+      } else if (entry.isFile && entry.name.endsWith('.toml')) {
+        results.push({ content: await readTextFile(fullPath) })
+      }
+    }
+    return results
+  }
+
+  try {
+    const locFiles = await readTomlFiles(`${mapsDir}/locations`)
+    for (const { content } of locFiles) {
+      allNodes.push(...parseLocationsToml(content, 'imported'))
+    }
+  } catch { /* no locations dir */ }
+
+  try {
+    const graphFiles = await readTomlFiles(`${mapsDir}/graph`)
+    for (const { content } of graphFiles) {
+      allEdges.push(...edgesToMapEdges(parseGraphToml(content)))
+    }
+  } catch { /* no graph dir */ }
+
+  return { nodes: allNodes, edges: allEdges }
 }

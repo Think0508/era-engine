@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { writeTextFile, mkdir } from '@tauri-apps/plugin-fs'
 import { useMapStore } from '../stores/mapStore'
 import { exportToToml } from '../utils/tomlExport'
 
@@ -9,6 +8,7 @@ const exportStatus = ref('')
 
 async function handleExport() {
   try {
+    const { mkdir, writeTextFile } = await import('@tauri-apps/plugin-fs')
     const result = exportToToml(mapStore.nodes, mapStore.edges)
     await mkdir('export/maps/locations', { recursive: true })
     await mkdir('export/maps/graph', { recursive: true })

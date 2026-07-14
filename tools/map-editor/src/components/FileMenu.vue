@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { open, save } from '@tauri-apps/plugin-dialog'
 import { useMapStore } from '../stores/mapStore'
 import { loadProjectFile, saveProjectFile } from '../utils/projectFile'
 import { importFromDir } from '../utils/tomlImport'
@@ -13,6 +12,7 @@ async function newProject() {
 }
 
 async function openProject() {
+  const { open } = await import('@tauri-apps/plugin-dialog')
   const path = await open({ multiple: false, filters: [{ name: 'MapEdit Project', extensions: ['mapedit'] }] })
   if (!path) return
   const project = await loadProjectFile(path)
@@ -23,6 +23,7 @@ async function openProject() {
 async function saveProject() {
   let path = mapStore.projectFilePath
   if (!path) {
+    const { save } = await import('@tauri-apps/plugin-dialog')
     const result = await save({ filters: [{ name: 'MapEdit Project', extensions: ['mapedit'] }], defaultPath: `${mapStore.projectName || 'untitled'}.mapedit` })
     if (!result) return
     path = result
@@ -36,6 +37,7 @@ async function importFromMod() {
     const ok = confirm('导入将覆盖当前项目，确定继续？')
     if (!ok) return
   }
+  const { open } = await import('@tauri-apps/plugin-dialog')
   const dir = await open({ directory: true, multiple: false })
   if (!dir) return
   try {

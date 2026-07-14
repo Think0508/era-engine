@@ -1,5 +1,4 @@
 import { parse } from '@iarna/toml'
-import { readDir, readTextFile } from '@tauri-apps/plugin-fs'
 import type { MapNode } from '../types/node'
 import type { MapEdge, EdgeDirection } from '../types/edge'
 
@@ -57,6 +56,7 @@ export async function importFromDir(mapsDir: string): Promise<ImportResult> {
   const allEdges: MapEdge[] = []
 
   async function readTomlFiles(dir: string): Promise<{ content: string }[]> {
+    const { readDir, readTextFile } = await import('@tauri-apps/plugin-fs')
     const results: { content: string }[] = []
     const entries = await readDir(dir)
     for (const entry of entries) {

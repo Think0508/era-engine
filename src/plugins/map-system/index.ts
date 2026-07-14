@@ -152,6 +152,8 @@ export function onEnable(ctx: PluginContext): void {
       const reachable = getReachable(loc.id, gc, mod?.graph ?? [])
       narrativeLog.write('地图', 'map', 'map-system', true, {
         locationId: loc.id,
+        locationName: loc.name,
+        locationType: loc.type,
         reachable,
       })
     },

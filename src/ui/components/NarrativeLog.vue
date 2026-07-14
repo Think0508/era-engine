@@ -12,9 +12,15 @@ import { useGameStore, type LogEntry } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import FormattedText from './FormattedText.vue'
 import TypewriterText from './TypewriterText.vue'
+import MapView from './MapView.vue'
 
 const gameStore = useGameStore()
 const uiStore = useUIStore()
+
+const emit = defineEmits<{
+  (e: 'move', targetLocationId: string): void
+  (e: 'cancel'): void
+}>()
 
 const logContainer = ref<HTMLElement | null>(null)
 const focusedChoiceIndex = ref(0)
@@ -75,6 +81,18 @@ function onTypewriterComplete(entry: LogEntry) {
 // 注释：点击继续——标记当前 line 已消费
 function consumeClickEntry(entry: LogEntry) {
   gameStore.markLogConsumed(entry.id)
+}
+
+// 注释：map 交互——移动
+function handleMapMove(targetId: string, entry: LogEntry) {
+  gameStore.markLogConsumed(entry.id)
+  emit('move', targetId)
+}
+
+// 注释：map 交互——取消
+function handleMapCancel(entry: LogEntry) {
+  gameStore.markLogConsumed(entry.id)
+  emit('cancel')
 }
 
 // 注释：键盘交互——方向键移动焦点，回车确认
@@ -156,9 +174,15 @@ function handleKeydown(e: KeyboardEvent) {
         </div>
       </template>
 
-      <!-- 注释：map 类型——渲染 MapView 占位（Task 5.11 实现） -->
+      <!-- 注释：map 类型——渲染 MapView -->
       <template v-else-if="entry.type === 'map' && isInteractive(entry)">
-        <div class="map-placeholder">[MapView: {{ entry.payload?.locationId }}]</div>
+        <MapView
+          :current-location-name="entry.payload?.locationName ?? ''"
+          :current-location-type="entry.payload?.locationType ?? ''"
+          :reachable="entry.payload?.reachable ?? []"
+          @move="(targetId: string) => handleMapMove(targetId, entry)"
+          @cancel="handleMapCancel(entry)"
+        />
       </template>
 
       <!-- 注释：已 consumed 的 choice 显示空（不重复显示选项） -->

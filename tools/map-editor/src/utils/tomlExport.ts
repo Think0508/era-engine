@@ -1,4 +1,4 @@
-import { stringify } from '@iarna/toml'
+import stringify from '@iarna/toml/stringify.js'
 import type { MapNode } from '../types/node'
 import type { MapEdge } from '../types/edge'
 

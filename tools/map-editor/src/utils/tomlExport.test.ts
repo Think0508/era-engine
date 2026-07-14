@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { exportToToml } from './tomlExport'
-import { parse } from '@iarna/toml'
+import parse from '@iarna/toml/parse-string.js'
 import type { MapNode } from '../types/node'
 
 describe('tomlExport', () => {

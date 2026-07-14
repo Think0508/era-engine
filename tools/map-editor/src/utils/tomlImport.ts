@@ -1,4 +1,4 @@
-import { parse } from '@iarna/toml'
+import parse from '@iarna/toml/parse-string.js'
 import type { MapNode } from '../types/node'
 import type { MapEdge, EdgeDirection } from '../types/edge'
 

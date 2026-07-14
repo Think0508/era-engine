@@ -1,5 +1,5 @@
 import { parse as parseTOML } from '@iarna/toml'
-import type { Edge, EntityData, LocationData } from './types'
+import type { Edge, EntityData, LocationData, MoveConfig } from './types'
 import type { Effect } from './effect-type-registry'
 import { resolveTemplate, deepMerge } from './template'
 import { entitySystem } from './entity-system'
@@ -320,6 +320,9 @@ export interface LoadedMod {
   instructions?: HInstruction[]
   effectBlocks?: Record<string, Effect>
 
+  // 注释：地图移动配置（插件默认 + mod override）
+  moveConfig: MoveConfig
+
   // 注释：待激活角色——spawn_condition 满足后才注册到 entity-system
   pendingSpawns?: PendingSpawn[]
 }
@@ -481,6 +484,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     talentDefs: {},
     styles: {},
     relationTypes: {},
+    moveConfig: { parent_time_cost: 10, child_time_cost: 5, edge_default_time_cost: 10 },
     // 注释：Phase H
     hConfig: {},
     hInstructions: [],
@@ -577,6 +581,10 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
 
   mod.locations = loadLocations(rawTomlMap, modName)
   mod.graph = loadGraph(rawTomlMap, modName)
+
+  // 注释：加载移动配置（插件默认 + mod override）
+  const moveData = loadMerged<{ move: MoveConfig }>('move.toml', 'move')
+  if (moveData?.move) mod.moveConfig = moveData.move
 
   const themePath = `/mods/${modName}/theme.toml`
   if (themePath in rawTomlMap) {

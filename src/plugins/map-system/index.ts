@@ -3,10 +3,7 @@
 // 不参与口上触发——只管移动 + 事件发射
 // tags 驱动指令不属于 map-system——消费 tag 的插件自己注册
 
-import type { PluginContext } from '../../core/types'
-import type { LocationData } from '../../core/types'
-import type { GameContext } from '../../core/types'
-import type { Edge } from '../../core/types'
+import type { PluginContext, LocationData, GameContext, Edge, MoveConfig } from '../../core/types'
 import { gameContext } from '../../core/game-context'
 import { entitySystem } from '../../core/entity-system'
 import { narrativeLog } from '../../core/narrative-log'
@@ -26,6 +23,7 @@ function getReachable(
   fromId: string,
   gc: GameContext,
   graph: Edge[],
+  cfg: MoveConfig,
 ): ReachableLocation[] {
   const results: ReachableLocation[] = []
   const seen = new Set<string>()
@@ -37,7 +35,7 @@ function getReachable(
     const parent = entitySystem.get('location', fromLoc.parent) as any as LocationData
     if (parent && !seen.has(parent.id)) {
       seen.add(parent.id)
-      results.push({ target: parent.id, name: parent.name, time_cost: 10, via: 'parent' })
+      results.push({ target: parent.id, name: parent.name, time_cost: cfg.parent_time_cost, via: 'parent' })
     }
   }
 
@@ -47,7 +45,7 @@ function getReachable(
     const l = loc as any as LocationData
     if (l.parent === fromId && !seen.has(l.id)) {
       seen.add(l.id)
-      results.push({ target: l.id, name: l.name, time_cost: 5, via: 'child' })
+      results.push({ target: l.id, name: l.name, time_cost: cfg.child_time_cost, via: 'child' })
     }
   }
 
@@ -58,7 +56,7 @@ function getReachable(
         const target = entitySystem.get('location', edge.to) as any as LocationData
         if (target) {
           seen.add(edge.to)
-          results.push({ target: edge.to, name: target.name, time_cost: edge.time_cost, via: 'graph' })
+          results.push({ target: edge.to, name: target.name, time_cost: edge.time_cost ?? cfg.edge_default_time_cost, via: 'graph' })
         }
       }
     }
@@ -85,7 +83,8 @@ export function onEnable(ctx: PluginContext): void {
       if (!id) return []
       const gc = gameContext.getContext()
       const mod = modLoader.getMod()
-      return getReachable(id, gc, mod?.graph ?? [])
+      const cfg = mod?.moveConfig ?? { parent_time_cost: 10, child_time_cost: 5, edge_default_time_cost: 10 }
+      return getReachable(id, gc, mod?.graph ?? [], cfg)
     },
     // 注释：获取子地点（parent === locationId 的地点）
     getChildren: (locationId: string): LocationData[] => {
@@ -126,7 +125,8 @@ export function onEnable(ctx: PluginContext): void {
 
       const gc = gameContext.getContext()
       const mod = modLoader.getMod()
-      const reachable = getReachable(loc.id, gc, mod?.graph ?? [])
+      const cfg = mod?.moveConfig ?? { parent_time_cost: 10, child_time_cost: 5, edge_default_time_cost: 10 }
+      const reachable = getReachable(loc.id, gc, mod?.graph ?? [], cfg)
       const r = reachable.find(r => r.target === targetLocationId)
       if (!r) {
         throw new Error(`moveTo 失败：从 '${loc.id}' 无法到达 '${targetLocationId}'`)
@@ -153,7 +153,8 @@ export function onEnable(ctx: PluginContext): void {
       if (!loc) return
       const gc = gameContext.getContext()
       const mod = modLoader.getMod()
-      const reachable = getReachable(loc.id, gc, mod?.graph ?? [])
+      const cfg = mod?.moveConfig ?? { parent_time_cost: 10, child_time_cost: 5, edge_default_time_cost: 10 }
+      const reachable = getReachable(loc.id, gc, mod?.graph ?? [], cfg)
       narrativeLog.write('地图', 'map', 'map-system', true, {
         locationId: loc.id,
         locationName: loc.name,

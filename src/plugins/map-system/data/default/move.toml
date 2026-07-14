@@ -1,0 +1,7 @@
+[move]
+# 移动到 parent 的默认耗时（分钟）
+parent_time_cost = 10
+# 移动到 child 的默认耗时（分钟）
+child_time_cost = 5
+# graph 边未指定 time_cost 时的默认耗时（分钟）
+edge_default_time_cost = 10

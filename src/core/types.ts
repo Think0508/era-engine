@@ -16,6 +16,12 @@ export interface Edge {
   condition?: string
 }
 
+export interface MoveConfig {
+  parent_time_cost: number
+  child_time_cost: number
+  edge_default_time_cost: number
+}
+
 export interface LocationData {
   id: string
   name: string

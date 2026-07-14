@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { type NodeProps } from '@vue-flow/core'
 import type { MapNode } from '../types/node'
-import { useUiStore } from '../stores/uiStore'
 
 interface LocationNodeData extends MapNode {
   level: number
+  displayName: string
 }
 
 const props = defineProps<NodeProps<LocationNodeData>>()
 const node = props.data
-const ui = useUiStore()
 </script>
 
 <template>
@@ -19,7 +18,7 @@ const ui = useUiStore()
   >
     <div class="node-header">
       <span class="level-badge">{{ node.level }}</span>
-      <span class="node-name">{{ ui.showIdOnNode ? node.id : node.name }}</span>
+      <span class="node-name">{{ node.displayName }}</span>
     </div>
     <div class="node-type">{{ node.type }}</div>
     <div v-if="node.tags.length > 0" class="node-tags">

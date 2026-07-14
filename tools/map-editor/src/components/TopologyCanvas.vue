@@ -35,7 +35,7 @@ const flowNodes = computed<Node[]>(() => {
     data: {
       ...n,
       level: levelCache.get(n.id) ?? 1,
-      _displayMode: ui.showIdOnNode ? 'id' : 'name',
+      displayName: ui.showIdOnNode ? n.id : n.name,
     },
   }))
 })
@@ -195,7 +195,6 @@ function onNodesChange(changes: NodeChange[]) {
 <template>
   <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu">
     <VueFlow
-      :key="'vf-' + (ui.showIdOnNode ? 'id' : 'nm')"
       :nodes="flowNodes"
       :edges="flowEdges"
       :node-types="{ location: LocationNode }"

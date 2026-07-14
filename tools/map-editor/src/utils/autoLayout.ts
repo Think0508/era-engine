@@ -4,39 +4,47 @@ const HORIZONTAL_GAP = 250
 const VERTICAL_GAP = 100
 
 export function autoLayout(nodes: MapNode[]): MapNode[] {
+  if (nodes.length === 0) return []
   const result = nodes.map(n => ({ ...n }))
-  const childrenMap = new Map<string | null, MapNode[]>()
+
+  // Build children map
+  const childrenOf = new Map<string | null, MapNode[]>()
   for (const n of result) {
     const key = n.parent ?? '__null__'
-    if (!childrenMap.has(key)) childrenMap.set(key, [])
-    childrenMap.get(key)!.push(n)
+    if (!childrenOf.has(key)) childrenOf.set(key, [])
+    childrenOf.get(key)!.push(n)
   }
 
-  function layoutSub(parentId: string | null, startX: number, y: number): number {
-    const children = childrenMap.get(parentId ?? '__null__') ?? []
-    if (children.length === 0) return 0
-
-    // Calculate total subtree width
-    let totalWidth = 0
-    const widths: number[] = []
+  // Pass 1: compute subtree width for each node
+  const subtreeWidth = new Map<string, number>()
+  function computeWidth(id: string | null): number {
+    const children = childrenOf.get(id ?? '__null__') ?? []
+    if (children.length === 0) return 180
+    let total = 0
     for (const child of children) {
-      const subWidth = layoutSub(child.id, 0, y + VERTICAL_GAP)
-      const w = Math.max(180, subWidth)
-      widths.push(w)
-      totalWidth += w
+      total += computeWidth(child.id)
     }
-    totalWidth += (children.length - 1) * HORIZONTAL_GAP
+    total += (children.length - 1) * HORIZONTAL_GAP
+    subtreeWidth.set(id ?? '__root__', total)
+    return total
+  }
+  computeWidth(null)
 
-    // Position children centered under parent
-    let x = startX - totalWidth / 2
-    for (let i = 0; i < children.length; i++) {
-      const cx = x + widths[i] / 2
-      children[i].position = { x: cx, y }
-      x += widths[i] + HORIZONTAL_GAP
+  // Pass 2: position nodes top-down
+  function position(parentId: string | null, centerX: number, y: number) {
+    const children = childrenOf.get(parentId ?? '__null__') ?? []
+    if (children.length === 0) return
+    const totalW = subtreeWidth.get(parentId ?? '__root__') ?? 0
+    let x = centerX - totalW / 2
+    for (const child of children) {
+      const childW = subtreeWidth.get(child.id) ?? 180
+      const cx = x + childW / 2
+      child.position = { x: cx, y }
+      position(child.id, cx, y + VERTICAL_GAP)
+      x += childW + HORIZONTAL_GAP
     }
-    return totalWidth
   }
 
-  layoutSub(null, 400, 100)
+  position(null, 400, 100)
   return result
 }

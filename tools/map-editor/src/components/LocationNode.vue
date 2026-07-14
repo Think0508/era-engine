@@ -36,6 +36,8 @@ const borderColor = computed(() => {
   if (!ui.levelColors) return '#3b82f6'
   return LEVEL_BORDER[Math.min(node.level - 1, LEVEL_BORDER.length - 1)] ?? '#3b82f6'
 })
+
+const displayText = computed(() => ui.showIdOnNode ? node.id : node.name)
 </script>
 
 <template>
@@ -47,7 +49,7 @@ const borderColor = computed(() => {
     <Handle type="target" :position="Position.Top" />
     <div class="node-header">
       <span class="level-badge" :style="{ background: borderColor }">{{ node.level }}</span>
-      <span class="node-name">{{ ui.showIdOnNode ? node.id : node.name }}</span>
+      <span class="node-name">{{ displayText }}</span>
     </div>
     <div class="node-type">{{ node.type }}</div>
     <div v-if="node.tags.length > 0" class="node-tags">

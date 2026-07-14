@@ -15,6 +15,7 @@ const flowNodes = computed<Node[]>(() => {
   // Force re-compute on data mutations AND display toggle
   mapStore.nodeVersionRef
   ui.showIdOnNode
+  ui.levelColors
   // Calculate hierarchy level for each node
   const levelCache = new Map<string, number>()
   function calcLevel(id: string): number {
@@ -62,7 +63,7 @@ const flowEdges = computed<Edge[]>(() =>
 const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
 const displayKey = ref(0)
-watch(() => ui.showIdOnNode, () => { displayKey.value++ })
+watch(() => [ui.showIdOnNode, ui.levelColors], () => { displayKey.value++ })
 let edgeCounter = 0
 let paneClickTimer: ReturnType<typeof setTimeout> | null = null
 const SNAP_DISTANCE = 60

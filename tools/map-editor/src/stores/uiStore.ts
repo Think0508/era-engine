@@ -8,6 +8,7 @@ export const useUiStore = defineStore('ui', () => {
   const breadcrumb = ref<string[]>(['主地图'])
   const showIdOnNode = ref(false)
   const syncNameToId = ref(false)
+  const levelColors = ref(true)
 
   function selectNode(id: string | null) {
     selectedNodeId.value = id
@@ -24,11 +25,12 @@ export const useUiStore = defineStore('ui', () => {
 
   function toggleShowId() { showIdOnNode.value = !showIdOnNode.value }
   function toggleSyncName() { syncNameToId.value = !syncNameToId.value }
+  function toggleLevelColors() { levelColors.value = !levelColors.value }
 
   return {
     selectedNodeId, selectedEdgeId, viewport, breadcrumb,
-    showIdOnNode, syncNameToId,
+    showIdOnNode, syncNameToId, levelColors,
     selectNode, selectEdge, clearSelection,
-    toggleShowId, toggleSyncName,
+    toggleShowId, toggleSyncName, toggleLevelColors,
   }
 })

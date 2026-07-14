@@ -18,6 +18,10 @@ const ui = useUiStore()
       <input type="checkbox" :checked="ui.syncNameToId" @change="ui.toggleSyncName()" />
       名称→ID 同步
     </label>
+    <label class="toggle-item" title="按层级给节点不同底色">
+      <input type="checkbox" :checked="ui.levelColors" @change="ui.toggleLevelColors()" />
+      层级配色
+    </label>
     <div class="spacer" />
     <ExportBar />
   </div>

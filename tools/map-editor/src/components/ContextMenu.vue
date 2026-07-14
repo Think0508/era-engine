@@ -43,6 +43,31 @@ function rename() {
   emit('close')
 }
 
+function editId() {
+  if (props.nodeId) {
+    const node = mapStore.nodes.find(n => n.id === props.nodeId)
+    if (!node) return
+    const newId = prompt('新 ID:', node.id)
+    if (newId && newId !== node.id) {
+      if (mapStore.nodes.some(n => n.id === newId)) {
+        alert(`ID '${newId}' 已存在`)
+        return
+      }
+      // Update edges referencing the old ID
+      for (const edge of mapStore.edges) {
+        if (edge.from === node.id) mapStore.updateEdge(edge.id, { from: newId })
+        if (edge.to === node.id) mapStore.updateEdge(edge.id, { to: newId })
+      }
+      // Update children's parent reference
+      for (const child of mapStore.nodes) {
+        if (child.parent === node.id) mapStore.updateNode(child.id, { parent: newId })
+      }
+      mapStore.updateNode(props.nodeId, { id: newId })
+    }
+  }
+  emit('close')
+}
+
 function toggleDirection() {
   if (props.edgeId) {
     const edge = mapStore.edges.find(e => e.id === props.edgeId)
@@ -62,6 +87,7 @@ function toggleDirection() {
   <div class="context-menu" :style="{ left: `${props.x}px`, top: `${props.y}px` }" @click.stop>
     <template v-if="nodeId">
       <div class="menu-item" @click="rename">重命名</div>
+      <div class="menu-item" @click="editId">修改 ID</div>
       <div class="menu-item" @click="toggleVisible">切换显隐</div>
       <div class="menu-item danger" @click="deleteNode">删除节点</div>
     </template>

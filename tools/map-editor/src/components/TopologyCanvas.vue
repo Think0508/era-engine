@@ -184,18 +184,21 @@ function onPaneReady(instance: any) {
 }
 
 function onNodesChange(changes: NodeChange[]) {
+  // Only handle 'remove' type — positions are synced via @node-drag-stop
   for (const change of changes) {
-    if (change.type === 'position' && change.dragging === false) {
-      const node = mapStore.nodes.find(n => n.id === change.id)
-      if (node && change.position) {
-        mapStore.updateNode(change.id, { position: { x: change.position.x, y: change.position.y } })
-      }
+    if (change.type === 'remove') {
+      // Node was removed via Vue Flow built-in (e.g., keyboard delete)
     }
   }
 }
 
 function onNodeDragStop({ node }: { node: Node }) {
   const draggedId = node.id
+  // Save final position from Vue Flow
+  const vfNode = vueFlowStore.value?.getNode(draggedId)
+  if (vfNode?.position) {
+    mapStore.updateNode(draggedId, { position: { x: vfNode.position.x, y: vfNode.position.y } })
+  }
   const pos = mapStore.nodes.find(n => n.id === draggedId)?.position
   if (!pos) return
   // Check proximity to other nodes
@@ -205,9 +208,7 @@ function onNodeDragStop({ node }: { node: Node }) {
     const dy = other.position.y - pos.y
     const dist = Math.sqrt(dx * dx + dy * dy)
     if (dist < SNAP_DISTANCE) {
-      // Snap to this node's position
       mapStore.updateNode(draggedId, { position: { ...other.position } })
-      // Create edge if not exists
       if (!mapStore.edges.some(e => e.from === draggedId && e.to === other.id)) {
         edgeCounter++
         mapStore.addEdge({

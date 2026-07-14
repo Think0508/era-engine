@@ -1,9 +1,0 @@
-# mods/test-mod/maps/locations/town_square.toml
-id = "town_square"
-name = "城镇广场"
-# parent: top-level (omitted — TOML has no null literal; loader treats absent parent as null per AGENTS.md §3)
-type = "town"
-tags = ["public"]
-exits = [
-  { target = "tavern", name = "去酒馆", time_cost = 5 }
-]

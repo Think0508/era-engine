@@ -137,8 +137,10 @@ describe('parseModData', () => {
     expect(square.name).toBe('城镇广场')
     expect(square.parent).toBeNull()
     expect((square as any).exits).toBeUndefined()
-    // graph is empty (test-mod has no graph/*.toml files yet)
-    expect(mod.graph).toEqual([])
+    // graph has one edge (test-mod/maps/graph/test.toml)
+    expect(mod.graph).toEqual([
+      { from: 'town_square', to: 'tavern', time_cost: 5 },
+    ])
   })
 
   it('parses theme.toml correctly', () => {

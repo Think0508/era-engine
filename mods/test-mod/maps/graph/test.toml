@@ -1,0 +1,4 @@
+[[edges]]
+from = "town_square"
+to = "tavern"
+time_cost = 5

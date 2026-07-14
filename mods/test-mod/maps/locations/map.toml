@@ -1,0 +1,12 @@
+[[locations]]
+id = "town_square"
+name = "城镇广场"
+type = "town"
+tags = ["public"]
+
+[[locations]]
+id = "tavern"
+name = "酒馆"
+parent = "town_square"
+type = "building"
+tags = ["has_drink", "rest"]

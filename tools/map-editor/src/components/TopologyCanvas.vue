@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -35,6 +35,7 @@ const flowNodes = computed<Node[]>(() => {
     data: {
       ...n,
       level: levelCache.get(n.id) ?? 1,
+      _displayMode: ui.showIdOnNode ? 'id' : 'name',
     },
   }))
 })
@@ -60,10 +61,9 @@ const flowEdges = computed<Edge[]>(() =>
 
 const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
-const savedViewport = ref({ x: 0, y: 0, zoom: 1 })
-const flowKey = ref(0)
 let edgeCounter = 0
 let paneClickTimer: ReturnType<typeof setTimeout> | null = null
+const SNAP_DISTANCE = 60
 
 function nextNodeId(prefix: string): string {
   let n = 0
@@ -179,20 +179,7 @@ function closeContextMenu() {
 
 function onPaneReady(instance: any) {
   vueFlowStore.value = instance
-  // Restore viewport after remount
-  if (savedViewport.value.x !== 0 || savedViewport.value.y !== 0 || savedViewport.value.zoom !== 1) {
-    instance.setViewport(savedViewport.value)
-    savedViewport.value = { x: 0, y: 0, zoom: 1 }
-  }
 }
-
-// Toggle display mode: save viewport, remount via key change
-watch(() => ui.showIdOnNode, () => {
-  if (vueFlowStore.value) {
-    savedViewport.value = vueFlowStore.value.getViewport()
-  }
-  flowKey.value++
-})
 
 function onNodesChange(changes: NodeChange[]) {
   for (const change of changes) {
@@ -204,12 +191,41 @@ function onNodesChange(changes: NodeChange[]) {
     }
   }
 }
+
+function onNodeDragStop({ node }: { node: Node }) {
+  const draggedId = node.id
+  const pos = mapStore.nodes.find(n => n.id === draggedId)?.position
+  if (!pos) return
+  // Check proximity to other nodes
+  for (const other of mapStore.nodes) {
+    if (other.id === draggedId) continue
+    const dx = other.position.x - pos.x
+    const dy = other.position.y - pos.y
+    const dist = Math.sqrt(dx * dx + dy * dy)
+    if (dist < SNAP_DISTANCE) {
+      // Snap to this node's position
+      mapStore.updateNode(draggedId, { position: { ...other.position } })
+      // Create edge if not exists
+      if (!mapStore.edges.some(e => e.from === draggedId && e.to === other.id)) {
+        edgeCounter++
+        mapStore.addEdge({
+          id: `edge_${edgeCounter}`,
+          from: draggedId,
+          to: other.id,
+          timeCost: 10,
+          direction: 'bidirectional',
+        })
+      }
+      break
+    }
+  }
+}
 </script>
 
 <template>
   <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu">
     <VueFlow
-      :key="flowKey"
+      :key="'vf-' + (ui.showIdOnNode ? 'id' : 'nm')"
       :nodes="flowNodes"
       :edges="flowEdges"
       :node-types="{ location: LocationNode }"
@@ -221,6 +237,7 @@ function onNodesChange(changes: NodeChange[]) {
       @nodes-change="onNodesChange"
       @node-click="onNodeClick"
       @edge-click="onEdgeClick"
+      @node-drag-stop="onNodeDragStop"
       @connect="onConnect"
       @edge-double-click="onEdgeDoubleClick"
       @pane-click="onPaneClick"

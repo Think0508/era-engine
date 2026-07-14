@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type NodeProps } from '@vue-flow/core'
+import { Handle, Position, type NodeProps } from '@vue-flow/core'
 import type { MapNode } from '../types/node'
 import { useUiStore } from '../stores/uiStore'
 
@@ -17,6 +17,7 @@ const ui = useUiStore()
     class="location-node"
     :class="{ invisible: !node.visible, collapsed: node.collapsed }"
   >
+    <Handle type="target" :position="Position.Top" />
     <div class="node-header">
       <span class="level-badge">{{ node.level }}</span>
       <span class="node-name">{{ ui.showIdOnNode ? node.id : node.name }}</span>
@@ -25,6 +26,7 @@ const ui = useUiStore()
     <div v-if="node.tags.length > 0" class="node-tags">
       <span v-for="tag in node.tags" :key="tag" class="tag">{{ tag }}</span>
     </div>
+    <Handle type="source" :position="Position.Bottom" />
   </div>
 </template>
 

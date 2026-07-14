@@ -365,12 +365,20 @@ function loadLocations(
   const result = new Map<string, LocationData>()
   const prefix = `/mods/${modName}/maps/locations/`
   for (const [path, raw] of Object.entries(rawTomlMap)) {
-    if (path.startsWith(prefix) && path.endsWith('.toml')) {
-      const data = parseFile(path, raw) as LocationData
-      if (data.parent === undefined) {
-        data.parent = null
+    if (!path.startsWith(prefix) || !path.endsWith('.toml')) continue
+    const data = parseFile(path, raw) as any
+    // Support both [[locations]] array and single-object file
+    const entries: any[] = data.locations ?? [data]
+    for (const loc of entries) {
+      if (!loc.id) {
+        throw new Error(`${path}: location 缺少 id 字段`)
       }
-      result.set(data.id, data)
+      if (loc.parent === undefined) {
+        loc.parent = null
+      }
+      // Silently ignore exits — new format uses parent chain + graph
+      delete loc.exits
+      result.set(loc.id, loc as LocationData)
     }
   }
   return result
@@ -819,35 +827,11 @@ function expandCharacterAbilities(mod: LoadedMod): void {
 
 // 注释：校验所有 location 的 exit.target 和 parent 存在
 // 不存在 → 报错（文件名+行号+不存在的 target+建议）
-// 不可达 → warning（无 exit 指向且无 parent）
 function validateLocations(mod: LoadedMod, modName: string): void {
-  // 注释：收集所有被引用的 target
-  const referencedByOthers = new Set<string>()
-  for (const [, loc] of mod.locations) {
-    for (const exit of loc.exits) {
-      referencedByOthers.add(exit.target)
-    }
-  }
-
   for (const [id, loc] of mod.locations) {
-    // 注释：校验 exit.target 存在
-    for (const exit of loc.exits) {
-      if (!mod.locations.has(exit.target)) {
-        throw new Error(
-          `mods/${modName}/maps/locations/: 地点 '${id}' 的 exit 目标 '${exit.target}' 不存在（可用：${[...mod.locations.keys()].slice(0, 5).join(', ')}...）`,
-        )
-      }
-    }
-    // 注释：校验 parent 存在
     if (loc.parent !== null && !mod.locations.has(loc.parent)) {
       throw new Error(
         `mods/${modName}/maps/locations/: 地点 '${id}' 的 parent '${loc.parent}' 不存在`,
-      )
-    }
-    // 注释：不可达 warning——无 exit 指向且无 parent
-    if (!referencedByOthers.has(id) && loc.parent === null) {
-      console.warn(
-        `mods/${modName}/maps/locations/: 地点 '${id}' 不可达（无其他地点的 exit 指向它，也无 parent）——可能是设计遗漏`,
       )
     }
   }

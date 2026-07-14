@@ -12,6 +12,8 @@ const mapStore = useMapStore()
 const ui = useUiStore()
 
 const flowNodes = computed<Node[]>(() => {
+  // Access version to force re-compute on any node/edge mutation
+  mapStore.nodeVersionRef
   // Calculate hierarchy level for each node
   const levelCache = new Map<string, number>()
   function calcLevel(id: string): number {
@@ -32,8 +34,6 @@ const flowNodes = computed<Node[]>(() => {
     data: {
       ...n,
       level: levelCache.get(n.id) ?? 1,
-      showId: ui.showIdOnNode,
-      displayName: ui.showIdOnNode ? n.id : n.name,
     },
   }))
 })
@@ -193,7 +193,6 @@ function onNodesChange(changes: NodeChange[]) {
 <template>
   <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu">
     <VueFlow
-      :key="mapStore.nodeVersionRef"
       :nodes="flowNodes"
       :edges="flowEdges"
       :node-types="{ location: LocationNode }"

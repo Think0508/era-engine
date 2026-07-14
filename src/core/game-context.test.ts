@@ -105,15 +105,12 @@ describe('game-context', () => {
   })
 
   it('moveTo emit location:leave 和 location:enter', async () => {
-    // 注释：设置当前地点和目标地点
     entitySystem.clear()
     entitySystem.register('location', 'town', {
       id: 'town', name: '城镇', parent: null, type: 'building', tags: [],
-      exits: [{ target: 'forest', name: '去森林', time_cost: 10 }],
     })
     entitySystem.register('location', 'forest', {
       id: 'forest', name: '森林', parent: null, type: 'field', tags: [],
-      exits: [{ target: 'town', name: '回城镇', time_cost: 10 }],
     })
     gameContext.setLocation(entitySystem.get('location', 'town') as any)
 
@@ -122,27 +119,28 @@ describe('game-context', () => {
     eventBus.on('location:leave', leaveHandler)
     eventBus.on('location:enter', enterHandler)
 
-    await gameContext.moveTo('forest')
+    await gameContext.moveTo('forest', 10)
 
-    // 注释：先 leave 后 enter
     expect(leaveHandler).toHaveBeenCalledBefore(enterHandler)
     expect(leaveHandler).toHaveBeenCalledWith({ from: 'town' })
     expect(enterHandler).toHaveBeenCalledWith({ to: 'forest' })
-    // 注释：地点已切换
     expect(gameContext.getContext().location?.id).toBe('forest')
-    // 注释：时间推进了 10 分钟
     expect(gameContext.getContext().time.minute).toBe(10)
   })
 
-  it('moveTo 无可达路径时报错', async () => {
+  it('moveTo 使用默认 timeCost 5 分钟', async () => {
     entitySystem.clear()
     entitySystem.register('location', 'town', {
       id: 'town', name: '城镇', parent: null, type: 'building', tags: [],
-      exits: [{ target: 'forest', name: '去森林', time_cost: 10 }],
+    })
+    entitySystem.register('location', 'forest', {
+      id: 'forest', name: '森林', parent: null, type: 'field', tags: [],
     })
     gameContext.setLocation(entitySystem.get('location', 'town') as any)
-    // 注释：unreachable 不是 town 的 exit
-    await expect(gameContext.moveTo('unreachable')).rejects.toThrow(/无法到达/)
+
+    await gameContext.moveTo('forest')
+
+    expect(gameContext.getContext().time.minute).toBe(5)
   })
 
   it('game:new_day payload 带 reason 字段', async () => {

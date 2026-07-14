@@ -42,7 +42,6 @@ export const mockTownSquare: LocationData = {
   parent: null,
   type: 'building',
   tags: ['has_shop'],
-  exits: [{ target: 'tavern', name: '去酒馆', time_cost: 5 }],
 }
 
 export const mockTavern: LocationData = {
@@ -51,7 +50,6 @@ export const mockTavern: LocationData = {
   parent: 'town_square',
   type: 'building',
   tags: ['has_drink'],
-  exits: [{ target: 'town_square', name: '去广场', time_cost: 5 }],
 }
 
 export const mockTime: GameTimeData = { minute: 33, hour: 10, day: 9, month: 9, year: 1 }

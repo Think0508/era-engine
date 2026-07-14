@@ -4,7 +4,7 @@ import type { GameContext } from './types'
 
 const ctx: GameContext = {
   player: { base: { hp: 50, mp: 100 }, id: 'player' },
-  location: { id: 'tavern', name: '酒馆', parent: null, type: 'building', tags: ['rest', 'has_drink'], exits: [] },
+  location: { id: 'tavern', name: '酒馆', parent: null, type: 'building', tags: ['rest', 'has_drink'] },
   time: { minute: 0, hour: 20, day: 1, month: 1, year: 1 },
   selectedCharacterId: 'npc1',
   getEntity: (type: string, id: string) => {

@@ -5,7 +5,7 @@ import type { GameContext, UISlotItem } from '../../core/types'
 // 注释：mock GameContext 供 condition 求值
 const mockCtx: GameContext = {
   player: null,
-  location: { id: 'town', name: '城镇', parent: null, type: 'building', tags: ['has_shop'], exits: [] },
+  location: { id: 'town', name: '城镇', parent: null, type: 'building', tags: ['has_shop'] },
   time: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
   getEntity: () => null,
 }

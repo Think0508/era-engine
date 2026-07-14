@@ -18,7 +18,12 @@ const pluginModules = {
     // 注释：简化版 map-system onEnable
     ctx.api.register('map', {
       getCurrentLocation: () => gameContext.getContext().location,
-      getExits: () => gameContext.getContext().location?.exits ?? [],
+      getReachable: () => {
+        const loc = gameContext.getContext().location
+        if (!loc) return []
+        const children = entitySystem.getAll('location').filter((l: any) => l.parent === loc.id)
+        return children.map((l: any) => ({ target: l.id, name: l.name, time_cost: 5, via: 'child' as const }))
+      },
     })
   } },
   'character-system': { onLoad: () => {}, onEnable: (ctx: any) => {
@@ -58,13 +63,8 @@ describe('Phase 6 集成测试', () => {
     eventBus.clear()
     gameContext.reset()
 
-    // 注释：加载 test-mod
-    const mod = await modLoader.loadMod('test-mod')
-
-    // 注释：注册 locations 到 entity-system（供 map API 查询）
-    for (const [id, loc] of mod.locations) {
-      entitySystem.register('location', id, loc as any)
-    }
+    // 注释：加载 test-mod（loadMod 自动注册 locations/characters 到 entity-system）
+    await modLoader.loadMod('test-mod')
 
     // 注释：设置玩家和起始地点
     gameContext.setPlayer('player')
@@ -102,10 +102,11 @@ describe('Phase 6 集成测试', () => {
     expect(loc?.id).toBe('town_square')
   })
 
-  it('map API getExits 返回当前地点出口', async () => {
-    const exits = await apiSystem.call('map', 'getExits')
-    expect(exits.length).toBeGreaterThan(0)
-    expect(exits[0].target).toBe('tavern')
+  it('map API getReachable 返回当前地点子区域', async () => {
+    const reachable = await apiSystem.call('map', 'getReachable')
+    expect(reachable.length).toBeGreaterThan(0)
+    expect(reachable[0].target).toBe('tavern')
+    expect(reachable[0].via).toBe('child')
   })
 
   it('插件按 data_dependencies 顺序加载（character 在 map 之前）', () => {

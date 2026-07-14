@@ -63,7 +63,7 @@ const flowEdges = computed<Edge[]>(() =>
 const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
 const displayKey = ref(0)
-watch(() => [ui.showIdOnNode, ui.levelColors], () => { displayKey.value++ })
+watch(() => ui.levelColors, () => { displayKey.value++ })
 let edgeCounter = 0
 let paneClickTimer: ReturnType<typeof setTimeout> | null = null
 const SNAP_DISTANCE = 60

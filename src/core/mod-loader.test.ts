@@ -124,23 +124,21 @@ describe('parseModData', () => {
     expect(characters.size).toBe(6)  // 5 roster + 1 named（test_named 在 roster 中没有，而是新增）
   })
 
-  it('parses locations correctly (2 locations, exits, parent)', () => {
+  it('parses locations correctly (2 locations, parent chain, graph)', () => {
     expect(mod.locations.size).toBe(2)
     const tavern = mod.locations.get('tavern')!
     expect(tavern.name).toBe('酒馆')
     expect(tavern.parent).toBe('town_square')
     expect(tavern.type).toBe('building')
     expect(tavern.tags).toContain('has_drink')
-    expect(tavern.exits).toHaveLength(1)
-    expect(tavern.exits[0]).toEqual({
-      target: 'town_square',
-      name: '去广场',
-      time_cost: 5,
-    })
+    // exits field is deleted by loadLocations — new format uses parent + graph
+    expect((tavern as any).exits).toBeUndefined()
     const square = mod.locations.get('town_square')!
     expect(square.name).toBe('城镇广场')
     expect(square.parent).toBeNull()
-    expect(square.exits[0].target).toBe('tavern')
+    expect((square as any).exits).toBeUndefined()
+    // graph is empty (test-mod has no graph/*.toml files yet)
+    expect(mod.graph).toEqual([])
   })
 
   it('parses theme.toml correctly', () => {

@@ -384,6 +384,26 @@ function loadLocations(
   return result
 }
 
+function loadGraph(
+  rawTomlMap: RawTomlMap,
+  modName: string,
+): Edge[] {
+  const result: Edge[] = []
+  const prefix = `/mods/${modName}/maps/graph/`
+  for (const [path, raw] of Object.entries(rawTomlMap)) {
+    if (!path.startsWith(prefix) || !path.endsWith('.toml')) continue
+    const data = parseFile(path, raw) as any
+    const edges = (data.edges as Edge[]) ?? []
+    for (const edge of edges) {
+      if (!edge.from || !edge.to) {
+        throw new Error(`${path}: edge 缺少 from 或 to 字段`)
+      }
+      result.push(edge)
+    }
+  }
+  return result
+}
+
 /**
  * 将 attributes.toml 中定义的默认值同步到角色实体
  * 命名空间 = category 的值：
@@ -556,6 +576,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   if (pendingSpawns.length > 0) mod.pendingSpawns = pendingSpawns
 
   mod.locations = loadLocations(rawTomlMap, modName)
+  mod.graph = loadGraph(rawTomlMap, modName)
 
   const themePath = `/mods/${modName}/theme.toml`
   if (themePath in rawTomlMap) {
@@ -825,13 +846,45 @@ function expandCharacterAbilities(mod: LoadedMod): void {
   }
 }
 
-// 注释：校验所有 location 的 exit.target 和 parent 存在
-// 不存在 → 报错（文件名+行号+不存在的 target+建议）
+// 注释：校验 location parent 和 graph edge 引用存在
 function validateLocations(mod: LoadedMod, modName: string): void {
+  // Validate parent exists
   for (const [id, loc] of mod.locations) {
     if (loc.parent !== null && !mod.locations.has(loc.parent)) {
       throw new Error(
         `mods/${modName}/maps/locations/: 地点 '${id}' 的 parent '${loc.parent}' 不存在`,
+      )
+    }
+  }
+
+  // Validate graph edges reference existing locations
+  for (const edge of mod.graph) {
+    if (!mod.locations.has(edge.from)) {
+      throw new Error(
+        `maps/graph/: edge from='${edge.from}' 引用的地点不存在（可用：${[...mod.locations.keys()].slice(0, 5).join(', ')}...）`,
+      )
+    }
+    if (!mod.locations.has(edge.to)) {
+      throw new Error(
+        `maps/graph/: edge to='${edge.to}' 引用的地点不存在`,
+      )
+    }
+  }
+
+  // Unreachable warning
+  const referencedByOthers = new Set<string>()
+  for (const edge of mod.graph) {
+    referencedByOthers.add(edge.to)
+  }
+  for (const [, loc] of mod.locations) {
+    if (loc.parent !== null) {
+      referencedByOthers.add(loc.id)
+    }
+  }
+  for (const [id, loc] of mod.locations) {
+    if (!referencedByOthers.has(id) && loc.parent === null) {
+      console.warn(
+        `mods/${modName}/maps/locations/: 地点 '${id}' 不可达（无 graph 边指向它，也无 parent）——可能是设计遗漏`,
       )
     }
   }

@@ -134,14 +134,18 @@ extends = "combat-base"   # 最多继承一个父插件
 #### map — 地图服务
 
 ```typescript
-ctx.api.call('map', 'getCurrentLocation')                    // → LocationData
-ctx.api.call('map', 'getExits', locationId?)                  // → Exit[]
+ctx.api.call('map', 'getCurrentLocation')                    // → LocationData | null
+ctx.api.call('map', 'getReachable', locationId?)              // → ReachableLocation[]
 ctx.api.call('map', 'getChildren', locationId)                // → LocationData[]
 ctx.api.call('map', 'getAncestors', locationId)               // → LocationData[]
 ctx.api.call('map', 'getLocation', locationId)                // → LocationData | null
 ctx.api.call('map', 'hasTag', locationId, tag)                // → boolean
-ctx.api.call('map', 'moveTo', targetLocationId)               // → void（触发生成 location:enter 事件）
+ctx.api.call('map', 'moveTo', targetLocationId)               // → void（校验可达性后移动，触发生成 location:enter）
 ```
+
+- `getReachable` 替代旧 `getExits`，综合 parent 链 + graph 边返回可达地点。`ReachableLocation` 包含 `{ target, name, time_cost, via }`，其中 `via` 为 `'parent' | 'child' | 'graph'`
+- `moveTo` 内部调用 `getReachable` 获取耗时，不可达则抛错。移动逻辑委托给 `gameContext.moveTo(targetId, timeCost)`
+- 移动耗时可在 `definitions/move.toml` 中自定义（详见 `docs/map-system.md`）
 
 #### character — 角色服务
 

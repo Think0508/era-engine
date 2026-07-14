@@ -59,8 +59,8 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   commonTextsEngine.loadFromData(defaultData, modData)
 
   ctx.api.register('talk-common', {
-    replace: (text: string, targetId: string | null) => commonTextsEngine.replaceAll(text, targetId),
-    getText: (variable: string, targetId: string | null) => commonTextsEngine.getText(variable, targetId),
+    replace: (text: string, targetId: string | null, actorId?: string) => commonTextsEngine.replaceAll(text, targetId, actorId),
+    getText: (variable: string, targetId: string | null, actorId?: string) => commonTextsEngine.getText(variable, targetId, actorId),
     getVariables: () => commonTextsEngine.variables,
   })
 

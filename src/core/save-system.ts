@@ -73,7 +73,9 @@ export async function saveGame(slotId: string, uiState: any, label?: string): Pr
     modVersion: mod.version,
     gameTime: { ...ctx.time },
     characters: allChars.map(c => JSON.parse(JSON.stringify(c))),
-    gameState: {},
+    gameState: {
+      completedScenes: gameContext.getCompletedScenes(),
+    },
     uiState: { foldStates: uiState?.foldStates ?? {} },
   }
 
@@ -137,9 +139,12 @@ export function restoreFromSave(data: SaveData): void {
   // 注释：恢复游戏时间
   gameContext.reset()
   const t = data.gameTime
-  gameContext.advanceTime(0) // 触发时间初始化
-  // 注释：使用内部方法设置时间
+  gameContext.advanceTime(0)
   Object.assign(gameContext.getContext().time, t)
+  // 注释：恢复已完成 scene
+  if (data.gameState?.completedScenes) {
+    gameContext.setCompletedScenes(data.gameState.completedScenes)
+  }
 }
 
 // 注释：导出存档（JSON 字符串）

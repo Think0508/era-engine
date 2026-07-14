@@ -16,10 +16,12 @@ import { evaluateCondition } from '../../core/condition'
 import { premiseRegistry } from '../../core/premise-registry'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { apiSystem } from '../../core/api'
+import type { ConversationRef } from '../../core/mod-loader'
+import { parseConversationRef, resolveConversation } from '../../core/mod-loader'
 
 // 注释：对话运行时状态——当前在哪个 node
 interface ConversationRuntime {
-  charId: string
+  ref: ConversationRef     // 引用方式
   convId: string
   nodeId: string
   nodes: Map<string, ConversationNode>
@@ -50,16 +52,23 @@ export function onEnable(ctx: PluginContext): void {
     triggerScene: async (scene: string, charId?: string): Promise<void> => {
       await triggerSceneInternal(scene, charId)
     },
-    // 注释：开始交互式对话——start_conversation effect / talk 指令调此方法
-    // charId: 对话对象
-    // conversationId: 可选指定对话，不传则自动选第一个 condition 满足的
-    startConversation: async (charId: string, conversationId?: string): Promise<void> => {
-      await startConversationInternal(charId, conversationId)
+    // 注释：开始交互式对话——接受 ConversationRef 或字符串简写
+    // ref: "character:令狐冲/teach_sword" 或 { type, ... } 对象
+    // speaker: 可选默认说话者
+    startConversation: async (ref: ConversationRef | string, speaker?: string | null): Promise<void> => {
+      const parsed = typeof ref === 'string' ? parseConversationRef(ref) : ref
+      await startConversationInternal(parsed, speaker ?? undefined)
     },
-    // 注释：获取角色的对话列表
-    getConversations: (charId: string): Conversation[] => {
+    // 注释：查找对话数据
+    getConversation: (type: string, key: string, name?: string): Conversation | undefined => {
       const mod = modLoader.getMod()
-      return mod?.conversations.get(charId) ?? []
+      if (!mod) return undefined
+      return resolveConversation(mod.conversations, {
+        type: type as ConversationRef['type'],
+        character: type === 'character' ? key : undefined,
+        name: type === 'character' || type === 'global' ? name ?? key : undefined,
+        path: (type === 'quest' || type === 'event') ? key : undefined,
+      })
     },
     // 注释：插值工具——{var} 替换
     interpolate: (text: string, context: any): string => {
@@ -80,10 +89,16 @@ export function onEnable(ctx: PluginContext): void {
     handler: async (execCtx: any) => {
       const selectedId = execCtx?.uiStore?.selectedCharacterId
       if (!selectedId) return
-      // 注释：设 selected = 对话对象
       execCtx.uiStore.selectCharacter(selectedId)
-      // 注释：调 startConversation
-      await startConversationInternal(selectedId)
+      // 注释：用角色的第一个 conversation
+      const mod = modLoader.getMod()
+      const charConvs = mod?.conversations.character.get(selectedId)
+      const firstName = charConvs ? Array.from(charConvs.keys())[0] : undefined
+      if (firstName) {
+        await startConversationInternal({ type: 'character', character: selectedId, name: firstName })
+      } else {
+        narrativeLog.write('（无话可说）', 'system', 'dialogue-system')
+      }
     },
   }
   ctx.commands.register(talkCmd)
@@ -142,6 +157,26 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
 
   let hasOutput = false
 
+  // 注释：0. 事件 condition 检查——已完成的/活跃的跳过，未开始的求值
+  // condition 满足 → auto start scene（不打断当前口上）
+  try {
+    const gc = gameContext.getContext()
+    const { evaluateCondition } = await import('../../core/condition')
+    const candidates = await apiSystem.call('quest', 'checkTriggerConditions')
+    if (Array.isArray(candidates)) {
+      for (const sid of candidates) {
+        const sMod = modLoader.getMod()
+        const sceneDef = sMod?.quests?.get?.(sid)
+        if (!sceneDef?.condition) continue
+        try {
+          if (evaluateCondition(sceneDef.condition, gc)) {
+            await apiSystem.call('quest', 'start', sid)
+          }
+        } catch { /* condition 求值失败，跳过 */ }
+      }
+    }
+  } catch { /* quest API 未就绪，跳过 */ }
+
   // 注释：1. 场景通用口上——独立输出
   const sceneLines = mod.sceneDialogue.filter(line => line.scene === scene)
   const matchedSceneLine = pickMatchingLine(sceneLines, charId)
@@ -186,7 +221,8 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
   // 注释：3. 纸娃娃兜底——三层都无对口上时用 talk-common 生成通用描述
   if (!hasOutput) {
     try {
-      const fallback = await apiSystem.call('talk-common', 'getText', scene, charId ?? null)
+      const playerId = gameContext.getContext().player?.id
+      const fallback = await apiSystem.call('talk-common', 'getText', scene, charId ?? null, playerId)
       if (fallback) {
         const interpolated = await interpolateLine(fallback, charId)
         if (charId) {
@@ -230,26 +266,12 @@ function pickMatchingLine(lines: ReactiveLine[], premiseTargetId?: string): Reac
   return matched[Math.floor(Math.random() * matched.length)]
 }
 
-// 注释：startConversation 内部实现
-async function startConversationInternal(charId: string, conversationId?: string): Promise<void> {
+// 注释：startConversation 内部实现（新版——使用 ConversationRef）
+async function startConversationInternal(ref: ConversationRef, speaker?: string): Promise<void> {
   const mod = modLoader.getMod()
   if (!mod) return
 
-  const conversations = mod.conversations.get(charId) ?? []
-  if (conversations.length === 0) {
-    narrativeLog.write('（无话可说）', 'system', 'dialogue-system')
-    return
-  }
-
-  // 注释：选对话——指定 conversationId 或第一个 condition 满足的
-  let selected: Conversation | undefined
-  if (conversationId) {
-    selected = conversations.find(c => c.id === conversationId)
-  } else {
-    // TODO: condition 求值——当前简化，选第一个
-    selected = conversations[0]
-  }
-
+  const selected = resolveConversation(mod.conversations, ref)
   if (!selected) {
     narrativeLog.write('（对话不存在）', 'system', 'dialogue-system')
     return
@@ -261,35 +283,43 @@ async function startConversationInternal(charId: string, conversationId?: string
     nodes.set(node.id, node)
   }
 
-  // 注释：进入 dialogue mode + 设当前对话
+  // 注释：存说话者信息到运行时
+  const defaultSpeaker = speaker ?? (ref.type === 'character' ? ref.character : undefined)
+
   currentConversation = {
-    charId,
+    ref,
     convId: selected.id,
     nodeId: 'start',
     nodes,
   }
   gameContext.enterMode('dialogue')
-  eventBus.emit('dialogue:start', { character: charId, conversationId: selected.id })
+  eventBus.emit('dialogue:start', { ref, conversationId: selected.id })
 
   // 注释：渲染 start node
-  await renderNode('start')
+  await renderNode('start', defaultSpeaker)
 }
 
 // 注释：渲染当前 node
-async function renderNode(nodeId: string): Promise<void> {
+async function renderNode(nodeId: string, speakerOverride?: string): Promise<void> {
   if (!currentConversation) return
   const node = currentConversation.nodes.get(nodeId)
   if (!node) return
   currentConversation.nodeId = nodeId
 
-  const char = entitySystem.get('character', currentConversation.charId) as any
-  const speakerName = char?.name ?? currentConversation.charId
+  // 注释：决定说话者——优先 lines 内的 speaker，回退到 speakerOverride，最后用 ref.character
+  const charId = currentConversation.ref.type === 'character' ? currentConversation.ref.character : undefined
+  const speakerName = speakerOverride ?? (charId ? (entitySystem.get('character', charId) as any)?.name ?? charId : undefined)
 
-  // 注释：渲染 lines
+  // 注释：查找 speaker style（[styles.speaker.角色名]）
+  const mod = modLoader.getMod()
+  const speakerStyle = speakerName ? (mod as any)?.styles?.speaker?.[speakerName] : undefined
+
+  // 注释：渲染 lines——speaker 作为元数据，不自动加前缀
+  // speaker 由 UI 消费（样式/头像），mod 作者决定是否写在文字里
   for (const line of node.lines) {
-    const interpolated = await interpolateLine(line, currentConversation.charId)
-    eventBus.emit('dialogue:line', { speaker: speakerName, text: interpolated })
-    narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system')
+    const interpolated = await interpolateLine(line, charId)
+    eventBus.emit('dialogue:line', { speaker: speakerName ?? null, text: interpolated, style: speakerStyle })
+    narrativeLog.write(interpolated, 'dialogue', 'dialogue-system', undefined, undefined, speakerStyle)
   }
 
   // 注释：执行 node effects
@@ -334,11 +364,11 @@ export async function selectChoice(entryId: string, choiceIndex: number): Promis
 // 注释：结束对话
 function endConversation(): void {
   if (!currentConversation) return
-  const charId = currentConversation.charId
+  const charId = currentConversation.ref.type === 'character' ? currentConversation.ref.character : undefined
   const convId = currentConversation.convId
   currentConversation = null
   gameContext.exitMode()
-  eventBus.emit('dialogue:end', { character: charId, conversationId: convId })
+  eventBus.emit('dialogue:end', { character: charId ?? null, conversationId: convId })
 }
 
 // 注释：{var} 插值

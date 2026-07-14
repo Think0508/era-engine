@@ -25,6 +25,7 @@ export interface GameContext {
   location: LocationData | null
   time: GameTimeData
   getEntity: (type: string, id: string) => EntityData | null
+  selectedCharacterId?: string
 }
 
 export interface UISlotItem {

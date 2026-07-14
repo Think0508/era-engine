@@ -22,6 +22,7 @@ import { calcFavorability, getFavorabilityLevel, getTrustLevel } from './settle/
 import { calcStateChange } from './settle/state'
 import { calcTrust } from './settle/trust'
 import { calcJudge } from './settle/judge'
+import { calcHpMpChange } from './settle/hp-mp'
 import { getLevel } from '../../core/entity-utils'
 import { checkOrgasm } from './settle/orgasm'
 import { modLoader } from '../../core/mod-loader'
@@ -95,6 +96,38 @@ export function onLoad(_ctx: PluginContext): void {
       const raw = calcStateChange(base, al, tbl)
       const fv = _p.negate ? -raw : raw
       if (fv !== 0) execCtx.settlement.applyChange(id, _p.state, fv)
+    }
+    return true
+  })
+
+  // 注释：settle_hp_mp——体力气力变化（公式#7），精确复刻 erArk common_default.py
+  // 参数: { hpValue=-1, mpValue=0, degree=0, addTime? }
+  // hpValue/mpValue: -1=程度减少, 1=程度增加, 其他=固定值
+  // degree: 0=少(HP1/MP3·分), 1=中(HP3/MP6·分), 2=大(HP5/MP10·分)
+  effectTypeRegistry.register('settle_hp_mp', async (_p: any, execCtx: any) => {
+    const ids = execCtx._targetIds as string[]
+    const addTime = execCtx._timeCost ?? _p.addTime ?? 10
+    const hpValue = _p.hpValue ?? -1
+    const mpValue = _p.mpValue ?? 0
+    const degree = _p.degree ?? 0
+    const isGroupSex = await apiSystem.call('h-group-sex', 'isActive').catch(() => false)
+    for (const id of ids) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch?.base) continue
+      const input: HpMpInput = {
+        charId: id, addTime, hpValue, mpValue, degree,
+        hpMax: ch.base['体力上限'] ?? 99999,
+        mpMax: ch.base['气力上限'] ?? 99999,
+        currentHp: ch.base['体力'] ?? 0,
+        currentMp: ch.base['气力'] ?? 0,
+        isGroupSex, isPlayer: id === 'player' || id === '0',
+        isDead: ch.dead ?? false, isTimeStop: false,
+      }
+      const result = calcHpMpChange(input)
+      if (!result.self) continue
+      if (result.self.hp !== 0) execCtx.settlement.applyChange(id, '体力', result.self.hp)
+      if (result.self.mp !== 0) execCtx.settlement.applyChange(id, '气力', result.self.mp)
+      if (result.self.hpCritical) eventBus.emit('character:hp_critical', { characterId: id })
     }
     return true
   })

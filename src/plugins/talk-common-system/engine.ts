@@ -47,38 +47,42 @@ export class CommonTextsEngine {
 
   private parseConditions(raw: string): string[] {
     if (raw.startsWith('premises:')) {
-      // 注释：保持 premises: 前缀，逐段保留
-      return raw.slice(9).split('&').filter(Boolean).map(s => s.includes('==') || s.includes('>') || s.includes('<') ? s : `premises:${s}`)
+      return raw.slice(9).split('&').filter(Boolean).map(s => {
+        const clean = s.startsWith('premises:') ? s.slice(9) : s
+        if (clean.includes('==') || clean.includes('>=') || clean.includes('<=') || clean.includes('>') || clean.includes('<')) {
+          return clean
+        }
+        return `premises:${clean}`
+      })
     }
     return [raw]
   }
 
-  private pickEntry(entries: CommonTextEntry[], targetId: string | null): string | null {
-    const premiseCtx = { selectedCharacterId: targetId }
+  private pickEntry(entries: CommonTextEntry[], targetId: string | null, actorId?: string): string | null {
+    const premiseCtx: Record<string, any> = { selectedCharacterId: targetId, actorId: actorId ?? null }
+    const getContext = () => {
+      const gc = gameContext.getContext()
+      if (targetId) (gc as any).selectedCharacterId = targetId
+      return gc
+    }
     const matched = entries.filter(e => {
       if (e.conditions.length === 0) return true
       for (const cond of e.conditions) {
         if (cond.startsWith('premises:')) {
-          // 注释：premise 格式 → premiseRegistry 求值
-          // 注意：premises: 后可能混有条件表达式（由转换脚本生成）
           const parts = cond.slice(9).split('&').filter(Boolean)
-          // 注释：逐段检查——premise ID 走 premiseRegistry，其他走表达式
           for (const part of parts) {
             if (part.includes('==') || part.includes('>=') || part.includes('<=') || part.includes('>') || part.includes('<')) {
-              // 注释：表达式部分 → evaluateCondition
               try {
-                const gc = gameContext.getContext()
+                const gc = getContext()
                 if (!evaluateCondition(part, gc)) return false
               } catch { return false }
             } else {
-              // 注释：premise ID → premiseRegistry
               if (!premiseRegistry.evaluate([part], premiseCtx)) return false
             }
           }
         } else {
-          // 注释：纯条件表达式
           try {
-            const gc = gameContext.getContext()
+            const gc = getContext()
             if (!evaluateCondition(cond, gc)) return false
           } catch { return false }
         }
@@ -89,7 +93,7 @@ export class CommonTextsEngine {
     return matched[Math.floor(Math.random() * matched.length)].context
   }
 
-  getText(variable: string, targetId: string | null): string | null {
+  getText(variable: string, targetId: string | null, actorId?: string): string | null {
     const entry = this.index[variable]
     if (!entry) return null
 
@@ -105,17 +109,17 @@ export class CommonTextsEngine {
       for (const partId of entry.parts) {
         const candidates = groups.get(partId)
         if (!candidates) continue
-        const picked = this.pickEntry(candidates, targetId)
+        const picked = this.pickEntry(candidates, targetId, actorId)
         if (picked) parts.push(picked)
       }
       if (parts.length === 0) return null
       return parts.join('')
     }
 
-    return this.pickEntry(entry.entries, targetId)
+    return this.pickEntry(entry.entries, targetId, actorId)
   }
 
-  replaceAll(text: string, targetId: string | null): string {
+  replaceAll(text: string, targetId: string | null, actorId?: string): string {
     if (!this.loaded) return text
 
     let result = text
@@ -126,7 +130,7 @@ export class CommonTextsEngine {
       let changed = false
       result = result.replace(varPattern, (_match, varName) => {
         if (!this.index[varName]) return _match
-        const replacement = this.getText(varName, targetId)
+        const replacement = this.getText(varName, targetId, actorId)
         if (replacement === null) return _match
         changed = true
         return replacement

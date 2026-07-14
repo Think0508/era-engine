@@ -16,3 +16,13 @@
 "苦痛" = "苦痛刻印"
 "恐怖" = "恐怖刻印"
 "反感" = "反发刻印"
+
+# 饥饿系统配置（由 hunger-system 插件读取）
+[hunger]
+max = 240                       # 饥饿值上限
+growth_per_min = 1.0            # 每分基础增长
+growth_random = [0.8, 1.2]      # 随机波动范围
+digestion_per_hour = 60         # 每小时消化速度(min)
+npc_auto_eat_threshold = 190    # NPC 自动进食阈值(80%)
+daily_ration_id = "干粮"        # NPC 每日口粮（空=不发放）
+daily_ration_count = 1

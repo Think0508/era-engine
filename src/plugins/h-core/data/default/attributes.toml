@@ -16,6 +16,7 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "精力" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
 "疲劳度" = { type = "number", default = 0, category = "base", display = true, display_group = "status" }
 "饥饿值" = { type = "number", default = 0, category = "base", display = true, display_group = "status" }
+"消化剩余" = { type = "number", default = 0, category = "base", display = false }
 "熟睡值" = { type = "number", default = 0, category = "base", display = true, display_group = "status" }
 "尿意" = { type = "number", default = 0, category = "base", display = true, display_group = "status" }
 "体力上限" = { type = "number", default = 2500, category = "base", display = true, display_group = "status" }
@@ -30,6 +31,7 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "情绪" = { type = "number", default = 50, category = "base", display = true, display_group = "emotion" }
 "理性" = { type = "number", default = 100, category = "base", display = true, display_group = "emotion" }
 "性别" = { type = "number", default = 0, category = "base", display = false }
+"阴茎大小" = { type = "number", default = 1, category = "base", display = true, display_group = "h" }
 
 # ════════════════════════════════════════
 # PARAMETER — 行动参数（每日重置）

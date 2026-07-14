@@ -39,11 +39,22 @@ function resolveValue(path: string, ctx: GameContext): any {
     }
 
     if (part === 'selected') {
-      return getDefaultValue(parts, i)
+      if (!ctx.selectedCharacterId) return getDefaultValue(parts, i)
+      current = ctx.getEntity('character', ctx.selectedCharacterId)
+      if (!current) return getDefaultValue(parts, i)
+      continue
     }
 
     if (Array.isArray(current)) {
       const remaining = parts.slice(i)
+      const idx = parseInt(remaining[0])
+      const isNumIdx = !isNaN(idx) && String(idx) === remaining[0]
+      if (isNumIdx) {
+        if (remaining.length === 1) return current[idx] ?? getDefaultValue(parts, i)
+        current = current[idx]
+        if (current === undefined) return getDefaultValue(parts, i)
+        continue
+      }
       if (remaining.length === 1) {
         return current.includes(remaining[0])
       }

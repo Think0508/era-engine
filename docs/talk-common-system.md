@@ -86,9 +86,51 @@ conditions = "premises:high_1"
 | `description` | string | 否 | 变量说明，用于自动生成条件手册 |
 | `[[entries]]` | array | 是 | 所有可选的文本条目 |
 | `[[entries]].context` | string | 是 | 输出的文本片断。可嵌套其他 talk_common 变量（如 `{vagina_s}`） |
-| `[[entries]].conditions` | string | 否 | premise 条件表达式。`premises:high_1&sys_0` 或多个条件用 `&` 连接 |
+| `[[entries]].conditions` | string | 否 | 条件表达式。支持 `premises:` 前缀和原生条件语法（见下文） |
 
 运行时从所有 `conditions` 满足的 entries 中随机选一条。
+
+#### conditions 格式
+
+支持两种写法：
+
+**1. premise 格式**（传统，用于 h-core 注册的前提）：
+```toml
+conditions = "premises:high_1&sys_0"
+```
+以 `premises:` 开头，多条件用 `&` 连接。每个条件要么是已注册的 premise ID（通过 `registry.register`），要么是条件表达式。
+
+**2. 原生条件表达式**（推荐，无需前提注册）：
+```toml
+conditions = "selected.talents.幼女 == 1"
+```
+直接使用 `player.*`、`location.*`、`game.time.*`、`selected.*`、`character.{ID}.*` 等路径和标准运算符。
+
+**混合使用**（`premises:` 和表达式混写）：
+```toml
+conditions = "premises:high_1&selected.body_semen.阴道.1 > 0"
+```
+第一个用 premise 系统，第二个用条件表达式引擎，`&` 连接表示"且"。
+
+**可用路径**：
+
+| 路径 | 例子 | 说明 |
+|------|------|------|
+| `player.{属性}` | `player.体力 > 0` | 玩家属性 |
+| `location.{字段}` | `location.id == 'tavern'` | 当前地点 |
+| `game.time.{单位}` | `game.time.hour >= 18` | 游戏时间 |
+| `character.{ID}.{属性}` | `character.令狐冲.好感度 >= 60` | 指定角色 |
+| `selected.{属性}` | `selected.talents.幼女 == 1` | 当前选中的角色（交互目标） |
+| `selected.body_semen.{部位}.{索引}` | `selected.body_semen.阴道.1 > 0` | 目标身上精液量（见 mod-author-guide） |
+
+**前提 ID 引用**：
+
+以 `premises:` 前缀引用已注册的前提：
+```toml
+conditions = "premises:HAVE_TARGET&premises:NOT_H"
+```
+
+前提 ID 由 h-core 和各插件在 `onEnable` 时注册。可用前提列表可通过 `@premises` 调试命令查看。
 
 ### 多段变量（body_part/ 类型）
 

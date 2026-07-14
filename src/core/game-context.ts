@@ -150,12 +150,32 @@ class GameContextManager {
     await eventBus.emit(event, payload)
   }
 
+  // 注释：已完成的 scene（event/quest）ID 集合——存档持久化
+  private completedScenes: Set<string> = new Set()
+
+  addCompletedScene(id: string): void {
+    this.completedScenes.add(id)
+  }
+
+  isCompleted(id: string): boolean {
+    return this.completedScenes.has(id)
+  }
+
+  getCompletedScenes(): string[] {
+    return Array.from(this.completedScenes)
+  }
+
+  setCompletedScenes(ids: string[]): void {
+    this.completedScenes = new Set(ids)
+  }
+
   reset(): void {
     this.player = null
     this.location = null
     this.time = { minute: 0, hour: 8, day: 1, month: 1, year: 1 }
     this.executionState = 'IDLE'
     this.modeStack = ['exploration']
+    this.completedScenes.clear()
   }
 }
 

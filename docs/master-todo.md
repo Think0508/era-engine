@@ -10,32 +10,45 @@
 
 ### 已完成（本会话）
 ```
-L0 架构层: 全部完成 ✅
-L1.1 渲染层 step3 ([styles] + _display + FullscreenOutput typewriter/click) ✅
-L1.2 纸娃娃兜底地文 (triggerScene 无口上→talk-common) ✅
-L1.3 选项面板 (存档入口 + Parameter独立双开关) ✅
-L1.8 settle_state ability_level 映射 ✅
-L2.12 talk-common CVP→条件表达式迁移 ✅
-  - CVP码全部转换为原生条件表达式
-  - VAR_MAP: 博士→{player.name}, 手机→书本, 咖啡→茶, 电脑→书本, 兽耳→耳朵
-  - 世界观专属清理: 罗德岛/信息素/尾巴通用化
-  - 遗留: 电视×6(待手动处理)
-L2.11 calcJudge 完整实行判定公式 ✅
-  - 精确复刻erArk 7类修正: 状态/能力/刻印/心情/陷落/天赋个性/好感信赖
-  - 待实现(依赖其他系统): 爱情旅馆/他人存在/助理/体位/处女
-插件默认数据体系:
-  - h-core/data/default/: attributes/abilities/equipment/status-effects/relations/talents/bondage/h-config
-  - mod-loader loadMerged 通用合并函数
-  - expandCharacterAbilities + initializeTalents
+L2.11 三项缺口全部完成 ✅
+  - 群交HP修正: hp-mp.ts 重写 + settle_hp_mp effect注册
+  - 精液吸收: calcSemenAbsorb + penis_dirty_dict + H中tick吸收
+  - 精液污染追踪: pl_penis_semen_dirty/not 前提注册 + 40处TOML转换
+
+根因修复: condition.ts selected 路径实现 ✅
+  - GameContext 加 selectedCharacterId
+  - resolveValue selected stub → 真实实体解析
+  - 数组数字索引支持 + talk-common parseConditions 双前缀bug修复
+
+jj_0~3 阴茎大小前提 ✅
+  - attributes.toml 加 "阴茎大小" + actorId入premiseCtx
+
+饥饿系统: hunger-system 插件 ✅
+  - eat_food effect + 自动增长 + 消化CD + NPC口粮 + h-config配置化
+
+L2.9 Scene/Event 系统 ✅
+  - events/统一加载 + start_scene effect + scene step(嵌套)
+  - dialogue-system 触发拦截 + completedScenes 存档持久化
+  - ConversationRef 重构: 4种type(character/global/quest/event) + speaker 解耦
+  - 内联 dialogue 支持 (lines 字段)
+  - 文档重写至 600+ 行
+
+TODO(依赖其他系统):
+  - 爱情旅馆/他人存在/助理/体位/处女/时停 +9999（calcJudge 缺）
+  - 目标榨精 ability[77] + 精液存量检查
+  - 食物获取方式(商店/烹饪/采集)
 ```
 
 ### 待做优先级
 
 ```
-1. L2.11 剩余项（群交HP/射精衰减/被发现面板/精液追踪）
-2. L2.9 Scene/Event 系统缺口（5项）
-3. L2.10 Combat 系统缺口（5项）
-4. L1.7 睡眠/昼寝/就寝指令
+1. L2.10 Combat 系统缺口（5项）
+2. L2.11 剩余: 被发现面板(UI) + 食物获取方式
+3. 地图系统重构（三层分离 + 工具）：
+   - 引擎侧: `docs/plans/map-system-rework.md` Phase 1
+   - 工具侧: `docs/tools/map-editor-design.md` Phase 2 + 3
+4. 移动/离开 effect（`move_to`、`npc_leave`——场景剧情中控制角色位置）
+5. L1.7 睡眠/昼寝/就寝指令
 5. L1.9 {{input}} 文本框语法
 6. L1.6 指令复刻（380条erArk指令，依赖系统就绪）
 7. 侧栏面板：特质页签/个人情报/日志统计/作弊
@@ -113,6 +126,7 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 | 文档 | 位置 | 阶段 | 说明 |
 |------|------|------|------|
 | AGENTS.md | 根目录 | — | **最高文档**，所有铁律的源头 |
+| map-editor-design.md | docs/tools/ | P1 | 可视化地图编辑器完整设计（技术栈、功能、数据格式） |
 | 开发检查清单.md | 根目录 | 全部 | 事前约束 + 事后自审 |
 | developer-handbook.md | docs/ | 全部 | 开发者交接手册（86行，✅ 存在） |
 | mod-author-guide.md | docs/ | 全部 | Mod 作者指南（✅ 已更新，含自定义前提章节） |
@@ -121,7 +135,7 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 | premises.md | docs/ | 全部 | 前提系统文档（✅ 已更新，含架构说明+mod自定义前提） |
 | dialogue-format.md | docs/ | 全部 | 口上/叙事格式规范（255行，✅） |
 | talk-common-system.md | docs/ | 全部 | 条件文本片断引擎（336行，✅） |
-| scene-system.md | docs/ | 全部 | 剧情系统（144行，✅） |
+| scene-system.md | docs/ | 全部 | 剧情系统（统一scene管理，318行，✅） |
 | premises.md | docs/ | 全部 | 前提系统（92行，✅） |
 | item-system.md | docs/ | P1 | 道具系统（210行，✅） |
 | clothing-system.md | docs/ | P1 | 服装系统（222行，✅） |
@@ -277,19 +291,20 @@ text = "你给这柄剑起了个名字：{{input var='sword_name'}}。"
 
 ```
 参考：src/plugins/quest-system/index.ts + docs/scene-system.md
-完成度：step 流程控制有，但触发条件 + 字段使用未完全
+L2.9 已统一 scene 管理、事件拦截、嵌套、持久化、ConversationRef。
+以下为仍待做的具体功能点：
 ```
 
-- [ ] mod-loader 加载 quest TOML（当前 `// TODO(task-10.2)`，quest 文件只被扫描但未被完整读取）
-- [ ] 前置任务检查（`prerequisites` 字段当前跳过）
-- [ ] combat step 的 `on_win` / `on_lose` 分支（当前 `// TODO: 监听 combat:end 判断`）
-- [ ] condition step 的条件求值（当前 `// TODO: condition 求值`）
-- [ ] spawn step 的角色/物品创建（当前 `// TODO: 创建角色/物品`）
-- [ ] `visible` 字段——任务在 UI 中是否可见未被 quest-system 读取
-- [ ] `display` 字段——event 的显示模式未被 quest-system 处理
-- [ ] `scene.has_character()` 条件函数——当前 condition 系统不支持
-- [ ] `"talk_to"` objective 类型监听 `dialogue:end` 已实现，但缺少 `"use_instruction"`、`"character_present"` 等类型
-- [ ] 已完成的任务状态持久化（当前 `getQuestStatus` 对已完成任务返回 `'not_started'`）
+- [x] mod-loader 加载 quest/event TOML（L2.9 统一扫描 quests/ + events/）
+- [x] 前置任务检查（`prerequisites` 字段——L2.9 completed）
+- [x] `display` 字段（current/log/hidden——L2.9 实现）
+- [x] 已完成任务状态持久化（completedScenes——L2.9 实现）
+- [ ] combat step 的 `on_win` / `on_lose` 分支——需 combat-system 在 `combat:end` 事件附带胜负信息（`result: 'win' | 'lose'`）
+- [ ] condition step 的条件求值——需在 `executeStep` 中调 `evaluateCondition`，传入当前 GameContext
+- [ ] spawn step 的角色/物品创建——需 spawn-system 或 inventory API
+- [ ] `visible` 字段——任务面板 UI 消费，当前 quest-system 已存字段，UI 未读
+- [ ] `scene.has_character()` 条件函数——条件系统扩展，需在 `resolveValue` 中注册特殊函数
+- [ ] 更多 objective 类型：`"use_instruction"`（监听指令执行）、`"character_present"`（检测角色在场）等
 
 ### L2.12 talk-common 天赋条件迁移
 
@@ -383,11 +398,11 @@ text = "你给这柄剑起了个名字：{{input var='sword_name'}}。"
 
 > scene-system.md 设计了完整的 event 机制，但代码中大量未实现。
 
-- [ ] `events/` 目录加载——当前只加载 `quests/main/` 和 `quests/side/`，没有 `events/` 路径
-- [ ] `start_scene` effect 类型——不存在
-- [ ] scene step 类型——quest-system 不支持 `type = "scene"`（嵌套场景）
-- [ ] 触发拦截逻辑——dialogue-system 没有 scene 拦截机制
-- [ ] 嵌套场景进度管理——不实现
+- [x] `events/` 目录加载——mod-loader 统一加载 quests/ + events/，scene ID 重复检测 + scene_id 引用校验
+- [x] `start_scene` effect + `start_quest` 别名——后台激活 scene（不打断当前）
+- [x] scene step 类型——`case 'scene'` + 嵌套场景栈 push/pop
+- [x] 触发拦截逻辑——dialogue-system 检查 condition 匹配的 scene 并自动开始
+- [x] 嵌套场景进度管理——场景栈实现（子完成→pop 回父），`parent` 字段可选
 
 ### L2.10 Combat 系统缺口
 
@@ -399,12 +414,35 @@ text = "你给这柄剑起了个名字：{{input var='sword_name'}}。"
 
 ### L2.11 H-core 结算缺口
 
-- [ ] 状态修正——`calcJudge` 中状态修正占位（`// TODO: 从 ctx.statusLevels`）
-- [ ] 陷落修正——占位（`// TODO: getFallLevel × 倍率`）
-- [ ] 群交 HP 修正——占位（`// TODO: 群交系统`）
-- [ ] 射精衰减——按时间衰减精液量未实现（`// TODO: 按时间衰减精液`）
+- [x] 状态修正——`calcJudge` 中状态修正完成
+- [x] 陷落修正——完成
+- [x] 群交 HP 修正——`hp-mp.ts` 重写 + `settle_hp_mp` effect
+- [x] 射精衰减——`calcSemenAbsorb` + `penis_dirty_dict` + H 中 tick
 - [ ] 被发现面板——隐奸系统 UI stub（`// TODO: 打开被发现面板`）
-- [ ] 精液污染追踪——talk-common 条件使用（剩余 40 条 `CVP_A2_Dirty|B0_G_1`）
+- [x] 精液污染追踪——`pl_penis_semen_dirty` 前提注册 + TOML 转换
+- [ ] jj_0/1/2/3 前提——射精后阴茎硬度/状态等级。erArk `jj_0~4`，需在 h-core 或 h-ejaculation 中注册 premise handler，检查 `h_state.just_shoot` 或 `h_state.shoot_semen_amount`
+- [x] 饥饿系统——`hunger-system` 插件完整实现：
+  - `eat_food` effect: 扣背包→减饥饿→消化CD→回HP/MP
+  - `game:hour_changed` 自动增长 (erArk 公式) + 消化衰减
+  - `game:new_day` NPC 每日口粮
+  - NPC 自动进食（背包有食物时）
+  - 配置化：h-config.toml `[hunger]` 段，mod 可 patch
+  - 默认食物：干粮/饮水/甜点
+  - 条件表达式：`selected.饥饿值 > 190` 等直接可用
+- [ ] 食物获取方式（后续）：
+  - 商店购买
+  - 烹饪/制作
+  - 采集/打猎
+  - NPC 一起吃饭好感加成
+  - 特殊食物效果（加料/毒品/精液等）
+- [ ] 目标榨精 ability[77]——`calcSemenAmount` 中因子(6)需目标角色ID和 `abilities.榨精.level`
+- [ ] 精液存量检查——`calcSemenAmount` 中因子(7)：射精量不超出 `semen_point + extra_semen_point`
+- [ ] 衣物精液追踪（`cloth_semen`）：
+  - **涉及**：h-ejaculation（射精时同步追踪衣物精液）、talk-common CVP 检查（`CVP_A2_Dirty|C{槽位ID}_{op}_{val}`）、clothing-system（精液扩散/清洗）
+  - **数据结构**：`ch.cloth_semen[slotId] = [0, current_ml, level, total_ml]`，同 `body_semen` 格式
+  - **条件表达式**：`selected.cloth_semen.{slotName}.{索引} > N`，需在 `condition.ts` 中注册 `cloth_semen` 路径或提供别名
+  - **入口**：射精时按射精部位关联的服装槽位增加精液（如阴道射精→内裤/下身），`update_semen_dirty` 的 erArk 等价函数
+  - **前置依赖**：clothing-system 完整实现（14 槽位）、服装精液扩散（`settle_semen_flow`）
 
   > **背景**：纸娃娃地文口上中有 40 条检查精液污染的 CVP 码（`CVP_A2_Dirty|B0_G_1`），
   > 表示"目标全身皮肤精液量 > 1"。当前无法求值，条件被静默跳过。

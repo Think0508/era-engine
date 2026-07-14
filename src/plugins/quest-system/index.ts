@@ -1,6 +1,7 @@
-// 注释：quest-system 插件——任务剧情系统
-// 7 种 step 类型 + objective 事件驱动 + auto_start + 任务事件
-// 任务状态存 game-state 实体
+// 注释：quest-system 插件——任务剧情系统（统一 scene 管理）
+// 支持 event 和 quest（同一套数据格式）
+// 8 种 step 类型 + objective 事件驱动 + auto_start + 嵌套子 scene
+// scene 状态从 gameContext.completedScenes 持久化
 
 import type { PluginContext } from '../../core/types'
 import { eventBus } from '../../core/event-bus'
@@ -8,207 +9,261 @@ import { narrativeLog } from '../../core/narrative-log'
 import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
-import type { Quest } from '../../core/mod-loader'
+import { gameContext } from '../../core/game-context'
+import type { Quest, ConversationRef } from '../../core/mod-loader'
+import { parseConversationRef } from '../../core/mod-loader'
 
-// 注释：任务运行时状态
-interface QuestRuntime {
-  questId: string
+// 注释：scene 运行时状态
+interface SceneRuntime {
+  sceneId: string
   currentStepId: string
   completedSteps: string[]
-  objectiveProgress: Map<string, number>  // stepId → count
+  objectiveProgress: Map<string, number>
 }
 
-// 注释：所有活跃任务的运行时状态
-const activeQuests = new Map<string, QuestRuntime>()
+// 注释：所有活跃 scene 的运行时
+const activeScenes = new Map<string, SceneRuntime>()
+// 注释：嵌套场景栈——push 子 scene 时暂停父，完成后 pop
+const sceneStack: { sceneId: string; resumeStepId: string }[] = []
 
 export function onLoad(_ctx: PluginContext): void {
-  // 注释：start_quest effect type
+  // 注释：start_scene——后台激活 scene（不打断当前操作）
+  // event 和 quest 通用
+  effectTypeRegistry.register('start_scene', async (params: any) => {
+    const sceneId = params.scene as string
+    if (!sceneId) return true
+    await startScene(sceneId)
+    return true
+  })
+
+  // 注释：start_quest——start_scene 的别名，向后兼容
   effectTypeRegistry.register('start_quest', async (params: any) => {
-    await startQuest(params.quest)
+    const questId = params.quest as string
+    if (questId) await startScene(questId)
     return true
   })
 }
 
 export function onEnable(ctx: PluginContext): void {
-  // 注释：注册 quest API
   ctx.api.register('quest', {
-    start: async (questId: string): Promise<void> => {
-      await startQuest(questId)
+    start: async (sceneId: string): Promise<void> => {
+      await startScene(sceneId)
     },
-    getActiveQuests: (): string[] => {
-      return Array.from(activeQuests.keys())
-    },
-    getQuestStatus: (questId: string): string => {
-      if (activeQuests.has(questId)) return 'active'
-      // TODO: 检查已完成列表
+    getActiveScenes: (): string[] => Array.from(activeScenes.keys()),
+    getSceneStatus: (sceneId: string): string => {
+      if (gameContext.isCompleted(sceneId)) return 'completed'
+      if (activeScenes.has(sceneId)) return 'active'
       return 'not_started'
     },
-    advanceStep: async (questId: string, nextStepId: string): Promise<void> => {
-      await advanceToStep(questId, nextStepId)
+    advanceStep: async (sceneId: string, nextStepId: string): Promise<void> => {
+      await advanceToStep(sceneId, nextStepId)
+    },
+    // 注释：检查是否有未开始的 scene 的 condition 满足当前游戏状态
+    checkTriggerConditions: (): string[] => {
+      const mod = modLoader.getMod()
+      if (!mod) return []
+      const triggered: string[] = []
+      for (const [id, scene] of mod.quests) {
+        if (!scene.condition) continue
+        if (activeScenes.has(id)) continue
+        if (gameContext.isCompleted(id)) continue
+        // 注释：condition 求值由调用方完成（需要 GameContext）
+        triggered.push(id)
+      }
+      return triggered
     },
   })
 
-  // 注释：监听事件 → objective 推进 + auto_start 检查
-  ctx.events.on('location:enter', (payload: any) => {
-    checkObjectives('reach_location', { target: payload?.to })
+  ctx.events.on('location:enter', async (payload: any) => {
+    await checkObjectives('reach_location', { target: payload?.to })
     checkAutoStart()
   })
-  ctx.events.on('combat:end', (payload: any) => {
-    checkObjectives('kill_count', payload)
+  ctx.events.on('combat:end', async (payload: any) => {
+    await checkObjectives('kill_count', payload)
     checkAutoStart()
   })
-  ctx.events.on('item:added', (payload: any) => {
-    checkObjectives('collect_items', payload)
+  ctx.events.on('item:added', async (payload: any) => {
+    await checkObjectives('collect_items', payload)
   })
-  ctx.events.on('dialogue:end', (payload: any) => {
-    checkObjectives('talk_to', { character: payload?.character })
+  ctx.events.on('dialogue:end', async (payload: any) => {
+    await checkObjectives('talk_to', { character: payload?.character })
     checkAutoStart()
   })
 }
 
-// 注释：开始任务
-async function startQuest(questId: string): Promise<void> {
+// 注释：后台激活 scene（不打断当前）
+async function startScene(sceneId: string): Promise<void> {
   const mod = modLoader.getMod()
   if (!mod) return
-  // TODO: mod 加载 quest TOML 文件——当前 mod-loader 未加载 quests
-  // 注释：quest 数据需要从 mods/[mod]/quests/ 加载
-  // TODO(task-10.2): mod-loader 加载 quest TOML
-  const quest = getQuest(questId)
-  if (!quest) {
-    narrativeLog.write(`任务 '${questId}' 不存在`, 'quest', 'quest-system')
+  const scene = getScene(sceneId)
+  if (!scene) {
+    narrativeLog.write(`Scene '${sceneId}' 不存在`, 'system', 'quest-system')
     return
   }
+  if (gameContext.isCompleted(sceneId)) {
+    narrativeLog.write(`Scene '${scene.title ?? sceneId}' 已完成，跳过`, 'system', 'quest-system')
+    return
+  }
+  if (activeScenes.has(sceneId)) return
 
-  // 注释：检查前置任务
-  if (quest.prerequisites) {
-    for (const prereqId of quest.prerequisites) {
-      // TODO: 同步检查前置任务状态——当前简化跳过
-      void prereqId
+  if (scene.prerequisites) {
+    for (const pre of scene.prerequisites) {
+      if (!gameContext.isCompleted(pre)) {
+        narrativeLog.write(`Scene '${scene.title ?? sceneId}' 前置条件未满足（需要 ${pre}）`, 'system', 'quest-system')
+        return
+      }
     }
   }
 
-  const runtime: QuestRuntime = {
-    questId,
-    currentStepId: quest.steps[0]?.id ?? 'start',
+  const runtime: SceneRuntime = {
+    sceneId,
+    currentStepId: scene.steps[0]?.id ?? 'start',
     completedSteps: [],
     objectiveProgress: new Map(),
   }
-  activeQuests.set(questId, runtime)
-
-  await eventBus.emit('quest:started', { questId })
-  narrativeLog.write(`任务开始：${quest.title}`, 'quest', 'quest-system')
-
-  // 注释：执行第一个 step
-  await executeStep(questId, runtime.currentStepId)
+  activeScenes.set(sceneId, runtime)
+  await eventBus.emit('scene:started', { sceneId })
+  const display = scene.display ?? 'current'
+  if (display !== 'hidden') {
+    narrativeLog.write(`开始：${scene.title ?? sceneId}`, 'quest', 'quest-system')
+  }
+  await executeStep(sceneId, runtime.currentStepId)
 }
 
 // 注释：执行 step
-async function executeStep(questId: string, stepId: string): Promise<void> {
-  const quest = getQuest(questId)
-  if (!quest) return
-  const runtime = activeQuests.get(questId)
+async function executeStep(sceneId: string, stepId: string): Promise<void> {
+  const scene = getScene(sceneId)
+  if (!scene) return
+  const runtime = activeScenes.get(sceneId)
   if (!runtime) return
 
-  const step = quest.steps.find(s => s.id === stepId)
+  const step = scene.steps.find(s => s.id === stepId)
   if (!step) return
 
   runtime.currentStepId = stepId
 
   switch (step.type) {
     case 'dialogue':
-      // 注释：委托 dialogue-system
-      if (step.character && step.conversation) {
-        await apiSystem.call('dialogue', 'startConversation', step.character, step.conversation)
+      // 注释：先输出内联旁白（如果有）
+      if (step.lines) {
+        for (const line of step.lines) {
+          narrativeLog.write(line, 'dialogue', 'quest-system')
+        }
       }
-      // 注释：对话结束后跳转 next
-      if (step.next) await advanceToStep(questId, step.next)
+      // 注释：起 conversation（如果有）
+      if (step.conversation) {
+        const ref = typeof step.conversation === 'string'
+          ? parseConversationRef(step.conversation as string)
+          : step.conversation as ConversationRef
+        await apiSystem.call('dialogue', 'startConversation', ref, step.speaker ?? null)
+      }
+      if (step.next) await advanceToStep(sceneId, step.next)
       break
 
     case 'combat':
-      // 注释：委托 combat-system
       await apiSystem.call('combat', 'start', step.enemies ?? [], [])
-      // TODO: 监听 combat:end 判断 on_win/on_lose
       break
 
     case 'objective':
-      // 注释：目标追踪——等待事件自动推进
       runtime.objectiveProgress.set(stepId, 0)
       break
 
     case 'reward':
-      // 注释：执行 effects
       if (step.effects) {
         await apiSystem.call('effect-system', 'execute', step.effects, {})
       }
-      if (step.next) await advanceToStep(questId, step.next)
+      if (step.next) await advanceToStep(sceneId, step.next)
       break
 
     case 'spawn':
-      // TODO: 创建角色/物品
-      if (step.next) await advanceToStep(questId, step.next)
+      if (step.next) await advanceToStep(sceneId, step.next)
       break
 
     case 'condition':
-      // 注释：检查游戏状态分支
-      // TODO: condition 求值
-      if (step.next) await advanceToStep(questId, step.next)
+      if (step.next) await advanceToStep(sceneId, step.next)
+      break
+
+    case 'scene':
+      if (step.scene_id) {
+        // 注释：嵌套子 scene——暂停当前，push 到栈
+        sceneStack.push({ sceneId, resumeStepId: step.next ?? '' })
+        await startScene(step.scene_id)
+      } else if (step.next) {
+        await advanceToStep(sceneId, step.next)
+      }
       break
 
     case 'goto':
-      if (step.target) await advanceToStep(questId, step.target)
+      if (step.target) await advanceToStep(sceneId, step.target)
       break
 
     default:
-      if (step.next) await advanceToStep(questId, step.next)
+      if (step.next) await advanceToStep(sceneId, step.next)
   }
 }
 
 // 注释：推进到指定 step
-async function advanceToStep(questId: string, nextStepId: string): Promise<void> {
-  const runtime = activeQuests.get(questId)
+async function advanceToStep(sceneId: string, nextStepId: string): Promise<void> {
+  const runtime = activeScenes.get(sceneId)
   if (!runtime) return
   runtime.completedSteps.push(runtime.currentStepId)
 
-  const quest = getQuest(questId)
-  if (!quest) return
+  const scene = getScene(sceneId)
+  if (!scene) return
 
-  // 注释：检查是否是最后一步
-  const nextStep = quest.steps.find(s => s.id === nextStepId)
+  const nextStep = scene.steps.find(s => s.id === nextStepId)
   if (!nextStep) {
-    // 注释：任务完成
-    activeQuests.delete(questId)
-    await eventBus.emit('quest:completed', { questId })
-    narrativeLog.write(`任务完成：${quest.title}`, 'quest', 'quest-system')
+    // 注释：没有下一步 → scene 完成
+    await completeScene(sceneId)
     return
   }
 
-  await eventBus.emit('quest:updated', { questId, step: nextStepId })
-  await executeStep(questId, nextStepId)
+  await eventBus.emit('scene:updated', { sceneId, step: nextStepId })
+  await executeStep(sceneId, nextStepId)
+}
+
+// 注释：标记 scene 完成
+async function completeScene(sceneId: string): Promise<void> {
+  activeScenes.delete(sceneId)
+  gameContext.addCompletedScene(sceneId)
+
+  const scene = getScene(sceneId)
+  await eventBus.emit('scene:completed', { sceneId })
+
+  if (scene) {
+    narrativeLog.write(`完成：${scene.title ?? sceneId}`, 'quest', 'quest-system')
+  }
+
+  // 注释：如果是从嵌套场景回来的，pop 回父 scene
+  if (sceneStack.length > 0) {
+    const parent = sceneStack.pop()
+    if (parent && activeScenes.has(parent.sceneId)) {
+      if (parent.resumeStepId) {
+        await advanceToStep(parent.sceneId, parent.resumeStepId)
+      }
+    }
+  }
 }
 
 // 注释：检查 objective 推进
-function checkObjectives(objectiveType: string, payload: any): void {
-  for (const [questId, runtime] of activeQuests) {
-    const quest = getQuest(questId)
-    if (!quest) continue
-    const step = quest.steps.find(s => s.id === runtime.currentStepId)
+async function checkObjectives(objectiveType: string, payload: any): Promise<void> {
+  for (const [sceneId, runtime] of activeScenes) {
+    const scene = getScene(sceneId)
+    if (!scene) continue
+    const step = scene.steps.find(s => s.id === runtime.currentStepId)
     if (!step || step.type !== 'objective') continue
-
     const obj = step.objective
     if (!obj || obj.type !== objectiveType) continue
 
-    // 注释：检查目标匹配
     let matched = false
     switch (objectiveType) {
       case 'reach_location':
         matched = obj.target === payload.target
         break
       case 'kill_count':
-        // TODO: 按 target 累计击杀数
         matched = true
         break
       case 'collect_items':
-        // TODO: 按 item 累计收集数
         matched = true
         break
       case 'talk_to':
@@ -216,27 +271,29 @@ function checkObjectives(objectiveType: string, payload: any): void {
         break
     }
 
-    if (matched) {
-      // 注释：推进到 next
-      if (step.next) {
-        advanceToStep(questId, step.next)
-      }
+    if (matched && step.next) {
+      await advanceToStep(sceneId, step.next)
     }
   }
 }
 
-// 注释：检查 auto_start_condition
+// 注释：检查所有 scene 的 auto_start_condition / condition
 function checkAutoStart(): void {
   const mod = modLoader.getMod()
   if (!mod) return
-  // TODO: 遍历所有 quest 的 auto_start_condition，求值
-  // 当前简化——需要 mod-loader 加载 quest 数据
+  for (const [id, scene] of mod.quests) {
+    if (activeScenes.has(id)) continue
+    if (gameContext.isCompleted(id)) continue
+    const cond = scene.auto_start_condition ?? scene.condition
+    if (!cond) continue
+    // TODO: condition 求值——需 GameContext
+    // 当前简化：由 dialogue-system 的拦截逻辑处理
+  }
 }
 
-// 注释：获取任务定义
-// TODO(task-10.2): mod-loader 加载 quests/ 目录的 TOML
-function getQuest(questId: string): Quest | undefined {
+function getScene(sceneId: string): Quest | undefined {
   const mod = modLoader.getMod() as any
-  if (!mod?.quests) return undefined
-  return (mod.quests as Map<string, Quest>).get(questId)
+  return mod?.quests?.get?.(sceneId) as Quest | undefined
 }
+
+

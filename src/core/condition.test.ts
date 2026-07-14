@@ -6,9 +6,16 @@ const ctx: GameContext = {
   player: { base: { hp: 50, mp: 100 }, id: 'player' },
   location: { id: 'tavern', name: '酒馆', parent: null, type: 'building', tags: ['rest', 'has_drink'], exits: [] },
   time: { minute: 0, hour: 20, day: 1, month: 1, year: 1 },
+  selectedCharacterId: 'npc1',
   getEntity: (type: string, id: string) => {
     if (type === 'character' && id === 'npc1') {
-      return { base: { hp: 80, attack: 15 }, id: 'npc1' }
+      return {
+        base: { hp: 80, attack: 15 },
+        id: 'npc1',
+        body_semen: { '0': [0, 5, 1, 10], '6': [0, 3, 1, 5] },
+        talents: { '幼女': 1, '贫乳': 1 },
+        abilities: { '舌技': { level: 3 } },
+      }
     }
     return null
   }
@@ -88,5 +95,35 @@ describe('evaluateCondition', () => {
 
   it('should not hang on unbalanced parens in string literals', () => {
     expect(() => evaluateCondition('location.name == "酒馆(分店"', ctx)).not.toThrow()
+  })
+
+  it('should evaluate selected character fields', () => {
+    expect(evaluateCondition('selected.base.hp > 50', ctx)).toBe(true)
+    expect(evaluateCondition('selected.base.hp > 100', ctx)).toBe(false)
+  })
+
+  it('should evaluate selected talents (L2.12 style)', () => {
+    expect(evaluateCondition('selected.talents.幼女 == 1', ctx)).toBe(true)
+    expect(evaluateCondition('selected.talents.贫乳 == 1', ctx)).toBe(true)
+    expect(evaluateCondition('selected.talents.巨乳 == 1', ctx)).toBe(false)
+  })
+
+  it('should evaluate selected abilities', () => {
+    expect(evaluateCondition('selected.abilities.舌技.level > 2', ctx)).toBe(true)
+    expect(evaluateCondition('selected.abilities.舌技.level > 5', ctx)).toBe(false)
+  })
+
+  it('should evaluate selected body_semen numeric array access', () => {
+    // body_semen.0.1 = current ml of body part 0 (hair) = 5
+    expect(evaluateCondition('selected.body_semen.0.1 > 1', ctx)).toBe(true)
+    expect(evaluateCondition('selected.body_semen.0.1 == 5', ctx)).toBe(true)
+    // body_semen.6.1 = current ml of body part 6 (vagina) = 3
+    expect(evaluateCondition('selected.body_semen.6.1 > 2', ctx)).toBe(true)
+    expect(evaluateCondition('selected.body_semen.6.1 > 5', ctx)).toBe(false)
+  })
+
+  it('should return default values for selected without selectedCharacterId', () => {
+    const ctxNoSelected = { ...ctx, selectedCharacterId: undefined }
+    expect(evaluateCondition('selected.base.hp > 10', ctxNoSelected)).toBe(false)
   })
 })

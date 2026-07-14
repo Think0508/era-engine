@@ -5,6 +5,7 @@ import { resolveTemplate, deepMerge } from './template'
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
 import { conditionRegistry } from './condition-registry'
+import { errorReporter } from './error-reporter'
 
 export interface ModDependency {
   plugin: string
@@ -188,13 +189,60 @@ export interface AbilityDef {
 }
 
 // 注释：任务定义
+export interface ConversationRef {
+  type: 'character' | 'global' | 'quest' | 'event'
+  character?: string    // type=character 时：角色 ID
+  name?: string         // type=character/global 时：文件名（不含.toml）
+  path?: string         // type=quest/event 时：相对路径
+}
+
+// 注释：解析 ConversationRef → Conversation 数据
+// 字符串简写格式: "type:参数" → 自动转为 ConversationRef 对象
+export function parseConversationRef(ref: string | ConversationRef): ConversationRef {
+  if (typeof ref === 'string') {
+    const colonIdx = ref.indexOf(':')
+    if (colonIdx < 0) return { type: 'global', name: ref }
+    const type = ref.slice(0, colonIdx) as ConversationRef['type']
+    const rest = ref.slice(colonIdx + 1)
+
+    if (type === 'character') {
+      const slashIdx = rest.indexOf('/')
+      if (slashIdx < 0) return { type: 'character', character: rest, name: '' }
+      return { type: 'character', character: rest.slice(0, slashIdx), name: rest.slice(slashIdx + 1) }
+    }
+    if (type === 'global') return { type: 'global', name: rest }
+    if (type === 'quest' || type === 'event') return { type, path: rest }
+    return { type: 'global', name: ref }
+  }
+  return ref
+}
+
+// 注释：根据 ConversationRef 查找 Conversation 数据
+export function resolveConversation(
+  conversations: LoadedMod['conversations'],
+  ref: ConversationRef,
+): Conversation | undefined {
+  switch (ref.type) {
+    case 'character':
+      if (!ref.character || !ref.name) return undefined
+      return conversations.character.get(ref.character)?.get(ref.name)
+    case 'global':
+      return ref.name ? conversations.global.get(ref.name) : undefined
+    case 'quest':
+      return ref.path ? conversations.quest.get(ref.path) : undefined
+    case 'event':
+      return ref.path ? conversations.event.get(ref.path) : undefined
+  }
+}
+
 export interface QuestStep {
   id: string
-  type: string          // dialogue/combat/objective/reward/spawn/condition/goto
+  type: string          // dialogue/combat/objective/reward/spawn/condition/goto/scene
   next?: string
   // dialogue
-  character?: string
-  conversation?: string
+  conversation?: ConversationRef | string  // 对象或字符串简写 "type:参数"
+  speaker?: string                          // 可选：默认说话者
+  lines?: string[]
   // combat
   enemies?: string[]
   on_win?: string
@@ -208,16 +256,19 @@ export interface QuestStep {
   else?: string
   // goto
   target?: string
+  // scene（嵌套子场景）
+  scene_id?: string
 }
 
 export interface Quest {
   id: string
-  title: string
+  title?: string
   description?: string
   type: string          // main/side/event
+  parent?: string       // 可选：父 scene ID，UI 显示层级用
   prerequisites?: string[]
   auto_start_condition?: string
-  // 注释：event 专用字段
+  condition?: string    // 可选：自动触发条件（event 和 quest 通用）
   display?: string      // "current" 显示剧情面板 / "hidden" 全程隐藏 / "log" 只记大事志
   visible?: string      // 可选：条件——满足时 quest 在 UI 中可见
   steps: QuestStep[]
@@ -240,7 +291,13 @@ export interface LoadedMod {
   sceneDialogue: ReactiveLine[]
   characterDialogue: ReactiveLine[]
   characterSpecificDialogue: Map<string, ReactiveLine[]>
-  conversations: Map<string, Conversation[]>
+  // 注释：conversation 数据——按 type 分组存储
+  conversations: {
+    character: Map<string, Map<string, Conversation>>   // characterId → name → Conversation
+    global: Map<string, Conversation>                    // name → Conversation
+    quest: Map<string, Conversation>                     // path → Conversation
+    event: Map<string, Conversation>                     // path → Conversation
+  }
   // 注释：Phase 8-10 新增
   items: Record<string, ItemDef>
   sets: SetDef[]
@@ -379,7 +436,12 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     sceneDialogue: [],
     characterDialogue: [],
     characterSpecificDialogue: new Map(),
-    conversations: new Map(),
+    conversations: {
+      character: new Map(),
+      global: new Map(),
+      quest: new Map(),
+      event: new Map(),
+    },
     // 注释：Phase 8-10 新增
     items: {},
     sets: [],
@@ -549,9 +611,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     mod.characterDialogue = (data.character_lines as ReactiveLine[]) ?? []
   }
 
-  // 注释：加载角色专属口上 + 交互式对话
-  // 优先级：characters/dialogue/{charId}/（低）← characters/named/{charId}/（高）
-  // 同名 charId 时 named 覆盖，方便从 roster 升级到 named
+  // 注释：加载角色专属口上
   function loadDialogueForPrefix(prefix: string): void {
     for (const [path, raw] of Object.entries(rawTomlMap)) {
       if (!path.startsWith(prefix) || !path.endsWith('.toml')) continue
@@ -559,31 +619,65 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       const parts = rest.split('/')
       if (parts.length < 2) continue
       const charId = parts[0]
-
       if (parts.length === 2 && parts[1] === 'dialogue.toml') {
         const data = parseFile(path, raw)
         const lines = (data.lines as ReactiveLine[]) ?? []
         mod.characterSpecificDialogue.set(charId, lines)
-      } else if (parts.length === 3 && parts[1] === 'conversations') {
-        const data = parseFile(path, raw)
-        const conv: Conversation = {
-          id: (data.id as string) ?? parts[2].replace(/\.toml$/, ''),
-          condition: data.condition as string | undefined,
-          nodes: (data.nodes as ConversationNode[]) ?? [],
-        }
-        const list = mod.conversations.get(charId) ?? []
-        const existingIdx = list.findIndex(c => c.id === conv.id)
-        if (existingIdx >= 0) {
-          list[existingIdx] = conv
-        } else {
-          list.push(conv)
-        }
-        mod.conversations.set(charId, list)
       }
     }
   }
   loadDialogueForPrefix(`/mods/${modName}/characters/dialogue/`)
   loadDialogueForPrefix(`/mods/${modName}/characters/named/`)
+
+  // 注释：加载 conversation（4 种来源）
+  function parseConversation(path: string, raw: string, name: string): Conversation {
+    const data = parseFile(path, raw)
+    return {
+      id: (data.id as string) ?? name.replace(/\.toml$/, ''),
+      condition: data.condition as string | undefined,
+      nodes: (data.nodes as ConversationNode[]) ?? [],
+    }
+  }
+
+  // 注释：1. 角色 conversation（characters/{charId}/conversations/[{subdir}/]{name}.toml）
+  for (const prefix of [`/mods/${modName}/characters/dialogue/`, `/mods/${modName}/characters/named/`]) {
+    for (const [path, raw] of Object.entries(rawTomlMap)) {
+      if (!path.startsWith(prefix) || !path.endsWith('.toml')) continue
+      const rest = path.slice(prefix.length)
+      const convIdx = rest.indexOf('/conversations/')
+      if (convIdx < 0) continue
+      const charId = rest.slice(0, convIdx)
+      const name = rest.slice(convIdx + '/conversations/'.length).replace(/\.toml$/, '')
+      if (!charId || !name) continue
+      const conv = parseConversation(path, raw, name)
+      if (!mod.conversations.character.has(charId)) {
+        mod.conversations.character.set(charId, new Map())
+      }
+      mod.conversations.character.get(charId)!.set(name, conv)
+    }
+  }
+
+  // 注释：2. 全局 conversation（conversations/{name}.toml）
+  const globalConvPrefix = `/mods/${modName}/conversations/`
+  for (const [path, raw] of Object.entries(rawTomlMap)) {
+    if (!path.startsWith(globalConvPrefix) || !path.endsWith('.toml')) continue
+    const name = path.slice(globalConvPrefix.length).replace(/\.toml$/, '')
+    const conv = parseConversation(path, raw, name)
+    mod.conversations.global.set(name, conv)
+  }
+
+  // 注释：3. quest/event conversation（quests/munu/**/conversations/{path}.toml）
+  for (const type of ['quest', 'event'] as const) {
+    const convDir = `/mods/${modName}/${type}s/`
+    for (const [path, raw] of Object.entries(rawTomlMap)) {
+      if (!path.startsWith(convDir) || !path.endsWith('.toml')) continue
+      if (!path.includes('/conversations/')) continue
+      const relPath = path.slice(convDir.length)
+      const convPath = relPath.replace(/\.toml$/, '')
+      const conv = parseConversation(path, raw, convPath.split('/').pop()!)
+      mod.conversations[type].set(convPath, conv)
+    }
+  }
 
   // 注释：加载 items.toml
   const itemsPath = `/mods/${modName}/definitions/items.toml`
@@ -622,16 +716,32 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     mod.styles = (data.styles as Record<string, Record<string, any>>) ?? {}
   }
 
-  // 注释：加载 quests（main/ + side/）
-  const questMainPrefix = `/mods/${modName}/quests/main/`
-  const questSidePrefix = `/mods/${modName}/quests/side/`
+  // 注释：加载 scenes（quests/ + events/ 下所有 toml，子目录自动支持）
+  // scene 是统一单位，type=main/side/event 只影响 UI 显示
+  const scenePrefixes = [`/mods/${modName}/quests/`, `/mods/${modName}/events/`]
   for (const [path, raw] of Object.entries(rawTomlMap)) {
     if (!path.endsWith('.toml')) continue
-    if (path.startsWith(questMainPrefix) || path.startsWith(questSidePrefix)) {
-      const data = parseFile(path, raw)
-      const quest = data as any as Quest
-      if (quest.id) {
-        mod.quests.set(quest.id, quest)
+    if (!scenePrefixes.some(p => path.startsWith(p))) continue
+    const data = parseFile(path, raw) as any
+    const scene = data as Quest
+    if (!scene.id) {
+      errorReporter.report({ source: 'mod-loader', severity: 'warning', file: path, message: 'Scene 缺少 id 字段，跳过' })
+      continue
+    }
+    if (mod.quests.has(scene.id)) {
+      errorReporter.report({ source: 'mod-loader', severity: 'error', file: path, message: `Scene ID '${scene.id}' 重复` })
+      continue
+    }
+    mod.quests.set(scene.id, scene)
+  }
+  // 注释：校验 scene 引用（scene_id 必须存在）
+  for (const [id, scene] of mod.quests) {
+    for (const step of scene.steps ?? []) {
+      if (step.type === 'scene' && step.scene_id && !mod.quests.has(step.scene_id)) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', message: `Scene '${id}' 的 step 引用了不存在的 scene_id '${step.scene_id}'`,
+          suggestion: `检查 ${scenePrefixes.map(p => p.replace(`/mods/${modName}/`, '')).join(' 或 ')} 下是否有该 id 的文件`,
+        })
       }
     }
   }

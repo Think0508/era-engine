@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -61,6 +61,8 @@ const flowEdges = computed<Edge[]>(() =>
 
 const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
+const displayKey = ref(0)
+watch(() => ui.showIdOnNode, () => { displayKey.value++ })
 let edgeCounter = 0
 let paneClickTimer: ReturnType<typeof setTimeout> | null = null
 const SNAP_DISTANCE = 60
@@ -225,7 +227,7 @@ function onNodeDragStop({ node }: { node: Node }) {
 <template>
   <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu">
     <VueFlow
-      :key="'vf-' + (ui.showIdOnNode ? 'id' : 'nm')"
+      :key="displayKey"
       :nodes="flowNodes"
       :edges="flowEdges"
       :node-types="{ location: LocationNode }"
@@ -233,7 +235,6 @@ function onNodeDragStop({ node }: { node: Node }) {
       :min-zoom="0.1"
       :max-zoom="3"
       :zoom-on-double-click="false"
-      fit-view-on-init
       @nodes-change="onNodesChange"
       @node-click="onNodeClick"
       @edge-click="onEdgeClick"

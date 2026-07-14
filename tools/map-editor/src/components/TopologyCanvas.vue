@@ -67,6 +67,7 @@ function onPaneClick(event: MouseEvent) {
 }
 
 function createRootNode(event: MouseEvent) {
+  if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
   if (!vueFlowStore.value) return
   nodeCounter++
   const id = `location_${nodeCounter}`

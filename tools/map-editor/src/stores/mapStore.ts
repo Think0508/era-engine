@@ -10,25 +10,32 @@ export const useMapStore = defineStore('map', () => {
   const projectName = ref('')
   const projectFilePath = ref('')
   const sourcePath = ref('')
+  let nodeVersion = 0
+  const nodeVersionRef = ref(0)
 
   const getChildren = (parentId: string) =>
     nodes.value.filter(n => n.parent === parentId)
 
   const rootNodes = computed(() => nodes.value.filter(n => !n.parent))
 
-  function addNode(node: MapNode) { nodes.value.push(node) }
+  function addNode(node: MapNode) { nodes.value.push(node); bumpVersion() }
   function updateNode(id: string, data: Partial<MapNode>) {
     const idx = nodes.value.findIndex(n => n.id === id)
-    if (idx >= 0) Object.assign(nodes.value[idx], data)
+    if (idx >= 0) {
+      nodes.value[idx] = { ...nodes.value[idx], ...data }
+      bumpVersion()
+    }
   }
+  function bumpVersion() { nodeVersionRef.value = ++nodeVersion }
   function removeNode(id: string) {
     const children = getChildren(id).map(c => c.id)
     for (const childId of children) removeNode(childId)
     edges.value = edges.value.filter(e => e.from !== id && e.to !== id)
     nodes.value = nodes.value.filter(n => n.id !== id)
+    bumpVersion()
   }
 
-  function addEdge(edge: MapEdge) { edges.value.push(edge) }
+  function addEdge(edge: MapEdge) { edges.value.push(edge); bumpVersion() }
   function updateEdge(id: string, data: Partial<MapEdge>) {
     const idx = edges.value.findIndex(e => e.id === id)
     if (idx >= 0) Object.assign(edges.value[idx], data)
@@ -42,6 +49,7 @@ export const useMapStore = defineStore('map', () => {
     edges.value = project.edges
     projectName.value = project.name
     sourcePath.value = project.sourcePath ?? ''
+    bumpVersion()
   }
 
   function toProject(): MapProject {
@@ -61,10 +69,12 @@ export const useMapStore = defineStore('map', () => {
     projectName.value = ''
     projectFilePath.value = ''
     sourcePath.value = ''
+    bumpVersion()
   }
 
   return {
     nodes, edges, projectName, projectFilePath, sourcePath,
+    nodeVersionRef,
     rootNodes, getChildren,
     addNode, updateNode, removeNode,
     addEdge, updateEdge, removeEdge,

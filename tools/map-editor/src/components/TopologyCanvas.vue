@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { VueFlow, type Node, type Edge, type NodeChange, MarkerType } from '@vue-flow/core'
+import { ref, computed } from 'vue'
+import { VueFlow, type Node, type Edge, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { useMapStore } from '../stores/mapStore'
 import { useUiStore } from '../stores/uiStore'
 import LocationNode from './LocationNode.vue'
+import ContextMenu from './ContextMenu.vue'
 
 const mapStore = useMapStore()
 const ui = useUiStore()
@@ -38,6 +39,11 @@ const flowEdges = computed<Edge[]>(() =>
   })
 )
 
+const vueFlowStore = ref<any>(null)
+const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
+let nodeCounter = 0
+let paneClickTimer: ReturnType<typeof setTimeout> | null = null
+
 function onNodeClick({ node }: { node: Node }) {
   ui.selectNode(node.id)
 }
@@ -46,8 +52,81 @@ function onEdgeClick({ edge }: { edge: Edge }) {
   ui.selectEdge(edge.id)
 }
 
-function onPaneClick() {
-  ui.clearSelection()
+function onPaneClick(event: MouseEvent) {
+  if (paneClickTimer) {
+    clearTimeout(paneClickTimer)
+    paneClickTimer = null
+    createRootNode(event)
+  } else {
+    paneClickTimer = setTimeout(() => {
+      paneClickTimer = null
+      ui.clearSelection()
+    }, 250)
+  }
+}
+
+function createRootNode(event: MouseEvent) {
+  if (!vueFlowStore.value) return
+  nodeCounter++
+  const id = `location_${nodeCounter}`
+  const flowPoint = vueFlowStore.value.screenToFlowCoordinate({ x: event.clientX, y: event.clientY })
+  mapStore.addNode({
+    id,
+    name: id,
+    type: 'region',
+    parent: null,
+    tags: [],
+    visible: true,
+    position: { x: flowPoint.x, y: flowPoint.y },
+    collapsed: false,
+  })
+}
+
+function onKeyDown(event: KeyboardEvent) {
+  if (event.key === 'Tab' && ui.selectedNodeId) {
+    event.preventDefault()
+    nodeCounter++
+    const parent = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
+    if (!parent) return
+    const id = `${parent.id}_child_${nodeCounter}`
+    mapStore.addNode({
+      id,
+      name: id,
+      type: 'area',
+      parent: parent.id,
+      tags: [],
+      visible: true,
+      position: { x: parent.position.x + 80, y: parent.position.y + 80 },
+      collapsed: false,
+    })
+    mapStore.addEdge({
+      id: `edge_p_${id}`,
+      from: parent.id,
+      to: id,
+      timeCost: 5,
+      direction: 'bidirectional',
+    })
+  }
+}
+
+function onNodeContextMenu(payload: NodeMouseEvent) {
+  payload.event.preventDefault()
+  const me = payload.event as MouseEvent
+  contextMenu.value = { x: me.clientX, y: me.clientY, nodeId: payload.node.id }
+}
+
+function onEdgeContextMenu(payload: EdgeMouseEvent) {
+  payload.event.preventDefault()
+  const me = payload.event as MouseEvent
+  contextMenu.value = { x: me.clientX, y: me.clientY, edgeId: payload.edge.id }
+}
+
+function closeContextMenu() {
+  contextMenu.value = null
+}
+
+function onPaneReady(instance: any) {
+  vueFlowStore.value = instance
 }
 
 function onNodesChange(changes: NodeChange[]) {
@@ -63,7 +142,7 @@ function onNodesChange(changes: NodeChange[]) {
 </script>
 
 <template>
-  <div class="canvas-wrapper">
+  <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu">
     <VueFlow
       :nodes="flowNodes"
       :edges="flowEdges"
@@ -71,19 +150,31 @@ function onNodesChange(changes: NodeChange[]) {
       :default-viewport="{ x: 0, y: 0, zoom: 1 }"
       :min-zoom="0.1"
       :max-zoom="3"
+      :zoom-on-double-click="false"
       fit-view-on-init
       @nodes-change="onNodesChange"
       @node-click="onNodeClick"
       @edge-click="onEdgeClick"
       @pane-click="onPaneClick"
+      @pane-ready="onPaneReady"
+      @node-context-menu="onNodeContextMenu"
+      @edge-context-menu="onEdgeContextMenu"
     >
       <Background :variant="BackgroundVariant.Dots" :gap="20" />
       <Controls />
     </VueFlow>
+    <ContextMenu
+      v-if="contextMenu"
+      :x="contextMenu.x"
+      :y="contextMenu.y"
+      :node-id="contextMenu.nodeId"
+      :edge-id="contextMenu.edgeId"
+      @close="closeContextMenu"
+    />
   </div>
 </template>
 
 <style scoped>
-.canvas-wrapper { height: 100%; width: 100%; }
+.canvas-wrapper { height: 100%; width: 100%; outline: none; }
 .canvas-wrapper :deep(.vue-flow__node) { cursor: pointer; }
 </style>

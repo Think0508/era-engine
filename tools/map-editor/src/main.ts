@@ -1,11 +1,8 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import '@vue-flow/core/dist/style.css'
+import '@vue-flow/core/dist/theme-default.css'
 import App from './App.vue'
-
-// Catch and display any initialization errors
-window.addEventListener('error', (e) => {
-  document.body.innerHTML = `<pre style="color:red;padding:20px">ERROR: ${e.message}\n${e.filename}:${e.lineno}</pre>`
-})
 
 const app = createApp(App)
 app.use(createPinia())

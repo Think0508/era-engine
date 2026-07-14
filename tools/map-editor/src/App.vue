@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Toolbar from './components/Toolbar.vue'
 import Breadcrumb from './components/Breadcrumb.vue'
+import TopologyCanvas from './components/TopologyCanvas.vue'
 import TagPool from './components/TagPool.vue'
 import NodePanel from './components/NodePanel.vue'
 import EdgePanel from './components/EdgePanel.vue'
@@ -13,11 +14,7 @@ import StatusBar from './components/StatusBar.vue'
     <Breadcrumb />
     <div class="main-area">
       <aside class="sidebar-left"><TagPool /></aside>
-      <main class="canvas-area">
-        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;">
-          Vue Flow 画布（下一步）
-        </div>
-      </main>
+      <main class="canvas-area"><TopologyCanvas /></main>
       <aside class="sidebar-right">
         <NodePanel />
         <EdgePanel />

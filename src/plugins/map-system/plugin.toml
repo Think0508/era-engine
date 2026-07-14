@@ -2,16 +2,11 @@
 id = "map-system"
 name = "地图系统"
 version = "1.0.0"
-description = "地图与移动系统——exit校验、移动逻辑、MapView渲染"
+description = "地图与移动系统——parent链+graph导航、MapView渲染"
 
 [data_dependencies]
 provides = ["map:loaded"]
 depends_on = ["characters:initialized"]
-
-[condition_fields]
-"location.id" = { type = "string", description = "当前地点ID" }
-"location.type" = { type = "string", description = "当前地点类型" }
-"location.parent" = { type = "string", description = "父地点ID" }
 
 [[events.listen]]
 name = "location:enter"

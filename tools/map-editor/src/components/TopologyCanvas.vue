@@ -35,7 +35,6 @@ const flowNodes = computed<Node[]>(() => {
     data: {
       ...n,
       level: levelCache.get(n.id) ?? 1,
-      displayName: ui.showIdOnNode ? n.id : n.name,
     },
   }))
 })
@@ -61,6 +60,8 @@ const flowEdges = computed<Edge[]>(() =>
 
 const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
+const savedViewport = ref({ x: 0, y: 0, zoom: 1 })
+const flowKey = ref(0)
 let edgeCounter = 0
 let paneClickTimer: ReturnType<typeof setTimeout> | null = null
 
@@ -178,17 +179,19 @@ function closeContextMenu() {
 
 function onPaneReady(instance: any) {
   vueFlowStore.value = instance
+  // Restore viewport after remount
+  if (savedViewport.value.x !== 0 || savedViewport.value.y !== 0 || savedViewport.value.zoom !== 1) {
+    instance.setViewport(savedViewport.value)
+    savedViewport.value = { x: 0, y: 0, zoom: 1 }
+  }
 }
 
-// Sync display mode to Vue Flow nodes when toggle changes
+// Toggle display mode: save viewport, remount via key change
 watch(() => ui.showIdOnNode, () => {
-  if (!vueFlowStore.value) return
-  vueFlowStore.value.setNodes((nds: any[]) =>
-    nds.map((nd: any) => ({
-      ...nd,
-      data: { ...nd.data, displayName: ui.showIdOnNode ? nd.id : nd.data.name },
-    }))
-  )
+  if (vueFlowStore.value) {
+    savedViewport.value = vueFlowStore.value.getViewport()
+  }
+  flowKey.value++
 })
 
 function onNodesChange(changes: NodeChange[]) {
@@ -206,6 +209,7 @@ function onNodesChange(changes: NodeChange[]) {
 <template>
   <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu">
     <VueFlow
+      :key="flowKey"
       :nodes="flowNodes"
       :edges="flowEdges"
       :node-types="{ location: LocationNode }"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { VueFlow, type Node, type Edge, MarkerType } from '@vue-flow/core'
+import { VueFlow, type Node, type Edge, type NodeChange, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { useMapStore } from '../stores/mapStore'
@@ -49,6 +49,17 @@ function onEdgeClick({ edge }: { edge: Edge }) {
 function onPaneClick() {
   ui.clearSelection()
 }
+
+function onNodesChange(changes: NodeChange[]) {
+  for (const change of changes) {
+    if (change.type === 'position' && change.dragging === false) {
+      const node = mapStore.nodes.find(n => n.id === change.id)
+      if (node && change.position) {
+        mapStore.updateNode(change.id, { position: { x: change.position.x, y: change.position.y } })
+      }
+    }
+  }
+}
 </script>
 
 <template>
@@ -61,6 +72,7 @@ function onPaneClick() {
       :min-zoom="0.1"
       :max-zoom="3"
       fit-view-on-init
+      @nodes-change="onNodesChange"
       @node-click="onNodeClick"
       @edge-click="onEdgeClick"
       @pane-click="onPaneClick"

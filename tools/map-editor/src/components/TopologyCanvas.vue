@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -179,6 +179,17 @@ function closeContextMenu() {
 function onPaneReady(instance: any) {
   vueFlowStore.value = instance
 }
+
+// Sync display mode to Vue Flow nodes when toggle changes
+watch(() => ui.showIdOnNode, () => {
+  if (!vueFlowStore.value) return
+  vueFlowStore.value.setNodes((nds: any[]) =>
+    nds.map((nd: any) => ({
+      ...nd,
+      data: { ...nd.data, displayName: ui.showIdOnNode ? nd.id : nd.data.name },
+    }))
+  )
+})
 
 function onNodesChange(changes: NodeChange[]) {
   for (const change of changes) {

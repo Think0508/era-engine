@@ -113,6 +113,20 @@ function createRootNode(event: MouseEvent) {
 }
 
 function onKeyDown(event: KeyboardEvent) {
+  if (event.key === 'Delete' || event.key === 'Backspace') {
+    if (ui.selectedNodeId) {
+      event.preventDefault()
+      mapStore.removeNode(ui.selectedNodeId)
+      ui.clearSelection()
+      return
+    }
+    if (ui.selectedEdgeId) {
+      event.preventDefault()
+      mapStore.removeEdge(ui.selectedEdgeId)
+      ui.clearSelection()
+      return
+    }
+  }
   if (event.key === 'Tab' && ui.selectedNodeId) {
     event.preventDefault()
     const parent = mapStore.nodes.find(n => n.id === ui.selectedNodeId)

@@ -4,6 +4,8 @@ import type { MapNode } from '../types/node'
 
 interface LocationNodeData extends MapNode {
   level: number
+  showId: boolean
+  displayName: string
 }
 
 const props = defineProps<NodeProps<LocationNodeData>>()
@@ -17,7 +19,7 @@ const node = props.data
   >
     <div class="node-header">
       <span class="level-badge">{{ node.level }}</span>
-      <span class="node-name">{{ node.name }}</span>
+      <span class="node-name">{{ node.displayName }}</span>
     </div>
     <div class="node-type">{{ node.type }}</div>
     <div v-if="node.tags.length > 0" class="node-tags">

@@ -10,7 +10,23 @@ const node = computed(() => mapStore.nodes.find(n => n.id === ui.selectedNodeId)
 
 function update(field: string, value: any) {
   if (!node.value) return
-  mapStore.updateNode(node.value.id, { [field]: value })
+  if (field === 'name' && ui.syncNameToId && typeof value === 'string' && value.length > 0) {
+    const oldId = node.value.id
+    const newId = value
+    if (oldId === newId) { mapStore.updateNode(oldId, { name: value }); return }
+    if (mapStore.nodes.some(n => n.id === newId)) { mapStore.updateNode(oldId, { name: value }); return }
+    for (const edge of mapStore.edges) {
+      if (edge.from === oldId) mapStore.updateEdge(edge.id, { from: newId })
+      if (edge.to === oldId) mapStore.updateEdge(edge.id, { to: newId })
+    }
+    for (const child of mapStore.nodes) {
+      if (child.parent === oldId) mapStore.updateNode(child.id, { parent: newId })
+    }
+    mapStore.updateNode(oldId, { id: newId, name: value })
+    ui.selectNode(newId)
+  } else {
+    mapStore.updateNode(node.value.id, { [field]: value })
+  }
 }
 function removeTag(tag: string) {
   if (!node.value) return

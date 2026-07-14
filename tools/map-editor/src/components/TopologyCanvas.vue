@@ -29,7 +29,12 @@ const flowNodes = computed<Node[]>(() => {
     id: n.id,
     type: 'location',
     position: n.position,
-    data: { ...n, level: levelCache.get(n.id) ?? 1 },
+    data: {
+      ...n,
+      level: levelCache.get(n.id) ?? 1,
+      showId: ui.showIdOnNode,
+      displayName: ui.showIdOnNode ? n.id : n.name,
+    },
   }))
 })
 

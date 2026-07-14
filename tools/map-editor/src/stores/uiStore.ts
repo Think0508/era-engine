@@ -6,6 +6,8 @@ export const useUiStore = defineStore('ui', () => {
   const selectedEdgeId = ref<string | null>(null)
   const viewport = ref({ x: 0, y: 0, zoom: 1 })
   const breadcrumb = ref<string[]>(['主地图'])
+  const showIdOnNode = ref(false)
+  const syncNameToId = ref(false)
 
   function selectNode(id: string | null) {
     selectedNodeId.value = id
@@ -20,8 +22,13 @@ export const useUiStore = defineStore('ui', () => {
     selectedEdgeId.value = null
   }
 
+  function toggleShowId() { showIdOnNode.value = !showIdOnNode.value }
+  function toggleSyncName() { syncNameToId.value = !syncNameToId.value }
+
   return {
     selectedNodeId, selectedEdgeId, viewport, breadcrumb,
+    showIdOnNode, syncNameToId,
     selectNode, selectEdge, clearSelection,
+    toggleShowId, toggleSyncName,
   }
 })

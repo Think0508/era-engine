@@ -968,6 +968,10 @@ export class ModLoader {
     for (const [id, data] of characters) {
       entitySystem.register('character', id, data)
     }
+    // Also register locations so map plugin can query them
+    for (const [id, data] of mod.locations) {
+      entitySystem.register('location', id, data as any)
+    }
   }
 
   getMod(): LoadedMod | null {

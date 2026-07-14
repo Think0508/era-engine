@@ -1,5 +1,5 @@
 import { parse as parseTOML } from '@iarna/toml'
-import type { EntityData, LocationData } from './types'
+import type { Edge, EntityData, LocationData } from './types'
 import type { Effect } from './effect-type-registry'
 import { resolveTemplate, deepMerge } from './template'
 import { entitySystem } from './entity-system'
@@ -281,6 +281,7 @@ export interface LoadedMod {
   dependencies: ModDependency[]
   entities: Map<string, Map<string, EntityData>>
   locations: Map<string, LocationData>
+  graph: Edge[]
   bindings: Record<string, Record<string, string>>
   theme: Record<string, Record<string, string>>
   attributes: Record<string, AttributeDefinition>
@@ -427,6 +428,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     dependencies: (metaSection.dependencies as ModDependency[]) ?? [],
     entities: new Map(),
     locations: new Map(),
+    graph: [],
     bindings: {},
     theme: {},
     attributes: {},

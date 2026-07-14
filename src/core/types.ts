@@ -9,13 +9,19 @@ export interface GameTimeData {
   year: number
 }
 
+export interface Edge {
+  from: string
+  to: string
+  time_cost: number
+  condition?: string
+}
+
 export interface LocationData {
   id: string
   name: string
   parent: string | null
   type: string
   tags: string[]
-  exits: { target: string; name: string; time_cost?: number }[]
 }
 
 export type EntityData = Record<string, any>

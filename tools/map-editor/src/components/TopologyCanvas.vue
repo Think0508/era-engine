@@ -41,9 +41,14 @@ const flowEdges = computed<Edge[]>(() =>
 
 const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
-let nodeCounter = 0
 let edgeCounter = 0
 let paneClickTimer: ReturnType<typeof setTimeout> | null = null
+
+function nextNodeId(prefix: string): string {
+  let n = 0
+  while (mapStore.nodes.some(node => node.id === `${prefix}${n}`)) n++
+  return `${prefix}${n}`
+}
 
 function onNodeClick({ node }: { node: Node }) {
   ui.selectNode(node.id)
@@ -69,8 +74,7 @@ function onPaneClick(event: MouseEvent) {
 function createRootNode(event: MouseEvent) {
   if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
   if (!vueFlowStore.value) return
-  nodeCounter++
-  const id = `location_${nodeCounter}`
+  const id = nextNodeId('location_')
   const flowPoint = vueFlowStore.value.screenToFlowCoordinate({ x: event.clientX, y: event.clientY })
   mapStore.addNode({
     id,
@@ -87,10 +91,9 @@ function createRootNode(event: MouseEvent) {
 function onKeyDown(event: KeyboardEvent) {
   if (event.key === 'Tab' && ui.selectedNodeId) {
     event.preventDefault()
-    nodeCounter++
     const parent = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
     if (!parent) return
-    const id = `${parent.id}_child_${nodeCounter}`
+    const id = nextNodeId(`${parent.id}_child_`)
     mapStore.addNode({
       id,
       name: id,
@@ -113,6 +116,8 @@ function onKeyDown(event: KeyboardEvent) {
 
 function onConnect(connection: Connection) {
   if (!connection.source || !connection.target) return
+  // Prevent duplicate edges between same nodes
+  if (mapStore.edges.some(e => e.from === connection.source && e.to === connection.target)) return
   edgeCounter++
   mapStore.addEdge({
     id: `edge_${edgeCounter}`,

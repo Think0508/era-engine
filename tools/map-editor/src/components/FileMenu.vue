@@ -32,6 +32,10 @@ async function saveProject() {
 }
 
 async function importFromMod() {
+  if (mapStore.nodes.length > 0) {
+    const ok = confirm('导入将覆盖当前项目，确定继续？')
+    if (!ok) return
+  }
   const dir = await open({ directory: true, multiple: false })
   if (!dir) return
   try {

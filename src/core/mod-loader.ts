@@ -964,9 +964,10 @@ export class ModLoader {
 
   private registerEntities(mod: LoadedMod): void {
     const characters = mod.entities.get('character')
-    if (!characters) return
-    for (const [id, data] of characters) {
-      entitySystem.register('character', id, data)
+    if (characters) {
+      for (const [id, data] of characters) {
+        entitySystem.register('character', id, data)
+      }
     }
     // Also register locations so map plugin can query them
     for (const [id, data] of mod.locations) {

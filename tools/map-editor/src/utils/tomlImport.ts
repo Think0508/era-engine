@@ -1,4 +1,3 @@
-import parse from '@iarna/toml/parse-string.js'
 import type { MapNode } from '../types/node'
 import type { MapEdge, EdgeDirection } from '../types/edge'
 
@@ -14,7 +13,8 @@ export interface ImportResult {
   edges: MapEdge[]
 }
 
-export function parseLocationsToml(raw: string, _regionId: string): MapNode[] {
+export async function parseLocationsToml(raw: string, _regionId: string): Promise<MapNode[]> {
+  const { default: parse } = await import('@iarna/toml/parse-string.js')
   const data = parse(raw) as any
   const entries: any[] = data.locations ?? [data]
   const nodes: MapNode[] = []
@@ -35,7 +35,8 @@ export function parseLocationsToml(raw: string, _regionId: string): MapNode[] {
   return nodes
 }
 
-export function parseGraphToml(raw: string): RawEdge[] {
+export async function parseGraphToml(raw: string): Promise<RawEdge[]> {
+  const { default: parse } = await import('@iarna/toml/parse-string.js')
   const data = parse(raw) as any
   return (data.edges as RawEdge[]) ?? []
 }
@@ -73,14 +74,14 @@ export async function importFromDir(mapsDir: string): Promise<ImportResult> {
   try {
     const locFiles = await readTomlFiles(`${mapsDir}/locations`)
     for (const { content } of locFiles) {
-      allNodes.push(...parseLocationsToml(content, 'imported'))
+      allNodes.push(...await parseLocationsToml(content, 'imported'))
     }
   } catch { /* no locations dir */ }
 
   try {
     const graphFiles = await readTomlFiles(`${mapsDir}/graph`)
     for (const { content } of graphFiles) {
-      allEdges.push(...edgesToMapEdges(parseGraphToml(content)))
+      allEdges.push(...edgesToMapEdges(await parseGraphToml(content)))
     }
   } catch { /* no graph dir */ }
 

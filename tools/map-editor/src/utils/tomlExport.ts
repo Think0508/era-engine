@@ -1,4 +1,3 @@
-import stringify from '@iarna/toml/stringify.js'
 import type { MapNode } from '../types/node'
 import type { MapEdge } from '../types/edge'
 
@@ -9,7 +8,9 @@ export interface ExportResult {
   edgeCount: number
 }
 
-export function exportToToml(nodes: MapNode[], edges: MapEdge[]): ExportResult {
+export async function exportToToml(nodes: MapNode[], edges: MapEdge[]): Promise<ExportResult> {
+  const { default: stringify } = await import('@iarna/toml/stringify.js')
+
   const locEntries = nodes.map(n => ({
     id: n.id,
     name: n.name,

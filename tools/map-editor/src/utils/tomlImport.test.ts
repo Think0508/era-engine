@@ -24,8 +24,8 @@ time_cost = 5
 `
 
 describe('tomlImport', () => {
-  it('parses [[locations]] into MapNodes', () => {
-    const nodes = parseLocationsToml(sampleLocations, 'test')
+  it('parses [[locations]] into MapNodes', async () => {
+    const nodes = await parseLocationsToml(sampleLocations, 'test')
     expect(nodes).toHaveLength(2)
     expect(nodes[0].id).toBe('town_square')
     expect(nodes[0].parent).toBeNull()
@@ -33,8 +33,8 @@ describe('tomlImport', () => {
     expect(nodes[1].tags).toContain('has_drink')
   })
 
-  it('parses graph [[edges]] into MapEdges', () => {
-    const raw = parseGraphToml(sampleGraph)
+  it('parses graph [[edges]] into MapEdges', async () => {
+    const raw = await parseGraphToml(sampleGraph)
     const edges = edgesToMapEdges(raw)
     expect(edges).toHaveLength(1)
     expect(edges[0].from).toBe('town_square')

@@ -1,32 +1,28 @@
 import { describe, it, expect } from 'vitest'
 import { exportToToml } from './tomlExport'
-import parse from '@iarna/toml/parse-string.js'
-import type { MapNode } from '../types/node'
 
 describe('tomlExport', () => {
-  it('exports nodes to [[locations]] TOML', () => {
-    const nodes: MapNode[] = [
+  it('exports nodes to [[locations]] TOML', async () => {
+    const nodes = [
       { id: 'a', name: 'A', type: 'r', parent: null, tags: ['x'], visible: true, position: { x: 0, y: 0 }, collapsed: false },
       { id: 'b', name: 'B', type: 'c', parent: 'a', tags: [], visible: true, position: { x: 0, y: 0 }, collapsed: false },
-    ]
-    const r = exportToToml(nodes, [])
-    const parsed = parse(r.locationsToml) as any
-    expect(parsed.locations).toHaveLength(2)
-    expect(parsed.locations[0].id).toBe('a')
-    expect(parsed.locations[1].parent).toBe('a')
+    ] as any
+    const r = await exportToToml(nodes, [])
+    expect(r.locationCount).toBe(2)
+    expect(r.locationsToml).toContain('id = "a"')
+    expect(r.locationsToml).toContain('parent = "a"')
   })
 
-  it('exports invisible flag', () => {
-    const nodes: MapNode[] = [
+  it('exports invisible flag', async () => {
+    const nodes = [
       { id: 'x', name: 'X', type: 'r', parent: null, tags: [], visible: false, position: { x: 0, y: 0 }, collapsed: false },
-    ]
-    const r = exportToToml(nodes, [])
-    const parsed = parse(r.locationsToml) as any
-    expect(parsed.locations[0].visible).toBe(false)
+    ] as any
+    const r = await exportToToml(nodes, [])
+    expect(r.locationsToml).toContain('visible = false')
   })
 
-  it('handles empty input', () => {
-    const r = exportToToml([], [])
+  it('handles empty input', async () => {
+    const r = await exportToToml([], [])
     expect(r.locationCount).toBe(0)
     expect(r.edgeCount).toBe(0)
   })

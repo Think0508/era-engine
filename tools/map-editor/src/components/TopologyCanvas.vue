@@ -66,6 +66,7 @@ const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string
 const displayKey = ref(0)
 watch(() => [ui.showIdOnNode, ui.levelColors], () => { displayKey.value++ })
 const bgUrl = ref('')
+const bgImageSize = ref({ w: 0, h: 0 })
 
 watch(() => mapStore.backgroundPath, (path) => {
   if (path) {
@@ -73,6 +74,13 @@ watch(() => mapStore.backgroundPath, (path) => {
   } else {
     bgUrl.value = ''
   }
+})
+
+watch(bgUrl, (url) => {
+  if (!url) { bgImageSize.value = { w: 0, h: 0 }; return }
+  const img = new Image()
+  img.onload = () => { bgImageSize.value = { w: img.naturalWidth, h: img.naturalHeight } }
+  img.src = url
 })
 
 let edgeCounter = 0

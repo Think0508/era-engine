@@ -7,4 +7,5 @@ export interface MapEdge {
   timeCost: number
   direction: EdgeDirection
   condition?: string
+  attrs?: Record<string, any>
 }

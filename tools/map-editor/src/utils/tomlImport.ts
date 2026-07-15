@@ -6,6 +6,7 @@ interface RawEdge {
   to: string
   time_cost?: number
   condition?: string
+  [key: string]: any
 }
 
 export interface ImportResult {
@@ -14,6 +15,7 @@ export interface ImportResult {
 }
 
 const KNOWN_LOC_FIELDS = new Set(['id', 'name', 'type', 'parent', 'tags', 'visible', 'exits'])
+const KNOWN_EDGE_FIELDS = new Set(['from', 'to', 'time_cost', 'condition'])
 
 export async function parseLocationsToml(raw: string, _regionId: string): Promise<MapNode[]> {
   const { default: parse } = await import('@iarna/toml/parse-string.js')
@@ -50,14 +52,21 @@ export async function parseGraphToml(raw: string): Promise<RawEdge[]> {
 }
 
 export function edgesToMapEdges(raw: RawEdge[]): MapEdge[] {
-  return raw.map((e, i) => ({
-    id: `edge_${i}`,
-    from: e.from,
-    to: e.to,
-    timeCost: e.time_cost ?? 10,
-    direction: 'bidirectional' as EdgeDirection,
-    condition: e.condition,
-  }))
+  return raw.map((e, i) => {
+    const attrs: Record<string, any> = {}
+    for (const key of Object.keys(e)) {
+      if (!KNOWN_EDGE_FIELDS.has(key)) attrs[key] = e[key]
+    }
+    return {
+      id: `edge_${i}`,
+      from: e.from,
+      to: e.to,
+      timeCost: e.time_cost ?? 10,
+      direction: 'bidirectional' as EdgeDirection,
+      condition: e.condition,
+      attrs: Object.keys(attrs).length > 0 ? attrs : undefined,
+    }
+  })
 }
 
 export async function importFromDir(mapsDir: string): Promise<ImportResult> {

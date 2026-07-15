@@ -8,9 +8,33 @@ const ui = useUiStore()
 
 const edge = computed(() => mapStore.edges.find(e => e.id === ui.selectedEdgeId) ?? null)
 
+const edgeAttrs = computed(() => (edge.value as any)?.attrs ?? {})
+
 function update(field: string, value: any) {
   if (!edge.value) return
   mapStore.updateEdge(edge.value.id, { [field]: value })
+}
+
+function addPathPoint() {
+  if (!edge.value) return
+  const path = [...(edgeAttrs.value.path ?? []), { x: 0.5, y: 0.5 }]
+  mapStore.updateEdge(edge.value.id, { attrs: { ...edgeAttrs.value, path } })
+}
+
+function removePathPoint(index: number) {
+  if (!edge.value) return
+  const path = [...(edgeAttrs.value.path ?? [])]
+  path.splice(index, 1)
+  mapStore.updateEdge(edge.value.id, { attrs: { ...edgeAttrs.value, path } })
+}
+
+function updatePathPoint(index: number, field: string, event: Event) {
+  if (!edge.value) return
+  const val = parseFloat((event.target as HTMLInputElement).value)
+  if (isNaN(val)) return
+  const path = [...(edgeAttrs.value.path ?? [])]
+  path[index] = { ...path[index], [field]: Math.max(0, Math.min(1, val)) }
+  mapStore.updateEdge(edge.value.id, { attrs: { ...edgeAttrs.value, path } })
 }
 </script>
 
@@ -28,6 +52,15 @@ function update(field: string, value: any) {
       </select>
     </label>
     <label>条件<textarea :value="edge.condition ?? ''" rows="2" @change="e => update('condition', (e.target as HTMLTextAreaElement).value || undefined)" /></label>
+    <div v-if="mapStore.isModeB" class="panel-section">
+      <label>路径控制点</label>
+      <div v-for="(pt, pi) in (edgeAttrs.path ?? [])" :key="pi" class="path-point-row">
+        <input type="number" step="0.01" min="0" max="1" :value="pt.x" @change="updatePathPoint(pi, 'x', $event)" placeholder="x" />
+        <input type="number" step="0.01" min="0" max="1" :value="pt.y" @change="updatePathPoint(pi, 'y', $event)" placeholder="y" />
+        <button @click="removePathPoint(pi)">×</button>
+      </div>
+      <button @click="addPathPoint" class="add-btn">+ 添加控制点</button>
+    </div>
   </div>
   <div v-else class="panel panel-empty"><p>未选中边</p></div>
 </template>
@@ -39,4 +72,9 @@ function update(field: string, value: any) {
 .panel input, .panel select, .panel textarea { width: 100%; box-sizing: border-box; padding: 4px 8px; }
 .panel textarea { resize: vertical; font-family: monospace; font-size: 12px; }
 .panel-empty { color: #94a3b8; text-align: center; padding-top: 40px; }
+.panel-section { margin-top: 12px; border-top: 1px solid #e2e8f0; padding-top: 12px; }
+.path-point-row { display: flex; gap: 4px; margin-bottom: 4px; align-items: center; }
+.path-point-row input { width: 48px; padding: 2px 4px; font-size: 11px; }
+.path-point-row button { padding: 2px 6px; cursor: pointer; }
+.add-btn { margin-top: 4px; padding: 2px 8px; font-size: 12px; cursor: pointer; }
 </style>

@@ -2,6 +2,7 @@ import type { MapNode } from '../types/node'
 import type { MapEdge } from '../types/edge'
 
 const KNOWN_LOC_FIELDS = new Set(['id', 'name', 'type', 'parent', 'tags', 'visible', 'exits', 'position', 'collapsed', 'attrs'])
+const KNOWN_EDGE_FIELDS = new Set(['from', 'to', 'time_cost', 'condition', 'attrs'])
 
 export interface ExportResult {
   locationsToml: string
@@ -31,12 +32,18 @@ export async function exportToToml(nodes: MapNode[], edges: MapEdge[]): Promise<
 
   const locationsToml = stringify({ locations: locEntries } as any)
 
-  const edgeEntries = edges.map(e => ({
-    from: e.from,
-    to: e.to,
-    time_cost: e.timeCost,
-    ...(e.condition ? { condition: e.condition } : {}),
-  }))
+  const edgeEntries = edges.map(e => {
+    const safeAttrs = e.attrs ? Object.fromEntries(
+      Object.entries(e.attrs).filter(([k]) => !KNOWN_EDGE_FIELDS.has(k))
+    ) : {}
+    return {
+      from: e.from,
+      to: e.to,
+      time_cost: e.timeCost,
+      ...(e.condition ? { condition: e.condition } : {}),
+      ...safeAttrs,
+    }
+  })
 
   const edgesToml = stringify({ edges: edgeEntries } as any)
 

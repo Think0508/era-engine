@@ -169,19 +169,26 @@ export function onEnable(ctx: PluginContext): void {
     modes: ['exploration'],
     priority: 5,
     source: 'plugin:map-system',
-    handler: () => {
+    handler: async () => {
       const loc = gameContext.getContext().location
       if (!loc) return
-      const gc = gameContext.getContext()
+      // Try to load a visual map layout
       const mod = modLoader.getMod()
-      const cfg = mod?.moveConfig ?? { parent_time_cost: 10, child_time_cost: 5, edge_default_time_cost: 10 }
-      const reachable = getReachable(loc.id, gc, mod?.graph ?? [], cfg)
-      narrativeLog.write('地图', 'map', 'map-system', true, {
-        locationId: loc.id,
-        locationName: loc.name,
-        locationType: loc.type,
-        reachable,
-      })
+      const hasLayout = mod?.layouts.has(loc.id) ?? false
+      if (hasLayout) {
+        await gameContext.enterMode('map')
+      } else {
+        // No visual layout — show text map as before
+        const gc = gameContext.getContext()
+        const cfg = mod?.moveConfig ?? { parent_time_cost: 10, child_time_cost: 5, edge_default_time_cost: 10 }
+        const reachable = getReachable(loc.id, gc, mod?.graph ?? [], cfg)
+        narrativeLog.write('地图', 'map', 'map-system', true, {
+          locationId: loc.id,
+          locationName: loc.name,
+          locationType: loc.type,
+          reachable,
+        })
+      }
     },
   }
   ctx.commands.register(moveCmd)

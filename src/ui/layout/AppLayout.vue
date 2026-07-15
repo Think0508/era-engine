@@ -10,6 +10,7 @@ import ModernLayout from './ModernLayout.vue'
 import FullScreenTextLayout from './FullScreenTextLayout.vue'
 import DailyMenuLayout from './DailyMenuLayout.vue'
 import CombatLayout from './CombatLayout.vue'
+import MapLayout from './MapLayout.vue'
 import FullscreenOutput from '../components/FullscreenOutput.vue'
 import FullscreenHistory from '../components/FullscreenHistory.vue'
 
@@ -41,6 +42,8 @@ const layoutComponent = computed(() => {
   if (gameStore.isExecuting) return FullScreenTextLayout
   // 每日菜单模式
   if (gameStore.currentMode === 'daily_menu') return DailyMenuLayout
+  // 地图模式
+  if (gameStore.currentMode === 'map') return MapLayout
   // 战斗模式 → 战斗专用布局
   if (gameStore.currentMode === 'combat') return CombatLayout
   // 对话模式 → 全屏文本（对话在日志中处理）

@@ -2,8 +2,10 @@
 import FileMenu from './FileMenu.vue'
 import ExportBar from './ExportBar.vue'
 import { useUiStore } from '../stores/uiStore'
+import { useMapStore } from '../stores/mapStore'
 
 const ui = useUiStore()
+const mapStore = useMapStore()
 </script>
 
 <template>
@@ -21,6 +23,11 @@ const ui = useUiStore()
     <label class="toggle-item" title="按层级给节点不同底色">
       <input type="checkbox" :checked="ui.levelColors" @change="ui.toggleLevelColors()" />
       层级配色
+    </label>
+    <div class="toolbar-divider" />
+    <label class="toggle-item" title="切换至视觉地图模式（背景图+点击区域）">
+      <input type="checkbox" :checked="mapStore.isModeB" @change="mapStore.toggleModeB()" />
+      视觉地图
     </label>
     <div class="spacer" />
     <ExportBar />

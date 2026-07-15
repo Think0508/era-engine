@@ -4,6 +4,7 @@ import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type N
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { useMapStore } from '../stores/mapStore'
+import { convertFileSrc } from '@tauri-apps/api/core'
 import { useUiStore } from '../stores/uiStore'
 import LocationNode from './LocationNode.vue'
 import ContextMenu from './ContextMenu.vue'
@@ -64,6 +65,16 @@ const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
 const displayKey = ref(0)
 watch(() => [ui.showIdOnNode, ui.levelColors], () => { displayKey.value++ })
+const bgUrl = ref('')
+
+watch(() => mapStore.backgroundPath, (path) => {
+  if (path) {
+    try { bgUrl.value = convertFileSrc(path) } catch { bgUrl.value = path }
+  } else {
+    bgUrl.value = ''
+  }
+})
+
 let edgeCounter = 0
 let paneClickTimer: ReturnType<typeof setTimeout> | null = null
 const SNAP_DISTANCE = 60
@@ -218,6 +229,30 @@ function onKeyDown(event: KeyboardEvent) {
   }
 }
 
+const bgFileInput = ref<HTMLInputElement | null>(null)
+
+function onBgFileSelected(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  const url = URL.createObjectURL(file)
+  bgUrl.value = url
+  mapStore.backgroundPath = url
+  input.value = ''
+}
+
+function onCanvasDrop(event: DragEvent) {
+  event.preventDefault()
+  const file = event.dataTransfer?.files?.[0]
+  if (file && file.type.startsWith('image/')) {
+    const url = URL.createObjectURL(file)
+    bgUrl.value = url
+    mapStore.backgroundPath = url
+  }
+}
+
+function onCanvasDragOver(event: DragEvent) { event.preventDefault() }
+
 function onConnect(connection: Connection) {
   if (!connection.source || !connection.target) return
   // Prevent duplicate edges between same nodes
@@ -307,7 +342,15 @@ function onNodeDragStop({ node }: { node: Node }) {
 </script>
 
 <template>
-  <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu">
+  <div
+    class="canvas-wrapper"
+    tabindex="0"
+    @keydown="onKeyDown"
+    @click="closeContextMenu"
+    :style="mapStore.isModeB && bgUrl ? { backgroundImage: `url(${bgUrl})`, backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' } : {}"
+    @dragover="onCanvasDragOver"
+    @drop="onCanvasDrop"
+  >
     <VueFlow
       :key="displayKey"
       :nodes="flowNodes"
@@ -338,6 +381,13 @@ function onNodeDragStop({ node }: { node: Node }) {
       :node-id="contextMenu.nodeId"
       :edge-id="contextMenu.edgeId"
       @close="closeContextMenu"
+    />
+    <input
+      ref="bgFileInput"
+      type="file"
+      accept="image/png,image/jpeg,image/webp"
+      style="display:none"
+      @change="onBgFileSelected"
     />
     <input
       ref="renameInput"

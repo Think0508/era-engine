@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick, onUnmounted, markRaw } from 'vue'
 import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -11,6 +11,7 @@ import ContextMenu from './ContextMenu.vue'
 
 const mapStore = useMapStore()
 const ui = useUiStore()
+const nodeTypes = { location: markRaw(LocationNode) }
 
 const flowNodes = computed<Node[]>(() => {
   // Force re-compute on data mutations AND display toggle
@@ -431,7 +432,7 @@ function onNodeDragStop({ node }: { node: Node }) {
       :key="displayKey"
       :nodes="flowNodes"
       :edges="flowEdges"
-      :node-types="{ location: LocationNode }"
+      :node-types="nodeTypes"
       :default-viewport="{ x: 0, y: 0, zoom: 1 }"
       :min-zoom="0.1"
       :max-zoom="3"

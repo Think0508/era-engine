@@ -37,7 +37,7 @@ const borderColor = computed(() => {
   return LEVEL_BORDER[Math.min(node.level - 1, LEVEL_BORDER.length - 1)] ?? '#3b82f6'
 })
 
-const showId = computed(() => ui.showIdOnNode)
+const displayText = computed(() => ui.showIdOnNode ? node.id : node.name)
 </script>
 
 <template>
@@ -49,7 +49,7 @@ const showId = computed(() => ui.showIdOnNode)
     <Handle type="target" :position="Position.Top" />
     <div class="node-header">
       <span class="level-badge" :style="{ background: borderColor }">{{ node.level }}</span>
-      <span class="node-name"><span v-show="!showId">{{ node.name }}</span><span v-show="showId">{{ node.id }}</span></span>
+      <span class="node-name">{{ displayText }}</span>
     </div>
     <div class="node-type">{{ node.type }}</div>
     <div v-if="node.tags.length > 0" class="node-tags">

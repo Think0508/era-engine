@@ -67,6 +67,11 @@ export const useMapStore = defineStore('map', () => {
 
   function toggleModeB() { isModeB.value = !isModeB.value }
 
+  const drawingZone = ref(false)
+  const drawTargetNodeId = ref<string | null>(null)
+  function startDrawZone(nodeId: string) { drawingZone.value = true; drawTargetNodeId.value = nodeId }
+  function stopDrawZone() { drawingZone.value = false; drawTargetNodeId.value = null }
+
   function clear() {
     nodes.value = []
     edges.value = []
@@ -83,7 +88,7 @@ export const useMapStore = defineStore('map', () => {
     addNode, updateNode, removeNode,
     addEdge, updateEdge, removeEdge,
     loadProject, toProject, clear,
-    isModeB, backgroundPath,
-    toggleModeB,
+    isModeB, backgroundPath, drawingZone, drawTargetNodeId,
+    toggleModeB, startDrawZone, stopDrawZone,
   }
 })

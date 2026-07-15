@@ -261,6 +261,56 @@ function onCanvasDrop(event: DragEvent) {
 
 function onCanvasDragOver(event: DragEvent) { event.preventDefault() }
 
+// Click zone drawing state
+const drawStart = ref<{ x: number; y: number } | null>(null)
+const drawCurrent = ref<{ x: number; y: number } | null>(null)
+
+function onCanvasMouseDown(event: MouseEvent) {
+  if (!mapStore.drawingZone || !mapStore.drawTargetNodeId || !vueFlowStore.value) return
+  const fp = vueFlowStore.value.screenToFlowCoordinate({ x: event.clientX, y: event.clientY })
+  drawStart.value = fp
+  drawCurrent.value = fp
+}
+
+function onCanvasMouseMove(event: MouseEvent) {
+  if (!drawStart.value || !vueFlowStore.value) return
+  const fp = vueFlowStore.value.screenToFlowCoordinate({ x: event.clientX, y: event.clientY })
+  drawCurrent.value = fp
+}
+
+function onCanvasMouseUp() {
+  if (!drawStart.value || !drawCurrent.value || !mapStore.drawTargetNodeId) return
+  const x = Math.min(drawStart.value.x, drawCurrent.value.x)
+  const y = Math.min(drawStart.value.y, drawCurrent.value.y)
+  const w = Math.abs(drawCurrent.value.x - drawStart.value.x)
+  const h = Math.abs(drawCurrent.value.y - drawStart.value.y)
+  if (w > 5 && h > 5) {
+    const node = mapStore.nodes.find(n => n.id === mapStore.drawTargetNodeId)
+    if (node) {
+      const attrs = (node as any).attrs ?? {}
+      const zones = [...(attrs.clickZones ?? []), { x, y, w, h }]
+      // Convert pixel coords to proportional based on bg image size
+      const bg = bgImageSize.value
+      if (bg.w > 0 && bg.h > 0) {
+        zones[zones.length - 1] = { x: x / bg.w, y: y / bg.h, w: w / bg.w, h: h / bg.h }
+      }
+      mapStore.updateNode(mapStore.drawTargetNodeId, { attrs: { ...attrs, clickZones: zones } })
+    }
+  }
+  drawStart.value = null
+  drawCurrent.value = null
+  mapStore.stopDrawZone()
+}
+
+function getDrawStyle() {
+  if (!drawStart.value || !drawCurrent.value) return {}
+  const x = Math.min(drawStart.value.x, drawCurrent.value.x)
+  const y = Math.min(drawStart.value.y, drawCurrent.value.y)
+  const w = Math.abs(drawCurrent.value.x - drawStart.value.x)
+  const h = Math.abs(drawCurrent.value.y - drawStart.value.y)
+  return { left: `${x}px`, top: `${y}px`, width: `${w}px`, height: `${h}px` }
+}
+
 function onConnect(connection: Connection) {
   if (!connection.source || !connection.target) return
   // Prevent duplicate edges between same nodes
@@ -356,9 +406,18 @@ function onNodeDragStop({ node }: { node: Node }) {
     @keydown="onKeyDown"
     @click="closeContextMenu"
     :style="mapStore.isModeB && bgUrl ? { backgroundImage: `url(${bgUrl})`, backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' } : {}"
-    @dragover="onCanvasDragOver"
-    @drop="onCanvasDrop"
+    @dragover.prevent="onCanvasDragOver"
+    @drop.prevent="onCanvasDrop"
+    @mousedown="onCanvasMouseDown"
+    @mousemove="onCanvasMouseMove"
+    @mouseup="onCanvasMouseUp"
   >
+    <!-- 注释：绘制点击区域时的矩形预览 -->
+    <div
+      v-if="drawStart && drawCurrent && mapStore.drawingZone"
+      class="draw-zone-preview"
+      :style="getDrawStyle()"
+    />
     <VueFlow
       :key="displayKey"
       :nodes="flowNodes"
@@ -378,6 +437,8 @@ function onNodeDragStop({ node }: { node: Node }) {
       @pane-ready="onPaneReady"
       @node-context-menu="onNodeContextMenu"
       @edge-context-menu="onEdgeContextMenu"
+      @dragover.prevent="onCanvasDragOver"
+      @drop.prevent="onCanvasDrop"
     >
       <Background :variant="BackgroundVariant.Dots" :gap="20" />
       <Controls />
@@ -413,5 +474,9 @@ function onNodeDragStop({ node }: { node: Node }) {
 .rename-input {
   position: fixed; left: -9999px; top: -9999px;
   width: 1px; height: 1px; opacity: 0;
+}
+.draw-zone-preview {
+  position: absolute; border: 2px dashed #3b82f6;
+  background: rgba(59,130,246,0.15); pointer-events: none; z-index: 100;
 }
 </style>

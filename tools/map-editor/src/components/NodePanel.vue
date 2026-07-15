@@ -103,6 +103,13 @@ function updateZoom(index: number, event: Event) {
     </div>
     <div v-if="mapStore.isModeB" class="panel-section">
       <label>点击区域</label>
+      <button
+        v-if="!mapStore.drawingZone"
+        class="draw-btn"
+        @click="mapStore.startDrawZone(node.id)"
+        :disabled="mapStore.drawingZone"
+      >绘制点击区域</button>
+      <span v-else class="draw-hint">在画布上拖动绘制矩形</span>
       <div v-for="(zone, zi) in (nodeAttrs.clickZones ?? [])" :key="zi" class="click-zone-row">
         <input type="number" step="0.01" min="0" max="1" :value="zone.x" @change="updateClickZone(zi, 'x', $event)" placeholder="x" />
         <input type="number" step="0.01" min="0" max="1" :value="zone.y" @change="updateClickZone(zi, 'y', $event)" placeholder="y" />
@@ -126,6 +133,8 @@ function updateZoom(index: number, event: Event) {
 .tag { background: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
 .tag-remove { cursor: pointer; margin-left: 4px; color: #ef4444; }
 .panel-empty { color: #94a3b8; text-align: center; padding-top: 40px; }
+.draw-btn { padding: 4px 12px; cursor: pointer; font-size: 12px; margin-bottom: 8px; }
+.draw-hint { font-size: 11px; color: #3b82f6; display: block; margin-bottom: 8px; }
 .panel-section { margin-top: 12px; border-top: 1px solid #e2e8f0; padding-top: 12px; }
 .click-zone-row { display: flex; gap: 4px; margin-bottom: 4px; align-items: center; }
 .click-zone-row input { width: 48px; padding: 2px 4px; font-size: 11px; }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onUnmounted, markRaw } from 'vue'
+import { ref, computed, watch, nextTick, markRaw } from 'vue'
 import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -72,7 +72,12 @@ const bgImageSize = ref({ w: 0, h: 0 })
 
 watch(() => mapStore.backgroundPath, (path) => {
   if (path) {
-    try { bgUrl.value = convertFileSrc(path) } catch { bgUrl.value = path }
+    // If already a data/blob URL (from file input), use as-is
+    if (path.startsWith('data:') || path.startsWith('blob:')) {
+      bgUrl.value = path
+    } else {
+      try { bgUrl.value = convertFileSrc(path) } catch { bgUrl.value = path }
+    }
   } else {
     bgUrl.value = ''
   }
@@ -254,19 +259,18 @@ function onCanvasDrop(event: DragEvent) {
   }
 }
 
-// Background image via blob URL (avoids Tauri CSP issues with data URLs)
+// Background image: read file as base64 data URL
 function onBgFileSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   if (!file) return
-  // Revoke previous blob URL to avoid memory leak
-  if (bgUrl.value?.startsWith('blob:')) URL.revokeObjectURL(bgUrl.value)
-  bgUrl.value = URL.createObjectURL(file)
+  const reader = new FileReader()
+  reader.onload = () => {
+    bgUrl.value = reader.result as string
+  }
+  reader.readAsDataURL(file)
   input.value = ''
 }
-
-// Cleanup blob URL on unmount
-onUnmounted(() => { if (bgUrl.value?.startsWith('blob:')) URL.revokeObjectURL(bgUrl.value) })
 
 // Click zone drawing — stores screen coords for preview, flow coords for saving
 const drawStartScreen = ref<{ x: number; y: number } | null>(null)

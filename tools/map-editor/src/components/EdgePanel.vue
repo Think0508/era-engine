@@ -36,6 +36,15 @@ function updatePathPoint(index: number, field: string, event: Event) {
   path[index] = { ...path[index], [field]: Math.max(0, Math.min(1, val)) }
   mapStore.updateEdge(edge.value.id, { attrs: { ...edgeAttrs.value, path } })
 }
+
+function updateZoom(index: number, event: Event) {
+  if (!edge.value) return
+  const val = parseInt((event.target as HTMLInputElement).value, 10)
+  if (isNaN(val) || val < 1) return
+  const zoom = [...((edgeAttrs.value.zoom as [number, number]) ?? [1, 1])]
+  zoom[index] = val
+  mapStore.updateEdge(edge.value.id, { attrs: { ...edgeAttrs.value, zoom } })
+}
 </script>
 
 <template>
@@ -61,6 +70,14 @@ function updatePathPoint(index: number, field: string, event: Event) {
       </div>
       <button @click="addPathPoint" class="add-btn">+ 添加控制点</button>
     </div>
+    <template v-if="mapStore.isModeB">
+      <label>Zoom 范围</label>
+      <div class="zoom-row">
+        <input type="number" min="1" :value="(edgeAttrs.zoom ?? [1,1])[0]" @change="updateZoom(0, $event)" placeholder="min" />
+        <span>—</span>
+        <input type="number" min="1" :value="(edgeAttrs.zoom ?? [1,1])[1]" @change="updateZoom(1, $event)" placeholder="max" />
+      </div>
+    </template>
   </div>
   <div v-else class="panel panel-empty"><p>未选中边</p></div>
 </template>
@@ -77,4 +94,6 @@ function updatePathPoint(index: number, field: string, event: Event) {
 .path-point-row input { width: 48px; padding: 2px 4px; font-size: 11px; }
 .path-point-row button { padding: 2px 6px; cursor: pointer; }
 .add-btn { margin-top: 4px; padding: 2px 8px; font-size: 12px; cursor: pointer; }
+.zoom-row { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; }
+.zoom-row input { width: 60px; padding: 4px 8px; }
 </style>

@@ -162,14 +162,14 @@ function createRootNode(event: MouseEvent) {
 const renameInput = ref<HTMLInputElement | null>(null)
 const renamePos = ref({ x: 0, y: 0 })
 let renameOrigin = ''
-let renaming = false
+const renaming = ref(false)
 
 function startRename() {
   if (!ui.selectedNodeId) return
   const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
   if (!node) return
   renameOrigin = node.name
-  renaming = true
+  renaming.value = true
   // Position the input near the node on screen
   const el = document.querySelector(`[data-id="${ui.selectedNodeId}"]`) as HTMLElement | null
   if (el) {
@@ -186,17 +186,17 @@ function startRename() {
 }
 
 function commitRename() {
-  if (!renaming || !ui.selectedNodeId) return
+  if (!renaming.value || !ui.selectedNodeId) return
   const val = renameInput.value?.value ?? ''
   if (val && val !== renameOrigin) {
     mapStore.updateNode(ui.selectedNodeId, { name: val })
   }
-  renaming = false
+  renaming.value = false
 }
 
 function cancelRename() {
-  if (!renaming) return
-  renaming = false
+  if (!renaming.value) return
+  renaming.value = false
 }
 
 function onRenameBlur() {
@@ -215,7 +215,7 @@ function onRenameInput(_event: Event) {}
 
 function onKeyDown(event: KeyboardEvent) {
   // If renaming, redirect keyboard events to the hidden input
-  if (renaming) {
+  if (renaming.value) {
     renameInput.value?.focus()
     return
   }

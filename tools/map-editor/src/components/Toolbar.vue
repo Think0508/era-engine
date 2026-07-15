@@ -15,13 +15,7 @@ function onBgSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   if (!file) return
-  const reader = new FileReader()
-  reader.onload = () => {
-    if (typeof reader.result === 'string') {
-      mapStore.backgroundPath = reader.result
-    }
-  }
-  reader.readAsDataURL(file)
+  mapStore.backgroundPath = URL.createObjectURL(file)
   input.value = ''
 }
 </script>

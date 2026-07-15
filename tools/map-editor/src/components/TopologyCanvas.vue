@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue'
+import { ref, computed, watch, nextTick, onUnmounted } from 'vue'
 import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -46,22 +46,20 @@ const flowNodes = computed<Node[]>(() => {
 })
 
 const flowEdges = computed<Edge[]>(() =>
-  mapStore.edges.map(e => {
-    const hasEnd = e.direction === 'directed' || e.direction === 'bidirectional'
-    const hasStart = e.direction === 'reverse' || e.direction === 'bidirectional'
-    return {
-      id: e.id,
-      source: e.from,
-      target: e.to,
-      type: 'default',
-      data: e,
-      markerEnd: hasEnd ? { type: MarkerType.ArrowClosed } : undefined,
-      markerStart: hasStart ? { type: MarkerType.ArrowClosed } : undefined,
-      style: e.condition
-        ? { strokeDasharray: '5,5', stroke: '#eab308' }
-        : { stroke: '#666' },
-    }
-  })
+  mapStore.edges.map(e => ({
+    id: e.id,
+    source: e.from,
+    target: e.to,
+    type: 'default',
+    data: JSON.parse(JSON.stringify(e)),
+    markerEnd: e.direction === 'directed' || e.direction === 'bidirectional'
+      ? { type: MarkerType.ArrowClosed } : undefined,
+    markerStart: e.direction === 'reverse' || e.direction === 'bidirectional'
+      ? { type: MarkerType.ArrowClosed } : undefined,
+    style: e.condition
+      ? { strokeDasharray: '5,5', stroke: '#eab308' }
+      : { stroke: '#666' },
+  }))
 )
 
 const vueFlowStore = ref<any>(null)
@@ -255,18 +253,19 @@ function onCanvasDrop(event: DragEvent) {
   }
 }
 
-// Background image via file input (works in any environment)
+// Background image via blob URL (avoids Tauri CSP issues with data URLs)
 function onBgFileSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   if (!file) return
-  const reader = new FileReader()
-  reader.onload = () => {
-    bgUrl.value = reader.result as string
-  }
-  reader.readAsDataURL(file)
+  // Revoke previous blob URL to avoid memory leak
+  if (bgUrl.value?.startsWith('blob:')) URL.revokeObjectURL(bgUrl.value)
+  bgUrl.value = URL.createObjectURL(file)
   input.value = ''
 }
+
+// Cleanup blob URL on unmount
+onUnmounted(() => { if (bgUrl.value?.startsWith('blob:')) URL.revokeObjectURL(bgUrl.value) })
 
 // Click zone drawing — stores screen coords for preview, flow coords for saving
 const drawStartScreen = ref<{ x: number; y: number } | null>(null)

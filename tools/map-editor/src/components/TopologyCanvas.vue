@@ -105,6 +105,7 @@ function nextNodeId(prefix: string): string {
 }
 
 function onNodeClick({ node }: { node: Node }) {
+  if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
   applyRename()
   ui.selectNode(node.id)
 }
@@ -125,7 +126,7 @@ function onPaneClick(event: MouseEvent) {
     paneClickTimer = setTimeout(() => {
       paneClickTimer = null
       ui.clearSelection()
-    }, 250)
+    }, 500)
   }
 }
 
@@ -144,6 +145,7 @@ function createRootNode(event: MouseEvent) {
     position: { x: flowPoint.x, y: flowPoint.y },
     collapsed: false,
   })
+  if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
   ui.selectNode(id)
 }
 
@@ -247,6 +249,7 @@ function onKeyDown(event: KeyboardEvent) {
       timeCost: 5,
       direction: 'bidirectional',
     })
+    if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
     ui.selectNode(id)
   }
 }

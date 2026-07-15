@@ -12,6 +12,8 @@ export const useMapStore = defineStore('map', () => {
   const sourcePath = ref('')
   let nodeVersion = 0
   const nodeVersionRef = ref(0)
+  const isModeB = ref(false)
+  const backgroundPath = ref('')
 
   const getChildren = (parentId: string) =>
     nodes.value.filter(n => n.parent === parentId)
@@ -63,6 +65,8 @@ export const useMapStore = defineStore('map', () => {
     }
   }
 
+  function toggleModeB() { isModeB.value = !isModeB.value }
+
   function clear() {
     nodes.value = []
     edges.value = []
@@ -79,5 +83,7 @@ export const useMapStore = defineStore('map', () => {
     addNode, updateNode, removeNode,
     addEdge, updateEdge, removeEdge,
     loadProject, toProject, clear,
+    isModeB, backgroundPath,
+    toggleModeB,
   }
 })

@@ -38,6 +38,30 @@ function addTag(e: Event) {
   const v = el.value.trim()
   if (v) { update('tags', [...node.value.tags, v]); el.value = '' }
 }
+
+const nodeAttrs = computed(() => (node.value as any)?.attrs ?? {})
+
+function addClickZone() {
+  if (!node.value) return
+  const zones = [...(nodeAttrs.value.clickZones ?? []), { x: 0.3, y: 0.3, w: 0.1, h: 0.1 }]
+  mapStore.updateNode(node.value.id, { attrs: { ...nodeAttrs.value, clickZones: zones } })
+}
+
+function removeClickZone(index: number) {
+  if (!node.value) return
+  const zones = [...(nodeAttrs.value.clickZones ?? [])]
+  zones.splice(index, 1)
+  mapStore.updateNode(node.value.id, { attrs: { ...nodeAttrs.value, clickZones: zones } })
+}
+
+function updateClickZone(index: number, field: string, event: Event) {
+  if (!node.value) return
+  const val = parseFloat((event.target as HTMLInputElement).value)
+  if (isNaN(val)) return
+  const zones = [...(nodeAttrs.value.clickZones ?? [])]
+  zones[index] = { ...zones[index], [field]: Math.max(0, Math.min(1, val)) }
+  mapStore.updateNode(node.value.id, { attrs: { ...nodeAttrs.value, clickZones: zones } })
+}
 </script>
 
 <template>
@@ -60,6 +84,17 @@ function addTag(e: Event) {
       </div>
       <input placeholder="添加标签..." @keydown.enter="addTag" />
     </div>
+    <div v-if="mapStore.isModeB" class="panel-section">
+      <label>点击区域</label>
+      <div v-for="(zone, zi) in (nodeAttrs.clickZones ?? [])" :key="zi" class="click-zone-row">
+        <input type="number" step="0.01" min="0" max="1" :value="zone.x" @change="updateClickZone(zi, 'x', $event)" placeholder="x" />
+        <input type="number" step="0.01" min="0" max="1" :value="zone.y" @change="updateClickZone(zi, 'y', $event)" placeholder="y" />
+        <input type="number" step="0.01" min="0" max="1" :value="zone.w" @change="updateClickZone(zi, 'w', $event)" placeholder="w" />
+        <input type="number" step="0.01" min="0" max="1" :value="zone.h" @change="updateClickZone(zi, 'h', $event)" placeholder="h" />
+        <button @click="removeClickZone(zi)">×</button>
+      </div>
+      <button @click="addClickZone" class="add-btn">+ 添加点击区域</button>
+    </div>
   </div>
   <div v-else class="panel panel-empty"><p>未选中节点</p></div>
 </template>
@@ -74,4 +109,9 @@ function addTag(e: Event) {
 .tag { background: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
 .tag-remove { cursor: pointer; margin-left: 4px; color: #ef4444; }
 .panel-empty { color: #94a3b8; text-align: center; padding-top: 40px; }
+.panel-section { margin-top: 12px; border-top: 1px solid #e2e8f0; padding-top: 12px; }
+.click-zone-row { display: flex; gap: 4px; margin-bottom: 4px; align-items: center; }
+.click-zone-row input { width: 48px; padding: 2px 4px; font-size: 11px; }
+.click-zone-row button { padding: 2px 6px; cursor: pointer; }
+.add-btn { margin-top: 4px; padding: 2px 8px; font-size: 12px; cursor: pointer; }
 </style>

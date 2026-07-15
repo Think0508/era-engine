@@ -418,10 +418,11 @@ function onNodeDragStop({ node }: { node: Node }) {
     tabindex="0"
     @keydown="onKeyDown"
     @click="closeContextMenu"
-    :style="mapStore.isModeB && bgUrl ? { backgroundImage: `url(${bgUrl})`, backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' } : {}"
+    :style="{}"
     @dragover.prevent="onCanvasDragOver"
     @drop.prevent="onCanvasDrop"
   >
+    <img v-if="mapStore.isModeB && bgUrl" :src="bgUrl" class="map-bg-img" />
     <!-- 注释：绘制点击区域时的矩形预览 -->
     <div
       v-if="drawStartScreen && drawCurrentScreen && mapStore.drawingZone"
@@ -483,8 +484,10 @@ function onNodeDragStop({ node }: { node: Node }) {
 </template>
 
 <style scoped>
-.canvas-wrapper { height: 100%; width: 100%; outline: none; }
+.canvas-wrapper { height: 100%; width: 100%; outline: none; position: relative; }
+.map-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; z-index: 0; }
 .canvas-wrapper :deep(.vue-flow__node) { cursor: pointer; }
+.canvas-wrapper :deep(.vue-flow__pane) { z-index: 1; position: relative; }
 .rename-input {
   position: fixed; left: -9999px; top: -9999px;
   width: 1px; height: 1px; opacity: 0;

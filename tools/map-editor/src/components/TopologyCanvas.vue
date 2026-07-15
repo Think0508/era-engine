@@ -32,16 +32,15 @@ const flowNodes = computed<Node[]>(() => {
   for (const n of mapStore.nodes) calcLevel(n.id)
 
   return mapStore.nodes.map(n => {
-    // Deep clone to avoid passing reactive objects to VueFlow
     const plain = JSON.parse(JSON.stringify(n))
     return {
       id: n.id,
       type: 'location',
       position: { x: n.position.x, y: n.position.y },
+      style: n.visible ? {} : { opacity: 0.35, borderStyle: 'dashed' },
       data: {
         ...plain,
         level: levelCache.get(n.id) ?? 1,
-        _v: mapStore.nodeVersionRef,
       },
     }
   })

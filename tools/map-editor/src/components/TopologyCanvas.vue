@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -30,16 +30,19 @@ const flowNodes = computed<Node[]>(() => {
   }
   for (const n of mapStore.nodes) calcLevel(n.id)
 
-  return mapStore.nodes.map(n => ({
-    id: n.id,
-    type: 'location',
-    position: n.position,
-    data: {
-      ...n,
-      level: levelCache.get(n.id) ?? 1,
-      _displayMode: ui.showIdOnNode ? 'id' : 'name',
-    },
-  }))
+  return mapStore.nodes.map(n => {
+    // Deep clone to avoid passing reactive objects to VueFlow
+    const plain = JSON.parse(JSON.stringify(n))
+    return {
+      id: n.id,
+      type: 'location',
+      position: { x: n.position.x, y: n.position.y },
+      data: {
+        ...plain,
+        level: levelCache.get(n.id) ?? 1,
+      },
+    }
+  })
 })
 
 const flowEdges = computed<Edge[]>(() =>
@@ -240,46 +243,30 @@ function onKeyDown(event: KeyboardEvent) {
 
 const bgFileInput = ref<HTMLInputElement | null>(null)
 
-function onBgFileSelected(e: Event) {
-  const input = e.target as HTMLInputElement
-  const file = input.files?.[0]
-  if (!file) return
-  const url = URL.createObjectURL(file)
-  bgUrl.value = url
-  mapStore.backgroundPath = url
-  input.value = ''
-}
-
 function onCanvasDragOver(event: DragEvent) { event.preventDefault() }
 
 function onCanvasDrop(event: DragEvent) {
   event.preventDefault()
   const file = event.dataTransfer?.files?.[0]
   if (file && file.type.startsWith('image/')) {
-    const url = URL.createObjectURL(file)
-    bgUrl.value = url
-    mapStore.backgroundPath = url
+    const reader = new FileReader()
+    reader.onload = () => { bgUrl.value = reader.result as string }
+    reader.readAsDataURL(file)
   }
 }
 
-// Tauri native file drop for background images
-let unlistenDrop: (() => void) | null = null
-onMounted(async () => {
-  try {
-    const { getCurrentWindow } = await import('@tauri-apps/api/window')
-    unlistenDrop = await getCurrentWindow().onDragDropEvent(async (event) => {
-      if (event.payload.type === 'drop') {
-        const path = event.payload.paths?.[0]
-        if (path) {
-          const { convertFileSrc: cfs } = await import('@tauri-apps/api/core')
-          bgUrl.value = cfs(path)
-          mapStore.backgroundPath = path
-        }
-      }
-    })
-  } catch (e) { console.warn('Tauri drop event not available:', e) }
-})
-onUnmounted(() => { unlistenDrop?.() })
+// Background image via file input (works in any environment)
+function onBgFileSelected(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = () => {
+    bgUrl.value = reader.result as string
+  }
+  reader.readAsDataURL(file)
+  input.value = ''
+}
 
 // Click zone drawing — stores screen coords for preview, flow coords for saving
 const drawStartScreen = ref<{ x: number; y: number } | null>(null)

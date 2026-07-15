@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import FileMenu from './FileMenu.vue'
 import ExportBar from './ExportBar.vue'
 import { useUiStore } from '../stores/uiStore'
@@ -6,6 +7,23 @@ import { useMapStore } from '../stores/mapStore'
 
 const ui = useUiStore()
 const mapStore = useMapStore()
+const bgInput = ref<HTMLInputElement | null>(null)
+
+function selectBg() { bgInput.value?.click() }
+
+function onBgSelected(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = () => {
+    if (typeof reader.result === 'string') {
+      mapStore.backgroundPath = reader.result
+    }
+  }
+  reader.readAsDataURL(file)
+  input.value = ''
+}
 </script>
 
 <template>
@@ -27,8 +45,10 @@ const mapStore = useMapStore()
     <div class="toolbar-divider" />
     <label class="toggle-item" title="切换至视觉地图模式（背景图+点击区域）">
       <input type="checkbox" :checked="mapStore.isModeB" @change="mapStore.toggleModeB()" />
-      视觉地图
+       视觉地图
     </label>
+    <button v-if="mapStore.isModeB" class="bg-btn" @click="selectBg">选择背景图</button>
+    <input ref="bgInput" type="file" accept="image/png,image/jpeg,image/webp" style="display:none" @change="onBgSelected" />
     <div class="spacer" />
     <ExportBar />
   </div>
@@ -40,4 +60,5 @@ const mapStore = useMapStore()
 .toggle-item { display: flex; align-items: center; gap: 4px; cursor: pointer; user-select: none; }
 .toggle-item input { margin: 0; cursor: pointer; }
 .spacer { flex: 1; }
+.bg-btn { padding: 2px 10px; cursor: pointer; font-size: 12px; }
 </style>

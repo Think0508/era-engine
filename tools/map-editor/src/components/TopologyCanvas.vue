@@ -115,18 +115,19 @@ function nextNodeId(prefix: string): string {
 
 function onNodeClick({ node }: { node: Node }) {
   if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
-  commitRename()
+  if (!renaming) { ui.selectNode(node.id); return }
+  renameInput.value?.blur()
   ui.selectNode(node.id)
 }
 
 function onEdgeClick({ edge }: { edge: Edge }) {
-  commitRename()
+  if (renaming) { renameInput.value?.blur(); return }
   ui.selectEdge(edge.id)
 }
 
 function onPaneClick(event: MouseEvent) {
   if (mapStore.drawingZone) return
-  commitRename()
+  if (renaming) { renameInput.value?.blur(); return }
   if (paneClickTimer) {
     clearTimeout(paneClickTimer)
     paneClickTimer = null
@@ -161,6 +162,7 @@ function createRootNode(event: MouseEvent) {
 // Inline rename �?floating input near the selected node
 const renameInput = ref<HTMLInputElement | null>(null)
 const renamePos = ref({ x: 0, y: 0 })
+const renameBuffer = ref('')
 let renameOrigin = ''
 let renaming = false
 
@@ -169,6 +171,7 @@ function startRename(firstChar: string) {
   const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
   if (!node) return
   renameOrigin = node.name
+  renameBuffer.value = firstChar
   renaming = true
   // Position the input near the node on screen
   const el = document.getElementById(ui.selectedNodeId) as HTMLElement | null
@@ -187,9 +190,8 @@ function startRename(firstChar: string) {
 
 function commitRename() {
   if (!renaming || !ui.selectedNodeId) return
-  const val = renameInput.value?.value ?? ''
-  if (val && val !== renameOrigin) {
-    mapStore.updateNode(ui.selectedNodeId, { name: val })
+  if (renameBuffer.value && renameBuffer.value !== renameOrigin) {
+    mapStore.updateNode(ui.selectedNodeId, { name: renameBuffer.value })
   }
   renaming = false
 }
@@ -205,12 +207,14 @@ function onRenameBlur() {
 }
 
 function onRenameKeyDown(event: KeyboardEvent) {
-  if (event.key === 'Enter') { event.preventDefault(); commitRename(); return }
+  if (event.key === 'Enter' && !event.isComposing) { event.preventDefault(); commitRename(); return }
   if (event.key === 'Escape') { event.preventDefault(); cancelRename(); return }
 }
 
 // No-op �?input value is read on commit only
-function onRenameInput(_event: Event) {}
+function onRenameInput(event: Event) {
+  renameBuffer.value = (event.target as HTMLInputElement).value
+}
 
 
 function onKeyDown(event: KeyboardEvent) {

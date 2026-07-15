@@ -40,3 +40,7 @@ src-tauri/target/
 # Big Files
 mods/_erark_source/definitions/scene-dialogue.toml
 mods/test-mod/definitions/scene-dialogue.toml
+
+# map-editor export files
+export/
+*.exported.toml

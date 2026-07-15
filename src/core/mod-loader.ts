@@ -955,6 +955,12 @@ const pluginDefaultModules = import.meta.glob('/src/plugins/*/data/default/**/*.
   eager: false,
 })
 
+const layoutModules = import.meta.glob('/mods/**/maps/layout/*.json', {
+  query: '?raw',
+  import: 'default',
+  eager: false,
+})
+
 export class ModLoader {
   private loadedMod: LoadedMod | null = null
 
@@ -967,6 +973,12 @@ export class ModLoader {
     // 注释：Layer 3——mod 定义数据（优先级最高，同名覆盖 plugin defaults）
     const prefix = `/mods/${modName}/`
     for (const [path, loader] of Object.entries(tomlModules)) {
+      if (path.startsWith(prefix)) {
+        rawTomlMap[path] = await loader()
+      }
+    }
+    // 注释：加载 layout JSON 文件
+    for (const [path, loader] of Object.entries(layoutModules)) {
       if (path.startsWith(prefix)) {
         rawTomlMap[path] = await loader()
       }

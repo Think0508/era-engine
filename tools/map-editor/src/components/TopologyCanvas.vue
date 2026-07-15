@@ -144,6 +144,7 @@ function createRootNode(event: MouseEvent) {
     position: { x: flowPoint.x, y: flowPoint.y },
     collapsed: false,
   })
+  ui.selectNode(id)
 }
 
 const renameInput = ref<HTMLInputElement | null>(null)
@@ -246,6 +247,7 @@ function onKeyDown(event: KeyboardEvent) {
       timeCost: 5,
       direction: 'bidirectional',
     })
+    ui.selectNode(id)
   }
 }
 
@@ -430,6 +432,7 @@ function onNodeDragStop({ node }: { node: Node }) {
     @dragover.prevent="onCanvasDragOver"
     @drop.prevent="onCanvasDrop"
   >
+    <img v-if="mapStore.isModeB && bgUrl" :src="bgUrl" class="map-bg-img" />
     <!-- 注释：绘制点击区域时的矩形预览 -->
     <div
       v-if="drawStartScreen && drawCurrentScreen && mapStore.drawingZone"
@@ -462,8 +465,7 @@ function onNodeDragStop({ node }: { node: Node }) {
       @dragover.prevent="onCanvasDragOver"
       @drop.prevent="onCanvasDrop"
     >
-      <img v-if="mapStore.isModeB && bgUrl" :src="bgUrl" class="flow-bg-img" />
-      <Background v-else :variant="BackgroundVariant.Dots" :gap="20" />
+      <Background :variant="BackgroundVariant.Dots" :gap="20" />
       <Controls />
     </VueFlow>
     <ContextMenu
@@ -493,7 +495,7 @@ function onNodeDragStop({ node }: { node: Node }) {
 
 <style scoped>
 .canvas-wrapper { height: 100%; width: 100%; outline: none; position: relative; }
-.flow-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.map-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; z-index: 0; }
 .canvas-wrapper :deep(.vue-flow__node) { cursor: pointer; }
 .canvas-wrapper :deep(.vue-flow__pane) { z-index: 1; position: relative; }
 .rename-input {

@@ -86,7 +86,11 @@ watch(() => mapStore.backgroundPath, (path) => {
 watch(bgUrl, (url) => {
   if (!url) { bgImageSize.value = { w: 0, h: 0 }; return }
   const img = new Image()
-  img.onload = () => { bgImageSize.value = { w: img.naturalWidth, h: img.naturalHeight } }
+  img.onload = () => {
+    bgImageSize.value = { w: img.naturalWidth, h: img.naturalHeight }
+    mapStore.bgImageWidth = img.naturalWidth
+    mapStore.bgImageHeight = img.naturalHeight
+  }
   img.src = url
 })
 

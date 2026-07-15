@@ -6,8 +6,6 @@ import { exportLayout } from '../utils/layoutExport'
 
 const mapStore = useMapStore()
 const exportStatus = ref('')
-const bgWidth = ref(1920)
-const bgHeight = ref(1080)
 
 async function handleExport() {
   try {
@@ -37,7 +35,7 @@ async function handleExportLayout() {
   if (!dir) return
   try {
     const { mkdir, writeTextFile } = await import('@tauri-apps/plugin-fs')
-    const layout = exportLayout(mapStore.nodes, mapStore.edges, bgWidth.value, bgHeight.value)
+    const layout = exportLayout(mapStore.nodes, mapStore.edges, mapStore.bgImageWidth, mapStore.bgImageHeight)
     await mkdir(`${dir}/maps/layout`, { recursive: true })
     await writeTextFile(`${dir}/maps/layout/exported.json`, JSON.stringify(layout, null, 2))
     exportStatus.value = `Layout 导出完成：${layout.nodes.length} 个节点 → ${dir}/maps/layout/`

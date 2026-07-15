@@ -14,6 +14,8 @@ export const useMapStore = defineStore('map', () => {
   const nodeVersionRef = ref(0)
   const isModeB = ref(false)
   const backgroundPath = ref('')
+  const bgImageWidth = ref(1920)
+  const bgImageHeight = ref(1080)
 
   const getChildren = (parentId: string) =>
     nodes.value.filter(n => n.parent === parentId)
@@ -88,7 +90,7 @@ export const useMapStore = defineStore('map', () => {
     addNode, updateNode, removeNode,
     addEdge, updateEdge, removeEdge,
     loadProject, toProject, clear,
-    isModeB, backgroundPath, drawingZone, drawTargetNodeId,
+    isModeB, backgroundPath, bgImageWidth, bgImageHeight, drawingZone, drawTargetNodeId,
     toggleModeB, startDrawZone, stopDrawZone,
   }
 })

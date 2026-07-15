@@ -68,7 +68,7 @@ const displayText = computed(() => ui.showIdOnNode ? node.id : node.name)
   font-family: sans-serif;
   transition: background 0.2s, border-color 0.2s;
 }
-.location-node.invisible { opacity: 0.4; border-style: dashed; }
+.location-node.invisible { opacity: 0.35 !important; border-style: dashed !important; background: #f1f5f9 !important; }
 .location-node.collapsed { border-color: #94a3b8; background: #f1f5f9; }
 .node-header { display: flex; align-items: center; gap: 6px; }
 .level-badge {

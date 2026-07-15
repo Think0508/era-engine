@@ -21,6 +21,7 @@ const LEVEL_BORDER = [
 
 interface LocationNodeData extends MapNode {
   level: number
+  _v: number
 }
 
 const props = defineProps<NodeProps<LocationNodeData>>()
@@ -38,20 +39,13 @@ const borderColor = computed(() => {
 })
 
 const displayText = computed(() => ui.showIdOnNode ? node.id : node.name)
-
-const nodeStyle = computed(() => ({
-  background: bgColor.value,
-  borderColor: borderColor.value,
-  opacity: node.visible ? 1 : 0.3,
-  borderStyle: node.visible ? 'solid' : 'dashed',
-}))
 </script>
 
 <template>
   <div
     class="location-node"
-    :class="{ collapsed: node.collapsed }"
-    :style="nodeStyle"
+    :class="{ invisible: !node.visible, collapsed: node.collapsed }"
+    :style="{ background: bgColor, borderColor: borderColor }"
   >
     <Handle type="target" :position="Position.Top" />
     <div class="node-header">
@@ -75,6 +69,7 @@ const nodeStyle = computed(() => ({
   font-family: sans-serif;
   transition: background 0.2s, border-color 0.2s;
 }
+.location-node.invisible { opacity: 0.35 !important; border-style: dashed !important; background: #f1f5f9 !important; }
 .location-node.collapsed { border-color: #94a3b8; background: #f1f5f9; }
 .node-header { display: flex; align-items: center; gap: 6px; }
 .level-badge {

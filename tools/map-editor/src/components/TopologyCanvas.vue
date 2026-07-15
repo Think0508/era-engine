@@ -41,6 +41,7 @@ const flowNodes = computed<Node[]>(() => {
       data: {
         ...plain,
         level: levelCache.get(n.id) ?? 1,
+        _v: mapStore.nodeVersionRef,
       },
     }
   })

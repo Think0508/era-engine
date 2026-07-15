@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -75,17 +75,17 @@ function nextNodeId(prefix: string): string {
 }
 
 function onNodeClick({ node }: { node: Node }) {
-  if (renaming && node.id !== ui.selectedNodeId) renaming = false
+  applyRename()
   ui.selectNode(node.id)
 }
 
 function onEdgeClick({ edge }: { edge: Edge }) {
-  renaming = false
+  applyRename()
   ui.selectEdge(edge.id)
 }
 
 function onPaneClick(event: MouseEvent) {
-  renaming = false
+  applyRename()
   if (paneClickTimer) {
     clearTimeout(paneClickTimer)
     paneClickTimer = null
@@ -115,47 +115,53 @@ function createRootNode(event: MouseEvent) {
   })
 }
 
+const renameInput = ref<HTMLInputElement | null>(null)
 let renameOrigin = ''   // original name before inline edit
 let renaming = false    // currently in inline rename mode
-let isComposing = false // IME composition in progress
 
-function onCompositionStart() { isComposing = true }
-
-function onCompositionEnd(e: CompositionEvent) {
-  isComposing = false
+function startRename() {
   if (!ui.selectedNodeId) return
   const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
   if (!node) return
-  if (!renaming) {
-    renameOrigin = node.name
-    renaming = true
-  }
-  mapStore.updateNode(ui.selectedNodeId, { name: node.name + e.data })
+  renameOrigin = node.name
+  renaming = true
+  // Focus hidden input on next tick (after Vue processes the template)
+  nextTick(() => {
+    if (renameInput.value) {
+      renameInput.value.value = node.name
+      renameInput.value.focus()
+      renameInput.value.select()
+    }
+  })
+}
+
+function applyRename() {
+  if (!ui.selectedNodeId) return
+  const val = renameInput.value?.value ?? ''
+  mapStore.updateNode(ui.selectedNodeId, { name: val || renameOrigin })
+  renaming = false
+}
+
+function revertRename() {
+  if (ui.selectedNodeId) mapStore.updateNode(ui.selectedNodeId, { name: renameOrigin })
+  renaming = false
+  if (renameInput.value) renameInput.value.blur()
+}
+
+function onRenameInput(event: Event) {
+  if (!renaming || !ui.selectedNodeId) return
+  mapStore.updateNode(ui.selectedNodeId, { name: (event.target as HTMLInputElement).value })
+}
+
+function onRenameKeyDown(event: KeyboardEvent) {
+  if (event.key === 'Enter') { applyRename(); return }
+  if (event.key === 'Escape') { revertRename(); return }
 }
 
 function onKeyDown(event: KeyboardEvent) {
-  // Skip inline rename during IME composition
-  if (event.isComposing) return
-
-  // Inline rename mode: Enter confirms, Escape reverts
+  // If renaming, redirect keyboard events to the hidden input
   if (renaming) {
-    if (event.key === 'Enter') {
-      renaming = false
-      return
-    }
-    if (event.key === 'Escape') {
-      renaming = false
-      if (ui.selectedNodeId) mapStore.updateNode(ui.selectedNodeId, { name: renameOrigin })
-      return
-    }
-    // Append ASCII character to name, skip IME-derived events
-    if (!isComposing && event.key.length === 1 && event.key.codePointAt(0)! < 256 && ui.selectedNodeId) {
-      event.preventDefault()
-      const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
-      if (node) mapStore.updateNode(ui.selectedNodeId, { name: node.name + event.key })
-      return
-    }
-    // Let other non-printable keys through
+    renameInput.value?.focus()
     return
   }
 
@@ -174,15 +180,15 @@ function onKeyDown(event: KeyboardEvent) {
     }
   }
 
-  // Printable key on selected node → start inline rename (replaces name)
-  // ASCII only — non-ASCII (CJK etc.) go through compositionend
-  if (event.key.length === 1 && event.key.codePointAt(0)! < 256 && ui.selectedNodeId) {
+  // Printable or function key on selected node → start rename
+  if (event.key.length === 1 && ui.selectedNodeId && !event.ctrlKey && !event.metaKey && !event.altKey) {
     event.preventDefault()
-    const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
-    if (node) {
-      renameOrigin = node.name
-      renaming = true
-      mapStore.updateNode(ui.selectedNodeId, { name: event.key })
+    startRename()
+    // Dispatch the pressed key to the hidden input
+    if (renameInput.value) {
+      renameInput.value.value = event.key
+      // Trigger input event so onRenameInput updates the node
+      renameInput.value.dispatchEvent(new Event('input', { bubbles: true }))
     }
     return
   }
@@ -301,7 +307,7 @@ function onNodeDragStop({ node }: { node: Node }) {
 </script>
 
 <template>
-  <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu" @compositionstart="onCompositionStart" @compositionend="onCompositionEnd">
+  <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu">
     <VueFlow
       :key="displayKey"
       :nodes="flowNodes"
@@ -333,10 +339,21 @@ function onNodeDragStop({ node }: { node: Node }) {
       :edge-id="contextMenu.edgeId"
       @close="closeContextMenu"
     />
+    <input
+      ref="renameInput"
+      class="rename-input"
+      @input="onRenameInput"
+      @keydown="onRenameKeyDown"
+      @blur="applyRename"
+    />
   </div>
 </template>
 
 <style scoped>
 .canvas-wrapper { height: 100%; width: 100%; outline: none; }
 .canvas-wrapper :deep(.vue-flow__node) { cursor: pointer; }
+.rename-input {
+  position: fixed; left: -9999px; top: -9999px;
+  width: 1px; height: 1px; opacity: 0;
+}
 </style>

@@ -3,7 +3,7 @@
 // 不参与口上触发——只管移动 + 事件发射
 // tags 驱动指令不属于 map-system——消费 tag 的插件自己注册
 
-import type { PluginContext, LocationData, GameContext, Edge, MoveConfig } from '../../core/types'
+import type { PluginContext, LocationData, GameContext, Edge, MoveConfig, MapLayout } from '../../core/types'
 import { gameContext } from '../../core/game-context'
 import { entitySystem } from '../../core/entity-system'
 import { narrativeLog } from '../../core/narrative-log'
@@ -117,6 +117,27 @@ export function onEnable(ctx: PluginContext): void {
     hasTag: (locationId: string, tag: string): boolean => {
       const loc = entitySystem.get('location', locationId) as any as LocationData
       return loc?.tags?.includes(tag) ?? false
+    },
+    // 注释：获取某地点的视觉地图 layout——沿 parent 链向上查找最近的 layout JSON
+    getMapLayout: (locationId?: string): { layout: MapLayout; parentId: string } | null => {
+      const mod = modLoader.getMod()
+      if (!mod) return null
+      const id = locationId ?? gameContext.getContext().location?.id
+      if (!id) return null
+
+      // Walk parent chain to find the nearest layout
+      const seen = new Set<string>()
+      let currentId: string | null = id
+      while (currentId && !seen.has(currentId)) {
+        seen.add(currentId)
+        if (mod.layouts.has(currentId)) {
+          const layout = mod.layouts.get(currentId)!
+          return { layout, parentId: currentId }
+        }
+        const loc = mod.locations.get(currentId)
+        currentId = loc?.parent ?? null
+      }
+      return null
     },
     // 注释：移动到目标地点——通过 getReachable 查找 time_cost，无路径则报错
     moveTo: async (targetLocationId: string): Promise<void> => {

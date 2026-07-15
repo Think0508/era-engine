@@ -33,11 +33,14 @@ const flowNodes = computed<Node[]>(() => {
 
   return mapStore.nodes.map(n => {
     const plain = JSON.parse(JSON.stringify(n))
+    // Apply visibility style — also bump version on every render to force re-render
+    const style: Record<string, any> = {}
+    if (!n.visible) { style.opacity = 0.35; style.borderStyle = 'dashed' }
     return {
       id: n.id,
       type: 'location',
       position: { x: n.position.x, y: n.position.y },
-      style: n.visible ? {} : { opacity: 0.35, borderStyle: 'dashed' },
+      style,
       data: {
         ...plain,
         level: levelCache.get(n.id) ?? 1,

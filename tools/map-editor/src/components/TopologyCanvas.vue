@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -104,6 +104,7 @@ function onEdgeClick({ edge }: { edge: Edge }) {
 }
 
 function onPaneClick(event: MouseEvent) {
+  if (mapStore.drawingZone) return
   applyRename()
   if (paneClickTimer) {
     clearTimeout(paneClickTimer)
@@ -249,6 +250,8 @@ function onBgFileSelected(e: Event) {
   input.value = ''
 }
 
+function onCanvasDragOver(event: DragEvent) { event.preventDefault() }
+
 function onCanvasDrop(event: DragEvent) {
   event.preventDefault()
   const file = event.dataTransfer?.files?.[0]
@@ -259,27 +262,43 @@ function onCanvasDrop(event: DragEvent) {
   }
 }
 
-function onCanvasDragOver(event: DragEvent) { event.preventDefault() }
+// Tauri native file drop for background images
+let unlistenDrop: (() => void) | null = null
+onMounted(async () => {
+  try {
+    const { getCurrentWindow } = await import('@tauri-apps/api/window')
+    unlistenDrop = await getCurrentWindow().onDragDropEvent((event) => {
+      if (event.payload.type === 'drop') {
+        const path = event.payload.paths?.[0]
+        if (path) {
+          try { bgUrl.value = convertFileSrc(path) } catch { bgUrl.value = path }
+          mapStore.backgroundPath = path
+        }
+      }
+    })
+  } catch { /* not in Tauri */ }
+})
+onUnmounted(() => { unlistenDrop?.() })
 
-// Click zone drawing state
+// Click zone drawing — uses VueFlow pane events (not wrapper mouse events)
 const drawStart = ref<{ x: number; y: number } | null>(null)
 const drawCurrent = ref<{ x: number; y: number } | null>(null)
 
-function onCanvasMouseDown(event: MouseEvent) {
+function onPaneMouseDown(event: MouseEvent) {
   if (!mapStore.drawingZone || !mapStore.drawTargetNodeId || !vueFlowStore.value) return
   const fp = vueFlowStore.value.screenToFlowCoordinate({ x: event.clientX, y: event.clientY })
   drawStart.value = fp
   drawCurrent.value = fp
 }
 
-function onCanvasMouseMove(event: MouseEvent) {
+function onPaneMouseMove(event: MouseEvent) {
   if (!drawStart.value || !vueFlowStore.value) return
   const fp = vueFlowStore.value.screenToFlowCoordinate({ x: event.clientX, y: event.clientY })
   drawCurrent.value = fp
 }
 
-function onCanvasMouseUp() {
-  if (!drawStart.value || !drawCurrent.value || !mapStore.drawTargetNodeId) return
+function onPaneMouseUp() {
+  if (!drawStart.value || !drawCurrent.value || !mapStore.drawTargetNodeId) { drawStart.value = null; drawCurrent.value = null; return }
   const x = Math.min(drawStart.value.x, drawCurrent.value.x)
   const y = Math.min(drawStart.value.y, drawCurrent.value.y)
   const w = Math.abs(drawCurrent.value.x - drawStart.value.x)
@@ -288,11 +307,12 @@ function onCanvasMouseUp() {
     const node = mapStore.nodes.find(n => n.id === mapStore.drawTargetNodeId)
     if (node) {
       const attrs = (node as any).attrs ?? {}
-      const zones = [...(attrs.clickZones ?? []), { x, y, w, h }]
-      // Convert pixel coords to proportional based on bg image size
+      const zones = [...(attrs.clickZones ?? [])]
       const bg = bgImageSize.value
       if (bg.w > 0 && bg.h > 0) {
-        zones[zones.length - 1] = { x: x / bg.w, y: y / bg.h, w: w / bg.w, h: h / bg.h }
+        zones.push({ x: x / bg.w, y: y / bg.h, w: w / bg.w, h: h / bg.h })
+      } else {
+        zones.push({ x, y, w, h })
       }
       mapStore.updateNode(mapStore.drawTargetNodeId, { attrs: { ...attrs, clickZones: zones } })
     }
@@ -408,9 +428,6 @@ function onNodeDragStop({ node }: { node: Node }) {
     :style="mapStore.isModeB && bgUrl ? { backgroundImage: `url(${bgUrl})`, backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' } : {}"
     @dragover.prevent="onCanvasDragOver"
     @drop.prevent="onCanvasDrop"
-    @mousedown="onCanvasMouseDown"
-    @mousemove="onCanvasMouseMove"
-    @mouseup="onCanvasMouseUp"
   >
     <!-- 注释：绘制点击区域时的矩形预览 -->
     <div
@@ -427,6 +444,7 @@ function onNodeDragStop({ node }: { node: Node }) {
       :min-zoom="0.1"
       :max-zoom="3"
       :zoom-on-double-click="false"
+      :pan-on-drag="!mapStore.drawingZone"
       @nodes-change="onNodesChange"
       @node-click="onNodeClick"
       @edge-click="onEdgeClick"
@@ -437,6 +455,9 @@ function onNodeDragStop({ node }: { node: Node }) {
       @pane-ready="onPaneReady"
       @node-context-menu="onNodeContextMenu"
       @edge-context-menu="onEdgeContextMenu"
+      @mousedown="onPaneMouseDown"
+      @mousemove="onPaneMouseMove"
+      @mouseup="onPaneMouseUp"
       @dragover.prevent="onCanvasDragOver"
       @drop.prevent="onCanvasDrop"
     >

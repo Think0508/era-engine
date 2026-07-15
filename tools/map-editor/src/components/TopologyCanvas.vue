@@ -115,19 +115,18 @@ function nextNodeId(prefix: string): string {
 
 function onNodeClick({ node }: { node: Node }) {
   if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
-  if (!renaming) { ui.selectNode(node.id); return }
-  renameInput.value?.blur()
+  commitRename()
   ui.selectNode(node.id)
 }
 
 function onEdgeClick({ edge }: { edge: Edge }) {
-  if (renaming) { renameInput.value?.blur(); return }
+  commitRename()
   ui.selectEdge(edge.id)
 }
 
 function onPaneClick(event: MouseEvent) {
   if (mapStore.drawingZone) return
-  if (renaming) { renameInput.value?.blur(); return }
+  commitRename()
   if (paneClickTimer) {
     clearTimeout(paneClickTimer)
     paneClickTimer = null
@@ -162,26 +161,24 @@ function createRootNode(event: MouseEvent) {
 // Inline rename �?floating input near the selected node
 const renameInput = ref<HTMLInputElement | null>(null)
 const renamePos = ref({ x: 0, y: 0 })
-const renameBuffer = ref('')
 let renameOrigin = ''
 let renaming = false
 
-function startRename(firstChar: string) {
+function startRename() {
   if (!ui.selectedNodeId) return
   const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
   if (!node) return
   renameOrigin = node.name
-  renameBuffer.value = firstChar
   renaming = true
   // Position the input near the node on screen
-  const el = document.getElementById(ui.selectedNodeId) as HTMLElement | null
+  const el = document.querySelector(`[data-id="${ui.selectedNodeId}"]`) as HTMLElement | null
   if (el) {
     const rect = el.getBoundingClientRect()
     renamePos.value = { x: rect.left, y: rect.top }
   }
   nextTick(() => {
     if (renameInput.value) {
-      renameInput.value.value = firstChar
+      renameInput.value.value = renameOrigin
       renameInput.value.focus()
       renameInput.value.select()
     }
@@ -190,8 +187,9 @@ function startRename(firstChar: string) {
 
 function commitRename() {
   if (!renaming || !ui.selectedNodeId) return
-  if (renameBuffer.value && renameBuffer.value !== renameOrigin) {
-    mapStore.updateNode(ui.selectedNodeId, { name: renameBuffer.value })
+  const val = renameInput.value?.value ?? ''
+  if (val && val !== renameOrigin) {
+    mapStore.updateNode(ui.selectedNodeId, { name: val })
   }
   renaming = false
 }
@@ -207,14 +205,12 @@ function onRenameBlur() {
 }
 
 function onRenameKeyDown(event: KeyboardEvent) {
-  if (event.key === 'Enter' && !event.isComposing) { event.preventDefault(); commitRename(); return }
+  if (event.key === 'Enter') { event.preventDefault(); commitRename(); return }
   if (event.key === 'Escape') { event.preventDefault(); cancelRename(); return }
 }
 
 // No-op �?input value is read on commit only
-function onRenameInput(event: Event) {
-  renameBuffer.value = (event.target as HTMLInputElement).value
-}
+function onRenameInput(_event: Event) {}
 
 
 function onKeyDown(event: KeyboardEvent) {
@@ -240,9 +236,9 @@ function onKeyDown(event: KeyboardEvent) {
   }
 
   // Printable or function key on selected node �?start rename
-  if (event.key.length === 1 && ui.selectedNodeId && !event.ctrlKey && !event.metaKey && !event.altKey) {
+  if (event.key === ' ' && ui.selectedNodeId) {
     event.preventDefault()
-    startRename(event.key)
+    startRename()
     return
   }
 
@@ -484,7 +480,6 @@ function onNodeDragStop({ node }: { node: Node }) {
       @mousedown="onPaneMouseDown"
       @mousemove="onPaneMouseMove"
       @mouseup="onPaneMouseUp"
-      @keydown="onKeyDown"
       @dragover.prevent="onCanvasDragOver"
       @drop.prevent="onCanvasDrop"
     >
@@ -508,7 +503,7 @@ function onNodeDragStop({ node }: { node: Node }) {
     />
     <input
       ref="renameInput"
-      v-show="renaming"
+      v-if="renaming"
       class="rename-float"
       :style="{ left: renamePos.x + 'px', top: renamePos.y + 'px' }"
       @input="onRenameInput"
@@ -535,3 +530,4 @@ function onNodeDragStop({ node }: { node: Node }) {
   background: rgba(59,130,246,0.15); pointer-events: none; z-index: 999;
 }
 </style>
+

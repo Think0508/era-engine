@@ -18,6 +18,7 @@ export async function exportToToml(nodes: MapNode[], edges: MapEdge[]): Promise<
     ...(n.parent ? { parent: n.parent } : {}),
     tags: n.tags,
     ...(n.visible ? {} : { visible: false }),
+    ...(n.attrs ?? {}),
   }))
 
   const locationsToml = stringify({ locations: locEntries } as any)

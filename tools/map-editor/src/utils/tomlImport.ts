@@ -13,6 +13,8 @@ export interface ImportResult {
   edges: MapEdge[]
 }
 
+const KNOWN_LOC_FIELDS = new Set(['id', 'name', 'type', 'parent', 'tags', 'visible', 'exits'])
+
 export async function parseLocationsToml(raw: string, _regionId: string): Promise<MapNode[]> {
   const { default: parse } = await import('@iarna/toml/parse-string.js')
   const data = parse(raw) as any
@@ -21,6 +23,11 @@ export async function parseLocationsToml(raw: string, _regionId: string): Promis
 
   for (const loc of entries) {
     if (!loc.id) continue
+    // Collect unknown fields into attrs for round-trip preservation
+    const attrs: Record<string, any> = {}
+    for (const key of Object.keys(loc)) {
+      if (!KNOWN_LOC_FIELDS.has(key)) attrs[key] = loc[key]
+    }
     nodes.push({
       id: loc.id,
       name: loc.name ?? loc.id,
@@ -30,6 +37,7 @@ export async function parseLocationsToml(raw: string, _regionId: string): Promis
       visible: loc.visible !== false,
       position: { x: 0, y: 0 },
       collapsed: false,
+      attrs: Object.keys(attrs).length > 0 ? attrs : undefined,
     })
   }
   return nodes

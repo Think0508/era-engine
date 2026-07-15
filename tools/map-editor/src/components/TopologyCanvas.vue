@@ -63,7 +63,7 @@ const flowEdges = computed<Edge[]>(() =>
 const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
 const displayKey = ref(0)
-watch(() => ui.levelColors, () => { displayKey.value++ })
+watch(() => [ui.showIdOnNode, ui.levelColors], () => { displayKey.value++ })
 let edgeCounter = 0
 let paneClickTimer: ReturnType<typeof setTimeout> | null = null
 const SNAP_DISTANCE = 60
@@ -75,14 +75,18 @@ function nextNodeId(prefix: string): string {
 }
 
 function onNodeClick({ node }: { node: Node }) {
+  if (renaming && node.id !== ui.selectedNodeId) renaming = false
   ui.selectNode(node.id)
 }
 
 function onEdgeClick({ edge }: { edge: Edge }) {
+  renaming = false
   ui.selectEdge(edge.id)
 }
 
 function onPaneClick(event: MouseEvent) {
+  renaming = false
+  if (paneClickTimer) {
   if (paneClickTimer) {
     clearTimeout(paneClickTimer)
     paneClickTimer = null
@@ -112,7 +116,32 @@ function createRootNode(event: MouseEvent) {
   })
 }
 
+let renameOrigin = ''   // original name before inline edit
+let renaming = false    // currently in inline rename mode
+
 function onKeyDown(event: KeyboardEvent) {
+  // Inline rename mode: Enter confirms, Escape reverts
+  if (renaming) {
+    if (event.key === 'Enter') {
+      renaming = false
+      return
+    }
+    if (event.key === 'Escape') {
+      renaming = false
+      if (ui.selectedNodeId) mapStore.updateNode(ui.selectedNodeId, { name: renameOrigin })
+      return
+    }
+    // Append character to name
+    if (event.key.length === 1 && ui.selectedNodeId) {
+      event.preventDefault()
+      const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
+      if (node) mapStore.updateNode(ui.selectedNodeId, { name: node.name + event.key })
+      return
+    }
+    // Let other non-printable keys through
+    return
+  }
+
   if (event.key === 'Delete' || event.key === 'Backspace') {
     if (ui.selectedNodeId) {
       event.preventDefault()
@@ -127,6 +156,19 @@ function onKeyDown(event: KeyboardEvent) {
       return
     }
   }
+
+  // Printable key on selected node → start inline rename (replaces name)
+  if (event.key.length === 1 && ui.selectedNodeId) {
+    event.preventDefault()
+    const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
+    if (node) {
+      renameOrigin = node.name
+      renaming = true
+      mapStore.updateNode(ui.selectedNodeId, { name: event.key })
+    }
+    return
+  }
+
   if (event.key === 'Tab' && ui.selectedNodeId) {
     event.preventDefault()
     const parent = mapStore.nodes.find(n => n.id === ui.selectedNodeId)

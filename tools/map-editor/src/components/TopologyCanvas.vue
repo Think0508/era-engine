@@ -117,8 +117,26 @@ function createRootNode(event: MouseEvent) {
 
 let renameOrigin = ''   // original name before inline edit
 let renaming = false    // currently in inline rename mode
+let isComposing = false // IME composition in progress
+
+function onCompositionStart() { isComposing = true }
+
+function onCompositionEnd(e: CompositionEvent) {
+  isComposing = false
+  if (!ui.selectedNodeId) return
+  const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
+  if (!node) return
+  if (!renaming) {
+    renameOrigin = node.name
+    renaming = true
+  }
+  mapStore.updateNode(ui.selectedNodeId, { name: node.name + e.data })
+}
 
 function onKeyDown(event: KeyboardEvent) {
+  // Skip inline rename during IME composition
+  if (event.isComposing) return
+
   // Inline rename mode: Enter confirms, Escape reverts
   if (renaming) {
     if (event.key === 'Enter') {
@@ -130,8 +148,8 @@ function onKeyDown(event: KeyboardEvent) {
       if (ui.selectedNodeId) mapStore.updateNode(ui.selectedNodeId, { name: renameOrigin })
       return
     }
-    // Append character to name
-    if (event.key.length === 1 && ui.selectedNodeId) {
+    // Append ASCII character to name, skip IME-derived events
+    if (!isComposing && event.key.length === 1 && event.key.codePointAt(0)! < 256 && ui.selectedNodeId) {
       event.preventDefault()
       const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
       if (node) mapStore.updateNode(ui.selectedNodeId, { name: node.name + event.key })
@@ -157,7 +175,8 @@ function onKeyDown(event: KeyboardEvent) {
   }
 
   // Printable key on selected node → start inline rename (replaces name)
-  if (event.key.length === 1 && ui.selectedNodeId) {
+  // ASCII only — non-ASCII (CJK etc.) go through compositionend
+  if (event.key.length === 1 && event.key.codePointAt(0)! < 256 && ui.selectedNodeId) {
     event.preventDefault()
     const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
     if (node) {
@@ -282,7 +301,7 @@ function onNodeDragStop({ node }: { node: Node }) {
 </script>
 
 <template>
-  <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu">
+  <div class="canvas-wrapper" tabindex="0" @keydown="onKeyDown" @click="closeContextMenu" @compositionstart="onCompositionStart" @compositionend="onCompositionEnd">
     <VueFlow
       :key="displayKey"
       :nodes="flowNodes"

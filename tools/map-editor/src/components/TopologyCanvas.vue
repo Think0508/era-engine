@@ -267,42 +267,46 @@ let unlistenDrop: (() => void) | null = null
 onMounted(async () => {
   try {
     const { getCurrentWindow } = await import('@tauri-apps/api/window')
-    unlistenDrop = await getCurrentWindow().onDragDropEvent((event) => {
+    unlistenDrop = await getCurrentWindow().onDragDropEvent(async (event) => {
       if (event.payload.type === 'drop') {
         const path = event.payload.paths?.[0]
         if (path) {
-          try { bgUrl.value = convertFileSrc(path) } catch { bgUrl.value = path }
+          const { convertFileSrc: cfs } = await import('@tauri-apps/api/core')
+          bgUrl.value = cfs(path)
           mapStore.backgroundPath = path
         }
       }
     })
-  } catch { /* not in Tauri */ }
+  } catch (e) { console.warn('Tauri drop event not available:', e) }
 })
 onUnmounted(() => { unlistenDrop?.() })
 
-// Click zone drawing — uses VueFlow pane events (not wrapper mouse events)
-const drawStart = ref<{ x: number; y: number } | null>(null)
-const drawCurrent = ref<{ x: number; y: number } | null>(null)
+// Click zone drawing — stores screen coords for preview, flow coords for saving
+const drawStartScreen = ref<{ x: number; y: number } | null>(null)
+const drawCurrentScreen = ref<{ x: number; y: number } | null>(null)
 
 function onPaneMouseDown(event: MouseEvent) {
   if (!mapStore.drawingZone || !mapStore.drawTargetNodeId || !vueFlowStore.value) return
-  const fp = vueFlowStore.value.screenToFlowCoordinate({ x: event.clientX, y: event.clientY })
-  drawStart.value = fp
-  drawCurrent.value = fp
+  drawStartScreen.value = { x: event.clientX, y: event.clientY }
+  drawCurrentScreen.value = { x: event.clientX, y: event.clientY }
 }
 
 function onPaneMouseMove(event: MouseEvent) {
-  if (!drawStart.value || !vueFlowStore.value) return
-  const fp = vueFlowStore.value.screenToFlowCoordinate({ x: event.clientX, y: event.clientY })
-  drawCurrent.value = fp
+  if (!drawStartScreen.value || !vueFlowStore.value) return
+  drawCurrentScreen.value = { x: event.clientX, y: event.clientY }
 }
 
 function onPaneMouseUp() {
-  if (!drawStart.value || !drawCurrent.value || !mapStore.drawTargetNodeId) { drawStart.value = null; drawCurrent.value = null; return }
-  const x = Math.min(drawStart.value.x, drawCurrent.value.x)
-  const y = Math.min(drawStart.value.y, drawCurrent.value.y)
-  const w = Math.abs(drawCurrent.value.x - drawStart.value.x)
-  const h = Math.abs(drawCurrent.value.y - drawStart.value.y)
+  if (!drawStartScreen.value || !drawCurrentScreen.value || !mapStore.drawTargetNodeId || !vueFlowStore.value) {
+    drawStartScreen.value = null; drawCurrentScreen.value = null; return
+  }
+  // Save using flow coordinates (for proportional conversion on export)
+  const startFlow = vueFlowStore.value.screenToFlowCoordinate(drawStartScreen.value)
+  const endFlow = vueFlowStore.value.screenToFlowCoordinate(drawCurrentScreen.value)
+  const x = Math.min(startFlow.x, endFlow.x)
+  const y = Math.min(startFlow.y, endFlow.y)
+  const w = Math.abs(endFlow.x - startFlow.x)
+  const h = Math.abs(endFlow.y - startFlow.y)
   if (w > 5 && h > 5) {
     const node = mapStore.nodes.find(n => n.id === mapStore.drawTargetNodeId)
     if (node) {
@@ -317,17 +321,19 @@ function onPaneMouseUp() {
       mapStore.updateNode(mapStore.drawTargetNodeId, { attrs: { ...attrs, clickZones: zones } })
     }
   }
-  drawStart.value = null
-  drawCurrent.value = null
+  drawStartScreen.value = null
+  drawCurrentScreen.value = null
   mapStore.stopDrawZone()
+  // Re-select the node after drawing
+  if (mapStore.drawTargetNodeId) ui.selectNode(mapStore.drawTargetNodeId)
 }
 
 function getDrawStyle() {
-  if (!drawStart.value || !drawCurrent.value) return {}
-  const x = Math.min(drawStart.value.x, drawCurrent.value.x)
-  const y = Math.min(drawStart.value.y, drawCurrent.value.y)
-  const w = Math.abs(drawCurrent.value.x - drawStart.value.x)
-  const h = Math.abs(drawCurrent.value.y - drawStart.value.y)
+  if (!drawStartScreen.value || !drawCurrentScreen.value) return {}
+  const x = Math.min(drawStartScreen.value.x, drawCurrentScreen.value.x)
+  const y = Math.min(drawStartScreen.value.y, drawCurrentScreen.value.y)
+  const w = Math.abs(drawCurrentScreen.value.x - drawStartScreen.value.x)
+  const h = Math.abs(drawCurrentScreen.value.y - drawStartScreen.value.y)
   return { left: `${x}px`, top: `${y}px`, width: `${w}px`, height: `${h}px` }
 }
 
@@ -431,7 +437,7 @@ function onNodeDragStop({ node }: { node: Node }) {
   >
     <!-- 注释：绘制点击区域时的矩形预览 -->
     <div
-      v-if="drawStart && drawCurrent && mapStore.drawingZone"
+      v-if="drawStartScreen && drawCurrentScreen && mapStore.drawingZone"
       class="draw-zone-preview"
       :style="getDrawStyle()"
     />
@@ -497,7 +503,7 @@ function onNodeDragStop({ node }: { node: Node }) {
   width: 1px; height: 1px; opacity: 0;
 }
 .draw-zone-preview {
-  position: absolute; border: 2px dashed #3b82f6;
-  background: rgba(59,130,246,0.15); pointer-events: none; z-index: 100;
+  position: fixed; border: 2px dashed #3b82f6;
+  background: rgba(59,130,246,0.15); pointer-events: none; z-index: 9999;
 }
 </style>

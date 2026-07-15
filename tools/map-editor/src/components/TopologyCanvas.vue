@@ -87,7 +87,6 @@ function onEdgeClick({ edge }: { edge: Edge }) {
 function onPaneClick(event: MouseEvent) {
   renaming = false
   if (paneClickTimer) {
-  if (paneClickTimer) {
     clearTimeout(paneClickTimer)
     paneClickTimer = null
     createRootNode(event)

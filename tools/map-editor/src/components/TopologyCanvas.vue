@@ -33,7 +33,7 @@ const flowNodes = computed<Node[]>(() => {
 
   return mapStore.nodes.map(n => {
     const plain = JSON.parse(JSON.stringify(n))
-    // Apply visibility style — also bump version on every render to force re-render
+    // Apply visibility style �?also bump version on every render to force re-render
     const style: Record<string, any> = {}
     if (!n.visible) { style.opacity = 0.35; style.borderStyle = 'dashed' }
     return {
@@ -115,18 +115,18 @@ function nextNodeId(prefix: string): string {
 
 function onNodeClick({ node }: { node: Node }) {
   if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
-  applyRename()
+  commitRename()
   ui.selectNode(node.id)
 }
 
 function onEdgeClick({ edge }: { edge: Edge }) {
-  applyRename()
+  commitRename()
   ui.selectEdge(edge.id)
 }
 
 function onPaneClick(event: MouseEvent) {
   if (mapStore.drawingZone) return
-  applyRename()
+  commitRename()
   if (paneClickTimer) {
     clearTimeout(paneClickTimer)
     paneClickTimer = null
@@ -158,48 +158,60 @@ function createRootNode(event: MouseEvent) {
   ui.selectNode(id)
 }
 
+// Inline rename �?floating input near the selected node
 const renameInput = ref<HTMLInputElement | null>(null)
-let renameOrigin = ''   // original name before inline edit
-let renaming = false    // currently in inline rename mode
+const renamePos = ref({ x: 0, y: 0 })
+let renameOrigin = ''
+let renaming = false
 
-function startRename() {
+function startRename(firstChar: string) {
   if (!ui.selectedNodeId) return
   const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
   if (!node) return
   renameOrigin = node.name
   renaming = true
-  // Focus hidden input on next tick (after Vue processes the template)
+  // Position the input near the node on screen
+  const el = document.querySelector(`[data-id="${ui.selectedNodeId}"]`) as HTMLElement | null
+  if (el) {
+    const rect = el.getBoundingClientRect()
+    renamePos.value = { x: rect.left, y: rect.top }
+  }
   nextTick(() => {
     if (renameInput.value) {
-      renameInput.value.value = node.name
+      renameInput.value.value = firstChar
       renameInput.value.focus()
       renameInput.value.select()
     }
   })
 }
 
-function applyRename() {
-  if (!ui.selectedNodeId) return
-  const val = renameInput.value?.value ?? ''
-  mapStore.updateNode(ui.selectedNodeId, { name: val || renameOrigin })
-  renaming = false
-}
-
-function revertRename() {
-  if (ui.selectedNodeId) mapStore.updateNode(ui.selectedNodeId, { name: renameOrigin })
-  renaming = false
-  if (renameInput.value) renameInput.value.blur()
-}
-
-function onRenameInput(event: Event) {
+function commitRename() {
   if (!renaming || !ui.selectedNodeId) return
-  mapStore.updateNode(ui.selectedNodeId, { name: (event.target as HTMLInputElement).value })
+  const val = renameInput.value?.value ?? ''
+  if (val && val !== renameOrigin) {
+    mapStore.updateNode(ui.selectedNodeId, { name: val })
+  }
+  renaming = false
+}
+
+function cancelRename() {
+  if (!renaming) return
+  renaming = false
+}
+
+function onRenameBlur() {
+  // Blur = cancel (revert to original)
+  cancelRename()
 }
 
 function onRenameKeyDown(event: KeyboardEvent) {
-  if (event.key === 'Enter') { applyRename(); return }
-  if (event.key === 'Escape') { revertRename(); return }
+  if (event.key === 'Enter') { event.preventDefault(); commitRename(); return }
+  if (event.key === 'Escape') { event.preventDefault(); cancelRename(); return }
 }
+
+// No-op �?input value is read on commit only
+function onRenameInput(_event: Event) {}
+
 
 function onKeyDown(event: KeyboardEvent) {
   // If renaming, redirect keyboard events to the hidden input
@@ -223,16 +235,10 @@ function onKeyDown(event: KeyboardEvent) {
     }
   }
 
-  // Printable or function key on selected node → start rename
+  // Printable or function key on selected node �?start rename
   if (event.key.length === 1 && ui.selectedNodeId && !event.ctrlKey && !event.metaKey && !event.altKey) {
     event.preventDefault()
-    startRename()
-    // Dispatch the pressed key to the hidden input
-    if (renameInput.value) {
-      renameInput.value.value = event.key
-      // Trigger input event so onRenameInput updates the node
-      renameInput.value.dispatchEvent(new Event('input', { bubbles: true }))
-    }
+    startRename(event.key)
     return
   }
 
@@ -290,7 +296,7 @@ function onBgFileSelected(e: Event) {
   input.value = ''
 }
 
-// Click zone drawing — stores screen coords for preview, flow coords for saving
+// Click zone drawing �?stores screen coords for preview, flow coords for saving
 const drawStartScreen = ref<{ x: number; y: number } | null>(null)
 const drawCurrentScreen = ref<{ x: number; y: number } | null>(null)
 
@@ -393,7 +399,7 @@ function onPaneReady(instance: any) {
 }
 
 function onNodesChange(changes: NodeChange[]) {
-  // Only handle 'remove' type — positions are synced via @node-drag-stop
+  // Only handle 'remove' type �?positions are synced via @node-drag-stop
   for (const change of changes) {
     if (change.type === 'remove') {
       // Node was removed via Vue Flow built-in (e.g., keyboard delete)
@@ -445,7 +451,7 @@ function onNodeDragStop({ node }: { node: Node }) {
     @drop.prevent="onCanvasDrop"
   >
     <img v-if="mapStore.isModeB && bgUrl" :src="bgUrl" class="map-bg-img" />
-    <!-- 注释：绘制点击区域时的矩形预览 -->
+    <!-- 注释：绘制点击区域时的矩形预�?-->
     <div
       v-if="drawStartScreen && drawCurrentScreen && mapStore.drawingZone"
       class="draw-zone-preview"
@@ -497,10 +503,12 @@ function onNodeDragStop({ node }: { node: Node }) {
     />
     <input
       ref="renameInput"
-      class="rename-input"
+      v-if="renaming"
+      class="rename-float"
+      :style="{ left: renamePos.x + 'px', top: renamePos.y + 'px' }"
       @input="onRenameInput"
       @keydown="onRenameKeyDown"
-      @blur="applyRename"
+      @blur="onRenameBlur"
     />
   </div>
 </template>
@@ -510,12 +518,15 @@ function onNodeDragStop({ node }: { node: Node }) {
 .map-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; z-index: 0; }
 .canvas-wrapper :deep(.vue-flow__node) { cursor: pointer; }
 .canvas-wrapper :deep(.vue-flow__pane) { z-index: 1; position: relative; }
-.rename-input {
-  position: fixed; left: -9999px; top: -9999px;
-  width: 1px; height: 1px; opacity: 0;
+.rename-float {
+  position: fixed; z-index: 10000;
+  width: 160px; padding: 4px 8px;
+  font-size: 13px; font-family: sans-serif;
+  border: 2px solid #3b82f6; border-radius: 4px;
+  background: #fff; outline: none;
 }
 .draw-zone-preview {
   position: fixed; border: 2px dashed #3b82f6;
-  background: rgba(59,130,246,0.15); pointer-events: none; z-index: 9999;
+  background: rgba(59,130,246,0.15); pointer-events: none; z-index: 999;
 }
 </style>

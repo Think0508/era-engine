@@ -1,5 +1,5 @@
 import { parse as parseTOML } from '@iarna/toml'
-import type { Edge, EntityData, LocationData, MoveConfig } from './types'
+import type { Edge, EntityData, LocationData, MapLayout, MoveConfig } from './types'
 import type { Effect } from './effect-type-registry'
 import { resolveTemplate, deepMerge } from './template'
 import { entitySystem } from './entity-system'
@@ -282,6 +282,7 @@ export interface LoadedMod {
   entities: Map<string, Map<string, EntityData>>
   locations: Map<string, LocationData>
   graph: Edge[]
+  layouts: Map<string, MapLayout>
   bindings: Record<string, Record<string, string>>
   theme: Record<string, Record<string, string>>
   attributes: Record<string, AttributeDefinition>
@@ -460,6 +461,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     entities: new Map(),
     locations: new Map(),
     graph: [],
+    layouts: new Map(),
     bindings: {},
     theme: {},
     attributes: {},
@@ -581,6 +583,15 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
 
   mod.locations = loadLocations(rawTomlMap, modName)
   mod.graph = loadGraph(rawTomlMap, modName)
+
+  // 注释：加载视觉地图 layout JSON
+  const layoutPrefix = `/mods/${modName}/maps/layout/`
+  for (const [path, raw] of Object.entries(rawTomlMap)) {
+    if (!path.startsWith(layoutPrefix) || !path.endsWith('.json')) continue
+    const data = parseFile(path, raw) as MapLayout
+    const layoutId = path.slice(layoutPrefix.length).replace(/\.json$/, '')
+    mod.layouts.set(layoutId, data)
+  }
 
   // 注释：加载移动配置（插件默认 + mod override）
   const moveData = loadMerged<{ move: MoveConfig }>('move.toml', 'move')

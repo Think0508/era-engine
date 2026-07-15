@@ -16,6 +16,39 @@ export interface Edge {
   condition?: string
 }
 
+export interface MapLayoutClickZone {
+  x: number
+  y: number
+  w: number
+  h: number
+}
+
+export interface MapLayoutNode {
+  id: string
+  x: number
+  y: number
+  w: number
+  h: number
+  clickZones: MapLayoutClickZone[]
+  zoom: [number, number]
+}
+
+export interface MapLayoutEdge {
+  from: string
+  to: string
+  path: { x: number; y: number }[]
+  zoom: [number, number]
+}
+
+export interface MapLayout {
+  version: number
+  background?: string
+  nodes: MapLayoutNode[]
+  edges: MapLayoutEdge[]
+  subMaps: Record<string, string>
+  zoomLevels: number
+}
+
 export interface MoveConfig {
   parent_time_cost: number
   child_time_cost: number

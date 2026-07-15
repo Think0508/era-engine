@@ -70,6 +70,12 @@ const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
 const displayKey = ref(0)
 watch(() => [ui.showIdOnNode, ui.levelColors], () => { displayKey.value++ })
+// Force VueFlow remount on node/edge data changes, preserving viewport
+watch(() => mapStore.nodeVersionRef, () => {
+  const vp = vueFlowStore.value?.getViewport()
+  displayKey.value++
+  if (vp) nextTick(() => vueFlowStore.value?.setViewport(vp))
+})
 const bgUrl = ref('')
 const bgImageSize = ref({ w: 0, h: 0 })
 

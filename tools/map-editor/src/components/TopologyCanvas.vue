@@ -33,7 +33,7 @@ const flowNodes = computed<Node[]>(() => {
 
   return mapStore.nodes.map(n => {
     const plain = JSON.parse(JSON.stringify(n))
-    // Apply visibility style �?also bump version on every render to force re-render
+    // Apply visibility style �?also bump version on every render to force re-render
     const style: Record<string, any> = {}
     if (!n.visible) { style.opacity = 0.35; style.borderStyle = 'dashed' }
     return {
@@ -158,7 +158,7 @@ function createRootNode(event: MouseEvent) {
   ui.selectNode(id)
 }
 
-// Inline rename �?floating input near the selected node
+// Inline rename �?floating input near the selected node
 const renameInput = ref<HTMLInputElement | null>(null)
 const renamePos = ref({ x: 0, y: 0 })
 let renameOrigin = ''
@@ -171,7 +171,7 @@ function startRename(firstChar: string) {
   renameOrigin = node.name
   renaming = true
   // Position the input near the node on screen
-  const el = document.querySelector(`[data-id="${ui.selectedNodeId}"]`) as HTMLElement | null
+  const el = document.getElementById(ui.selectedNodeId) as HTMLElement | null
   if (el) {
     const rect = el.getBoundingClientRect()
     renamePos.value = { x: rect.left, y: rect.top }
@@ -209,7 +209,7 @@ function onRenameKeyDown(event: KeyboardEvent) {
   if (event.key === 'Escape') { event.preventDefault(); cancelRename(); return }
 }
 
-// No-op �?input value is read on commit only
+// No-op �?input value is read on commit only
 function onRenameInput(_event: Event) {}
 
 
@@ -235,7 +235,7 @@ function onKeyDown(event: KeyboardEvent) {
     }
   }
 
-  // Printable or function key on selected node �?start rename
+  // Printable or function key on selected node �?start rename
   if (event.key.length === 1 && ui.selectedNodeId && !event.ctrlKey && !event.metaKey && !event.altKey) {
     event.preventDefault()
     startRename(event.key)
@@ -296,7 +296,7 @@ function onBgFileSelected(e: Event) {
   input.value = ''
 }
 
-// Click zone drawing �?stores screen coords for preview, flow coords for saving
+// Click zone drawing �?stores screen coords for preview, flow coords for saving
 const drawStartScreen = ref<{ x: number; y: number } | null>(null)
 const drawCurrentScreen = ref<{ x: number; y: number } | null>(null)
 
@@ -399,7 +399,7 @@ function onPaneReady(instance: any) {
 }
 
 function onNodesChange(changes: NodeChange[]) {
-  // Only handle 'remove' type �?positions are synced via @node-drag-stop
+  // Only handle 'remove' type �?positions are synced via @node-drag-stop
   for (const change of changes) {
     if (change.type === 'remove') {
       // Node was removed via Vue Flow built-in (e.g., keyboard delete)
@@ -451,7 +451,7 @@ function onNodeDragStop({ node }: { node: Node }) {
     @drop.prevent="onCanvasDrop"
   >
     <img v-if="mapStore.isModeB && bgUrl" :src="bgUrl" class="map-bg-img" />
-    <!-- 注释：绘制点击区域时的矩形预�?-->
+    <!-- 注释：绘制点击区域时的矩形预�?-->
     <div
       v-if="drawStartScreen && drawCurrentScreen && mapStore.drawingZone"
       class="draw-zone-preview"
@@ -480,6 +480,7 @@ function onNodeDragStop({ node }: { node: Node }) {
       @mousedown="onPaneMouseDown"
       @mousemove="onPaneMouseMove"
       @mouseup="onPaneMouseUp"
+      @keydown="onKeyDown"
       @dragover.prevent="onCanvasDragOver"
       @drop.prevent="onCanvasDrop"
     >
@@ -503,7 +504,7 @@ function onNodeDragStop({ node }: { node: Node }) {
     />
     <input
       ref="renameInput"
-      v-if="renaming"
+      v-show="renaming"
       class="rename-float"
       :style="{ left: renamePos.x + 'px', top: renamePos.y + 'px' }"
       @input="onRenameInput"

@@ -31,7 +31,7 @@ async function handleExport() {
 
 <template>
   <div class="export-bar">
-    <button @click="handleExport">导出 TOML</button>
+    <button @click="handleExport" title="选择目录后导出 maps/locations/*.toml 和 maps/graph/*.toml">导出 TOML</button>
     <span v-if="exportStatus" class="status">{{ exportStatus }}</span>
   </div>
 </template>

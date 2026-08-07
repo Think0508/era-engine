@@ -142,3 +142,15 @@ erArk 效果ID: 21   12   CVE_A2  CVE_A1  53  55  501
 | 1101~1109(第一次) | 📝 TODO | h-first-time 插件 |
 | CVE_*(经验) | 📝 TODO | 经验系统 |
 | 501~599(H/其他) | 📝 TODO | 查 default.py |
+
+### 指令复刻（L1.6）已完成 vs TODO
+
+| 项 | 状态 | 说明 |
+|----|------|------|
+| 第 0 步粗筛（404 → 228 保留） | ✅ | `docs/instruction-replication/instruction-master-list.md` + keep-list |
+| 前置改动（spec §10 全部） | ✅ | loader 收敛 / judge_check 注入 / calcJudge adjustments 表 / IN_* → location.tags / 耗时机制 / UI 分类 / _erark_source 归档 |
+| 判定链路（judge_check → settle_* 门控） | ✅ | 共享执行上下文修复 + 端到端测试 |
+| 条件引擎（selected/target/别名/校验） | ✅ | condition-registry.validateExpression + fieldAliases + {id} 占位替换 |
+| B1 批次（daily 24 条） | 📝 TODO | 批次清单 → 用户筛选 → TOML（下一步） |
+| B2-B6（obscenity/sex） | 📝 TODO | sex 延后至 H UI 就绪 |
+| 尿道/特殊特征/恋爱依赖项 | ⛔ 不做 | 尿道 19 条 / 特殊特征 8 条砍掉，告白延后 |

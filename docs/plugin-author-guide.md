@@ -258,7 +258,7 @@ ctx.api.call('h-core', 'endHScene', ...)                       // → void
 ctx.api.call('h-core', 'getLevel', charId, levelType)          // → number
 ctx.api.call('h-core', 'calcFavorability', charId)             // → number
 ctx.api.call('h-core', 'calcTrust', charId)                    // → number
-ctx.api.call('h-core', 'calcJudge', judgeBase, favorability, trust) // → JudgeResult
+ctx.api.call('h-core', 'calcJudge', judgeBase, favorability, trust, charId?, judgeClass?) // → JudgeResult
 ctx.api.call('h-core', 'getFavorabilityLevel', charId)         // → number
 ctx.api.call('h-core', 'getTrustLevel', charId)                // → number
 ctx.api.call('h-core', 'registerPremise', id, handler)         // → void

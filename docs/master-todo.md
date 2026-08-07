@@ -10,6 +10,128 @@
 
 ### 已完成（本会话）
 ```
+L1.6 前置改动（spec §10，B1 开工前一次做完）✅
+  - loader 收敛: h-instructions/ 双路径 → 单 instructions/（插件默认层 + mod 层按 id 去重，mod 胜出）
+    h-instruction-loader.ts 删除，并入 instruction-loader.ts；h_ 前缀移除
+  - HInstruction 接口扩展: erark_id/erark_behavior/judge_base/judge_class/tags/condition
+    loader 自动注入 judge_check（有 judge_base 时置顶）
+  - judge_check/calcJudge 对接: calcJudge 加 judgeClass 参数 → 查 hConfig [judge.adjustments] 表
+    h-config.toml 新增修正表（性交-250/A性交-350/W性交-400/亲吻-125，instuct_judege.py 逐行翻译）
+    未实装修正项（月经/体位/旅馆/他人/助理/H打断/监禁/睡眠/激素）留 TODO 注释
+  - 位置前提迁移: 8 个 IN_* handler 删除 → location.tags（对照表 docs/instruction-replication/location-tags.md）
+  - 引擎耗时机制: timeCost<=0（-1=handler 自定义耗时）不自动推进时间、不进结算公式
+  - UI 分类开关: CommandBar 动态收集已存在，补全排序（play/work/arts/system）
+  - 清理: mods/_erark_source/ → docs/instruction-replication/archive/_erark_source/
+  - 顺带修复: typecheck 基线错误 12 处（未用 import/ExecutionContext.sourceId 等）
+  验收: npm run typecheck ✅ / npm run test 266 通过 ✅ / dev 启动无报错 ✅
+
+Code review 修复（2026-08-08 子代理 review）✅
+  - loader 兼容 spec schema：category/sub_category 规范名（type/sub_type 旧别名兜底）
+  - 单条指令注册失败（id 重复）→ errorReporter + 跳过，不拖垮 h-core（原会 throw 禁用整个插件）
+  - 天赋个性修正按 erArk 门控 S 类判定：亲吻(D) 不吃 淫乱/性好奇/性冷漠/性无知（instuct_judege.py 162-178 行）
+  - game:execution_end 发 clamp 后耗时（-1 不再外泄给 h-hidden/h-pregnancy）
+  - 同层指令 id 重复 → warning；缺 time_cost / 孤儿 judge_class → warning
+  - 修正条件解析失败 → errorReporter（原静默吞）
+  - 新增 4 测试（S类门控判别/单条失败隔离/executor premises/timeCost -1）→ 270 通过
+  验收: npm run typecheck ✅ / npm run test 270 通过 ✅
+
+二次深度审查修复（2026-08-08，静默bug/架构/完整性）✅
+  - 条件绕过消除: DailyMenu/ScreenNumpad 原来 evaluateCondition: ()=>true（静默执行风险）
+    → 新建共享求值器 src/ui/utils/command-eval.ts，三组件同源；executor fail-safe：
+      有 condition/premises 但调用方无求值器 → warning + 跳过（禁止静默放行）
+  - 加载时校验（AGENTS §21）: condition 引用未注册字段 → error + 注销该指令；
+    premises 未注册 → warning（去重）；hConfig adjustments 修正条件 → error
+    - 因插件 condition_fields/premises 在 onEnable 后才注册，新增 game:plugins_loaded
+      生命周期事件（plugin-manager 全部 onEnable 后 emit），校验延迟到该事件
+  - condition-registry: 新增结构路径 pattern（location.tags.{tag}/talents/abilities/
+    factions/status/relations/first_times/experience/body_parts/base/inventory）+
+    validateExpression()（selected./target. 归一化校验）
+  - judge_check 多目标: 最坏者胜出合并（retreated>partial>success），防静默覆盖
+  - condition.ts 根路径只在位置0生效（防深层字段遮蔽，如角色字段名叫 player）
+  - h-config adjustments 条件改显式结构路径（target.talents.性无知）
+  验收: npm run typecheck ✅ / npm run test 274 通过 ✅ / dev 启动无报错 ✅
+
+三次深度审查修复（2026-08-08，round-3：条件引擎真相对齐）✅
+  - selected 根路径修复（重大）：gameContext.getContext() 从未提供 selectedCharacterId →
+    bridge 同步选中角色（watch uiStore.selectedCharacterId → gameContext.setSelectedCharacterId）
+    （talk/open_selected_panel 的 `selected != null` 之前恒 false——指令永久死亡，现已修复）
+  - 条件引擎 null/undefined 右值支持（`selected != null` 存在性检查，不再抛错→恒 false）
+  - 能力记录终端解包为等级（AGENTS §36 {level,xp} 数据契约）；对象数组单段 id 匹配（status.醉意 存在性）
+  - 字段别名机制：core 条件引擎保持通用，插件注册别名（status-system 注册
+    status→status_effects / remaining→remaining_duration，gameContext.setFieldAliases）
+  - validateExpression 去掉根白名单：插件自定义根（combat.in_progress）直接精确校验；
+    数字/负数字面量不误判
+  - judge_check 空目标 fail-closed（retreat+警告）；mergeJudgeResult 提取纯函数+单测；
+    settle_hp_mp 补 canApply 门控（与兄弟 settle_* 一致）
+  - executor 前提/条件检查包 try/catch（前提 handler 抛错不再逃逸 execute()）；
+    command-eval 去掉 player 兜底（与 resolveTarget('selected') 语义一致，防 HAVE_TARGET 假通过）
+  - ScreenNumpad ctx 补齐（api/engine/sourceId）；engine-ui-bridge createExecutionContext 换共享求值器
+  - effect_block 未知引用 → warning；CommandDef 增加 tags 字段透传（spec §3）
+  - game:plugins_loaded 监听器防重复注册
+  验收: npm run typecheck ✅ / npm run test 281 通过 ✅ / dev 启动无报错 ✅
+
+四次深度审查修复（2026-08-08，round-4：跑通性验证）✅
+  - 真浏览器启动 bug：main.ts 手动重复注册 locations（loadMod 内部已注册）→
+    "实体 location:town_square 已存在" 启动即失败页 → 删除重复注册
+  - era-engine.config.toml 从未被读取（active_mod 死配置，切模组无效）→ main.ts 读取
+    active_mod（?raw 导入 + @iarna/toml，缺省兜底 test-mod）
+  - meta.toml starting_location/player_character 死字段（AGENTS §39 文档化但未加载）→
+    LoadedMod 加载 + main.ts 使用（起始地点/玩家实体按 mod 声明）
+  - 新增 boot 冒烟测试 src/plugins/boot-smoke.test.ts（镜像 main.ts 全量插件加载）：
+    插件 onEnable 全部成功（move/talk/do_h/end_h 存在性强断言）、指令注册、校验无误报
+  - instruction-loader 幂等保护（onEnable 重跑不再重复注册刷屏）
+  验收: npm run typecheck ✅ / npm run test 288 通过 ✅ / dev 启动无报错 ✅
+
+五次深度审查修复（2026-08-08，round-5：测试审查 + 判定链路真 bug）✅
+  - 【重大 pre-existing bug】effect-system 每效果新建 handlerCtx 拷贝 → judge_check 写入的
+    _judgeResult 后序 settle_* 读不到 → canApply 恒 true → 判定退缩从不阻止结算！
+    （judge_check/settle_favorability/trust/state/hp_mp 全链路静默失效）
+    修复：handlerCtx = Object.assign(execCtx, ...) 共享同一执行上下文
+  - 新增端到端判定测试（effect-system + h-core onLoad + executor 全链路）：
+    退缩 → settle_state 跳过（快乐不变）+ 退缩日志；已吻 → 判定成功 → settle_state 生效（40）
+  - phase-h 测试自足化：mod 加载测试前置 entitySystem.clear()（消除顺序脆弱依赖）
+  - 测试审查发现：setEntityAttr 找不到命名空间时写直接属性（测试角色未按
+    applyAttributeDefaults 初始化导致的假失败——测试已镜像真实初始化）
+  验收: npm run typecheck ✅ / npm run test 289 通过 ✅
+
+六次深度审查修复（2026-08-08，round-6：链路验证）✅
+  - 新增链路冒烟测试 src/plugins/chain-flow.test.ts（真正"点指令"的全链路）：
+    rest → 时间+60min/恢复效果/场景口上；do_h → H开始 → end_h 结束（模式栈往返）；
+    talk → 占位输出；整批无 error
+  - 新增 bridge 叙事链测试（narrativeLog.write → eventBus → bridge → gameStore）
+  - 链路验证中发现并修复：
+    - 测试 mock 缺 selectCharacter（talk handler 依赖）——真实 uiStore 有，产品无 bug
+    - talk-common API 注册在 onEnable（async）——plugin-manager 有 await，产品无 bug
+    - rest 无选中目标时 2 条 "target='selected' 无选中" warning——test-mod 数据设计
+      （搭档恢复效果），B1 写 rest 时按 target 条件化
+  验收: npm run typecheck ✅ / npm run test 294 通过 ✅（32 文件）
+
+七次深度审查修复（2026-08-08，round-7：静默错误排查）✅
+  - 【静默 bug】dialogue pickMatchingLine 不求值替换 {id} 占位符 → character.{id}.好感度
+    解析为查找角色 '{id}'（恒不存在 → 条件恒 true）：好感度条件失效 + 无条件台词被随机遮蔽
+    → substituteId() 替换后求值（premises: 分支同样处理）
+  - executor finally 的 checkTalentGain 无防护 → 异常会逃逸 execute()（UI 点击崩）
+    → try/catch + errorReporter
+  - settle_hp_mp 的 .catch(()=>false) 吞真实错误 → 只忽略"插件未注册"（与 judge_check 一致）
+  - 链路测试升级：h-core onEnable 用真实 eventBus（execution_end 二段结算监听器真实注册）
+    + 新增"H 中执行指令 → body_item_tick + orgasmJudge 不崩"测试
+  - 角色口上分支测试（{id} 判别：好感度 50 → '哦，是你啊'；10 → '你是何人'）
+  - 修 flaky：test-mod greet 两行条件互斥（原无条件行 + 随机选 → 断言 flaky）
+  验收: npm run typecheck ✅ / npm run test 296 通过 ✅（6 连跑稳定）
+
+已知缺口（本次审查发现，登记 TODO）:
+  - resolveValue 不支持 quest.*/inventory.* 根路径（注册表里有、求值恒为 0/false 静默）——
+    需 gameContext 暴露 quests/inventory 上下文后接入
+  - 可用条件属性手册.md 生成（conditionRegistry.generateManual 已有实现）未接线——
+    浏览器端无法写文件系统，需 dev 工具/脚本方案
+  - plugin-manager 用 console.warn（铁律要求 errorReporter）——既有代码，随批收敛
+
+下一步: B1 批次清单 docs/instruction-replication/batch-01-daily.md（24 条 daily/work/play）
+  → 用户筛选 → 逐条写 TOML 到 src/plugins/h-core/data/default/instructions/（spec §8 每批工作流）
+```
+
+### 已完成（此前会话）
+```
 L2.11 三项缺口全部完成 ✅
   - 群交HP修正: hp-mp.ts 重写 + settle_hp_mp effect注册
   - 精液吸收: calcSemenAbsorb + penis_dirty_dict + H中tick吸收
@@ -50,7 +172,7 @@ TODO(依赖其他系统):
 4. 移动/离开 effect（`move_to`、`npc_leave`——场景剧情中控制角色位置）
 5. L1.7 睡眠/昼寝/就寝指令
 5. L1.9 {{input}} 文本框语法
-6. L1.6 指令复刻（380条erArk指令，依赖系统就绪）
+6. L1.6 指令复刻（前置改动 ✅，下一步：B1 批次清单 → 用户筛选 → 逐条 TOML）
 7. 侧栏面板：特质页签/个人情报/日志统计/作弊
 ```
 
@@ -145,7 +267,9 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 | add-instruction.md | docs/skills/ | 全部 | 添加指令工作流（66行，✅） |
 | phase-p1-core-era.md | docs/plans/ | P1 | 核心era体验计划（175行，**当前阶段**） |
 | phase-11-15-mvp-release.md | docs/plans/ | 11-15 | MVP发布计划（320行，**当前**） |
-| 2026-07-04-instruction-replication.md | docs/plans/ | P1 | 指令复刻方案（67行，**当前**） |
+| 2026-07-04-instruction-replication.md | docs/plans/ | P1 | 指令复刻方案（67行，已被下述 spec 取代） |
+| 2026-08-07-instruction-replication-design.md | docs/superpowers/specs/ | P1 | **指令复刻设计 spec（当前权威，做 L1.6 必读）** |
+| migration-workflow.md | docs/instruction-replication/ | P1 | **逐条迁移 SOP（做 L1.6 必读）** |
 | h-hypnosis-design.md | docs/specs/ | H子 | 催眠设计规格（**做催眠时必读**） |
 | h-hidden-design.md | docs/specs/ | H子 | 隐奸设计规格（**做隐奸时必读**） |
 | h-group-sex-design.md | docs/specs/ | H子 | 群交设计规格（**做群交时必读**） |
@@ -215,11 +339,14 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 
 ### L1.6 指令复刻（Phase A/B/C）
 
-**参考**：`docs/superpowers/plans/2026-07-04-instruction-replication.md` + `docs/skills/erark-replication.md`
+**参考**：`docs/superpowers/specs/2026-08-07-instruction-replication-design.md`（权威 spec）+ `docs/instruction-replication/migration-workflow.md`（逐条 SOP）+ `docs/skills/erark-replication.md`
 
+> **当前进度**：第 0 步粗筛 ✅（228 保留，见 `docs/instruction-replication/instruction-keep-list.md`）→ 前置改动 ✅（spec §10 全部完成）→ **下一步 B1 批次清单**（24 条 daily/work/play，写 `batch-01-daily.md` 等用户筛选）
+
+- **前置改动** ✅（见会话交接摘要）：loader 收敛 / 接口扩展+judge_check 注入 / calcJudge adjustments 表 / IN_* 迁 location.tags / 耗时机制 / UI 分类 / _erark_source 归档
 - **Phase A**：齐全前提（~80 个），按 A1（身体/体技/体位）→ A2（服装/地点/道具）→ A3（杂项）分批
 - **Phase B**：效果补齐，逐条从 erArk `default.py` 读取 base_value
-- **Phase C**：指令 TOML 数据（~380 条），分批：DAILY → WORK → PLAY → ARTS → OBSCENITY → SEX
+- **Phase C**：指令 TOML 数据（228 条），分批：B1 daily(24) → B2 obscenity(37) → B3-B6 sex(142，H UI 就绪后) → SYSTEM/ARTS 顺带
 
 ### L1.7 睡眠/昼寝/就寝指令
 

@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.git/
+src-tauri/target/
+用来复刻的蓝本游戏 erArk 不要commit/
+用来复刻的蓝本游戏 eratw/
+复刻攻略-猥亵-H系统专用/
+参考的UI eraTW（UI内容，era游戏常见布局参考）/
+参考的UI 一些其他的era游戏DOL（UI）/
+前期与ai对话的参考文档/
+*.exe
+graphify-out/
+.superpowers/

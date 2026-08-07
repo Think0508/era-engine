@@ -8,6 +8,7 @@ interface ConditionField {
 
 class ConditionRegistry {
   private fields: ConditionField[] = []
+  // 注释：内置基础字段（AGENTS §21）——固定存在
   private builtinFields: ConditionField[] = [
     { path: 'location.id', type: 'string', description: 'Current location ID', operators: '== !=', source: 'engine' },
     { path: 'location.type', type: 'string', description: 'Current location type', operators: '== !=', source: 'engine' },
@@ -17,6 +18,25 @@ class ConditionRegistry {
     { path: 'game.time.day', type: 'number', description: 'Current day', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'game.time.month', type: 'number', description: 'Current month', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'quest.{id}.status', type: 'string', description: 'Quest status', operators: '== !=', source: 'engine' }
+  ]
+  // 注释：结构路径惯例（AGENTS §8 路径结构）——数据化字段（talents/abilities/relations 等）按结构校验
+  private structuralFields: ConditionField[] = [
+    { path: 'location.tags.{tag}', type: 'boolean', description: 'Location has tag (array includes)', operators: '== !=', source: 'engine' },
+    { path: 'character.{id}.base.{attr}', type: 'number', description: 'Character base attribute', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.talents.{talent}', type: 'number', description: 'Character talent level', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.abilities.{ability}', type: 'number', description: 'Character ability level', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.abilities.{ability}.level', type: 'number', description: 'Character ability level (object form)', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.abilities.{ability}.xp', type: 'number', description: 'Character ability xp', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.factions.{faction}', type: 'string', description: 'Character faction rank', operators: '== !=', source: 'engine' },
+    { path: 'character.{id}.status.{status}', type: 'boolean', description: 'Character has status effect', operators: '== !=', source: 'engine' },
+    { path: 'character.{id}.status.{status}.stack', type: 'number', description: 'Status effect stack count', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.status.{status}.remaining', type: 'number', description: 'Status effect remaining minutes', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.relations.{other}.{type}', type: 'number', description: 'Character relation value', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.experience.{exp}', type: 'number', description: 'Character experience counter', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.first_times.{key}', type: 'boolean', description: 'Character first-time flag', operators: '== !=', source: 'engine' },
+    { path: 'character.{id}.first_records.{key}', type: 'object', description: 'Character first-time record', operators: '== !=', source: 'engine' },
+    { path: 'character.{id}.body_parts.{part}', type: 'boolean', description: 'Character body part presence', operators: '== !=', source: 'engine' },
+    { path: 'inventory.{item}.count', type: 'number', description: 'Inventory item count', operators: '> < >= <= == !=', source: 'engine' },
   ]
 
   registerFromAttributes(attributes: Record<string, any>): void {
@@ -68,13 +88,22 @@ class ConditionRegistry {
   }
 
   getAllFields(): ConditionField[] {
-    return [...this.builtinFields, ...this.fields]
+    return [...this.builtinFields, ...this.structuralFields, ...this.fields]
   }
 
   validateField(path: string): boolean {
     const allFields = this.getAllFields()
     if (allFields.some(f => f.path === path)) return true
     return allFields.some(f => f.path.includes('{') && pathMatch(f.path, path))
+  }
+
+  // 注释：校验一个条件表达式——提取所有字段路径并逐个 validateField
+  // selected./target. 根先归一化为 character.{id}.（与实体解析语义一致）
+  // 未知路径返回 { ok: false, unknown: [...] }
+  validateExpression(expr: string): { ok: boolean; unknown: string[] } {
+    const paths = extractFieldPaths(expr).map(normalizeRootPath)
+    const unknown = paths.filter((p: string) => !this.validateField(p))
+    return { ok: unknown.length === 0, unknown }
   }
 
   generateManual(): string {
@@ -107,6 +136,33 @@ function pathMatch(pattern: string, actual: string): boolean {
     if (patternParts[i] !== actualParts[i]) return false
   }
   return true
+}
+
+// 注释：从条件表达式中提取字段路径（location.tags.has_x / player.气血 / selected.xxx / target.xxx /
+// 插件注册的自定义根（如 combat.in_progress）等）
+// 做法：去掉字符串字面量 → 按运算符/括号切 token → 收集含 '.' 且首字符为字母的 token
+// 不做根白名单过滤——插件自定义根字段直接走 validateField 精确匹配
+const STRING_RE = /"[^"]*"|'[^']*'/g
+const TOKEN_SPLIT_RE = /&&|\|\||[()!<>=]+|\s+/
+
+function extractFieldPaths(expr: string): string[] {
+  const stripped = expr.replace(STRING_RE, '')
+  const tokens = stripped.split(TOKEN_SPLIT_RE).map(t => t.trim()).filter(Boolean)
+  const paths: string[] = []
+  for (const token of tokens) {
+    if (!token.includes('.')) continue
+    // 注释：首字符须为字母（数字/负号字面量如 0.5、-5 不是字段路径）
+    if (!/[A-Za-z]/.test(token[0])) continue
+    if (!paths.includes(token)) paths.push(token)
+  }
+  return paths
+}
+
+// 注释：selected./target. → character.{id}.（与 resolveValue 的实体解析语义一致）
+function normalizeRootPath(path: string): string {
+  if (path.startsWith('selected.')) return `character.{id}.${path.slice('selected.'.length)}`
+  if (path.startsWith('target.')) return `character.{id}.${path.slice('target.'.length)}`
+  return path
 }
 
 export const conditionRegistry = new ConditionRegistry()

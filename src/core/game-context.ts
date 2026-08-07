@@ -16,14 +16,30 @@ class GameContextManager {
   private executionState: 'IDLE' | 'EXECUTING' = 'IDLE'
   // 注释：模式栈——enterMode push，exitMode pop
   private modeStack: string[] = ['exploration']
+  // 注释：实体字段别名（插件注册，如 status → status_effects）
+  private fieldAliases: Record<string, string> = {}
+  // 注释：当前选中角色（UI 层通过 bridge 同步；条件引擎 selected/target 根路径使用）
+  private selectedCharacterId: string | null = null
 
   getContext(): GameContext {
     return {
       player: this.player,
       location: this.location,
       time: { ...this.time },
-      getEntity: (type: string, id: string) => entitySystem.get(type, id)
+      getEntity: (type: string, id: string) => entitySystem.get(type, id),
+      selectedCharacterId: this.selectedCharacterId ?? undefined,
+      fieldAliases: this.fieldAliases,
     }
+  }
+
+  // 注释：注册实体字段别名（供条件路径解析，如 status → status_effects）
+  setFieldAliases(aliases: Record<string, string>): void {
+    this.fieldAliases = { ...this.fieldAliases, ...aliases }
+  }
+
+  // 注释：同步 UI 选中角色到核心（条件引擎 selected/target 根路径）
+  setSelectedCharacterId(charId: string | null): void {
+    this.selectedCharacterId = charId
   }
 
   setPlayer(charId: string): void {

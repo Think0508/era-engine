@@ -8,9 +8,7 @@ import { commandRegistry, type CommandDef } from '../../core/command-registry'
 import { commandExecutor } from '../../core/command-executor'
 import { apiSystem } from '../../core/api'
 import { entitySystem } from '../../core/entity-system'
-import { evaluateCondition } from '../../core/condition'
-import { gameContext } from '../../core/game-context'
-import { premiseRegistry } from '../../core/premise-registry'
+import { createCommandEvaluators } from '../utils/command-eval'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { useKeyInput } from '../composables/useKeyInput'
@@ -53,7 +51,7 @@ const availableCategories = computed(() => {
   for (const cmd of rawActCommands.value) {
     if (cmd.category) cats.add(cmd.category)
   }
-  const allOrder = ['favorite', 'daily', 'obscenity', 'sex', 'combat', 'custom']
+  const allOrder = ['favorite', 'daily', 'play', 'work', 'obscenity', 'sex', 'arts', 'system', 'combat', 'custom']
   return allOrder.filter(c => cats.has(c) || c === 'favorite' || c === 'custom')
 })
 
@@ -75,19 +73,7 @@ const numberToCommand = computed<Map<number, string>>(() => {
   return map
 })
 
-function evalCondition(expr: string): boolean {
-  if (expr.startsWith('premises:')) {
-    const premises = expr.slice(9).split(/[&,]/).map(s => s.trim()).filter(Boolean)
-    if (premises.length === 0) return true
-    // 注释：非严格——未知 erark 前提跳过（已注册的 HAVE_TARGET/NOT_H/HP_G_1 等仍正常求值）
-    return premiseRegistry.evaluate(premises, {
-      selectedCharacterId: uiStore.selectedCharacterId ?? gameStore.player?.id ?? null,
-    }, false)
-  }
-  const gc = gameContext.getContext()
-  try { return evaluateCondition(expr, gc) }
-  catch { return false }
-}
+const evaluators = createCommandEvaluators({ uiStore, gameStore })
 
 async function executeCommand(commandId: string) {
   lastCommand.value = commandId
@@ -95,7 +81,7 @@ async function executeCommand(commandId: string) {
   await commandExecutor.execute(commandId, {
     uiStore, gameStore, api: apiSystem,
     engine: { setExecutionState: () => {}, emit: () => {} },
-    evaluateCondition: evalCondition,
+    ...evaluators,
     sourceId: player?.id ?? null,
   })
   // 注释：指令执行完成后推入输出模式（全屏逐条显示日志）

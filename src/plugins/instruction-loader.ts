@@ -1,19 +1,19 @@
-// 注释：通用指令加载器
-// 从 mod 的 definitions/instructions/ 加载指令 TOML
+// 注释：指令加载器（L1.6 统一 loader）
+// 从 modLoader.mod.instructions 加载指令 TOML（插件默认层 + mod 定义层已在 mod-loader 合并去重）
 // 支持 [effect_blocks] 复用 + effects 引用
+// judge_base 存在时自动注入 judge_check effect（置顶执行，失败则 settle_* 跳过）
+// 单条指令注册失败 → errorReporter 报告 + 跳过该条（铁律：插件错误降级，不死锁启动）
+//
+// 校验分离：condition/premises/hConfig adjustments 的字段校验依赖全部插件的
+// condition_fields 与 premises 注册完毕（plugin-manager 在全部 onEnable 后发 game:plugins_loaded），
+// 因此 validateInstructionData() 由 h-core 监听该事件时调用，注册本身在 h-core onEnable 即完成。
 
 import { commandRegistry, type CommandDef } from '../core/command-registry'
 import { modLoader, type LoadedMod, type HInstruction } from '../core/mod-loader'
+import { errorReporter } from '../core/error-reporter'
+import { conditionRegistry } from '../core/condition-registry'
+import { premiseRegistry } from '../core/premise-registry'
 import type { Effect } from '../core/effect-type-registry'
-
-interface ResolvedInstruction extends HInstruction {
-  effects: Effect[]
-}
-
-interface InstructionTomlFile {
-  effect_blocks?: Record<string, Effect>
-  instructions?: HInstruction[]
-}
 
 function resolveEffects(
   raw: HInstruction,
@@ -23,10 +23,17 @@ function resolveEffects(
   const resolved: Effect[] = []
   for (const item of raw.effects) {
     if (typeof item === 'string') {
-      // 引用 effect_block
+      // 引用 effect_block——未知块名 → 警告（禁止静默丢效果）
       const block = blocks[item]
       if (block) {
         resolved.push({ ...block })
+      } else {
+        errorReporter.report({
+          source: 'instruction-loader',
+          severity: 'warning',
+          message: `指令 '${raw.id}' 引用了不存在的 effect_block：'${item}'，该效果被跳过`,
+          suggestion: '检查 [effect_blocks] 中的定义名，或把 effects 写为内联对象',
+        })
       }
       continue
     }
@@ -36,48 +43,161 @@ function resolveEffects(
   return resolved
 }
 
+// 注释：judge_base 存在 → 自动注入 judge_check（判定失败 retreated 时 settle_* 跳过）
+export function injectJudgeCheck(raw: HInstruction, effects: Effect[]): Effect[] {
+  const judgeBase = raw.judge_base
+  if (typeof judgeBase !== 'number' || !(judgeBase > 0)) return effects
+  const params: Record<string, any> = { base: judgeBase }
+  if (raw.judge_class) params.judge_class = raw.judge_class
+  return [{ type: 'judge_check', params }, ...effects]
+}
+
 export function loadInstructions(): void {
-  const mod = modLoader.getMod() as LoadedMod & { instructions?: ResolvedInstruction[]; effectBlocks?: Record<string, Effect> }
+  const mod = modLoader.getMod() as LoadedMod
   if (!mod) return
-  const allInstructions = (mod as any).instructions ?? []
+  const allInstructions = mod.instructions ?? []
   if (allInstructions.length === 0) return
 
-  const blocks = (mod as any).effectBlocks ?? {}
+  const blocks = mod.effectBlocks ?? {}
 
   for (const raw of allInstructions) {
-    const resolved: ResolvedInstruction = {
-      ...raw,
-      effects: resolveEffects(raw, blocks),
+    // 注释：幂等保护——onEnable 重跑（插件重载/热更新场景）时同 id 指令已注册则跳过，
+    // 避免 commandRegistry 重复注册抛错刷屏（指令数据刷新属 HMR 后续 TODO）
+    if (commandRegistry.getById(raw.id)?.source === 'instructions') continue
+    try {
+      registerInstruction(raw, blocks)
+    } catch (err) {
+      // 注释：单条失败（如 id 重复）→ 报告 + 继续，不拖垮整批
+      errorReporter.report({
+        source: 'instruction-loader',
+        severity: 'warning',
+        message: `指令 '${raw.id}' 注册失败：${err instanceof Error ? err.message : String(err)}`,
+        suggestion: '检查指令 id 是否与已有指令重复，或字段格式是否正确',
+      })
     }
-
-    const categoryMap: Record<string, string> = {
-      daily: 'daily', obscenity: 'obscenity', sex: 'sex',
-      arts: 'arts', play: 'play', work: 'work', system: 'system', social: 'social',
-    }
-    const category = categoryMap[raw.type] ?? 'custom'
-
-    let modes: string[]
-    if (raw.type === 'sex') modes = ['h_scene']
-    else if (raw.type === 'obscenity') modes = ['exploration']
-    else modes = raw.modes ?? ['exploration']
-
-    let condition: string | undefined
-    if (resolved.premises && resolved.premises.length > 0) {
-      condition = `premises:${resolved.premises.join(',')}`
-    }
-
-    const cmdDef: CommandDef = {
-      id: resolved.id,
-      label: resolved.label,
-      group: 'character_commands',
-      modes,
-      category,
-      timeCost: resolved.time_cost ?? 30,
-      priority: resolved.priority ?? 50,
-      condition,
-      effects: resolved.effects,
-      source: 'mod:instructions',
-    }
-    commandRegistry.register(cmdDef)
   }
+}
+
+// 注释：延迟校验（game:plugins_loaded 后调用）——此时所有插件 condition_fields/premises 已注册
+// - 指令 condition 引用未注册字段 → error + 注销该指令（AGENTS §21：加载时校验，禁止静默失效）
+// - 指令 premises 引用未注册前提 → warning（去重，运行时非严格模式会静默跳过，必须提示）
+// - hConfig [judge.adjustments] 修正条件 → error
+export function validateInstructionData(): void {
+  const mod = modLoader.getMod() as LoadedMod
+  if (!mod) return
+
+  // 注释：hConfig adjustments 修正条件校验
+  validateAdjustmentConditions(mod)
+
+  const registeredPremises = new Set(premiseRegistry.getRegisteredIds())
+  const warnedPremises = new Set<string>()
+
+  for (const raw of mod.instructions ?? []) {
+    if (raw.condition) {
+      const { ok, unknown } = conditionRegistry.validateExpression(raw.condition)
+      if (!ok) {
+        errorReporter.report({
+          source: 'instruction-loader',
+          severity: 'error',
+          message: `指令 '${raw.id}' 的 condition 引用了未注册字段：${unknown.join(', ')}（条件：${raw.condition}）`,
+          suggestion: '对照 可用条件属性手册 检查字段路径；location.tags.has_xxx 需要地点定义该 tag',
+        })
+        // 注释：注册已完成，条件不可达的指令注销（防止点击后静默无反应）
+        // 仅注销本 loader 注册的指令（source='instructions'），避免误删同名插件/原生指令
+        const existing = commandRegistry.getById(raw.id)
+        if (existing?.source === 'instructions') {
+          commandRegistry.unregister(raw.id)
+        }
+        continue
+      }
+    }
+
+    if (raw.premises) {
+      for (const p of raw.premises) {
+        if (!registeredPremises.has(p) && !warnedPremises.has(p)) {
+          warnedPremises.add(p)
+          errorReporter.report({
+            source: 'instruction-loader',
+            severity: 'warning',
+            message: `指令 '${raw.id}' 引用了未注册前提：${p}`,
+            suggestion: '在 h-core 前提文件注册 handler（语义查 erArk handle_premise_*.py），或移除该前提（SOP §4）',
+          })
+        }
+      }
+    }
+  }
+}
+
+// 注释：hConfig [judge.adjustments] 的 condition 与指令 condition 同标准校验
+function validateAdjustmentConditions(mod: LoadedMod): void {
+  const adjustments = (mod.hConfig as any)?.judge?.adjustments as Record<string, { condition: string; value: number }[]> | undefined
+  if (!adjustments) return
+  for (const [judgeClass, entries] of Object.entries(adjustments)) {
+    for (const entry of entries) {
+      if (!entry?.condition) continue
+      const { ok, unknown } = conditionRegistry.validateExpression(entry.condition)
+      if (!ok) {
+        errorReporter.report({
+          source: 'instruction-loader',
+          severity: 'error',
+          message: `判定族 '${judgeClass}' 的修正条件引用了未注册字段：${unknown.join(', ')}（条件：${entry.condition}）`,
+          suggestion: '检查 h-config.toml [judge.adjustments]，字段路径须存在于条件手册（含结构路径：talents./first_times./relations. 等）',
+        })
+      }
+    }
+  }
+}
+
+function registerInstruction(raw: HInstruction, blocks: Record<string, Effect>): void {
+  const baseEffects = resolveEffects(raw, blocks)
+  const effects = injectJudgeCheck(raw, baseEffects)
+
+  const categoryMap: Record<string, string> = {
+    daily: 'daily', obscenity: 'obscenity', sex: 'sex',
+    arts: 'arts', play: 'play', work: 'work', system: 'system', social: 'social',
+  }
+  // 注释：category（spec §3 规范名）优先，type（旧别名）兜底
+  const category = raw.category ?? categoryMap[raw.type ?? ''] ?? 'custom'
+
+  let modes: string[]
+  const typeKey = raw.category ?? raw.type ?? ''
+  if (typeKey === 'sex') modes = ['h_scene']
+  else if (typeKey === 'obscenity') modes = ['exploration']
+  else modes = raw.modes ?? ['exploration']
+
+  const subCategory = raw.sub_category ?? (raw.sub_type && raw.sub_type !== '0' ? raw.sub_type : undefined)
+
+  if (raw.judge_class && !raw.judge_base) {
+    errorReporter.report({
+      source: 'instruction-loader',
+      severity: 'warning',
+      message: `指令 '${raw.id}' 写了 judge_class='${raw.judge_class}' 但没有 judge_base，judge_class 将被忽略`,
+      suggestion: '有判定才写 judge_base；judge_class 只跟随 judge_base（SOP §6 三问决策）',
+    })
+  }
+  if (raw.time_cost === undefined) {
+    errorReporter.report({
+      source: 'instruction-loader',
+      severity: 'warning',
+      message: `指令 '${raw.id}' 缺少 time_cost，使用默认值 30`,
+      suggestion: 'time_cost 必须查 Behavior_Data.csv + handle_instruct.py 后填写（SOP §5），-1 需查 handler 真实值',
+    })
+  }
+
+  const cmdDef: CommandDef = {
+    id: raw.id,
+    label: raw.label,
+    group: 'character_commands',
+    modes,
+    category,
+    sub_category: subCategory,
+    timeCost: raw.time_cost ?? 30,
+    priority: raw.priority ?? 50,
+    premises: raw.premises,
+    condition: raw.condition,
+    effects,
+    source: 'instructions',
+    tags: raw.tags,
+  }
+  commandRegistry.register(cmdDef)
 }

@@ -1,0 +1,18 @@
+# 测试专用指令（L1.6 loader 端到端测试 fixture）
+# 用 spec §3 规范字段名（category/sub_category），验证 loader 的 schema 兼容
+
+[[instructions]]
+id = "test_judge_cmd"
+label = "测试判定指令"
+category = "obscenity"
+sub_category = ""
+time_cost = 10
+priority = 50
+judge_base = 200
+judge_class = "亲吻"
+premises = ["HAVE_TARGET", "NOT_H"]
+condition = "location.tags.has_bedroom == true"
+effects = [
+  { type = "nop" },
+  { type = "trigger_dialogue", params = { scene = "test_judge_cmd" } },
+]

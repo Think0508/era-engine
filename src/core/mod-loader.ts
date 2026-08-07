@@ -34,16 +34,25 @@ export interface EquipmentSlot {
   semen_capacity?: number
 }
 
-// 注释：H 指令定义
+// 注释：H 指令定义（L1.6 指令复刻 schema）
 export interface HInstruction {
   id: string
   label: string
-  type: string
-  sub_type?: string
-  time_cost?: number
+  // 注释：category（spec §3 规范名）与 type（旧别名/测试数据）等价，loader 优先 category
+  category?: string           // daily/obscenity/sex/system/arts/play/work（驱动 UI 开关行 + modes）
+  type?: string               // 旧别名（test-mod 等既有数据用）
+  sub_category?: string       // sex 子类：base/foreplay/wait_upon/insert/item/drug/sm/arts
+  sub_type?: string           // 旧别名
+  time_cost?: number          // 分钟；-1 = handler 自定义耗时（引擎不自动推进）
   priority?: number
   modes?: string[]
-  premises?: string[]
+  premises?: string[]         // 前提（premiseRegistry 注册的 ID；位置前提已迁到 condition）
+  condition?: string          // 条件表达式（location.tags.has_xxx 等）
+  judge_base?: number         // 实行判定基准值（有判定才写）
+  judge_class?: string        // 判定族名（hConfig [judge.adjustments] 表 key）
+  erark_id?: string           // 迁移期追溯字段，全部批次验收后删除
+  erark_behavior?: string     // 迁移期追溯字段，全部批次验收后删除
+  tags?: string[]             // 多标签（system:/kind:/part:）
   effects?: Effect[]
 }
 
@@ -279,6 +288,9 @@ export interface LoadedMod {
   name: string
   version: string
   dependencies: ModDependency[]
+  // 注释：meta.toml 可选字段（AGENTS §39）——起始地点/玩家实体，main.ts 启动用
+  startingLocation?: string
+  playerCharacter?: string
   entities: Map<string, Map<string, EntityData>>
   locations: Map<string, LocationData>
   graph: Edge[]
@@ -315,10 +327,9 @@ export interface LoadedMod {
   relationTypes: Record<string, { min: number; max: number; default: number; name: string }>
   // 注释：Phase H — H 系统
   hConfig: HConfig
-  hInstructions: HInstruction[]
 
-  // 注释：通用指令（非 H 专属）
-  instructions?: HInstruction[]
+  // 注释：指令（插件默认层 + mod 定义层，按 id 去重，mod 胜出）
+  instructions: HInstruction[]
   effectBlocks?: Record<string, Effect>
 
   // 注释：地图移动配置（插件默认 + mod override）
@@ -458,6 +469,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     name: (metaSection.name as string) ?? '',
     version: (metaSection.version as string) ?? '',
     dependencies: (metaSection.dependencies as ModDependency[]) ?? [],
+    startingLocation: (metaSection.starting_location as string) ?? undefined,
+    playerCharacter: (metaSection.player_character as string) ?? undefined,
     entities: new Map(),
     locations: new Map(),
     graph: [],
@@ -489,7 +502,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     moveConfig: { parent_time_cost: 10, child_time_cost: 5, edge_default_time_cost: 10 },
     // 注释：Phase H
     hConfig: {},
-    hInstructions: [],
+    instructions: [],
   }
 
   // 注释：合并插件默认 + mod 定义的属性
@@ -807,31 +820,36 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     mod.hConfig = deepMerge(mod.hConfig, data) as HConfig
   }
 
-  // 注释：加载 h-instructions/ 目录下所有 TOML
-  const hInstrPrefix = `/mods/${modName}/definitions/h-instructions/`
-  for (const [path, raw] of Object.entries(rawTomlMap)) {
-    if (!path.startsWith(hInstrPrefix) || !path.endsWith('.toml')) continue
-    const data = parseFile(path, raw)
-    const instructions = (data.instructions as HInstruction[]) ?? []
-    mod.hInstructions.push(...instructions)
-  }
-
-  // 注释：加载通用 instructions/ 目录下所有 TOML
-  const instrPrefix = `/mods/${modName}/definitions/instructions/`
-  const allInstructions: HInstruction[] = []
+  // 注释：加载指令——单路径 instructions/，插件默认层（Layer 1）+ mod 定义层（Layer 3）
+  // 按 id 去重：mod 覆盖插件默认（rawTomlMap 中插件默认先插入，mod 后插入，Map.set 后写胜出）
+  const instructionsMap = new Map<string, HInstruction>()
   let effectBlocks: Record<string, Effect> = {}
   for (const [path, raw] of Object.entries(rawTomlMap)) {
-    if (!path.startsWith(instrPrefix) || !path.endsWith('.toml')) continue
+    const isPluginDefault = path.startsWith('/src/plugins/')
+    const isModData = path.startsWith(`/mods/${modName}/`)
+    if (!isPluginDefault && !isModData) continue
+    if (!path.includes('/instructions/') || !path.endsWith('.toml')) continue
     const data = parseFile(path, raw)
     const blocks = (data as any).effect_blocks as Record<string, Effect> | undefined
     if (blocks) effectBlocks = { ...effectBlocks, ...blocks }
     const instructions = (data.instructions as HInstruction[]) ?? []
-    allInstructions.push(...instructions)
+    for (const inst of instructions) {
+      if (!inst?.id) continue
+      if (instructionsMap.has(inst.id)) {
+        // 注释：同层重复 id → 后读文件胜出，警告提示作者（跨层覆盖是预期行为，不警告）
+        errorReporter.report({
+          source: 'mod-loader',
+          severity: 'warning',
+          file: path,
+          message: `指令 id '${inst.id}' 重复（已在其他 instructions/ 文件中定义），后读文件覆盖`,
+          suggestion: '同层指令 id 必须唯一；mod 覆盖插件默认请用同 id 但只在 mod 层定义',
+        })
+      }
+      instructionsMap.set(inst.id, inst)
+    }
   }
-  if (allInstructions.length > 0 || Object.keys(effectBlocks).length > 0) {
-    mod.instructions = allInstructions
-    mod.effectBlocks = effectBlocks
-  }
+  mod.instructions = [...instructionsMap.values()]
+  mod.effectBlocks = effectBlocks
 
   // 注释：校验 locations——exit.target 和 parent 必须存在
   validateLocations(mod, modName)

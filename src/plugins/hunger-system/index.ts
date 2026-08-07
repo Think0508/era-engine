@@ -5,7 +5,6 @@
 import type { PluginContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
-import { eventBus } from '../../core/event-bus'
 import { apiSystem } from '../../core/api'
 import { modLoader } from '../../core/mod-loader'
 import { narrativeLog } from '../../core/narrative-log'

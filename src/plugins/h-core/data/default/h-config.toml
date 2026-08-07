@@ -26,3 +26,39 @@ digestion_per_hour = 60         # 每小时消化速度(min)
 npc_auto_eat_threshold = 190    # NPC 自动进食阈值(80%)
 daily_ration_id = "干粮"        # NPC 每日口粮（空=不发放）
 daily_ration_count = 1
+
+# 实行判定特殊修正表（judge_class → 修正条目列表）
+# 来源：erArk Script/Design/instuct_judege.py 逐行翻译（铁律：公式结构不可简化）
+# 条件表达式用现有系统，target = 被判定角色（judge_check 注入 selectedCharacterId）
+# 每条指令写 judge_class 时，calcJudge 自动查此表并叠加修正值
+#
+# 处女惩罚（instuct_judege.py 262-285 行，均需 target 无【性无知】天赋才生效）：
+#   性交-250（阴道处女）/ A性交-350（肛门处女）/ W性交-400（子宫处女）
+#   U性交-400（尿道处女）——尿道不做，不进入批次，仅记录
+#   亲吻-125（初吻）——口交无判定惩罚（源码仅有询问确认，UI 层）
+# 条件写法说明：破处状态在 first_times 命名空间（h-first-time 插件维护，true=已破），
+#   与 erArk talent[0..4]（天赋存在=仍处）语义等价
+#
+# TODO 未实装修正项（不写死，对应系统实装后补）：
+#   - 月经周期：性交/W性交 安全期-10 / 普通-50 / 危险-200 / 排卵-300（需 Reproduction_period 属性）
+#     （豁免：妊娠合意 / 戴套 / 避孕中出合意+事前药 / 性无知）
+#   - 体位喜欢 +30：性交/A性交/W性交 当前体位=喜好体位（需体位喜好天赋）
+#   - 爱情旅馆 +25/50/100（h_in_love_hotel + 房型等级）
+#   - 他人存在修正：25+25×n（S类 40+40×n，群交/隐奸 60+60×n）× 露出能力调整
+#   - 助理助攻 +50（assistant_services[8]）
+#   - 今天H被打断 -50×次数（h_interrupt）
+#   - 监禁 +9999 / 睡眠 +9999（时停 +9999 已在 judge_check 内联处理）
+#   - 激素系修正 +25/50/100（talent 304/305/306，施加方）
+[judge.adjustments]
+"性交" = [
+  { condition = "target.first_times.virgin_V != true && target.talents.性无知 != 1", value = -250 },
+]
+"A性交" = [
+  { condition = "target.first_times.virgin_A != true && target.talents.性无知 != 1", value = -350 },
+]
+"W性交" = [
+  { condition = "target.first_times.virgin_W != true && target.talents.性无知 != 1", value = -400 },
+]
+"亲吻" = [
+  { condition = "target.first_times.virgin_KISS != true && target.talents.性无知 != 1", value = -125 },
+]

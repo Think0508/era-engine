@@ -2,6 +2,7 @@
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { parse as parseTOML } from '@iarna/toml'
 import './style.css'
 import App from './App.vue'
 import { modLoader } from './core/mod-loader'
@@ -19,6 +20,26 @@ import { SlotRegistry, SLOT_REGISTRY_KEY } from './ui/slots/slot-registry'
 import { registerNativeCommands } from './ui/native-commands'
 import { useGameStore } from './ui/stores/game-store'
 import { useUIStore } from './ui/stores/ui-store'
+import { errorReporter } from './core/error-reporter'
+import configRaw from '../era-engine.config.toml?raw'
+
+// 注释：读取活跃模组（era-engine.config.toml active_mod；切换模组改此值后重启 dev）
+function resolveActiveMod(): string {
+  try {
+    const data = parseTOML(configRaw) as { active_mod?: string }
+    const name = data?.active_mod?.trim()
+    if (name) return name
+  } catch (err) {
+    errorReporter.report({
+      source: 'main',
+      severity: 'error',
+      message: `era-engine.config.toml 解析失败：${err instanceof Error ? err.message : String(err)}`,
+      suggestion: '检查配置文件格式',
+    })
+  }
+  return 'test-mod'
+}
+const activeModName = resolveActiveMod()
 
 async function main(): Promise<void> {
   const pinia = createPinia()
@@ -32,28 +53,29 @@ async function main(): Promise<void> {
   const slotRegistry = new SlotRegistry()
   app.provide(SLOT_REGISTRY_KEY, slotRegistry)
 
-  // 注释：2. 加载 test-mod
-  await modLoader.loadMod('test-mod')
+  // 注释：2. 加载活跃模组（loadMod 内部已注册 characters + locations 到 entity-system）
+  await modLoader.loadMod(activeModName)
   const mod = modLoader.getMod()
   if (!mod) throw new Error('模组加载失败')
 
-  // 注释：3. 注册 locations 到 entity-system
-  for (const [id, loc] of mod.locations) {
-    entitySystem.register('location', id, loc as any)
-  }
-
-  // 注释：4. 加载 bindings
+  // 注释：3. 加载 bindings
   bindingResolver.loadBindings(mod.bindings)
 
-  // 注释：5. 注册 condition fields
+  // 注释：4. 注册 condition fields
   conditionRegistry.clear()
   conditionRegistry.registerFromAttributes(mod.attributes)
   conditionRegistry.registerFromBindings(mod.bindings)
 
-  // 注释：6. 设置玩家和起始地点
-  gameContext.setPlayer('player')
-  const startLoc = entitySystem.get('location', 'town_square') as any
-  if (startLoc) gameContext.setLocation(startLoc)
+  // 注释：6. 设置玩家和起始地点（mod meta.toml 声明，缺省兜底）
+  gameContext.setPlayer(mod.playerCharacter ?? 'player')
+  const startLoc = entitySystem.get('location', mod.startingLocation ?? '') as any
+  if (startLoc) {
+    gameContext.setLocation(startLoc)
+  } else {
+    // 注释：mod 未声明起始地点或地点不存在 → 取第一个地点兜底
+    const firstLoc = mod.locations.values().next().value as any
+    if (firstLoc) gameContext.setLocation(firstLoc)
+  }
 
   // 注释：7. 创建 PluginManager 并发现引擎插件
   const pluginManager = new PluginManager(apiSystem, eventBus, slotRegistry, commandRegistry)
@@ -78,7 +100,7 @@ async function main(): Promise<void> {
 
   // 注释：9. 加载主题
   try {
-    await themeManager.loadModTheme('test-mod')
+    await themeManager.loadModTheme(activeModName)
     themeManager.setUITheme(uiStore.theme)
     themeManager.setColorScheme(uiStore.colorScheme)
   } catch { /* 主题加载失败不影响核心功能 */ }

@@ -1,7 +1,7 @@
 // 注释：AppLayout 根布局——按 (executionState × mode × theme) 选子布局
 
 <script setup lang="ts">
-import { computed, inject, provide, ref, shallowRef } from 'vue'
+import { computed, inject, provide } from 'vue'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { SlotRegistry, SLOT_REGISTRY_KEY } from '../slots/slot-registry'

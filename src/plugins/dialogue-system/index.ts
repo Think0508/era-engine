@@ -245,13 +245,16 @@ function pickMatchingLine(lines: ReactiveLine[], premiseTargetId?: string): Reac
   if (lines.length === 0) return null
   const gc = gameContext.getContext()
   const selectedId = premiseTargetId ?? gc.player?.id ?? null
+  // 注释：{id} 占位符 = 当前角色（角色口上惯例，如 character.{id}.好感度）——
+  // 不求值替换会变成查找角色 '{id}'（恒不存在 → 条件恒 true，静默失效）
+  const substituteId = (cond: string) => cond.replace(/\{id\}/g, selectedId ?? '')
   // 注释：筛选 condition 为 true 的条目
   const matched = lines.filter(line => {
     if (!line.condition) return true
     // 注释：premises:XXX&YYY 格式 → 调 h-core premise 求值
     // 注意分隔符是 & 不是 ,（与 convert-erark-talk.cjs 输出一致）
     if (line.condition.startsWith('premises:')) {
-      const premiseList = line.condition.slice(9).split('&').map(s => s.trim()).filter(Boolean)
+      const premiseList = substituteId(line.condition).slice(9).split('&').map(s => s.trim()).filter(Boolean)
       if (premiseList.length === 0) return true
       return premiseRegistry.evaluate(premiseList, {
         selectedCharacterId: selectedId,
@@ -259,7 +262,7 @@ function pickMatchingLine(lines: ReactiveLine[], premiseTargetId?: string): Reac
       }, false)  // 注释：非严格——未知 erark 前提跳过（不阻塞）
     }
     // 注释：标准 condition 表达式
-    try { return evaluateCondition(line.condition, gc) }
+    try { return evaluateCondition(substituteId(line.condition), gc) }
     catch { return false }
   })
   if (matched.length === 0) return null

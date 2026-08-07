@@ -7,6 +7,7 @@ const ctx: GameContext = {
   location: { id: 'tavern', name: '酒馆', parent: null, type: 'building', tags: ['rest', 'has_drink'] },
   time: { minute: 0, hour: 20, day: 1, month: 1, year: 1 },
   selectedCharacterId: 'npc1',
+  fieldAliases: { status: 'status_effects', remaining: 'remaining_duration' },
   getEntity: (type: string, id: string) => {
     if (type === 'character' && id === 'npc1') {
       return {
@@ -14,7 +15,10 @@ const ctx: GameContext = {
         id: 'npc1',
         body_semen: { '0': [0, 5, 1, 10], '6': [0, 3, 1, 5] },
         talents: { '幼女': 1, '贫乳': 1 },
-        abilities: { '舌技': { level: 3 } },
+        abilities: { '舌技': { level: 3, xp: 0 } },
+        status_effects: [
+          { id: '醉意', remaining_duration: 120, stack: 2, last_tick_game_time: 1 },
+        ],
       }
     }
     return null
@@ -125,5 +129,42 @@ describe('evaluateCondition', () => {
   it('should return default values for selected without selectedCharacterId', () => {
     const ctxNoSelected = { ...ctx, selectedCharacterId: undefined }
     expect(evaluateCondition('selected.base.hp > 10', ctxNoSelected)).toBe(false)
+  })
+
+  it('target 根路径与 selected 同解（judge adjustments 用）', () => {
+    expect(evaluateCondition('target.base.hp > 50', ctx)).toBe(true)
+    expect(evaluateCondition('target.first_times.virgin_KISS != true', ctx)).toBe(true)
+    expect(evaluateCondition('target.talents.巨乳 == 1', ctx)).toBe(false)
+    const ctxNoTarget = { ...ctx, selectedCharacterId: undefined }
+    expect(evaluateCondition('target.base.hp > 10', ctxNoTarget)).toBe(false)
+  })
+
+  it('null/undefined 右值——存在性检查（selected != null 惯用法）', () => {
+    // 有选中 → selected 解析到实体 → != null 为 true
+    expect(evaluateCondition('selected != null', ctx)).toBe(true)
+    expect(evaluateCondition('selected == null', ctx)).toBe(false)
+    // 无选中 → undefined → != null 为 false（talk/open_selected_panel 依赖此语义）
+    const ctxNoSel = { ...ctx, selectedCharacterId: undefined }
+    expect(evaluateCondition('selected != null', ctxNoSel)).toBe(false)
+    expect(evaluateCondition('selected == null', ctxNoSel)).toBe(true)
+  })
+
+  it('能力记录终端解包为等级（AGENTS §36 数据契约）', () => {
+    expect(evaluateCondition('selected.abilities.舌技 >= 3', ctx)).toBe(true)
+    expect(evaluateCondition('selected.abilities.舌技 >= 4', ctx)).toBe(false)
+    expect(evaluateCondition('selected.abilities.舌技.level >= 3', ctx)).toBe(true)
+  })
+
+  it('status 别名路径（fieldAliases：status→status_effects, remaining→remaining_duration）', () => {
+    // 存在性：对象数组按 id 匹配 + 终端条目解包 true
+    expect(evaluateCondition('selected.status.醉意 == true', ctx)).toBe(true)
+    expect(evaluateCondition('selected.status.中毒 == true', ctx)).toBe(false)
+    // stack / remaining（别名 → remaining_duration）
+    expect(evaluateCondition('selected.status.醉意.stack == 2', ctx)).toBe(true)
+    expect(evaluateCondition('selected.status.醉意.remaining >= 60', ctx)).toBe(true)
+    expect(evaluateCondition('selected.status.醉意.remaining < 60', ctx)).toBe(false)
+    // 无别名时不误解析（fieldAliases 缺失 → 未知字段默认 0）
+    const ctxNoAlias = { ...ctx, fieldAliases: undefined }
+    expect(evaluateCondition('selected.status.醉意 == true', ctxNoAlias)).toBe(false)
   })
 })

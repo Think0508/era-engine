@@ -38,7 +38,7 @@ const visibleEdges = computed(() => {
   })
 })
 
-function getNodeStyle(node: any, containerW: number, containerH: number) {
+function getNodeStyle(node: any) {
   return {
     left: `${node.x * 100}%`,
     top: `${node.y * 100}%`,
@@ -75,7 +75,7 @@ function handleZoomOut() { currentZoom.value = Math.max(currentZoom.value - 1, 1
       v-for="node in visibleNodes"
       :key="node.id"
       class="map-node"
-      :style="getNodeStyle(node, 100, 100)"
+      :style="getNodeStyle(node)"
       @click="handleNodeClick(node.id)"
     >
       <div class="node-label">{{ node.id }}</div>

@@ -62,4 +62,60 @@ describe('condition-registry', () => {
     expect(manual).toContain('player.hp')
     expect(manual).toContain('|')
   })
+
+  it('validateExpression——结构路径（location.tags.{tag}/talents/first_times/relations）', () => {
+    conditionRegistry.registerFromAttributes({
+      气血: { type: 'number', default: 100 }
+    })
+    expect(conditionRegistry.validateExpression('location.tags.has_bedroom == true').ok).toBe(true)
+    expect(conditionRegistry.validateExpression('location.tags.has_bedroom == true && player.气血 < 30').ok).toBe(true)
+    // selected/target 归一化为 character.{id}.
+    expect(conditionRegistry.validateExpression('selected.talents.巨乳 == 1').ok).toBe(true)
+    expect(conditionRegistry.validateExpression('target.first_times.virgin_V != true && target.talents.性无知 != 1').ok).toBe(true)
+    expect(conditionRegistry.validateExpression('character.令狐冲.relations.岳灵珊.好感度 > 60').ok).toBe(true)
+    expect(conditionRegistry.validateExpression('character.令狐冲.status.醉意 == true').ok).toBe(true)
+    expect(conditionRegistry.validateExpression('inventory.回血丹.count >= 3').ok).toBe(true)
+    // abilities 对象形式（level/xp）
+    expect(conditionRegistry.validateExpression('selected.abilities.舌技.level >= 3').ok).toBe(true)
+    expect(conditionRegistry.validateExpression('character.令狐冲.abilities.华山剑法.level >= 3').ok).toBe(true)
+    // 引号内字符串不参与校验
+    expect(conditionRegistry.validateExpression('quest.find_master.status == "active"').ok).toBe(true)
+  })
+
+  it('validateExpression——未知字段返回列表', () => {
+    conditionRegistry.registerFromAttributes({
+      气血: { type: 'number', default: 100 }
+    })
+    const r = conditionRegistry.validateExpression('player.气血 < 30 && player.不存在的属性 > 10 && location.ghost == 1')
+    expect(r.ok).toBe(false)
+    expect(r.unknown).toContain('player.不存在的属性')
+    expect(r.unknown).toContain('location.ghost')
+    expect(r.unknown).not.toContain('player.气血')
+  })
+
+  it('validateExpression——插件自定义根字段直接精确校验（无根白名单）', () => {
+    conditionRegistry.registerFromAttributes({
+      气血: { type: 'number', default: 100 },
+      内力: { type: 'number', default: 50 },
+    })
+    conditionRegistry.registerFromPlugin('combat-base', {
+      'combat.in_progress': { type: 'boolean', description: 'Is combat in progress' }
+    })
+    expect(conditionRegistry.validateExpression('combat.in_progress == true').ok).toBe(true)
+    // 未注册的自定义根 → 未知
+    const r = conditionRegistry.validateExpression('combat.not_a_field == true')
+    expect(r.ok).toBe(false)
+    expect(r.unknown).toContain('combat.not_a_field')
+    // 数字/负数字面量不误判为字段
+    expect(conditionRegistry.validateExpression('player.气血 == 0.5 && player.内力 != -5').ok).toBe(true)
+  })
+
+  it('validateExpression——! 否定与比较符边界', () => {
+    conditionRegistry.registerFromAttributes({
+      气血: { type: 'number', default: 100 }
+    })
+    expect(conditionRegistry.validateExpression('!player.气血').ok).toBe(true)
+    expect(conditionRegistry.validateExpression('player.气血 >= 30 && player.气血 <= 100').ok).toBe(true)
+    expect(conditionRegistry.validateExpression('location.tags.has_bedroom != true').ok).toBe(true)
+  })
 })

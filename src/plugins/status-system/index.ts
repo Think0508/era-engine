@@ -8,6 +8,7 @@ import { entitySystem } from '../../core/entity-system'
 import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
+import { gameContext } from '../../core/game-context'
 
 // 注释：onLoad——注册 apply_status/remove_status effect type
 export function onLoad(_ctx: PluginContext): void {
@@ -32,6 +33,13 @@ export function onLoad(_ctx: PluginContext): void {
 
 // 注释：onEnable——注册 status API + 监听 hour_changed + condition 字段
 export function onEnable(ctx: PluginContext): void {
+  // 注释：注册条件路径字段别名（文档路径 status./remaining → 运行时字段名）
+  // core 条件引擎保持通用，别名知识由本插件持有（AGENTS §32 条件集成）
+  gameContext.setFieldAliases({
+    status: 'status_effects',
+    remaining: 'remaining_duration',
+  })
+
   ctx.api.register('status', {
     hasStatus: (charId: string, statusId: string): boolean => {
       const char = entitySystem.get('character', charId) as any

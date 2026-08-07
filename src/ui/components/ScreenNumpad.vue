@@ -7,9 +7,13 @@
 
 <script setup lang="ts">
 import { useUIStore } from '../stores/ui-store'
+import { useGameStore } from '../stores/game-store'
 import { commandExecutor } from '../../core/command-executor'
+import { apiSystem } from '../../core/api'
+import { createCommandEvaluators } from '../utils/command-eval'
 
 const uiStore = useUIStore()
+const gameStore = useGameStore()
 
 // 注释：数字键盘 1-9
 const numberPad = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -38,10 +42,15 @@ function clearBuffer() {
 // 注释：快捷指令按钮（从 favorites 读取）
 // TODO: 支持别名，当前用 commandId
 function executeFavorite(commandId: string) {
-  // TODO(task-5.15): bridge 接入后传入真实 ExecutionContext
+  // 注释：ctx 与 CommandBar 同构（求值器/effect-system/EXECUTING 包裹一致）
+  const player = gameStore.player as any
   commandExecutor.execute(commandId, {
     uiStore,
-    evaluateCondition: () => true,
+    gameStore,
+    api: apiSystem,
+    engine: { setExecutionState: () => {}, emit: () => {} },
+    ...createCommandEvaluators({ uiStore, gameStore }),
+    sourceId: player?.id ?? null,
   })
 }
 </script>

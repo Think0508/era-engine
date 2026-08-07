@@ -13,6 +13,10 @@
 
 import { getLevel } from '../../../core/entity-utils'
 import { entitySystem } from '../../../core/entity-system'
+import { modLoader } from '../../../core/mod-loader'
+import { gameContext } from '../../../core/game-context'
+import { evaluateCondition } from '../../../core/condition'
+import { errorReporter } from '../../../core/error-reporter'
 
 const FAV_THRESHOLDS = [0, 100, 500, 1000, 2500, 5000, 10000, 50000, 100000]
 const FAV_JUDGE_ADD = [0, 10, 25, 50, 75, 100, 150, 225, 300]
@@ -25,6 +29,13 @@ export interface JudgeResult {
   success: boolean
   partial: boolean
   retreated: boolean
+}
+
+// 注释：多目标判定结果合并——最坏者胜出（retreated > partial > success）
+export function mergeJudgeResult(current: JudgeResult, next: JudgeResult): JudgeResult {
+  if (next.retreated) return next
+  if (next.partial && !current.retreated) return next
+  return current
 }
 
 function getStatLevel(char: any, name: string): number {
@@ -41,11 +52,47 @@ function getTalent(char: any, name: string): number {
   return (char.talents?.[name] ?? 0) as number
 }
 
+// 注释：查 hConfig [judge.adjustments] 表，求 judge_class 对应的特殊修正总和
+// 条件表达式复用现有系统，ctx 中 selected = 被判定角色（target 根路径等价 selected）
+function calcAdjustments(judgeClass: string | undefined, charId: string): number {
+  if (!judgeClass) return 0
+  const hc = (modLoader.getMod()?.hConfig as any) ?? {}
+  const entries = hc?.judge?.adjustments?.[judgeClass] as { condition: string; value: number }[] | undefined
+  if (!entries || entries.length === 0) return 0
+  const char = entitySystem.get('character', charId) as any
+  if (!char) return 0
+  const baseCtx = gameContext.getContext()
+  const judgeCtx = { ...baseCtx, selectedCharacterId: charId }
+  let total = 0
+  for (const entry of entries) {
+    try {
+      if (evaluateCondition(entry.condition, judgeCtx)) total += entry.value
+    } catch (err) {
+      // 注释：修正条件表达式解析失败 → 报告 + 跳过该条（不阻断判定）
+      errorReporter.report({
+        source: 'h-core/judge',
+        severity: 'warning',
+        message: `判定族 '${judgeClass}' 的修正条件解析失败：${entry.condition}（${err instanceof Error ? err.message : String(err)}）`,
+        suggestion: '检查 h-config.toml [judge.adjustments] 中的 condition 表达式，字段路径须存在于条件手册',
+      })
+    }
+  }
+  return total
+}
+
+// 注释：S 类判定族（erArk InstructJudge.csv need_type == "S"）——天赋个性修正只对 S 类生效
+// 亲吻(D) 等日常类不吃 淫乱/性好奇/性冷漠/性无知 修正（instuct_judege.py 162-178 行）
+const S_TYPE_JUDGE_CLASSES = new Set([
+  '初级骚扰', '严重骚扰', '性交', 'A性交', 'W性交', 'U开发', 'U性交',
+  '口交', '道具', '药物', 'SM', '群交', '隐奸', '露出',
+])
+
 export function calcJudge(
   judgeBase: number,
   favorability: number,
   trust: number,
   charId?: string,
+  judgeClass?: string,
 ): JudgeResult {
   const favLevel = getLevel(favorability, FAV_THRESHOLDS)
   const favAdd = FAV_JUDGE_ADD[favLevel] ?? 0
@@ -100,17 +147,25 @@ export function calcJudge(
         if (getTalent(char, talentId)) total += value
       }
 
-      // 注释：7. 天赋个性修正
-      if (getTalent(char, '淫乱')) total += 50
-      if (getTalent(char, '性好奇')) total += 30
-      if (getTalent(char, '性冷漠')) total -= 30
-      if (getTalent(char, '性无知')) total += 100
+      // 注释：7. 天赋个性修正——仅 S 类判定生效（erArk instuct_judege.py 162-178 行）
+      // judgeClass 未声明时（直接 API 调用）保持原行为：应用修正
+      const isStype = !judgeClass || S_TYPE_JUDGE_CLASSES.has(judgeClass)
+      if (isStype) {
+        if (getTalent(char, '淫乱')) total += 50
+        if (getTalent(char, '性好奇')) total += 30
+        if (getTalent(char, '性冷漠')) total -= 30
+        if (getTalent(char, '性无知')) total += 100
+      }
+      // 注释：心情/底线类天赋修正对所有判定生效（erArk 136-159 行，S 判断之外）
       if (getTalent(char, '讨厌男性')) total -= 30
       if (getTalent(char, '难以越过的底线')) total -= 100
       if (getTalent(char, '持有博士把柄')) total += 100
       if (getTalent(char, '被博士持有把柄')) total -= 100
       if (getTalent(char, '女儿')) total += 100
     }
+
+    // 注释：8. 判定族特殊修正（hConfig [judge.adjustments] 表，如处女惩罚）
+    total += calcAdjustments(judgeClass, charId)
   }
 
   if (total >= judgeBase) {

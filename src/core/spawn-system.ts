@@ -6,7 +6,6 @@ import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
 import { evaluateCondition } from './condition'
 import { modLoader, type PendingSpawn } from './mod-loader'
-import type { EntityData } from './types'
 
 let processedIds = new Set<string>()
 

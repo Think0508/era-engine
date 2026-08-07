@@ -22,12 +22,14 @@ describe('UI 集成测试', () => {
 
   it('原生指令注册后可查询', () => {
     expect(commandRegistry.getById('open_player_panel')).toBeDefined()
-    expect(commandRegistry.getById('rest')).toBeDefined()
+    expect(commandRegistry.getById('log_history')).toBeDefined()
     expect(commandRegistry.getById('save')).toBeDefined()
     expect(commandRegistry.getById('load')).toBeDefined()
     // 注释：move/talk 由插件注册，不在 native-commands 中
     expect(commandRegistry.getById('move')).toBeUndefined()
     expect(commandRegistry.getById('talk')).toBeUndefined()
+    // 注释：rest 已从 native-commands 移除（067a068f）
+    expect(commandRegistry.getById('rest')).toBeUndefined()
   })
 
   it('game-store 填充 mock 数据后状态正确', () => {
@@ -60,8 +62,8 @@ describe('UI 集成测试', () => {
     const uiStore = useUIStore()
     gameStore.setPlayer(mockPlayer)
 
-    // 注释：执行 rest 指令（handler 写日志）
-    await commandExecutor.execute('rest', {
+    // 注释：执行 cheat_skip_day 指令（handler 写日志）
+    await commandExecutor.execute('cheat_skip_day', {
       uiStore,
       gameStore,
       evaluateCondition: () => true,
@@ -101,9 +103,9 @@ describe('UI 集成测试', () => {
   it('指令编号映射——getByMode 返回 Act_COM', () => {
     const gameStore = useGameStore()
     gameStore.pushMode('exploration')
-    const locationCmds = commandRegistry.getByMode('exploration', 'location_commands')
-    // 注释：move 已移出 native-commands，rest 仍在
-    expect(locationCmds.some(c => c.id === 'rest')).toBe(true)
+    const mainMenuCmds = commandRegistry.getByMode('exploration', 'main_menu')
+    // 注释：move/rest 已移出 native-commands，main_menu 组仍有原生指令
+    expect(mainMenuCmds.some(c => c.id === 'log_history')).toBe(true)
   })
 
   it('narrativeLog write + addLogEntry 流程', () => {
@@ -117,6 +119,31 @@ describe('UI 集成测试', () => {
     gameStore.addLogEntry(entry)
     expect(gameStore.narrativeLogEntries).toHaveLength(1)
     expect(gameStore.narrativeLogEntries[0].text).toBe('测试文本')
+  })
+
+  it('bridge 叙事链：narrativeLog.write → eventBus → bridge → gameStore.addLogEntry', async () => {
+    const pinia = createPinia()
+    setActivePinia(pinia)
+    const gameStore = useGameStore()
+    const { EngineUIBridge } = await import('./engine-ui-bridge')
+    const { narrativeLog } = await import('../core/narrative-log')
+    const { eventBus } = await import('../core/event-bus')
+    const { gameContext } = await import('../core/game-context')
+
+    const bridge = new EngineUIBridge(pinia)
+    narrativeLog.setEventBus(eventBus)
+    narrativeLog.clear()
+    bridge.start()
+    // 注释：bridge.start() 会同步选中角色到核心
+    gameContext.setSelectedCharacterId('guard')
+    expect(gameContext.getContext().selectedCharacterId).toBe('guard')
+
+    narrativeLog.write('bridge 叙事测试', 'dialogue', 'test')
+    // 注释：narrative:written 是异步 fire-and-forget——等一个宏任务
+    await new Promise(r => setTimeout(r, 0))
+    expect(gameStore.narrativeLogEntries.some(e => e.text === 'bridge 叙事测试')).toBe(true)
+
+    bridge.stop()
   })
 
   it('unregisterNativeCommands 清除所有原生指令', () => {

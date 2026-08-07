@@ -11,6 +11,7 @@ import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { commandExecutor } from '../../core/command-executor'
 import { apiSystem } from '../../core/api'
+import { createCommandEvaluators } from '../utils/command-eval'
 import GameButton from './GameButton.vue'
 
 const emit = defineEmits<{
@@ -40,7 +41,7 @@ function wakeUp() {
   emit('wakeUp')
 }
 
-// 注释：执行菜单指令
+// 注释：执行菜单指令（求值器与 CommandBar 同源，防止条件绕过）
 async function executeCommand(commandId: string) {
   const player = gameStore.player as any
   await commandExecutor.execute(commandId, {
@@ -48,7 +49,7 @@ async function executeCommand(commandId: string) {
     uiStore,
     api: apiSystem,
     engine: { setExecutionState: () => {}, emit: () => {} },
-    evaluateCondition: () => true,
+    ...createCommandEvaluators({ uiStore, gameStore }),
     sourceId: player?.id ?? null,
   })
 }

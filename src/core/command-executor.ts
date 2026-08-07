@@ -10,7 +10,7 @@ import { commandRegistry } from './command-registry'
 import { errorReporter } from './error-reporter'
 import { gameContext } from './game-context'
 import { entitySystem } from './entity-system'
-import { realtimeSettle, clampHpMp } from './realtime-settle'
+import { realtimeSettle } from './realtime-settle'
 import { newDaySettle } from './newday-settle'
 import { processPendingSpawns } from './spawn-system'
 import { checkTalentGain } from './talent-utils'
@@ -26,8 +26,12 @@ export interface ExecutionContext {
   engine?: any
   // 注释：PluginContext.api 兼容（供 effects 类指令调 effect-system）
   api?: any
+  // 注释：执行源角色 ID（target='self' 时使用）
+  sourceId?: string | null
   // 注释：condition 求值函数（供运行时检查指令条件）
   evaluateCondition?: (expr: string) => boolean
+  // 注释：premises 求值函数（指令有 premises 字段时使用）
+  evaluatePremises?: (premises: string[]) => boolean
 }
 
 export class CommandExecutor {
@@ -44,16 +48,58 @@ export class CommandExecutor {
       return
     }
 
-    // 注释：运行时再次检查 condition（注册时存的是字符串，运行时求值）
-    if (cmd.condition && ctx.evaluateCondition) {
-      if (!ctx.evaluateCondition(cmd.condition)) {
-        errorReporter.report({
-          source: 'command-executor',
-          severity: 'warning',
-          message: `指令 '${id}' 的条件不满足：${cmd.condition}`,
-        })
-        return
+    // 注释：运行时再次检查 premises/condition（求值器可能抛错——如前提 handler 异常——
+    // 必须捕获：报错 + 跳过，绝不让异常逃逸 execute()（否则不回 IDLE、不恢复执行状态）
+    try {
+      // 注释：premises 检查——fail-safe：有前提但调用方未提供求值器 → 警告 + 跳过（禁止静默放行）
+      if (cmd.premises && cmd.premises.length > 0) {
+        if (!ctx.evaluatePremises) {
+          errorReporter.report({
+            source: 'command-executor',
+            severity: 'warning',
+            message: `指令 '${id}' 有前提（${cmd.premises.join(', ')}）但调用方未提供 evaluatePremises，跳过执行`,
+            suggestion: '调用方需注入 evaluatePremises（premiseRegistry 非严格求值），参考 CommandBar/command-eval',
+          })
+          return
+        }
+        if (!ctx.evaluatePremises(cmd.premises)) {
+          errorReporter.report({
+            source: 'command-executor',
+            severity: 'warning',
+            message: `指令 '${id}' 的前提不满足：${cmd.premises.join(', ')}`,
+          })
+          return
+        }
       }
+
+      // 注释：condition 检查——fail-safe 同上
+      if (cmd.condition) {
+        if (!ctx.evaluateCondition) {
+          errorReporter.report({
+            source: 'command-executor',
+            severity: 'warning',
+            message: `指令 '${id}' 有条件（${cmd.condition}）但调用方未提供 evaluateCondition，跳过执行`,
+            suggestion: '调用方需注入 evaluateCondition（条件表达式求值），参考 CommandBar/command-eval',
+          })
+          return
+        }
+        if (!ctx.evaluateCondition(cmd.condition)) {
+          errorReporter.report({
+            source: 'command-executor',
+            severity: 'warning',
+            message: `指令 '${id}' 的条件不满足：${cmd.condition}`,
+          })
+          return
+        }
+      }
+    } catch (err) {
+      errorReporter.report({
+        source: 'command-executor',
+        severity: 'error',
+        message: `指令 '${id}' 的前提/条件求值抛错：${err instanceof Error ? err.message : String(err)}`,
+        suggestion: '检查前提 handler 与条件表达式',
+      })
+      return
     }
 
     // 注释：包裹 EXECUTING
@@ -66,6 +112,8 @@ export class CommandExecutor {
     }
 
     const timeCost = cmd.timeCost ?? (cmd.effects ? 10 : 0)
+    // 注释：timeCost <= 0（如 -1 = handler 自定义耗时）→ 引擎不自动推进时间，也不进结算公式
+    const settleTimeCost = timeCost > 0 ? timeCost : 0
 
     try {
       // 注释：推进时间（effects 类指令才推进）
@@ -76,7 +124,7 @@ export class CommandExecutor {
       if (cmd.handler) {
         await cmd.handler(ctx)
       } else if (cmd.effects) {
-        const effectCtx = { ...ctx, _timeCost: timeCost }
+        const effectCtx = { ...ctx, _timeCost: settleTimeCost }
         if (effectCtx.api?.call) {
           try {
             await effectCtx.api.call('effect-system', 'execute', cmd.effects, effectCtx)
@@ -135,12 +183,20 @@ export class CommandExecutor {
         engine.setExecutionState('IDLE')
       }
       if (engine?.emit) {
-        await engine.emit('game:execution_end', { commandId: id })
+        await engine.emit('game:execution_end', { commandId: id, timeCost: settleTimeCost })
       }
-      // 注释：检查天赋自动习得
-      const player = entitySystem.get('character', gameContext.getContext().player?.id ?? '')
-      if (player) {
-        checkTalentGain((player as any).id)
+      // 注释：检查天赋自动习得（finally 内防护——异常不得逃逸 execute()）
+      try {
+        const player = entitySystem.get('character', gameContext.getContext().player?.id ?? '')
+        if (player) {
+          checkTalentGain((player as any).id)
+        }
+      } catch (err) {
+        errorReporter.report({
+          source: 'command-executor',
+          severity: 'warning',
+          message: `指令 '${id}' 的天赋习得检查抛错：${err instanceof Error ? err.message : String(err)}`,
+        })
       }
     }
   }

@@ -10,11 +10,13 @@ export interface CommandDef {
   category?: string
   sub_category?: string  // 子系统分类（foreplay/insert/item/drug/sm/wait_upon 等）
   timeCost?: number
+  premises?: string[]   // 前提 ID 列表（premiseRegistry 求值；位置前提已迁到 condition）
   condition?: string
   priority?: number
   effects?: any[]
   handler?: (ctx: any) => void | Promise<void>
   source: string
+  tags?: string[]       // 多标签（system:/kind:/part:，驱动 UI 分组/插件过滤，L1.6 spec §3）
 }
 
 export class CommandRegistry {

@@ -1,5 +1,6 @@
 # mods/test-mod/definitions/character-dialogue.toml
 # 注释：角色通用口上——fallback，角色无专属口上时用
+# greet 两行条件互斥（好感度阈值），保证口上选择确定性（不靠随机）
 
 [[character_lines]]
 scene = "greet"
@@ -8,6 +9,7 @@ text = "你是何人？"
 
 [[character_lines]]
 scene = "greet"
+condition = "character.{id}.好感度 >= 30"
 text = "哦，是你啊。"
 
 [[character_lines]]

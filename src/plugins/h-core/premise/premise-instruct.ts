@@ -117,25 +117,10 @@ export function registerInstructPremises(registry: any): void {
 
   // 注释：服装前提已由 premise-clothing.ts 注册
 
-  // 注释：服装前提已由 premise-clothing.ts 注册，不重复
-
   // ── Location / place ─────────────────────────────────────────
-  function locationTypeIs(typeName: string) {
-    return (_ctx: any) => {
-      const loc = gameContext.getContext().location
-      if (!loc) return false
-      return loc.type === typeName || loc.id === typeName
-    }
-  }
-
-  registry.register('IN_BATHROOM', locationTypeIs('bathroom'))
-  registry.register('IN_PRISON', locationTypeIs('prison'))
-  registry.register('IN_KITCHEN', locationTypeIs('kitchen'))
-  registry.register('IN_LIBRARY', locationTypeIs('library'))
-  registry.register('IN_GYM_ROOM', locationTypeIs('gym'))
-  registry.register('IN_H_SHOP', locationTypeIs('h_shop'))
-  registry.register('IN_TOILET_MAN', locationTypeIs('toilet_man'))
-  registry.register('IN_LOVE_HOTEL', locationTypeIs('love_hotel'))
+  // 注释：位置前提（IN_*）已按架构决策迁移为 location.tags 检查（见 docs/instruction-replication/location-tags.md）
+  // 指令 TOML 不再写 IN_* 前提，改用 condition = "location.tags.has_xxx == true"
+  // 以下 PLACE_* 保留地点字段判断（furniture_count/door），不 tag 化
 
   registry.register('PLACE_FURNITURE_GE_1', (_ctx: any) => {
     const loc = gameContext.getContext().location

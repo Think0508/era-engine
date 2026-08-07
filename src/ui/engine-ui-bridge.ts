@@ -5,6 +5,7 @@
 // narrativeLog.write → emit narrative:written → bridge → game-store.addLogEntry
 
 import type { Pinia } from 'pinia'
+import { watch } from 'vue'
 import { gameContext } from '../core/game-context'
 import { eventBus } from '../core/event-bus'
 import { entitySystem } from '../core/entity-system'
@@ -12,6 +13,7 @@ import { narrativeLog } from '../core/narrative-log'
 import { apiSystem } from '../core/api'
 import { useGameStore, type LogEntry } from './stores/game-store'
 import { useUIStore } from './stores/ui-store'
+import { createCommandEvaluators } from './utils/command-eval'
 
 // 注释：handler 类型与 event-bus 的 BridgeHandler 一致
 type BridgeHandler = (payload: any) => void | Promise<void>
@@ -19,6 +21,7 @@ type BridgeHandler = (payload: any) => void | Promise<void>
 export class EngineUIBridge {
   private pinia: Pinia
   private handlers: { event: string; handler: BridgeHandler }[] = []
+  private watchStops: (() => void)[] = []
 
   constructor(pinia: Pinia) {
     this.pinia = pinia
@@ -108,6 +111,15 @@ export class EngineUIBridge {
     // 注释：设置 narrativeLog 的 eventBus
     narrativeLog.setEventBus(eventBus)
 
+    // 注释：UI 选中角色 → 核心（条件引擎 selected/target 根路径依赖）
+    // 初始化 + 变更同步；stop() 时清理 watcher
+    const syncSelection = () => {
+      gameContext.setSelectedCharacterId(uiStore.selectedCharacterId)
+    }
+    syncSelection()
+    const selectionWatch = watch(() => uiStore.selectedCharacterId, syncSelection)
+    this.watchStops.push(selectionWatch)
+
     // 注释：监听时间变化 → 同步到 game-store
     const timeHandler: BridgeHandler = () => {
       const ctx = gameContext.getContext()
@@ -144,12 +156,14 @@ export class EngineUIBridge {
     gameStore.setExecutionState(gameContext.getExecutionState())
   }
 
-  // 注释：停止 bridge——移除所有监听
+  // 注释：停止 bridge——移除所有监听与 watcher
   stop(): void {
     for (const { event, handler } of this.handlers) {
       eventBus.off(event, handler)
     }
     this.handlers = []
+    for (const stop of this.watchStops) stop()
+    this.watchStops = []
   }
 
   // 注释：创建 ExecutionContext 供 commandExecutor 使用
@@ -161,7 +175,8 @@ export class EngineUIBridge {
       gameStore,
       engine: gameContext,
       api: apiSystem,
-      evaluateCondition: () => true, // TODO: 接入 condition-registry 求值
+      ...createCommandEvaluators({ uiStore, gameStore }),
+      sourceId: gameStore.player?.id ?? null,
     }
   }
 }

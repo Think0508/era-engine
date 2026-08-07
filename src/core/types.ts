@@ -71,6 +71,8 @@ export interface GameContext {
   time: GameTimeData
   getEntity: (type: string, id: string) => EntityData | null
   selectedCharacterId?: string
+  // 注释：实体字段别名（插件注册，如 status → status_effects）——core 不认知具体别名
+  fieldAliases?: Record<string, string>
 }
 
 export interface UISlotItem {

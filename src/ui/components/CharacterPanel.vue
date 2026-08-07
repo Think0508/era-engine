@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { modLoader } from '../../core/mod-loader'
-import { getEntityAttr, getLevel } from '../../core/entity-utils'
 import CollapsibleSection from './CollapsibleSection.vue'
 
 const props = withDefaults(defineProps<{
@@ -25,8 +24,6 @@ const character = computed(() => {
 
 const tabs = ['属性', '特质']
 const activeTab = ref('属性')
-
-const charSex = computed(() => (character.value?.base?.['性别'] ?? 0) as number)
 
 // 装备
 const equipmentList = computed(() => {
@@ -138,8 +135,7 @@ const skillAttrs = filterAbilities(false)
             <div v-for="a in senseAttrs" :key="a.label" class="attr-row">
               <span class="attr-label">{{ a.label }}</span>
               <span class="attr-val">
-                {{ a.value }}
-                <span v-if="a.level > 0" class="attr-level">Lv{{ a.level }}</span>
+                Lv{{ a.level }}
               </span>
             </div>
           </div>
@@ -151,8 +147,7 @@ const skillAttrs = filterAbilities(false)
             <div v-for="a in abilAttrs" :key="a.label" class="attr-row">
               <span class="attr-label">{{ a.label }}</span>
               <span class="attr-val">
-                {{ a.value }}
-                <span v-if="a.level > 0" class="attr-level">Lv{{ a.level }}</span>
+                Lv{{ a.level }}
               </span>
             </div>
           </div>
@@ -163,7 +158,7 @@ const skillAttrs = filterAbilities(false)
           <div v-if="markAttrs.length > 0" class="attr-list">
             <div v-for="a in markAttrs" :key="a.label" class="attr-row">
               <span class="attr-label">{{ a.label }}</span>
-              <span class="attr-val">{{ a.value }}</span>
+              <span class="attr-val">{{ a.level }}</span>
             </div>
           </div>
           <p v-else class="text-dim">（无刻印）</p>

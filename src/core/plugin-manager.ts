@@ -208,6 +208,10 @@ class PluginManager {
         this.disabledPlugins.add(def.meta.id)
       }
     }
+
+    // 注释：全部插件启用完毕 → 生命周期事件（此时 condition_fields/premises 已全部注册，
+    // 依赖它们的延迟校验（如指令 condition/premises）监听此事件）
+    await this.eventBus.emit('game:plugins_loaded', {})
   }
 
   // 注释：将 plugin.toml [ui] 段的 location_commands/character_commands/main_menu 注册到 CommandRegistry

@@ -16,33 +16,46 @@ function resolveValue(path: string, ctx: GameContext): any {
       return getDefaultValue(parts, i)
     }
 
-    if (part === 'player') {
-      current = ctx.player
-      continue
-    }
+    // 注释：根路径（player/location/game/selected/target）只在路径首位生效，
+    // 防止实体深层字段（如名为 player/location 的字段）被根路径遮蔽
+    if (i === 0) {
+      if (part === 'player') {
+        current = ctx.player
+        continue
+      }
 
-    if (part === 'location') {
-      current = ctx.location
-      continue
-    }
+      if (part === 'location') {
+        current = ctx.location
+        continue
+      }
 
-    if (part === 'game') {
-      current = { time: ctx.time }
-      continue
-    }
+      if (part === 'game') {
+        current = { time: ctx.time }
+        continue
+      }
 
-    if (part === 'character' && i === 0) {
-      const charId = parts[i + 1]
-      current = ctx.getEntity('character', charId)
-      i++
-      continue
-    }
+      if (part === 'character') {
+        const charId = parts[i + 1]
+        current = ctx.getEntity('character', charId)
+        i++
+        continue
+      }
 
-    if (part === 'selected') {
-      if (!ctx.selectedCharacterId) return getDefaultValue(parts, i)
-      current = ctx.getEntity('character', ctx.selectedCharacterId)
-      if (!current) return getDefaultValue(parts, i)
-      continue
+      if (part === 'selected') {
+        // 注释：无选中 → undefined（保持"缺失"语义，支持 `selected != null` 存在性检查）
+        if (!ctx.selectedCharacterId) return undefined
+        current = ctx.getEntity('character', ctx.selectedCharacterId)
+        if (!current) return undefined
+        continue
+      }
+
+      if (part === 'target') {
+        // 注释：target = 被判定角色（judge adjustments 等场景），与 selected 同解
+        if (!ctx.selectedCharacterId) return undefined
+        current = ctx.getEntity('character', ctx.selectedCharacterId)
+        if (!current) return undefined
+        continue
+      }
     }
 
     if (Array.isArray(current)) {
@@ -56,6 +69,11 @@ function resolveValue(path: string, ctx: GameContext): any {
         continue
       }
       if (remaining.length === 1) {
+        // 注释：单段——字符串数组做包含检查；对象数组（如 status_effects）按 id 匹配返回存在性
+        const first = current[0]
+        if (first && typeof first === 'object') {
+          return current.some((item: any) => item?.id === remaining[0])
+        }
         return current.includes(remaining[0])
       }
       const found = current.find((item: any) =>
@@ -71,6 +89,9 @@ function resolveValue(path: string, ctx: GameContext): any {
     if (typeof current === 'object' && current !== null) {
       if (part in current) {
         current = current[part]
+      } else if (ctx.fieldAliases?.[part] && ctx.fieldAliases[part] in current) {
+        // 注释：字段别名（插件注册，如 status → status_effects）——core 不认知具体别名
+        current = current[ctx.fieldAliases[part]]
       } else if ('base' in current && typeof current.base === 'object') {
         // 注释：实体对象 → 跨命名空间查找
         current = getEntityAttr(current, part)
@@ -83,7 +104,18 @@ function resolveValue(path: string, ctx: GameContext): any {
   }
 
   if (current === null || current === undefined) {
-    return 0
+    // 注释：根路径缺失（如无 player/无选中）→ undefined（`X != null` 存在性检查可判别）
+    return undefined
+  }
+  if (typeof current === 'object') {
+    // 注释：终端对象解包（引擎数据契约，AGENTS §36/§32）：
+    // 能力记录 {level, xp} → 等级；状态条目 {id, remaining_duration, stack} → 存在性 true
+    if (typeof (current as any).level === 'number' && 'xp' in current) {
+      return (current as any).level
+    }
+    if ('remaining_duration' in current && 'stack' in current) {
+      return true
+    }
   }
   return current
 }
@@ -120,6 +152,16 @@ function evalSimple(expr: string, ctx: GameContext): boolean {
     }
     if (right === 'false') {
       return op === '==' ? leftVal === false : (op === '!=' ? leftVal !== false : false)
+    }
+    // 注释：null/undefined 右值——存在性检查（`selected != null`、`player.字段 == null`）
+    // resolveValue 对缺失根路径返回 undefined，对缺失数值字段返回 0（AGENTS §38 默认值）
+    if (right === 'null' || right === 'undefined') {
+      const isMissing = leftVal === null || leftVal === undefined
+      switch (op) {
+        case '==': return isMissing
+        case '!=': return !isMissing
+        default: throw new Error(`Operator '${op}' cannot be applied to null check`)
+      }
     }
 
     const rightVal = parseFloat(right)

@@ -26,6 +26,9 @@ dist-ssr
 # Superpowers workflow state
 .superpowers/
 
+# graphify knowledge graph artifacts
+graphify-out/
+
 # Tauri build artifacts
 src-tauri/target/
 *.exe
@@ -34,8 +37,8 @@ src-tauri/target/
 ä¾›å‚è€ƒçš„UI*/
 
 
-ÓÃÀ´¸´¿ÌµÄÀ¶±¾ÓÎÏ· erArk ²»Òªcommit/
-ÓÃÀ´¸´¿ÌµÄÀ¶±¾ÓÎÏ· eratw/
+ç”¨æ¥å¤åˆ»çš„è“æœ¬æ¸¸æˆ erArk ä¸è¦commit/
+ç”¨æ¥å¤åˆ»çš„è“æœ¬æ¸¸æˆ eratw/
 
 # Big Files
 mods/_erark_source/definitions/scene-dialogue.toml

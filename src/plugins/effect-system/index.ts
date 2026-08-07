@@ -232,7 +232,9 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
 
     // 注释：解析 target → targetIds
     const targetIds = await resolveTarget(effect.target ?? 'selected', execCtx)
-    const handlerCtx = { ...execCtx, _targetIds: targetIds, settlement }
+    // 注释：handler 上下文必须共享同一对象——judge_check 写入 _judgeResult，
+    // 后续 settle_* 效果要能读到（拷 贝会丢跨效果状态，判定门控会静默失效）
+    const handlerCtx = Object.assign(execCtx, { _targetIds: targetIds, settlement })
 
     try {
       const result = await handler(effect.params, handlerCtx)

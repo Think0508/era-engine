@@ -79,7 +79,7 @@ function init() {
 }
 
 // 全局点击推进（仅在没有 choice 条目时）
-function handleClick(e: MouseEvent) {
+function handleClick() {
   // 如果最新显示的条目是 choice，忽略全局点击（用户必须选选项）
   const lastEntry = visibleEntries.value[visibleEntries.value.length - 1]
   if (lastEntry && isChoiceEntry(lastEntry)) return
@@ -94,7 +94,7 @@ function handleClick(e: MouseEvent) {
 }
 
 // 选择选项
-function selectChoice(entry: LogEntry, choiceIndex: number) {
+function selectChoice(entry: LogEntry) {
   gameStore.markLogConsumed(entry.id)
   // TODO: 通知对话系统继续——emit 事件或调 API
   advance()
@@ -117,7 +117,7 @@ function handleKeydown(e: KeyboardEvent) {
     focusMap.value[lastEntry.id] = (key - 1 + choices.length) % choices.length
   } else if (e.key === 'Enter') {
     e.preventDefault()
-    selectChoice(lastEntry, key)
+    selectChoice(lastEntry)
   }
 }
 
@@ -190,8 +190,8 @@ function isChoiceEntry(entry: LogEntry): boolean {
                 :key="idx"
                 class="choice-item"
                 :class="{ focused: (focusMap[entry.id] ?? 0) === idx }"
-                @click.stop="selectChoice(entry, idx)"
-                @mouseover="focusMap[entry.id] = idx"
+                @click.stop="selectChoice(entry)"
+                @mouseover="focusMap[entry.id] = Number(idx)"
               >
                 > {{ choice.text }}
               </div>

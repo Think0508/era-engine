@@ -22,10 +22,11 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "体力上限" = { type = "number", default = 2500, category = "base", display = true, display_group = "status" }
 "气力上限" = { type = "number", default = 2000, category = "base", display = true, display_group = "status" }
 "欲望值" = { type = "number", default = 0, category = "base", display = true, display_group = "h" }
-"射精槽" = { type = "number", default = 0, category = "base", display = true, display_group = "h" }
-"射精槽上限" = { type = "number", default = 1000, category = "base", display = true, display_group = "h" }
+"射精欲" = { type = "number", default = 0, category = "base", display = true, display_group = "h" }
+"射精欲上限" = { type = "number", default = 1000, category = "base", display = true, display_group = "h" }
 "精液量" = { type = "number", default = 100, category = "base", display = true, display_group = "h" }
 "精液量上限" = { type = "number", default = 100, category = "base", display = true, display_group = "h" }
+"额外精液量" = { type = "number", default = 0, category = "base", display = true, display_group = "h" }
 "愤怒" = { type = "number", default = 0, category = "base", display = true, display_group = "emotion" }
 "酒气" = { type = "number", default = 0, category = "base", display = true, display_group = "emotion" }
 "情绪" = { type = "number", default = 50, category = "base", display = true, display_group = "emotion" }

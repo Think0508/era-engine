@@ -152,9 +152,9 @@ export class SettlementContext {
     else if (attr === '尿意') {
       v = Math.min(240, v)
     }
-    // 射精槽 → 不超 射精槽上限
-    else if (attr === '射精槽') {
-      const max = this.resolveValue(char, '射精槽上限')
+    // 射精欲 → 不超 射精欲上限
+    else if (attr === '射精欲') {
+      const max = this.resolveValue(char, '射精欲上限')
       if (max > 0) v = Math.min(max, v)
     }
     // 精液量 → 不超 精液量上限

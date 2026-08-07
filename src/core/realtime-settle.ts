@@ -40,6 +40,30 @@ function settleRestRecovery(entity: any, minutes: number, opts: SettleOptions): 
         : Math.floor(minutes * (0.3 + Math.random() * 0.9))
       setEntityAttr(entity, '熟睡值', Math.min(100, sleepVal + add))
     }
+    // 额外精液累积（对齐 erArk sleep_settle.py refresh_temp_semen_max）
+    // 睡≥6h(360分钟)：额外精液 += 当前精液/2，上限 精液上限×4；满则获得"浓厚精液"天赋
+    if (minutes >= 360) {
+      // 清零射精欲（erArk sleep_settle.py:56）
+      setEntityAttr(entity, '射精欲', 0)
+      // 重置今日首射标记（erArk sleep_settle.py:57——睡醒后今日首射翻倍）
+      if (!entity.action_info) entity.action_info = {}
+      entity.action_info.day_first_shoot_semen = true
+      const semen = getEntityAttr(entity, '精液量')
+      const semenMax = getEntityAttr(entity, '精液量上限')
+      if (typeof semen === 'number' && semen > 0 && typeof semenMax === 'number' && semenMax > 0) {
+        const extraMax = semenMax * 4
+        const extra = getEntityAttr(entity, '额外精液量')
+        const newExtra = Math.min(extraMax, (typeof extra === 'number' ? extra : 0) + Math.floor(semen / 2))
+        setEntityAttr(entity, '额外精液量', newExtra)
+        // 浓厚精液天赋（erArk talent[33]：额外精液满上限时获得）
+        if (!entity.talents) entity.talents = {}
+        if (newExtra >= extraMax) {
+          entity.talents['浓厚精液'] = 1
+        } else {
+          delete entity.talents['浓厚精液']
+        }
+      }
+    }
   }
 }
 
@@ -61,13 +85,6 @@ function settleUrine(entity: any, minutes: number): void {
   const variance = 0.8 + Math.random() * 0.4
   const add = Math.max(1, Math.floor(minutes * variance))
   setEntityAttr(entity, '尿意', Math.min(240, urine + add))
-}
-
-// ── 射精槽衰减 ──
-function settleEjaculation(entity: any, minutes: number): void {
-  const eja = getEntityAttr(entity, '射精槽')
-  if (typeof eja !== 'number' || eja <= 0) return
-  setEntityAttr(entity, '射精槽', Math.max(0, eja - minutes * 10))
 }
 
 // ── 精液量恢复 ──
@@ -101,7 +118,6 @@ export function realtimeSettle(entity: any, minutes: number, opts: SettleOptions
   settleRestRecovery(entity, minutes, opts)
   settleHunger(entity, minutes)
   settleUrine(entity, minutes)
-  settleEjaculation(entity, minutes)
   settleSemen(entity, minutes)
   clampHpMp(entity)
 }

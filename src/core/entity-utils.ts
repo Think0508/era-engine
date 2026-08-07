@@ -4,7 +4,7 @@ export const ATTR = {
   HP: '体力', MP: '气力', STAMINA: '精力',
   FATIGUE: '疲劳度', HUNGER: '饥饿值', SLEEP: '熟睡值', URINE: '尿意',
   HP_MAX: '体力上限', MP_MAX: '气力上限',
-  DESIRE: '欲望值', EJA_GAUGE: '射精槽', EJA_GAUGE_MAX: '射精槽上限',
+  DESIRE: '欲望值', EJA_GAUGE: '射精欲', EJA_GAUGE_MAX: '射精欲上限',
   SEMEN: '精液量', SEMEN_MAX: '精液量上限',
   ANGER: '愤怒', ALCOHOL: '酒气',
   // 情绪
@@ -40,14 +40,6 @@ const SEARCH_ORDER = [
   'base', 'params', 'flags', 'talents', 'marks', 'abilities',
   'first_record', 'experience', 'social', 'economy', 'combat',
 ]
-
-/** 判断一个对象是否可能是角色实体（有命名空间结构） */
-function isEntity(obj: any): boolean {
-  return obj && typeof obj === 'object' && (
-    Array.isArray(obj.base) || 
-    (obj.base && typeof obj.base === 'object')
-  )
-}
 
 /** 跨命名空间读取属性值 */
 export function getEntityAttr(entity: any, name: string): any {

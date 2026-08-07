@@ -23,14 +23,14 @@ export function onLoad(_ctx: PluginContext): void {
       // 注释：仅排卵日可受精
       const period = char.base?.['排卵周期'] ?? 0
       if (period !== 5) continue
-      // 注释：检查 V(4) 和 W(7) 部位精液
-      const semenV = char.body_semen?.[4]?.[1] ?? 0
+      // 注释：检查 V(6) 和 W(7) 部位精液（body_part cid：6=阴道 7=子宫）
+      const semenV = char.body_semen?.[6]?.[1] ?? 0
       const semenW = char.body_semen?.[7]?.[1] ?? 0
       if (semenV + semenW <= 0) continue
       // 注释：避孕药检查
       if (char.body_items?.['11']?.active || char.body_items?.['12']?.active) continue
       // 注释：受精率计算
-      const mainSemen = semenV > 0 ? char.body_semen[4] : char.body_semen[7]
+      const mainSemen = semenV > 0 ? char.body_semen[6] : char.body_semen[7]
       const semenCount = mainSemen[1]
       const semenLevel = mainSemen[2] ?? 1
       let rate = Math.pow(semenCount / 1000, 2) * 100 + semenLevel * 5
@@ -40,7 +40,7 @@ export function onLoad(_ctx: PluginContext): void {
       // TODO: 浓厚精液 ×2（需 thick_semen 标记）
       rate = Math.min(100, Math.max(0, rate))
       // 注释：清空 V/W 部位精液（对齐 erArk pregnancy.py:102）
-      if (char.body_semen?.[4]) char.body_semen[4][1] = 0
+      if (char.body_semen?.[6]) char.body_semen[6][1] = 0
       if (char.body_semen?.[7]) char.body_semen[7][1] = 0
       if (Math.random() * 100 < rate) {
         initPregnancy(char)
@@ -55,32 +55,29 @@ export function onEnable(ctx: PluginContext): void {
   // 注释：监听 h:shoot → 自动触发受孕判定
   eventBus.on('h:shoot', (payload: any) => {
     if (payload?.condom) return  // 避孕套 → 精液不进体内
-    if (payload?.character) {
-      // 注释：对 target（精液接收方）做 pregnancy_check
-      const targetId = getTargetForSemen(payload.character, payload.position)
-      if (targetId) {
-        entitySystem.get('character', targetId) // 确保存在
-        // 直接执行受孕判定
-        const targetChar = entitySystem.get('character', targetId) as any
-        if (!targetChar || isPregnant(targetChar)) return
-        const period = targetChar.base?.['排卵周期'] ?? 0
-        if (period !== 5) return
-        const semenV = targetChar.body_semen?.[4]?.[1] ?? 0
-        const semenW = targetChar.body_semen?.[7]?.[1] ?? 0
-        if (semenV + semenW <= 0) return
-        if (targetChar.body_items?.['11']?.active || targetChar.body_items?.['12']?.active) return
-        const mainSemen = semenV > 0 ? targetChar.body_semen[4] : targetChar.body_semen[7]
-        const semenCount = mainSemen[1]
-        const semenLevel = mainSemen[2] ?? 1
-        let rate = Math.pow(semenCount / 1000, 2) * 100 + semenLevel * 5
-        if (targetChar.body_items?.['10']?.active) rate *= 5
-        rate = Math.min(100, Math.max(0, rate))
-        if (targetChar.body_semen?.[4]) targetChar.body_semen[4][1] = 0
-        if (targetChar.body_semen?.[7]) targetChar.body_semen[7][1] = 0
-        if (Math.random() * 100 < rate) {
-          initPregnancy(targetChar)
-          narrativeLog.write(`${targetChar.name ?? targetId} 怀孕了！`, 'system', 'h-pregnancy')
-        }
+    // 注释：精液接收方 = payload.target（eja_climax 已确定）；fallback 用遍历
+    const targetId = payload?.target ?? getTargetForSemen(payload?.character, payload?.position)
+    if (targetId) {
+      // 直接执行受孕判定
+      const targetChar = entitySystem.get('character', targetId) as any
+      if (!targetChar || isPregnant(targetChar)) return
+      const period = targetChar.base?.['排卵周期'] ?? 0
+      if (period !== 5) return
+      const semenV = targetChar.body_semen?.[6]?.[1] ?? 0
+      const semenW = targetChar.body_semen?.[7]?.[1] ?? 0
+      if (semenV + semenW <= 0) return
+      if (targetChar.body_items?.['11']?.active || targetChar.body_items?.['12']?.active) return
+      const mainSemen = semenV > 0 ? targetChar.body_semen[6] : targetChar.body_semen[7]
+      const semenCount = mainSemen[1]
+      const semenLevel = mainSemen[2] ?? 1
+      let rate = Math.pow(semenCount / 1000, 2) * 100 + semenLevel * 5
+      if (targetChar.body_items?.['10']?.active) rate *= 5
+      rate = Math.min(100, Math.max(0, rate))
+      if (targetChar.body_semen?.[6]) targetChar.body_semen[6][1] = 0
+      if (targetChar.body_semen?.[7]) targetChar.body_semen[7][1] = 0
+      if (Math.random() * 100 < rate) {
+        initPregnancy(targetChar)
+        narrativeLog.write(`${targetChar.name ?? targetId} 怀孕了！`, 'system', 'h-pregnancy')
       }
     }
   })
@@ -108,7 +105,12 @@ export function onEnable(ctx: PluginContext): void {
 
       if (dp >= 90 && !c.pregnancy.lactation) {
         c.pregnancy.lactation = true
-        // TODO: 设定奶水积累
+        // 注释：泌乳开始——设置泌乳天赋（erArk pregnancy.py:190 talent[27]=1，涨奶条件）
+        if (!c.talents) c.talents = {}
+        c.talents['泌乳'] = 1
+        // 注释：初始化乳汁字段（对齐 erArk pregnancy.py）
+        if (!c.pregnancy.milk) c.pregnancy.milk = 0
+        if (!c.pregnancy.milk_max) c.pregnancy.milk_max = calcMilkMax(c)
       }
 
       if (dp >= 260 && !c.pregnancy.hasGivenBirth && !c.pregnancy.laborStarted) {
@@ -127,6 +129,8 @@ export function onEnable(ctx: PluginContext): void {
         c.pregnancy.childcareDaysLeft--
         if (c.pregnancy.childcareDaysLeft <= 0) {
           c.pregnancy.childcareComplete = true
+          // 注释：育儿完成 → 移除泌乳天赋（erArk pregnancy.py:309 talent[27]=0）
+          if (c.talents) delete c.talents['泌乳']
         }
       }
     }
@@ -145,6 +149,31 @@ export function onEnable(ctx: PluginContext): void {
       const char = entitySystem.get('character', charId) as any
       return char?.base?.['排卵周期'] ?? 0
     },
+    getMilk: (charId: string) => {
+      const char = entitySystem.get('character', charId) as any
+      return char?.pregnancy?.milk ?? 0
+    },
+  })
+
+  // 注释：涨奶——对齐 erArk realtime_settle.py:142-146
+  // 持有泌乳天赋(talent[27])即涨奶：milk += add_time × 2/3 × (0.8~1.2 随机)，上限 milk_max
+  // erArk 在 realtime 结算（每次行动 add_time，非睡眠路径）；此处监听 execution_end
+  ctx.events.on('game:execution_end', (payload: any) => {
+    // 休息/睡眠不走 realtime 涨奶（erArk 睡眠走 sleep_settle）
+    if (payload?.commandId === 'rest' || payload?.commandId === 'sleep') return
+    const addTime = payload?.timeCost ?? 10
+    for (const ch of entitySystem.getAll('character')) {
+      const c = ch as any
+      if (!c?.talents?.['泌乳']) continue
+      // 未初始化 pregnancy 的（如未怀孕但有泌乳天赋的 NPC）→ 用完整结构
+      if (!c.pregnancy) c.pregnancy = initPregnancyData()
+      if (!c.pregnancy.milk_max) c.pregnancy.milk_max = calcMilkMax(c)
+      const milkChange = Math.floor(addTime * 2 / 3)
+      const addMilk = milkChange > 0
+        ? Math.floor(Math.random() * (Math.floor(milkChange * 1.2) - Math.floor(milkChange * 0.8) + 1)) + Math.floor(milkChange * 0.8)
+        : 0
+      c.pregnancy.milk = Math.min((c.pregnancy.milk ?? 0) + addMilk, c.pregnancy.milk_max)
+    }
   })
 }
 
@@ -165,8 +194,8 @@ function isPregnant(char: any): boolean {
   return char?.pregnancy != null && typeof char.pregnancy.daysPregnant === 'number' && char.pregnancy.daysPregnant >= 0 && !char.pregnancy.complete
 }
 
-function initPregnancy(char: any): void {
-  char.pregnancy = {
+function initPregnancyData(): any {
+  return {
     stage: 0,
     daysPregnant: 0,
     lactation: false,
@@ -175,7 +204,23 @@ function initPregnancy(char: any): void {
     childcareDaysLeft: null,
     childcareComplete: false,
     complete: false,
+    milk: 0,
+    milk_max: 0,
   }
+}
+
+function initPregnancy(char: any): void {
+  char.pregnancy = initPregnancyData()
+}
+
+// 注释：乳汁上限计算（对齐 erArk pregnancy.py:194 milk_max = 150 + (talent_id - 121) * 40）
+// 胸围天赋 → 上限：贫乳190 / 普乳230 / 巨乳270 / 爆乳310（绝壁121无对应，默认150）
+function calcMilkMax(char: any): number {
+  const chestMap: Record<string, number> = { '贫乳': 190, '普乳': 230, '巨乳': 270, '爆乳': 310 }
+  for (const [talentName, max] of Object.entries(chestMap)) {
+    if (char.talents?.[talentName]) return max
+  }
+  return 150
 }
 
 function giveBirth(char: any): void {

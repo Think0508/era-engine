@@ -9,6 +9,8 @@ export interface BodyItemSlot {
 // 注释：H 身体状态——只在 H 会话内有意义，H 结束重置
 
 export interface H_STATE {
+  // H 交互对象（对方角色 ID，无对象=自己/自慰）——erArk target_character_id
+  target_character_id?: string
   // 插入位置 -1=未插入 0=V 1=A 2=U 3=W 4=M
   insert_position: number
   // 当前体位 ID 1-12
@@ -39,6 +41,21 @@ export interface H_STATE {
   is_h: boolean
   // H 内行为次数
   turn_count: number
+  // ===== 二段结算字段（对齐 erArk h_state，orgasm_settle 使用）=====
+  // 各部位额外高潮累计快感（10级后）
+  extra_orgasm_feel?: Record<number, number>
+  // 额外高潮总次数
+  extra_orgasm_count?: number
+  // 各部位寸止累计次数（平方和用于成功率）
+  orgasm_edge_count?: Record<number, number>
+  // 各部位时停中绝顶计数
+  time_stop_orgasm_count?: Record<number, number>
+  // 多重绝顶部位集合（本次同时绝顶的部位）
+  plural_orgasm_set?: number[]
+  // 射精位置（体内部位 body_part cid，用于饮精绝顶判定 2=口 15=胃）
+  shoot_position_body?: number
+  // 本次指令待结算的快感变化量累积（[partId] → 数值变化，二段结算消耗后清空）
+  pending_orgasm_feel?: Record<number, number>
 }
 
 export function createHState(): H_STATE {
@@ -58,5 +75,12 @@ export function createHState(): H_STATE {
     sex_toy_level: 0,
     is_h: true,
     turn_count: 0,
+    extra_orgasm_feel: {},
+    extra_orgasm_count: 0,
+    orgasm_edge_count: {},
+    time_stop_orgasm_count: {},
+    plural_orgasm_set: [],
+    shoot_position_body: -1,
+    pending_orgasm_feel: {},
   }
 }

@@ -474,8 +474,26 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 
 | 效果 type | 参数 | 语义 |
 |-----------|------|------|
-| `tech_adjust` | `part` | 部位属性名（皮肤/胸部/阴蒂/阴道/后穴/子宫/口喉/心理…） |
+| `tech_adjust` | `part` | 部位属性名（皮肤/胸部/阴蒂/阴道/后穴/尿道/子宫/口喉/心理…）——体技修正的部位快感+欲情：快感 = base×sqrt(发起者.技巧 × 目标.部位感度) + 附加修正（体位/喜欢体位/眼罩/无觉刻印/群交/怀孕灌肠/催眠敏感），欲情 = base×ability表[目标.部位感度] + 素质/催眠/群交修正；含 tenths/连续减值/无意识门控 |
 | | `baseValue` | 基础固定值，默认 50 |
+| `pain_by_lubrication` | — | 121：目标苦痛 = base(30)×(苦痛刻印系数 + 润滑苦痛系数)，润滑越少苦痛系数越高（erArk default.py:8255） |
+| `pain_by_part` | `part` | 122-125：V/A/U/W 性交苦痛 = base(V/A=30/U=1000/W=100)×(苦痛刻印系数 + max(润滑系数−腰技系数,0)×扩张尺寸系数)；W 子宫奸 ×3（erArk default.py:8287-8468） |
+| `feel_by_sex` | `part` | 131-134：性交快感/欲情：快感 = base(50)×sqrt(目标感度×发起者.技巧) + (阴茎大小/2+腰技/2)，欲情额外修正同；后穴(A)欲情只加阴茎大小项（erArk :8552 源码原样）（erArk default.py:8471-8636） |
+| `pain_to_h` | — | 135：心理快感 = base(50)×sqrt(心理感度×发起者.技巧) + 受虐系数；欲情 + 技巧+受虐；苦痛 + 技巧+受虐（erArk default.py:8639-8680） |
+
+> 以上 5 个效果全走 settleOneState 通用管线（tenths_add/连续减值/素质修正/无意识门控自动生效），
+> 来源为 erArk 独立 settle 函数（2026-08-08 补齐）。**兽部不支持**（方舟世界观专属，全砍——遇兽部 warning+跳过）。
+
+### 射精欲效果（h-ejaculation 注册）
+
+| 效果 type | 参数 | 语义 |
+|-----------|------|------|
+| `pl_p_adjust` | `skill`（可选） | PL_P 系列（erArk 120/141-146）：被服务时发起者自己的射精欲 += int((time_cost+50) × adjust + 自己P快/8)；adjust = 服务者.技巧（无 skill）或 服务者.技巧/2 + 服务者.对应技（指技/舌技/足技/胸技/膣技/肛技）；**target 应为 self** |
+| `eja_add` | — | 70：自己射精欲 += int(time_cost + 10 + 射精欲×0.4)（erArk default.py:3648） |
+| `eja_add_target` | `baseValue` | 44：目标射精欲 += int((time_cost+baseValue) × ability表[目标.阴茎感度])（erArk default.py:3219） |
+
+> 射精欲积累的另一种途径（自动）：任何 P 部位快感结算后，二段结算自动按
+> `射精欲 += 100 + int(射精欲×0.4)` 积累（erArk Second_effect.py:657-679），无需手写效果。
 
 ## 对接什么
 

@@ -9,7 +9,9 @@ const fs = require('fs')
 const path = require('path')
 
 const ERA_DIR = '用来复刻的蓝本游戏 erArk 不要commit/data/csv'
-const OUT_DIR = 'mods/test-mod/definitions/h-instructions'
+// 注释：输出目录可用环境变量覆盖（重新生成 archive 时：
+// OUT_DIR=docs/instruction-replication/archive/_erark_source/definitions/h-instructions）
+const OUT_DIR = process.env.OUT_DIR || 'mods/test-mod/definitions/h-instructions'
 
 // ===== 效果 ID → 我们的 effect type + params 映射 =====
 const EFFECT_MAP = {
@@ -34,15 +36,17 @@ const EFFECT_MAP = {
   39: { type: 'modify_attribute', params: { attr: '尿意', value: 5 } },
 
   // 状态值 (50-99) → settle_state，baseValue 各不同
-  // 注意: 51-70 大部分是 TARGET_* 效果，用 settle_state 默认 target
-  41: { type: 'settle_state', params: { state: '皮肤', baseValue: 30 } },
-  42: { type: 'settle_state', params: { state: '胸部', baseValue: 30 } },
-  43: { type: 'settle_state', params: { state: '阴蒂', baseValue: 30 } },
-  44: { type: 'settle_state', params: { state: '阴茎', baseValue: 30 } },
-  45: { type: 'settle_state', params: { state: '阴道', baseValue: 30 } },
-  46: { type: 'settle_state', params: { state: '肛肠', baseValue: 30 } },
-  47: { type: 'settle_state', params: { state: '尿道', baseValue: 30 } },
-  48: { type: 'settle_state', params: { state: '子宫', baseValue: 30 } },
+  // 注意: 41-48 是 TARGET_ADD_SMALL_*（base_value=50，default.py:3157-3350 逐条核实 2026-08-08）：
+  //   41 S/42 B/43 C/45 V/46 A/47 U/48 W = 目标部位快感 base 50；44 = 目标 eja（非快感！）
+  // 51-70 大部分是 TARGET_* 效果，用 settle_state 默认 target
+  41: { type: 'settle_state', params: { state: '皮肤', baseValue: 50 } },
+  42: { type: 'settle_state', params: { state: '胸部', baseValue: 50 } },
+  43: { type: 'settle_state', params: { state: '阴蒂', baseValue: 50 } },
+  44: { type: 'eja_add_target', params: { baseValue: 30 } },
+  45: { type: 'settle_state', params: { state: '阴道', baseValue: 50 } },
+  46: { type: 'settle_state', params: { state: '后穴', baseValue: 50 } },
+  47: { type: 'settle_state', params: { state: '尿道', baseValue: 50 } },
+  48: { type: 'settle_state', params: { state: '子宫', baseValue: 50 } },
   49: { type: 'settle_state', params: { state: '欲情', baseValue: 30 } },
   51: { type: 'settle_state', params: { state: '快乐', baseValue: 30 } },
   52: { type: 'settle_state', params: { state: '恭顺', baseValue: 30 } },
@@ -55,7 +59,10 @@ const EFFECT_MAP = {
   59: { type: 'settle_state', params: { state: '苦痛', baseValue: 30 } },
   60: { type: 'settle_state', params: { state: '恐怖', baseValue: 30 } },
   62: { type: 'settle_state', params: { state: '苦痛', baseValue: 30 } },
-  70: { type: 'settle_state', params: { state: '恐怖', baseValue: 30 } },
+  // 70 = ADD_SMALL_P_FEEL（自己射精欲，default.py:3648-3672）——2026-08-08 修正：
+  // 原误映射为恐怖 settle（21-效果ID速查表 70 行为已废弃）；公式 eja += tc + 10 + eja×0.4；
+  // target=self（语义"自身"，与 pl_p_adjust 一致）
+  70: { type: 'eja_add', params: {}, target: 'self' },
   71: { type: 'settle_state', params: { state: '习得', baseValue: 30 } },
   81: { type: 'settle_state', params: { state: '习得', baseValue: 30 } },
   86: { type: 'settle_state', params: { state: '先导', baseValue: 30 } },
@@ -72,8 +79,9 @@ const EFFECT_MAP = {
 }
 
 // ===== 状态 ID → 中文名映射（erArk status_data）=====
+// 注：5=肛肠 引擎属性名为"后穴"（attributes.toml），转换统一用引擎名
 const STATE_NAMES = {
-  0: '皮肤', 1: '胸部', 2: '阴蒂', 3: '阴茎', 4: '阴道', 5: '肛肠',
+  0: '皮肤', 1: '胸部', 2: '阴蒂', 3: '阴茎', 4: '阴道', 5: '后穴',
   6: '尿道', 7: '子宫', 8: '润滑', 9: '习得', 10: '恭顺', 11: '好意',
   12: '欲情', 13: '快乐', 14: '先导', 15: '屈服', 16: '羞耻', 17: '苦痛',
   18: '恐怖', 19: '抑郁', 20: '反感', 21: '口喉', 22: '兽部', 23: '心理',
@@ -173,25 +181,41 @@ function translateEffect(effId, prevEff) {
   const mapped = EFFECT_MAP[numId]
   if (mapped) return { ...mapped, params: { ...mapped.params } }
 
-  // 100+ 用于部位快感（100-199 = 各部位快感 +50 baseValue）
-  if (numId >= 100 && numId < 200) {
-    const feelMap = {
-      101: '快乐', 110: '皮肤', 111: '皮肤', 112: '胸部', 114: '阴道',
-      115: '肛肠', 116: '尿道', 117: '子宫', 118: '口喉', 119: '兽部',
-      120: '阴茎', 141: '皮肤', 142: '口喉', 143: '脚', 144: '胸部',
-      145: '阴道', 146: '肛肠', 154: '胸部', 155: '阴蒂',
-      159: '阴道', 161: '肛肠', 163: '尿道', 165: '子宫', 171: '口喉',
-    }
-    const feelTechMap = { 110: 1, 111: 1, 112: 1, 114: 1, 115: 1, 116: 1, 117: 1, 118: 1, 119: 1 }
-    const part = feelMap[numId]
-    if (part) {
-      // tech_adjust 效果（带体技修正） vs 普通 settle_state
-      if (feelTechMap[numId] || (numId >= 110 && numId <= 146)) {
-        return { type: 'tech_adjust', params: { part, baseValue: 50 } }
-      }
-      return { type: 'settle_state', params: { state: part, baseValue: 50 } }
-    }
+  // 100-199 部位快感/特殊补正（2026-08-08 逐 ID 对照 constant_effect.py 重写）：
+  //   110-119 TECH_ADD_*：发起者技巧×目标感度 → 部位快感+欲情（tech_adjust）
+  //   120/141-146 PL_P 系列：服务者技巧(+/2+对应技) → 发起者自己射精欲（pl_p_adjust，target=self）
+  //   121-125/131-135 疼痛系（pain_by_lubrication/pain_by_part/feel_by_sex/pain_to_h）
+  if (numId === 110) return { type: 'tech_adjust', params: { part: '皮肤', baseValue: 50 } }
+  if (numId === 111) return { type: 'tech_adjust', params: { part: '胸部', baseValue: 50 } }
+  if (numId === 112) return { type: 'tech_adjust', params: { part: '阴蒂', baseValue: 50 } }
+  // 113 TECH_ADD_P_ADJUST 已弃用（constant_effect.py:211 标注）→ 不产出
+  if (numId === 114) return { type: 'tech_adjust', params: { part: '阴道', baseValue: 50 } }
+  if (numId === 115) return { type: 'tech_adjust', params: { part: '后穴', baseValue: 50 } }
+  if (numId === 116) return { type: 'tech_adjust', params: { part: '尿道', baseValue: 50 } }
+  if (numId === 117) return { type: 'tech_adjust', params: { part: '子宫', baseValue: 50 } }
+  if (numId === 118) return { type: 'tech_adjust', params: { part: '口喉', baseValue: 50 } }
+  // 119 TECH_ADD_F_ADJUST 兽部——全砍（2026-08-08 决策：无属性/无感度/方舟世界观专属）→ 不产出
+  if (numId === 120) return { type: 'pl_p_adjust', params: {}, target: 'self' }
+
+  // 疼痛系（独立 effect 类型，h-core settle/pain-adjust.ts）
+  if (numId === 121) return { type: 'pain_by_lubrication', params: {} }
+  if (numId >= 122 && numId <= 125) {
+    const partMap = { 122: '阴道', 123: '后穴', 124: '尿道', 125: '子宫' }
+    return { type: 'pain_by_part', params: { part: partMap[numId] } }
   }
+  if (numId >= 131 && numId <= 134) {
+    const partMap = { 131: '阴道', 132: '后穴', 133: '尿道', 134: '子宫' }
+    return { type: 'feel_by_sex', params: { part: partMap[numId] } }
+  }
+  if (numId === 135) return { type: 'pain_to_h', params: {} }
+
+  // PL_P 系列（141-146：FINGER/TONGUE/FEET/BREAST/VAGINA/ANUS_TECH_ADD_PL_P_ADJUST）
+  if (numId >= 141 && numId <= 146) {
+    const skillMap = { 141: '指技', 142: '舌技', 143: '足技', 144: '胸技', 145: '膣技', 146: '肛技' }
+    return { type: 'pl_p_adjust', params: { skill: skillMap[numId] }, target: 'self' }
+  }
+  // 注：101/154/155/159/161/163/165/171 无 constant_effect 定义且未被任何指令链引用
+  // （Behavior_Effect.csv 全链核实 2026-08-08）→ 不再映射
 
   // 位置效果 (800-862) — 插入位置
   if (numId >= 800 && numId <= 840) {
@@ -358,11 +382,6 @@ function translateEffect(effId, prevEff) {
   if (numId === 1505) return { type: 'modify_attribute', params: { attr: '气力', value: 50, target: 'self' } }
   if (numId === 1751) return { type: 'set_field', params: { path: 'sp_flag.urinated', value: true } }
 
-  // 疼痛系 tech_adjust (121-135)
-  if ((numId >= 121 && numId <= 125) || (numId >= 131 && numId <= 135)) {
-    return { type: 'tech_adjust', params: { type: 'pain', erArkId: numId } }
-  }
-
   // 更多体位 (866-868)
   if (numId >= 866 && numId <= 868) {
     const pos = { 866: 13, 867: 14, 868: 15 }
@@ -483,6 +502,7 @@ function main() {
       if (!translated) continue
       const eff = { type: translated.type, params: { ...translated.params } }
       if (translated.condition) eff.condition = translated.condition
+      if (translated.target) eff.target = translated.target
       effects.push(eff)
     }
 
@@ -560,6 +580,9 @@ function main() {
           }
           if (eff.condition) {
             line += `, condition = "${eff.condition}"`
+          }
+          if (eff.target) {
+            line += `, target = "${eff.target}"`
           }
           line += ' },\n'
           toml += line

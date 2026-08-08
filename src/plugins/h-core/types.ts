@@ -13,8 +13,11 @@ export interface H_STATE {
   target_character_id?: string
   // 插入位置 -1=未插入 0=V 1=A 2=U 3=W 4=M
   insert_position: number
-  // 当前体位 ID 1-12
+  // 当前体位 ID -1=无体位 1-12（erArk "仅博士有的数据"——引擎按被结算角色 h_state 存；
+  // 默认 -1 对齐 erArk game_type.py:463）
   current_sex_position: number
+  // 当前子宫性交位置 0=未插入 1=子宫口插入 2=子宫奸（仅发起者/玩家有，erArk game_type.py:467）
+  current_womb_sex_position: number
   // 各部位绝顶计数 [partId]: [当前H内累计, 总累计]
   orgasm_count: Record<number, number[]>
   // 各部位绝顶等级（0=small 1=normal 2=strong，循环）
@@ -61,7 +64,8 @@ export interface H_STATE {
 export function createHState(): H_STATE {
   return {
     insert_position: -1,
-    current_sex_position: 0,
+    current_sex_position: -1,
+    current_womb_sex_position: 0,
     orgasm_count: {},
     orgasm_level: {},
     orgasm_edge: 0,

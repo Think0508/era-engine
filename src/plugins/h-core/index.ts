@@ -22,8 +22,11 @@ import { calcFavorability, getFavorabilityLevel, getTrustLevel, clearTalentAdjus
 import { calcTrust } from './settle/trust'
 import { calcJudge, mergeJudgeResult, type JudgeResult } from './settle/judge'
 import { calcHpMpChange, type HpMpInput } from './settle/hp-mp'
-import { settleOneState, PART_ABILITY, getFeelExtraAdjust } from './settle/state-settle'
+import { settleOneState, PART_ABILITY, getFeelExtraAdjust, getFallLevel } from './settle/state-settle'
 import { getTalentStateAdjust } from './settle/talent-adjust'
+import { grantFavoritePositionIfDue } from './settle/position'
+import { runPainByLubrication, runPainByPart, runFeelBySex, runPainToH, getGroupSexActive } from './settle/pain-adjust'
+import { addEja } from './settle/eja'
 import { decayTalkCount } from './settle/talk'
 import { isSettleGated } from '../../utils/settle-gate'
 import { getContinuousAdjust } from '../../core/command-executor'
@@ -39,6 +42,9 @@ import type { SecondSettleResult } from './settle/orgasm'
 let hCorePluginsLoadedListener = false
 // 注释：talk_count 衰减监听器只注册一次（同 plugins_loaded 模式）
 let hCoreTalkDecayListener = false
+// 注释：execution_end 二段结算监听器只注册一次——2026-08-08 eja 重构后此监听器
+// 承担射精欲积累 + 绝顶判定，重复注册会双倍结算（plugin-manager 的 loadPlugins 无幂等守卫）
+let hCoreExecutionEndListener = false
 
 // 注释：处理二段结算结果——输出绝顶/多重绝顶日志与事件（execution_end 与 h_orgasm_check 共用）
 // 2026-08-08 对齐 erArk orgasm_settle_flag 去重（second_behavior.py:168-195）：
@@ -154,24 +160,22 @@ export function onLoad(_ctx: PluginContext): void {
 
   effectTypeRegistry.register('settle_state', async (_p: any, execCtx: any) => {
     if (!canApply(execCtx)) return true
+    // 注释：兽部全砍（同 tech_adjust）——不静默写死属性，报 warning 后跳过
+    if (_p.state === '兽部' || _p.state === '兽部快感') {
+      errorReporter.report({
+        source: 'h-core',
+        severity: 'warning',
+        message: `settle_state：状态 '兽部' 未实现（兽部全砍决策），效果被跳过`,
+        suggestion: '检查指令 TOML 是否误用兽部状态；本引擎不支持兽部（方舟世界观专属）',
+      })
+      return true
+    }
     const ids = execCtx._targetIds as string[]
     const tc = execCtx._timeCost ?? 10
     const bv = _p.baseValue ?? 30
     const continuous = getContinuousAdjust()
     // 注释：群交修正（可选能力——仅"插件未注册"被忽略，真实错误照报）
-    let isGroupSex = false
-    try {
-      isGroupSex = await apiSystem.call('h-group-sex', 'isActive')
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err)
-      if (!msg.includes('h-group-sex') && !msg.includes('未注册')) {
-        errorReporter.report({
-          source: 'h-core',
-          severity: 'error',
-          message: `settle_state 查群交状态失败：${msg}`,
-        })
-      }
-    }
+    const isGroupSex = await getGroupSexActive()
     for (const id of ids) {
       const ch = entitySystem.get('character', id) as any
       // 注释：单状态结算（与 talk_add_adjust 共用同一管线——erArk base_chara_state_common_settle）
@@ -241,6 +245,17 @@ export function onLoad(_ctx: PluginContext): void {
   //   三件套：tenths_add（+min(3×基础, 当前/10)）/ 连续重复减值（非自己）/ 无意识时心理快感跳过
   // 参数: { part: "皮肤|胸部|阴蒂|阴道|肛肠|尿道|子宫|口喉|心理", baseValue?: 50 }
   effectTypeRegistry.register('tech_adjust', async (_p: any, execCtx: any) => {
+    // 注释：兽部全砍（2026-08-08 决策：无属性/无感度/无绝顶，方舟兽人世界观专属）——
+    // 不静默（原实现会静默写 base['兽部'] 死属性），报 warning 后跳过
+    if (_p.part === '兽部' || _p.part === '兽部快感') {
+      errorReporter.report({
+        source: 'h-core',
+        severity: 'warning',
+        message: `tech_adjust：部位 '兽部' 未实现（兽部全砍决策），效果被跳过`,
+        suggestion: '检查指令 TOML 是否误用兽部部位；本引擎不支持兽部（方舟世界观专属）',
+      })
+      return true
+    }
     const ids = execCtx._targetIds as string[]
     const tc = execCtx._timeCost ?? 10
     const bv = _p.baseValue ?? 50
@@ -250,19 +265,7 @@ export function onLoad(_ctx: PluginContext): void {
     const getAdj = (lv: number) => tbl[Math.min(Math.max(0, lv), 10)] ?? 4.0
     const continuous = getContinuousAdjust()
     // 注释：群交修正（可选能力——仅"插件未注册"被忽略，真实错误照报）
-    let isGroupSex = false
-    try {
-      isGroupSex = await apiSystem.call('h-group-sex', 'isActive')
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err)
-      if (!msg.includes('h-group-sex') && !msg.includes('未注册')) {
-        errorReporter.report({
-          source: 'h-core',
-          severity: 'error',
-          message: `tech_adjust 查群交状态失败：${msg}`,
-        })
-      }
-    }
+    const isGroupSex = await getGroupSexActive()
 
     for (const id of ids) {
       const target = entitySystem.get('character', id) as any
@@ -297,21 +300,15 @@ export function onLoad(_ctx: PluginContext): void {
         // 注释：部位快感变化量 → 二段结算累积（extra 高潮用）
         const feelPartId = ORGASM_ATTR_TO_PART[_p.part]
         if (feelPartId !== undefined) accumulateOrgasmFeel(target, feelPartId, feel)
-        // 注释：阴茎部位快感 → 射精欲积累（erArk ADD_SMALL_P_FEEL 内嵌 eja_point +=）
-        // 公式：now_add_lust = (add_time + 50) × adjust(技巧) + 阴茎快感/8（default.py:8304）
-        // 注：同步内联（避免跨插件 async void 乱序）；h-ejaculation 的 eja_add effect 保留供 TOML 手动用
-        if (_p.part === '阴茎') {
-          const techLv2 = target?.abilities?.['技巧']?.level ?? 0
-          const adjust2 = getAdj(techLv2)
-          const penisFeel2 = target.base?.['阴茎'] ?? 0
-          const nowAddLust = Math.floor((tc + 50) * adjust2 + penisFeel2 / 8)
-          target.base['射精欲'] = (target.base['射精欲'] ?? 0) + nowAddLust
-        }
-        // 注释：欲情 = base × max(0, ability表[目标.部位感度] + 催眠敏感 + 素质修正 + 群交0.05)
-        // state 12 非快感分支（chara_base_state_adjust:358-454 + :479 max(0) 钳制，非 sqrt；
-        // 欲情吃羞耻/开放天赋修正）
+        // 注释：射精欲积累已移出本效果——对齐 erArk 二段结算 ADD_SMALL_P_FEEL
+        // （Second_effect.py:657-679：每次 P 部位快感产生时 eja_point += 100 + int(eja_point×0.4)），
+        // 由 orgasm.ts orgasmJudge 读 pending_orgasm_feel[3] 统一处理（h-ejaculation API 写入）
+        // 欲情 = base × max(0, ability表[目标.部位感度] + 催眠敏感 + 素质修正 + 攻略进度 + 群交0.05)
+        // state 12 非快感分支（chara_base_state_adjust:358-454 + :455-458 fall + :479 max(0) 钳制，非 sqrt；
+        // 欲情吃羞耻/开放天赋修正 + fall×0.05——2026-08-08 审查补：原手写公式漏攻略进度修正）
         const lustTalentAdj = getTalentStateAdjust(modLoader.getMod(), target, ATTR.AROUSAL)
-        let lustExtraAdj = hypnosisAdj + lustTalentAdj
+        const lustFallAdj = getFallLevel(target) * 0.05
+        let lustExtraAdj = hypnosisAdj + lustTalentAdj + lustFallAdj
         if (isGroupSex && target?.h_state?.is_h) {
           const others = Math.max(0, entitySystem.getAll('character').filter((c: any) => c.id !== target.id && c.current_location === target.current_location).length - 1)
           lustExtraAdj += Math.min(10, others) * 0.05
@@ -322,6 +319,64 @@ export function onLoad(_ctx: PluginContext): void {
         target.base[ATTR.AROUSAL] = Math.min(99999, (target.base[ATTR.AROUSAL] ?? 0) + lust)
       }
     }
+    return true
+  })
+
+  // ═══════════════════════════════════════════════════════════
+  // pain 系列（erArk 独立 settle 函数，default.py:8255-8680）
+  // ═══════════════════════════════════════════════════════════
+
+  // 注释：121 润滑 → 苦痛（TARGET_LUBRICATION_ADJUST_ADD_PAIN）
+  effectTypeRegistry.register('pain_by_lubrication', async (_p: any, execCtx: any) => {
+    return runPainByLubrication(execCtx)
+  })
+
+  // 注释：122-125 V/A/U/W 苦痛（TARGET_*_ADJUST_ADD_PAIN）——params: part
+  effectTypeRegistry.register('pain_by_part', async (_p: any, execCtx: any) => {
+    return runPainByPart(execCtx, _p.part as string)
+  })
+
+  // 注释：131-134 V/A/U/W 快感+欲情（TARGET_*_ADJUST_ADD_BY_SEX）——params: part
+  effectTypeRegistry.register('feel_by_sex', async (_p: any, execCtx: any) => {
+    return runFeelBySex(execCtx, _p.part as string)
+  })
+
+  // 注释：135 心理快感+欲情+苦痛（TARGET_PAIN_TO_H_ADJUST）
+  effectTypeRegistry.register('pain_to_h', async (_p: any, execCtx: any) => {
+    return runPainToH(execCtx)
+  })
+
+  // ═══════════════════════════════════════════════════════════
+  // PL_P 系列（对发起者自己的 P快/射精欲，erArk TECH_ADD_PL_P_ADJUST: default.py:8239-8252 +
+  // FINGER/TONGUE/FEET/BREAST/VAGINA/ANUS: :8683-8725）
+  // ═══════════════════════════════════════════════════════════
+
+  // 注释：pl_p_adjust——被服务时发起者自己的射精欲积累
+  // 120（无 skill 参数）：adjust = adj(服务者.技巧)
+  // 141-146（skill = 指技/舌技/足技/胸技/膣技/肛技）：adjust = adj(服务者.技巧)/2 + adj(服务者.技能)
+  // eja += int((tc+50) × adjust + 自己当前P快/8)（erArk now_lust = status_data[3]）
+  // 服务者 = 发起者 h_state.target_character_id（erArk target_data = character_data.target_character_id）
+  effectTypeRegistry.register('pl_p_adjust', async (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
+    const srcId = execCtx.sourceId
+    const src = srcId ? entitySystem.get('character', srcId) as any : null
+    if (!src) return true
+    const tc = execCtx._timeCost ?? 10
+    const hc = (modLoader.getMod()?.hConfig as any) ?? {}
+    const tbl = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
+    const getAdj = (lv: number) => tbl[Math.min(Math.max(0, lv), 10)] ?? 4.0
+    const partnerId = src?.h_state?.target_character_id
+    const partner = partnerId ? entitySystem.get('character', partnerId) as any : null
+    if (!partner) return true
+    const techAdj = getAdj(partner?.abilities?.['技巧']?.level ?? 0)
+    const adjust = _p.skill
+      ? techAdj / 2 + getAdj(partner?.abilities?.[_p.skill]?.level ?? 0)
+      : techAdj
+    // 自己当前 P 快感（erArk status_data[3]）
+    const ownPFeel = getEntityAttr(src, '阴茎')
+    const delta = Math.floor((tc + 50) * adjust + ownPFeel / 8)
+    // 注释：跨插件写射精欲走 h-ejaculation API（唯一通信路径铁律；h-ejaculation 未启用 → 静默降级）
+    await addEja(srcId, delta)
     return true
   })
 
@@ -437,7 +492,7 @@ export function onLoad(_ctx: PluginContext): void {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.h_state) continue
       // 注释：extra 累积走 pending_orgasm_feel（settle_state/tech_adjust 已写入）；statusDelta 兼容参数已弃用
-      const result = orgasmJudge(id, undefined, opts)
+      const result = await orgasmJudge(id, undefined, opts)
       await handleOrgasmResults(id, ch, result)
       // 注释：玩家射精触发（与 execution_end 一致）
       if (result.shouldEjaculate && (id === '0' || id === 'player')) {
@@ -773,6 +828,55 @@ export function onLoad(_ctx: PluginContext): void {
   })
 }
 
+// 注释：execution_end 二段结算处理（对齐 erArk check_second_effect）
+// 流程：body_item_tick（道具 tick）→ orgasmJudge（高潮判定 + 射精欲积累）→ 玩家射精时调 eja_climax
+// 模块级函数 + 只注册一次守卫（plugin-manager 的 loadPlugins 无幂等守卫，重复 onEnable 会双倍结算）
+async function handleExecutionEnd(): Promise<void> {
+  const mode = gameContext.getCurrentMode()
+  if (mode !== 'h_scene') return
+  const inH: string[] = []
+  for (const ch of entitySystem.getAll('character')) {
+    const c = ch as any
+    if (c.h_state?.is_h) inH.push(c.id)
+  }
+  if (inH.length === 0) return
+  // 注释：1. 对每个 H 中角色应用 body_item_tick（道具持续效果）
+  await apiSystem.call('effect-system', 'execute', [{ type: 'body_item_tick', params: { target: 'self' } }], {
+    sourceId: inH[0],
+    _targetIds: inH,
+  })
+  // 注释：2. 自动二段结算——高潮判定（erArk orgasm_judge + orgasm_settle）
+  for (const id of inH) {
+    const ch = entitySystem.get('character', id) as any
+    if (!ch?.h_state) continue
+    const result = await orgasmJudge(id)
+    await handleOrgasmResults(id, ch, result)
+    // 注释：3. 玩家射精触发（erArk orgasm_judge 射精分支）
+    // 忍耐判定（概率+手动弹窗延后）和射精量公式都在 eja_climax 内部（h-ejaculation），此处只触发
+    if (result.shouldEjaculate && (id === '0' || id === 'player')) {
+      if (effectTypeRegistry.has('eja_climax')) {
+        await apiSystem.call('effect-system', 'execute', [
+          { type: 'eja_climax', params: { positionId: insertPositionToBodyCid(ch.h_state?.insert_position ?? -1) }, target: 'self' },
+        ], { sourceId: id, _targetIds: [id] })
+      } else {
+        // 射精系统未启用（h-ejaculation 插件缺失）——登记 warning 而非静默
+        errorReporter.report({
+          source: 'h-core',
+          severity: 'warning',
+          message: `玩家射精欲已满但 eja_climax 未注册（h-ejaculation 插件未启用）`,
+          suggestion: '检查 h-ejaculation 插件是否已加载',
+        })
+      }
+    }
+  }
+  // 注释：4. 喜欢体位懒授予（erArk settle_favorite_sex_position 在公式内懒授予 → 引擎统一
+  // 在此点：体位经验 ≥100 且无喜好天赋 → 授予 + 叙事，2026-08-08 grilling 决策）
+  for (const id of inH) {
+    const ch = entitySystem.get('character', id) as any
+    if (ch) grantFavoritePositionIfDue(ch, modLoader.getMod())
+  }
+}
+
 export function onEnable(ctx: PluginContext): void {
   registerNoSaveMode('h_scene')
   // 注释：天赋修正索引随插件启用重建（mod 切换/测试环境重载时避免脏缓存）
@@ -785,46 +889,12 @@ export function onEnable(ctx: PluginContext): void {
   registerInstructPremises(premiseRegistry)
 
   // 注释：每次 H 行动后自动二段结算（对齐 erArk check_second_effect）
-  // 流程：body_item_tick（道具 tick）→ orgasmJudge（高潮判定）→ 玩家射精时调 eja_climax
-  ctx.events.on('game:execution_end', async () => {
-    const mode = gameContext.getCurrentMode()
-    if (mode !== 'h_scene') return
-    const inH: string[] = []
-    for (const ch of entitySystem.getAll('character')) {
-      const c = ch as any
-      if (c.h_state?.is_h) inH.push(c.id)
-    }
-    if (inH.length === 0) return
-    // 注释：1. 对每个 H 中角色应用 body_item_tick（道具持续效果）
-    await apiSystem.call('effect-system', 'execute', [{ type: 'body_item_tick', params: { target: 'self' } }], {
-      sourceId: inH[0],
-      _targetIds: inH,
-    })
-    // 注释：2. 自动二段结算——高潮判定（erArk orgasm_judge + orgasm_settle）
-    for (const id of inH) {
-      const ch = entitySystem.get('character', id) as any
-      if (!ch?.h_state) continue
-      const result = orgasmJudge(id)
-      await handleOrgasmResults(id, ch, result)
-      // 注释：3. 玩家射精触发（erArk orgasm_judge 射精分支）
-      // 忍耐判定（概率+手动弹窗延后）和射精量公式都在 eja_climax 内部（h-ejaculation），此处只触发
-      if (result.shouldEjaculate && (id === '0' || id === 'player')) {
-        if (effectTypeRegistry.has('eja_climax')) {
-          await apiSystem.call('effect-system', 'execute', [
-            { type: 'eja_climax', params: { positionId: insertPositionToBodyCid(ch.h_state?.insert_position ?? -1) }, target: 'self' },
-          ], { sourceId: id, _targetIds: [id] })
-        } else {
-          // 射精系统未启用（h-ejaculation 插件缺失）——登记 warning 而非静默
-          errorReporter.report({
-            source: 'h-core',
-            severity: 'warning',
-            message: `玩家射精欲已满但 eja_climax 未注册（h-ejaculation 插件未启用）`,
-            suggestion: '检查 h-ejaculation 插件是否已加载',
-          })
-        }
-      }
-    }
-  })
+  // 流程：body_item_tick（道具 tick）→ orgasmJudge（高潮判定 + 射精欲积累）→ 玩家射精时调 eja_climax
+  // 只注册一次（plugin-manager 的 loadPlugins 无幂等守卫，重复 onEnable 会双倍结算）
+  if (!hCoreExecutionEndListener) {
+    hCoreExecutionEndListener = true
+    ctx.events.on('game:execution_end', handleExecutionEnd)
+  }
 
   ctx.api.register('h-core', {
     evaluatePremises: (premises: string[], evalCtx: any) => premiseRegistry.evaluate(premises, evalCtx),
@@ -834,10 +904,11 @@ export function onEnable(ctx: PluginContext): void {
     // 注释：通用状态结算（对外暴露——其他插件（如 h-hidden 隐奸/露出持续快感）经 API 调用，
     // 遵守"插件间禁止直接 import"铁律；参数同 settleOneState）
     // settleState(charId, state, baseValue, timeCost, opts?: {
-    //   abilityLevel?, abilityKeyOverride?, isGroupSex?, continuous?, negate?, tenthsAdd?, extraAdjust? })
+    //   abilityLevel?, abilityKeyOverride?, isGroupSex?, continuous?, negate?, tenthsAdd?, extraAdjust?,
+    //   externalAbilityLevel? })
     settleState: (
       charId: string, state: string, baseValue: number, timeCost: number,
-      opts?: { abilityLevel?: number | null; abilityKeyOverride?: string | null; isGroupSex?: boolean; continuous?: number; negate?: boolean; tenthsAdd?: boolean; extraAdjust?: number },
+      opts?: { abilityLevel?: number | null; abilityKeyOverride?: string | null; isGroupSex?: boolean; continuous?: number; negate?: boolean; tenthsAdd?: boolean; extraAdjust?: number; externalAbilityLevel?: number | null },
     ) => {
       const ch = entitySystem.get('character', charId) as any
       if (!ch) {
@@ -861,6 +932,7 @@ export function onEnable(ctx: PluginContext): void {
         opts?.negate ?? false,
         opts?.tenthsAdd ?? true,
         opts?.extraAdjust ?? 0,
+        opts?.externalAbilityLevel ?? null,
       )
     },
   })

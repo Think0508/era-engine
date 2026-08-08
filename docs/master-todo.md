@@ -10,6 +10,58 @@
 
 ### 已完成（本会话）
 ```
+tech_adjust 结算保真补全（2026-08-08，grilling 定稿后执行）✅
+  - 体位修正（chara_feel_state_adjust:314-325）：h-config [sex_positions] 12 体位系数（蓝本 Sex_Position.csv）
+    + getFeelExtraAdjust 扩展（V/A/U/W 有体位 +系数 / 喜欢体位 +0.5 / 子宫奸 +2，玩家 current_womb_sex_position==2）
+    + 12 体位喜好天赋（favorite_position 字段，talents.toml 已有定义补字段）+ settle/position.ts
+    （经验 141-152 ≥100 → h_scene execution_end 懒授予+叙事，G2 决策）；types.ts current_womb_sex_position +
+    current_sex_position 默认改 -1（对齐 erArk game_type.py:463 无体位语义）
+  - pain 系列独立 effect（settle/pain-adjust.ts，erArk default.py:8255-8680）：
+    pain_by_lubrication(121) / pain_by_part(122-125，U base=1000/W base=100/W子宫奸×3) /
+    feel_by_sex(131-134，A欲情只用 size——:8552 源码原样) / pain_to_h(135)；移植 get_pain_adjust
+    （attr_calculation.py:635-678）；全走 settleOneState 管线（settleOneState 新增 externalAbilityLevel
+    参数支持快感 sqrt(目标感度×外部等级)）
+  - PL_P 系列（pl_p_adjust：120 纯技巧 / 141-146 技巧÷2+指技舌技足技胸技膣技肛技，default.py:8239-8252/8683-8725）
+  - 射精欲重构（ADR-0006）：删除 tech_adjust/settle_state 内联 (tc+50)×技巧+P快/8（来源不明、行号失效）
+    → orgasmJudge 二段结算读 pending_orgasm_feel[3] → 射精欲 += 100+int(射精欲×0.4)（Second_effect.py:657-679，
+    per-character 泛化）；h-core 经 h-ejaculation API（getEja/addEja，settle/eja.ts）写入，h-core 不再直接碰字段
+  - 尿道方案A（ADR-0004）：ORGASM_PART_ATTR/PART_PREFIX/ORGASM_PART_SENSITIVITY/PART_EXP_ID 加 partId 6；
+    attributes 尿道 display=false；默认不定义尿道感度/扩张；指令保持砍掉（master-list 标注更新）
+  - 兽部全砍：tech_adjust/settle_state 遇 part/state=兽部 → warning+跳过（防静默写死属性）；转换脚本不产出
+  - 口喉欲情用自身感度（ADR-0005，不复制 erArk ability[7] 上游 bug，default.py:8178/8210）
+  - 转换脚本修正（scripts/convert-erark-instructions.cjs，Behavior_Effect.csv 453 ID 全链核实）：
+    70→eja_add（原误映射恐怖）/ 44→eja_add_target / 41-48 base 30→50（44 非快感！）/ 120/141-146→pl_p_adjust
+    target=self / 121-135→pain 新类型 / 115 等肛肠→后穴（引擎属性名）/ 119 兽部不产出 / 111→胸部 112→阴蒂
+    （原 111 皮肤/112 胸部 错位）；重新生成 archive（OUT_DIR 环境变量）+ 效果合并脚本保留手工策展 premises
+  - 新增 23 测试（体位 7 含懒授予/pain 6/PL_P 3/eja 3/尿道绝顶 1/兽部 2/未知部位 1）
+  - 复查修复（2026-08-08 第二轮）：position.ts 懒授予死循环 bug（经验≥100 时天赋永不授予——getFavoritePosition
+    推导值误判为"已授予"）✅；execution_end 二段结算监听器提取 handleExecutionEnd + 只注册一次守卫
+    （plugin-manager loadPlugins 无幂等守卫，重复 onEnable 会双倍 eja/绝顶）✅；eja_add/eja_add_target 补退缩门控
+    （judge_check retreated 时效果链应整体跳过）✅；转换脚本 70 补 target='self' 并重新生成合并 archive ✅；
+    兽部 warning 补 '兽部快感' 别名 ✅
+  - 合规审计（2026-08-08 第三轮，逐项对照 erArk 源码）：
+    【发现·已修】tech_adjust 欲情分支漏攻略进度修正（chara_base_state_adjust:455-458 正面状态 +fall×0.05，
+    settle_state 路径有 fallAdj 但手写公式漏）→ 补 getFallLevel(target)×0.05 + 测试
+    【核实一致】体位 12 系数与 Sex_Position.csv 逐一相同；tech_adjust 快感全成分（sqrt/催眠/眼罩/无觉/
+    群交/怀孕灌肠/体位/喜欢体位/子宫奸/max(0)/tenths/连续减值）；pain 四效果逐条；PL_P 两式；eja 三公式；
+    getPainAdjust 表；尿道绝顶链与其他部位一致（只差经验 ID 216→16，已核实）
+    【记录·非本次引入】连续减值条件=所有非自己目标（erArk 仅玩家交互对象，群交有差异，预先存在）；
+    时停中 eja/射精无时停抑制（既有）；转换 866-868 insert_position 13/14/15 与引擎 0-4 错位（预先存在，
+    808-817 部分碰巧正确）；orgasm 链 411 隐奸暴露/415 储电/997 未实现（既有范围）；体位经验 141-152 在
+    erArk 无写入点（未接线功能，引擎机制为超集）
+    【TODO·待指令批次】体位经验链路接通（用户决策：等 B2-B6 指令批次时定）：
+      erArk 死功能确认——体位经验 141-152 全库无写入点（所有 base_chara_experience_common_settle 调用、
+      指令效果链、事件数据、AI 逻辑均无），settle_favorite_sex_position 的"经验≥100 自动授予"分支永不触发，
+      喜好天赋 250-261 无其他授予点 → erArk 正常游玩"喜欢体位+0.5"恒不生效。
+      引擎机制已全部就绪（h_experience 任意 expId / grantFavoritePositionIfDue 懒授予 / getFeelExtraAdjust
+      +0.5，均有测试），仅差数据链路。接通方案（引擎自定义规则，erArk 无依据）：
+      - 给经验对象：被使用者 NPC（settle_favorite_sex_position 读被结算角色经验的意图）
+      - 哪些指令：性交类（V/A/U/W 性交 12 体位 + 换体位指令），体位 N → exp 140+N，每次行动 +1
+      - 实现位置：转换脚本自动附加 h_experience（从 set_field current_sex_position 推导）
+  验收: npm run typecheck ✅（仅遗留 main.ts App.vue 预先错误）/ npm run test 445 通过 ✅（41 文件）
+  TODO 遗留（依赖未实装系统，同 spec §5.3）：信物/系统难度修正、调香（明确不做）、u_orgasm 漏尿
+  （排尿系统）、体位经验自动授予的叙事文案在 narrativeLog（对齐 erArk 文案）
+```
 L1.6 前置改动（spec §10，B1 开工前一次做完）✅
   - loader 收敛: h-instructions/ 双路径 → 单 instructions/（插件默认层 + mod 层按 id 去重，mod 胜出）
     h-instruction-loader.ts 删除，并入 instruction-loader.ts；h_ 前缀移除

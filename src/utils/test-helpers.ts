@@ -55,7 +55,8 @@ export function resetCharacterEntity(char: any, baseKeys: Record<string, number>
 export const DEFAULT_NPC_BASE: Record<string, number> = {
   体力: 80, 体力上限: 100, 气力: 50, 气力上限: 100,
   好感度: 0, 信赖度: 0, 好意: 0, 快乐: 0, 恐怖: 0, 皮肤: 0, 心理: 0,
-  疲劳度: 0, 欲情: 0, 先导: 0, 阴道: 0, 苦痛: 0, 恭顺: 0, 羞耻: 0, 屈服: 0, 习得: 0,
+  疲劳度: 0, 欲情: 0, 先导: 0, 阴道: 0, 后穴: 0, 子宫: 0, 尿道: 0,
+  苦痛: 0, 恭顺: 0, 羞耻: 0, 屈服: 0, 习得: 0,
 }
 
 /** 标准玩家 base */

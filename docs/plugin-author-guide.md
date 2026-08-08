@@ -264,15 +264,20 @@ ctx.api.call('h-core', 'getTrustLevel', charId)                // → number
 ctx.api.call('h-core', 'registerPremise', id, handler)         // → void
 // 通用状态结算（统一管线：能力系数/素质/fall/连续减值/tenths/max(0) 钳制等）
 ctx.api.call('h-core', 'settleState', charId, state, baseValue, timeCost, opts?)
-//   opts?: { abilityLevel?, abilityKeyOverride?, isGroupSex?, continuous?, negate?, tenthsAdd?, extraAdjust? }
+//   opts?: { abilityLevel?, abilityKeyOverride?, isGroupSex?, continuous?, negate?, tenthsAdd?, extraAdjust?,
+//            externalAbilityLevel? }
+//   externalAbilityLevel：快感状态的外部能力等级 → 系数 = sqrt(目标部位感度 × 外部等级)
+//   （erArk chara_feel_state_adjust:296-299，如 pain_to_h 心理快感 = sqrt(心理感度 × 发起者.技巧)）
 //   例：隐奸持续快感 —— settleState(npcId, '羞耻', 0, timeCost*5, { abilityLevel: 露出等级, extraAdjust: 3.1, tenthsAdd: false })
 ```
 
 #### h-ejaculation — 射精
 
 ```typescript
-ctx.api.call('h-ejaculation', 'getEja', charId)               // → number
-ctx.api.call('h-ejaculation', 'setEja', charId, val)          // → void
+ctx.api.call('h-ejaculation', 'getEja', charId)               // → number（当前射精欲）
+ctx.api.call('h-ejaculation', 'setEja', charId, val)          // → void（绝对值写入）
+ctx.api.call('h-ejaculation', 'addEja', charId, delta)        // → void（增量累加——射精欲字段唯一写入口；
+                                                              //   h-core 结算经此写入，禁止其他插件直接改字段）
 ctx.api.call('h-ejaculation', 'getSemenOnBody', charId)       // → number
 ctx.api.call('h-ejaculation', 'absorbSemen', charId)          // → void
 ```

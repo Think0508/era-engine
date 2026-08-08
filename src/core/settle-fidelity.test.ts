@@ -13,6 +13,7 @@ import { premiseRegistry } from '../core/premise-registry'
 import { errorReporter } from '../core/error-reporter'
 import { onLoad as effectOnLoad, onEnable as effectOnEnable } from '../plugins/effect-system/index'
 import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from '../plugins/h-core/index'
+import { onLoad as ejacOnLoad, onEnable as ejacOnEnable } from '../plugins/h-ejaculation/index'
 import { eventBus } from '../core/event-bus'
 import { behaviorHistory, clearBehaviorHistory, getContinuousAdjust } from './command-executor'
 import { effectTypeRegistry } from './effect-type-registry'
@@ -56,6 +57,9 @@ describe('结算保真补全（tenths_add / 连续减值 / 无意识门控）', 
     effectOnEnable(stubCtx)
     hCoreOnLoad(stubCtx)
     hCoreOnEnable(stubCtx)
+    // 注释：射精欲读写经 h-ejaculation API（跨插件通信），eja 相关测试需加载
+    ejacOnLoad(stubCtx)
+    ejacOnEnable(stubCtx)
 
     const p = entitySystem.get('character', 'player') as any
     p.base = { 体力: 50, 体力上限: 100, 气力: 30, 气力上限: 100 }
@@ -525,6 +529,256 @@ describe('结算保真补全（tenths_add / 连续减值 / 无意识门控）', 
       expect(n.base['心理'] ?? 0).toBe(0)
       await runTech('皮肤')
       expect(n.base['皮肤']).toBe(72)
+    })
+
+    it('欲情含攻略进度修正（fall×0.05，chara_base_state_adjust:455-458）——快感不受影响', async () => {
+      const p = entitySystem.get('character', 'player') as any
+      p.abilities = { 技巧: { level: 3, xp: 0 } }
+      const n = npc()
+      n.abilities = { 皮肤感度: { level: 2, xp: 0 } }
+      n.talents = { 思慕: 1 } // fall 1 → 欲情 +0.05
+      await runTech('皮肤')
+      expect(n.base['欲情']).toBe(71) // floor(55 × (1.25 + 0.05))
+      expect(n.base['皮肤']).toBe(72) // 快感 55×sqrt(1.4×1.25)——fall 只加 base 状态
+    })
+  })
+
+  // ═══════════════════════════════════════════════════════════════
+  // 2026-08-08 结算保真补全二批：体位修正 / pain 系列 / PL_P / eja / 尿道绝顶 / 兽部砍
+  // ═══════════════════════════════════════════════════════════════
+
+  describe('体位修正（chara_feel_state_adjust:314-325）', () => {
+    async function runState(state: string, tc = 5): Promise<void> {
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'settle_state', params: { state, baseValue: 30 }, target: 'selected' },
+      ], execCtx({ _timeCost: tc }))
+    }
+
+    it('无体位（current_sex_position=-1/缺失）→ 无加成：floor(35×1)=35', async () => {
+      npc().h_state = { current_sex_position: -1 }
+      await runState('阴道')
+      expect(npc().base['阴道']).toBe(35)
+    })
+
+    it('对面立位（pos 7，系数 0.3）→ floor(35×1.3)=45', async () => {
+      npc().h_state = { current_sex_position: 7 }
+      await runState('阴道')
+      expect(npc().base['阴道']).toBe(45)
+    })
+
+    it('喜欢体位 +0.5（正常位喜好 + pos 1，系数 0.0）→ floor(35×1.5)=52', async () => {
+      npc().talents = { 正常位喜好: 1 }
+      npc().h_state = { current_sex_position: 1 }
+      await runState('阴道')
+      expect(npc().base['阴道']).toBe(52)
+    })
+
+    it('体位经验 ≥100 推导喜欢体位（experience 141=100 → pos 1）→ 52', async () => {
+      npc().experience = { '141': 100 }
+      npc().h_state = { current_sex_position: 1 }
+      await runState('阴道')
+      expect(npc().base['阴道']).toBe(52)
+      // 经验推导不写天赋（懒授予在 execution_end）
+      expect(npc().talents['正常位喜好'] ?? 0).toBe(0)
+    })
+
+    it('懒授予：经验 ≥100 且无天赋 → 授予喜好天赋 + 叙事（position.ts）', async () => {
+      const { grantFavoritePositionIfDue } = await import('../plugins/h-core/settle/position')
+      npc().experience = { '141': 100 }
+      const granted = grantFavoritePositionIfDue(npc(), modLoader.getMod())
+      expect(granted).toBe(1)
+      expect(npc().talents['正常位喜好']).toBe(1)
+      // 再次调用 → 不重复授予
+      expect(grantFavoritePositionIfDue(npc(), modLoader.getMod())).toBeNull()
+      // 无经验 → 不授予
+      npc().talents = {}
+      npc().experience = {}
+      expect(grantFavoritePositionIfDue(npc(), modLoader.getMod())).toBeNull()
+    })
+
+    it('子宫奸（玩家 current_womb_sex_position==2）→ 子宫 +2 → floor(35×3)=105', async () => {
+      const p = entitySystem.get('character', 'player') as any
+      p.h_state = { current_sex_position: 1, current_womb_sex_position: 2 }
+      npc().h_state = { current_sex_position: 1 }
+      await runState('子宫')
+      expect(npc().base['子宫']).toBe(105)
+    })
+
+    it('非 V/A/U/W 状态不受体位影响（皮肤 + pos 7 → 35）', async () => {
+      npc().h_state = { current_sex_position: 7 }
+      await runState('皮肤')
+      expect(npc().base['皮肤']).toBe(35)
+    })
+  })
+
+  describe('pain 系列（default.py:8255-8680，独立 effect 类型）', () => {
+    it('pain_by_lubrication (121)：润滑0→3.0，苦痛 floor(35×(1+3))=140', async () => {
+      npc().base['润滑'] = 0
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'pain_by_lubrication', params: {}, target: 'selected' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(npc().base['苦痛']).toBe(140)
+    })
+
+    it('pain_by_part V (122)：润滑100→2.5，腰技0→0，扩张0-阴茎1+1=0→3.0 → 35×(1+7.5)=297', async () => {
+      npc().base['润滑'] = 100
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'pain_by_part', params: { part: '阴道' }, target: 'selected' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(npc().base['苦痛']).toBe(297)
+    })
+
+    it('pain_by_part W 子宫奸 (125)：润滑0→3.0，扩张0-1-1=-2→10×3=30 → 105×(1+90)=9555', async () => {
+      const p = entitySystem.get('character', 'player') as any
+      p.h_state = { current_womb_sex_position: 2 }
+      npc().base['润滑'] = 0
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'pain_by_part', params: { part: '子宫' }, target: 'selected' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(npc().base['苦痛']).toBe(9555)
+    })
+
+    it('feel_by_sex V (131)：快感 55×(sqrt(1×1)+1.05)=112；欲情 55×(1+1.05)=112', async () => {
+      npc().base['润滑'] = 0
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'feel_by_sex', params: { part: '阴道' }, target: 'selected' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(npc().base['阴道']).toBe(112)
+      expect(npc().base['欲情']).toBe(112)
+    })
+
+    it('feel_by_sex A (132)：欲情 extra 只用 size_adjust（erArk :8552 源码原样）→ 55×(1+0.55)=85', async () => {
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'feel_by_sex', params: { part: '后穴' }, target: 'selected' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(npc().base['后穴']).toBe(112) // 快感 extra 仍是 size+waist
+      expect(npc().base['欲情']).toBe(85)  // 欲情 extra 只有 size
+    })
+
+    it('pain_to_h (135)：心理 55×(1+1)=110；欲情 55×(1+2)=165；苦痛 55×(1+2)=165', async () => {
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'pain_to_h', params: {}, target: 'selected' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(npc().base['心理']).toBe(110)
+      expect(npc().base['欲情']).toBe(165)
+      expect(npc().base['苦痛']).toBe(165)
+    })
+
+    it('未知部位 → warning 不崩溃', async () => {
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'pain_by_part', params: { part: '脚' }, target: 'selected' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(errorReporter.getErrors().some(e => e.severity === 'warning' && e.message.includes('未知部位'))).toBe(true)
+    })
+  })
+
+  describe('PL_P 系列（发起者自己射精欲，default.py:8239-8252/8683-8725）', () => {
+    function setup(): void {
+      const p = entitySystem.get('character', 'player') as any
+      p.base['射精欲'] = 0
+      p.h_state = { target_character_id: 'npc_1' }
+      npc().abilities = { 技巧: { level: 0, xp: 0 }, 指技: { level: 0, xp: 0 } }
+    }
+
+    it('120 纯技巧：adjust=1.0 → eja += floor(55×1.0+0)=55', async () => {
+      setup()
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'pl_p_adjust', params: {}, target: 'self' },
+      ], execCtx({ _timeCost: 5 }))
+      expect((entitySystem.get('character', 'player') as any).base['射精欲']).toBe(55)
+    })
+
+    it('141 技巧/2+指技：1.0/2+1.0=1.5 → eja += 82', async () => {
+      setup()
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'pl_p_adjust', params: { skill: '指技' }, target: 'self' },
+      ], execCtx({ _timeCost: 5 }))
+      expect((entitySystem.get('character', 'player') as any).base['射精欲']).toBe(82)
+    })
+
+    it('自己当前P快/8：P快 240 → 55+30=85', async () => {
+      setup()
+      ;(entitySystem.get('character', 'player') as any).base['阴茎'] = 240
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'pl_p_adjust', params: {}, target: 'self' },
+      ], execCtx({ _timeCost: 5 }))
+      expect((entitySystem.get('character', 'player') as any).base['射精欲']).toBe(85)
+    })
+  })
+
+  describe('射精欲积累（二段结算 ADD_SMALL_P_FEEL，Second_effect.py:657-679）', () => {
+    it('P快感产生（pending[3]>0）→ eja += floor(100 + eja×0.4)', async () => {
+      const { orgasmJudge } = await import('../plugins/h-core/settle/orgasm')
+      const p = entitySystem.get('character', 'player') as any
+      p.base['射精欲'] = 500
+      p.base['射精欲上限'] = 1000
+      p.h_state = {
+        is_h: true, orgasm_level: {}, orgasm_edge: 0,
+        extra_orgasm_feel: {}, extra_orgasm_count: 0,
+        orgasm_edge_count: {}, time_stop_orgasm_count: {}, plural_orgasm_set: [],
+        pending_orgasm_feel: { 3: 1000 },
+      }
+      const result = await orgasmJudge('player')
+      expect(p.base['射精欲']).toBe(800) // 500 + floor(100 + 500×0.4)
+      expect(result.shouldEjaculate).toBe(false) // 800 < 1000
+      // pending 已消耗
+      expect(p.h_state.pending_orgasm_feel?.[3] ?? 0).toBe(0)
+    })
+
+    it('eja_add (70)：自己 eja += floor(tc + 10 + eja×0.4)', async () => {
+      const p = entitySystem.get('character', 'player') as any
+      p.base['射精欲'] = 100
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'eja_add', params: {}, target: 'self' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(p.base['射精欲']).toBe(155) // 100 + floor(5+10+40)
+    })
+
+    it('eja_add_target (44)：目标 eja += floor((tc+30)×adj(目标.阴茎感度))', async () => {
+      npc().abilities = { 阴茎感度: { level: 3, xp: 0 } }
+      npc().base['射精欲'] = 0
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'eja_add_target', params: { baseValue: 30 }, target: 'selected' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(npc().base['射精欲']).toBe(49) // floor(35×tbl[3]=1.4)=49
+    })
+  })
+
+  describe('尿道绝顶（ORGASM_PART_ATTR partId 6，方案A 引擎支持）', () => {
+    it('尿道快感等级变化 → 触发尿道绝顶（orgasm_count[6] + 绝顶经验 16）', async () => {
+      const { orgasmJudge } = await import('../plugins/h-core/settle/orgasm')
+      const n = npc()
+      n.h_state = {
+        is_h: true, orgasm_level: {}, orgasm_edge: 0,
+        extra_orgasm_feel: {}, extra_orgasm_count: 0,
+        orgasm_edge_count: {}, time_stop_orgasm_count: {}, plural_orgasm_set: [],
+      }
+      n.params = undefined
+      n.base['尿道'] = 600 // 等级 2（阈值 0,100,500,1000,...）
+      n.abilities = { 尿道感度: { level: 3 } }
+      const result = await orgasmJudge('npc_1')
+      const u = result.orgasms.filter(e => e.partId === 6)
+      expect(u.length).toBe(2) // 等级 0→2 = 2 次尿道绝顶
+      expect(n.h_state.orgasm_count[6]?.[1] ?? 0).toBe(2)
+      expect(n.experience['16'] ?? 0).toBe(2) // U 绝顶经验（PART_EXP_ID 6→16）
+    })
+  })
+
+  describe('兽部全砍（warning + 跳过，防静默写死属性）', () => {
+    it('tech_adjust part=兽部 → warning 且不写 base["兽部"]', async () => {
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'tech_adjust', params: { part: '兽部', baseValue: 50 }, target: 'selected' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(npc().base['兽部'] ?? 0).toBe(0)
+      expect(errorReporter.getErrors().some(e => e.severity === 'warning' && e.message.includes('兽部'))).toBe(true)
+    })
+
+    it('settle_state state=兽部 → warning 且不写 base["兽部"]', async () => {
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'settle_state', params: { state: '兽部', baseValue: 30 }, target: 'selected' },
+      ], execCtx({ _timeCost: 5 }))
+      expect(npc().base['兽部'] ?? 0).toBe(0)
+      expect(errorReporter.getErrors().some(e => e.severity === 'warning' && e.message.includes('兽部'))).toBe(true)
     })
   })
 

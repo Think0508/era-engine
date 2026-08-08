@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+﻿import { describe, it, expect } from 'vitest'
 import { getLevel } from '../core/entity-utils'
 import { entitySystem } from '../core/entity-system'
 
@@ -91,7 +91,7 @@ describe('Phase H 集成测试', () => {
       h_state: { is_h: true, orgasm_level: {}, orgasm_edge: 0 },
       params: {},
     })
-    const result = orgasmJudge('0')
+    const result = await orgasmJudge('0')
     expect(result.shouldEjaculate).toBe(true)
     entitySystem.clear()
   })
@@ -105,7 +105,7 @@ describe('Phase H 集成测试', () => {
       h_state: { is_h: true, orgasm_level: {}, orgasm_edge: 0, endure_not_shoot_count: 3 },
       params: {},
     })
-    const result = orgasmJudge('0')
+    const result = await orgasmJudge('0')
     expect(result.shouldEjaculate).toBe(false)
     const char = entitySystem.get('character', '0') as any
     expect(char.base['射精欲']).toBe(0)
@@ -136,7 +136,7 @@ describe('Phase H 集成测试', () => {
     const char = entitySystem.get('character', 'orgasm_extra_1') as any
     // 模拟 settle_state 写入 25000 快感变化
     accumulateOrgasmFeel(char, 4, 25000)
-    const result = orgasmJudge('orgasm_extra_1')
+    const result = await orgasmJudge('orgasm_extra_1')
     // 25000 ≥ 20000×0.9^0 → extraAdd=1，触发额外高潮
     const extraOrg = result.orgasms.find(e => e.extra)
     expect(extraOrg).toBeDefined()
@@ -173,7 +173,7 @@ describe('Phase H 集成测试', () => {
       params: { 阴道: 2500 },
       abilities: { 阴道感度: { level: 3 } },
     })
-    const result = orgasmJudge('orgasm_edge_1')
+    const result = await orgasmJudge('orgasm_edge_1')
     // 重结算：历史累计 3 → 解放路径 roll_count 压缩 → 1 条超强（感度 3 < 6 → 强）
     expect(result.orgasms.length).toBe(1)
     expect(result.orgasms[0].degree).toBe(2)

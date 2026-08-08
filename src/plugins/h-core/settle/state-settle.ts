@@ -6,20 +6,23 @@
 // 其余用 ability_lv_adjust 表
 // 三件套：tenths_add（:233-240）/ 连续重复减值（:210-231，非负面非自己）/ 无意识心理门控（:196-208）
 // 附带：素质修正（数据化）/ 催眠敏感（快感 + 欲情才 +2，erArk feel :304-305 + base :441）/
-// 快感附加修正（眼罩/无觉/群交/怀孕灌肠）/ 攻略进度 / max(0) 钳制 / 苦痛快感化 / 射精欲积累 / extra_feel
+// 快感附加修正（眼罩/无觉/群交/怀孕灌肠/体位/喜欢体位/子宫奸）/ 攻略进度 / max(0) 钳制 /
+// 苦痛快感化 / extra_feel；射精欲积累 → orgasm.ts 二段结算（ADD_SMALL_P_FEEL，2026-08-08 移出）
 //
 // ctx：结算上下文（settle_state 效果调用传 execCtx；绝顶附加等无 settlement 场景直接改 base）
 
 import { modLoader } from '../../../core/mod-loader'
 import { entitySystem } from '../../../core/entity-system'
+import { gameContext } from '../../../core/game-context'
 import { getEntityAttr, ATTR } from '../../../core/entity-utils'
 import { getTalentStateAdjust } from './talent-adjust'
+import { getFavoritePosition } from './position'
 import { BAD_STATES, MENTAL_STATES } from './state'
 
-// 部位状态ID → 属性名（attributes.toml 的 parameter 命名；erArk 6=尿道/22=兽部 未实现已移除）
+// 部位状态ID → 属性名（attributes.toml 的 parameter 命名；erArk 22=兽部 未实现已移除）
 export const ORGASM_PART_ATTR: Record<number, string> = {
   0: '皮肤', 1: '胸部', 2: '阴蒂', 3: '阴茎', 4: '阴道', 5: '后穴',
-  7: '子宫', 21: '口喉', 23: '心理',
+  6: '尿道', 7: '子宫', 21: '口喉', 23: '心理',
 }
 
 // 属性名 → 部位状态ID（反向映射，供 settle_state/tech_adjust 累积快感变化用）
@@ -49,6 +52,7 @@ export const PART_ABILITY: Record<string, string> = {
 // 快感状态附加修正（erArk chara_feel_state_adjust，common_default.py:300-347）
 // 眼罩 +0.2（body_item slot 6）/ 无意识时无觉刻印 +(adj-1)×2 / 群交 +0.02×其他人数(cap 10)
 // V/W：怀孕 inflation +1 / 灌肠 enema_capacity×0.2
+// 体位：V/A/U/W + pleasure_coefficient / 喜欢体位 +0.5 / 子宫奸（玩家 current_womb_sex_position==2）+2
 export function getFeelExtraAdjust(ch: any, state: string, tbl: number[], isGroupSex: boolean): number {
   if (!ch) return 0
   let extra = 0
@@ -65,13 +69,32 @@ export function getFeelExtraAdjust(ch: any, state: string, tbl: number[], isGrou
     if (ch?.h_state?.inflation) extra += 1
     if (ch?.h_state?.enema) extra += (ch?.h_state?.enema_capacity ?? 0) * 0.2
   }
+  // 体位修正（erArk chara_feel_state_adjust:314-325）——V/A/U/W 部位
+  // 数据模型修正（上游缺陷）：erArk 门控读玩家体位（handle_dr_have_sex_position）、系数读被结算
+  // 角色体位——但其体位字段"仅博士有的数据"（game_type.py:463-464），NPC 恒 -1 → 修正实际恒 0。
+  // 引擎体位由指令 set_field 写在被结算角色 h_state（转换 TOML 行为），故门控+系数统一取被结算
+  // 角色自身体位（= erArk 设计意图：性交体位中的部位快感加成）
+  if ((state === '阴道' || state === '后穴' || state === '尿道' || state === '子宫')) {
+    const pos = ch?.h_state?.current_sex_position
+    if (typeof pos === 'number' && pos !== -1) {
+      const hc = (modLoader.getMod()?.hConfig as any) ?? {}
+      const posDef = (hc.sex_positions as Record<number, { pleasure_coefficient?: number }> | undefined)?.[pos]
+      extra += posDef?.pleasure_coefficient ?? 0
+      // 喜欢体位 +0.5（erArk :319-322 settle_favorite_sex_position）
+      if (getFavoritePosition(ch, modLoader.getMod()) === pos) extra += 0.5
+    }
+    // 子宫奸 +2（erArk :323-325——读玩家 h_state.current_womb_sex_position == 2）
+    const playerId = gameContext.getContext().player?.id ?? null
+    const player = playerId ? entitySystem.get('character', playerId) as any : null
+    if (state === '子宫' && player?.h_state?.current_womb_sex_position === 2) extra += 2
+  }
   return extra
 }
 
 // 攻略等级（erArk get_character_fall_level，attr_calculation.py:891-921）
 // 爱情/隶属系最高级 1-4（fall_1=思慕或屈从…fall_4=爱侣或奴隶）
 const FALL_PAIRS: [string, string][] = [['思慕', '屈从'], ['恋慕', '驯服'], ['恋人', '宠物'], ['爱侣', '奴隶']]
-function getFallLevel(ch: any): number {
+export function getFallLevel(ch: any): number {
   if (!ch?.talents) return 0
   for (let i = FALL_PAIRS.length - 1; i >= 0; i--) {
     if (ch.talents[FALL_PAIRS[i][0]] || ch.talents[FALL_PAIRS[i][1]]) return i + 1
@@ -137,11 +160,15 @@ export function applyStateChange(ctx: { settlement?: any }, ch: any, id: string,
 // tenthsAdd：tenths_add 开关（erArk 绝顶附加 middle 档为 True、small/large 为 False）
 // extraAdjust：额外系数（erArk extra_adjust 参数——加法进 final_adjust，
 // 如隐奸持续快感 4-mode+人数×0.1、露出 others×0.1）
+// externalAbilityLevel：快感状态的外部能力等级（erArk ability_level 传外部等级时
+// final_adjust = sqrt(目标部位感度 × 外部等级)，chara_feel_state_adjust:296-299；
+// 仅 feel 状态生效，如 pain_to_h 心理快感 = sqrt(心理感度 × 发起者.技巧)）
 export function settleOneState(
   ctx: { sourceId?: string | null; settlement?: any },
   ch: any, id: string, state: string, baseValue: number, timeCost: number,
   abilityLevel: number | null, abilityKeyOverride: string | null, isGroupSex: boolean, continuous: number,
   negate = false, tenthsAdd = true, extraAdjust = 0,
+  externalAbilityLevel: number | null = null,
 ): void {
   if (!ch) return
   const hc = (modLoader.getMod()?.hConfig as any) ?? {}
@@ -164,10 +191,13 @@ export function settleOneState(
   const al = abilityLevel !== null
     ? abilityLevel
     : (ch?.abilities?.[abilityKey]?.level ?? 0)
-  // 刻印状态（快乐/屈服/苦痛/恐怖/反感）用 mark_debuff 系数表（:374-378）
-  const abilityCoeff = (MARK_DEBUFF_STATES as Set<string>).has(state)
-    ? getMarkDebuffAdjust(al)
-    : (tbl[Math.min(al, 10)] ?? 4.0)
+  // 快感状态 + 外部能力等级 → sqrt(目标部位感度 × 外部等级)（erArk chara_feel_state_adjust:294-299）
+  const abilityCoeff = (isFeelState && externalAbilityLevel !== null)
+    ? Math.sqrt((tbl[Math.min(al, 10)] ?? 4.0) * (tbl[Math.min(externalAbilityLevel, 10)] ?? 4.0))
+    // 刻印状态（快乐/屈服/苦痛/恐怖/反感）用 mark_debuff 系数表（:374-378）
+    : (MARK_DEBUFF_STATES as Set<string>).has(state)
+      ? getMarkDebuffAdjust(al)
+      : (tbl[Math.min(al, 10)] ?? 4.0)
   // 素质修正（数据化，erArk common_default.py:379-422）
   const talentAdj = getTalentStateAdjust(modLoader.getMod(), ch, state)
   // 催眠敏感——仅快感状态（chara_feel_state_adjust:304-305 全部位快感）
@@ -209,15 +239,9 @@ export function settleOneState(
     // 部位快感变化量 → 二段结算累积（extra 高潮用，对齐 erArk change_data.status_data）
     const partId = ORGASM_ATTR_TO_PART[state]
     if (partId !== undefined) accumulateOrgasmFeel(ch, partId, fv)
-    // 阴茎部位快感 → 射精欲积累（erArk ADD_SMALL_P_FEEL 内嵌 eja_point +=）
-    // 公式：now_add_lust = (add_time + 50) × adjust(技巧) + 阴茎快感/8（default.py:8304）
-    if (state === '阴茎') {
-      const techLv2 = ch?.abilities?.['技巧']?.level ?? 0
-      const adjust2 = tbl[Math.min(techLv2, 10)] ?? 4.0
-      const penisFeel2 = ch?.base?.['阴茎'] ?? 0
-      const nowAddLust = Math.floor((timeCost + 50) * adjust2 + penisFeel2 / 8)
-      if (ch?.base) ch.base['射精欲'] = (ch.base['射精欲'] ?? 0) + nowAddLust
-    }
+    // 注释：射精欲积累已移出本管线——对齐 erArk 二段结算 ADD_SMALL_P_FEEL
+    // （Second_effect.py:657-679：每次 P 部位快感产生时 eja_point += 100 + int(eja_point×0.4)），
+    // 由 orgasm.ts orgasmJudge 读 pending_orgasm_feel[3] 统一处理（orgasm.ts 顶部）
     // 额外快感（erArk extra_feel_settle:484-515）——恭顺/先导/羞耻/苦痛 对应能力≥5 时
     // 心理快感 max(10, final/20)×内层系数 + 心理经验(155)
     const extraAbility = EXTRA_FEEL_ABILITY[state]

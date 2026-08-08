@@ -288,7 +288,7 @@ describe('orgasm 释放与 roll_count 压缩（erArk orgasm_settle.py 对齐）'
       // 直接调 orgasmJudge 路径：pending_orgasm_feel 驱动
       const { orgasmJudge } = await import('./h-core/settle/orgasm')
       ch.h_state.pending_orgasm_feel = { 4: 20000 }
-      const result = orgasmJudge('es_5')
+      const result = await orgasmJudge('es_5')
       expect(result.orgasms).toHaveLength(1)
       expect(result.orgasms[0].extra).toBe(true)
       expect(ch.h_state.orgasm_level[4]).toBe(11)

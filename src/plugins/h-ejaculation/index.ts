@@ -1,5 +1,8 @@
 // 注释：h-ejaculation 插件——射精系统，完全对齐 erArk
-// - 射精积累：内联在 h-core 的 tech_adjust/settle_state（阴茎快感结算时，公式 default.py:8304）
+// - 射精积累：二段结算 ADD_SMALL_P_FEEL（Second_effect.py:657-679 + 04-射精系统.md:50-54）——
+//   每次 P 部位快感产生时 eja_point += 100 + int(eja_point×0.4)；由 h-core orgasmJudge
+//   读 pending_orgasm_feel[3] 后经本插件 API（getEja/addEja）写入（2026-08-08 重构：
+//   原内联在 h-core tech_adjust/settle_state 的 (tc+50)×技巧+P快/8 公式已废弃——来源不明）
 // - eja_climax: 射精判定 + 忍耐判定 + 避孕套检查 + 射精量公式
 // - eja_shoot: 直接射精量计算（TOML 手动触发）
 // - absorbSemen: 精液吸收（对齐 realtime_settle.py:231-260）
@@ -77,8 +80,8 @@ function recalcSemenLevel(char: any, positionId: number): void {
 }
 
 export function onLoad(_ctx: PluginContext): void {
-  // 注释：射精积累已内联到 h-core 的 tech_adjust/settle_state（阴茎部位快感结算时，公式 default.py:8304）
-  // 注：h-core 同步内联避免跨插件 async void 乱序；如需独立触发可在此重新注册 eja_add
+  // 注释：射精积累由 h-core orgasmJudge 二段结算处理（ADD_SMALL_P_FEEL 公式，经本插件 API 写入）——
+  // 见文件头注释；TOML 如需手动增加射精欲可用 addEja API 或 h_experience 类效果
 
   // 注释：射精判定 + 玩家阴茎污浊追踪（对齐 erArk orgasm_judge 射精分支 + common_ejaculation）
   effectTypeRegistry.register('eja_climax', (params: any, ctx: any) => {
@@ -189,6 +192,38 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
+  // 注释：eja_add——自己射精欲增加（erArk 效果 70 ADD_SMALL_P_FEEL，default.py:3648-3672）
+  // 公式：eja += floor(tc + 10 + eja×0.4)；语义"自身"——作用于发起者（target=self）
+  effectTypeRegistry.register('eja_add', (_p: any, ctx: any) => {
+    // 退缩门控（与 settle_* 一致：judge_check 判定退缩 → 整链跳过）
+    if ((ctx as any)?._judgeResult?.retreated) return true
+    const tc = ctx._timeCost ?? 10
+    const ownerId = ctx.sourceId ?? (ctx._targetIds as string[])[0]
+    const char = entitySystem.get('character', ownerId) as any
+    if (!char?.base) return true
+    const cur = char.base['射精欲'] ?? 0
+    char.base['射精欲'] = Math.max(0, cur + Math.floor(tc + 10 + cur * 0.4))
+    return true
+  })
+
+  // 注释：eja_add_target——目标射精欲增加（erArk 效果 44 TARGET_ADD_SMALL_P_FEEL，
+  // default.py:3219-3251；非部位快感结算！）公式：eja += floor((tc + baseValue) × adj(目标.阴茎感度))
+  effectTypeRegistry.register('eja_add_target', (params: any, ctx: any) => {
+    if ((ctx as any)?._judgeResult?.retreated) return true
+    const tc = ctx._timeCost ?? 10
+    const bv = params.baseValue ?? 30
+    const hc = (modLoader.getMod()?.hConfig as any) ?? {}
+    const tbl = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
+    for (const id of ctx._targetIds as string[]) {
+      const char = entitySystem.get('character', id) as any
+      if (!char?.base) continue
+      const sensLv = char?.abilities?.['阴茎感度']?.level ?? 0
+      const adjust = tbl[Math.min(Math.max(0, sensLv), 10)] ?? 4.0
+      char.base['射精欲'] = Math.max(0, (char.base['射精欲'] ?? 0) + Math.floor((tc + bv) * adjust))
+    }
+    return true
+  })
+
   // 注释：clean_penis_semen——清洗玩家阴茎精液（erArk default.py:4174）
   effectTypeRegistry.register('clean_penis_semen', (_p: any, _execCtx: any) => {
     const player = entitySystem.get('character', '0') as any
@@ -284,6 +319,12 @@ export function onEnable(ctx: PluginContext): void {
     setEja: (charId: string, val: number) => {
       const char = entitySystem.get('character', charId) as any
       if (char?.base) char.base['射精欲'] = Math.max(0, val)
+    },
+    // 注释：射精欲增加（delta 可为负——非 H 衰减走本 API 的减法语义）
+    // 射精欲字段的唯一写入口（h-core 结算经此 API 写入，禁止直接改字段）
+    addEja: (charId: string, delta: number) => {
+      const char = entitySystem.get('character', charId) as any
+      if (char?.base) char.base['射精欲'] = Math.max(0, (char.base['射精欲'] ?? 0) + (delta ?? 0))
     },
     getSemenOnBody: (charId: string) => {
       const char = entitySystem.get('character', charId) as any

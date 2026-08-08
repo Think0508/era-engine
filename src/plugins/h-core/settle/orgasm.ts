@@ -14,11 +14,15 @@
 //      ——erArk candidate = 自己累计 + 本次全部部位高潮数，crossed = 本次高潮部位数
 //
 // 机制：每次 H 内指令执行后，对 H 中角色自动检测各部位快感等级变化 → 触发对应部位绝顶
-// 部位状态ID（CharacterState.csv cid，type=0 的快感属性）——只保留我们引擎已实现属性的部位：
-//   0=皮肤(s) 1=胸部(b) 2=阴蒂(c) 3=阴茎(p,射精槽跳过) 4=阴道(v) 5=肛肠(a) 7=子宫(w)
-//   21=口喉(m) 23=心理(h)
-// 注：erArk 的 6=尿道(u)/22=兽部(f) 未实现（无属性/无感度），已从表中移除；
-//     erArk 的 5=肛肠(a) 在我们引擎中属性名为"后穴"
+// 部位状态ID（CharacterState.csv cid，type=0 的快感属性）：
+//   0=皮肤(s) 1=胸部(b) 2=阴蒂(c) 3=阴茎(p,射精槽跳过) 4=阴道(v) 5=肛肠(a)
+//   6=尿道(u) 7=子宫(w) 21=口喉(m) 23=心理(h)
+// 注：erArk 的 22=兽部(f) 未实现已移除（全砍决策：无属性/无感度/遇兽部 warning）；
+//     尿道(u) 引擎泛化支持（方案A：默认数据无感度能力/无指令 → 游戏内不可见，mod 可加）
+//     5=肛肠(a) 在我们引擎中属性名为"后穴"
+// 2026-08-08 追加：尿道绝顶特有附加（u_orgasm_to_pee 漏尿，Second_effect.py:3126）→ TODO：
+//   依赖排尿系统未实装（同 spec §5.3 处理）；尿道绝顶的通用附加（润滑/体力/气力/欲情/快乐）
+//   走 ORGASM_SIDE_EFFECTS 自动生效
 
 import { getEntityAttr, ATTR } from '../../../core/entity-utils'
 import { entitySystem } from '../../../core/entity-system'
@@ -26,6 +30,7 @@ import { gameContext } from '../../../core/game-context'
 import { getContinuousAdjust } from '../../../core/command-executor'
 import { settleOneState, ORGASM_PART_ATTR, applyStateChange } from './state-settle'
 import { calcHpMpChange, type HpMpInput } from './hp-mp'
+import { getEja, addEja } from './eja'
 
 // 部位状态ID → 属性名（与 state-settle 同源；外部兼容导出）
 export { ORGASM_PART_ATTR, ORGASM_ATTR_TO_PART, accumulateOrgasmFeel } from './state-settle'
@@ -47,12 +52,12 @@ export function insertPositionToBodyCid(insertPosition: number): number {
 // 部位 → 感度能力名（强绝顶/超强绝顶需要对应感度等级）
 export const ORGASM_PART_SENSITIVITY: Record<number, string> = {
   0: '皮肤感度', 1: '胸部感度', 2: '阴蒂感度', 3: '阴茎感度', 4: '阴道感度',
-  5: '后穴感度', 7: '子宫感度', 21: '口喉感度', 23: '心理感度',
+  5: '后穴感度', 6: '尿道感度', 7: '子宫感度', 21: '口喉感度', 23: '心理感度',
 }
 
 // erArk part_dict：部位状态ID → 二段行为前缀
 const PART_PREFIX: Record<number, string> = {
-  0: 's', 1: 'b', 2: 'c', 3: 'p', 4: 'v', 5: 'a', 7: 'w',
+  0: 's', 1: 'b', 2: 'c', 3: 'p', 4: 'v', 5: 'a', 6: 'u', 7: 'w',
   21: 'm', 23: 'h',
 }
 
@@ -413,7 +418,7 @@ export function settleOrgasm(
     // 2026-08-08 修复：原只写 orgasm_count，绝顶经验从无写入 → h-mark 快乐/无觉刻印累计分支与
     // talk-common 绝顶经验条件静默失效
     const PART_EXP_ID: Record<number, number> = {
-      0: 10, 1: 11, 2: 12, 4: 14, 5: 15, 7: 17, 21: 156, 23: 158,
+      0: 10, 1: 11, 2: 12, 4: 14, 5: 15, 6: 16, 7: 17, 21: 156, 23: 158,
     }
     const recordOrgasmCount = (): void => {
       if (!hs.orgasm_count) hs.orgasm_count = {}
@@ -555,12 +560,23 @@ export function releaseTimeStopOrgasm(charId: string, opts?: OrgasmSettleOptions
  * @param statusDelta 兼容参数（已弃用：extra 累积改读 hs.pending_orgasm_feel，由 settle_state/tech_adjust 写入）
  * @returns 结算结果
  */
-export function orgasmJudge(charId: string, _statusDelta?: Record<number, number>, opts?: OrgasmSettleOptions): SecondSettleResult {
+export async function orgasmJudge(charId: string, _statusDelta?: Record<number, number>, opts?: OrgasmSettleOptions): Promise<SecondSettleResult> {
   const char = entitySystem.get('character', charId) as any
   const empty: SecondSettleResult = { orgasms: [], pluralCount: 0, released: false, shouldEjaculate: false }
   if (!char) return empty
   if (!char.h_state) return empty
   const hs = char.h_state
+
+  // 注释：射精欲积累——对齐 erArk 二段结算 ADD_SMALL_P_FEEL（Second_effect.py:657-679 +
+  // 04-射精系统.md:50-54：每次 P 部位快感产生时 eja_point += 100 + int(eja_point × 0.4)）
+  // 引擎泛化：任意角色自己产生 P 快感即积累（fork 硬编码玩家 0；per-character 与 eja_climax
+  // 通用性一致——2026-08-08 grilling 决策）。读取必须发生在 pending 清空（本函数尾部）之前。
+  // 写在射精判定之前——本指令积累的射精欲可立即触发应射精判定（erArk 同序）
+  const pendingP = hs.pending_orgasm_feel?.[3] ?? 0
+  if (pendingP > 0) {
+    const cur = await getEja(charId)
+    await addEja(charId, Math.floor(100 + cur * 0.4))
+  }
 
   // 玩家射精判定（erArk orgasm_judge 前半段，orgasm_settle.py:43-61）
   // erArk: eja_point >= eja_point_max → 触发射精（忍耐面板/精液量/强度）

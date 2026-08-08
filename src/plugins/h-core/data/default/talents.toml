@@ -1,5 +1,8 @@
 # 插件默认天赋（由 erArk Talent.csv 自动转换）
 # 排除：源石病相关/博士信息素/透视等 Arknights 世界观专属
+# 体位喜好（正常位喜好~背面卧位喜好，erArk talent 250-261）带 favorite_position 字段——
+# 标记喜欢体位（体位修正 +0.5，handle_talent.py:336-368）；授予途径：体位经验（experience
+# 141-152）≥100 后由 h-core 在 H 行动结束懒授予
 
 [talents."阴道处女"]
 name = "阴道处女"
@@ -803,72 +806,84 @@ name = "正常位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 1
 
 [talents."背后位喜好"]
 name = "背后位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 2
 
 [talents."对面骑乘位喜好"]
 name = "对面骑乘位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 3
 
 [talents."背面骑乘位喜好"]
 name = "背面骑乘位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 4
 
 [talents."对面座位喜好"]
 name = "对面座位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 5
 
 [talents."背面座位喜好"]
 name = "背面座位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 6
 
 [talents."对面立位喜好"]
 name = "对面立位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 7
 
 [talents."背面立位喜好"]
 name = "背面立位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 8
 
 [talents."对面抱位喜好"]
 name = "对面抱位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 9
 
 [talents."背面抱位喜好"]
 name = "背面抱位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 10
 
 [talents."对面卧位喜好"]
 name = "对面卧位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 11
 
 [talents."背面卧位喜好"]
 name = "背面卧位喜好"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorite_position = 12
 
 [talents."勤劳"]
 name = "勤劳"

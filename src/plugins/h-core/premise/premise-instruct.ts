@@ -231,17 +231,21 @@ export function registerInstructPremises(registry: any): void {
       return (ch?.h_state?.sex_toy_level ?? 0) >= minLevel
     }
   }
+  // 注释：档位语义对齐 erArk handle_premise_H.py:3206/3229/3241——
+  // WEAK==1 / MIDDLE==2 / STRONG==3（2026-08-08 审查修复：原 WEAK 误为 1-3、
+  // STRONG 误为 >=4（vibrator_set 上限 3 → 恒 false 死键）、MIDDLE 缺失）
+  function sexToyLevelEq(level: number) {
+    return (ctx: any) => {
+      const ch = getTarget(ctx)
+      if (!ch) return false
+      return (ch?.h_state?.sex_toy_level ?? 0) === level
+    }
+  }
   registry.register('TARGET_NOW_SEX_TOY_ON', sexToyLevelGe(1))
   registry.register('TARGET_NOW_SEX_TOY_OFF', (ctx: any) => !sexToyLevelGe(1)(ctx))
-  registry.register('TARGET_NOW_SEX_TOY_WEAK', (ctx: any) => {
-    const level = (() => {
-      const ch = getTarget(ctx)
-      if (!ch) return 0
-      return ch?.h_state?.sex_toy_level ?? 0
-    })()
-    return level >= 1 && level <= 3
-  })
-  registry.register('TARGET_NOW_SEX_TOY_STRONG', sexToyLevelGe(4))
+  registry.register('TARGET_NOW_SEX_TOY_WEAK', sexToyLevelEq(1))
+  registry.register('TARGET_NOW_SEX_TOY_MIDDLE', sexToyLevelEq(2))
+  registry.register('TARGET_NOW_SEX_TOY_STRONG', sexToyLevelEq(3))
   registry.register('TARGET_NOT_VIBRATOR_INSERTION', (ctx: any) => {
     const ch = getTarget(ctx)
     if (!ch) return false
@@ -269,4 +273,104 @@ export function registerInstructPremises(registry: any): void {
   })
   registry.register('DEBUG_MODE_ON', () => false)
   registry.register('DEBUG_MODE_OFF', () => true)
+
+  // ═══════════════════════════════════════════════════════════════
+  // T2：talk-common 迁移数据引用的 erArk 前提（2026-08-08 全量扫描补齐）
+  // 原则：数据可判的注册真实语义；依赖未实装系统的注册恒 false + TODO 注释
+  // （情境不存在 → 地文不可达是正确的；系统落地时补语义，校验测试持续盯防新增未注册前提）
+  // ═══════════════════════════════════════════════════════════════
+
+  // ── 无意识系列（unconscious_h 数据存在：时停=3、催眠=4-7、睡眠=1 待 L1.7）──
+  // erArk handle_premise_sp_flag.py:1804/1834 等：t_unconscious_flag = 任意无意识；
+  // t_unconscious_flag_N = unconscious_h === N
+  registry.register('T_UNCONSCIOUS_FLAG', (ctx: any) => {
+    const ch = getTarget(ctx)
+    return !!ch?.sp_flag?.unconscious_h
+  })
+  for (let n = 1; n <= 6; n++) {
+    const level = n
+    registry.register(`T_UNCONSCIOUS_FLAG_${level}`, (ctx: any) => {
+      const ch = getTarget(ctx)
+      return ch?.sp_flag?.unconscious_h === level
+    })
+  }
+
+  // ── 位置类（location.tags 可判）──
+  registry.register('H_IN_BATHROOM', (_ctx: any) => {
+    const tags = gameContext.getContext().location?.tags ?? []
+    return tags.includes('has_bathroom')
+  })
+  registry.register('H_IN_LOVE_HOTEL', (_ctx: any) => {
+    const tags = gameContext.getContext().location?.tags ?? []
+    return tags.includes('has_love_hotel')
+  })
+
+  // ── 宝珠等级（宝珠系统未实装 → 无宝珠 = 等级 0）──
+  registry.register('JJ_0', () => true)
+  for (let n = 1; n <= 3; n++) {
+    registry.register(`JJ_${n}`, () => false)  // TODO 宝珠系统未实装
+  }
+
+  // ── 玩家射精/精液前提（射精系统已实装：射精欲/精液量/额外精液量 属性 + dirty 污染）──
+  // erArk handle_premise_H.py:1448-1664（查玩家 character_data[0]）
+  // eja_point 阈值：LOW<=300 / MIDDLE<=600 / HIGH<=900 / EXTREME>900（累计上界语义 →
+  // LOW_OR_MIDDLE=<=600 / HIGH_OR_EXTREME=>600）
+  // 2026-08-08 审查修复：原恒 false → 阴茎短词池（penis.toml 240 条）全部不可达，
+  // 行为地文里的 {penis} 永远原样输出（静默失效）
+  function getPlayerChar(): any | null {
+    const player = gameContext.getContext().player
+    if (!player?.id) return null
+    return entitySystem.get('character', player.id) as any ?? null
+  }
+  const plSemenTotal = (): number => {
+    const p = getPlayerChar()
+    return (p?.base?.['精液量'] ?? 0) + (p?.base?.['额外精液量'] ?? 0)
+  }
+  registry.register('PL_EJA_POINT_LOW_OR_MIDDLE', () => {
+    const p = getPlayerChar()
+    return (p?.base?.['射精欲'] ?? 0) <= 600
+  })
+  registry.register('PL_EJA_POINT_HIGH_OR_EXTREME', () => {
+    const p = getPlayerChar()
+    // 注释：>600 是"高或极"的意图语义（低中=≤600 的互补分区）。
+    // erArk 字面实现有 bug：HIGH 只查上界 ≤900（覆盖全区间）→ HIGH_OR_EXTREME 恒 true；
+    // 我们取意图语义（对齐项目修复 erArk 死代码的既有先例），数值 600 可追溯 MIDDLE 阈值
+    return (p?.base?.['射精欲'] ?? 0) > 600
+  })
+  registry.register('PL_SEMEN_LE_2', () => plSemenTotal() <= 2)
+  registry.register('PL_SEMEN_G_2', () => plSemenTotal() > 2)
+  registry.register('PL_SEMEN_L_100', () => plSemenTotal() < 100)
+  registry.register('PL_SEMEN_GE_100', () => plSemenTotal() >= 100)
+  registry.register('PL_PENIS_NOT_SEMEN_DIRTY', () => {
+    const p = getPlayerChar()
+    return !p?.dirty?.penis_dirty_dict?.semen
+  })
+  registry.register('PL_PENIS_SEMEN_DIRTY', () => {
+    const p = getPlayerChar()
+    return !!p?.dirty?.penis_dirty_dict?.semen
+  })
+
+  // ── 依赖未实装系统 → 恒 false（情境不存在，地文不可达）──
+  // TODO 各系统落地时补语义（校验测试会盯防新未注册前提）：
+  //   子宫体位（B3）/ 露出 / 隐奸 / 群交 / 逆推 / 催眠逆推·木头人 / 精液·射精（h-ejaculation 对接）
+  //   今日首次（h-first-time）/ 时停解放 / 助手 / 监狱 / 女儿 / 访客 / 睡眠装睡（L1.7）
+  const pendingFalse = [
+    'DR_WOMB_POSITION_INSERT', 'DR_WOMB_POSITION_SEX',
+    'EXHIBITIONISM_SEX_MODE_1', 'EXHIBITIONISM_SEX_MODE_2', 'EXHIBITIONISM_SEX_MODE_3', 'EXHIBITIONISM_SEX_MODE_4',
+    'GROUP_SEX_MODE_ON',
+    'HIDDEN_SEX_MODE_1', 'HIDDEN_SEX_MODE_2', 'HIDDEN_SEX_MODE_3', 'HIDDEN_SEX_MODE_4',
+    'T_HIDDEN_SEX_MODE_1_OR_3', 'T_HIDDEN_SEX_MODE_2_OR_4',
+    'T_NPC_ACTIVE_H',
+    'T_HYPNOSIS_ACTIVE_H', 'T_HYPNOSIS_BLOCKHEAD',
+    'T_FIRST_A_SEX_IN_TODAY', 'T_FIRST_SEX_IN_TODAY', 'T_FIRST_U_SEX_IN_TODAY',
+    'TARGET_TIME_STOP_ORGASM_RELASE',
+    'T_IS_ASSISTANT', 'T_IMPRISONMENT_1', 'TARGET_IS_PLAYER_DAUGHTER', 'TARGET_VISITOR_FLAG_1',
+    'TARGET_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', 'TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP',
+    'PLACE_SOMEONE_NOT_IN_HIDDEN_AND_CONSCIOUS',
+    // 注释：目标精液污染 > 1（erArk Dirty 类型 CVP，hair 地文用）——依赖精液系统（h-ejaculation）落地
+    'CVP_A2_DIRTY|B0_G_1',
+  ]
+  for (const id of pendingFalse) {
+    registry.register(id, () => false)
+  }
 }

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { getLevel } from '../core/entity-utils'
+import { entitySystem } from '../core/entity-system'
 
 // 注释：Phase H 集成测试——核心公式 + h-state 生命周期
 // 完整的端到端 H 流程测试需要 browser 环境，这里测可独立验证的部分
@@ -86,12 +87,29 @@ describe('Phase H 集成测试', () => {
     const { entitySystem } = await import('../core/entity-system')
     entitySystem.register('character', '0', {
       id: '0', name: '玩家',
-      base: { 射精欲: 1500, 射精欲上限: 1000 },
+      base: { 射精欲: 1500, 射精欲上限: 1000, 精液量: 100 },
       h_state: { is_h: true, orgasm_level: {}, orgasm_edge: 0 },
       params: {},
     })
     const result = orgasmJudge('0')
     expect(result.shouldEjaculate).toBe(true)
+    entitySystem.clear()
+  })
+
+  it('orgasm 二段结算——射精欲满但精液量≤2 → 无精液高潮（不射精，射精欲归零）', async () => {
+    const { orgasmJudge } = await import('../plugins/h-core/settle/orgasm')
+    const { entitySystem } = await import('../core/entity-system')
+    entitySystem.register('character', '0', {
+      id: '0', name: '玩家',
+      base: { 射精欲: 1500, 射精欲上限: 1000, 精液量: 0, 额外精液量: 2 },
+      h_state: { is_h: true, orgasm_level: {}, orgasm_edge: 0, endure_not_shoot_count: 3 },
+      params: {},
+    })
+    const result = orgasmJudge('0')
+    expect(result.shouldEjaculate).toBe(false)
+    const char = entitySystem.get('character', '0') as any
+    expect(char.base['射精欲']).toBe(0)
+    expect(char.h_state.endure_not_shoot_count).toBe(0)
     entitySystem.clear()
   })
 
@@ -131,12 +149,13 @@ describe('Phase H 集成测试', () => {
   it('orgasm 二段结算——寸止失败解放重结算', async () => {
     const { orgasmJudge } = await import('../plugins/h-core/settle/orgasm')
     const { entitySystem } = await import('../core/entity-system')
-    // 玩家技巧低 + 寸止计数高 → 必定失败 → 解放
+    // 玩家技巧低 + 被结算角色自己寸止计数高 → 必定失败 → 解放
+    // 2026-08-08 对齐：寸止计数归属 = 被结算角色自己（原误用玩家计数）
     entitySystem.register('character', '0', {
       id: '0', name: '玩家',
       base: { 射精欲: 500, 射精欲上限: 1000 },
       abilities: { 技巧: { level: 1 } },
-      h_state: { is_h: true, orgasm_level: {}, orgasm_edge: 1, orgasm_edge_count: { 4: 3 } },
+      h_state: { is_h: true, orgasm_level: {}, orgasm_edge: 1, orgasm_edge_count: {} },
       params: {},
     })
     entitySystem.register('character', 'orgasm_edge_1', {
@@ -145,7 +164,7 @@ describe('Phase H 集成测试', () => {
         is_h: true,
         orgasm_level: { 4: 2 },
         orgasm_edge: 1,           // 寸止中
-        orgasm_edge_count: {},
+        orgasm_edge_count: { 4: 3 },  // 自己累计 3 → 平方和 9 > 技巧1×3 → 必失败
         extra_orgasm_feel: {},
         extra_orgasm_count: 0,
         time_stop_orgasm_count: {},
@@ -155,19 +174,25 @@ describe('Phase H 集成测试', () => {
       abilities: { 阴道感度: { level: 3 } },
     })
     const result = orgasmJudge('orgasm_edge_1')
-    expect(result.orgasms.length).toBeGreaterThanOrEqual(0)
+    // 重结算：历史累计 3 → 解放路径 roll_count 压缩 → 1 条超强（感度 3 < 6 → 强）
+    expect(result.orgasms.length).toBe(1)
+    expect(result.orgasms[0].degree).toBe(2)
     const char = entitySystem.get('character', 'orgasm_edge_1') as any
     // 解放后 edge 应为 2（重结算完成）
     expect(char.h_state.orgasm_edge).toBe(2)
+    // 2026-08-08 审查加强：失败重结算后累计计数清空（原残留 → 退出 H 二次释放双倍结算）
+    expect(char.h_state.orgasm_edge_count[4]).toBe(0)
+    // 本次 normal 丢弃（orgasm_level 未更新——erArk 失败时本次等级差不入账，下次补算）
+    expect(char.h_state.orgasm_level[4]).toBe(2)
     entitySystem.clear()
   })
 
-  it('射精系统——忍耐判定（技巧高时必忍，耐力不足时概率失败）', async () => {
+  it('射精系统——忍耐判定（技巧高时必忍，超出后 0.15×超限概率失败）', async () => {
     const { judgeOrgasmEdgeSuccess } = await import('../plugins/h-core/settle/orgasm')
     // 技巧3×3=9 ≥ 计数平方和4 → 必成功
     expect(judgeOrgasmEdgeSuccess({ 4: 2 }, 3)).toBe(true)
-    // 技巧1×3=3 < 计数平方和9 → 20%×6=120% 失败率 → 必失败（随机≥1.2 不可能）
-    expect(judgeOrgasmEdgeSuccess({ 4: 3 }, 1)).toBe(false)
+    // 技巧0×3=0 < 计数平方和9 → 0.15×9=1.35 → 成功率 0 → 必失败（2026-08-08 对齐 0.15）
+    expect(judgeOrgasmEdgeSuccess({ 4: 3 }, 0)).toBe(false)
   })
 
   it('射精系统——睡眠额外精液累积（realtime-settle）', async () => {
@@ -188,14 +213,20 @@ describe('Phase H 集成测试', () => {
     entitySystem.clear()
   })
 
-  it('calcTrust 信赖度', async () => {
+  it('calcTrust 信赖度（复刻 calculation_trust，common_default.py:752-813）', async () => {
     const { calcTrust } = await import('../plugins/h-core/settle/trust')
-    // 注释：10分钟行为→信赖≈0
-    expect(calcTrust(10, 0)).toBe(0)
-    // 注释：60分钟行为→信赖=1
-    expect(calcTrust(60, 0)).toBe(1)
-    // 注释：60分钟+好感→信赖有多倍
-    expect(calcTrust(60, 5000)).toBeGreaterThan(1)
+    // 注释：素质修正读 mod.talentDefs——先加载 mod（测试环境无 h-core onEnable 的索引重建）
+    const { modLoader } = await import('../core/mod-loader')
+    await modLoader.loadMod('test-mod')
+    entitySystem.register('character', 'trust_npc', { id: 'trust_npc', base: {}, talents: {} })
+    // 注释：10 分钟行为 → 10/60×1.0（float，erArk 同）
+    expect(calcTrust('trust_npc', 10)).toBeCloseTo(10 / 60)
+    // 注释：60 分钟行为 → 1
+    expect(calcTrust('trust_npc', 60)).toBeCloseTo(1)
+    // 注释：思慕 +0.25 → 60/60×1.25
+    ;(entitySystem.get('character', 'trust_npc') as any).talents = { 思慕: 1 }
+    expect(calcTrust('trust_npc', 60)).toBeCloseTo(1.25)
+    entitySystem.clear()
   })
 
   it('calcStateChange 状态值变化', async () => {

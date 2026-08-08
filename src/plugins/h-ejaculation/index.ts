@@ -219,13 +219,14 @@ export function onLoad(_ctx: PluginContext): void {
 }
 
 export function onEnable(ctx: PluginContext): void {
-  // 注释：玩家阴茎精液污浊前提
+  // 注释：玩家阴茎精液污浊前提（2026-08-08 审查修复：原硬编码角色 '0'——
+  // 引擎玩家 id 由 meta.toml player_character 决定（如 'player'），查 '0' 恒 undefined → 静默失效）
   premiseRegistry.register('pl_penis_semen_dirty', () => {
-    const player = entitySystem.get('character', '0') as any
+    const player = entitySystem.get('character', gameContext.getContext().player?.id ?? '0') as any
     return !!player?.dirty?.penis_dirty_dict?.semen
   })
   premiseRegistry.register('pl_penis_not_semen_dirty', () => {
-    const player = entitySystem.get('character', '0') as any
+    const player = entitySystem.get('character', gameContext.getContext().player?.id ?? '0') as any
     return !player?.dirty?.penis_dirty_dict?.semen
   })
 

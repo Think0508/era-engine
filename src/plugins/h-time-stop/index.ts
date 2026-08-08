@@ -8,6 +8,8 @@ import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { commandRegistry } from '../../core/command-registry'
+import { apiSystem } from '../../core/api'
+import { errorReporter } from '../../core/error-reporter'
 
 let timeStopActive = false
 let lastActionTimeCost = 10  // 注释：缺省 10 分钟
@@ -59,20 +61,26 @@ export function onLoad(_ctx: PluginContext): void {
       if (c.time_stop_data) { c.time_stop_data = {} }
       // 注释：清除时停状态（对齐 1242）
       if (c.sp_flag) c.sp_flag.unconscious_h = 0
-      // 注释：绝顶释放（对齐 527）
-      if (c.h_state?.time_stop_orgasm_count) {
-        c.h_state.time_stop_release = true
-        for (const [partStr, count] of Object.entries(c.h_state.time_stop_orgasm_count) as [string, number][]) {
-          const partId = parseInt(partStr)
-          if (count >= 3) {
-            const feelLv = c.abilities?.[`feel_${partId}`]?.level ?? 0
-            const degree = feelLv >= 6 ? 3 : 2
-            narrativeLog.write(`${c.name ?? ''} 时停解放！${count}次累积→超强绝顶(Lv${degree})`, 'system', 'h-time-stop')
-          } else if (count > 0) {
-            narrativeLog.write(`${c.name ?? ''} 时停解放！${count}次绝顶释放`, 'system', 'h-time-stop')
+      // 注释：绝顶释放（对齐 527 / erArk TIME_STOP_ORGASM_RELEASE，default.py:6764-6800）
+      // 2026-08-08 修复：原只输出日志无数值——时停累计的绝顶被静默丢弃。
+      // 经 effect 通道调 h-core 的 release_time_stop_orgasm（跨插件禁止直接 import），
+      // 把 time_stop_orgasm_count 转成真实高潮结算（数值+事件+日志）
+      if (c.h_state?.time_stop_orgasm_count && Object.keys(c.h_state.time_stop_orgasm_count).length > 0) {
+        try {
+          await apiSystem.call('effect-system', 'execute', [{ type: 'release_time_stop_orgasm' }], {
+            sourceId: c.id,
+            _targetIds: [c.id],
+          })
+        } catch (err) {
+          const msg = err instanceof Error ? err.message : String(err)
+          if (!msg.includes('release_time_stop_orgasm') && !msg.includes('未注册')) {
+            errorReporter.report({
+              source: 'h-time-stop',
+              severity: 'error',
+              message: `时停解放结算失败：${msg}`,
+            })
           }
         }
-        c.h_state.time_stop_orgasm_count = {}
       }
     }
     if (frozenTime) gameContext.setTime(frozenTime)

@@ -17,6 +17,10 @@ const path = require('path')
 const ERA_DIR = '用来复刻的蓝本游戏 erArk 不要commit/data/talk_common'
 const OUT_DIR = 'src/plugins/talk-common-system/data/default/talk-common'
 
+// 注释：增量模式（--incremental）——跳过已存在的输出 TOML，只生成新文件
+// 保护已迁移/手改过的文件不被覆盖（2026-08-08 新地文导入流程）
+const INCREMENTAL = process.argv.includes('--incremental')
+
 // ===== CSV 解析 =====
 function parseCSV(filePath) {
   const raw = fs.readFileSync(filePath, 'utf-8')
@@ -265,15 +269,17 @@ const TALENT_MAP = {
   '0': '阴道处女', '1': '肛门处女', '2': '尿道处女', '3': '子宫处女',
   '6': '未初潮', '7': '未成年',
   '20': '受精', '21': '妊娠', '24': '育儿',
+  '27': '泌乳',
   '102': '幼女', '103': '少女', '104': '処女', '105': '成人',
   '106': '淑女', '107': '人妻',
   '121': '绝壁', '122': '贫乳', '123': '普乳', '124': '巨乳', '125': '爆乳',
+  '126': '小臀', '127': '普臀', '128': '巨臀',
   '129': '细腿', '130': '肉腿', '131': '小足', '132': '长足',
-  '222': '性无知',
+  '222': '性无知', '277': '羞耻',
 }
 
 const STATUS_MAP = {
-  '0': '皮肤', '1': '胸部', '4': '阴道', '5': '后穴', '6': '尿道', '7': '子宫',
+  '0': '皮肤', '1': '胸部', '2': '阴蒂', '3': '阴茎', '4': '阴道', '5': '后穴', '6': '尿道', '7': '子宫',
 }
 
 const ABILITY_MAP = {
@@ -303,12 +309,12 @@ function convertCVPPremise(premiseStr) {
   for (const p of parts) {
     // CVP_{subject}_{type}|{id}_{cmp}_{val}  (T/S/A 有 ID)
     // CVP_{subject}_{type}_{cmp}_{val}        (G 无 ID)
-    let m = p.match(/^CVP_(A\d)_(T|S|A)\|(\d+)_([GLE]+)_?(-?\d*)$/)
+    let m = p.match(/^CVP_(A\d)_(T|S|A)\|(\d+)_(NE|[GLE]+)_?(-?\d*)$/)
     let type, id, cmp, val
     if (m) {
       type = m[2]; id = m[3]; cmp = m[4]; val = m[5] || '1'
     } else {
-      m = p.match(/^CVP_(A\d)_(G)_([GLE]+)_?(-?\d*)$/)
+      m = p.match(/^CVP_(A\d)_(G)_(NE|[GLE]+)_?(-?\d*)$/)
       if (m) { type = m[2]; id = null; cmp = m[3]; val = m[4] || '1' }
     }
     if (!m) {
@@ -318,7 +324,8 @@ function convertCVPPremise(premiseStr) {
     }
     const subj = m[1]
     const cvpPrefix = subj === 'A1' ? 'player' : 'selected'
-    const cmpMap = { G: '>', GE: '>=', L: '<', LE: '<=', E: '==' }
+    // 注释：T2 补丁——erArk 运算符含 NE（≠），原表缺失会误转成 ==
+    const cmpMap = { G: '>', GE: '>=', L: '<', LE: '<=', E: '==', NE: '!=' }
     const op = cmpMap[cmp] || '=='
 
     if (type === 'T') {
@@ -362,6 +369,9 @@ function main() {
       const fullPath = path.join(dir, entry.name)
       if (entry.isDirectory()) { scanDir(fullPath); continue }
       if (!entry.name.endsWith('.csv')) continue
+
+      // 注释：eat（吃饭）已砍（用户确认），跳过——防止增量重跑时反复生成
+      if (entry.name.includes('eat')) continue
 
       const entries = parseCSV(fullPath)
       if (entries.length === 0) continue
@@ -475,6 +485,10 @@ function main() {
 
     const outFileName = `${variable}.toml`
     const outPath = path.join(OUT_DIR, subDir, outFileName)
+    if (INCREMENTAL && fs.existsSync(outPath)) {
+      console.log(`  跳过（已存在）${subDir}/${outFileName}`)
+      continue
+    }
     fs.writeFileSync(outPath, toml, 'utf-8')
 
     const partInfo = isMultiPart ? ` parts=${JSON.stringify(partsArr)}` : ''

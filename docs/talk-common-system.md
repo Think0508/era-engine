@@ -361,6 +361,31 @@ context = "粉嫩紧致湿润温暖，触感细腻敏感的{vagina_s}"
 - `body/vagina.csv` → `body/vagina.toml`
 - `action_A/penis_in_body/penis_in_vagina_A.csv` → `action_A/penis_in_vagina.toml`
 
+### 导入 erArk 新增地文模块（2026-08-08 流程确认）
+
+> erArk 侧会持续新增地文模块（如子宫高潮等新 orgasm 类型）。导入流程：
+
+1. **确认新增内容**：从 erArk 更新 `data/talk_common/` 下的新文件（通常是新目录/新动作类型，如
+   `action_A/orgasm/v_orgasm_womb_A.csv`——模块化新增，不涉及已迁移文件）
+2. **重跑转换脚本（增量）**：`node scripts/convert-erark-talk-common.cjs --incremental`
+   - `--incremental` 跳过**已存在**的输出 TOML（保护已迁移/手改文件）——只生成新文件
+   - 已知目录（body/body_part/action_X/penis_in_body/orgasm）按既有规则命名
+   - 未知目录走 fallback（`variable = 文件路径推导`）——转换后**检查生成的 variable 命名**，
+     如需规范命名，在脚本 deriveVariable 加对应分支
+   - **注意**：新文件在增量模式下生成后，下次重跑会因"已存在"被跳过——如需修正已生成的新文件，
+     删除对应 TOML 再重跑（**只删新文件，勿动已跟踪文件**）
+   - erArk 更新已有文件的内容（如 v_orgasm 条目扩展）→ 增量会跳过——如确认要采纳更新，
+     git diff 审计后**删除对应已跟踪 TOML 再重跑**（或人工核对后保留）
+3. **验证（自动安全网）**：`npm run test` 的 `talk-common-data.test.ts` 全量校验
+   - 新增地文引用的前提若未注册 → 测试失败 → 按 T2 模式补齐（可判的注册语义、
+     依赖未实装系统的恒 false + TODO）
+   - 新 CVP 的 T/S/A ID 若不在映射表 → 保留 premises:CVP_... → 校验报出 → **补脚本映射表**
+     （TALENT_MAP/STATUS_MAP/ABILITY_MAP，查 Talent.csv/CharacterState.csv 确认名字）→ 删新文件重转
+   - 新增表达式的字段路径未注册 → 测试失败 → condition-registry 补结构路径
+4. **重启 dev server**：新 TOML 加入 glob 后需重启 vite 才被收录
+5. **已迁移文件被 erArk 更新**（如 v_orgasm 175→457 条）：git diff 可审计变化
+   （条目扩展/变量修正 {Name}→{target.name} 等）——按需决定保留或 git checkout 回滚
+
 ### 转义规则
 
 erark CSV 中的 `\` 转义序列转换规则：

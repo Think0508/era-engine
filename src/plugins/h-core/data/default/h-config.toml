@@ -27,6 +27,50 @@ npc_auto_eat_threshold = 190    # NPC 自动进食阈值(80%)
 daily_ration_id = "干粮"        # NPC 每日口粮（空=不发放）
 daily_ration_count = 1
 
+# 口上系统配置（dialogue-system 读取，T3）
+# common_mix_rate: 口上出现行为地文的概率（0-100，对齐 erArk draw_setting[13]×10，默认 30%）
+[talk]
+common_mix_rate = 30
+
+# 特殊情境加权（T6，erArk handle_special_talk_weight，talk.py:168-223）
+# 候选口上的前提集与某情境的 premises 有交集 → 权重 ×multiplier（每类最多一次，多类累计；
+# erArk 默认 9 类 ×5）。mod 可覆盖/扩展
+[[talk.situations]]
+premises = ["self_time_stop_orgasm_relase", "target_time_stop_orgasm_relase"]
+multiplier = 5
+
+[[talk.situations]]
+premises = ["self_is_player_daughter", "self_not_player_daughter"]
+multiplier = 5
+
+[[talk.situations]]
+premises = ["h_in_love_hotel"]
+multiplier = 5
+
+[[talk.situations]]
+premises = ["h_in_bathroom"]
+multiplier = 5
+
+[[talk.situations]]
+premises = ["npc_active_h", "t_npc_active_h"]
+multiplier = 5
+
+[[talk.situations]]
+premises = ["hidden_sex_mode_1", "hidden_sex_mode_2", "hidden_sex_mode_3", "hidden_sex_mode_4", "hidden_sex_mode_1_or_2", "hidden_sex_mode_3_or_4", "hidden_sex_mode_1_or_3", "hidden_sex_mode_2_or_4", "target_hidden_sex_mode_1", "target_hidden_sex_mode_2", "target_hidden_sex_mode_3", "target_hidden_sex_mode_4", "target_hidden_sex_mode_1_or_2", "target_hidden_sex_mode_3_or_4", "target_hidden_sex_mode_1_or_3", "target_hidden_sex_mode_2_or_4"]
+multiplier = 5
+
+[[talk.situations]]
+premises = ["exhibitionism_sex_mode_1", "exhibitionism_sex_mode_2", "exhibitionism_sex_mode_3", "exhibitionism_sex_mode_4", "exhibitionism_sex_mode_ge_1", "target_exhibitionism_sex_mode_1", "target_exhibitionism_sex_mode_2", "target_exhibitionism_sex_mode_3", "target_exhibitionism_sex_mode_4"]
+multiplier = 5
+
+[[talk.situations]]
+premises = ["group_sex_mode_on"]
+multiplier = 5
+
+[[talk.situations]]
+premises = ["imprisonment_1", "t_imprisonment_1"]
+multiplier = 5
+
 # 实行判定特殊修正表（judge_class → 修正条目列表）
 # 来源：erArk Script/Design/instuct_judege.py 逐行翻译（铁律：公式结构不可简化）
 # 条件表达式用现有系统，target = 被判定角色（judge_check 注入 selectedCharacterId）

@@ -140,8 +140,8 @@ erArk 效果ID: 21   12   CVE_A2  CVE_A1  53  55  501
 | 51~58(状态值) | ✅ | settle_state |
 | 62~81(苦痛/习得) | ✅ | settle_state |
 | 1101~1109(第一次) | 📝 TODO | h-first-time 插件 |
-| CVE_*(经验) | 📝 TODO | 经验系统 |
-| 501~599(H/其他) | 📝 TODO | 查 default.py |
+| CVE_*(经验) | ✅ | h_experience（expId=80 对话经验已用） |
+| 501(TALK_ADD_ADJUST) | ✅ | talk_add_adjust（chat 专用，default.py:5813） |
 
 ### 指令复刻（L1.6）已完成 vs TODO
 
@@ -151,6 +151,9 @@ erArk 效果ID: 21   12   CVE_A2  CVE_A1  53  55  501
 | 前置改动（spec §10 全部） | ✅ | loader 收敛 / judge_check 注入 / calcJudge adjustments 表 / IN_* → location.tags / 耗时机制 / UI 分类 / _erark_source 归档 |
 | 判定链路（judge_check → settle_* 门控） | ✅ | 共享执行上下文修复 + 端到端测试 |
 | 条件引擎（selected/target/别名/校验） | ✅ | condition-registry.validateExpression + fieldAliases + {id} 占位替换 |
-| B1 批次（daily 24 条） | 📝 TODO | 批次清单 → 用户筛选 → TOML（下一步） |
+| 结算保真（tenths_add / 连续减值 / 无意识门控） | ✅ | settle_state/favorability/trust/hp_mp 全部对齐（common_default.py:196-240/551-589） |
+| 素质修正数据化 + 催眠敏感 | ✅ | state_adjusts/favorability_adjusts 天赋字段（talents.toml），全加法 fix 链；调香不做（香薰系统砍掉） |
+| B1 试点：chat（1004） | ✅ | 批次清单 `batch-01-daily.md` + TOML（插件默认层 daily.toml）+ 6 测试 |
+| B1 其余 23 条 | 📝 TODO | 用户筛选后逐条进行 |
 | B2-B6（obscenity/sex） | 📝 TODO | sex 延后至 H UI 就绪 |
 | 尿道/特殊特征/恋爱依赖项 | ⛔ 不做 | 尿道 19 条 / 特殊特征 8 条砍掉，告白延后 |

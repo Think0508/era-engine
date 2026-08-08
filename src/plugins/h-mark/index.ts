@@ -13,6 +13,13 @@ const MARKS: Record<string, number> = {
   '快乐': 13, '屈服': 14, '苦痛': 15, '时姦': 16, '恐怖': 17, '反发': 18, '无觉': 19,
 }
 
+// 注释：刻印 ID → 能力名（2026-08-08 审查修复：原存 mark_{id} 数字键，
+// 与 abilities.toml 按名存储（'快乐刻印' 等）双轨分裂——settle_state/calcJudge/h-bondage/
+// h-hypnosis 读按名键恒 0，刻印升级对判定/状态系数静默失效；统一按名键为唯一存储）
+const MARK_ABILITY: Record<number, string> = {
+  13: '快乐刻印', 14: '屈服刻印', 15: '苦痛刻印', 16: '时姦刻印', 17: '恐怖刻印', 18: '反发刻印', 19: '无觉刻印',
+}
+
 // 注释：刻印升级条件
 // 快乐/无觉：单次 OR 累计 → [单次LV1, 累计LV1, 单次LV2, 累计LV2, ...]
 // 其余：累计值 → [LV1, LV2, LV3]
@@ -41,7 +48,7 @@ export function onEnable(ctx: PluginContext): void {
     getLevel: (charId: string, markId: number): number => {
       const char = entitySystem.get('character', charId) as any
       if (!char?.abilities) return 0
-      const ab = char.abilities[`mark_${markId}`]
+      const ab = char.abilities[MARK_ABILITY[markId]]
       return ab?.level ?? 0
     },
 
@@ -51,13 +58,16 @@ export function onEnable(ctx: PluginContext): void {
       if (!char) return
       const name = Object.entries(MARKS).find(([, id]) => id === markId)?.[0]
       if (!name) return
-      const key = `mark_${markId}`
+      const key = MARK_ABILITY[markId]
       const currentLevel = char.abilities?.[key]?.level ?? 0
       const conditions = MARK_UP_CONDITIONS[name]
       if (!conditions || conditions.length === 0) return
 
       // 注释：检测是否可以升到下一级
       let nextLevel = currentLevel + 1
+      // 注释：无觉刻印升级需目标无意识（erArk mark_effect 整个无觉块被
+      // handle_unconscious_flag_ge_1 包裹，second_behavior.py:507）
+      if (markId === 19 && (char.sp_flag?.unconscious_h ?? 0) < 1) return
       while (nextLevel <= conditions.length) {
         const cond = conditions[nextLevel - 1]
         const checkValue = getCheckValue(char, markId)
@@ -89,7 +99,7 @@ export function onEnable(ctx: PluginContext): void {
 
     getMarkAdjust: (charId: string, markId: number): number => {
       const char = entitySystem.get('character', charId) as any
-      const level = char?.abilities?.[`mark_${markId}`]?.level ?? 0
+      const level = char?.abilities?.[MARK_ABILITY[markId]]?.level ?? 0
       const adjustMap: Record<number, Record<number, number>> = {
         13: { 0: 0, 1: 50, 2: 100, 3: 150 },
         14: { 0: 0, 1: 50, 2: 100, 3: 150 },
@@ -154,31 +164,44 @@ function getCheckValue(char: any, markId: number): number {
 
 // 注释：获取累计值（快乐/无觉用累计绝顶，其余同 getCheckValue）
 function getCumulativeValue(char: any, markId: number): number {
-  const experience = char.experience ?? {}
+  const h = char.h_state ?? {}
   switch (markId) {
-    case 13: // 快乐——累计绝顶
-      return experience['orgasm_total'] ?? 0
-    case 19: // 无觉——累计无意识绝顶
-      return experience['unconscious_orgasm'] ?? 0
+    case 13: // 快乐——累计绝顶（erArk all_happy_count = sum orgasm_count[state][1]）
+      return sumOrgasmCount(h, 1)
+    case 19: // 无觉——累计无意识绝顶（erArk all = experience[78]）
+      return getUnconsciousOrgasmTotal(char)
     default:
       return getCheckValue(char, markId)
   }
 }
 
-// 注释：计算本次 H 绝顶次数
+// 注释：计算单次 H 绝顶次数（orgasm_count[state][0] 合计——erArk mark_effect single_*_count）
 function countOrgasmThisSession(h: any): number {
+  return sumOrgasmCount(h, 0)
+}
+
+// 注释：计算累计绝顶次数（orgasm_count[state][1] 合计——erArk mark_effect all_happy_count）
+// 2026-08-08 修复：原读 experience['orgasm_total']（无人写入 → 恒 0，快乐刻印累计分支静默失效）
+function sumOrgasmCount(h: any, idx: number): number {
   if (!h?.orgasm_count) return 0
   let total = 0
   for (const [, counts] of Object.entries(h.orgasm_count) as [string, number[]][]) {
-    total += counts[0] ?? 0
+    total += counts[idx] ?? 0
   }
   return total
 }
 
-// 注释：计算本次 H 无意识绝顶次数
-function countUnconsciousOrgasmThisSession(_h: any): number {
-  // TODO: 需要无意识标记追踪（h-hypnosis 子系统）
-  return 0
+// 注释：计算本次 H 无意识绝顶次数（erArk 无觉刻印 single 同用 orgasm_count[state][0]，
+// 无意识绝顶在时停解放时也会写入 orgasm_count——原实现恒 0 TODO 已删除）
+function countUnconsciousOrgasmThisSession(h: any): number {
+  return sumOrgasmCount(h, 0)
+}
+
+// 注释：计算累计无意识绝顶（erArk mark_effect 无觉 all = experience[78]，
+// 无意识绝顶经验由 orgasm 结算写入——2026-08-08 修复：原读 experience['unconscious_orgasm']
+// 无人写入 → 恒 0，无觉刻印完全无法升级）
+function getUnconsciousOrgasmTotal(char: any): number {
+  return char?.experience?.['78'] ?? 0
 }
 
 // 注释：刻印副作用——设定能力最低值

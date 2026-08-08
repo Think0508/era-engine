@@ -4,6 +4,29 @@
 
 本规范定义引擎中所有"输出到叙事日志的文本"的统一格式。
 
+### 口上选择机制（T1-T6 复刻 erArk，2026-08-08）
+
+场景口上（`scene_lines`/`character_lines`）的选择流程：
+
+```
+候选池合并（场景通用 + 角色专属×10 + 角色通用）
+  → 条件筛选（condition / premises: 前提集）
+  → 权重计算（前提权重 high_N 累加 + 满足前提数；静态 weight 字段优先；情境加权×5）
+  → 权重区间随机选一
+  → 混合率（weight<100 时按概率替换为行为地文）
+  → 无候选 → 行为地文 → 纸娃娃变量兜底
+```
+
+| 机制 | 字段/配置 | 说明 |
+|------|----------|------|
+| 权重 | `weight = N` | 静态权重（等价 erArk CVP_Weight 固定）；缺省 = 前提权重（无条件=1） |
+| 前提权重 | `condition = "premises:high_5"` | high_N 前提贡献权重 N；其余满足前提各 +1 |
+| 专属加权 | — | 角色专属口上（characters/dialogue/）权重 ×10 |
+| 情境加权 | hConfig `[[talk.situations]]` | 前提集命中 → ×multiplier（默认 9 类 ×5） |
+| 版本化 | `version = N` | 行版本；角色实体 `character_text_version` 选版（0=不启用） |
+| 无意识屏蔽 | — | 目标无意识（时停）时，无 unconscious 前提的口上淘汰 |
+| 混合率 | hConfig `talk.common_mix_rate`（默认 30） | weight<100 的口上按概率替换为行为地文（{penis_in_vagina} 等） |
+
 ### 四个层级的关系
 
 ```

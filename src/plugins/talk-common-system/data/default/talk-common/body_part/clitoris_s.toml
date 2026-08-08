@@ -1,0 +1,682 @@
+# 自动生成—请勿手动编辑
+# 来源: erArk data/talk_common/ (clitoris_s_A.csv, clitoris_s_B.csv)
+# 条目数: 135
+
+variable = "clitoris_s"
+description = "clitoris短词——part A+part B拼接"
+parts = ["A", "B"]
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "敏感"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "湿润"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "充血"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "粉嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "坚挺"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "娇小"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "湿滑"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "细嫩"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "温热"
+
+[[entries]]
+part = "A"
+conditions = "premises:high_1"
+context = "颤动"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.幼女 == 1"
+context = "幼小"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.幼女 == 1"
+context = "稚嫩"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.幼女 == 1"
+context = "紧小"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.幼女 == 1"
+context = "细嫩"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.幼女 == 1"
+context = "娇嫩"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.幼女 == 1"
+context = "未发育"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.幼女 == 1"
+context = "藏于包皮"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.幼女 == 1"
+context = "怯生生"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.幼女 == 1"
+context = "懵懂"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.幼女 == 1"
+context = "躲闪"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.少女 == 1"
+context = "小巧"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.少女 == 1"
+context = "粉嫩"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.少女 == 1"
+context = "紧致"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.少女 == 1"
+context = "娇嫩"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.少女 == 1"
+context = "初绽"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.少女 == 1"
+context = "青涩"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.少女 == 1"
+context = "嫩滑"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.少女 == 1"
+context = "初探"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.処女 == 1"
+context = "青春"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.処女 == 1"
+context = "饱满"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.処女 == 1"
+context = "粉红"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.処女 == 1"
+context = "活力"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.処女 == 1"
+context = "弹性"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.処女 == 1"
+context = "水润"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.処女 == 1"
+context = "挺立"
+
+[[entries]]
+part = "A"
+conditions = "premises:target_is_player_daughter"
+context = "血亲"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.成人 == 1"
+context = "丰满"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.成人 == 1"
+context = "迷人"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.成人 == 1"
+context = "妩媚"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.成人 == 1"
+context = "柔美"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.淑女 == 1"
+context = "老练"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.淑女 == 1"
+context = "纯熟"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.淑女 == 1"
+context = "丰满"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.淑女 == 1"
+context = "诱惑"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.淑女 == 1"
+context = "风韵"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.人妻 == 1"
+context = "纯熟"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.人妻 == 1"
+context = "丰满"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.人妻 == 1"
+context = "妩媚"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.人妻 == 1"
+context = "禁忌"
+
+[[entries]]
+part = "A"
+conditions = "selected.talents.人妻 == 1"
+context = "出轨"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level <= 3"
+context = "生涩"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level <= 3"
+context = "紧绷"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level <= 3"
+context = "新奇"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level <= 3"
+context = "不适应"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level <= 3"
+context = "微颤"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+context = "敏感"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+context = "主动"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+context = "充血"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+context = "湿润"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+context = "迎合"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level > 6"
+context = "极敏感"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level > 6"
+context = "失控"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level > 6"
+context = "剧烈"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level > 6"
+context = "痉挛"
+
+[[entries]]
+part = "A"
+conditions = "selected.abilities.阴蒂感度.level > 6"
+context = "滚烫"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 < 1000"
+context = "微颤"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 < 1000"
+context = "轻抽"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 < 1000"
+context = "渗液"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 < 1000"
+context = "微肿"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+context = "肿胀"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+context = "湿滑"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+context = "抽搐"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+context = "滚烫"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+context = "剧烈痉挛"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+context = "喷液"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+context = "肿硬"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+context = "发红"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 90000"
+context = "失控痉挛"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 90000"
+context = "发紫肿胀"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 90000"
+context = "持续抽搐"
+
+[[entries]]
+part = "A"
+conditions = "selected.阴蒂 >= 90000"
+context = "泛滥爱液"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
+context = "松弛"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
+context = "安静"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
+context = "隐忍"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "酒气"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "酒香"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_2"
+context = "松懈"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
+context = "被迫"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
+context = "紧绷"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
+context = "尴尬"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
+context = "窘迫"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+context = "炫耀"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+context = "挑逗"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+context = "大胆"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+context = "表演般"
+
+[[entries]]
+part = "A"
+conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+context = "自信"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "假装正常"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "维持平静"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "表面如常"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "掩饰"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "装作无事"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_1_or_3"
+context = "强装镇定"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "隐藏"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "躲避"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "小心"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "隐蔽"
+
+[[entries]]
+part = "A"
+conditions = "premises:t_hidden_sex_mode_2_or_4"
+context = "谨慎"
+
+[[entries]]
+part = "A"
+conditions = "premises:FALL_LEVEL_E_-1"
+context = "紧绷"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "阴蒂"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "阴核"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "花蒂"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "肉核"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "肉粒"
+
+[[entries]]
+part = "B"
+conditions = "premises:high_1"
+context = "蜜豆"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.幼女 == 1"
+context = "小阴蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.幼女 == 1"
+context = "小肉粒"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.幼女 == 1"
+context = "幼蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.幼女 == 1"
+context = "嫩蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.幼女 == 1"
+context = "蒂儿"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.少女 == 1"
+context = "小花蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.少女 == 1"
+context = "嫩阴核"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.少女 == 1"
+context = "粉蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.少女 == 1"
+context = "小蜜豆"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.処女 == 1"
+context = "花蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.処女 == 1"
+context = "嫩肉核"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.処女 == 1"
+context = "鲜蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.成人 == 1"
+context = "美蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.成人 == 1"
+context = "艳核"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.成人 == 1"
+context = "丰蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.淑女 == 1"
+context = "熟蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.淑女 == 1"
+context = "骚核"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.淑女 == 1"
+context = "淫蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.人妻 == 1"
+context = "骚蒂"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.人妻 == 1"
+context = "淫核"
+
+[[entries]]
+part = "B"
+conditions = "selected.talents.人妻 == 1"
+context = "骚肉核"

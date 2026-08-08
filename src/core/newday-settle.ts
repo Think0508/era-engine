@@ -22,8 +22,8 @@ export function newDaySettle(): void {
   const allChars = entitySystem.getAll('character')
   for (const char of allChars as any[]) {
     if (!char.id) continue
-    // 欲望积累：随机(ability[33] ~ ability[33]*2)
-    const abl33 = char.abilities?.[33]?.level ?? 0
+    // 欲望积累：随机(ability[33] ~ ability[33]*2)——33=欲望，abilities 按名存
+    const abl33 = char.abilities?.['欲望']?.level ?? 0
     if (abl33 > 0) {
       const add = abl33 + Math.floor(Math.random() * (abl33 + 1))
       const desire = getEntityAttr(char.id, '欲望值')

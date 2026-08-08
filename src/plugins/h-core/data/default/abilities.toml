@@ -120,6 +120,12 @@ type = "passive"
 max_level = 10
 tags = ["abl"]
 
+[abilities."话术技能"]
+name = "话术技能"
+type = "passive"
+max_level = 10
+tags = ["abl"]
+
 # ═══ 刻印 ═══
 [abilities."快乐刻印"]
 name = "快乐刻印"

@@ -15,6 +15,7 @@ import type { CommandDef } from '../../core/command-registry'
 import { evaluateCondition } from '../../core/condition'
 import { premiseRegistry } from '../../core/premise-registry'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
+import { weightedRandom } from '../../utils/weighted-random'
 import { apiSystem } from '../../core/api'
 import type { ConversationRef } from '../../core/mod-loader'
 import { parseConversationRef, resolveConversation } from '../../core/mod-loader'
@@ -177,52 +178,74 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
     }
   } catch { /* quest API 未就绪，跳过 */ }
 
-  // 注释：1. 场景通用口上——独立输出
-  const sceneLines = mod.sceneDialogue.filter(line => line.scene === scene)
-  const matchedSceneLine = pickMatchingLine(sceneLines, charId)
-  if (matchedSceneLine) {
-    const interpolated = await interpolateLine(matchedSceneLine.text, charId)
-    const display = resolveLineDisplay(matchedSceneLine)
-    narrativeLog.write(interpolated, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
-    await executeLineEffects(matchedSceneLine)
+  // 注释：1+2. 口上选择——同池权重竞争（erArk handle_talk_sub：通用 + 角色专属合并候选池，
+  // 专属权重 ×draw_setting[14]（默认10）；pickWeightedLine 按权重区间随机选一）
+  // T4 版本化：角色层口上按 character_text_version 过滤（erArk character_text_version，
+  // 0=不启用角色口上；行 version 缺省=1）；场景通用恒参与
+  // T5 无意识屏蔽：目标无意识（时停）时，非 unconscious 前提的口上淘汰（erArk :224-237）
+  const char = charId ? entitySystem.get('character', charId) as any : null
+  const charTextVersion = char?.character_text_version ?? 1
+  const isUnconscious = char?.sp_flag?.unconscious_h === 3
+  // 注释：无意识时所有口上（含场景通用）若无 unconscious 前提都淘汰（erArk :224-237）
+  const keepConscious = (line: ReactiveLine): boolean => !isUnconscious || /unconscious/i.test(line.condition ?? '')
+  const pool: { line: ReactiveLine; source: 'scene' | 'character'; multiplier: number }[] = []
+  for (const l of mod.sceneDialogue) {
+    if (l.scene === scene && keepConscious(l)) pool.push({ line: l, source: 'scene', multiplier: 1 })
+  }
+  if (charId) {
+    const keepVersion = (line: ReactiveLine): boolean => (line.version ?? 1) === charTextVersion
+    const specificLines = mod.characterSpecificDialogue.get(charId) ?? []
+    for (const l of specificLines) {
+      if (l.scene === scene && keepVersion(l) && keepConscious(l)) pool.push({ line: l, source: 'character', multiplier: 10 })
+    }
+    for (const l of mod.characterDialogue) {
+      if (l.scene === scene && keepVersion(l) && keepConscious(l)) pool.push({ line: l, source: 'character', multiplier: 1 })
+    }
+  }
+  const matched = pickWeightedLine(pool, charId)
+  if (matched) {
+    const entry = pool.find(p => p.line === matched.line)
+    // 注释：T3 混合率——权重<100 的口上按 hConfig talk.common_mix_rate（默认30，对齐 erArk draw_setting[13]×10）
+    // 随机替换为行为地文（erArk talk.py:244-254：not unusual_talk_flag or talk_weight < 100）
+    const hc = (modLoader.getMod()?.hConfig as any) ?? {}
+    const mixRate = hc?.talk?.common_mix_rate ?? 30
+    const playerId = gameContext.getContext().player?.id
+    let outputText: string | null = null
+    let outputIsChar = entry?.source === 'character'
+    if (charId && matched.weight < 100 && mixRate > 0) {
+      try {
+        const behaviorText = await apiSystem.call('talk-common', 'getBehaviorText', scene, charId, playerId)
+        if (behaviorText && Math.random() * 100 < mixRate) {
+          // 注释：行为地文含 {penis}/{target.name} 等占位符，必须与口上同路径插值
+          // （漏插值会原样显示——2026-08-08 审查发现）
+          outputText = await interpolateLine(behaviorText, charId)
+          outputIsChar = false // 地文为叙述视角（erArk common_talk_flag）
+        }
+      } catch { /* talk-common 未就绪，走口上 */ }
+    }
+    if (outputText === null) {
+      outputText = await interpolateLine(matched.line.text, charId)
+    }
+    const display = resolveLineDisplay(matched.line)
+    if (outputIsChar && charId) {
+      const char = entitySystem.get('character', charId) as any
+      const speakerName = char?.name ?? charId
+      narrativeLog.write(`${speakerName}：${outputText}`, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
+    } else {
+      narrativeLog.write(outputText, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
+    }
+    if (outputIsChar) {
+      await executeLineEffects(matched.line)
+    }
     hasOutput = true
   }
 
-  // 注释：2. 角色口上——有 charId 时才查
-  if (charId) {
-    // 注释：角色专属 > 角色通用
-    const specificLines = mod.characterSpecificDialogue.get(charId) ?? []
-    const matchedSpecific = pickMatchingLine(specificLines.filter(l => l.scene === scene), charId)
-
-    if (matchedSpecific) {
-      const char = entitySystem.get('character', charId) as any
-      const speakerName = char?.name ?? charId
-      const interpolated = await interpolateLine(matchedSpecific.text, charId)
-      const display = resolveLineDisplay(matchedSpecific)
-      narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
-      await executeLineEffects(matchedSpecific)
-      hasOutput = true
-    } else {
-      // 注释：角色通用 fallback
-      const genericLines = mod.characterDialogue.filter(l => l.scene === scene)
-      const matchedGeneric = pickMatchingLine(genericLines, charId)
-      if (matchedGeneric) {
-        const char = entitySystem.get('character', charId) as any
-        const speakerName = char?.name ?? charId
-        const interpolated = await interpolateLine(matchedGeneric.text, charId)
-        const display = resolveLineDisplay(matchedGeneric)
-        narrativeLog.write(`${speakerName}：${interpolated}`, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
-        await executeLineEffects(matchedGeneric)
-        hasOutput = true
-      }
-    }
-  }
-
-  // 注释：3. 纸娃娃兜底——三层都无对口上时用 talk-common 生成通用描述
+  // 注释：3. 纸娃娃兜底——无对口上时用行为地文（T3），再退 talk-common 变量兜底
   if (!hasOutput) {
     try {
       const playerId = gameContext.getContext().player?.id
-      const fallback = await apiSystem.call('talk-common', 'getText', scene, charId ?? null, playerId)
+      const fallback = await apiSystem.call('talk-common', 'getBehaviorText', scene, charId ?? null, playerId)
+        ?? await apiSystem.call('talk-common', 'getText', scene, charId ?? null, playerId)
       if (fallback) {
         const interpolated = await interpolateLine(fallback, charId)
         if (charId) {
@@ -239,34 +262,72 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
   }
 }
 
-// 注释：从匹配的 lines 中按 condition 筛选后随机选一条
+// 注释：从匹配的候选池中按权重区间随机选一条（erArk choice_talk_from_talk_data + get_rand_value_for_value_region）
+// 权重 = 前提权重（high_N 累加 + 满足前提数，getWeight）× multiplier（角色专属×10）
+// 静态 weight 字段优先（等价 erArk CVP_Weight|0 固定权重，固定后仍乘 multiplier——erArk talk.py:159 同）
 // premiseTargetId — 触发口上的目标角色（用于 premise 求值，如 high_1 查谁的状态）
-function pickMatchingLine(lines: ReactiveLine[], premiseTargetId?: string): ReactiveLine | null {
-  if (lines.length === 0) return null
+interface WeightedCandidate {
+  line: ReactiveLine
+  source: 'scene' | 'character'
+  multiplier: number
+}
+
+function pickWeightedLine(pool: WeightedCandidate[], premiseTargetId?: string): { line: ReactiveLine; weight: number } | null {
+  if (pool.length === 0) return null
   const gc = gameContext.getContext()
   const selectedId = premiseTargetId ?? gc.player?.id ?? null
+  const premiseCtx = { selectedCharacterId: selectedId, sourceId: gc.player?.id ?? null }
   // 注释：{id} 占位符 = 当前角色（角色口上惯例，如 character.{id}.好感度）——
   // 不求值替换会变成查找角色 '{id}'（恒不存在 → 条件恒 true，静默失效）
   const substituteId = (cond: string) => cond.replace(/\{id\}/g, selectedId ?? '')
-  // 注释：筛选 condition 为 true 的条目
-  const matched = lines.filter(line => {
-    if (!line.condition) return true
-    // 注释：premises:XXX&YYY 格式 → 调 h-core premise 求值
-    // 注意分隔符是 & 不是 ,（与 convert-erark-talk.cjs 输出一致）
-    if (line.condition.startsWith('premises:')) {
-      const premiseList = substituteId(line.condition).slice(9).split('&').map(s => s.trim()).filter(Boolean)
-      if (premiseList.length === 0) return true
-      return premiseRegistry.evaluate(premiseList, {
-        selectedCharacterId: selectedId,
-        sourceId: gc.player?.id ?? null,
-      }, false)  // 注释：非严格——未知 erark 前提跳过（不阻塞）
+
+  const candidates: { line: ReactiveLine; weight: number }[] = []
+  // 注释：T6 特殊情境加权（erArk handle_special_talk_weight，talk.py:168-223）——
+  // 候选前提集与某情境 premises 有交集 → weight ×multiplier（每类最多一次，多类累计）
+  const situations = (modLoader.getMod()?.hConfig as any)?.talk?.situations as { premises?: string[]; multiplier?: number }[] | undefined
+  const applySituation = (premiseList: string[], weight: number): number => {
+    if (!situations || premiseList.length === 0) return weight
+    const has = new Set(premiseList.map(p => p.toLowerCase()))
+    let w = weight
+    for (const s of situations) {
+      const mult = s.multiplier ?? 5
+      const hit = (s.premises ?? []).some(p => has.has(p.toLowerCase()))
+      if (hit) w *= mult
     }
-    // 注释：标准 condition 表达式
-    try { return evaluateCondition(substituteId(line.condition), gc) }
-    catch { return false }
-  })
-  if (matched.length === 0) return null
-  return matched[Math.floor(Math.random() * matched.length)]
+    return w
+  }
+  for (const c of pool) {
+    const line = c.line
+    // 筛选 condition（两种格式：纯表达式 / premises:XXX&YYY 前提集）
+    if (line.condition) {
+      const cond = substituteId(line.condition)
+      if (cond.startsWith('premises:')) {
+        const premiseList = cond.slice(9).split('&').map(s => s.trim()).filter(Boolean)
+        if (premiseList.length === 0) {
+          candidates.push({ line, weight: Math.max(1, line.weight ?? 1) * c.multiplier })
+          continue
+        }
+        // 注释：非严格——未知 erark 前提跳过（不阻塞）
+        if (!premiseRegistry.evaluate(premiseList, premiseCtx, false)) continue
+        const w = premiseRegistry.getWeight(premiseList, premiseCtx)
+        const base = Math.max(1, line.weight ?? w) * c.multiplier
+        candidates.push({ line, weight: applySituation(premiseList, base) })
+      } else {
+        try {
+          if (!evaluateCondition(cond, gc)) continue
+        } catch {
+          continue
+        }
+        candidates.push({ line, weight: Math.max(1, line.weight ?? 1) * c.multiplier })
+      }
+    } else {
+      candidates.push({ line, weight: Math.max(1, line.weight ?? 1) * c.multiplier })
+    }
+  }
+  if (candidates.length === 0) return null
+  // 权重区间随机（等价 erArk random.choices）
+  const picked = weightedRandom(candidates.map(c => ({ item: c, weight: c.weight })))
+  return { line: picked.line, weight: picked.weight }
 }
 
 // 注释：startConversation 内部实现（新版——使用 ConversationRef）

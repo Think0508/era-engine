@@ -1,0 +1,55 @@
+# 插件默认层指令（Layer 1 权威副本）——通用日常指令（B1 批次）
+# mod 覆盖：mods/[模组名]/definitions/instructions/daily.toml（同 id 胜出）
+# 复刻依据：docs/instruction-replication/batch-01-daily.md（erArk 行号可追溯）
+
+# ═══ chat 效果链（Behavior_Effect.csv 原链，逐条翻译，无合并省略）═══
+[effect_blocks]
+chat_fail_chain = [
+  # 102 chat_failed：[12] DOWN_BOTH_SMALL_MANA_POINT（双方 -3/分 气力）
+  { type = "settle_hp_mp", target = "self", params = { mpValue = -1, degree = 0 } },
+  { type = "settle_hp_mp", target = "selected", params = { mpValue = -1, degree = 0 } },
+]
+chat_success_chain = [
+  # 101 chat：21 - 12 - CVE_A2_E|80_G_1 - CVE_A1_E|80_G_1 - 53 - 55 - 501
+  # 21 ADD_INTERACTION_FAVORABILITY
+  { type = "settle_favorability" },
+  # 12 DOWN_BOTH_SMALL_MANA_POINT
+  { type = "settle_hp_mp", target = "self", params = { mpValue = -1, degree = 0 } },
+  { type = "settle_hp_mp", target = "selected", params = { mpValue = -1, degree = 0 } },
+  # CVE_A2_E|80_G_1：对方 对话经验(80) +1
+  { type = "h_experience", target = "selected", params = { expId = "80", value = 1 } },
+  # CVE_A1_E|80_G_1：自己 对话经验(80) +1
+  { type = "h_experience", target = "self", params = { expId = "80", value = 1 } },
+  # 53 TARGET_ADD_SMALL_FRIENDLY：好意 +（time+30）× 亲密修正
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  # 55 TARGET_ADD_SMALL_HAPPY：快乐 +（time+30）× 快乐刻印修正
+  { type = "settle_state", params = { state = "快乐", baseValue = 30 } },
+  # 501 TALK_ADD_ADJUST：好感 × 话术加成 + 好意/快乐 × 话术 + 记录谈话时间
+  { type = "talk_add_adjust" },
+]
+
+[[instructions]]
+id = "chat"
+label = "聊天"
+erark_id = "1004"
+erark_behavior = "CHAT"
+erark_h_mode_show_type = 1
+erark_tired_type = 1
+category = "daily"
+sub_category = ""
+time_cost = 5
+priority = 50
+# 前提 = 新 CSV premise_set（HAVE_TARGET|NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1）
+#   + h_mode_show_type=1 自动注入（NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX）
+#   + tired_type=1 自动注入（TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3）
+#   （erArk handle_instruct.py:134-152；2026-08-08 更新对齐——NOT_SHOW_NON_H_IN_HIDDEN_SEX/
+#   DRUNK_LEVEL_NOT_3 为新增前提，见 premise-h.ts）
+premises = ["HAVE_TARGET", "NOT_H", "TIRED_LE_84", "HP_G_1", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "DRUNK_LEVEL_NOT_3"]
+tags = ["kind:play", "system:h-core"]
+# 无位置前提 → 全地点可用（SOP §7）
+effects = [
+  # erArk handle_chat（handle_instruct.py:455-465）：talk_count > 发起者话术技能+1 → 失败链，否则成功链
+  # talk_count 时间衰减与 +1 由 chat_settle 内部处理（复刻 settle_behavior.py:560-581）
+  { type = "chat_settle", params = { fail_effects = "chat_fail_chain", success_effects = "chat_success_chain" } },
+  { type = "trigger_dialogue", params = { scene = "chat" } },
+]

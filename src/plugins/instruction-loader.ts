@@ -114,8 +114,9 @@ export function validateInstructionData(): void {
 
     if (raw.premises) {
       for (const p of raw.premises) {
-        if (!registeredPremises.has(p) && !warnedPremises.has(p)) {
-          warnedPremises.add(p)
+        // 注释：前提名大小写不敏感（premiseRegistry 注册时 lower 化）
+        if (!registeredPremises.has(p.toLowerCase()) && !warnedPremises.has(p.toLowerCase())) {
+          warnedPremises.add(p.toLowerCase())
           errorReporter.report({
             source: 'instruction-loader',
             severity: 'warning',
@@ -124,6 +125,44 @@ export function validateInstructionData(): void {
           })
         }
       }
+    }
+
+    // 注释：自动注入前提完整性校验（2026-08-08 erArk 前提自动化更新，SOP §4.1）——
+    // erArk 按 h_mode_show_type/tired_type 运行时注入前提（handle_instruct.py:134-152），
+    // 我们静态展开进 TOML。带迁移字段的指令必须包含对应展开前提，缺漏 → warning
+    // （防止 erArk 更新注入集合后已迁移指令漏补——chat 曾漏 NOT_SHOW/DRUNK 两个）
+    validateAutoInjectedPremises(raw)
+  }
+}
+
+// 注释：自动注入前提映射（erArk handle_instruct.py:134-152，SOP §4.1）
+// 键：字段前缀:值；值：必须展开进 premises 的前提列表
+const AUTO_INJECTED_PREMISES: Record<string, string[]> = {
+  'h_mode:1': ['NOT_H', 'NOT_SHOW_NON_H_IN_HIDDEN_SEX'],
+  'h_mode:2': ['TARGET_IS_H'],
+  'tired:1': ['TIRED_LE_84', 'HP_G_1', 'DRUNK_LEVEL_NOT_3'],
+  'tired:2': ['TIRED_LE_74', 'HP_G_1', 'DRUNK_LEVEL_NOT_3'],
+}
+
+function validateAutoInjectedPremises(raw: HInstruction): void {
+  if (raw.erark_h_mode_show_type === undefined && raw.erark_tired_type === undefined) return
+  const has = new Set((raw.premises ?? []).map(p => p.toLowerCase()))
+  const expected: Record<string, string[]> = {}
+  if (raw.erark_h_mode_show_type !== undefined) {
+    expected['h_mode_show_type'] = AUTO_INJECTED_PREMISES[`h_mode:${raw.erark_h_mode_show_type}`] ?? []
+  }
+  if (raw.erark_tired_type !== undefined) {
+    expected['tired_type'] = AUTO_INJECTED_PREMISES[`tired:${raw.erark_tired_type}`] ?? []
+  }
+  for (const [field, premises] of Object.entries(expected)) {
+    const missing = premises.filter(p => !has.has(p.toLowerCase()))
+    if (missing.length > 0) {
+      errorReporter.report({
+        source: 'instruction-loader',
+        severity: 'warning',
+        message: `指令 '${raw.id}' 的 ${field}=${raw.erark_h_mode_show_type ?? raw.erark_tired_type} 自动注入前提缺失：${missing.join(', ')}`,
+        suggestion: `按 SOP §4.1 展开 erArk 自动注入的前提（handle_instruct.py:134-152）；erArk 更新后须核对此映射`,
+      })
     }
   }
 }

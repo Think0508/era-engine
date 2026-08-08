@@ -1,6 +1,8 @@
 import { premiseRegistry } from '../../core/premise-registry'
 import { evaluateCondition } from '../../core/condition'
 import { gameContext } from '../../core/game-context'
+import { entitySystem } from '../../core/entity-system'
+import { weightedRandom } from '../../utils/weighted-random'
 import type { CommonTextIndex, CommonTextEntry } from './types'
 
 export type VariableData = Record<string, {
@@ -58,14 +60,53 @@ export class CommonTextsEngine {
     return [raw]
   }
 
-  private pickEntry(entries: CommonTextEntry[], targetId: string | null, actorId?: string): string | null {
+  private pickEntry(entries: CommonTextEntry[], targetId: string | null, actorId?: string, unconsciousPass = false): string | null {
+    const candidates = this.weightedCandidates(entries, targetId, actorId, unconsciousPass)
+    if (candidates.length === 0) return null
+    return weightedRandom(candidates.map(c => ({ item: c.text, weight: c.weight })))
+  }
+
+  // 注释：候选加权（T7 审查修复——erArk get_weight_from_premise_dict 权重语义）
+  // 地文条目的 high_N 前提贡献权重，其余满足前提 +1；原实现均匀随机（权重被忽略）
+  private weightedCandidates(entries: CommonTextEntry[], targetId: string | null, actorId?: string, unconsciousPass = false): { text: string; weight: number }[] {
+    const premiseCtx: Record<string, any> = { selectedCharacterId: targetId, actorId: actorId ?? null }
+    const out: { text: string; weight: number }[] = []
+    for (const e of this.filterEntries(entries, targetId, actorId, { unconsciousPass })) {
+      let weight = 1
+      const premiseList: string[] = []
+      for (const cond of e.conditions) {
+        if (cond.startsWith('premises:')) {
+          premiseList.push(...cond.slice(9).split('&').filter(Boolean))
+        }
+      }
+      if (premiseList.length > 0) {
+        const w = premiseRegistry.getWeight(premiseList, premiseCtx)
+        if (w <= 0) continue
+        weight = w
+      }
+      out.push({ text: e.context, weight })
+    }
+    return out
+  }
+
+  /** 列出通过条件筛选的全部候选（行为地文组合用——B/C 组合并池后统一随机） */
+  private filterEntries(entries: CommonTextEntry[], targetId: string | null, actorId?: string, opts?: { unconsciousPass?: boolean }): CommonTextEntry[] {
     const premiseCtx: Record<string, any> = { selectedCharacterId: targetId, actorId: actorId ?? null }
     const getContext = () => {
       const gc = gameContext.getContext()
       if (targetId) (gc as any).selectedCharacterId = targetId
       return gc
     }
-    const matched = entries.filter(e => {
+    // 注释：T8 审查补漏——无意识过滤（erArk talk_common_judge :683-687 + get_weight_from_premise_dict :224-237）
+    // 动作类（unconsciousPass=false）：目标无意识（unconscious_h>=1）且本条条件无 unconscious 前提 → 跳过；
+    // 部位类（unconsciousPass=true）：跳过无意识检查（部位描述在无意识时仍可用）
+    const target = targetId ? entitySystem.get('character', targetId) as any : null
+    const unconscious = (target?.sp_flag?.unconscious_h ?? 0) >= 1
+    return entries.filter(e => {
+      if (unconscious && !opts?.unconsciousPass) {
+        const hasUnconsciousPremise = e.conditions.some(c => /unconscious/i.test(c))
+        if (!hasUnconsciousPremise) return false
+      }
       if (e.conditions.length === 0) return true
       for (const cond of e.conditions) {
         if (cond.startsWith('premises:')) {
@@ -89,13 +130,41 @@ export class CommonTextsEngine {
       }
       return true
     })
-    if (matched.length === 0) return null
-    return matched[Math.floor(Math.random() * matched.length)].context
+  }
+
+  // 注释：行为地文组合（T3，erArk talk_common_judge 语义）
+  // behaviorKey = 行为部位名（如 penis_in_vagina）——组合 action_A/B1/B2/C1/C2 分段：
+  //   A 组：action_A_xxx（随机一条）
+  //   B 组：action_B1_xxx ∪ action_B2_xxx 合并池（随机一条，erArk part_id 同为 "B"）
+  //   C 组：action_C1_xxx ∪ action_C2_xxx 合并池（随机一条）
+  // 动作段间换行（erArk 'action' in type_id → + '\n'）
+  getBehaviorText(behaviorKey: string, targetId: string | null, actorId?: string): string | null {
+    const segmentGroups = [
+      [`action_A_${behaviorKey}`],
+      [`action_B1_${behaviorKey}`, `action_B2_${behaviorKey}`],
+      [`action_C1_${behaviorKey}`, `action_C2_${behaviorKey}`],
+    ]
+    let out = ''
+    for (const group of segmentGroups) {
+      const candidates: { text: string; weight: number }[] = []
+      for (const variable of group) {
+        const entry = this.index[variable]
+        if (!entry) continue
+        candidates.push(...this.weightedCandidates(entry.entries, targetId, actorId))
+      }
+      if (candidates.length === 0) continue
+      out += weightedRandom(candidates.map(c => ({ item: c.text, weight: c.weight }))) + '\n'
+    }
+    if (out.length === 0) return null
+    return out.trim()
   }
 
   getText(variable: string, targetId: string | null, actorId?: string): string | null {
     const entry = this.index[variable]
     if (!entry) return null
+    // 注释：动作类 vs 部位类——无意识过滤语义（erArk body_part_flag）
+    const isAction = variable.startsWith('action_')
+    const unconsciousPass = !isAction
 
     if (entry.parts.length > 0) {
       const groups = new Map<string, CommonTextEntry[]>()
@@ -104,19 +173,31 @@ export class CommonTextsEngine {
         if (!groups.has(p)) groups.set(p, [])
         groups.get(p)!.push(e)
       }
+      // 注释：T8 审查补漏——短词池合并（erArk talk.py:662-665）：
+      // _s 短词且非 penis/hair → A 段并入 common_s 的 A 段候选（合并后统一权重随机）
+      if (entry.variable.includes('_s') && !entry.variable.includes('penis') && !entry.variable.includes('hair')) {
+        const commonA = this.index['common_s']
+        if (commonA) {
+          const a = groups.get('A') ?? []
+          for (const e of commonA.entries) {
+            if ((e.part ?? '') === 'A') a.push(e)
+          }
+          groups.set('A', a)
+        }
+      }
 
       const parts: string[] = []
       for (const partId of entry.parts) {
         const candidates = groups.get(partId)
         if (!candidates) continue
-        const picked = this.pickEntry(candidates, targetId, actorId)
+        const picked = this.pickEntry(candidates, targetId, actorId, unconsciousPass)
         if (picked) parts.push(picked)
       }
       if (parts.length === 0) return null
       return parts.join('')
     }
 
-    return this.pickEntry(entry.entries, targetId, actorId)
+    return this.pickEntry(entry.entries, targetId, actorId, unconsciousPass)
   }
 
   replaceAll(text: string, targetId: string | null, actorId?: string): string {

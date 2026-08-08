@@ -90,18 +90,21 @@ name = "受精"
 max = 1
 description = ""
 tags = ["性素质"]
+favorability_adjusts = [{ group = "preg", value = 0.5 }]
 
 [talents."妊娠"]
 name = "妊娠"
 max = 1
 description = ""
 tags = ["性素质"]
+favorability_adjusts = [{ group = "preg", value = 0.5 }]
 
 [talents."临盆"]
 name = "临盆"
 max = 1
 description = ""
 tags = ["性素质"]
+favorability_adjusts = [{ group = "preg", value = 0.5 }]
 
 [talents."产后"]
 name = "产后"
@@ -660,24 +663,28 @@ name = "思慕"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorability_adjusts = [{ group = "love1", value = 0.25 }]
 
 [talents."恋慕"]
 name = "恋慕"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorability_adjusts = [{ group = "love2", value = 0.5 }]
 
 [talents."恋人"]
 name = "恋人"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorability_adjusts = [{ group = "love3", value = 0.75 }]
 
 [talents."爱侣"]
 name = "爱侣"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorability_adjusts = [{ group = "love4", value = 1.0 }]
 
 [talents."戒指"]
 name = "戒指"
@@ -690,24 +697,28 @@ name = "屈从"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorability_adjusts = [{ group = "love1", value = 0.25 }]
 
 [talents."驯服"]
 name = "驯服"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorability_adjusts = [{ group = "love2", value = 0.5 }]
 
 [talents."宠物"]
 name = "宠物"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorability_adjusts = [{ group = "love3", value = 0.75 }]
 
 [talents."奴隶"]
 name = "奴隶"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorability_adjusts = [{ group = "love4", value = 1.0 }]
 
 [talents."项圈"]
 name = "项圈"
@@ -738,6 +749,8 @@ name = "感情缺乏"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["*"], value = -0.4 }]
+favorability_adjusts = [{ value = -0.2 }]
 
 [talents."难以越过的底线"]
 name = "难以越过的底线"
@@ -750,6 +763,7 @@ name = "献身"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["恭顺", "屈服"], value = 0.4 }]
 
 [talents."倒错"]
 name = "倒错"
@@ -762,6 +776,7 @@ name = "讨厌男性"
 max = 1
 description = ""
 tags = ["精神素质"]
+favorability_adjusts = [{ value = -0.2 }]
 
 [talents."讨厌女性"]
 name = "讨厌女性"
@@ -774,12 +789,14 @@ name = "施虐狂"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["先导"], value = 0.4 }]
 
 [talents."受虐狂"]
 name = "受虐狂"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["苦痛"], value = 0.4 }]
 
 [talents."正常位喜好"]
 name = "正常位喜好"
@@ -858,48 +875,56 @@ name = "勤劳"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["习得", "先导"], value = 0.3 }]
 
 [talents."懒散"]
 name = "懒散"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["习得", "先导"], value = -0.3 }]
 
 [talents."脆弱"]
 name = "脆弱"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["恭顺", "屈服"], value = 0.3 }]
 
 [talents."坚强"]
 name = "坚强"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["恭顺", "屈服"], value = -0.3 }]
 
 [talents."热情"]
 name = "热情"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["好意", "快乐"], value = 0.3 }]
 
 [talents."孤僻"]
 name = "孤僻"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["好意", "快乐"], value = -0.3 }]
 
 [talents."羞耻"]
 name = "羞耻"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["欲情", "羞耻"], value = 0.3 }]
 
 [talents."开放"]
 name = "开放"
 max = 1
 description = ""
 tags = ["精神素质"]
+state_adjusts = [{ states = ["欲情", "羞耻"], value = -0.3 }]
 
 [talents."内衣透视"]
 name = "内衣透视"
@@ -1026,6 +1051,7 @@ name = "教官"
 max = 1
 description = ""
 tags = ["技术素质"]
+state_adjusts = [{ states = ["习得", "先导"], value = 0.5 }]
 
 [talents."厨艺"]
 name = "厨艺"

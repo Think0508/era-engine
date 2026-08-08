@@ -119,15 +119,410 @@ Code review 修复（2026-08-08 子代理 review）✅
   - 修 flaky：test-mod greet 两行条件互斥（原无条件行 + 随机选 → 断言 flaky）
   验收: npm run typecheck ✅ / npm run test 296 通过 ✅（6 连跑稳定）
 
-已知缺口（本次审查发现，登记 TODO）:
+B1 试点：chat（1004）完整复刻（2026-08-08，用户要求最小化验证，先单条后整批）✅
+  - 批次清单 docs/instruction-replication/batch-01-daily.md：24 条总览 + chat 深度分析
+    （判定四列=无判定（handle_chat 无 judge）/ 前提 4 已注册+1 新注册 / 效果链 7 ID 两步路径逐条 /
+     time_cost=5（Behavior_Data.csv 非 -1）/ 无位置前提）
+  - chat TOML → src/plugins/h-core/data/default/instructions/daily.toml（插件默认层，mod 可覆盖）
+    失败链/成功链用 [effect_blocks]（TOML 内联表不能跨行，块名引用）
+  - 新增引擎效果（h-core）：
+    - chat_settle：复刻 handle_chat（talk_count 衰减/分支/递增，settle_behavior.py:560-581）
+    - talk_add_adjust：复刻 501 TALK_ADD_ADJUST（default.py:5813，话术加成 + talk_time 记录）
+  - 新增前提 NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1
+    （语义 handle_premise/__init__.py:834；未实装子系统留 TODO：监禁/睡眠/外勤等）
+  - 修静默 bug：calcFavorability 亲密项用数字键 33（abilities 按名存 → 恒 0）→ 改按名 '亲密'
+  - 补 话术技能（erArk ability 40）到 h-core 默认 abilities.toml
+  - 新增 6 测试 src/plugins/instruction-chat.test.ts（成功链全 7 ID 数值/失败链/同日衰减/跨天归零/话术门槛/无 error）
+  验收: npm run typecheck ✅ / npm run test 302 通过 ✅（33 文件）
+
+L1.6 结算保真补全（2026-08-08，tenths_add/连续减值/无意识门控三件套）✅
+  - tenths_add（common_default.py:233-240）：settle_state 全局生效——追加 min(3×基础值, 当前值/10)；
+    当前值 0 时无影响（chat 既有测试数值不变）
+  - 连续重复指令减值（common_default.py:210-231/569-589）：引擎新增执行历史
+    behaviorHistory（command-executor 记录，上限 8 条）+ getContinuousAdjust（第 3 次 0.7 → 5 次触底 0.4）
+    → settle_state（非负面/非自己）/ settle_favorability / settle_trust（仅正收益）全部生效；
+    基础指令 wait/move/rest 不衰减（erArk instruct 0/1/2）
+  - 无意识门控（common_default.py:196-208/551-557）：时停部分（sp_flag.unconscious_h===3）——
+    settle_state 心智状态/心理快感跳过、favorability/trust 不结算、settle_hp_mp 不结算；
+    睡眠/无意识留 TODO（L1.7）
+  - 系统难度/信物修正 → 留 TODO（依赖系统未实装，同 spec §5.3）
+  - 新增 15 测试 src/core/settle-fidelity.test.ts；chat 测试加 beforeEach 历史隔离
+  验收: npm run typecheck ✅ / npm run test 317 通过 ✅（34 文件）
+
+结算保真审查（2026-08-08，三件套架构核查）✅
+  - 接入架构确认：三件套全部在 settle_* effect 类型内 → 所有指令 TOML 引用这些类型即自动生效
+    （chat 已受益；B2-B6 按 SOP 映射同样自动获得），无逐指令接线负担
+  - 【审查发现·已修】settle_state 无意识门控只查 ids[0]——多目标（群交/战斗 all_enemies）时
+    其他目标门控静默失效 → 改 per-id（新增多目标测试，直接调 handler）
+  - 【审查发现·已修】tech_adjust 三件套缺失 + 两处公式偏差（B3-B6 大量依赖，必须前置）：
+    ① 欲情误用 sqrt(部位感度×欲情)——erArk state 12 非快感分支 = base×ability表[目标.部位感度]
+    ② 部位感度查 abilities[part]（'皮肤'）——能力实际按名存 '皮肤感度'，恒 undefined → 感度等级
+       从未生效（静默）→ 新增 PART_ABILITY 映射
+    ③ 补 tenths_add/连续减值/无意识心理门控
+  - 【已修】tenths 当前值改 getEntityAttr 跨命名空间读取
+  - 登记 TODO：tech_adjust 的素质/调香/催眠敏感/体位/信物/难度修正（依赖未实装系统，同 spec §5.3）；
+    body_item_tick/二段结算在时停下的行为（B3 前核对 second_behavior.py）
+  验收: npm run typecheck ✅ / npm run test 322 通过 ✅（34 文件）
+
+第二批结算保真：素质修正数据化 + 催眠敏感（2026-08-08）✅
+  - 数据化设计（用户确认架构）：修正写入 talents.toml 天赋定义字段，TS 查定义表动态应用——
+    加新天赋 = 改 TOML 一行，零 TS 改动（talents.toml 解析为 mod.talentDefs，TalentDef 接口补字段）
+  - state_adjusts（状态系数加法，erArk common_default.py:379-422）：13 天赋
+    勤劳/懒散/教官（习得先导±）、脆弱/坚强/献身（恭顺屈服）、热情/孤僻（好意快乐）、
+    羞耻/开放（欲情羞耻）、施虐狂（先导）、受虐狂（苦痛）、感情缺乏（states=["*"] 全部 -0.4）
+  - favorability_adjusts（好感系数，erArk :717-748）：爱情隶属系 8 个（love1-4 组二选一累计）、
+    受精/妊娠/临盆（preg 组）、感情缺乏/讨厌男性（无组）、博士信息素 3 个（pheromone 组取最高，新增定义）
+  - calcFavorability 重构：乘法混合链 → erArk 全加法 fix 链（int(fix×base)）；死键 getFallTalentLevel 删除
+  - 催眠敏感：settle_state（欲情/快感 +2 系数）+ tech_adjust（快感 sqrt 内 +2、欲情 +2），
+    数据 ch.hypnosis.increase_body_sensitivity（h-hypnosis 既有字段，实体数据共享合规）
+  - 调香（aromatherapy）→ 不做（香薰系统粗筛已砍）；calcTrust 为 MVP 简化版，天赋修正随其完整复刻登记 TODO；
+    体位修正（Sex_Position 系数/喜欢体位/子宫奸/怀孕灌肠加成）→ B3 批次清单时一并做
+  - 新增 10 测试（素质修正 4/催眠敏感 2/好感素质 4）
+  验收: npm run typecheck ✅ / npm run test 332 通过 ✅（34 文件）
+
+calcTrust 完整复刻（2026-08-08，用户纠正：禁止擅自简化）✅
+  - 原 trust.ts 为 MVP 简化（duration/60 × 好感系数）——擅自简化，已废弃
+  - 完整复刻 erArk calculation_trust（common_default.py:752-813）：fix 全加法链
+    （亲密/快乐刻印/屈服刻印 +0.2/级，苦痛/恐怖刻印 -0.3/级，反发 -1.0/级 + 素质修正数据化）
+    trust = add_time/60 × fix（float，erArk 同）；>0 乘连续减值；封顶 300 进 SettlementContext 统一钳制
+  - 测试更新（phase-h-integration calcTrust：10/60→0.167、60→1、思慕→1.25）
+  验收: npm run typecheck ✅ / npm run test 332 通过 ✅（34 文件）
+
+快感附加修正 + 死键修复（2026-08-08，用户纠正：漏报的简化项）✅
+  - settle_state/tech_adjust 补 chara_feel_state_adjust:300-347 全部位修正：
+    眼罩 +0.2（body_item slot 6）/ 无意识时无觉刻印 +(adj-1)×2 / 群交 +0.02×人数(cap10)
+    / V/W 怀孕 inflation +1、灌肠 enema_capacity×0.2
+  - settle_state 补 base 分支群交 +0.05×人数（:444-450）；tech_adjust 欲情补素质修正+群交
+  - 苦痛转化（:242-245）：pain_as_pleasure → 心理快感 ×施虐系数（tenths_add=False），settle_state 实现
+  - 死键修复：newday-settle abilities[33]→'欲望'、前提 TECHNIQUE_GE_3 abilities[30]→'技巧'
+  - 空气催眠置零（好感/信赖 fix=0，unconscious_h==5 + 空气催眠位置）→ TODO：h-hypnosis
+    空气模式存在但 air_hypnosis_position 字段未实现（h-hypnosis:230 门锁 TODO），依赖缺口非擅自简化
+  - 体位系数（Sex_Position pleasure_coefficient/喜欢体位/子宫奸体位）→ B3 批次清单时做（已确认）
+  - 新增 5 测试（眼罩/无觉/怀孕灌肠/苦痛转化/欲情素质）
+  验收: npm run typecheck ✅ / npm run test 337 通过 ✅（34 文件）
+
+第 5/7 项二次审查（2026-08-08，用户要求"完整准确"逐项核对）✅
+  - 【审查发现·已补】extra_feel_settle（common_default.py:484-515）完全未实现：
+    恭顺(顺从≥5)/先导(施虐≥5)/羞耻(露出≥5)/苦痛(受虐≥5) → 心理快感 max(10,final/20)×内层系数 + 心理经验(155)
+  - 【审查发现·已补】攻略进度素质（:455-477）：正面状态 +fall×0.05 / 负面 -fall×0.2（fall=爱情/隶属系最高级，
+    attr_calculation.py:891 get_character_fall_level）
+  - 【审查发现·已补】系数 max(0) 钳制（:353/:479）——此前缺失
+  - 【审查发现·已修】苦痛转化内层公式：原 tbl[施虐] 单系数 → sqrt(心理感度×受虐) + feel 附加修正
+    + 内层连续减值 + 无意识门控（:242-245，ability=36 受虐非施虐）
+  - 【审查发现·已修】settle_state 快感状态 abilityKey 死键：'皮肤' → PART_ABILITY 映射 '皮肤感度'
+    （51~58 效果的 stateAbility 映射逐条核对全部正确：习得→技巧/恭顺→顺从/好意→亲密/欲情→欲望/快乐→快乐刻印）
+  - 浮点误差行为与 erArk 一致（1-4×0.2 → floor=6，Python int() 同值）
+  - 新增 5 测试（fall 修正 2/extra_feel 2/快感能力映射 1）
+  验收: npm run typecheck ✅ / npm run test 342 通过 ✅（34 文件）
+
+第 5/7 项三次审查（2026-08-08，settle_state 与 common_default.py:154-515 逐行并排）✅
+  - 【审查发现·已修】连续减值的"基础指令跳过"是误读——erArk `last_instr in [0,1,2]` 为死代码
+    （behavior_id 是字符串恒不匹配，character_behavior.py:127 + Behavior.py 全字符串）→
+    一切指令（wait/move/rest）都参与衰减；删除 BASE_INSTRUCTIONS；HISTORY_MAX 8→10（erArk 10 条）
+  - 【审查发现·已补】刻印状态专用系数表 get_mark_debuff_adjust（:374-378 + attr_calculation.py:581-598）：
+    快乐/屈服/苦痛/恐怖/反感 5 状态 0→1 / 1→1.5 / 2→3 / ≥3→5（不是 ability_lv_adjust！）
+  - 【审查发现·已补】dead 门控（:180-181/:548）——settle_state/settle_favorability/settle_trust 死亡不结算
+  - 【审查发现·已补】数值上限：好感度 100000（character_handle.py:395/:403）、通用状态 99999（:249）
+    进 SettlementContext.clampValue（信赖 300 已有）
+  - 新增 4 测试（mark_debuff 3/dead 1；连续减值测试改为"一切指令衰减"）
+  验收: npm run typecheck ✅ / npm run test 346 通过 ✅（34 文件）
+
+第 5 轮审查（2026-08-08，实现代码/链路/静默错误角度）✅
+  - 【审查发现·已修】激素维度错误：博士信息素（304-306）是**发起者**天赋（erArk calculation_favorability:737-741
+    character_data.talent），此前在目标身上查 → 玩家激素修正静默失效 → favorability_adjusts 加 on="initiator"
+    （数据化），calcFavorability/calcTrust 加 initiatorId 参数，settle_favorability/talk_add_adjust/settle_trust 传入 sourceId
+  - 【审查发现·已修】h_experience 缺 canApply 门控：退缩时经验仍结算（与其他 settle_* 不一致）→ 补
+  - 【链路确认】apiSystem 未注册错误消息含 namespace 名 → 群交查询 catch 条件正确（可选能力静默）
+  - 【登记 TODO】退缩替代行为链（erArk handle_instruct.py:334-349：判定失败 → LOW/HIGH_OBSCENITY_ANUS/KISS_FAIL/
+    DO_H_FAIL 替代行为，非中止）——当前"跳过全部效果"为近似；extra_feel 的经验 155 不计入 settlement 日志
+  - 新增 3 测试（激素发起者 2/trust 门控 2）
+  验收: npm run typecheck ✅ / npm run test 349 通过 ✅（34 文件）
+
+chat 端到端审查（2026-08-08，用户要求以 chat 为例查完整性/链路/静默错误）✅
+  - 【已修】talk_count 衰减挂载位置：erArk 挂整个行动循环（character_behavior.py:413），原实现只在
+    chat_settle 内衰减（做别的行动不衰减）→ 抽 decayTalkCount（settle/talk.ts）挂 game:execution_start
+    监听（h-core，读 gameContext.selectedCharacterId——bridge 同步链路）；chat_settle 只留分支+递增
+  - 【已修】talk_add_adjust（501）缺 dead/时停门控：时停中 chat 时 21 被挡但 501 好感仍结算 → 补
+    （与 settle_favorability 门控一致，时停中 chat 整体冻结：好感/好意/快乐/气力不变，仅经验+talk_count）
+  - 【已修·测试盲区】测试 stub 的 engine.emit 为 no-op → execution_start/end 被吞（衰减/二段结算
+    测不到）→ 三个测试文件改转发真实 eventBus（产品路径：bridge → gameContext.emit → eventBus 已确认）
+  - 【审查发现·已修·真静默 bug】executeEffects 共享 execCtx：handlerCtx 的 Object.assign 会把上一个
+    效果的 _targetIds 写进共享对象（嵌套链 target='self' 后）→ 后续无 target 效果读污染值结算到错误目标；
+    且 execution_end 的 body_item_tick 调用传 _targetIds 但 resolveTarget 默认 'selected' → ids 恒空
+    （H 中震动棒持续快感从未生效）→ 循环外缓存 initialTargetIds，无 target 效果优先用调用方初始值
+  - 新增 2 测试（非聊天行动衰减 / 时停中 chat 冻结）；chat 测试 8 条 + chain-flow 真实事件路径
+  验收: npm run typecheck ✅ / npm run test 349 通过 ✅（34 文件）
+
+chat 边界审查（2026-08-08，第 6 轮：边界/盲区/测试隔离）✅
+  - 新增 5 测试：失败链 talk_time 不更新（引用比较）/ 话术 1 门槛边界 / 连续 chat 联动
+    （talk_time 更新后同小时不衰减）/ 衰减日回退安全 / 前提行为矩阵（无目标/体力1/疲劳200/时停/正常）
+  - 【审查发现·测试隔离 bug】instruction-chat 的 resetChars 未重置 sp_flag——「时停 chat」测试设的
+    unconscious_h=3 污染其后所有测试（成功链全挂，产品代码无 bug）→ resetChars 补全字段
+    （sp_flag/dead/talents/hypnosis/body_items/h_state，对齐 settle-fidelity 的 resetNpc）
+  - 期间多轮 debug 定位（事件 stub→门控→canApply→handler→loop 逐层排除），最终确认产品链路无 bug
+  验收: npm run typecheck ✅ / npm run test 354 通过 ✅（34 文件，chat 13 条）
+
+静默门控可观测化 + 测试公共基座（2026-08-08，用户担忧：门控 continue 静默跳过难排查）✅
+  - 新增 src/utils/settle-gate.ts：isSettleGated(ch, context)——dead/时停统一门控，被跳过时
+    console.debug(`[settle-gate] ...`)——门控不再黑箱，浏览器 console debug 级直接可见；
+    settle_favorability/trust/talk_add_adjust/settle_state(dead) 全部接入（语义统一防遗漏/不一致）
+  - 新增 src/utils/test-helpers.ts：共享测试基座——makeTestExecCtx（engine.emit 转发真实 eventBus）
+    + resetCharacterEntity（全字段重置：base/abilities/talents/hypnosis/sp_flag/dead/body_items/
+    h_state/experience/action_info）+ DEFAULT_NPC_BASE/DEFAULT_PLAYER_BASE；
+    instruction-chat/settle-fidelity 已迁移，新指令测试直接复用（防"各写各的 reset 漏字段"复发）
+  验收: npm run typecheck ✅ / npm run test 354 通过 ✅（34 文件）
+  补：chain-flow 也迁移到基座；门控 debug 实测输出（时停 chat → [settle-gate] settle_favorability/talk_add_adjust 可见）；
+  dev 冒烟干净（Vite ready，无 stderr）
+
+前提"自己/目标"维度修复（2026-08-08，用户质疑：注册≠真实落实——审查盲区命中）✅
+  - 【重大发现·已修】erArk 前提分"自己/目标"：无 T_ 前缀查自己（character_data = cache[character_id]），
+    T_/TARGET_ 前缀查目标。原 handler 把玩家条件查到了目标上：
+    NOT_H/IS_H（玩家**或**目标，handle_premise_other.py:1376/:1392）、TIRED_LE_84（玩家，:444）、
+    HP_G_1（玩家，handle_self_not_tired）、TECHNIQUE_GE_3（自己，ability.py:1017）→ 全部修正为玩家维度
+    （getPlayerChar helper：引擎指令仅玩家发起，自己=玩家；NPC 发起需扩展 ctx.sourceId）
+  - 修复后 chat 前提完整语义：玩家（有目标/不在H/疲劳≤134/体力>1）+ 目标（可协同或监禁）
+  - 新增前提维度测试（玩家在H/疲劳/体力 与目标同字段对比）
+  - 【登记 TODO·B2 开工前】其余前提语义系统核对：FINGER/WAIST_TECHNIQUE（应自己）、HAVE_*物品
+    （应自己）、NOW_CONDOM（应自己）、VIBRATOR_LEVEL_*（应自己）、high_*/HIGH_1（erArk HIGH_1
+    恒 true 是权重前提，我们实现成参数等级=偏离）、premise-fall 数字键死键
+  验收: npm run typecheck ✅ / npm run test 355 通过 ✅（34 文件）
+
+复刻 skill 沉淀（2026-08-08，用户要求：把 chat 全部教训固化为稳定流程）✅
+  - 新增 docs/skills/replicating-an-instruction.md：完整复刻一条指令的 6 阶段检查清单
+    （取证/判定/前提语义对象/效果翻译/防静默验证/文档），含常见静默错误速查表
+  - RED 基线 = chat 复刻全程真实失败记录（注册≠语义对/执行≠效果对/测试 stub 盲区/
+    reset 漏字段/浮点误差/被砍内容补回）
+  - 已注册到 AGENTS.md 必读清单 + migration-workflow §13 索引
+  - GREEN 验证：下一指令 stroke 按此 skill 试运行（验证是否避免同类错误）
+
+口上系统完整复刻（2026-08-08，spec: docs/superpowers/specs/2026-08-08-talk-system-replication-design.md）✅
+  - T1 权重系统：premiseRegistry.getWeight（high_N→N + 满足前提数 + 淘汰 + 空集1）；口上 weight 字段
+    （固定权重优先）；triggerScene 同池竞争（scene+character 合并，专属×10，权重区间随机）；high_N 前提
+    修复（原误用"参数等级≥N"）
+  - T2 CVP 静态转换补全：premiseRegistry **大小写不敏感**（重大修复——迁移数据小写前提 vs 注册大写
+    导致 talk-common 条件静默失效）；getFallLevel 死键修复（数字键→按名查思慕→奴隶）；FALL_LEVEL
+    全组合注册（cmp×-4..4）；NE 运算符补丁；47 个未注册前提补齐（12 可判 + 35 恒 false + TODO）；
+    condition-registry 补 player.abilities.level/player.talents/body_semen 路径；尿道属性补定义；
+    全量数据校验测试（可解析/前提全注册/表达式可校验——静默失效变可检测）
+  - T3 行为地文：getBehaviorText（A + B1∪B2 + C1∪C2 三段组合、动作段换行，erArk part 分组确认）；
+    混合率（hConfig talk.common_mix_rate 默认30）+ **weight≥100 不替换保护**（erArk talk.py:246）；
+    无口上时行为地文兜底
+  - T4 版本化口上：行 version + 实体 character_text_version（0=不启用）
+  - T5 无意识屏蔽：时停目标只出 unconscious 前提口上（场景通用无条件也淘汰，erArk :224-237）
+  - T6 特殊情境加权：hConfig [[talk.situations]] 数据化（9 类默认 ×5，mod 可覆盖）
+  - 新增测试 12 个（权重 4/竞争 4/行为地文 4/版本 1/无意识 1/情境 1）
+  验收: npm run typecheck ✅ / npm run test 373 通过 ✅（37 文件）/ dev 冒烟干净
+
+口上系统第 7 轮审查（2026-08-08，T1-T6 实现逐项核对 erArk）✅
+  - 【已修·真 bug】hConfig 情境配置拼写错误：self_time_stop_orgasm_relaese（多 e）——
+    erArk 值实际为 relase（SELF_TIME_STOP_ORGASM_RELAESE = "self_time_stop_orgasm_relase"）→
+    时停解放情境的 self 前提永不匹配（静默）→ 已改
+  - 【已修】getWeight 的 high_ 判断用原串——大写输入（HIGH_5）时权重语义丢失 → 改 lower 判断
+  - 【已修·真简化】talk-common 地文条目均匀随机（pickEntry/getBehaviorText）——erArk 是
+    get_weight_from_premise_dict 权重区间随机（high_N 生效）→ weightedCandidates 加权随机
+  - 【核对通过】情境加权顺序（基础→专属×10→情境×5，固定权重也乘）；erArk 9 类集合照抄
+    （含 SELF_NOT_PLAYER_DAUGHTER 等原版成员）；版本过滤仅角色层；无意识子串检查为近似（登记）
+  - 偶发 vitest 4 skipped（pool 调度，DEPRECATED poolOptions 警告）——重跑稳定，登记观察
+  验收: npm run typecheck ✅ / npm run test 373 通过 ✅（37 文件）
+
+口上系统第 8 轮审查（2026-08-08，按计划逐项核对 + 查漏/重复/静默）✅
+  - 【计划交付点·漏项已补】T3"短词池合并 common_s"（erArk talk.py:662-665）：_s 短词且非
+    penis/hair → A 段候选并入 common_s 的 A 段——此前未实现
+  - 【计划交付点·漏项已补】T5"talk_common 无意识处理"（erArk :683-687）：动作类地文在目标
+    无意识（unconscious_h>=1）且条件无 unconscious 前提时淘汰；部位类跳过无意识检查——此前未实现
+  - 【重复实现已消除】权重区间随机两处重复（dialogue pickWeightedLine / talk-common pickEntry+
+    getBehaviorText）→ 抽 src/utils/weighted-random.ts 共用
+  - 【核对通过】各 phase 与计划一致；无跨层违规；无其他重复造轮子；try/catch 无吞错
+  - 新增测试 2 个（common_s 合并 / 无意识过滤——测试环境补注册 high_1/FALL_LEVEL 前提）
+  验收: npm run typecheck ✅ / npm run test 375 通过 ✅（37 文件）
+
+📌 待办登记（2026-08-08，口上系统相关）：
+  - 【TODO·B3】口球屏蔽：triggerScene 目标口球时屏蔽口上（除口球相关行为）——
+    erArk get_weight_from_premise_dict:239-244（self_now_gag/target_now_gag 且行为不在 GAG 集）
+    → 依赖 B3 口球系统（body_item slot 14 = gag 已有）落地时补
+  - 【TODO·提醒导入】erArk 新增地文模块（子宫高潮等）：用户从 erArk 更新 talk_common 后，
+    按 docs/talk-common-system.md「导入 erArk 新增地文模块」流程导入（重跑转换脚本 →
+    校验测试全量验证 → 未注册前提按 T2 模式补齐 → 重启 dev）。新模块不涉及去重（纯新增）
+
+erArk 新地文增量导入（2026-08-08，62 个新模块文件）✅
+  - 新增：a/b/c/m_orgasm（肛/胸/阴蒂/口绝顶 4 档）×A/B2/C2 + w_orgasm（子宫 3 档）+
+    v_orgasm_super + body/clitoris + body_part/clitoris_s；eat 按用户已砍排除
+  - 脚本加 --incremental（跳过已存在输出文件）；补 STATUS_MAP（阴蒂/阴茎）+ TALENT_MAP
+    （泌乳/小臀/普臀/巨臀/羞耻）——修复新 CVP 的静态转换
+  - 【注意·用户需知晓】v_orgasm_normal/small/strong（9 个已跟踪文件）被 erArk 源更新：
+    条目 175→457、{Name}→{target.name} 变量修正——本次已重转为新版（git diff 可审计），
+    如需回滚：git checkout -- <文件>
+  - vitest.config 补 hookTimeout 60s（数据量翻倍致加载超默认 10s → 测试文件整体 skipped）
+  - 校验测试全绿 + 新模块验证测试（w_orgasm 组合/clitoris 部位短词）
+  验收: npm run typecheck ✅ / npm run test 376 通过 ✅（37 文件）/ dev 冒烟干净
+
+chat/口上系统专项验证 + 全部修复（2026-08-08，用户要求验证两部分的 bug/静默错误与架构）✅
+  基线：typecheck ✅ / test 376 通过（37 文件）——架构三层分离 ✅ / 无跨插件 import ✅ / 测试数值断言扎实
+  【已修·真 bug】混合率路径行为地文未插值：dialogue-system 混合率命中时 {penis}/{target.name}
+    原样输出叙事日志（fallback 路径有 interpolateLine，混合率路径漏了）→ 补插值 + 测试断言无占位符
+  【已修·真 bug】TARGET_NOW_SEX_TOY_* 语义错误（premise-instruct.ts）：WEAK 误为 1-3（应 ==1）、
+    STRONG 误为 >=4（vibrator_set 上限 3 → 恒 false 死键，应 ==3）、MIDDLE 缺失（应 ==2）
+    ——对照 handle_premise_H.py:3206/3229/3241；新增 premise-instruct.test.ts 行为矩阵
+  【已修·真 bug】射精/精液前提恒 false：PL_EJA_POINT_*/PL_SEMEN_*/PL_PENIS_* 原注册恒 false →
+    penis 短词池（240 条）全部不可达，行为地文 {penis} 永远原样显示（静默失效）→ 按 erArk
+    handle_premise_H.py:1448-1664 补真实语义（射精欲阈值 ≤600/>600、精液量+额外精液量阈值）；
+    h-ejaculation pl_penis_semen_dirty/not 硬编码角色 '0'（引擎玩家 id 实际为 'player'）→ 改
+    gameContext player id
+  【已修·架构不一致】刻印能力双轨分裂：h-mark 写 mark_{id} 数字键，settle_state/calcJudge/
+    h-bondage/h-hypnosis 读按名键（'快乐刻印'）→ 刻印升级对判定修正/状态系数静默失效 → 统一按名键
+    （h-mark 写按名 + calcFavorability/calcTrust 改按名读）；新增 h-mark.test.ts（4 测试）
+  【已修·违反铁律简化】talk_add_adjust（501）只算 floor((tc+30)×adjust)——erArk 走完整
+    base_chara_state_common_settle/favorability_common_settle（tenths_add/连续减值/素质/攻略）→
+    提取 settleOneState 共用管线 + 501 补全（ability_level = 发起者话术，快乐用 mark_debuff_adjust）；
+    顺带修正催眠敏感范围（仅快感+欲情 +2，原全状态 +2 与 erArk 不符）；
+    chat 测试断言更新：话术0 好意/快乐 70→73、话术5 好意 98→101
+  【已修·注释误导】501 "仅玩家→NPC" 是误读——erArk 是"任一方为玩家即结算"（NPC→玩家也结算）→
+    h-core 注释 + batch-01-daily §1.5/§1.6 + mod-author-guide 参数协议同步修正
+  验收：npm run typecheck ✅ / npm run test 382 通过 ✅（39 文件：新增 premise-instruct + h-mark）
+  📌 待办登记：旧存档 mark_{id} 键成为孤儿（pre-release 可接受，随存档迁移机制处理）；
+    chat_settle 嵌套 execute 的 ctx 传播契约建议固化到 mod-author-guide（已记录语义，参数表待补）
+
+erArk 高潮结算更新对齐（2026-08-08，用户提示 erArk 三处改进：orgasm_settle 独立文件/同部位只显示最高程度/退出 H 释放寸止）✅
+  - 【无需改】orgasm_settle 独立文件——纯 erArk 内部重构（延迟导入解循环依赖），我们已是独立 settle/orgasm.ts
+  - 【已改·roll_count 压缩】解放状态（orgasm_edge==2/3 或 time_stop_release）climax>=3 → 0 次普通 roll + 1 次超强绝顶；
+    1-2 → 1 次；非解放 → 每次一条（原解放时按 climaxCount 条输出——静默多输出）
+  - 【已改·releaseOrgasmEdge】新增（对齐 erArk release_orgasm_edge_now，orgasm_settle.py:333-355）：
+    endHScene 清 h_state 前对所有 is_h 角色释放寸止累计（orgasm_edge_count → 真实高潮结算 + 事件 + 日志），
+    原实现直接清 h_state 静默丢弃；单人/群交退出全覆盖
+  - 【已改·releaseTimeStopOrgasm】新增（对齐 TIME_STOP_ORGASM_RELEASE，default.py:6764-6800）：
+    h-time-stop time_stop_off 原只输出日志无数值（时停累计静默丢弃）→ 经 effect 通道
+    （release_time_stop_orgasm effect，跨插件禁直接 import）转成真实结算
+  - 【已改·judgeOrgasmEdgeSuccess】失败率 0.2→0.15 + 补多部位幂修正 success^max(1,k/2)（orgasm_settle.py:423-426）
+  - 【已改·寸止计数归属】判定/累计用被结算角色自己的 orgasm_edge_count（原误用玩家——erArk candidate =
+    自己累计 + 本次全部部位高潮数，crossed = 本次高潮部位数）
+  - 【已改·口上聚合】handleOrgasmResults 日志按部位取最高程度显示一条（erArk orgasm_settle_flag 去重），
+    h:orgasm 事件逐条保留（数值消费方）
+  - 【发现并修复·既有 bug】eventBus.emit 防重入保护（emitting 集合）→ handleOrgasmResults 同步连发 3 次
+    h:orgasm 只发 1 条（h-hidden 发现度/h-time-stop 累计静默少算）→ 改 async 逐条 await
+   - 新增 12 测试 src/plugins/orgasm-release.test.ts（roll_count 压缩 5/释放 3/时停释放 2/幂修正 1/聚合 1）
+  - phase-h 寸止失败测试同步修正（计数归属自己 + 0.15 边界）
+  验收: npm run typecheck ✅ / npm run test 394 通过 ✅（40 文件，连跑 2 次稳定）/ dev 冒烟干净
+  📌 待办登记：寸止行为口上（{part}_orgasm_edge）与 extra_orgasm 口上尚未接入（B3 H UI）；
+    orgasm_edge_off 仍是旧语义置 0（erArk 新增 ORGASM_EDGE_RELEASE 为独立 effect，B3 指令化时接）
+
+高潮结算对齐二次审查（2026-08-08，用户要求审查准确性/完整性/对接）✅
+  - 【已修·寸止判定快照】判定移主循环前一次（erArk 结构）——原逐部位判定：后续部位 candidate 含前部位
+    刚写入计数，与 erArk 快照语义不一致（超限边界的失败概率偏差）
+  - 【已修·失败重结算】只传累计寸止+本次 un_count（原把本次 normal 也传入 → orgasm_level 多计；
+    erArk 失败时本次 normal 丢弃，下次结算补算等级差）；结算后清空计数（原残留 →
+    退出 H 时 releaseOrgasmEdge 二次释放 = 双倍结算）
+  - 【已修·技巧等级读法】寸止判定技巧等级原用 getEntityAttr（返回 abilities 的 {level,xp} 对象 →
+    恒 0，判定静默偏差）→ 改按名读 .level
+  - 【已修·既有缺口】h_state.orgasm_count 从无写入 → h-mark 快乐刻印升级条件与 h-group-sex
+    结束奖励（体力上限+2/次等）静默失效 → settleOrgasm 每次真实高潮 [0]/[1] +1（B绝顶喷乳不计入，
+    erArk 独立行为 b_orgasm_to_milk）
+  - 新增 3 测试（寸止成功快照/orgasm_count 写入/喷乳不计数）；phase-h 寸止失败测试加强
+    （orgasms 1 条 degree 2 + 计数清 0 + orgasm_level 不更新）
+  验收: npm run typecheck ✅ / npm run test 397 通过 ✅（40 文件，连跑 2 次稳定）/ dev 冒烟干净
+  📌 待办登记：单人退出 H 的绝顶奖励（erArk H_END 体力上限+2/气力上限+3/精液上限，default.py:6819-6855）
+    未实现（h-group-sex 仅有群交版 group_sex_end_add_hpmp_max；orgasm_count 数据源已修复，B3 指令化时接）；
+    时停解放的 settle_unconscious_semen_and_cloth（精液/衣服结算）未对接（依赖 h-ejaculation 扩展）
+
+高潮结算第三轮审查（2026-08-08，数值语义/生命周期/静默错误）✅
+  - 【核对通过】judgeOrgasmDegree 概率表 3 档 [0.98,0.02,0] 与 erArk 逐行一致；getStatusLevel 阈值数组
+    与 Character_State_Level.csv（level 0-10 → max 0/100/500/1000/2500/6000/12000/30000/50000/75000/100000）
+    一致（含 2500 → level 4 的边界语义）；extra 阈值 20000×0.9^n 一致
+  - 【已修·静默偏差】extra 分支：preData>=10 且 extraAdd=0 时，原实现回落"当前等级-记录等级"
+    → 10 级后快感续涨但未到 extra 阈值时错误触发普通高潮；erArk normal = extra_add（无条件覆盖）
+    → 改 else 分支（extra 分支独占）
+  - 【已修·生命周期残留】time_stop_release 置 true 后永不重置 → 时停解除后 H 内后续所有高潮全走
+    解放路径（roll 压缩/超强，静默偏差）→ h-core execution_start 监听对 H 中角色重置 false
+    （对齐 erArk handle_npc_ai_in_h.py:99"NPC 每次行动开始重置"；时停解除指令同一次行动内先
+    release 后结算的顺序不受影响）
+  -   新增 4 测试（extra=0 无高潮/extra 达阈值 1 条/time_stop_release 行动重置/寸止成功快照计数）
+  验收: npm run typecheck ✅ / npm run test 400 通过 ✅（40 文件，连跑 2 次稳定）
+  📌 待办登记：时停中退出 H 的边缘（releaseOrgasmEdge 时停分支会把寸止计数并入 time_stop_orgasm_count，
+    随后 h_state 清理丢失——erArk 时停中不判定寸止故无此路径，B3 时停指令化时一并核对）；
+    玩家射精的 p_orgasm 绝顶行为（erArk orgasm_judge 射精分支 p_orgasm_small/normal/strong，
+    eja_climax 已有忍耐判定，绝顶计数未接入）
+
+高潮结算第四轮审查（2026-08-08，经验链/刻印升级/射精判定——orgasm_count 激活后的消费方）✅
+  - 【已修·静默失效】绝顶经验从无写入（erArk ADD_1_XClimax_EXPERIENCE：部位累计 10-17/156/158 +
+    总累计 20；无意识/时停解放（非玩家）时 type2 额外转 78）→ settleOrgasm recordOrgasmCount 补写
+    ——h-mark 无觉刻印（exp78）与 talk-common 绝顶经验条件（experience.N）此前恒 0
+  - 【已修·静默失效】h-mark getCumulativeValue 读 experience['orgasm_total']/['unconscious_orgasm']
+    （无人写入 → 恒 0）：快乐刻印累计分支改读 orgasm_count[state][1] 合计（erArk all_happy_count）；
+    无觉刻印累计改读 experience['78']（erArk all = exp 78）；无觉单次分支删除恒 0 的 TODO 实现
+    （改用 orgasm_count[0] 合计，erArk 同）；无觉升级补无意识门（erArk mark_effect 整个无觉块被
+    handle_unconscious_flag_ge_1 包裹）
+  - 【已修·静默偏差】玩家射精判定缺"无精液高潮"分支：精液量+额外 ≤ 2ml → erArk p_no_semen_climax
+    （绝顶不射精：射精欲归零 + 忍耐计数清零）→ 原实现直接 shouldEjaculate（精液 0 也走射精链路）
+  - 【核对通过】h-mark 刻印升级数值 vs Mark_Up.csv：屈服 30000/50000/100000、苦痛与恐怖 20000/40000/80000、
+    反发 10000/30000/80000 全部一致；快乐/无觉硬编码条件（2/5、8/20、16/50、100、200、500）与
+    mark_effect 逐行一致；经验映射（0-7→10-17、21→156、23→158）与 Second_effect 一致
+  - 新增 6 测试（h-mark 快乐累计/无觉 exp78/无意识门/无觉单次 + phase-h 无精液高潮 + 原射精测试补精液量）
+  验收: npm run typecheck ✅ / npm run test 404 通过 ✅（40 文件，连跑 2 次稳定）
+  📌 待办登记：无精液高潮的行为口上（p_no_semen_climax）与射精绝顶 p_orgasm 口上/计数（B3 H UI）
+
+erArk 指令前提自动化更新对齐（2026-08-08，InstructConfig.csv 新增 h_mode_show_type/tired_type 两列）✅
+  - 【机制理解】erArk handle_instruct.py:134-152 按类型运行时自动注入前提：
+    h_mode_show_type=1（非H显示）→ NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX；=2（仅H内）→ TARGET_IS_H；
+    tired_type=1（低疲劳）→ TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3；=2（特定疲劳）→ TIRED_LE_74 +
+    HP_G_1 + DRUNK_LEVEL_NOT_3。新 CSV premise_set 已精简（chat 仅剩 2 个显式前提）
+  - 【对齐决策】不学运行时注入（我们 TOML 显式 premises 更透明、mod 可覆盖）→ 迁移时静态展开：
+    SOP §4 新增 4.1「自动注入前提展开」规则；批次清单 §2 更新展开映射
+  - 【已注册 3 新前提（premise-h.ts）】TIRED_LE_74（疲劳≤118，erArk :405）、
+    NOT_SHOW_NON_H_IN_HIDDEN_SEX（隐奸全局开关取反，未实装 → 恒 true = erArk 默认值 + TODO）、
+    DRUNK_LEVEL_NOT_3（醉酒等级≠3，醉酒系统未实装 → 恒 true = 语义正确降级 + TODO）
+  - 【已更新】chat(1004) TOML premises 补 NOT_SHOW_NON_H_IN_HIDDEN_SEX + DRUNK_LEVEL_NOT_3
+    （h_mode_show_type=1 + tired_type=1 展开）；batch-01-daily §1.3/§2 同步
+  - 【登记待批次】TARGET_IS_H 未注册（h_mode_show_type=2 的 H 内指令迁移时注册）
+  - 新增 1 测试（TIRED_LE_74 边界 118/119 + 新前提恒 true）
+  验收: npm run typecheck ✅ / npm run test 405 通过 ✅（40 文件，连跑 2 次稳定）
+
+erArk 前提自动化承接机制（2026-08-08，架构决策：不学运行时注入，显式展开 + 追溯字段 + 完整性校验）✅
+  - 【决策】erArk"类型字段→运行时注入前提"（handle_instruct.py:134-152）不学——TOML 显式 premises
+    更透明（可审计/可测试/mod 可覆盖）；静态展开语义等价
+  - 【已加·追溯字段】HInstruction 扩展 erark_h_mode_show_type/erark_tired_type（迁移期字段，
+    与 erark_id 同生命周期，全部批次完成后删除）——chat 已填；未来 diff CSV 可精确定位类型值变化
+  - 【已加·完整性校验】validateInstructionData 新增 validateAutoInjectedPremises：带迁移字段的指令
+    按 AUTO_INJECTED_PREMISES 映射（SOP §4.1）核对 premises 是否包含应展开前提，缺漏 → warning
+    （防止 erArk 更新注入集合后已迁移指令漏补——chat 曾漏 NOT_SHOW/DRUNK）
+  - 新增 1 测试（缺展开前提 → warning；chat 齐全无 warning）
+  验收: npm run typecheck ✅ / npm run test 406 通过 ✅（40 文件）
+
+erArk 新地文导入补漏（2026-08-08，T9）✅
+  - 【发现·修复】action_B1_penis_in_hair.toml 全文件损坏（340 条 context 含 U+FFFD）——
+    旧转换的历史编码问题（CSV 源现已干净）→ 重转修复（parse OK、0 U+FFFD）
+  - 【升级】talk-common-data 校验测试：轻量解析（只提取 conditions 行）→ **完整 parseTOML**
+    ——description/context 损坏的文件不再静默通过（loadTomlDir 的 catch 静默跳过变可检测）
+  - 【处理】重转引入 1 个 Dirty CVP（CVP_A2_Dirty|B0_G_1，精液污染，hair 地文）→ 恒 false + TODO
+    （依赖 h-ejaculation 精液系统）；eat 反复生成 → 脚本跳过 eat 文件名
+  - 【vitest.config】poolOptions 为 vitest 4 已移除 API（DEPRECATED 警告，运行时兼容）——
+    LSP 报错但不影响 typecheck（vue-tsc 不检查该文件），登记观察
+  - 【数据规模实测】talk-common 全量：165 文件 / 202,181 条 / 完整 parse ~1.7s（Node）；
+    游戏启动同 erArk 全量加载（无超时概念，dev 下 165 个 ?raw 请求是主要延迟 ~2-5s，
+    生产打包后快）。【可选优化·登记】若 dev 首屏慢 → 懒解析（parse 延后到首次访问
+    variable）+ dev 请求聚合；先保持现状（与 erArk 一致）
+  验收: npm run typecheck ✅ / npm run test 376 通过 ✅（37 文件，连续 3 次稳定）
+  - 【TODO·L1.7】睡眠完整语义（无意识口上屏蔽的 sleep 分支、T_UNCONSCIOUS_FLAG_1 等前提）
+  - 【TODO·随系统】35 个恒 false 前提（隐奸/露出/群交/监禁/助手/女儿/首次/时停解放/精液）补语义；
+    行为地文 daily 数据（erArk 侧新增未构建）
+
+激素/信息素纠正（2026-08-08，用户指出——擅自加入了被砍的世界观内容）✅
+  - 【用户发现·已撤销】博士信息素（304-306）属**信息素系统**（方舟世界观专属），粗筛明确砍掉
+    （master-list:543"含原砍掉的 46 条：…激素…"；4111/4112 hormone_on/off 延后）——
+    第 2 批时我见 talents.toml 缺失就擅自补了 3 个定义+修正，第 5 轮又在错误基础上深化（on="initiator"）
+  - 已全部撤销：talents.toml 删 3 定义；talent-adjust.ts 删 on 机制；calcFavorability/calcTrust 恢复单参数；
+    调用点恢复；删 2 个激素测试。talents.toml 现仅含给既有天赋的修正字段，零新增定义
+  - 教训登记：粗筛 master-list 是"砍掉/延后"的权威依据，补任何 erArk 数据前必须先查 master-list
+  验收: npm run typecheck ✅ / npm run test 347 通过 ✅（34 文件）
+
+已知缺口（登记 TODO，批末一并处理）:
+  - settle_state/settle_favorability 缺 erArk 的 tenths_add、连续指令减值、无意识门控、系统难度/信物修正（引擎既有近似）
   - resolveValue 不支持 quest.*/inventory.* 根路径（注册表里有、求值恒为 0/false 静默）——
     需 gameContext 暴露 quests/inventory 上下文后接入
   - 可用条件属性手册.md 生成（conditionRegistry.generateManual 已有实现）未接线——
     浏览器端无法写文件系统，需 dev 工具/脚本方案
   - plugin-manager 用 console.warn（铁律要求 errorReporter）——既有代码，随批收敛
 
-下一步: B1 批次清单 docs/instruction-replication/batch-01-daily.md（24 条 daily/work/play）
-  → 用户筛选 → 逐条写 TOML 到 src/plugins/h-core/data/default/instructions/（spec §8 每批工作流）
+下一步: B1 剩余 23 条（用户筛选 → 逐条复刻，SOP 每批工作流）
+  → 每条约 30 分钟分析+实现；sleep 特殊耗时（跨天跳转）L1.7 处理
 ```
 
 ### 已完成（此前会话）
@@ -341,7 +736,7 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 
 **参考**：`docs/superpowers/specs/2026-08-07-instruction-replication-design.md`（权威 spec）+ `docs/instruction-replication/migration-workflow.md`（逐条 SOP）+ `docs/skills/erark-replication.md`
 
-> **当前进度**：第 0 步粗筛 ✅（228 保留，见 `docs/instruction-replication/instruction-keep-list.md`）→ 前置改动 ✅（spec §10 全部完成）→ **下一步 B1 批次清单**（24 条 daily/work/play，写 `batch-01-daily.md` 等用户筛选）
+> **当前进度**：第 0 步粗筛 ✅（228 保留，见 `docs/instruction-replication/instruction-keep-list.md`）→ 前置改动 ✅（spec §10 全部完成）→ **B1 试点 chat 已复刻 ✅（6 测试）→ 剩余 23 条待用户筛选**（批次清单 `batch-01-daily.md`）
 
 - **前置改动** ✅（见会话交接摘要）：loader 收敛 / 接口扩展+judge_check 注入 / calcJudge adjustments 表 / IN_* 迁 location.tags / 耗时机制 / UI 分类 / _erark_source 归档
 - **Phase A**：齐全前提（~80 个），按 A1（身体/体技/体位）→ A2（服装/地点/道具）→ A3（杂项）分批

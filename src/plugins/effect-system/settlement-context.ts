@@ -144,6 +144,14 @@ export class SettlementContext {
     else if (attr === '疲劳度') {
       v = Math.min(160, v)
     }
+    // 信赖度上限 300（erArk base_chara_favorability_and_trust_common_settle:663/:667）
+    else if (attr === '信赖度') {
+      v = Math.min(300, v)
+    }
+    // 好感度上限 100000（erArk character_handle.add_favorability:395/:403）
+    else if (attr === '好感度') {
+      v = Math.min(100000, v)
+    }
     // 饥饿值上限 240
     else if (attr === '饥饿值') {
       v = Math.min(240, v)
@@ -165,6 +173,10 @@ export class SettlementContext {
     // 欲望值上限 100
     else if (attr === '欲望值') {
       v = Math.min(100, v)
+    }
+    // 通用上限 99999（erArk 状态值 clamp，common_default.py:249）
+    else {
+      v = Math.min(99999, v)
     }
 
     return v

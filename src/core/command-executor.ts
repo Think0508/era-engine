@@ -15,6 +15,36 @@ import { newDaySettle } from './newday-settle'
 import { processPendingSpawns } from './spawn-system'
 import { checkTalentGain } from './talent-utils'
 
+// 注释：玩家指令执行历史（连续重复指令减值用，对齐 erArk cache.pl_pre_behavior_instruce）
+// erArk 上限 10 条（character_behavior.py:127-129）；系数在第 5 次触底 0.4
+const HISTORY_MAX = 10
+export const behaviorHistory: string[] = []
+export function recordBehaviorHistory(id: string): void {
+  behaviorHistory.push(id)
+  if (behaviorHistory.length > HISTORY_MAX) behaviorHistory.shift()
+}
+export function clearBehaviorHistory(): void {
+  behaviorHistory.length = 0
+}
+
+// 注释：连续重复指令减值系数（erArk common_default.py:210-231/569-589）
+// 玩家对同一目标连续执行同一条指令：第 3 次起系数 = 1 - 0.15×(连续次数-1)，下限 0.4
+// 注意：erArk 的"基础指令跳过"（last_instr in [0,1,2]）是死代码——behavior_id 为字符串，
+// 与数字比较恒 False → 一切指令（含 wait/move/rest）都参与连续计数
+// 最后一条不是连续重复 → 1.0（不衰减）
+export function getContinuousAdjust(): number {
+  const n = behaviorHistory.length
+  if (n < 2 || behaviorHistory[n - 1] !== behaviorHistory[n - 2]) return 1
+  const last = behaviorHistory[n - 1]
+  let count = 0
+  for (let i = n - 1; i >= 0; i--) {
+    if (behaviorHistory[i] === last) count++
+    else break
+  }
+  if (count <= 2) return 1
+  return Math.max(0.4, 1 - 0.15 * (count - 1))
+}
+
 // 注释：ExecutionContext 暴露给 handler 函数的上下文
 // 与 PluginContext 不同——原生指令是 UI 层概念，不需要 parent/api.register
 export interface ExecutionContext {
@@ -101,6 +131,9 @@ export class CommandExecutor {
       })
       return
     }
+
+    // 注释：记录执行历史（连续重复指令减值用）——前提/条件通过后、执行开始前
+    recordBehaviorHistory(id)
 
     // 注释：包裹 EXECUTING
     const engine = ctx.engine

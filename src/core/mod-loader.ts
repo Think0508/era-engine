@@ -52,6 +52,11 @@ export interface HInstruction {
   judge_class?: string        // 判定族名（hConfig [judge.adjustments] 表 key）
   erark_id?: string           // 迁移期追溯字段，全部批次验收后删除
   erark_behavior?: string     // 迁移期追溯字段，全部批次验收后删除
+  // 迁移期追溯字段（2026-08-08 erArk 前提自动化更新）：InstructConfig.csv 的 h_mode_show_type/
+  // tired_type 原始值——用于承接 erArk 后续更新（diff CSV 定位类型值变化）与
+  // validateInstructionData 的"自动注入前提完整性"校验（SOP §4.1），全部批次验收后删除
+  erark_h_mode_show_type?: number   // 0=全显示 1=非H显示 2=仅H内显示
+  erark_tired_type?: number         // 0=无关 1=低疲劳 2=特定疲劳
   tags?: string[]             // 多标签（system:/kind:/part:）
   effects?: Effect[]
 }
@@ -86,6 +91,11 @@ export interface ReactiveLine {
   condition?: string
   text: string
   effects?: Effect[]
+  // 注释：权重（T1 权重系统）——静态权重，等价 erArk CVP_Weight|0 固定权重；缺省时权重 =
+  // 前提权重（high_N 累加 + 满足前提数），无条件 = 1
+  weight?: number
+  // 注释：口上版本（T4 版本化）——同一场景多版本时按角色 character_text_version 选择
+  version?: number
   // 注释：展示参数（[styles] 引用或行级覆盖）
   style?: string
   display?: string
@@ -149,6 +159,11 @@ export interface TalentDef {
   modifiers?: TalentModifier[]
   gain?: TalentGain
   tags?: string[]
+  // 注释：结算修正（数据化，h-core settle/talent-adjust.ts 消费）
+  // state_adjusts：状态系数加法修正（erArk chara_base_state_adjust），states=["*"]=全部状态
+  // favorability_adjusts：好感/信赖系数加法修正（erArk calculation_favorability），同 group 取最大
+  state_adjusts?: { states: string[]; value: number }[]
+  favorability_adjusts?: { group?: string; value: number }[]
 }
 
 // 注释：套装定义

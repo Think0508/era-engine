@@ -85,6 +85,29 @@ cid,instruct_id,name,instruct_type,instruct_sub_type,premise_set,behavior_id,...
 - 位置前提**一律**走 location.tags，**禁止**注册 `IN_*` handler（这是既定架构决策）。
 - 未注册前提**不能静默跳过**——批次清单里必须标注"已注册/需注册/改tag"，批末验收时确认无遗漏。
 
+### 4.1 自动注入前提展开（2026-08-08 erArk 更新对齐）
+
+erArk 新版 InstructConfig.csv 新增 `h_mode_show_type`（H模式显示类型）与 `tired_type`（疲劳类型）两列，
+`handle_instruct.py:134-152` 在运行时按类型**自动注入**前提（CSV premise_set 中已不含这些前提）：
+
+```
+h_mode_show_type = 1（非H显示） → 注入 NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX
+h_mode_show_type = 2（仅H内显示） → 注入 TARGET_IS_H
+tired_type = 1（低疲劳）        → 注入 TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3
+tired_type = 2（特定疲劳）       → 注入 TIRED_LE_74 + HP_G_1 + DRUNK_LEVEL_NOT_3
+tired_type = 0 / h_mode_show_type = 0 → 不注入
+```
+
+**迁移时必须把自动注入的前提显式展开进 TOML premises**（我们引擎无运行时注入，静态数据语义等价）：
+- 新 CSV 的 premise_set 只抄显式部分，自动注入部分按上表补写（禁止只抄 premise_set 导致漏前提）
+- `h_mode_show_type=1` 同时映射到我们的 modes（默认 exploration）；`=2` 映射到 modes=['h_scene']
+  （loader 已按 category=sex 处理）——modes 与 NOT_H/TARGET_IS_H 前提双保险
+- 三个新增前提的语义与注册状态见 premise-h.ts：
+  - `TIRED_LE_74`：玩家疲劳 ≤118（tired_type=2 用，与 TIRED_LE_84 的 ≤134 区分）
+  - `NOT_SHOW_NON_H_IN_HIDDEN_SEX`：隐奸全局开关取反（未实装 → 恒 true = erArk 默认值）
+  - `DRUNK_LEVEL_NOT_3`：醉酒等级≠3（醉酒系统未实装 → 恒 true = 语义正确降级）
+- 批次清单的"前提依赖状态"表新增一列 `h_mode_show_type / tired_type`，标注自动注入展开
+
 ---
 
 ## 5. 耗时（time_cost）——-1 是特殊信号，必须查 handler
@@ -346,8 +369,9 @@ effects = [
 ## 13. 相关文档索引
 
 - `docs/skills/erark-replication.md` — 复刻铁律（必读）
+- `docs/skills/replicating-an-instruction.md` — **逐条复刻完整验证清单（防静默错误，复刻任何指令前必读）**
 - `docs/skills/add-instruction.md` — 添加新指令工作流
 - `docs/instruction-replication/instruction-master-list.md` — 全量 404 条粗筛清单
 - `docs/instruction-replication/location-tags.md` — 位置 tag 对照总表
 - `docs/instruction-replication/batch-NN-*.md` — 各批次清单
-- `docs/mod-author-guide.md` — mod 作者指南
+- `docs/mod-author-guide.md` — mod 作者指南（含指令效果参数协议）

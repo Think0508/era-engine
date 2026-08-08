@@ -17,6 +17,7 @@ import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from './h-core/index
 import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable } from './dialogue-system/index'
 import { onEnable as talkCommonOnEnable } from './talk-common-system/index'
 import { eventBus } from '../core/event-bus'
+import { makeTestExecCtx } from '../utils/test-helpers'
 
 // 注释：events 用真实 eventBus——h-core 的 execution_end 二段结算监听器必须真实注册才能测到
 const stubCtx: any = {
@@ -26,23 +27,7 @@ const stubCtx: any = {
   ui: { registerSlot: () => {} },
 }
 
-function execCtx(overrides: any = {}) {
-  return {
-    uiStore: {
-      selectedCharacterId: 'npc_1',
-      selectCharacter: () => {},
-      setActivePanel: () => {},
-      clearSelection: () => {},
-    },
-    gameStore: { player: { id: 'player' } },
-    api: apiSystem,
-    engine: { setExecutionState: () => {}, emit: async () => {} },
-    evaluateCondition: () => true,
-    evaluatePremises: () => true,
-    sourceId: 'player',
-    ...overrides,
-  }
-}
+const execCtx = makeTestExecCtx
 
 describe('指令执行链路冒烟', () => {
   beforeAll(async () => {

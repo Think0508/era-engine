@@ -441,6 +441,42 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 
 > 完整文档见 `docs/scene-system.md`。
 
+## 指令效果参数协议
+
+> 覆写或新增指令（`definitions/instructions/`）时，`effects` 里的每个效果都有参数协议。
+> 参数值全部有 erArk 源码依据（`docs/instruction-replication/batch-01-daily.md`），**-1/0 不是魔法数字**，含义如下：
+
+### 通用结算效果（h-core 注册）
+
+| 效果 type | 参数 | 语义 |
+|-----------|------|------|
+| `settle_hp_mp` | `hpValue` / `mpValue` | **-1 = 按程度扣减，1 = 按程度增加**，其他值 = 固定增减量（erArk common_default.py:42 同款协议） |
+| | `degree` | 程度档：**0=少**（体力1/分、气力3/分）、1=中（3/6）、2=大（5/10）——erArk dregree_dict |
+| | `addTime`（可选） | 覆盖 time_cost；缺省用指令的 time_cost |
+| `settle_state` | `state` | 状态属性名（好意/快乐/恭顺…，取 attributes.toml 的 parameter 属性） |
+| | `baseValue` | 基础固定值，**默认 30**（erArk base_chara_state_common_settle 默认值）；最终 = (time_cost + baseValue) × 系数 |
+| | `ability_level`（可选） | 系数用哪个能力的等级；缺省查 hConfig `state_ability` 映射（如 好意→亲密） |
+| | `negate`（可选） | true = 结果取负 |
+| `settle_favorability` | — | 好感度按 calcFavorability 公式（状态/能力/素质修正链）结算 |
+| `settle_trust` | — | 信赖度按 calcTrust 公式；上限 300 |
+| `h_experience` | `expId` | 经验 ID（如 `"80"` = 对话经验，Experience.csv） |
+| | `value` | 增量（erArk CVE 效果的最后一个数字） |
+| `judge_check` | — | **loader 自动注入**（有 judge_base 时），不要手写；target 默认 = 指令目标 |
+
+### chat 专用效果
+
+| 效果 type | 参数 | 语义 |
+|-----------|------|------|
+| `chat_settle` | `fail_effects` / `success_effects` | 分支链（effect_blocks 块名或内联数组）；`talk_count > 发起者.话术技能+1` → fail，否则 success；无论如何 talk_count +1（衰减由引擎在每次行动开始自动处理） |
+| `talk_add_adjust` | — | 复刻 erArk 501（default.py:5875）：结算条件 = 有目标且任一方为玩家（NPC→NPC 跳过）；好感 = int(calcFavorability × 话术adjust)，>0 再乘连续减值；好意/快乐 = 完整 base_chara_state_common_settle 管线（tenths/素质/攻略/连续减值，ability_level = 发起者话术技能，快乐用 mark_debuff_adjust）；记录 talk_time |
+
+### 体技效果
+
+| 效果 type | 参数 | 语义 |
+|-----------|------|------|
+| `tech_adjust` | `part` | 部位属性名（皮肤/胸部/阴蒂/阴道/后穴/子宫/口喉/心理…） |
+| | `baseValue` | 基础固定值，默认 50 |
+
 ## 对接什么
 
 | 你要做的 | 对接哪里 | 是否有插件默认？ |

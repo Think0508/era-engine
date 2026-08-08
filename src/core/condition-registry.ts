@@ -27,6 +27,8 @@ class ConditionRegistry {
     { path: 'character.{id}.abilities.{ability}', type: 'number', description: 'Character ability level', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.abilities.{ability}.level', type: 'number', description: 'Character ability level (object form)', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.abilities.{ability}.xp', type: 'number', description: 'Character ability xp', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'player.abilities.{ability}.level', type: 'number', description: 'Player ability level (CVP A1 转换输出)', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'player.talents.{talent}', type: 'number', description: 'Player talent (CVP A1 转换输出)', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.factions.{faction}', type: 'string', description: 'Character faction rank', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.status.{status}', type: 'boolean', description: 'Character has status effect', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.status.{status}.stack', type: 'number', description: 'Status effect stack count', operators: '> < >= <= == !=', source: 'engine' },
@@ -36,6 +38,7 @@ class ConditionRegistry {
     { path: 'character.{id}.first_times.{key}', type: 'boolean', description: 'Character first-time flag', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.first_records.{key}', type: 'object', description: 'Character first-time record', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.body_parts.{part}', type: 'boolean', description: 'Character body part presence', operators: '== !=', source: 'engine' },
+    { path: 'character.{id}.body_semen.{part}.{index}', type: 'number', description: 'Character body semen count (精液污染追踪)', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'inventory.{item}.count', type: 'number', description: 'Inventory item count', operators: '> < >= <= == !=', source: 'engine' },
   ]
 

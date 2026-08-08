@@ -199,6 +199,10 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
   const results = new Map<string, boolean>()
   const settlement = new SettlementContext()
   settlement.timeCost = execCtx._timeCost ?? 0
+  // 注释：缓存调用方显式传入的初始目标——handlerCtx 的 Object.assign 会覆盖 execCtx._targetIds
+  // （如嵌套链里 target='self' 的效果会把 _targetIds 写成 ['player']），无 target 的效果必须读初始值
+  // 而不是被污染的当前值，否则静默结算到错误目标
+  const initialTargetIds = execCtx._targetIds
 
   for (const effect of effects) {
     // 注释：depends_on 检查——前置成功才执行
@@ -231,7 +235,11 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
     }
 
     // 注释：解析 target → targetIds
-    const targetIds = await resolveTarget(effect.target ?? 'selected', execCtx)
+    // 效果未显式写 target 时：调用方已显式传 _targetIds（如 h-core execution_end 的 body_item_tick）
+    // → 优先用初始值；否则默认 'selected'（UI 选中）
+    const targetIds = effect.target
+      ? await resolveTarget(effect.target, execCtx)
+      : (initialTargetIds ?? await resolveTarget('selected', execCtx))
     // 注释：handler 上下文必须共享同一对象——judge_check 写入 _judgeResult，
     // 后续 settle_* 效果要能读到（拷 贝会丢跨效果状态，判定门控会静默失效）
     const handlerCtx = Object.assign(execCtx, { _targetIds: targetIds, settlement })

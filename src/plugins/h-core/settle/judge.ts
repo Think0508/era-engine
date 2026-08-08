@@ -164,7 +164,31 @@ export function calcJudge(
       if (getTalent(char, '女儿')) total += 100
     }
 
-    // 注释：8. 判定族特殊修正（hConfig [judge.adjustments] 表，如处女惩罚）
+    // 注释：8. 他人存在修正（erArk instuct_judege.py:247-260）——
+    // 场景人数 > 2 且 目标意识正常（T_NORMAL_5_6 ≈ unconscious_h===0，睡眠/催眠未实装部分随 L1.7 细化）
+    // 群交/隐奸指令 60+60n；S 类判定 40+40n；其余（D 类如亲吻）25+25n；
+    // 露出调整 = int(基数 × (ability_lv_adjust[目标露出] - 1.6))（露出能力高 → 被看着不紧张）
+    // 注：erArk 外层条件 judge_data_type != "V"（V=访客类判定，访客系统已砍）——恒满足
+    const hc = (modLoader.getMod()?.hConfig as any) ?? {}
+    const adjTable = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
+    const loc = gameContext.getContext().location
+    if (charId && loc) {
+      const sceneCount = entitySystem.getAll('character').filter((c: any) => c.current_location === loc.id).length
+      const target = entitySystem.get('character', charId) as any
+      if (sceneCount > 2 && (target?.sp_flag?.unconscious_h ?? 0) === 0) {
+        const otherCount = sceneCount - 2
+        let otherBase: number
+        if (judgeClass === '群交' || judgeClass === '隐奸') otherBase = 60 + 60 * otherCount
+        else if (judgeClass && S_TYPE_JUDGE_CLASSES.has(judgeClass)) otherBase = 40 + 40 * otherCount
+        else otherBase = 25 + 25 * otherCount
+        const exposeLv = target?.abilities?.['露出']?.level ?? 0
+        const exposeAdj = adjTable[Math.min(Math.max(0, exposeLv), 10)] ?? 4.0
+        const otherPeople = Math.floor(otherBase * (exposeAdj - 1.6))
+        total += otherPeople
+      }
+    }
+
+    // 注释：9. 判定族特殊修正（hConfig [judge.adjustments] 表，如处女惩罚）
     total += calcAdjustments(judgeClass, charId)
   }
 

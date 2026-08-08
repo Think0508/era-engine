@@ -19,16 +19,16 @@ import { registerBodyItemPremises } from './premise/premise-body-item'
 import { registerInstructPremises } from './premise/premise-instruct'
 import { loadInstructions, validateInstructionData } from '../instruction-loader'
 import { calcFavorability, getFavorabilityLevel, getTrustLevel, clearTalentAdjustIndex } from './settle/favorability'
-import { BAD_STATES, MENTAL_STATES } from './settle/state'
 import { calcTrust } from './settle/trust'
 import { calcJudge, mergeJudgeResult, type JudgeResult } from './settle/judge'
 import { calcHpMpChange, type HpMpInput } from './settle/hp-mp'
+import { settleOneState, PART_ABILITY, getFeelExtraAdjust } from './settle/state-settle'
 import { getTalentStateAdjust } from './settle/talent-adjust'
 import { decayTalkCount } from './settle/talk'
 import { isSettleGated } from '../../utils/settle-gate'
 import { getContinuousAdjust } from '../../core/command-executor'
 import { getLevel, getEntityAttr } from '../../core/entity-utils'
-import { orgasmJudge, accumulateOrgasmFeel, ORGASM_ATTR_TO_PART, insertPositionToBodyCid, releaseOrgasmEdge, releaseTimeStopOrgasm } from './settle/orgasm'
+import { orgasmJudge, accumulateOrgasmFeel, ORGASM_ATTR_TO_PART, insertPositionToBodyCid, releaseOrgasmEdge, releaseTimeStopOrgasm, type OrgasmSettleOptions } from './settle/orgasm'
 import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { ATTR } from '../../core/entity-utils'
@@ -180,106 +180,6 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：单状态结算（settle_state 与 talk_add_adjust 共用；erArk base_chara_state_common_settle，
-  // common_default.py:154-260）
-  // abilityLevel：显式等级覆盖（erArk ability_level 参数，可来自非结算对象——
-  // 如 501 传发起者.话术技能；null = 按 abilityKey 查目标自身）
-  // abilityKeyOverride：能力名覆盖（erArk ability id 对应，如 501 传 '话术技能'）
-  // 能力系数：mark 状态（快乐/屈服/苦痛/恐怖/反感）用 get_mark_debuff_adjust（:374-378），
-  // 其余用 ability_lv_adjust 表
-  // 三件套：tenths_add（:233-240）/ 连续重复减值（:210-231，非负面非自己）/ 无意识心理门控（:196-208）
-  // 附带：素质修正（数据化）/ 催眠敏感（快感 + 欲情才 +2，erArk feel :304-305 + base :441）/
-  // 快感附加修正（眼罩/无觉/群交/怀孕灌肠）/ 攻略进度 / max(0) 钳制 / 苦痛快感化 / 射精欲积累 / extra_feel
-  function settleOneState(
-    execCtx: any, ch: any, id: string, state: string, baseValue: number, timeCost: number,
-    abilityLevel: number | null, abilityKeyOverride: string | null, isGroupSex: boolean, continuous: number, negate = false,
-  ): void {
-    if (!ch) return
-    const hc = (modLoader.getMod()?.hConfig as any) ?? {}
-    const tbl = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
-    const base = timeCost + baseValue
-    // 注释：确定使用哪个能力等级——优先显式 ability_level（erArk 参数），
-    // 其次查 hConfig.state_ability 映射，快感状态 → 部位感度能力（PART_ABILITY），最后兜底 state 同名
-    const stateAbility = (hc.state_ability as Record<string, string>) ?? {}
-    const feelAbility = PART_ABILITY[state]
-    const abilityKey = abilityKeyOverride ?? stateAbility[state] ?? feelAbility ?? state
-    // 注释：无意识/时停门控 per-id（erArk common_default.py:196-208）——心智状态与心理快感不结算
-    // 睡眠/无意识系统未实装（L1.7），目前仅时停可判（sp_flag.unconscious_h===3）
-    const isMental = MENTAL_STATES.has(state)
-    const isBad = BAD_STATES.has(state)
-    const isFeelState = ORGASM_ATTR_TO_PART[state] !== undefined
-    // 注释：死亡 → 不结算（erArk common_default.py:180-181）
-    if (ch?.dead) return
-    if (ch?.sp_flag?.unconscious_h === 3 && (isMental || state === '心理')) return
-    // 注释：能力等级——显式覆盖优先（501 传发起者.话术技能），否则按 abilityKey 查目标自身
-    const al = abilityLevel !== null
-      ? abilityLevel
-      : (ch?.abilities?.[abilityKey]?.level ?? 0)
-    // 注释：刻印状态（快乐/屈服/苦痛/恐怖/反感）用 mark_debuff 系数表（:374-378）
-    const abilityCoeff = (MARK_DEBUFF_STATES as Set<string>).has(state)
-      ? getMarkDebuffAdjust(al)
-      : (tbl[Math.min(al, 10)] ?? 4.0)
-    // 注释：素质修正（数据化，erArk common_default.py:379-422）
-    const talentAdj = getTalentStateAdjust(modLoader.getMod(), ch, state)
-    // 注释：催眠敏感——仅快感状态（chara_feel_state_adjust:304-305 全部位快感）
-    // 与欲情（chara_base_state_adjust:441）才 +2；心智状态（好意/快乐等）不加
-    // （2026-08-08 审查修复：原对全部状态 +2，与 erArk 不符）
-    const hypnosisAdj = (isFeelState || state === ATTR.AROUSAL) && ch?.hypnosis?.increase_body_sensitivity ? 2 : 0
-    // 注释：快感状态附加修正（眼罩/无觉刻印/群交 0.02/怀孕灌肠，chara_feel_state_adjust:300-347）；
-    // base 状态群交 0.05（chara_base_state_adjust:444-450）
-    let extraAdj = 0
-    if (isFeelState) {
-      extraAdj += getFeelExtraAdjust(ch, state, tbl, isGroupSex)
-    } else if (isGroupSex && ch?.h_state?.is_h) {
-      const others = Math.max(0, entitySystem.getAll('character').filter((c: any) => c.id !== ch.id && c.current_location === ch.current_location).length - 1)
-      extraAdj += Math.min(10, others) * 0.05
-    }
-    // 注释：攻略进度素质（erArk :455-477）——正面 +fall×0.05 / 负面 -fall×0.2（难度/信物 TODO）
-    let fallAdj = 0
-    if ((POSITIVE_BASE_STATES as Set<string>).has(state)) fallAdj = getFallLevel(ch) * 0.05
-    else if ((NEGATIVE_BASE_STATES as Set<string>).has(state)) fallAdj = -(getFallLevel(ch) * 0.2)
-    // 注释：max(0) 钳制（erArk :353/:479——保证最终系数不为负）
-    const coeff = Math.max(0, abilityCoeff + talentAdj + hypnosisAdj + extraAdj + fallAdj)
-    const raw = base * coeff
-    // 注释：连续重复指令减值（erArk common_default.py:210-231）——非负面状态、非自己
-    const finalAdjust = (!isBad && id !== execCtx.sourceId) ? continuous : 1
-    const adjValue = raw * finalAdjust
-    // 注释：tenths_add（erArk common_default.py:233-240）——追加 min(3×基础值, 当前状态值/10)
-    // 当前值跨命名空间读取（与 applyChange/getEntityAttr 语义一致）
-    const cur = getEntityAttr(ch, state)
-    let finalValue = Math.floor(adjValue + (cur > 0 ? Math.min(3 * adjValue, cur / 10) : 0))
-    // 注释：心控-苦痛快感化（erArk common_default.py:242-245）——苦痛 → 心理快感
-    // （内层 ability_level = ability[36] 受虐；tenths_add=False；转化后 return 不结算苦痛）
-    if (state === ATTR.PAIN && ch?.hypnosis?.pain_as_pleasure) {
-      settleInnerMind(execCtx, ch, id, finalValue, ATTR.MASOCHISM, tbl, isGroupSex, continuous)
-      return
-    }
-    const fv = negate ? -finalValue : finalValue
-    if (fv !== 0) {
-      execCtx.settlement.applyChange(id, state, fv)
-      // 注释：部位快感变化量 → 二段结算累积（extra 高潮用，对齐 erArk change_data.status_data）
-      const partId = ORGASM_ATTR_TO_PART[state]
-      if (partId !== undefined) accumulateOrgasmFeel(ch, partId, fv)
-      // 注释：阴茎部位快感 → 射精欲积累（erArk ADD_SMALL_P_FEEL 内嵌 eja_point +=）
-      // 公式：now_add_lust = (add_time + 50) × adjust(技巧) + 阴茎快感/8（default.py:8304）
-      if (state === '阴茎') {
-        const techLv2 = ch?.abilities?.['技巧']?.level ?? 0
-        const adjust2 = tbl[Math.min(techLv2, 10)] ?? 4.0
-        const penisFeel2 = ch?.base?.['阴茎'] ?? 0
-        const nowAddLust = Math.floor((timeCost + 50) * adjust2 + penisFeel2 / 8)
-        if (ch?.base) ch.base['射精欲'] = (ch.base['射精欲'] ?? 0) + nowAddLust
-      }
-      // 注释：额外快感（erArk extra_feel_settle:484-515）——恭顺/先导/羞耻/苦痛 对应能力≥5 时
-      // 心理快感 max(10, final/20)×内层系数 + 心理经验(155)
-      const extraAbility = EXTRA_FEEL_ABILITY[state]
-      if (extraAbility && (ch?.abilities?.[extraAbility]?.level ?? 0) >= 5) {
-        const innerBase = Math.max(10, Math.floor(finalValue / 20))
-        settleInnerMind(execCtx, ch, id, innerBase, extraAbility, tbl, isGroupSex, continuous)
-        if (!ch.experience) ch.experience = {}
-        ch.experience['155'] = (ch.experience['155'] ?? 0) + 1
-      }
-    }
-  }
 
   // 注释：settle_hp_mp——体力气力变化（公式#7），精确复刻 erArk common_default.py
   // 参数: { hpValue=-1, mpValue=0, degree=0, addTime? }
@@ -331,84 +231,6 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：部位属性名 → 感度能力名（tech_adjust 查目标感度等级用）
-  // erArk：feel_ability_id = state_id（0=皮肤感度…23=心理感度102）
-  const PART_ABILITY: Record<string, string> = {
-    '皮肤': '皮肤感度', '胸部': '胸部感度', '阴蒂': '阴蒂感度', '阴道': '阴道感度',
-    '后穴': '后穴感度', '尿道': '尿道感度', '子宫': '子宫感度', '口喉': '口喉感度',
-    '心理': '心理感度', '阴茎': '阴茎感度',
-  }
-
-  // 注释：快感状态附加修正（erArk chara_feel_state_adjust，common_default.py:300-347）
-  // 眼罩 +0.2（body_item slot 6）/ 无意识时无觉刻印 +(adj-1)×2 / 群交 +0.02×其他人数(cap 10)
-  // V/W：怀孕 inflation +1 / 灌肠 enema_capacity×0.2
-  function getFeelExtraAdjust(ch: any, state: string, tbl: number[], isGroupSex: boolean): number {
-    if (!ch) return 0
-    let extra = 0
-    if (ch?.body_items?.['6']) extra += 0.2
-    if ((ch?.sp_flag?.unconscious_h ?? 0) >= 1) {
-      const markLv = ch?.abilities?.['无觉刻印']?.level ?? 0
-      extra += ((tbl[Math.min(markLv, 10)] ?? 4.0) - 1) * 2
-    }
-    if (isGroupSex && ch?.h_state?.is_h) {
-      const others = Math.max(0, entitySystem.getAll('character').filter((c: any) => c.id !== ch.id && c.current_location === ch.current_location).length - 1)
-      extra += Math.min(10, others) * 0.02
-    }
-    if (state === '阴道' || state === '子宫') {
-      if (ch?.h_state?.inflation) extra += 1
-      if (ch?.h_state?.enema) extra += (ch?.h_state?.enema_capacity ?? 0) * 0.2
-    }
-    return extra
-  }
-
-  // 注释：攻略等级（erArk get_character_fall_level，attr_calculation.py:891-921）
-  // 爱情/隶属系最高级 1-4（fall_1=思慕或屈从…fall_4=爱侣或奴隶）
-  const FALL_PAIRS: [string, string][] = [['思慕', '屈从'], ['恋慕', '驯服'], ['恋人', '宠物'], ['爱侣', '奴隶']]
-  function getFallLevel(ch: any): number {
-    if (!ch?.talents) return 0
-    for (let i = FALL_PAIRS.length - 1; i >= 0; i--) {
-      if (ch.talents[FALL_PAIRS[i][0]] || ch.talents[FALL_PAIRS[i][1]]) return i + 1
-    }
-    return 0
-  }
-
-  // 注释：正面/负面 base 状态集合（erArk :455/:467）——攻略进度素质修正范围
-  const POSITIVE_BASE_STATES = new Set([ATTR.LUBE, ATTR.LEARN, ATTR.DEFERENCE, ATTR.FONDNESS, ATTR.AROUSAL, ATTR.PLEASURE, ATTR.ANTICIPATION, ATTR.OBEDIENCE, ATTR.SHAME])
-  const NEGATIVE_BASE_STATES = new Set([ATTR.PAIN, ATTR.FEAR, ATTR.DEPRESSION, ATTR.RESENTMENT])
-
-  // 注释：刻印状态专用系数表（erArk chara_base_state_adjust:374-378 + attr_calculation.py:581-598）
-  // 快乐/屈服/苦痛/恐怖/反感 5 个状态的能力系数用 get_mark_debuff_adjust：0→1 / 1→1.5 / 2→3 / ≥3→5
-  // （不是 ability_lv_adjust 表！）
-  const MARK_DEBUFF_STATES = new Set([ATTR.PLEASURE, ATTR.OBEDIENCE, ATTR.PAIN, ATTR.FEAR, ATTR.RESENTMENT])
-  function getMarkDebuffAdjust(lv: number): number {
-    if (lv >= 3) return 5
-    if (lv === 2) return 3
-    if (lv === 1) return 1.5
-    return 1
-  }
-
-  // 注释：内层心理快感结算（erArk 对 state 23 心理的完整 base_chara_state_common_settle 调用）
-  // 系数 = sqrt(ability表[心理感度] × ability表[给定能力]) + 催眠敏感 + feel 附加修正（chara_feel_state_adjust）
-  // 含无意识门控（:198）/ 连续减值 / max(0) 钳制（:353）；tenths_add=False
-  function settleInnerMind(execCtx: any, ch: any, id: string, innerBase: number, abilityKey: string, tbl: number[], isGroupSex: boolean, continuous: number): void {
-    if (ch?.sp_flag?.unconscious_h === 3) return
-    const abLv = ch?.abilities?.[abilityKey]?.level ?? 0
-    const mindLv = ch?.abilities?.['心理感度']?.level ?? 0
-    const innerAdjust = Math.sqrt((tbl[Math.min(mindLv, 10)] ?? 4.0) * (tbl[Math.min(abLv, 10)] ?? 4.0))
-      + (ch?.hypnosis?.increase_body_sensitivity ? 2 : 0)
-      + getFeelExtraAdjust(ch, '心理', tbl, isGroupSex)
-    const innerContinuous = id !== execCtx.sourceId ? continuous : 1
-    const converted = Math.floor(Math.max(0, innerAdjust) * innerBase * innerContinuous)
-    if (converted > 0) {
-      execCtx.settlement.applyChange(id, ATTR.MIND, converted)
-      const partId = ORGASM_ATTR_TO_PART[ATTR.MIND]
-      if (partId !== undefined) accumulateOrgasmFeel(ch, partId, converted)
-    }
-  }
-
-  // 注释：额外快感（erArk extra_feel_settle，common_default.py:484-515）
-  // 恭顺(顺从≥5)/先导(施虐≥5)/羞耻(露出≥5)/苦痛(受虐≥5) → 心理快感 max(10, final/20)×内层系数 + 心理经验(155)
-  const EXTRA_FEEL_ABILITY: Record<string, string> = { '恭顺': ATTR.SUBMISSION, '先导': ATTR.SADISM, '羞耻': ATTR.EXPOSURE, '苦痛': ATTR.MASOCHISM }
 
   // 注释：tech_adjust——体技修正的部位快感/欲情（erArk TECH_ADD_*: default.py:7918-8265）
   // erArk 公式（均经 base_chara_state_common_settle）：
@@ -605,11 +427,17 @@ export function onLoad(_ctx: PluginContext): void {
   // 注释：h_orgasm_check——手动触发二段高潮结算（兼容旧指令；自动结算走 game:execution_end）
   effectTypeRegistry.register('h_orgasm_check', async (_p: any, execCtx: any) => {
     const ids = execCtx._targetIds as string[]
+    // 注释：二段结算上下文（连续减值/群交/结算记录——绝顶附加状态用）
+    let isGroupSex = false
+    try {
+      isGroupSex = await apiSystem.call('h-group-sex', 'isActive')
+    } catch { /* 群交插件未注册 */ }
+    const opts: OrgasmSettleOptions = { continuous: getContinuousAdjust(), isGroupSex, settlement: execCtx.settlement }
     for (const id of ids) {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.h_state) continue
       // 注释：extra 累积走 pending_orgasm_feel（settle_state/tech_adjust 已写入）；statusDelta 兼容参数已弃用
-      const result = orgasmJudge(id)
+      const result = orgasmJudge(id, undefined, opts)
       await handleOrgasmResults(id, ch, result)
       // 注释：玩家射精触发（与 execution_end 一致）
       if (result.shouldEjaculate && (id === '0' || id === 'player')) {
@@ -630,7 +458,7 @@ export function onLoad(_ctx: PluginContext): void {
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.h_state) continue
-      const result = releaseTimeStopOrgasm(id)
+      const result = releaseTimeStopOrgasm(id, { continuous: getContinuousAdjust(), settlement: execCtx.settlement })
       if (result.orgasms.length > 0) await handleOrgasmResults(id, ch, result)
     }
     return true
@@ -1003,6 +831,38 @@ export function onEnable(ctx: PluginContext): void {
     startHScene, endHScene, getLevel, calcFavorability, calcTrust, calcJudge,
     getFavorabilityLevel, getTrustLevel,
     registerPremise: (id: string, handler: any) => premiseRegistry.register(id, handler),
+    // 注释：通用状态结算（对外暴露——其他插件（如 h-hidden 隐奸/露出持续快感）经 API 调用，
+    // 遵守"插件间禁止直接 import"铁律；参数同 settleOneState）
+    // settleState(charId, state, baseValue, timeCost, opts?: {
+    //   abilityLevel?, abilityKeyOverride?, isGroupSex?, continuous?, negate?, tenthsAdd?, extraAdjust? })
+    settleState: (
+      charId: string, state: string, baseValue: number, timeCost: number,
+      opts?: { abilityLevel?: number | null; abilityKeyOverride?: string | null; isGroupSex?: boolean; continuous?: number; negate?: boolean; tenthsAdd?: boolean; extraAdjust?: number },
+    ) => {
+      const ch = entitySystem.get('character', charId) as any
+      if (!ch) {
+        // 注释：无效目标不静默（调用方 bug——如跨插件传错 id）
+        errorReporter.report({
+          source: 'h-core',
+          severity: 'warning',
+          message: `settleState：角色 '${charId}' 不存在，跳过结算`,
+          suggestion: '检查调用方传入的 charId 是否正确（跨插件调用经 API 通道）',
+        })
+        return
+      }
+      const playerId = gameContext.getContext().player?.id ?? null
+      settleOneState(
+        { sourceId: playerId, settlement: undefined },
+        ch, charId, state, baseValue, timeCost,
+        opts?.abilityLevel ?? null,
+        opts?.abilityKeyOverride ?? null,
+        opts?.isGroupSex ?? false,
+        opts?.continuous ?? getContinuousAdjust(),
+        opts?.negate ?? false,
+        opts?.tenthsAdd ?? true,
+        opts?.extraAdjust ?? 0,
+      )
+    },
   })
 
   loadInstructions()

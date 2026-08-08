@@ -1,10 +1,11 @@
-// 注释：orgasm 释放与 roll_count 压缩测试（2026-08-08 对齐 erArk orgasm_settle.py 更新）
+﻿// 注释：orgasm 释放与 roll_count 压缩测试（2026-08-08 对齐 erArk orgasm_settle.py 更新）
 // 覆盖：
 //   1. 解放状态 roll_count 压缩（climax>=3 → 0 次普通 roll + 1 次超强；1-2 → 1 次；非解放 → 全部）
 //   2. releaseOrgasmEdge（退出 H 释放寸止累计——原静默丢弃）+ 集成 end_h 路径
 //   3. releaseTimeStopOrgasm（时停解除释放时停累计）
 //   4. judgeOrgasmEdgeSuccess 多部位幂修正（0.15 失败率 + ^max(1,k/2)）
 //   5. handleOrgasmResults 日志按部位聚合（口上只显示最高程度，h:orgasm 事件逐条保留）
+//   6. 绝顶附加状态（erArk 二段行为效果：润滑/体力/气力/欲情/快乐/苦痛反感减）
 
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import { modLoader } from '../core/mod-loader'
@@ -302,7 +303,6 @@ describe('orgasm 释放与 roll_count 压缩（erArk orgasm_settle.py 对齐）'
     })
   })
 
-
   describe('handleOrgasmResults 日志聚合（h:orgasm 事件逐条保留）', () => {
     it('同部位 3 次小绝顶 → 日志仅 1 条；事件 3 条', async () => {
       const n = npc()
@@ -327,6 +327,85 @@ describe('orgasm 释放与 roll_count 压缩（erArk orgasm_settle.py 对齐）'
       eventBus.off('h:orgasm', handler)
       n.h_state = undefined
       n.base['阴道'] = 0
+    })
+  })
+
+  describe('绝顶附加状态（erArk 二段行为效果：润滑/体力/气力/欲情/快乐/苦痛反感减）', () => {
+    function sideHState(overrides: any = {}): any {
+      return {
+        is_h: true,
+        orgasm_level: { 4: 0 },
+        orgasm_edge: 0,
+        orgasm_edge_count: {},
+        time_stop_orgasm_count: {},
+        extra_orgasm_feel: {},
+        extra_orgasm_count: 0,
+        plural_orgasm_set: [],
+        ...overrides,
+      }
+    }
+
+    it('small 档：润滑+300、气力-60、欲情+20、快乐+20（无体力/苦痛减）', () => {
+      const ch = registerOrgasmChar('se_1', sideHState(), {})
+      ch.base = { ...DEFAULT_NPC_BASE, 润滑: 0, 欲情: 0, 快乐: 0 }
+      const spy = vi.spyOn(Math, 'random')
+      spy.mockReturnValue(0.5) // degree 0
+      settleOrgasm('se_1', { 4: 1 }, {}, {}, { continuous: 1, isGroupSex: false })
+      expect(ch.base['润滑']).toBe(300)
+      expect(ch.base['气力']).toBe(0) // 50-60 clamp 0（calcHpMpChange MP 下限 0）
+      expect(ch.base['欲情']).toBe(20)
+      expect(ch.base['快乐']).toBe(20)
+      expect(ch.base['体力']).toBe(80) // small 无体力扣
+      expect(ch.base['苦痛']).toBe(0)
+    })
+
+    it('normal 档：润滑+300、体力-10、气力-60、欲情+100、快乐+100、苦痛/反感减', () => {
+      const ch = registerOrgasmChar('se_2', sideHState(), {})
+      ch.base = { ...DEFAULT_NPC_BASE, 润滑: 0, 欲情: 0, 快乐: 0, 苦痛: 100, 反感: 0 }
+      const spy = vi.spyOn(Math, 'random')
+      spy.mockReturnValue(0.99) // degree 1（≥0.98 → normal）
+      settleOrgasm('se_2', { 4: 1 }, {}, {}, { continuous: 1, isGroupSex: false })
+      expect(ch.base['润滑']).toBe(300)
+      expect(ch.base['体力']).toBe(80 - 10) // 10分×1
+      expect(ch.base['气力']).toBe(0) // 50-60 clamp 0（calcHpMpChange MP 下限 0）
+      expect(ch.base['欲情']).toBe(100)
+      expect(ch.base['快乐']).toBe(100)
+      // 苦痛 100 → -(50 + 100/10) = -60 → 40（系数：苦痛刻印 0 → 1.0）
+      expect(ch.base['苦痛']).toBe(40)
+      // 反感 0 → -(50 + 0) = -50 → clamp 0
+      expect(ch.base['反感']).toBe(0)
+    })
+
+    it('middle 档 tenths=True：欲情当前 100 → +100 基础 + min(300, 10) tenths = +110', () => {
+      const ch = registerOrgasmChar('se_3', sideHState(), {})
+      ch.base = { ...DEFAULT_NPC_BASE, 润滑: 0, 欲情: 100, 快乐: 0 }
+      const spy = vi.spyOn(Math, 'random')
+      spy.mockReturnValue(0.99) // degree 1（normal 档欲情 middle tenths=True）
+      settleOrgasm('se_3', { 4: 1 }, {}, {}, { continuous: 1, isGroupSex: false })
+      expect(ch.base['欲情']).toBe(100 + 100 + 10)
+    })
+
+    it('super 档（解放≥3 + 感度6）：润滑+3000、体力-60、气力-300、欲情/快乐+1000', () => {
+      const ch = registerOrgasmChar('se_4', sideHState({ orgasm_edge: 2 }), {}, { 阴道感度: { level: 6 } })
+      ch.base = { ...DEFAULT_NPC_BASE, 润滑: 0, 欲情: 0, 快乐: 0 }
+      settleOrgasm('se_4', { 4: 3 }, {}, {}, { continuous: 1, isGroupSex: false })
+      // 解放 climax 3 → 超强分支 degree 3 → super 档
+      expect(ch.base['润滑']).toBe(3000)
+      expect(ch.base['体力']).toBe(80 - 60) // 20分×3
+      expect(ch.base['气力']).toBe(0) // 50-300 clamp 0
+      expect(ch.base['欲情']).toBe(1000)
+      expect(ch.base['快乐']).toBe(1000)
+    })
+
+    it('润滑无能力系数（欲望等级不影响润滑）+ 欲情吃欲望等级', () => {
+      const ch = registerOrgasmChar('se_5', sideHState(), {}, { 欲望: { level: 5 } })
+      ch.base = { ...DEFAULT_NPC_BASE, 润滑: 0, 欲情: 0 }
+      const spy = vi.spyOn(Math, 'random')
+      spy.mockReturnValue(0.5) // degree 0（small：欲情 +20，能力=欲望）
+      settleOrgasm('se_5', { 4: 1 }, {}, {}, { continuous: 1, isGroupSex: false })
+      // 润滑系数 1.0（erArk 无 ability_level）→ 300；欲情 20×ability_lv_adjust[5]=1.8 → 36
+      expect(ch.base['润滑']).toBe(300)
+      expect(ch.base['欲情']).toBe(Math.floor(20 * 1.8))
     })
   })
 })

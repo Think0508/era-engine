@@ -262,6 +262,10 @@ ctx.api.call('h-core', 'calcJudge', judgeBase, favorability, trust, charId?, jud
 ctx.api.call('h-core', 'getFavorabilityLevel', charId)         // → number
 ctx.api.call('h-core', 'getTrustLevel', charId)                // → number
 ctx.api.call('h-core', 'registerPremise', id, handler)         // → void
+// 通用状态结算（统一管线：能力系数/素质/fall/连续减值/tenths/max(0) 钳制等）
+ctx.api.call('h-core', 'settleState', charId, state, baseValue, timeCost, opts?)
+//   opts?: { abilityLevel?, abilityKeyOverride?, isGroupSex?, continuous?, negate?, tenthsAdd?, extraAdjust? }
+//   例：隐奸持续快感 —— settleState(npcId, '羞耻', 0, timeCost*5, { abilityLevel: 露出等级, extraAdjust: 3.1, tenthsAdd: false })
 ```
 
 #### h-ejaculation — 射精

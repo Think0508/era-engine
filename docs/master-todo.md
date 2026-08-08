@@ -486,6 +486,67 @@ erArk 前提自动化承接机制（2026-08-08，架构决策：不学运行时�
   - 新增 1 测试（缺展开前提 → warning；chat 齐全无 warning）
   验收: npm run typecheck ✅ / npm run test 406 通过 ✅（40 文件）
 
+绝顶附加状态实现（2026-08-08，erArk 二段行为效果——统一通用结算对齐）✅
+  - 【背景】erArk 更新"二段结算状态效果统一调 base_chara_state_common_settle"——我们无单独数值
+    结算代码（纯 erArk 内部重构，零直接影响）；但暴露既有缺口：43 个绝顶行为（8 部位×4 程度+射精）
+    的效果链我们只实现了经验/计数（210），润滑/体力/气力/欲情/快乐/苦痛反感减完全缺失
+  - 【架构重构】settleOneState 及辅助（PART_ABILITY/getFeelExtraAdjust/getFallLevel/mark_debuff/
+    settleInnerMind/extra_feel）从 h-core/index.ts 闭包抽到独立模块 settle/state-settle.ts——
+    settle_state/talk_add_adjust/绝顶附加状态三处共用同一管线（禁止重复实现）；
+    settleOneState 新增 tenthsAdd 参数（erArk 绝顶附加 middle 档 True、small/large False）+
+    settlement 可选（无结算记录时直接改 base，clamp 0-99999）
+  - 【已实现】settleOrgasmSideEffects：按程度档映射（ORGASM_SIDE_EFFECTS）结算
+    润滑 300/300/900/3000（无能力系数）、体力 10分/20分deg1、气力 20分/25分deg1/30分deg2、
+    欲情 20(tF)/100(tT)/100(tT)/1000(tF)（能力=欲望）、快乐同构（能力=快乐刻印）、
+    苦痛/反感递减（-50-cur/10、-500-cur/5、-2000-cur/3，能力=苦痛/反发刻印）
+  - 【作用对象】部位绝顶附加作用于绝顶者自己（erArk 同）；p_orgasm 射精的 TARGET_润滑/
+    射精位置重置/CVE 精液经验 → B3 射精链路 TODO
+  - 【不做】隐奸暴露（h:orgasm 事件已等价接入 h-hidden）、蓄能（人力发电已砍）
+  - 【登记 TODO】群交系数（isGroupSex 需异步查，settleOrgasm 同步——B3 群交核对）；
+    附加状态无 settlement 时直接改 base（结算显示 B3 接入）
+  - 新增 5 测试（small/normal/super 档数值 + middle tenths + 润滑无系数/欲情吃等级）
+  验收: npm run typecheck ✅ / npm run test 411 通过 ✅（40 文件，连跑 2 次稳定）
+
+隐奸/露出持续快感 + 他人存在判定修正（2026-08-08，erArk realtime_settle + instuct_judege 完整对齐）✅
+  - 【架构】settleOneState 新增 extraAdjust 参数（erArk extra_adjust 系数，加法进 final_adjust）；
+    h-core API 暴露 settleState（其他插件经 API 调统一管线——遵守"插件间禁止直接 import"铁律）
+  - 【已修·静默失效】h-hidden applyHiddenSexTick 重写（统一管线）：
+    ① '心理快感' 死键（正确键 '心理'——心理快感从不上涨到可读键）
+    ② 补外层条件：场景人数>2 且 周围有清醒未睡他人（unconscious_h===0 近似）
+    ③ 补露出块（exhibitionism_sex_mode ≥1 → 羞耻/心理 ×3 × min(他人×0.1,2)）——原完全缺失
+    ④ 补素质/fall/连续减值/max(0) 钳制（原直接改 base 缺全部）
+    ⑤ 修正误解注释（sqrt(ability[16])——state 16 羞耻走 base 分支无 sqrt，ability_level=露出34）
+  - 【已修·监听器门槛】execution_end 监听原 `if (mode < 1) continue` 跳过露出角色 → 露出块永不触发
+  - 【已实现·他人存在判定修正】judge.ts calcJudge 第 8 项（instuct_judege.py:247-260）：
+    场景>2 且目标意识正常 → 群交/隐奸 60+60n、S 类 40+40n、其余 25+25n × (ability_lv_adjust[露出]-1.6)；
+    V 类（访客）外层条件恒满足（访客系统已砍）
+  - 【数值核对】50×4.1 = 204.999... → floor/int 204——JS/Python 同为 IEEE 754，与 erArk int() 一致
+  - 新增 9 测试（隐奸 3 档 + 露出 + 人数条件 + 他人修正 4 项）
+  验收: npm run typecheck ✅ / npm run test 420 通过 ✅（40 文件，连跑 2 次稳定）/ dev 冒烟干净
+  📌 待办登记：realtime_settle 其余块（群交/内衣/女儿/灌肠/捆绑/初H 持续快感）随各自系统落地；
+    周围清醒他人检查的完整状态语义（睡眠/催眠）随 L1.7 细化
+
+隐奸暴露对象修正 + 审查（2026-08-08，暴露值/成就挂玩家——erArk character_id=0 语义）✅
+  - 【已修】h:orgasm 监听：暴露值/发现度结算对象从绝顶者改为玩家（隐奸发起方）——
+    触发条件保持"绝顶者 mode≥1"（玩家发起隐奸中等价），多人隐奸/NPC 发起场景语义正确
+  - 【已修·连带】成就记录对象：hidden_sex_record[4]（绝顶）/[3]（射精）原记绝顶者（NPC）→
+    成就 912/913"隐藏方绝顶≥3"永不满足（静默）→ 改挂玩家
+  - 【文档】plugin-author-guide.md h-core API 表补 settleState（铁律：新增 API 同步文档）
+  - 【测试】新增隐奸绝顶暴露测试（暴露值/成就挂玩家 + NPC 不受影响）
+  验收: npm run typecheck ✅ / npm run test 421 通过 ✅（40 文件）
+
+隐奸/露出最终审查（2026-08-08，跨地点计数/静默路径/稳定性）✅
+  - 【已修·跨地点多算】settleHiddenValue 的他人计数原 getAll().length（全角色含其他地点）
+    → 改同地点过滤（erArk get_chara_now_scene_all_chara_id_list 同场景语义）
+  - 【已修·跨地点目标】settleDiscovered 找隐奸目标原未过滤地点 → 改同地点
+    （erArk get_hidden_sex_targets 同场景）
+  - 【已修·静默路径】settleState API 无效 charId 原静默 return → 加 errorReporter warning
+    （铁律：禁止静默失败）
+  - 【核对通过】applyHiddenSexTick 连续减值语义（NPC 吃 continuous、玩家不吃）、
+    hasConsciousOthers 含玩家、他人存在修正 S 类判断顺序/露出负修正边界、
+    settleOneState extraAdjust 默认 0 不影响既有调用、h:shoot 成就对象（玩家）
+  验收: npm run typecheck ✅ / npm run test 421 通过 ✅（40 文件，连跑 2 次稳定）/ dev 冒烟干净
+
 erArk 新地文导入补漏（2026-08-08，T9）✅
   - 【发现·修复】action_B1_penis_in_hair.toml 全文件损坏（340 条 context 含 U+FFFD）——
     旧转换的历史编码问题（CSV 源现已干净）→ 重转修复（parse OK、0 U+FFFD）

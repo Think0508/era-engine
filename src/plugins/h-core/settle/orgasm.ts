@@ -1,4 +1,4 @@
-// 注释：绝顶结算（二段结算核心）——对齐 erArk Script/Settle/orgasm_settle.py（2026-08-08 更新版）
+﻿// 注释：绝顶结算（二段结算核心）——对齐 erArk Script/Settle/orgasm_settle.py（2026-08-08 更新版）
 // orgasm_judge + orgasm_settle_in_second_behavior + judge_orgasm_degree + judge_orgasm_edge_success
 // + release_orgasm_edge_now（退出 H / 寸止解放时把累计寸止转成真实高潮——原 erArk 在
 // second_behavior.py 内嵌，新版独立文件；行为差异见下）
@@ -20,19 +20,15 @@
 // 注：erArk 的 6=尿道(u)/22=兽部(f) 未实现（无属性/无感度），已从表中移除；
 //     erArk 的 5=肛肠(a) 在我们引擎中属性名为"后穴"
 
-import { getEntityAttr } from '../../../core/entity-utils'
+import { getEntityAttr, ATTR } from '../../../core/entity-utils'
 import { entitySystem } from '../../../core/entity-system'
+import { gameContext } from '../../../core/game-context'
+import { getContinuousAdjust } from '../../../core/command-executor'
+import { settleOneState, ORGASM_PART_ATTR, applyStateChange } from './state-settle'
+import { calcHpMpChange, type HpMpInput } from './hp-mp'
 
-// 部位状态ID → 属性名（我们 attributes.toml 的 parameter 命名）
-export const ORGASM_PART_ATTR: Record<number, string> = {
-  0: '皮肤', 1: '胸部', 2: '阴蒂', 3: '阴茎', 4: '阴道', 5: '后穴',
-  7: '子宫', 21: '口喉', 23: '心理',
-}
-
-// 属性名 → 部位状态ID（反向映射，供 settle_state/tech_adjust 累积快感变化用）
-export const ORGASM_ATTR_TO_PART: Record<string, number> = Object.fromEntries(
-  Object.entries(ORGASM_PART_ATTR).map(([id, name]) => [name, Number(id)]),
-)
+// 部位状态ID → 属性名（与 state-settle 同源；外部兼容导出）
+export { ORGASM_PART_ATTR, ORGASM_ATTR_TO_PART, accumulateOrgasmFeel } from './state-settle'
 
 // 注释：插入位置 → 射精部位 body_part cid（erArk 射精部位由 UI 面板选择；
 // 我们无射精面板，默认射在当前插入部位。insert_position: -1=无 0=V 1=A 2=U 3=W 4=M）
@@ -46,17 +42,6 @@ export function insertPositionToBodyCid(insertPosition: number): number {
     4: 2,  // M → 口
   }
   return map[insertPosition] ?? 6
-}
-
-/**
- * 累积本次指令的快感变化量到 h_state.pending_orgasm_feel
- * （对齐 erArk change_data.status_data[orgasm]：每次快感结算把变化量记入，二段结算时消耗）
- * 由 settle_state / tech_adjust 在写入部位快感后调用
- */
-export function accumulateOrgasmFeel(char: any, partId: number, delta: number): void {
-  if (!char?.h_state || !delta) return
-  if (!char.h_state.pending_orgasm_feel) char.h_state.pending_orgasm_feel = {}
-  char.h_state.pending_orgasm_feel[partId] = (char.h_state.pending_orgasm_feel[partId] ?? 0) + delta
 }
 
 // 部位 → 感度能力名（强绝顶/超强绝顶需要对应感度等级）
@@ -150,6 +135,163 @@ export function judgeOrgasmEdgeSuccess(
 }
 
 /**
+ * 绝顶附加状态结算（erArk 二段行为效果，Behavior_Effect.csv + Second_effect.py）
+ * 每次绝顶行为（s/b/c/v/a/w/m/h_orgasm_×程度）触发：
+ *   润滑/欲情/快乐 走 base_chara_state_common_settle（统一通用结算）
+ *   体力/气力 走 base_chara_hp_mp_common_settle
+ *   苦痛/反感 按程度档递减（now_add_lust 负值公式，Second_effect.py:1860-1980）
+ * 2026-08-08 新增：原实现只结算经验/orgasm_count，绝顶附加状态完全缺失
+ *   （H 数值节奏核心：绝顶 = 大量润滑/欲情/快乐 + 体力气力消耗）
+ * 注：middle 档（+100）tenths_add 为 True，small/large 为 False（erArk 原样）
+ * 注：直接改 base（与 orgasm_level/experience 等一致，不走 settlement——结算显示 B3 接入）
+ */
+
+interface OrgasmHpMpCost {
+  time: number   // add_time（分钟）
+  degree: number // 0=少 1=中 2=大
+}
+
+interface OrgasmSideEffect {
+  lube?: number                          // 润滑 +（无能力系数，erArk 无 ability_level）
+  hp?: OrgasmHpMpCost                    // 体力 -（缺省不扣）
+  mp?: OrgasmHpMpCost                    // 气力 -
+  desire?: { value: number; tenths: boolean }  // 欲情 +（能力=欲望 33）
+  happy?: { value: number; tenths: boolean }   // 快乐 +（能力=快乐刻印 13）
+  painReduce?: 'small' | 'middle' | 'large'    // 苦痛/反感 递减档
+}
+
+const ORGASM_SIDE_EFFECTS: Record<number, OrgasmSideEffect> = {
+  // small：228润滑300 - 232气力小(20分deg0) - 265欲情20(tF) - 266快乐20(tF)
+  0: {
+    lube: 300,
+    mp: { time: 20, degree: 0 },
+    desire: { value: 20, tenths: false },
+    happy: { value: 20, tenths: false },
+  },
+  // normal：228润滑300 - 231体力小(10分deg0) - 232气力小 - 266快乐20(tF) - 278欲情100(tT) - 301/302苦痛反感小减
+  1: {
+    lube: 300,
+    hp: { time: 10, degree: 0 },
+    mp: { time: 20, degree: 0 },
+    desire: { value: 100, tenths: true },
+    happy: { value: 100, tenths: true },
+    painReduce: 'small',
+  },
+  // strong：229润滑900 - 231体力小 - 234气力中(25分deg1) - 278欲情100(tT) - 279快乐100(tT) - 303/304中减
+  2: {
+    lube: 900,
+    hp: { time: 10, degree: 0 },
+    mp: { time: 25, degree: 1 },
+    desire: { value: 100, tenths: true },
+    happy: { value: 100, tenths: true },
+    painReduce: 'middle',
+  },
+  // super：230润滑3000 - 233体力中(20分deg1) - 236气力大(30分deg2) - 291/292欲情快乐1000(tF) - 305/306大减
+  3: {
+    lube: 3000,
+    hp: { time: 20, degree: 1 },
+    mp: { time: 30, degree: 2 },
+    desire: { value: 1000, tenths: false },
+    happy: { value: 1000, tenths: false },
+    painReduce: 'large',
+  },
+}
+
+// 苦痛/反感递减档参数（erArk Second_effect.py:1860-1980：now_add_lust = -基数 - 当前值/除数）
+const PAIN_REDUCE_PARAMS: Record<'small' | 'middle' | 'large', { base: number; divisor: number }> = {
+  small: { base: 50, divisor: 10 },
+  middle: { base: 500, divisor: 5 },
+  large: { base: 2000, divisor: 3 },
+}
+
+/** 二段结算上下文（连续减值/群交修正/结算记录——由调用方提供，缺省用引擎默认） */
+export interface OrgasmSettleOptions {
+  continuous?: number       // 连续重复指令减值系数（缺省查行为历史）
+  isGroupSex?: boolean      // 群交修正（缺省 false；群交场景 B3 核对）
+  settlement?: any          // 结算记录（缺省直接改 base）
+}
+
+// 注释：绝顶附加状态结算（erArk 二段行为效果，Behavior_Effect.csv + Second_effect.py）
+// 每次绝顶事件（degree 0-3）按档结算：润滑/体力/气力/欲情/快乐 + 苦痛/反感递减
+// - 润滑/欲情/快乐：base_chara_state_common_settle（统一通用管线，经 settleOneState；
+//   润滑无能力系数（ability_level=-1→0），欲情=欲望 33，快乐=快乐刻印 13；middle 档 tenths=True）
+// - 体力/气力：base_chara_hp_mp_common_settle（calcHpMpChange）
+// - 苦痛/反感：now_add_lust 负值公式（-基数-当前值/除数，add_time 传负）
+// 2026-08-08 新增：原实现只结算经验/orgasm_count，绝顶附加状态完全缺失
+//   （H 数值节奏核心：绝顶 = 大量润滑/欲情/快乐 + 体力气力消耗）
+// 注：直接改 base（无 settlement 时），与 orgasm_level/experience 等一致
+function settleOrgasmSideEffects(ch: any, charId: string, degree: number, opts: OrgasmSettleOptions | undefined): void {
+  const eff = ORGASM_SIDE_EFFECTS[degree]
+  if (!eff || !ch?.base) return
+  const continuous = opts?.continuous ?? getContinuousAdjust()
+  const isGroupSex = opts?.isGroupSex ?? false
+  const ctx = { sourceId: gameContext.getContext().player?.id ?? null, settlement: opts?.settlement }
+  // 润滑（state 8；erArk 无 ability_level → 系数 1.0）
+  if (eff.lube !== undefined) {
+    settleOneState(ctx, ch, charId, '润滑', eff.lube, 0, 0, null, isGroupSex, continuous, false, false)
+  }
+  // 欲情（state 12，能力=欲望 33）
+  if (eff.desire) {
+    const desireLv = ch?.abilities?.['欲望']?.level ?? 0
+    settleOneState(ctx, ch, charId, ATTR.AROUSAL, eff.desire.value, 0, desireLv, null, isGroupSex, continuous, false, eff.desire.tenths)
+  }
+  // 快乐（state 13，能力=快乐刻印 13）
+  if (eff.happy) {
+    const happyLv = ch?.abilities?.['快乐刻印']?.level ?? 0
+    settleOneState(ctx, ch, charId, ATTR.PLEASURE, eff.happy.value, 0, happyLv, null, isGroupSex, continuous, false, eff.happy.tenths)
+  }
+  // 体力/气力（base_chara_hp_mp_common_settle：各自 add_time/degree，分开结算——共用会串档）
+  if (eff.hp) {
+    const input: HpMpInput = {
+      charId,
+      addTime: eff.hp.time,
+      hpValue: -1,
+      mpValue: 0,
+      degree: eff.hp.degree,
+      hpMax: ch.base['体力上限'] ?? 99999,
+      mpMax: ch.base['气力上限'] ?? 99999,
+      currentHp: ch.base['体力'] ?? 0,
+      currentMp: ch.base['气力'] ?? 0,
+      isGroupSex,
+      isPlayer: charId === 'player' || charId === '0',
+      isDead: ch.dead ?? false,
+      isTimeStop: false,
+    }
+    const result = calcHpMpChange(input)
+    if (result.self?.hp !== 0) applyStateChange(ctx, ch, charId, '体力', result.self?.hp ?? 0)
+  }
+  if (eff.mp) {
+    const input: HpMpInput = {
+      charId,
+      addTime: eff.mp.time,
+      hpValue: 0,
+      mpValue: -1,
+      degree: eff.mp.degree,
+      hpMax: ch.base['体力上限'] ?? 99999,
+      mpMax: ch.base['气力上限'] ?? 99999,
+      currentHp: ch.base['体力'] ?? 0,
+      currentMp: ch.base['气力'] ?? 0,
+      isGroupSex,
+      isPlayer: charId === 'player' || charId === '0',
+      isDead: ch.dead ?? false,
+      isTimeStop: false,
+    }
+    const result = calcHpMpChange(input)
+    if (result.self?.mp !== 0) applyStateChange(ctx, ch, charId, '气力', result.self?.mp ?? 0)
+  }
+  // 苦痛/反感递减（erArk DOWN_*_PAIN/DISGUST：now_add_lust 负值，add_time 传负）
+  if (eff.painReduce) {
+    const p = PAIN_REDUCE_PARAMS[eff.painReduce]
+    const painLv = ch?.abilities?.['苦痛刻印']?.level ?? 0
+    const hateLv = ch?.abilities?.['反发刻印']?.level ?? 0
+    const curPain = ch.base?.[ATTR.PAIN] ?? 0
+    const curHate = ch.base?.[ATTR.RESENTMENT] ?? 0
+    settleOneState(ctx, ch, charId, ATTR.PAIN, 0, -(p.base + curPain / p.divisor), painLv, null, isGroupSex, continuous, false, false)
+    settleOneState(ctx, ch, charId, ATTR.RESENTMENT, 0, -(p.base + curHate / p.divisor), hateLv, null, isGroupSex, continuous, false, false)
+  }
+}
+
+/**
  * 绝顶结算（对齐 erArk orgasm_settle 的核心逻辑，去掉 UI/成就/人力发电）
  * 对单个角色执行完整二段高潮结算
  *
@@ -157,6 +299,7 @@ export function judgeOrgasmEdgeSuccess(
  * @param normalOrgasm 各部位普通高潮次数
  * @param extraOrgasm 各部位额外高潮次数
  * @param unCountOrgasm 各部位不计数高潮次数
+ * @param opts 二段结算上下文（连续减值/群交/结算记录）
  * @returns 高潮事件列表 + 多重绝顶信息
  */
 export function settleOrgasm(
@@ -164,6 +307,7 @@ export function settleOrgasm(
   normalOrgasm: Record<number, number>,
   extraOrgasm: Record<number, number>,
   unCountOrgasm: Record<number, number>,
+  opts?: OrgasmSettleOptions,
 ): SecondSettleResult {
   const char = entitySystem.get('character', charId) as any
   const result: SecondSettleResult = { orgasms: [], pluralCount: 0, released: false, shouldEjaculate: false }
@@ -311,6 +455,8 @@ export function settleOrgasm(
         extra: extraData > 0,
       })
       recordOrgasmCount()
+      // 注释：绝顶附加状态（润滑/体力/气力/欲情/快乐 + 苦痛反感减）——erArk 二段行为效果
+      settleOrgasmSideEffects(char, charId, degree, opts)
     }
 
     // 解放状态且次数 ≥ 3 → 超强绝顶（erArk：感度 < 6 → 降为强）
@@ -327,6 +473,7 @@ export function settleOrgasm(
         extra: extraData > 0,
       })
       recordOrgasmCount()
+      settleOrgasmSideEffects(char, charId, degree, opts)
     }
 
     // B绝顶喷乳（对齐 erArk：pregnancy.milk > 0 且 milk/milk_max > 0.80）
@@ -360,7 +507,7 @@ export function settleOrgasm(
  * 2026-08-08 新增：原引擎退出 H 直接清 h_state，寸止成功累计的绝顶被静默丢弃。
  * @returns 释放产生的高潮事件（orgasms 为空 = 未在寸止状态，无结算）
  */
-export function releaseOrgasmEdge(charId: string): SecondSettleResult {
+export function releaseOrgasmEdge(charId: string, opts?: OrgasmSettleOptions): SecondSettleResult {
   const empty: SecondSettleResult = { orgasms: [], pluralCount: 0, released: false, shouldEjaculate: false }
   const char = entitySystem.get('character', charId) as any
   if (!char?.h_state) return empty
@@ -369,7 +516,7 @@ export function releaseOrgasmEdge(charId: string): SecondSettleResult {
   if ((hs.orgasm_edge ?? 0) === 0) return empty
   // 置解放状态（release_flag 生效 → roll_count 压缩 + ≥3 超强绝顶）
   hs.orgasm_edge = 2
-  const result = settleOrgasm(charId, {}, {}, hs.orgasm_edge_count ?? {})
+  const result = settleOrgasm(charId, {}, {}, hs.orgasm_edge_count ?? {}, opts)
   // 清空寸止计数（erArk 置 0 保留键）
   for (const key of Object.keys(hs.orgasm_edge_count ?? {})) {
     hs.orgasm_edge_count[key] = 0
@@ -383,7 +530,7 @@ export function releaseOrgasmEdge(charId: string): SecondSettleResult {
  * （置 time_stop_release 解放标志 → release_flag 生效 → 压缩/超强分支），然后清空计数。
  * @returns 释放产生的高潮事件（orgasms 为空 = 无时停累计）
  */
-export function releaseTimeStopOrgasm(charId: string): SecondSettleResult {
+export function releaseTimeStopOrgasm(charId: string, opts?: OrgasmSettleOptions): SecondSettleResult {
   const empty: SecondSettleResult = { orgasms: [], pluralCount: 0, released: false, shouldEjaculate: false }
   const char = entitySystem.get('character', charId) as any
   if (!char?.h_state) return empty
@@ -392,7 +539,7 @@ export function releaseTimeStopOrgasm(charId: string): SecondSettleResult {
   if (Object.keys(counts).length === 0) return empty
   // 置时停解放标志（erArk：time_stop_release = True）
   hs.time_stop_release = true
-  const result = settleOrgasm(charId, {}, {}, counts)
+  const result = settleOrgasm(charId, {}, {}, counts, opts)
   // 清空时停累计（erArk 置 0 保留键）
   for (const key of Object.keys(counts)) {
     counts[key] = 0
@@ -408,7 +555,7 @@ export function releaseTimeStopOrgasm(charId: string): SecondSettleResult {
  * @param statusDelta 兼容参数（已弃用：extra 累积改读 hs.pending_orgasm_feel，由 settle_state/tech_adjust 写入）
  * @returns 结算结果
  */
-export function orgasmJudge(charId: string, _statusDelta?: Record<number, number>): SecondSettleResult {
+export function orgasmJudge(charId: string, _statusDelta?: Record<number, number>, opts?: OrgasmSettleOptions): SecondSettleResult {
   const char = entitySystem.get('character', charId) as any
   const empty: SecondSettleResult = { orgasms: [], pluralCount: 0, released: false, shouldEjaculate: false }
   if (!char) return empty
@@ -489,7 +636,7 @@ export function orgasmJudge(charId: string, _statusDelta?: Record<number, number
     hs.pending_orgasm_feel = {}
   }
 
-  const result = settleOrgasm(charId, normalOrgasm, extraOrgasm, unCountOrgasm)
+  const result = settleOrgasm(charId, normalOrgasm, extraOrgasm, unCountOrgasm, opts)
   result.shouldEjaculate = empty.shouldEjaculate
 
   // 饮精绝顶经验（对齐 erArk orgasm_settle 尾部：part_count>=1 且射精位置在口/胃 → 经验111）
@@ -511,7 +658,7 @@ export function orgasmJudge(charId: string, _statusDelta?: Record<number, number
     for (const key of Object.keys(unCountOrgasm).map(Number)) {
       unCount[key] = (unCount[key] ?? 0) + (unCountOrgasm[key] ?? 0)
     }
-    const retry = settleOrgasm(charId, {}, {}, unCount)
+    const retry = settleOrgasm(charId, {}, {}, unCount, opts)
     retry.shouldEjaculate = empty.shouldEjaculate
     return retry
   }

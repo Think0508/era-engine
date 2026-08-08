@@ -24,6 +24,7 @@ import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { commandRegistry } from '../../core/command-registry'
+import { apiSystem } from '../../core/api'
 
 
 // 注释：Hidden_Level.csv 的 4 级发现度阈值
@@ -108,8 +109,10 @@ async function settleHiddenValue(
   const abilityLv = ch?.abilities?.['隐蔽']?.level ?? 0
   const abiAdjust = getAbilityAdjust(abilityLv)
 
-  // 注释：other_chara_adjust — erArk hidden_sex_panel.py:185-187
-  const sceneCount = entitySystem.getAll('character').length
+  // 注释：other_chara_adjust — erArk hidden_sex_panel.py:185-187（同场景角色数——自己和玩家之外）
+  // 2026-08-08 审查修复：原 getAll().length 跨地点多算（全角色数），改为同地点过滤
+  const locId = ch.current_location
+  const sceneCount = entitySystem.getAll('character').filter((c: any) => c.current_location === locId).length
   const otherCharaAdjust = Math.max(sceneCount - 2, 1)
 
   let delta: number
@@ -160,9 +163,11 @@ async function settleDiscovered(charId: string): Promise<void> {
   if (!ch) return
   // 注释：清除隐奸模式 — erArk: sp_flag.hidden_sex_mode = 0
   if (ch.sp_flag) ch.sp_flag.hidden_sex_mode = 0
-  // 注释：找场景中第一个隐奸角色作为目标
+  // 注释：找同场景中第一个隐奸角色作为目标（2026-08-08 审查修复：原未过滤地点，
+  // 可能指向其他地点的隐奸角色——erArk get_hidden_sex_targets 同场景）
+  const locId = ch.current_location
   const hiddenTargets = entitySystem.getAll('character').filter((c: any) =>
-    c.id !== charId && (c?.sp_flag?.hidden_sex_mode ?? 0) >= 1
+    c.id !== charId && c.current_location === locId && (c?.sp_flag?.hidden_sex_mode ?? 0) >= 1
   )
   if (hiddenTargets.length > 0 && ch.sp_flag) {
     ch.sp_flag.target_character_id = hiddenTargets[0].id
@@ -189,33 +194,46 @@ async function settleDiscovered(charId: string): Promise<void> {
 //   final_value = time_base_value × final_adjust
 //   extra_adjust 是加法（不是乘法），tenths_add=false
 // TODO: 缺少 ability[16](羞耻感觉) 和 ability[102](心理感觉) 字段，暂用 ability[34] 简化
-function applyHiddenSexTick(charId: string, addTime: number): void {
+// 注释：隐奸/露出持续快感 tick（对齐 erArk realtime_settle.py:566-613 的隐奸块 + 露出块）
+// 2026-08-08 重构：
+//   - 原实现只覆盖隐奸块（缺外层条件/素质/fall/连续减值；'心理快感' 死键（正确键为 '心理'）静默失效；
+//     sqrt(ability[16]) 注释为误解——state 16 羞耻走 base 分支（无 sqrt，ability_level=露出34））
+//   - 改经 h-core API settleState 统一管线（跨插件禁止直接 import）；补露出块与条件
+// erArk 公式：
+//   隐奸中（场景人数>2 且 周围有清醒未睡他人）：
+//     羞耻/心理快感 += time×5 × (ability_lv_adjust[露出] + 素质/fall 等 + (4-mode) + 他人×0.1)，tenths=False
+//   露出模式（exhibitionism_sex_mode≥1）：
+//     羞耻/心理快感 += time×3 × (ability_lv_adjust[露出] + ... + min(他人×0.1, 2))，tenths=False
+async function applyHiddenSexTick(charId: string, addTime: number): Promise<void> {
   const ch = entitySystem.get('character', charId) as any
   if (!ch) return
   const mode = ch?.sp_flag?.hidden_sex_mode ?? 0
-  if (mode < 1) return
+  const exhibitionMode = ch?.sp_flag?.exhibitionism_sex_mode ?? 0
+  if (mode < 1 && exhibitionMode < 1) return
 
-  const sceneCount = entitySystem.getAll('character').length
+  // 场景人数（同地点）与"其他人"计数（减去自己和玩家）
+  const locId = ch.current_location
+  const sceneCount = entitySystem.getAll('character').filter((c: any) => c.current_location === locId).length
   const othersCount = Math.max(0, sceneCount - 2)
+  // 周围有清醒未睡他人（erArk handle_scene_others_conscious——unconscious_h===0 近似，
+  // 睡眠/催眠等状态未实装部分随 L1.7 细化）
+  const hasConsciousOthers = entitySystem.getAll('character').some((c: any) =>
+    c.id !== charId && c.current_location === locId && (c.sp_flag?.unconscious_h ?? 0) === 0)
+  const exposeLv = ch?.abilities?.['露出']?.level ?? 0
+  const opts = { abilityLevel: exposeLv, tenthsAdd: false }
 
-  // 注释：extra_add = (4 - mode) + others_count × 0.1
-  const extraAdd = (4 - mode) + othersCount * 0.1
-
-  // 注释：ability[34] = 露出经验
-  const techLv = ch?.abilities?.['露出']?.level ?? 0
-  const techAdj = getAbilityAdjust(techLv)
-  // 注释：TODO — 完整公式为 sqrt(getAbilityAdjust(ability[16]) * techAdj)，缺少 ability[16]
-  const feelAdj = techAdj
-  const totalAdj = feelAdj + extraAdd
-
-  if (!ch.base) ch.base = {}
-  const timeBase = addTime * 5
-  // 注释：羞耻(state 16)
-  const shameBase = Math.floor(timeBase * totalAdj)
-  ch.base['羞耻'] = Math.min(99999, (ch.base['羞耻'] ?? 0) + shameBase)
-  // 注释：心理快感(state 23) — 同上公式
-  const pleasureBase = Math.floor(timeBase * totalAdj)
-  ch.base['心理快感'] = Math.min(99999, (ch.base['心理快感'] ?? 0) + pleasureBase)
+  // 隐奸块：场景人数 > 2 且 周围有清醒未睡他人（erArk realtime_settle.py:580/585-598）
+  if (mode >= 1 && sceneCount > 2 && hasConsciousOthers) {
+    const extraAdd = (4 - mode) + othersCount * 0.1
+    await apiSystem.call('h-core', 'settleState', charId, '羞耻', 0, addTime * 5, { ...opts, extraAdjust: extraAdd })
+    await apiSystem.call('h-core', 'settleState', charId, '心理', 0, addTime * 5, { ...opts, extraAdjust: extraAdd })
+  }
+  // 露出块：露出模式中（erArk realtime_settle.py:610-613，系数=min(他人×0.1,2)）
+  if (exhibitionMode >= 1) {
+    const othersAdj = Math.min(othersCount * 0.1, 2)
+    await apiSystem.call('h-core', 'settleState', charId, '羞耻', 0, addTime * 3, { ...opts, extraAdjust: othersAdj })
+    await apiSystem.call('h-core', 'settleState', charId, '心理', 0, addTime * 3, { ...opts, extraAdjust: othersAdj })
+  }
 }
 
 // 注释：isCharacterHiddenFromNPC — NPC AI 过滤
@@ -480,7 +498,10 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
       const mode = c?.sp_flag?.hidden_sex_mode ?? 0
-      if (mode < 1) continue
+      // 注释：露出模式角色也要走到持续快感 tick（2026-08-08 修复：原门槛跳过露出角色，
+      // applyHiddenSexTick 的露出块永不触发——静默失效）
+      const exhibitionMode = c?.sp_flag?.exhibitionism_sex_mode ?? 0
+      if (mode < 1 && exhibitionMode < 1) continue
 
       const behaviorId = c?.behavior?.behavior_id
       const behaviorTags = c?.behavior?.tags ?? []
@@ -491,7 +512,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
 
       await settleHiddenValue(c.id, addTime, addFlag, intensity)
 
-      applyHiddenSexTick(c.id, addTime)
+      await applyHiddenSexTick(c.id, addTime)
 
       if (!isWait) {
         const discovered = await checkAndSettleDiscovery(c.id)
@@ -513,11 +534,15 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     }
   })
 
-  // 注释：隐奸中绝顶 → 增加发现度
+  // 注释：隐奸中绝顶 → 增加发现度（暴露对象 = 隐奸发起方/玩家，erArk EXPOSED_ORGASM_*_IN_HIDDEN_SEX
+  // Second_effect.py:2411-2426 handle_hidden_sex_flow(character_id=0)）
+  // 2026-08-08 修正：原暴露值加给绝顶者——触发条件"绝顶者 mode≥1"保证玩家发起的隐奸中绝顶者即玩家
+  // （数值等价），但多人隐奸/NPC 发起场景语义错位；改为显式挂玩家（被发现是发起方的社交事件）
   eventBus.on('h:orgasm', async (payload: any) => {
     if (!payload?.character) return
     const ch = entitySystem.get('character', payload.character) as any
     if (!ch || (ch?.sp_flag?.hidden_sex_mode ?? 0) < 1) return
+    const playerId = gameContext.getContext().player?.id
 
     const orgasmLv = payload.level ?? 0
     const orgasmMap = [
@@ -528,22 +553,38 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     ]
     const { duration, intensity } = orgasmMap[Math.min(orgasmLv, 3)]
 
-    await settleHiddenValue(payload.character, duration, true, intensity)
-    await checkAndSettleDiscovery(payload.character)
+    // 注释：暴露值/发现度挂玩家（隐奸发起方）——erArk character_id=0；绝顶者仅作触发检查
+    if (playerId) {
+      await settleHiddenValue(playerId, duration, true, intensity)
+      await checkAndSettleDiscovery(playerId)
+    }
 
-    if (!ch.achievement) ch.achievement = {}
-    if (!ch.achievement.hidden_sex_record) ch.achievement.hidden_sex_record = {}
-    ch.achievement.hidden_sex_record[4] = (ch.achievement.hidden_sex_record[4] ?? 0) + 1
+    // 注释：成就记录（rec[4]=绝顶）挂玩家（隐藏方/发起方——成就 912/913 "隐藏方绝顶≥3"，
+    // erArk 同；2026-08-08 修正：原记绝顶者（NPC）→ 绝顶成就永不满足）
+    if (playerId) {
+      const player = entitySystem.get('character', playerId) as any
+      if (player) {
+        if (!player.achievement) player.achievement = {}
+        if (!player.achievement.hidden_sex_record) player.achievement.hidden_sex_record = {}
+        player.achievement.hidden_sex_record[4] = (player.achievement.hidden_sex_record[4] ?? 0) + 1
+      }
+    }
   })
 
-  // 注释：隐奸中射精 → 成就记录
+  // 注释：隐奸中射精 → 成就记录（rec[3]=射精，同样挂玩家——隐藏方射精，erArk 同）
   eventBus.on('h:shoot', (payload: any) => {
     if (!payload?.character) return
     const ch = entitySystem.get('character', payload.character) as any
     if (!ch || (ch?.sp_flag?.hidden_sex_mode ?? 0) < 1) return
-    if (!ch.achievement) ch.achievement = {}
-    if (!ch.achievement.hidden_sex_record) ch.achievement.hidden_sex_record = {}
-    ch.achievement.hidden_sex_record[3] = (ch.achievement.hidden_sex_record[3] ?? 0) + 1
+    const playerId = gameContext.getContext().player?.id
+    if (playerId) {
+      const player = entitySystem.get('character', playerId) as any
+      if (player) {
+        if (!player.achievement) player.achievement = {}
+        if (!player.achievement.hidden_sex_record) player.achievement.hidden_sex_record = {}
+        player.achievement.hidden_sex_record[3] = (player.achievement.hidden_sex_record[3] ?? 0) + 1
+      }
+    }
   })
 
   // 注释：H 结束 → 清除隐奸模式

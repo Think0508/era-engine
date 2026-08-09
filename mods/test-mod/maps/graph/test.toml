@@ -2,3 +2,9 @@
 from = "town_square"
 to = "tavern"
 time_cost = 5
+
+# 反向边：顶级地点 town_square 需被边指向（否则"不可达"warning——2026-08-10 清理噪音）
+[[edges]]
+from = "tavern"
+to = "town_square"
+time_cost = 5

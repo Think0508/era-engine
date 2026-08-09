@@ -5,11 +5,10 @@ export class PremiseRegistry {
 
   // 注释：注册 key 大小写不敏感（T2 修复）——迁移数据用 erArk 小写原名（dr_position_normal），
   // 手工 TOML 用大写（DR_POSITION_NORMAL），统一 lower 存储避免"注册了但查不到"静默失效
+  // 重复注册 = 覆盖且不警告（2026-08-10：同名覆盖是设计特性——mod 插件覆盖通用插件前提
+  //（mod-override 运行时 override），且插件重复加载（HMR/测试）是既有场景；警告纯噪音）
   register(id: string, handler: PremiseHandler): void {
     const key = id.toLowerCase()
-    if (this.handlers.has(key)) {
-      console.warn(`Premise '${id}' 重复注册，新 handler 覆盖旧`)
-    }
     this.handlers.set(key, handler)
   }
 

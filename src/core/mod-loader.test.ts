@@ -137,9 +137,10 @@ describe('parseModData', () => {
     expect(square.name).toBe('城镇广场')
     expect(square.parent).toBeNull()
     expect((square as any).exits).toBeUndefined()
-    // graph has one edge (test-mod/maps/graph/test.toml)
+    // graph has two edges（test-mod/maps/graph/test.toml——反向边避免顶级地点"不可达"warning）
     expect(mod.graph).toEqual([
       { from: 'town_square', to: 'tavern', time_cost: 5 },
+      { from: 'tavern', to: 'town_square', time_cost: 5 },
     ])
   })
 

@@ -391,6 +391,16 @@
      与其他系统交互（条件引擎/effect/事件/存档/契约）/ 参考索引
    - 【索引】master-todo 顶部参考索引注册 relation-system.md
    手册验收: typecheck ✅ / test 553 通过 ✅ / validate 4/4 / 扫描 0 违规
+   dev 控制台噪音清理（2026-08-10，用户「npm run 报很多错」）✅：
+   - 【噪音·已修】premise-registry 重复注册 console.warn 删除——同名覆盖是设计特性
+     （mod 插件覆盖通用插件前提，mod-override 运行时 override）+ 插件重复加载（HMR/测试）
+     是既有场景——警告纯噪音；语义保持"后者覆盖"
+   - 【噪音·已修】test-mod contract_demo 的 params 字段删除（L2 教学 warning）——
+     test-mod 是测试模组应保持 0 warning，L2 教学已在 example-mod 注释说明
+   - 【噪音·已修】test-mod 顶级地点 town_square"不可达"warning——maps/graph 加反向边
+     （tavern→town_square）；mod-loader.test.ts 图断言同步（2 条边）
+   - 【结果】validate 两个 mod 均 0 warning；dev 控制台干净
+   噪音清理验收: typecheck ✅ / test 553 通过 ✅ / validate 4/4 / 扫描 0 违规
 ```
 
 ### 下一步（2026-08-09 定稿，串行顺序）:

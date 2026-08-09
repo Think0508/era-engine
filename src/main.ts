@@ -58,6 +58,31 @@ async function main(): Promise<void> {
   const mod = modLoader.getMod()
   if (!mod) throw new Error('模组加载失败')
 
+  // 注释：2.5 加载画面素材（方案 B，2026-08-10）——mod meta.toml 声明 loading_video/loading_image
+  // 路径相对 mod 根（如 "assets/loading.gif"）；未声明 → 保持 index.html 的闪烁文字 fallback（不报错）。
+  // 素材需为浏览器可访问路径（dev 下 Vite 直接服务项目根；生产构建的资源处理后续补）。
+  // 视频优先于图片；Vue mount 会替换 #app 内容 → 占位随引擎就绪自动消失。
+  const loadingMedia = mod.loadingVideo ?? mod.loadingImage
+  if (loadingMedia) {
+    const screen = document.getElementById('loading-screen')
+    if (screen) {
+      const mediaEl = mod.loadingVideo ? document.createElement('video') : document.createElement('img')
+      if (mod.loadingVideo) {
+        const video = mediaEl as HTMLVideoElement
+        video.autoplay = true
+        video.muted = true
+        video.loop = true
+        video.playsInline = true
+        video.src = `/mods/${activeModName}/${mod.loadingVideo}`
+      } else {
+        ;(mediaEl as HTMLImageElement).src = `/mods/${activeModName}/${mod.loadingImage}`
+      }
+      mediaEl.style.maxWidth = '90vw'
+      mediaEl.style.maxHeight = '90vh'
+      screen.insertBefore(mediaEl, screen.firstChild)
+    }
+  }
+
   // 注释：3. 加载 bindings
   bindingResolver.loadBindings(mod.bindings)
 

@@ -340,6 +340,10 @@ export interface LoadedMod {
   // 注释：meta.toml 可选字段（AGENTS §39）——起始地点/玩家实体，main.ts 启动用
   startingLocation?: string
   playerCharacter?: string
+  // 注释：加载画面素材（方案 B，2026-08-10）——mod 声明的 loading_video/loading_image
+  // 路径相对 mod 根（如 "assets/loading.gif"）；未声明 → 引擎用 index.html 的闪烁文字 fallback
+  loadingImage?: string
+  loadingVideo?: string
   entities: Map<string, Map<string, EntityData>>
   locations: Map<string, LocationData>
   graph: Edge[]
@@ -697,6 +701,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     dependencies: (metaSection.dependencies as ModDependency[]) ?? [],
     startingLocation: (metaSection.starting_location as string) ?? undefined,
     playerCharacter: (metaSection.player_character as string) ?? undefined,
+    loadingImage: (metaSection.loading_image as string) ?? undefined,
+    loadingVideo: (metaSection.loading_video as string) ?? undefined,
     entities: new Map(),
     locations: new Map(),
     graph: [],

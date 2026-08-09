@@ -1641,6 +1641,11 @@ title_image = "assets/title.png"    # 可选
 description = "一个武侠同人 ERA 游戏"
 player_character = "player_01"       # 玩家实体的固定 ID
 starting_location = "华山_正殿"       # 可选：创建完成后起始地点
+# 加载画面素材（可选，2026-08-10）——引擎启动期间显示（loadMod 后、Vue 挂载前）：
+#   loading_video 优先（autoplay muted loop）；否则 loading_image（图片/GIF）
+#   路径相对 mod 根；未声明 → 引擎用闪烁"加载中……"文字 fallback（不报错）
+loading_image = "assets/loading.gif"
+# loading_video = "assets/loading.mp4"
 ```
 
 ---

@@ -44,6 +44,13 @@ player_character = "player"
 # starting_location：新游戏起始地点 ID（必须在 maps/locations/ 中存在）
 starting_location = "山村"
 
+# 加载画面素材（可选，2026-08-10 方案 B）——引擎启动期间显示：
+#   loading_video：视频（优先）；loading_image：图片/GIF
+#   路径相对 mod 根（如 "assets/loading.gif"，素材放本 mod 的 assets/ 下）；
+#   不声明 → 引擎用闪烁"加载中……"文字 fallback（不报错）
+# loading_image = "assets/loading.gif"
+# loading_video = "assets/loading.mp4"
+
 # [creation]：可选——新游戏的角色创建流程（不写 = 跳过创建直接进游戏）
 # steps 字段：type = "input"（输入文本，field=存到哪个字段/prompt=提示语）
 #           或 "choose"（选项，choices=选项列表，选中的值存到 field）

@@ -401,6 +401,17 @@
      （tavern→town_square）；mod-loader.test.ts 图断言同步（2 条边）
    - 【结果】validate 两个 mod 均 0 warning；dev 控制台干净
    噪音清理验收: typecheck ✅ / test 553 通过 ✅ / validate 4/4 / 扫描 0 违规
+   加载画面（方案 B，2026-08-10，用户「加载空白十几秒」）✅：
+   - 【背景】main.ts 在引擎初始化完成后才 mount Vue——loadMod+插件加载期间 #app 空白
+   - 【占位】index.html 内联 #loading-screen（闪烁"加载中…"文字，CSS animation）——
+     Vue mount 替换 #app 自动消失；纯静态零 JS 侵入
+   - 【mod 可配】meta.toml 新增可选字段 loading_image（图片/GIF）/ loading_video（视频优先）：
+     路径相对 mod 根（素材放 mods/{mod}/assets/）；mod-loader 透传到 LoadedMod；
+     main.ts loadMod 后把素材插进 #loading-screen（video autoplay muted loop playsinline）
+   - 【fallback】未声明素材 → 保持闪烁文字占位（不报错）；素材缺失（404）→ 仅视频/图片
+     不显示、文字层仍在（DOM 结构保留文字）
+   - 【文档】AGENTS §39 meta 字段表 + example-mod meta.toml 注释示例 + index.html 注释
+   加载画面验收: typecheck ✅ / validate 4/4 / dev 冒烟正常
 ```
 
 ### 下一步（2026-08-09 定稿，串行顺序）:

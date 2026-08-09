@@ -32,6 +32,20 @@ export class SettlementContext {
     const char = entitySystem.get('character', charId) as any
     if (!char) return
 
+    // ability 类属性（attributes.toml category=ability）：操作 abilities[name].level，
+    // 保持 {level, xp} 结构——2026-08-09 第5轮修复：原走 writeValue→setEntityAttr 整键替换，
+    // abilities[name] 被替换成数字 → calcJudge/settle_state 等直接读 .level 的读取方恒 0（静默失效）
+    if (this.isAbilityAttr(attrName)) {
+      if (!char.abilities) char.abilities = {}
+      const entry = char.abilities[attrName] ?? { level: 0, xp: 0 }
+      const oldVal = entry.level ?? 0
+      const newVal = Math.max(0, oldVal + delta)
+      entry.level = newVal
+      char.abilities[attrName] = entry
+      this.record(charId, attrName, oldVal, newVal)
+      return
+    }
+
     const oldVal = this.resolveValue(char, attrName)
     const clamped = this.clampValue(char, attrName, oldVal + delta)
     this.writeValue(char, attrName, clamped)
@@ -46,10 +60,27 @@ export class SettlementContext {
     const char = entitySystem.get('character', charId) as any
     if (!char) return
 
+    // ability 类属性：设 abilities[name].level（保持 {level, xp} 结构，见 applyChange 注释）
+    if (this.isAbilityAttr(attrName)) {
+      if (!char.abilities) char.abilities = {}
+      const entry = char.abilities[attrName] ?? { level: 0, xp: 0 }
+      const oldVal = entry.level ?? 0
+      entry.level = Math.max(0, value)
+      char.abilities[attrName] = entry
+      this.record(charId, attrName, oldVal, Math.max(0, value))
+      return
+    }
+
     const oldVal = this.resolveValue(char, attrName)
     this.writeValue(char, attrName, value)
 
     this.record(charId, attrName, oldVal, value)
+  }
+
+  /** attributes.toml category=ability 的属性 → canonical 存储是 abilities 命名空间 */
+  private isAbilityAttr(attrName: string): boolean {
+    const mod = modLoader.getMod()
+    return mod?.attributes?.[attrName]?.category === 'ability'
   }
 
   /** 是否没有任何变化 */
@@ -156,9 +187,9 @@ export class SettlementContext {
     else if (attr === '饥饿值') {
       v = Math.min(240, v)
     }
-    // 尿意上限 240
+    // 尿意上限 300（G6 决策 2026-08-09：erArk 代码 min(...,300) 为准——注释 240 与代码矛盾）
     else if (attr === '尿意') {
-      v = Math.min(240, v)
+      v = Math.min(300, v)
     }
     // 射精欲 → 不超 射精欲上限
     else if (attr === '射精欲') {

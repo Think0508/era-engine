@@ -22,14 +22,17 @@ export function newDaySettle(): void {
   const allChars = entitySystem.getAll('character')
   for (const char of allChars as any[]) {
     if (!char.id) continue
+    // G2 决策 2026-08-09：欲望每日增长仅 NPC（erArk past_day_settle.py:76 `if character_id:`
+    // 排除玩家；玩家欲望由 H/自慰/药物链置 79/0/100，B3 指令化时带）
+    if (char.id === 'player' || char.id === '0') continue
     // 欲望积累：随机(ability[33] ~ ability[33]*2)——33=欲望，abilities 按名存
     const abl33 = char.abilities?.['欲望']?.level ?? 0
     if (abl33 > 0) {
       const add = abl33 + Math.floor(Math.random() * (abl33 + 1))
-      const desire = getEntityAttr(char.id, '欲望值')
+      const desire = getEntityAttr(char, '欲望值')
       if (typeof desire === 'number') {
         const newVal = Math.min(100, desire + add)
-        setEntityAttr(char.id, '欲望值', newVal)
+        setEntityAttr(char, '欲望值', newVal)
       }
     }
   }

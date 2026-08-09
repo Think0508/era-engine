@@ -36,8 +36,13 @@ export const ATTR = {
 } as const
 
 // 命名空间搜索顺序
+// 注意（2026-08-09 契约审查）：marks 排在 abilities 之后——刻印的 canonical 存储是
+// abilities（h-mark 按名键写入、calcJudge/settle_state/favorability/trust 全走 abilities）；
+// entity.marks 仅是 attributes.toml category=mark 的默认落位 + 条件字典注册镜像（零写入方）。
+// marks 若在 abilities 前，getEntityAttr('快乐刻印') 会命中恒 0 的死存储，遮蔽真实刻印等级
+// （静默失效地雷——第 4 轮审查消除）
 const SEARCH_ORDER = [
-  'base', 'params', 'flags', 'talents', 'marks', 'abilities',
+  'base', 'params', 'flags', 'talents', 'abilities', 'marks',
   'first_record', 'experience', 'social', 'economy', 'combat',
 ]
 

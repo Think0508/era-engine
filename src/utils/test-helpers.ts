@@ -34,7 +34,9 @@ export function makeTestExecCtx(overrides: any = {}): any {
 /**
  * 全字段重置角色实体（镜像 applyAttributeDefaults 语义 + 测试可写字段）。
  * 必须覆盖：base 键集合 / abilities / talents / hypnosis / sp_flag / dead / body_items /
- * h_state / experience / action_info / current_location——漏任何一个都会跨测试污染。
+ * h_state / experience / action_info / current_location / marks——漏任何一个都会跨测试污染。
+ * 契约化（2026-08-09，标准角色契约 §5.1）：base 键集合 = 最小必需集 + 常用状态键，
+ * 与 DEFAULT_NPC_BASE/DEFAULT_PLAYER_BASE 一致（一致性测试保证 ⊆ attributes.toml 定义）。
  */
 export function resetCharacterEntity(char: any, baseKeys: Record<string, number> = {}): void {
   if (!char) return
@@ -43,6 +45,7 @@ export function resetCharacterEntity(char: any, baseKeys: Record<string, number>
   char.talents = {}
   char.experience = {}
   char.sp_flag = {}
+  char.marks = {}
   char.dead = undefined
   char.hypnosis = undefined
   char.body_items = undefined
@@ -51,16 +54,21 @@ export function resetCharacterEntity(char: any, baseKeys: Record<string, number>
   char.current_location = 'town_square'
 }
 
-/** 标准 NPC base（含常用状态键——setEntityAttr 只写已有键，缺失键会落到直接属性） */
+/** 标准 NPC base（契约 §5.1 异常级全量 + 常用状态键——setEntityAttr 只写已有键，缺失键会落到直接属性） */
 export const DEFAULT_NPC_BASE: Record<string, number> = {
   体力: 80, 体力上限: 100, 气力: 50, 气力上限: 100,
-  好感度: 0, 信赖度: 0, 好意: 0, 快乐: 0, 恐怖: 0, 皮肤: 0, 心理: 0,
-  疲劳度: 0, 欲情: 0, 先导: 0, 阴道: 0, 后穴: 0, 子宫: 0, 尿道: 0,
-  苦痛: 0, 恭顺: 0, 羞耻: 0, 屈服: 0, 习得: 0,
+  好感度: 0, 信赖度: 0,
+  欲望值: 0, 射精欲: 0, 射精欲上限: 1000, 精液量: 100, 精液量上限: 100,
+  好意: 0, 快乐: 0, 恐怖: 0, 皮肤: 0, 心理: 0, 胸部: 0, 阴蒂: 0, 阴茎: 0,
+  阴道: 0, 后穴: 0, 子宫: 0, 口喉: 0, 尿道: 0,
+  疲劳度: 0, 欲情: 0, 先导: 0, 润滑: 0, 苦痛: 0, 恭顺: 0, 羞耻: 0, 屈服: 0,
+  习得: 0, 抑郁: 0, 反感: 0, 优越: 0,
 }
 
-/** 标准玩家 base */
+/** 标准玩家 base（契约 §5.1 异常级全量 + 常用状态键） */
 export const DEFAULT_PLAYER_BASE: Record<string, number> = {
   体力: 50, 体力上限: 100, 气力: 30, 气力上限: 100,
-  好感度: 0, 信赖度: 0, 好意: 0, 快乐: 0, 疲劳度: 0,
+  好感度: 0, 信赖度: 0,
+  欲望值: 0, 射精欲: 0, 射精欲上限: 1000, 精液量: 100, 精液量上限: 100,
+  好意: 0, 快乐: 0, 皮肤: 0, 心理: 0, 疲劳度: 0,
 }

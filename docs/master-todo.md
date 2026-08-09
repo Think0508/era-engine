@@ -10,6 +10,145 @@
 
 ### 已完成（本会话）
 ```
+标准角色契约（spec §10.1，2026-08-09，B1 剩余迁移前必做）✅
+  - Step 1 名称映射表：scripts/erark-name-map.json（erarkToOurs/oursToErark/dropped/structuralSubstitutions）
+    改名：肛肠→后穴/心理快感→心理/射精槽→射精欲/精液槽→精液量/疲劳值→疲劳度/醉酒度→酒气/理智→精力/胸→胸部
+  - Step 2 第1层扫描：scripts/scan-attr-refs.cjs（TS 中文属性字面量 + ATTR.XXX 展开 vs 定义集）
+    → 修复 4 处死键：h-ejaculation '饥饿度'→'饥饿值'×2、h-group-sex '心理快感'→'心理'/
+    '精液上限'→'精液量上限'+'欲望'→'欲望值'（base 死键，erArk desire_point 确认）/'疲劳'→'疲劳度'
+    → 补定义：隐蔽(ability 90,h-hidden)、排卵周期(pregnancy 周期)、精神(hypnosis 精神力)、
+    饿得快(talent)、TSP/tsp_max(h-time-stop 插件默认)、力道/根骨/定力/灵敏/福缘(combat-wuxia 插件默认)、
+    气血/内力(test-mod 示范 mod 自定义属性)、华山剑法/混元功/基础攻击/采药(test-mod abilities)
+    → 扫描 0 违规（exit 0）
+  - Step 3 第3层对账：scripts/scan-erark-defs.cjs（A 骨架=erArk 4 CSV+Character 结构体 48 字段；
+    B 遗漏抓取源=228 保留指令效果链，behavior_id 大小写归一 + effect 链 ' - ' 拆分 +
+    转换脚本全写法抽取：EFFECT_MAP/clothMap/expMap/if-numId 平衡花括号）
+    → docs/instruction-replication/erark-attr-ledger.md 四类：已对齐 364 / 替代处理 15 / 有意删减 45 / 遗漏 0
+    → 技能系列 41-49 归"有意删减"（L2.13 记录不做实现，B 扫描确认零引用；话术技能 40 例外已定义）
+    → 附：90 个未映射 effect id（保留指令链用到，转换脚本跳过 → 迁移时两步路径翻译，SOP §8）
+  - Step 4 文档：docs/character-schema.md（10 节：结构树/属性表含默认值+读取方+缺失影响+可删性/
+    能力天赋状态经验/实体结构 h_state+sp_flag+body_items+dirty+first_times/最小必需集(异常级+静默失效级)/
+    字段字典/场景索引/mod 扩展规则/校验规则/改名记录）；mod-author-guide 新增"角色字段速查"节
+  - Step 5 校验落地：src/core/character-contract.ts（校验器注册表，纯机制无属性名——三层铁律）；
+    mod-loader validateCharacterContract（裸字段/未定义状态效果/关系类型 warning +
+    插件校验器调用，校验异常 warning 化不拖垮加载）；fillMissingAttributes 导出（全命名空间查重——
+    契约前存档 base 写法不重复补，补时 warning）；save-system restoreFromSave 接线；h-core 注册
+    §5.1 必需集校验器（具体字段名在插件层）；test-helpers 契约化（DEFAULT_NPC_BASE/PLAYER_BASE 补全
+    最小必需集 + reset 补 marks 重置）
+  - Step 6 测试：src/core/character-contract.test.ts 13 条（裸字段/缺必需/校验器异常隔离/
+    存档补齐/契约前存档兼容/基座一致性/扫描脚本自测 exit 0）
+  - Step 7 验收：typecheck ✅ / test 458 通过（42 文件，基线 421+37）/ dev 冒烟干净 /
+    扫描 0 违规 / 对账表四类齐备遗漏 0 / test-mod 新增契约示范角色 contract_demo（全命名空间写法示范）
+  - 顺带清理：test-mod 射精槽/射精槽上限 旧名 → 射精欲/射精欲上限；tsconfig.app.json types 补 node
+  - 登记：attr-scan-report.md 的 UNMATCHED 1287 条为人工三审备查（UI/日志文本，无真实属性引用）
+  审查修复（2026-08-09 用户要求复查）✅：
+  - 【真缺口】h-core 默认 attributes.toml 缺 erArk 标准角色卡（ABL/刻印/感度/扩张/性技只存在于
+    test-mod）→ 无 attributes.toml 的 mod（武侠）会触发必需集校验器全角色警告 + 条件字典不注册
+    player.技巧/player.快乐刻印 + 属性面板不显示 → 补 35 键进 h-core 默认层
+  - 【扫描误报】scan-erark-defs 未覆盖转换脚本区间映射（122-125/131-134/141-146/1055-1062 等
+    range 块 + partMap/skillMap 字符串 map）→ 未映射 effect id 90 虚高 → 真实 2 个（1723/1724）；
+    B 列新增部位引用抓取（pain/pl_p 链）
+  - 【查证记录】1723/1724（carry_target/stop_carry_target）：default.py:2707/:2730 语义写入对账表附录
+    （action_info.carry_chara_id 写入——需专用 handler，set_field 只写 _targetIds 无法表达"玩家写自己"，
+    B2+ ARTS 批次用）
+  - 【死键】test-mod test_spawn 的 `ability`（单数）命名空间——基础攻击从未被读取（expandCharacterAbilities
+    只读 abilities 复数）→ 改 abilities
+  - 【铁律】character-contract.ts 重复注册 console.warn → errorReporter
+  复查验收: typecheck ✅ / test 458 通过 ✅ / 扫描 0 违规 + 未映射 2（已查证）/ dev 冒烟干净
+  二次审查修复（2026-08-09，用户要求再复查）✅：
+  - 【真缺口·静默】运行时生成路径未契约化：npc.toml 路人（character-system handleNpcSpawns）直接
+    浅拷贝模板注册——abilities 是裸数字（.level 恒 undefined → 结算系数静默 0）、marks/params/talents
+    缺默认（面板不显示）；pendingSpawns 也只在加载时 applyAttributeDefaults（abilities 简写未展开、
+    talents 未初始化）→ 新增 finalizeCharacterData（mod-loader 导出：默认值+abilities 展开+talents
+    初始化，幂等），三处接入：parseModData roster/named/pendingSpawns + handleNpcSpawns（含命名空间
+    克隆防模板污染——浅拷贝下 applyAttributeDefaults 会改共享模板）+ processPendingSpawns 兜底
+  - 【测试盲区】h-core 必需集校验器常量未导出（真实校验器永不进测试）→ 导出 CONTRACT_REQUIRED_*
+    + 一致性测试（必需集 ⊆ h-core attributes.toml 定义）；restoreFromSave 全路径（真实 mod 加载 →
+    读档缺字段补齐 + warning 不静默）测试；npc 路人生成契约化集成测试（全插件加载镜像 boot-smoke）；
+    finalizeCharacterData 单元测试（简写展开/默认值/talents 初始化/最小 mod 幂等）
+  - 【深挖确认】全部角色注册点枚举（mod-loader/save-system/spawn-system/character-system）已覆盖；
+    UNMATCHED 1252 条深筛（上下文含 base[/params[/abilities[/getEntity 等模式）= 0 条漏网；
+    中文属性常量（HUNGER_ATTR/DIGESTION_ATTR）值均定义 ✓；bindings.get/set 无中文属性调用 ✓
+  二次复查验收: typecheck ✅ / test 463 通过 ✅（42 文件，+5）/ 扫描 0 违规 / dev 冒烟干净
+  三次审查（2026-08-09，链路打通验证——"启动顺序"链）✅：
+  - 【真断点·已修】main.ts 顺序 = loadMod（第2步）先 → 插件 onLoad（第8步）后 → h-core 必需集
+    校验器在首次加载时未注册，**生产环境永不执行**（指令校验有 game:plugins_loaded 延迟，角色契约没有）
+    → mod-loader 导出 revalidateCharacterContract()，h-core onLoad 注册校验器后立即补跑
+    （两种启动顺序都覆盖：mod 先行=补跑生效；插件先行=parseModData 时已注册；幂等无害）
+  - 【真 bug·已修·boot-smoke 抓到的】h-core 必需集校验器硬编码查 base → 好感度/信赖度
+    category=social 落在 entity.social → 首次真实补跑即对 test-mod 全角色误报"缺必需"
+    → 校验器按 attributes.toml category 动态解析命名空间（nsMap + 默认 base）
+  - 【链路测试·新增】revalidate 补跑链（fake 校验器 + 删定义的 bad mod → 补跑抓到缺必需）；
+    条件注册链（h-core 默认属性 → conditionRegistry 可校验 player.技巧/player.快乐刻印——
+    补全前任意 mod 条件校验失败）；必需集落位链（加载后每个必需键 getEntityAttr 可读——
+    定义→默认落位→读取方可见 整链验证，含 social 命名空间具体断言）
+  - 【稳定性】466 全量连跑 2 次稳定；测试隔离修复（落位链测试补 entitySystem.clear）
+  三次审查验收: typecheck ✅ / test 466 通过 ✅（42 文件，连跑 2 次）/ boot-smoke 7/7（真实补跑 0 误报）/
+  扫描 0 违规 / dev 冒烟干净
+  四次审查（2026-08-09，bug/静默错误扫尾）✅：
+  - 【真 bug·数据丢失·已修】fillMissingAttributes.hasAnywhere 硬编码命名空间清单漏查 social/
+    economy/combat → 契约后存档（好感度在 entity.social）读档时被默认值 30 覆盖（玩家真实值
+    丢失）+ 虚假 warning → 动态扫描角色全部对象命名空间（先写失败测试再修）
+  - 【静默地雷·已修】SEARCH_ORDER 中 marks 在 abilities 前：h-mark 升级写 abilities（按名键），
+    attributes category=mark 默认落位 entity.marks 恒 0 → 任何 getEntityAttr/setEntityAttr 读刻印
+    会命中 marks 死存储（静默遮蔽真实刻印等级）→ marks 移到 abilities 之后（core 纯机制改动，
+    穷举确认：calcJudge/settle_state/favorability/trust/h-mark 全走 abilities，UI 不读刻印，零依赖）
+    → 刻印 canonical 存储 = abilities 定稿写入 schema §2.3；新增刻印读取链测试
+  - 【排查确认】ParameterSection 只遍历 daily_reset 属性（刻印不进面板，无展示 bug）；
+    setEntityAttr 整键替换语义对能力键是既有非法用法（产品代码无此调用，不扩大范围）
+  四次审查验收: typecheck ✅ / test 468 通过 ✅（42 文件，连跑 2 次）/ 扫描 0 违规 / dev 冒烟干净
+  实时结算机制对齐（2026-08-09，grill G1-G6 逐项定稿后落地）✅
+  - 【背景】用户指出"写入方缺失"需区分：指令迁移可带 vs erArk 原生机制必须补——
+    复查发现 realtime-settle.ts 已实现大部分原生机制（先前"无写入方"结论为 grep 盲区），
+    真正缺口 = newday-settle 参数 bug（静默死代码）+ 饥饿双轨 + 射精欲消退缺失等
+  - G1 饥饿双轨收敛【方案 a】：hunger-system hour_changed 增长删除（与行动级重叠=双倍），
+    增长唯一源 = realtimeSettle.settleHunger（补 erArk 系数 2-hp/max × 2-mp/max）；h-config
+    [hunger] 删 growth_per_min/growth_random；消化/NPC 进食/每日口粮保留
+  - G2 欲望每日增长【方案 a】：newday-settle 修参数 bug（getEntityAttr(char.id)→char，传字符串
+    恒失效）+ 范围对齐 erArk 仅 NPC（玩家欲望由 H/自慰/药物链置 79/0/100，B3 带）
+  - G3 射精欲自然消退【方案 a】：h-ejaculation 射精时写 action_info.last_eaj_add_time
+    （gameTimeToTotalMinutes 新 helper）+ realtimeSettle 玩家分支：非 H 且距上次射精 >30 分 → -10/分
+  - G4 快感清零【方案 a】：realtimeSettle isSleep 分支按 attributes.toml daily_reset=true 标记归零
+    （该标记首次有消费方；erArk sleep_settle.py:124-128 转珠部分因宝珠系统砍掉只留清零；
+    L1.7 sleep 指令化时自动生效）
+  - G5 愤怒【方案 a】：finalizeCharacterData 新角色初始化 rand(1,35)（erArk character.py:99，
+    有键保留/幂等）+ isSleep 睡眠醒来重置 rand(1,35)（sleep_settle.py:80）；
+    MOOD_TO_*/判定失败链 ±值随 B 批次
+  - G6 数值对齐【方案 a】：尿意上限 240→300（erArk 代码 min(...,300) vs 注释 240 以代码为准，
+    clampValue+settleUrine 同步）；熟睡两分支补 tired_adjust=1+疲劳/160、深睡区间 rand(-0.3~0.6)
+    （下界钳 0 防御）
+  - 新增测试 23 个（G1 饥饿系数/封顶 1、G2 欲望 NPC/玩家/上限/同日 4、G3 消退 6、G4 清零 3、
+    G5 愤怒 5、G6 尿意/熟睡 4）——新文件 realtime-settle.test.ts + newday-settle.test.ts
+  - 待办登记：醉酒消退（系统未实装延后）、休息 HP/MP 恢复公式（B1 rest 迁移时对齐 settle_rest：
+    max×0.003+10）、MOOD_TO_* 等指令链效果（B 批次）、深睡/浅睡阈值 60 细节（L1.7 睡眠系统时核对
+    Sleep_Level.csv）、vitest pool 偶发 skip（已登记既有现象，重跑稳定）
+  G1-G6 落地后审查（2026-08-09，bug/静默错误/链路）✅
+  - 【静默失效点·已修】eja_shoot（直接射精 effect，B3 指令将用）缺射精结算：不扣精液、
+    不写 just_shoot/day_first_shoot_semen/last_eaj_add_time（与 eja_climax 不一致）→
+    未来 B3 用上时射精不扣精液 + G3 射精欲消退永不触发（静默）→ 对齐补齐 + 链路测试
+  - 【过度修复·已撤销】newDaySettle reset：临时加的"读档回拨 reset"经测试证明有害
+    （读档当天重复结算）；lastSettledDay != 比较已正确处理回拨日期 → 撤销 + 测试改为确认正确行为
+  - 【链路确认】G1 饥饿行动级唯一源 ✓（command-executor → realtimeSettle 玩家+全角色）；
+    G2 每行动调用同日幂等 ✓；G3 eja_climax 二段结算路径已写 last_eaj ✓；G4/G5 睡眠部分
+    入口 = sleep 指令（B1 剩余 1014，未迁移 → isSleep 恒 false 机制休眠，迁移后自动生效——预期）；
+    G6 尿意 240 零残留 ✓；rest 恢复走 recover_permil（数值对齐 settle_rest 留 B1 待办）✓
+  - 【稳定性】新测试文件（realtime-settle/newday-settle/phase-h）3 连跑全稳定 48/48；
+    全量 494 ×3 全绿（偶发 1 error 为 vitest pool 既有登记现象，重跑稳定）
+  验收: typecheck ✅ / test 494 通过 ✅（44 文件）/ 扫描 0 违规 / dev 冒烟干净
+  验收: typecheck ✅ / test 492 通过 ✅（44 文件，连跑 2 次稳定）/ 扫描 0 违规 / dev 冒烟干净
+  验收: npm run typecheck ✅ / npm run test 458 通过 ✅（42 文件）/ 扫描 exit 0 / dev 冒烟干净
+```
+
+### 下一步（2026-08-09 定稿，串行顺序）:
+```
+1. 【B1 剩余 23 条】用户筛选 → 逐条复刻（SOP 每批工作流 + 自动前提展开 §4.1 + 属性存在性核对——
+   迁移时查 docs/instruction-replication/erark-attr-ledger.md"这个 erArk 字段我们怎么处理的"）
+   → 每条约 30 分钟分析+实现；sleep 特殊耗时（跨天跳转）L1.7 处理；
+   → 未映射 effect id 90 个（对账表附录）遇之必走两步路径翻译（constant_effect.py → default.py）
+2. B2 obscenity 37 条（前提/判定已就绪）
+3. B3-B6 sex 142 条（延后至 H 场景 UI 就绪，spec §8）
+```
+```
 tech_adjust 结算保真补全（2026-08-08，grilling 定稿后执行）✅
   - 体位修正（chara_feel_state_adjust:314-325）：h-config [sex_positions] 12 体位系数（蓝本 Sex_Position.csv）
     + getFeelExtraAdjust 扩展（V/A/U/W 有体位 +系数 / 喜欢体位 +0.5 / 子宫奸 +2，玩家 current_womb_sex_position==2）
@@ -633,13 +772,11 @@ erArk 新地文导入补漏（2026-08-08，T9）✅
   - 可用条件属性手册.md 生成（conditionRegistry.generateManual 已有实现）未接线——
     浏览器端无法写文件系统，需 dev 工具/脚本方案
   - plugin-manager 用 console.warn（铁律要求 errorReporter）——既有代码，随批收敛
-
-下一步: B1 剩余 23 条（用户筛选 → 逐条复刻，SOP 每批工作流）
-  → 每条约 30 分钟分析+实现；sleep 特殊耗时（跨天跳转）L1.7 处理
-```
+  - 扫描脚本自测：scan-attr-refs/scan-erark-defs 已接 vitest（character-contract.test.ts）——
+    npm run scan:attrs / scan:erark 独立可跑
 
 ### 已完成（此前会话）
-```
+
 L2.11 三项缺口全部完成 ✅
   - 群交HP修正: hp-mp.ts 重写 + settle_hp_mp effect注册
   - 精液吸收: calcSemenAbsorb + penis_dirty_dict + H中tick吸收
@@ -849,7 +986,7 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 
 **参考**：`docs/superpowers/specs/2026-08-07-instruction-replication-design.md`（权威 spec）+ `docs/instruction-replication/migration-workflow.md`（逐条 SOP）+ `docs/skills/erark-replication.md`
 
-> **当前进度**：第 0 步粗筛 ✅（228 保留，见 `docs/instruction-replication/instruction-keep-list.md`）→ 前置改动 ✅（spec §10 全部完成）→ **B1 试点 chat 已复刻 ✅（6 测试）→ 剩余 23 条待用户筛选**（批次清单 `batch-01-daily.md`）
+> **当前进度**：第 0 步粗筛 ✅（228 保留，见 `docs/instruction-replication/instruction-keep-list.md`）→ 前置改动 ✅（spec §10 全部完成）→ **B1 试点 chat 已复刻 ✅ + 二段结算/绝顶附加/隐奸露出等 erArk 对齐全部完成** → **标准角色契约 ✅（spec §10.1，2026-08-09：character-schema.md / 双向扫描 0 违规 / 对账表四类齐备 / 校验落地）** → **下一步：B1 剩余 23 条**（执行顺序见会话交接摘要"下一步"；迁移时查对账表"这个 erArk 字段我们怎么处理的"）
 
 - **前置改动** ✅（见会话交接摘要）：loader 收敛 / 接口扩展+judge_check 注入 / calcJudge adjustments 表 / IN_* 迁 location.tags / 耗时机制 / UI 分类 / _erark_source 归档
 - **Phase A**：齐全前提（~80 个），按 A1（身体/体技/体位）→ A2（服装/地点/道具）→ A3（杂项）分批

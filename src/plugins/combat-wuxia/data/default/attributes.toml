@@ -1,0 +1,12 @@
+# combat-wuxia 插件默认属性定义（插件默认层 Layer 1）
+# 武侠六维：mod 可 override（武侠 mod 在 definitions/attributes.toml 中覆盖默认值）
+# 契约补键（2026-08-09）：ATTR.STR/CON/WILL/AGI/FORT 常量引用 '力道/根骨/定力/灵敏/福缘'
+# 但此前无任何 attributes.toml 定义 → 角色裸字段 + 扫描违规。此处补插件默认定义
+# （默认 0 = 未设定时不产生面板加成；武侠 mod 内容起步时在 mod 层覆写真实默认值）
+
+[attributes]
+"力道" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：攻击力基础（combat-wuxia）" }
+"根骨" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：防御/体力上限基础（combat-wuxia）" }
+"定力" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：防御/气力上限基础（combat-wuxia）" }
+"灵敏" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：闪避/命中基础（combat-wuxia）" }
+"福缘" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：暴击基础（combat-wuxia）" }

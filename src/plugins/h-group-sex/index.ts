@@ -128,7 +128,7 @@ function applyGroupSexRealtimeTick(charId: string, addTime: number): void {
   const adjust = Math.min(othersCount * 0.1, 2)
   if (!ch?.base) return
   ch.base['羞耻'] = Math.min(99999, (ch.base['羞耻'] ?? 0) + Math.floor(addTime * adjust))
-  ch.base['心理快感'] = Math.min(99999, (ch.base['心理快感'] ?? 0) + Math.floor(addTime * adjust))
+  ch.base['心理'] = Math.min(99999, (ch.base['心理'] ?? 0) + Math.floor(addTime * adjust))
 }
 
 export function onLoad(_ctx: PluginContext): void {
@@ -168,9 +168,9 @@ export function onLoad(_ctx: PluginContext): void {
       if (!c.base) c.base = {}
       c.base['体力上限'] = Math.min(99999, (c.base['体力上限'] ?? 0) + orgasmCount * 2)
       c.base['气力上限'] = Math.min(99999, (c.base['气力上限'] ?? 0) + orgasmCount * 3)
-      c.base['欲望'] = Math.max(0, (c.base['欲望'] ?? 0) - orgasmCount * 20)
+      c.base['欲望值'] = Math.max(0, (c.base['欲望值'] ?? 0) - orgasmCount * 20)
       if (c.id === 'player' || c.id === '0') {
-        c.base['精液上限'] = Math.min(999, (c.base['精液上限'] ?? 0) + orgasmCount)
+        c.base['精液量上限'] = Math.min(999, (c.base['精液量上限'] ?? 0) + orgasmCount)
       }
     }
     return true
@@ -312,7 +312,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     return !entitySystem.getAll('character').some((c: any) => c?.h_state?.is_h)
   })
   reg('SCENE_ALL_NOT_TIRED', (_ctx2: any) => {
-    return !entitySystem.getAll('character').some((c: any) => (c?.base?.['疲劳'] ?? 0) > 74)
+    return !entitySystem.getAll('character').some((c: any) => (c?.base?.['疲劳度'] ?? 0) > 74)
   })
 
   // 注释：Step 6 — 流程前提

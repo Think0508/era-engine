@@ -358,15 +358,19 @@ function translateEffect(effId, prevEff) {
 
   // 日常特殊效果
   if (numId === 304) return { type: 'set_field', params: { path: 'sp_flag.showering', value: true } }
-  if (numId === 325) return { type: 'modify_attribute', params: { attr: '疲劳', value: -10 } }
+  // 325 REST_FLAG_TO_0（清空休息 flag）——2026-08-09 修正：原误映射 attr='疲劳' 死键
+  if (numId === 325) return { type: 'set_field', params: { path: 'sp_flag.rest', value: false } }
   if (numId === 341) return { type: 'set_field', params: { path: 'sp_flag.apologized', value: true } }
   if (numId === 363) return { type: 'set_field', params: { path: 'sp_flag.following', value: true } }
   if (numId === 365) return { type: 'set_field', params: { path: 'sp_flag.following', value: false } }
   if (numId === 366) return { type: 'set_field', params: { path: 'sp_flag.woke_up', value: true } }
   if (numId === 372) return { type: 'set_field', params: { path: 'sp_flag.sleeping', value: false } }
-  if (numId === 457) return { type: 'modify_attribute', params: { attr: '睡意', value: -50 } }
-  if (numId === 489) return { type: 'modify_attribute', params: { attr: '疲劳', value: -30 } }
-  if (numId === 509) return { type: 'modify_attribute', params: { attr: '欲望', value: -20 } }
+  // 457 MASTUREBATE_BEFORE_SLEEP_FLAG_TO_0（睡前自慰标志清零）——sp_flag 未实装，nop+TODO（2026-08-09 修正：原误映射 attr='睡意' 死键）
+  if (numId === 457) return { type: 'nop', params: {}, _todo: '457 MASTUREBATE_BEFORE_SLEEP_FLAG_TO_0 睡前自慰标志清零（sp_flag.masturebate_before_sleep 未实装）' }
+  // 489 HYPNOSIS_FLAG_TO_0（催眠标志清零）——nop+TODO（2026-08-09 修正：原误映射 attr='疲劳' 死键）
+  if (numId === 489) return { type: 'nop', params: {}, _todo: '489 HYPNOSIS_FLAG_TO_0 催眠标志清零' }
+  // 509 SLEEP_ADD_ADJUST（宿舍睡觉换睡衣+关门）——L1.7 睡眠系统，nop+TODO（2026-08-09 修正：原误映射 attr='欲望' 语义错误）
+  if (numId === 509) return { type: 'nop', params: {}, _todo: '509 SLEEP_ADD_ADJUST 睡眠换衣关门（L1.7 sleep 指令化时接专用 handler）' }
   if (numId === 525) return { type: 'set_field', params: { path: 'sp_flag.clean', value: true } }
   if (numId === 538) return { type: 'modify_relation', params: { relation: '好感度', value: 10 } }
   if (numId === 606) return { type: 'set_field', params: { path: 'sp_flag.pajamas', value: true } }
@@ -374,10 +378,13 @@ function translateEffect(effId, prevEff) {
   if (numId === 648) return { type: 'cloth_wear_all', params: {} }
   if (numId === 649) return { type: 'cloth_remove_all', params: {} }
   if (numId === 702) return { type: 'modify_attribute', params: { attr: '尿意', value: -50 } }
-  if (numId === 703) return { type: 'modify_attribute', params: { attr: '饥饿', value: -30 } }
+  // 703 RECORD_WAKE_TIME（记录起床时间）——L1.7 睡眠系统，nop+TODO（2026-08-09 修正：原误映射 attr='饥饿' 死键）
+  if (numId === 703) return { type: 'nop', params: {}, _todo: '703 RECORD_WAKE_TIME 记录起床时间（L1.7 睡眠系统）' }
   if (numId === 751) return { type: 'set_field', params: { path: 'sp_flag.moved', value: true } }
-  if (numId === 931) return { type: 'modify_attribute', params: { attr: '欲望', value: -30 } }
-  if (numId === 932) return { type: 'modify_attribute', params: { attr: '欲望', value: -50 } }
+  // 931/932 ADJUST_BODY_MANAGE_DAY/SLEEP_ITEM（身体管理道具自动穿戴）——身体管理系统砍掉（对账表
+  // Character.body_manage 有意删减），nop+TODO（2026-08-09 修正：原误映射 attr='欲望' 语义错误）
+  if (numId === 931) return { type: 'nop', params: {}, _todo: '931 ADJUST_BODY_MANAGE_DAY_ITEM 身体管理道具穿戴（系统砍掉）' }
+  if (numId === 932) return { type: 'nop', params: {}, _todo: '932 ADJUST_BODY_MANAGE_SLEEP_ITEM 身体管理道具穿戴（系统砍掉）' }
   if (numId === 1504) return { type: 'modify_attribute', params: { attr: '体力', value: 50, target: 'self' } }
   if (numId === 1505) return { type: 'modify_attribute', params: { attr: '气力', value: 50, target: 'self' } }
   if (numId === 1751) return { type: 'set_field', params: { path: 'sp_flag.urinated', value: true } }

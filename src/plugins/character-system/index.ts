@@ -6,7 +6,7 @@ import type { PluginContext, EntityData } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { bindingResolver } from '../../core/binding-resolver'
 import { eventBus } from '../../core/event-bus'
-import { modLoader } from '../../core/mod-loader'
+import { modLoader, finalizeCharacterData } from '../../core/mod-loader'
 
 // 注释：onLoad——character-system 无需提前声明
 export function onLoad(_ctx: PluginContext): void {
@@ -205,6 +205,17 @@ function handleNpcSpawns(locationId: string): void {
         npcData.name = spawn.names[randomInt(0, spawn.names.length - 1)]
       }
       npcData.current_location = locationId
+      // 注释：先克隆 finalize 会触及的命名空间——template 是共享对象，浅拷贝下
+      // applyAttributeDefaults 会污染模板（base 被加默认键）；克隆后各自独立
+      for (const ns of ['base', 'params', 'marks', 'abilities', 'talents']) {
+        if (npcData[ns] && typeof npcData[ns] === 'object') {
+          npcData[ns] = { ...npcData[ns] }
+        }
+      }
+      // 注释：契约最终化（标准角色契约 spec §10.1）——attributes 默认值落位 +
+      // abilities 简写展开 + talents 初始化。此前缺失：路人 NPC 的 abilities 是裸数字
+      // （.level 恒 undefined → 结算系数静默 0）、marks/params 缺默认（面板不显示）
+      finalizeCharacterData(npcData, mod)
       // 注释：注册到 entity-system
       entitySystem.register('character', npcId, npcData)
     }

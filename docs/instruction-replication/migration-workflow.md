@@ -374,4 +374,9 @@ effects = [
 - `docs/instruction-replication/instruction-master-list.md` — 全量 404 条粗筛清单
 - `docs/instruction-replication/location-tags.md` — 位置 tag 对照总表
 - `docs/instruction-replication/batch-NN-*.md` — 各批次清单
-- `docs/mod-author-guide.md` — mod 作者指南（含指令效果参数协议）
+- `docs/character-schema.md` — **标准角色契约（属性/能力/结构字段/最小必需集/校验规则/改名记录——写角色数据前必读）**
+- `docs/instruction-replication/erark-attr-ledger.md` — **erArk 字段对账表（迁移时查"这个 erArk 字段我们怎么处理的"；四类：已对齐/替代处理/有意删减/遗漏）**
+- `docs/instruction-replication/erark-attr-scan.json` — 对账表原始数据（scan-erark-defs.cjs --report 生成）
+- `docs/instruction-replication/attr-scan-report.md` — 第1层扫描报告（scan-attr-refs.cjs --report 生成）
+- `scripts/erark-name-map.json` — 改名映射表（扫描输入）
+- `docs/mod-author-guide.md` — mod 作者指南（含指令效果参数协议 + 角色字段速查）

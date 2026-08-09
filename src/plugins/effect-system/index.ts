@@ -12,12 +12,19 @@ import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
 import { apiSystem } from '../../core/api'
 import { evaluateCondition } from '../../core/condition'
+import { modLoader } from '../../core/mod-loader'
 import { SettlementContext } from './settlement-context'
+
+// attributes.toml category=ability 的属性 → canonical 存储是 abilities[name].level（{level,xp} 结构）。
+// 2026-08-09 第5轮修复：直写 base / setEntityAttr 整键替换会把 abilities[name] 换成数字，
+// 直接读 .level 的读取方（calcJudge/settle_state/favorability/trust）恒 0 —— 静默失效
+function isAbilityAttr(attr: string): boolean {
+  return modLoader.getMod()?.attributes?.[attr]?.category === 'ability'
+}
 
 // 注释：onLoad——注册 10 核心类型 handler
 export function onLoad(_ctx: PluginContext): void {
-  // 注释：set_attribute——走 binding 系统；无绑定则直接改实体 base
-  // TODO: 后续区分「插件键名→binding」和「mod 属性名→直接 base」
+  // 注释：set_attribute——走 binding 系统；无绑定则按 attributes.toml category 落位
   effectTypeRegistry.register('set_attribute', (params: any, ctx: any) => {
     const targetIds = ctx._targetIds as string[]
     for (const id of targetIds) {
@@ -26,7 +33,15 @@ export function onLoad(_ctx: PluginContext): void {
         bindingResolver.set(id, params.attr, params.value)
       } else {
         const char = entitySystem.get('character', id) as any
-        if (char?.base) char.base[params.attr] = params.value
+        if (!char) continue
+        if (isAbilityAttr(params.attr)) {
+          if (!char.abilities) char.abilities = {}
+          const entry = char.abilities[params.attr] ?? { level: 0, xp: 0 }
+          entry.level = Math.max(0, params.value ?? 0)
+          char.abilities[params.attr] = entry
+        } else if (char?.base) {
+          char.base[params.attr] = params.value
+        }
       }
     }
     return true
@@ -47,7 +62,14 @@ export function onLoad(_ctx: PluginContext): void {
           bindingResolver.set(id, params.attr, current + delta)
         } else {
           const char = entitySystem.get('character', id) as any
-          if (char?.base) {
+          if (!char) continue
+          if (isAbilityAttr(params.attr)) {
+            // ability 类：改 abilities[name].level（保持 {level,xp} 结构，见 isAbilityAttr 注释）
+            if (!char.abilities) char.abilities = {}
+            const entry = char.abilities[params.attr] ?? { level: 0, xp: 0 }
+            entry.level = Math.max(0, (entry.level ?? 0) + delta)
+            char.abilities[params.attr] = entry
+          } else if (char?.base) {
             const current = char.base[params.attr] ?? 0
             char.base[params.attr] = current + delta
           }

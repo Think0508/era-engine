@@ -1,35 +1,32 @@
-# 注释：test-mod 专属能力/武功定义
-# 通用 H 能力（指技/舌技/B感觉/C感觉/欲情等）由 h-core 插件默认提供
+# test-mod 示范能力定义（标准角色契约 spec §10.1 —— mod 扩展规则演示）
+# 华山剑法：condition-registry 测试引用（character.令狐冲.abilities.华山剑法.level >= 3）。
+# 按契约：mod 新增能力必须经 definitions/abilities.toml 定义，禁止角色数据裸字段。
 
+[abilities]
 [abilities."华山剑法"]
 name = "华山剑法"
-description = "华山派基础剑法"
 type = "active"
 max_level = 10
 tags = ["combat_active", "sword"]
-effects = [{ type = "modify_attribute", params = { attr = "attack", value = 5, target = "self" } }]
-time_cost = 10
-xp_curve = "linear"
-xp_per_level = 100
-
-[[abilities."华山剑法".unlocks]]
-at_level = 6
-ability = "独孤九剑"
+description = "华山派基础剑法（test-mod 示范：mod 自定义能力）"
 
 [abilities."混元功"]
 name = "混元功"
-description = "华山派内功心法"
 type = "passive"
-max_level = 5
+max_level = 10
 tags = ["combat_passive", "internal"]
-effects = [{ type = "modify_attribute", params = { attr = "mp", value = 20, target = "self" } }]
-xp_curve = "linear"
-xp_per_level = 150
+description = "华山派内功（test-mod 示范：roster 简写引用）"
 
 [abilities."基础攻击"]
 name = "基础攻击"
-description = "无武功的普通攻击"
 type = "active"
-max_level = 0
+max_level = 10
 tags = ["combat_active"]
-time_cost = 5
+description = "普通攻击（test-mod 示范：roster 简写引用）"
+
+[abilities."采药"]
+name = "采药"
+type = "active"
+max_level = 10
+tags = ["combat_active"]
+description = "野外采药（test-mod 示范：roster 简写引用）"

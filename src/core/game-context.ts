@@ -6,6 +6,15 @@ const NIGHT_START_HOUR = 22
 const DAYS_PER_MONTH = 30
 const MONTHS_PER_YEAR = 12
 
+/**
+ * 游戏时间 → 总分钟数（跨年月日累计，存档友好的整数）。
+ * 仅用于时间差值比较（如 G3 射精消退的 30 分钟门控）；月按 30 天近似——
+ * 30 分钟量级的阈值不受近似影响。
+ */
+export function gameTimeToTotalMinutes(time: GameTimeData): number {
+  return ((((time.year * MONTHS_PER_YEAR + (time.month - 1)) * DAYS_PER_MONTH + (time.day - 1)) * 24 + time.hour) * 60 + time.minute)
+}
+
 class GameContextManager {
   private player: EntityData | null = null
   private location: LocationData | null = null

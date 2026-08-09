@@ -453,6 +453,8 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 | `settle_hp_mp` | `hpValue` / `mpValue` | **-1 = 按程度扣减，1 = 按程度增加**，其他值 = 固定增减量（erArk common_default.py:42 同款协议） |
 | | `degree` | 程度档：**0=少**（体力1/分、气力3/分）、1=中（3/6）、2=大（5/10）——erArk dregree_dict |
 | | `addTime`（可选） | 覆盖 time_cost；缺省用指令的 time_cost |
+| `modify_attribute` / `set_attribute` | `attr` | **ability 类属性（技巧/刻印/感度/性技等）自动操作 `abilities[name].level`（保持 {level,xp} 结构）**；其他属性写 base（绑定优先）——2026-08-09 契约语义，写 TOML 时无需区分 |
+| | `value` | modify：增减量；set：设置值 |
 | `settle_state` | `state` | 状态属性名（好意/快乐/恭顺…，取 attributes.toml 的 parameter 属性） |
 | | `baseValue` | 基础固定值，**默认 30**（erArk base_chara_state_common_settle 默认值）；最终 = (time_cost + baseValue) × 系数 |
 | | `ability_level`（可选） | 系数用哪个能力的等级；缺省查 hConfig `state_ability` 映射（如 好意→亲密） |
@@ -494,6 +496,24 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 
 > 射精欲积累的另一种途径（自动）：任何 P 部位快感结算后，二段结算自动按
 > `射精欲 += 100 + int(射精欲×0.4)` 积累（erArk Second_effect.py:657-679），无需手写效果。
+
+## 角色字段速查（标准角色契约）
+
+> 权威契约：`docs/character-schema.md`（10 节：属性表/最小必需集/字段字典/校验规则/改名记录）。
+> 写角色数据（roster/named/base.toml）前必读。速查要点：
+
+- **定义权威**：`definitions/attributes.toml`（h-core 提供全套默认，mod 可覆写/新增）——角色数据禁止裸字段，未定义键 → 加载 warning
+- **命名空间映射**：`category=base` → 写 `base = {}`；`parameter` → `params = {}`；`mark` → `marks = {}`；`ability` → `abilities = {}`（简写数字，加载展开为 `{level, xp}`）
+- **最小必需集**（角色必须有的字段，缺了结算/判定静默失效）：
+  - base：体力/气力/体力上限/气力上限/好感度/信赖度/欲望值/射精欲/射精欲上限/精液量/精液量上限
+  - params：皮肤/胸部/阴蒂/阴茎/阴道/后穴/子宫/口喉/心理 + 润滑/习得/恭顺/好意/欲情/快乐/先导/屈服/羞耻/苦痛/恐怖/抑郁/反感
+  - marks：快乐/屈服/苦痛/恐怖/反发刻印
+  - abilities：技巧/顺从/亲密/欲望/露出/施虐/受虐
+  - 其余（疲劳度/饥饿值/感度组/扩张/话术/隐蔽/性技/排卵周期/精神…）缺失 = 对应功能静默关闭
+- **默认值**：全部在 `docs/character-schema.md` §2 属性表（mod 不写 → 用 default；读档缺字段自动补齐 + warning）
+- **经验**：`experience = { 数值id = 次数 }`（erArk 数值直通，禁改键名）
+- **改名对照**（erArk ↔ 我们）：肛肠→后穴、心理快感→心理、射精槽→射精欲、精液槽→精液量、疲劳值→疲劳度、醉酒度→酒气、处女天赋→`first_times.virgin_*`——完整表见 schema §10 + `scripts/erark-name-map.json`
+- **禁止**：数字键能力（读 `abilities['技巧']` 不是 `abilities[30]`）、手动写 h_state/body_items（引擎管理）、改 experience 键名、补回已砍字段（兽部/尿道感度/激素/技能系列，见对账表"有意删减"）
 
 ## 对接什么
 

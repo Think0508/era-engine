@@ -32,10 +32,11 @@ import { isSettleGated } from '../../utils/settle-gate'
 import { getContinuousAdjust } from '../../core/command-executor'
 import { getLevel, getEntityAttr } from '../../core/entity-utils'
 import { orgasmJudge, accumulateOrgasmFeel, ORGASM_ATTR_TO_PART, insertPositionToBodyCid, releaseOrgasmEdge, releaseTimeStopOrgasm, type OrgasmSettleOptions } from './settle/orgasm'
-import { modLoader } from '../../core/mod-loader'
+import { modLoader, revalidateCharacterContract } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { ATTR } from '../../core/entity-utils'
 import { registerNoSaveMode } from '../../core/save-system'
+import { registerCharacterValidator } from '../../core/character-contract'
 import type { SecondSettleResult } from './settle/orgasm'
 
 // 注释：game:plugins_loaded 监听器只注册一次（onEnable 重复执行时不重复监听）
@@ -70,6 +71,12 @@ async function handleOrgasmResults(id: string, ch: any, result: SecondSettleResu
 }
 
 export function onLoad(_ctx: PluginContext): void {
+  // 注释：角色契约校验器（标准角色契约 spec §10.1——最小必需集）
+  registerCharacterContractValidator()
+  // 注释：补跑已加载 mod 的角色校验——main.ts 顺序 = loadMod 先、插件 onLoad 后，
+  // 首次加载时本校验器未注册（必需集校验永不执行）；注册后立即补跑。
+  // 插件先行的启动顺序无需补跑（parseModData 时校验器已注册，revalidate 幂等无害）
+  revalidateCharacterContract()
   // 注释：judge_check——实行判定（公式#3），在效果前运行
   // 结果存 execCtx._judgeResult，settle_* 效果跳过 retreated
   // judge_class → calcJudge 查 hConfig [judge.adjustments] 特殊修正表
@@ -1070,4 +1077,61 @@ function autoClothOff(charId: string): void {
       delete ch.equipment[slot]
     }
   }
+}
+
+// ════════════════════════════════════════
+// 标准角色契约（spec §10.1）——最小必需集校验器
+// 具体字段名在此插件层声明（core 的 character-contract 注册表是纯机制，不认属性名）
+// 校验时机：mod-loader 加载角色后（applyAttributeDefaults 已执行 → 缺=定义被删/未定义）
+// 缺失 → warning + 建议（不阻止加载）
+// 导出供契约一致性测试（必需集 ⊆ attributes.toml 定义，防"校验器引用未定义属性"）
+// ════════════════════════════════════════
+// 异常级（§5.1）：缺失直接破坏核心玩法链路
+export const CONTRACT_REQUIRED_BASE = ['体力', '气力', '体力上限', '气力上限', '好感度', '信赖度', '欲望值', '射精欲', '射精欲上限', '精液量', '精液量上限']
+export const CONTRACT_REQUIRED_PARAMS = ['皮肤', '胸部', '阴蒂', '阴茎', '阴道', '后穴', '子宫', '口喉', '心理', '润滑', '习得', '恭顺', '好意', '欲情', '快乐', '先导', '屈服', '羞耻', '苦痛', '恐怖', '抑郁', '反感']
+export const CONTRACT_REQUIRED_MARKS = ['快乐刻印', '屈服刻印', '苦痛刻印', '恐怖刻印', '反发刻印']
+export const CONTRACT_REQUIRED_ABILITIES = ['技巧', '顺从', '亲密', '欲望', '露出', '施虐', '受虐']
+
+function registerCharacterContractValidator(): void {
+  const REQUIRED_BASE = CONTRACT_REQUIRED_BASE
+  const REQUIRED_PARAMS = CONTRACT_REQUIRED_PARAMS
+  const REQUIRED_MARKS = CONTRACT_REQUIRED_MARKS
+  const REQUIRED_ABILITIES = CONTRACT_REQUIRED_ABILITIES
+
+  // attributes.toml category → 实体命名空间（与 applyAttributeDefaults 一致）
+  const nsOf = (def: { category?: string }): string => {
+    if (!def?.category) return 'base'
+    const nsMap: Record<string, string> = { parameter: 'params', mark: 'marks', ability: 'abilities' }
+    return nsMap[def.category] ?? def.category
+  }
+
+  registerCharacterValidator({
+    id: 'h-core',
+    validate: (charId, char, mod) => {
+      // 按 attributes.toml category 动态解析命名空间（好感度/信赖度 = social → entity.social，
+      // 硬编码 base 会误报"缺必需"——2026-08-09 boot-smoke 抓到的真 bug）
+      const check = (keys: string[], label: string): void => {
+        for (const key of keys) {
+          const def = mod.attributes?.[key]
+          const ns = nsOf(def)
+          const container = (char as any)?.[ns]
+          if (!container || container[key] === undefined) {
+            errorReporter.report({
+              source: 'character-contract:h-core',
+              severity: 'warning',
+              file: `mods/${mod.id}/definitions/attributes.toml`,
+              message: `角色 '${charId}' 缺${label}必需属性 '${key}'（契约 §5.1 异常级，期望命名空间 ${ns}）`,
+              suggestion: def
+                ? `attributes.toml 已定义 '${key}'（category=${def.category}，默认 ${JSON.stringify(def.default)}）——检查是否被 mod 覆盖删除了；加载时已按默认补齐`
+                : `attributes.toml 未定义 '${key}'——契约要求该属性必须存在，请在 h-core 默认或 mod definitions/attributes.toml 中定义`,
+            })
+          }
+        }
+      }
+      check(REQUIRED_BASE, 'base')
+      check(REQUIRED_PARAMS, 'params')
+      check(REQUIRED_MARKS, 'marks')
+      check(REQUIRED_ABILITIES, 'abilities')
+    },
+  })
 }

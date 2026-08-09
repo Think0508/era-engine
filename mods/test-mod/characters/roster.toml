@@ -54,4 +54,30 @@ template = "base-human"
 name = "赵灵儿"
 spawn_condition = "flags.赵灵儿出现 == true"
 base = { hp = 80, attack = 3, "好感度" = 60, "性别" = 2 }
-ability = { "基础攻击" = 1 }
+abilities = { "基础攻击" = 1 }
+
+# ════════════════════════════════════════════════════════════
+# 示范角色：标准角色契约完整结构（spec §10.1 Step 7 验收项）
+# 展示 mod 作者写角色的全部合法命名空间；字段 = 契约 §5.1 最小必需集 + 扩展
+# 全部键均有定义（attributes/abilities/talents/status-effects/relations.toml），
+# 裸字段会被加载校验 warning（可运行 npm run dev 观察 console）
+# 注意：TOML 内联表不能跨行（以下均为单行）
+# ════════════════════════════════════════════════════════════
+[[roster]]
+id = "contract_demo"
+template = "base-human"
+name = "契约示范"
+# §5.1 异常级（base）+ 静默失效级 + mod 自定义属性（气血/内力）
+base = { "体力" = 100, "气力" = 100, "体力上限" = 2500, "气力上限" = 2000, "好感度" = 30, "信赖度" = 10, "欲望值" = 20, "射精欲" = 0, "射精欲上限" = 1000, "精液量" = 100, "精液量上限" = 100, "疲劳度" = 0, "饥饿值" = 0, "尿意" = 0, "熟睡值" = 0, "排卵周期" = 1, "精神" = 100, "气血" = 100, "内力" = 50 }
+# §5.1 异常级（params 行为参数 + 部位快感）
+params = { "皮肤" = 10, "胸部" = 5, "阴蒂" = 5, "阴茎" = 0, "阴道" = 8, "后穴" = 3, "子宫" = 0, "口喉" = 2, "心理" = 4, "润滑" = 20, "习得" = 15, "恭顺" = 10, "好意" = 20, "欲情" = 10, "快乐" = 5, "先导" = 5, "屈服" = 5, "羞耻" = 10, "苦痛" = 0, "恐怖" = 0, "抑郁" = 0, "反感" = 0 }
+marks = { "快乐刻印" = 1, "屈服刻印" = 0, "苦痛刻印" = 0, "恐怖刻印" = 0, "反发刻印" = 0 }
+# §5.1 异常级（abilities 判定必需）+ 扩展（定义于 abilities.toml / attributes.toml）
+abilities = { "技巧" = 2, "顺从" = 1, "亲密" = 2, "欲望" = 1, "露出" = 0, "施虐" = 0, "受虐" = 0, "华山剑法" = 3, "混元功" = 2 }
+talents = { "剑骨" = 1, "剑术精通" = 1 }
+experience = { 80 = 5 }
+status_effects = [{ id = "醉意", remaining_duration = 60, stack = 1 }]
+relations = { player = { "好感度" = 40 } }
+behavior = { activity = 0.5, home_locations = { town_square = 1.0 } }
+equipment = { upper = "布衣", lower = "裙子" }
+assets = { portrait_type = "heroine" }

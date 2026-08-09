@@ -67,11 +67,11 @@ describe('parseModData', () => {
     })
   })
 
-  it('parses roster.toml correctly (5 characters + 1 pending, equipment, assets)', () => {
+  it('parses roster.toml correctly (6 characters + 1 pending, equipment, assets)', () => {
     const m = parseModData('test-mod', rawTomlMap)
     const characters = m.entities.get('character')!
-    // 注释：5 roster + 1 named（test_named，覆盖之前没有同名 roster 条目，作为新增角色）
-    expect(characters.size).toBe(6)
+    // 注释：6 roster（含契约示范角色 contract_demo）+ 1 named（test_named，覆盖之前没有同名 roster 条目，作为新增角色）
+    expect(characters.size).toBe(7)
     // 注释：有 spawn_condition 的角色在 pendingSpawns 里
     expect((m as any).pendingSpawns).toHaveLength(1)
     expect((m as any).pendingSpawns[0].id).toBe('test_spawn')
@@ -121,7 +121,7 @@ describe('parseModData', () => {
     // 注释：talents 正确（named 设定值 + 插件默认初始化为 0）
     expect(named!.talents['剑骨']).toBe(1)
     // 注释：named 不增加 counts（只覆盖已存在的 ID，或新增不存在的 ID）
-    expect(characters.size).toBe(6)  // 5 roster + 1 named（test_named 在 roster 中没有，而是新增）
+    expect(characters.size).toBe(7)  // 6 roster + 1 named（test_named 在 roster 中没有，而是新增）
   })
 
   it('parses locations correctly (2 locations, parent chain, graph)', () => {

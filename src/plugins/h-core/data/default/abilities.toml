@@ -217,3 +217,12 @@ name = "榨精"
 type = "passive"
 max_level = 10
 tags = ["technique"]
+
+# ═══ 隐蔽（erArk ability 90，隐奸相关）═══
+# 契约补键（2026-08-09）：h-hidden 引用 '隐蔽' 但 abilities.toml 缺定义——
+# erArk Ability.csv: 90,5,隐蔽（性技类），隐奸/露出相关系数（h-hidden 读取）
+[abilities."隐蔽"]
+name = "隐蔽"
+type = "passive"
+max_level = 10
+tags = ["technique"]

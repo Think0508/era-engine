@@ -99,26 +99,16 @@ export function onLoad(_ctx: PluginContext): void {
 }
 
 export function onEnable(ctx: PluginContext): void {
-  // 注释：每小时饥饿值增长 + 消化衰减
+  // 注释：消化衰减 + NPC 自动进食（饥饿值增长已收敛到引擎行动级结算——
+  // G1 决策 2026-08-09：erArk 只有行动级（realtime_settle 按 true_add_time 结算），
+  // 小时级 tick 与行动级重叠 = 双倍增长；增长统一走 core realtimeSettle.settleHunger
+  // （含 erArk HP/MP 比例系数），此处只保留不重叠的消化/NPC 进食）
   ctx.events.on('game:hour_changed', async () => {
     const cfg = getHungerConfig()
-    const maxHunger = cfg.max ?? 240
     const allChars = entitySystem.getAll('character')
     for (const ch of allChars) {
       const c = ch as any
       if (!c?.base) continue
-
-      // 注释：饥饿值增长（erArk: rand(0.8~1.2)×60×HP系数）
-      const range = cfg.growth_random ?? [0.8, 1.2]
-      const baseGrowth = (cfg.growth_per_min ?? 1.0) * 60
-      const randGrowth = baseGrowth * (range[0] + Math.random() * (range[1] - range[0]))
-      const hpMax = c.base['体力上限'] ?? 2500
-      const mpMax = c.base['气力上限'] ?? 2000
-      const hpRatio = (c.base['体力'] ?? 0) / Math.max(1, hpMax)
-      const mpRatio = (c.base['气力'] ?? 0) / Math.max(1, mpMax)
-      const hpCoeff = 2 - hpRatio
-      const mpCoeff = 2 - mpRatio
-      c.base[HUNGER_ATTR] = Math.min(maxHunger, (c.base[HUNGER_ATTR] ?? 0) + Math.floor(randGrowth * hpCoeff * mpCoeff))
 
       // 注释：消化递减
       const digestRate = cfg.digestion_per_hour ?? 60

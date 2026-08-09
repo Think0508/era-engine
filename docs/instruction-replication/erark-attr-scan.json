@@ -1,0 +1,3852 @@
+{
+  "generatedAt": "2026-08-09",
+  "authority": "以我们迁移的属性字段为权威（attributes/abilities/talents.toml）",
+  "definitionSets": {
+    "ourAttrs": 101,
+    "ourAbilities": 40,
+    "ourTalents": 181,
+    "erarkStates": 24,
+    "erarkAbilities": 48,
+    "erarkExperiences": 120,
+    "erarkTalents": 184,
+    "keptInstructions": 228
+  },
+  "classificationCounts": {
+    "已对齐": 364,
+    "有意删减": 45,
+    "替代处理": 15
+  },
+  "rows": [
+    {
+      "id": "0",
+      "erarkName": "皮肤",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "皮肤",
+      "note": "",
+      "neededBy": "making_out, make_masturebate, safe_candles, handjob, blowjob, footjob, axillajob, rub_buttock"
+    },
+    {
+      "id": "1",
+      "erarkName": "胸部",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "胸部",
+      "note": "",
+      "neededBy": "touch_breast, milk, breast_caress, twiddle_nipples, breast_sucking, nipples_love_egg, nipple_clamp_on, milking_machine_on"
+    },
+    {
+      "id": "2",
+      "erarkName": "阴蒂",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "阴蒂",
+      "note": "",
+      "neededBy": "touch_clitoris, clit_caress, open_labia, cunnilingus, clit_love_egg, clit_clamp_on, electric_message_stick, rub_buttock"
+    },
+    {
+      "id": "3",
+      "erarkName": "阴茎",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "阴茎",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "4",
+      "erarkName": "阴道",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "阴道",
+      "note": "",
+      "neededBy": "touch_vagina, cunnilingus, finger_insertion, vibrator_insertion, sixty_nine"
+    },
+    {
+      "id": "5",
+      "erarkName": "肛肠",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "后穴",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "6",
+      "erarkName": "尿道",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "尿道",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "7",
+      "erarkName": "子宫",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "子宫",
+      "note": "",
+      "neededBy": "external_womb_massage, womb_os_caress"
+    },
+    {
+      "id": "8",
+      "erarkName": "润滑",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "润滑",
+      "note": "",
+      "neededBy": "stroke, touch_head, touch_breast, touch_buttocks, embrace, kiss, lap_pillow, raise_skirt"
+    },
+    {
+      "id": "9",
+      "erarkName": "习得",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "习得",
+      "note": "",
+      "neededBy": "plant_manage_crop, singing, play_instrument, exercise, play_chess, external_womb_massage, bondage, clyster"
+    },
+    {
+      "id": "10",
+      "erarkName": "恭顺",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "恭顺",
+      "note": "",
+      "neededBy": "touch_head, hand_in_hand, face_seat_sex, back_seat_sex, face_seat_cervix_sex, back_seat_cervix_sex, face_seat_womb_sex, back_seat_womb_sex"
+    },
+    {
+      "id": "11",
+      "erarkName": "好意",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "好意",
+      "note": "",
+      "neededBy": "chat, listen_complaint, singing, play_instrument, play_chess, touch_head, embrace, kiss"
+    },
+    {
+      "id": "12",
+      "erarkName": "欲情",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "欲情",
+      "note": "",
+      "neededBy": "chat, take_shower, touch_head, touch_breast, touch_buttocks, hand_in_hand, embrace, kiss"
+    },
+    {
+      "id": "13",
+      "erarkName": "快乐",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "快乐",
+      "note": "",
+      "neededBy": "kiss, make_masturebate, make_lick_anal, vaginal_sex, change_vaginal_sex_position, normal_sex, back_sex, riding_sex"
+    },
+    {
+      "id": "14",
+      "erarkName": "先导",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "先导",
+      "note": "",
+      "neededBy": "lap_pillow, make_lick_anal, riding_sex, back_riding_sex, riding_cervix_sex, back_riding_cervix_sex, riding_womb_sex, back_riding_womb_sex"
+    },
+    {
+      "id": "15",
+      "erarkName": "屈服",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "屈服",
+      "note": "",
+      "neededBy": "chat, stroke, touch_head, touch_buttocks, hand_in_hand, embrace, ask_for_pan, touch_clitoris"
+    },
+    {
+      "id": "16",
+      "erarkName": "羞耻",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "羞耻",
+      "note": "",
+      "neededBy": "stroke, touch_buttocks, raise_skirt, milk, make_masturebate, face_hug_sex, back_hug_sex, face_hug_cervix_sex"
+    },
+    {
+      "id": "17",
+      "erarkName": "苦痛",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "苦痛",
+      "note": "",
+      "neededBy": "stroke, apologize, touch_head, touch_breast, touch_buttocks, hand_in_hand, embrace, kiss"
+    },
+    {
+      "id": "18",
+      "erarkName": "恐怖",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "恐怖",
+      "note": "",
+      "neededBy": "touch_clitoris, touch_vagina, touch_anus, anal_caress, patch_on, patch_off, gag_on, gag_off"
+    },
+    {
+      "id": "19",
+      "erarkName": "抑郁",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "抑郁",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "20",
+      "erarkName": "反感",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "反感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "21",
+      "erarkName": "口喉",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "口喉",
+      "note": "",
+      "neededBy": "kiss, kiss_h, make_lick_anal, blowjob, hand_blowjob, tits_blowjob, focus_blowjob, deep_throat"
+    },
+    {
+      "id": "22",
+      "erarkName": "兽部",
+      "source": "CharacterState",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "兽部全砍（tech_adjust/settle_state 遇 part/state=兽部 → warning+跳过；master-list 标注；转换脚本不产出）",
+      "neededBy": null
+    },
+    {
+      "id": "23",
+      "erarkName": "心理",
+      "source": "CharacterState",
+      "classification": "已对齐",
+      "normalized": "心理",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "0",
+      "erarkName": "皮肤感度",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "皮肤感度",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "1",
+      "erarkName": "胸部感度",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "胸部感度",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "2",
+      "erarkName": "阴蒂感度",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "阴蒂感度",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "3",
+      "erarkName": "阴茎感度",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "阴茎感度",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "4",
+      "erarkName": "阴道感度",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "阴道感度",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "5",
+      "erarkName": "肛肠感度",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "后穴感度",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "6",
+      "erarkName": "尿道感度",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "尿道方案A（ADR-0004）：默认不定义尿道感度/扩张（指令全砍），仅保留尿道 status 属性 display=false",
+      "neededBy": null
+    },
+    {
+      "id": "7",
+      "erarkName": "子宫感度",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "子宫感度",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "9",
+      "erarkName": "阴道扩张",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "阴道扩张",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "10",
+      "erarkName": "肛肠扩张",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "后穴扩张",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "11",
+      "erarkName": "尿道扩张",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "尿道方案A（ADR-0004）：默认不定义（同上）",
+      "neededBy": null
+    },
+    {
+      "id": "12",
+      "erarkName": "子宫扩张",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "子宫扩张",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "13",
+      "erarkName": "快乐刻印",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "快乐刻印",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "14",
+      "erarkName": "屈服刻印",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "屈服刻印",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "15",
+      "erarkName": "苦痛刻印",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "苦痛刻印",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "16",
+      "erarkName": "时姦刻印",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "时姦刻印",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "17",
+      "erarkName": "恐怖刻印",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "恐怖刻印",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "18",
+      "erarkName": "反发刻印",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "反发刻印",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "19",
+      "erarkName": "无觉刻印",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "无觉刻印",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "30",
+      "erarkName": "技巧",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "技巧",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "31",
+      "erarkName": "顺从",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "顺从",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "32",
+      "erarkName": "亲密",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "亲密",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "33",
+      "erarkName": "欲望",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "欲望",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "34",
+      "erarkName": "露出",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "露出",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "35",
+      "erarkName": "施虐",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "施虐",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "36",
+      "erarkName": "受虐",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "受虐",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "40",
+      "erarkName": "话术技能",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "话术技能",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "41",
+      "erarkName": "指挥技能",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "技能系列（erArk ability 41-49）L2.13 记录不做实现——通用生活技能不迁移；chat 例外补定义话术技能(40)因 TALK_ADD_ADJUST 需要等级；其余 9 个无任何保留指令效果链引用（B 扫描确认），需要时按 ability-progression 机制补定义",
+      "neededBy": null
+    },
+    {
+      "id": "42",
+      "erarkName": "战斗技能",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "同上（L2.13：技能系列不迁移）",
+      "neededBy": null
+    },
+    {
+      "id": "43",
+      "erarkName": "料理技能",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "同上（L2.13：技能系列不迁移）",
+      "neededBy": null
+    },
+    {
+      "id": "44",
+      "erarkName": "音乐技能",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "同上（L2.13：技能系列不迁移）",
+      "neededBy": null
+    },
+    {
+      "id": "45",
+      "erarkName": "学识技能",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "同上（L2.13：技能系列不迁移）",
+      "neededBy": null
+    },
+    {
+      "id": "46",
+      "erarkName": "医术技能",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "同上（L2.13：技能系列不迁移）",
+      "neededBy": null
+    },
+    {
+      "id": "47",
+      "erarkName": "农业技能",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "同上（L2.13：技能系列不迁移）",
+      "neededBy": null
+    },
+    {
+      "id": "48",
+      "erarkName": "制造技能",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "同上（L2.13：技能系列不迁移）",
+      "neededBy": null
+    },
+    {
+      "id": "49",
+      "erarkName": "绘画技能",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "同上（L2.13：技能系列不迁移）",
+      "neededBy": null
+    },
+    {
+      "id": "70",
+      "erarkName": "指技",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "指技",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "71",
+      "erarkName": "舌技",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "舌技",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "72",
+      "erarkName": "足技",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "足技",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "73",
+      "erarkName": "胸技",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "胸技",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "74",
+      "erarkName": "膣技",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "膣技",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "75",
+      "erarkName": "肛技",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "肛技",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "76",
+      "erarkName": "腰技",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "腰技",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "77",
+      "erarkName": "榨精",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "榨精",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "90",
+      "erarkName": "隐蔽",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "隐蔽",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "100",
+      "erarkName": "口喉感度",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "口喉感度",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "101",
+      "erarkName": "兽部感度",
+      "source": "Ability",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "兽部全砍（ability 101，不定义）",
+      "neededBy": null
+    },
+    {
+      "id": "102",
+      "erarkName": "心理感度",
+      "source": "Ability",
+      "classification": "已对齐",
+      "normalized": "心理感度",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "0",
+      "erarkName": "皮肤经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.0（数值 id 直通，显示名 皮肤经验）",
+      "note": "",
+      "neededBy": "touch_buttocks, making_out, safe_candles"
+    },
+    {
+      "id": "1",
+      "erarkName": "胸部经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.1（数值 id 直通，显示名 胸部经验）",
+      "note": "",
+      "neededBy": "touch_breast, milk, breast_caress, twiddle_nipples, breast_sucking, nipples_love_egg, nipple_clamp_on, vibrator_insertion_anal"
+    },
+    {
+      "id": "2",
+      "erarkName": "阴蒂经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.2（数值 id 直通，显示名 阴蒂经验）",
+      "note": "",
+      "neededBy": "touch_clitoris, clit_caress, open_labia, clit_love_egg, clit_clamp_on, electric_message_stick"
+    },
+    {
+      "id": "3",
+      "erarkName": "阴茎经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.3（数值 id 直通，显示名 阴茎经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "4",
+      "erarkName": "阴道经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.4（数值 id 直通，显示名 阴道经验）",
+      "note": "",
+      "neededBy": "touch_vagina, cunnilingus, finger_insertion, vaginal_sex, change_vaginal_sex_position, normal_sex, back_sex, riding_sex"
+    },
+    {
+      "id": "5",
+      "erarkName": "肛肠经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.5（数值 id 直通，显示名 肛肠经验）",
+      "note": "",
+      "neededBy": "touch_anus, open_anus, lick_anal, anal_caress, anal_sex, change_anal_sex_position, normal_anal_sex, back_anal_sex"
+    },
+    {
+      "id": "6",
+      "erarkName": "尿道经验",
+      "source": "Experience",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "部位全砍（兽部/尿道），经验不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "7",
+      "erarkName": "子宫经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.7（数值 id 直通，显示名 子宫经验）",
+      "note": "",
+      "neededBy": "external_womb_massage, womb_os_caress, change_cervix_sex_position, normal_cervix_sex, back_cervix_sex, riding_cervix_sex, back_riding_cervix_sex, face_seat_cervix_sex"
+    },
+    {
+      "id": "10",
+      "erarkName": "皮肤绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.10（数值 id 直通，显示名 皮肤绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "11",
+      "erarkName": "胸部绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.11（数值 id 直通，显示名 胸部绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "12",
+      "erarkName": "阴蒂绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.12（数值 id 直通，显示名 阴蒂绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "13",
+      "erarkName": "阴茎绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.13（数值 id 直通，显示名 阴茎绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "14",
+      "erarkName": "阴道绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.14（数值 id 直通，显示名 阴道绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "15",
+      "erarkName": "肛肠绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.15（数值 id 直通，显示名 肛肠绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "16",
+      "erarkName": "尿道绝顶经验",
+      "source": "Experience",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "部位全砍（兽部/尿道），经验不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "17",
+      "erarkName": "子宫绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.17（数值 id 直通，显示名 子宫绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "20",
+      "erarkName": "绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.20（数值 id 直通，显示名 绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "21",
+      "erarkName": "射精经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.21（数值 id 直通，显示名 射精经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "22",
+      "erarkName": "喷乳经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.22（数值 id 直通，显示名 喷乳经验）",
+      "note": "",
+      "neededBy": "milk"
+    },
+    {
+      "id": "23",
+      "erarkName": "放尿经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.23（数值 id 直通，显示名 放尿经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "24",
+      "erarkName": "精液经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.24（数值 id 直通，显示名 精液经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "25",
+      "erarkName": "饮精经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.25（数值 id 直通，显示名 饮精经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "26",
+      "erarkName": "膣射经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.26（数值 id 直通，显示名 膣射经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "27",
+      "erarkName": "肛射经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.27（数值 id 直通，显示名 肛射经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "30",
+      "erarkName": "奉仕经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.30（数值 id 直通，显示名 奉仕经验）",
+      "note": "",
+      "neededBy": "make_lick_anal, handjob, blowjob, paizuri, footjob, hairjob, axillajob, rub_buttock"
+    },
+    {
+      "id": "31",
+      "erarkName": "爱情经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.31（数值 id 直通，显示名 爱情经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "32",
+      "erarkName": "苦痛快乐经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.32（数值 id 直通，显示名 苦痛快乐经验）",
+      "note": "",
+      "neededBy": "spanking, whip, deep_throat"
+    },
+    {
+      "id": "33",
+      "erarkName": "嗜虐快乐经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.33（数值 id 直通，显示名 嗜虐快乐经验）",
+      "note": "",
+      "neededBy": "spanking, safe_candles, whip"
+    },
+    {
+      "id": "34",
+      "erarkName": "露出经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.34（数值 id 直通，显示名 露出经验）",
+      "note": "",
+      "neededBy": "ask_exhibitionism_sex, safe_candles"
+    },
+    {
+      "id": "35",
+      "erarkName": "隐奸经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.35（数值 id 直通，显示名 隐奸经验）",
+      "note": "",
+      "neededBy": "ask_hidden_sex"
+    },
+    {
+      "id": "36",
+      "erarkName": "逆推经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.36（数值 id 直通，显示名 逆推经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "37",
+      "erarkName": "被逆推经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.37（数值 id 直通，显示名 被逆推经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "40",
+      "erarkName": "接吻经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.40（数值 id 直通，显示名 接吻经验）",
+      "note": "",
+      "neededBy": "kiss, kiss_h"
+    },
+    {
+      "id": "41",
+      "erarkName": "手交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.41（数值 id 直通，显示名 手交经验）",
+      "note": "",
+      "neededBy": "touch_breast, touch_clitoris, touch_vagina, touch_anus, making_out, breast_caress, twiddle_nipples, clit_caress"
+    },
+    {
+      "id": "42",
+      "erarkName": "口交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.42（数值 id 直通，显示名 口交经验）",
+      "note": "",
+      "neededBy": "breast_sucking, cunnilingus, lick_anal, make_lick_anal, blowjob, hand_blowjob, focus_blowjob, deep_throat"
+    },
+    {
+      "id": "43",
+      "erarkName": "乳交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.43（数值 id 直通，显示名 乳交经验）",
+      "note": "",
+      "neededBy": "paizuri, tits_blowjob"
+    },
+    {
+      "id": "44",
+      "erarkName": "足交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.44（数值 id 直通，显示名 足交经验）",
+      "note": "",
+      "neededBy": "footjob"
+    },
+    {
+      "id": "45",
+      "erarkName": "发交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.45（数值 id 直通，显示名 发交经验）",
+      "note": "",
+      "neededBy": "hairjob"
+    },
+    {
+      "id": "46",
+      "erarkName": "腋交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.46（数值 id 直通，显示名 腋交经验）",
+      "note": "",
+      "neededBy": "axillajob"
+    },
+    {
+      "id": "47",
+      "erarkName": "服装交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.47（数值 id 直通，显示名 服装交经验）",
+      "note": "",
+      "neededBy": "make_masturebate"
+    },
+    {
+      "id": "48",
+      "erarkName": "兽部交经验",
+      "source": "Experience",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "部位全砍（兽部/尿道），经验不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "50",
+      "erarkName": "异常经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.50（数值 id 直通，显示名 异常经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "51",
+      "erarkName": "道具使用经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.51（数值 id 直通，显示名 道具使用经验）",
+      "note": "",
+      "neededBy": "nipples_love_egg, nipple_clamp_on, clit_love_egg, clit_clamp_on, electric_message_stick, vibrator_insertion, vibrator_insertion_anal, anal_beads"
+    },
+    {
+      "id": "52",
+      "erarkName": "紧缚经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.52（数值 id 直通，显示名 紧缚经验）",
+      "note": "",
+      "neededBy": "bondage"
+    },
+    {
+      "id": "53",
+      "erarkName": "灌肠经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.53（数值 id 直通，显示名 灌肠经验）",
+      "note": "",
+      "neededBy": "clyster, continue_clyster"
+    },
+    {
+      "id": "54",
+      "erarkName": "自慰经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.54（数值 id 直通，显示名 自慰经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "55",
+      "erarkName": "调教自慰经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.55（数值 id 直通，显示名 调教自慰经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "56",
+      "erarkName": "群交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.56（数值 id 直通，显示名 群交经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "57",
+      "erarkName": "助手经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.57（数值 id 直通，显示名 助手经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "60",
+      "erarkName": "插入经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.60（数值 id 直通，显示名 插入经验）",
+      "note": "",
+      "neededBy": "vaginal_sex, change_vaginal_sex_position, normal_sex, back_sex, riding_sex, back_riding_sex, face_seat_sex, back_seat_sex"
+    },
+    {
+      "id": "61",
+      "erarkName": "阴道性交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.61（数值 id 直通，显示名 阴道性交经验）",
+      "note": "",
+      "neededBy": "vaginal_sex, change_vaginal_sex_position, normal_sex, back_sex, riding_sex, back_riding_sex, face_seat_sex, back_seat_sex"
+    },
+    {
+      "id": "62",
+      "erarkName": "肛肠性交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.62（数值 id 直通，显示名 肛肠性交经验）",
+      "note": "",
+      "neededBy": "anal_sex, change_anal_sex_position, normal_anal_sex, back_anal_sex, riding_anal_sex, back_riding_anal_sex, face_seat_anal_sex, back_seat_anal_sex"
+    },
+    {
+      "id": "63",
+      "erarkName": "尿道性交经验",
+      "source": "Experience",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "部位全砍（兽部/尿道），经验不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "64",
+      "erarkName": "子宫性交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.64（数值 id 直通，显示名 子宫性交经验）",
+      "note": "",
+      "neededBy": "change_cervix_sex_position, normal_cervix_sex, back_cervix_sex, riding_cervix_sex, back_riding_cervix_sex, face_seat_cervix_sex, back_seat_cervix_sex, face_stand_cervix_sex"
+    },
+    {
+      "id": "65",
+      "erarkName": "阴道扩张经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.65（数值 id 直通，显示名 阴道扩张经验）",
+      "note": "",
+      "neededBy": "touch_vagina, finger_insertion, vaginal_sex, change_vaginal_sex_position, normal_sex, back_sex, riding_sex, back_riding_sex"
+    },
+    {
+      "id": "66",
+      "erarkName": "肛肠扩张经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.66（数值 id 直通，显示名 肛肠扩张经验）",
+      "note": "",
+      "neededBy": "touch_anus, anal_caress, anal_sex, change_anal_sex_position, normal_anal_sex, back_anal_sex, riding_anal_sex, back_riding_anal_sex"
+    },
+    {
+      "id": "67",
+      "erarkName": "尿道扩张经验",
+      "source": "Experience",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "部位全砍（兽部/尿道），经验不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "68",
+      "erarkName": "子宫扩张经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.68（数值 id 直通，显示名 子宫扩张经验）",
+      "note": "",
+      "neededBy": "womb_os_caress, change_cervix_sex_position, normal_cervix_sex, back_cervix_sex, riding_cervix_sex, back_riding_cervix_sex, face_seat_cervix_sex, back_seat_cervix_sex"
+    },
+    {
+      "id": "70",
+      "erarkName": "无意识皮肤经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.70（数值 id 直通，显示名 无意识皮肤经验）",
+      "note": "",
+      "neededBy": "bondage"
+    },
+    {
+      "id": "71",
+      "erarkName": "无意识胸部经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.71（数值 id 直通，显示名 无意识胸部经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "72",
+      "erarkName": "无意识阴蒂经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.72（数值 id 直通，显示名 无意识阴蒂经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "73",
+      "erarkName": "无意识阴茎经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.73（数值 id 直通，显示名 无意识阴茎经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "74",
+      "erarkName": "无意识阴道经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.74（数值 id 直通，显示名 无意识阴道经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "75",
+      "erarkName": "无意识肛肠经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.75（数值 id 直通，显示名 无意识肛肠经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "76",
+      "erarkName": "无意识尿道经验",
+      "source": "Experience",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "部位全砍（兽部/尿道），经验不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "77",
+      "erarkName": "无意识子宫经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.77（数值 id 直通，显示名 无意识子宫经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "78",
+      "erarkName": "无意识绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.78（数值 id 直通，显示名 无意识绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "79",
+      "erarkName": "无意识性交经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.79（数值 id 直通，显示名 无意识性交经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "80",
+      "erarkName": "对话经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.80（数值 id 直通，显示名 对话经验）",
+      "note": "",
+      "neededBy": "chat, apologize, listen_complaint"
+    },
+    {
+      "id": "81",
+      "erarkName": "战斗经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.81（数值 id 直通，显示名 战斗经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "82",
+      "erarkName": "学识经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.82（数值 id 直通，显示名 学识经验）",
+      "note": "",
+      "neededBy": "play_chess"
+    },
+    {
+      "id": "83",
+      "erarkName": "料理经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.83（数值 id 直通，显示名 料理经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "84",
+      "erarkName": "约会经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.84（数值 id 直通，显示名 约会经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "85",
+      "erarkName": "音乐经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.85（数值 id 直通，显示名 音乐经验）",
+      "note": "",
+      "neededBy": "singing, play_instrument"
+    },
+    {
+      "id": "86",
+      "erarkName": "妊娠经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.86（数值 id 直通，显示名 妊娠经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "87",
+      "erarkName": "指挥经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.87（数值 id 直通，显示名 指挥经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "88",
+      "erarkName": "医疗经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.88（数值 id 直通，显示名 医疗经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "89",
+      "erarkName": "农业经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.89（数值 id 直通，显示名 农业经验）",
+      "note": "",
+      "neededBy": "plant_manage_crop"
+    },
+    {
+      "id": "90",
+      "erarkName": "制造经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.90（数值 id 直通，显示名 制造经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "91",
+      "erarkName": "绘画经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.91（数值 id 直通，显示名 绘画经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "92",
+      "erarkName": "阅读经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.92（数值 id 直通，显示名 阅读经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "93",
+      "erarkName": "H书阅读经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.93（数值 id 直通，显示名 H书阅读经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "94",
+      "erarkName": "饮酒经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.94（数值 id 直通，显示名 饮酒经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "111",
+      "erarkName": "饮精绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.111（数值 id 直通，显示名 饮精绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "120",
+      "erarkName": "睡姦经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.120（数值 id 直通，显示名 睡姦经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "121",
+      "erarkName": "被睡姦经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.121（数值 id 直通，显示名 被睡姦经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "122",
+      "erarkName": "催眠经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.122（数值 id 直通，显示名 催眠经验）",
+      "note": "",
+      "neededBy": "hypnosis_one, hypnosis_all"
+    },
+    {
+      "id": "123",
+      "erarkName": "被催眠经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.123（数值 id 直通，显示名 被催眠经验）",
+      "note": "",
+      "neededBy": "hypnosis_one"
+    },
+    {
+      "id": "124",
+      "erarkName": "时姦经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.124（数值 id 直通，显示名 时姦经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "125",
+      "erarkName": "被时姦经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.125（数值 id 直通，显示名 被时姦经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "126",
+      "erarkName": "催眠姦经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.126（数值 id 直通，显示名 催眠姦经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "127",
+      "erarkName": "被催眠姦经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.127（数值 id 直通，显示名 被催眠姦经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "141",
+      "erarkName": "正常位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.141（数值 id 直通，显示名 正常位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "142",
+      "erarkName": "後背位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.142（数值 id 直通，显示名 後背位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "143",
+      "erarkName": "对面骑乘位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.143（数值 id 直通，显示名 对面骑乘位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "144",
+      "erarkName": "背面骑乘位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.144（数值 id 直通，显示名 背面骑乘位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "145",
+      "erarkName": "对面座位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.145（数值 id 直通，显示名 对面座位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "146",
+      "erarkName": "背面座位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.146（数值 id 直通，显示名 背面座位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "147",
+      "erarkName": "对面立位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.147（数值 id 直通，显示名 对面立位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "148",
+      "erarkName": "背面立位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.148（数值 id 直通，显示名 背面立位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "149",
+      "erarkName": "对面抱位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.149（数值 id 直通，显示名 对面抱位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "150",
+      "erarkName": "背面抱位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.150（数值 id 直通，显示名 背面抱位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "151",
+      "erarkName": "对面卧位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.151（数值 id 直通，显示名 对面卧位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "152",
+      "erarkName": "背面卧位经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.152（数值 id 直通，显示名 背面卧位经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "153",
+      "erarkName": "口喉经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.153（数值 id 直通，显示名 口喉经验）",
+      "note": "",
+      "neededBy": "kiss, kiss_h, blowjob, hand_blowjob, tits_blowjob, focus_blowjob, deep_throat, clean_blowjob"
+    },
+    {
+      "id": "154",
+      "erarkName": "兽部经验",
+      "source": "Experience",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "部位全砍（兽部/尿道），经验不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "155",
+      "erarkName": "心理经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.155（数值 id 直通，显示名 心理经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "156",
+      "erarkName": "口喉绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.156（数值 id 直通，显示名 口喉绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "157",
+      "erarkName": "兽部绝顶经验",
+      "source": "Experience",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "部位全砍（兽部/尿道），经验不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "158",
+      "erarkName": "心理绝顶经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.158（数值 id 直通，显示名 心理绝顶经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "159",
+      "erarkName": "无意识口喉经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.159（数值 id 直通，显示名 无意识口喉经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "160",
+      "erarkName": "无意识兽部经验",
+      "source": "Experience",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "部位全砍（兽部/尿道），经验不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "161",
+      "erarkName": "无意识心理经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.161（数值 id 直通，显示名 无意识心理经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "170",
+      "erarkName": "手交理论经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.170（数值 id 直通，显示名 手交理论经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "171",
+      "erarkName": "口交理论经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.171（数值 id 直通，显示名 口交理论经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "172",
+      "erarkName": "足交理论经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.172（数值 id 直通，显示名 足交理论经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "173",
+      "erarkName": "乳交理论经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.173（数值 id 直通，显示名 乳交理论经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "174",
+      "erarkName": "性交理论经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.174（数值 id 直通，显示名 性交理论经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "175",
+      "erarkName": "肛交理论经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.175（数值 id 直通，显示名 肛交理论经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "176",
+      "erarkName": "榨精理论经验",
+      "source": "Experience",
+      "classification": "已对齐",
+      "normalized": "experience.176（数值 id 直通，显示名 榨精理论经验）",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "0",
+      "erarkName": "阴道处女",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "阴道处女",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "1",
+      "erarkName": "肛门处女",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "肛门处女",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "2",
+      "erarkName": "尿道处女",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "尿道处女",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "3",
+      "erarkName": "子宫处女",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "子宫处女",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "4",
+      "erarkName": "无接吻经验",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "无接吻经验",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "5",
+      "erarkName": "童贞",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "童贞",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "6",
+      "erarkName": "未初潮",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "未初潮",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "7",
+      "erarkName": "未成年",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "未成年",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "11",
+      "erarkName": "亲吻合意",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "亲吻合意",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "12",
+      "erarkName": "本番合意",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "本番合意",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "13",
+      "erarkName": "避孕中出合意",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "避孕中出合意",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "14",
+      "erarkName": "妊娠合意",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "妊娠合意",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "15",
+      "erarkName": "肛门性交合意",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "肛门性交合意",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "16",
+      "erarkName": "尿道性交合意",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "尿道性交合意",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "20",
+      "erarkName": "受精",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "受精",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "21",
+      "erarkName": "妊娠",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "妊娠",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "22",
+      "erarkName": "临盆",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "临盆",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "23",
+      "erarkName": "产后",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "产后",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "24",
+      "erarkName": "育儿",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "育儿",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "26",
+      "erarkName": "孕肚",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "孕肚",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "27",
+      "erarkName": "泌乳",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "泌乳",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "31",
+      "erarkName": "精爱味觉",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "精爱味觉",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "32",
+      "erarkName": "精液膨腹",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "精液膨腹",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "33",
+      "erarkName": "浓厚精液",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "浓厚精液",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "34",
+      "erarkName": "漏尿",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "漏尿",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "35",
+      "erarkName": "无意识妊娠",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "无意识妊娠",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "40",
+      "erarkName": "淫乱",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "淫乱",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "41",
+      "erarkName": "淫体",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "淫体",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "42",
+      "erarkName": "淫乳",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "淫乳",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "43",
+      "erarkName": "淫核",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "淫核",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "44",
+      "erarkName": "淫茎",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "淫茎",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "45",
+      "erarkName": "淫膣",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "淫膣",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "46",
+      "erarkName": "淫肛",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "淫肛",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "47",
+      "erarkName": "淫胱",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "淫胱",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "48",
+      "erarkName": "淫宫",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "淫宫",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "49",
+      "erarkName": "真·淫魔",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "真·淫魔",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "51",
+      "erarkName": "精液中毒",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "精液中毒",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "52",
+      "erarkName": "自慰中毒",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "自慰中毒",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "53",
+      "erarkName": "膣射中毒",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "膣射中毒",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "54",
+      "erarkName": "肛射中毒",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "肛射中毒",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "55",
+      "erarkName": "饮精中毒",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "饮精中毒",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "61",
+      "erarkName": "周期性发情",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "周期性发情",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "62",
+      "erarkName": "发情期中",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "发情期中",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "63",
+      "erarkName": "不易湿",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "不易湿",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "64",
+      "erarkName": "容易湿",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "容易湿",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "71",
+      "erarkName": "已催眠·浅",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "已催眠·浅",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "72",
+      "erarkName": "已催眠·深",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "已催眠·深",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "73",
+      "erarkName": "已催眠·极",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "已催眠·极",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "81",
+      "erarkName": "皮肤钝感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "皮肤钝感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "82",
+      "erarkName": "皮肤敏感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "皮肤敏感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "83",
+      "erarkName": "乳房钝感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "乳房钝感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "84",
+      "erarkName": "乳房敏感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "乳房敏感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "85",
+      "erarkName": "阴蒂钝感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "阴蒂钝感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "86",
+      "erarkName": "阴蒂敏感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "阴蒂敏感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "87",
+      "erarkName": "阴茎钝感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "阴茎钝感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "88",
+      "erarkName": "阴茎敏感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "阴茎敏感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "89",
+      "erarkName": "阴道钝感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "阴道钝感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "90",
+      "erarkName": "阴道敏感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "阴道敏感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "91",
+      "erarkName": "肛门钝感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "肛门钝感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "92",
+      "erarkName": "肛门敏感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "肛门敏感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "93",
+      "erarkName": "尿道钝感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "尿道钝感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "94",
+      "erarkName": "尿道敏感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "尿道敏感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "95",
+      "erarkName": "子宫钝感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "子宫钝感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "96",
+      "erarkName": "子宫敏感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "子宫敏感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "97",
+      "erarkName": "兽部钝感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "兽部钝感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "98",
+      "erarkName": "兽部敏感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "兽部敏感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "101",
+      "erarkName": "婴儿",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "婴儿",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "102",
+      "erarkName": "幼女",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "幼女",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "103",
+      "erarkName": "萝莉",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "萝莉",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "104",
+      "erarkName": "少女",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "少女",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "105",
+      "erarkName": "大姐姐",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "大姐姐",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "106",
+      "erarkName": "熟女",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "熟女",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "107",
+      "erarkName": "人妻",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "人妻",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "108",
+      "erarkName": "长生者",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "长生者",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "111",
+      "erarkName": "兽耳",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "兽耳",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "112",
+      "erarkName": "兽角",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "兽角",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "113",
+      "erarkName": "兽尾",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "兽尾",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "114",
+      "erarkName": "光环",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "光环",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "115",
+      "erarkName": "翅膀",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "翅膀",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "116",
+      "erarkName": "触手",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "触手",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "117",
+      "erarkName": "小车",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "小车",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "121",
+      "erarkName": "绝壁",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "绝壁",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "122",
+      "erarkName": "贫乳",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "贫乳",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "123",
+      "erarkName": "普乳",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "普乳",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "124",
+      "erarkName": "巨乳",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "巨乳",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "125",
+      "erarkName": "爆乳",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "爆乳",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "126",
+      "erarkName": "小臀",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "小臀",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "127",
+      "erarkName": "普臀",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "普臀",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "128",
+      "erarkName": "巨臀",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "巨臀",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "129",
+      "erarkName": "细腿",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "细腿",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "130",
+      "erarkName": "肉腿",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "肉腿",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "131",
+      "erarkName": "小足",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "小足",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "132",
+      "erarkName": "长足",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "长足",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "150",
+      "erarkName": "源石病感染者",
+      "source": "CharacterTalent",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "方舟世界观（矿石病）不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "151",
+      "erarkName": "嗜睡",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "嗜睡",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "152",
+      "erarkName": "高温体质",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "高温体质",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "153",
+      "erarkName": "低温体质",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "低温体质",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "154",
+      "erarkName": "带电体质",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "带电体质",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "155",
+      "erarkName": "带毒体质",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "带毒体质",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "156",
+      "erarkName": "视力障碍",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "视力障碍",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "157",
+      "erarkName": "听力障碍",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "听力障碍",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "158",
+      "erarkName": "失忆",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "失忆",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "159",
+      "erarkName": "人格障碍",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "人格障碍",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "160",
+      "erarkName": "行动不便",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "行动不便",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "161",
+      "erarkName": "低存在感",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "低存在感",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "162",
+      "erarkName": "体表源石结晶",
+      "source": "CharacterTalent",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "方舟世界观（矿石病）不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "163",
+      "erarkName": "义肢",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "义肢",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "164",
+      "erarkName": "毒抗性",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "毒抗性",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "165",
+      "erarkName": "大胃王",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "大胃王",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "166",
+      "erarkName": "昼伏夜出",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "昼伏夜出",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "167",
+      "erarkName": "猫舌",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "猫舌",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "168",
+      "erarkName": "水分身",
+      "source": "CharacterTalent",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "方舟世界观/未实装系统不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "171",
+      "erarkName": "生育模组",
+      "source": "CharacterTalent",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "未实装系统不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "201",
+      "erarkName": "思慕",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "思慕",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "202",
+      "erarkName": "恋慕",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "恋慕",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "203",
+      "erarkName": "恋人",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "恋人",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "204",
+      "erarkName": "爱侣",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "爱侣",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "205",
+      "erarkName": "戒指",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "戒指",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "211",
+      "erarkName": "屈从",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "屈从",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "212",
+      "erarkName": "驯服",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "驯服",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "213",
+      "erarkName": "宠物",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "宠物",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "214",
+      "erarkName": "奴隶",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "奴隶",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "215",
+      "erarkName": "项圈",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "项圈",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "220",
+      "erarkName": "性好奇",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "性好奇",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "221",
+      "erarkName": "性冷漠",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "性冷漠",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "222",
+      "erarkName": "性无知",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "性无知",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "223",
+      "erarkName": "感情缺乏",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "感情缺乏",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "224",
+      "erarkName": "难以越过的底线",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "难以越过的底线",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "225",
+      "erarkName": "献身",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "献身",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "226",
+      "erarkName": "倒错",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "倒错",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "227",
+      "erarkName": "讨厌男性",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "讨厌男性",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "228",
+      "erarkName": "讨厌女性",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "讨厌女性",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "229",
+      "erarkName": "施虐狂",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "施虐狂",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "230",
+      "erarkName": "受虐狂",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "受虐狂",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "250",
+      "erarkName": "正常位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "正常位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "251",
+      "erarkName": "背后位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "背后位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "252",
+      "erarkName": "对面骑乘位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "对面骑乘位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "253",
+      "erarkName": "背面骑乘位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "背面骑乘位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "254",
+      "erarkName": "对面座位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "对面座位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "255",
+      "erarkName": "背面座位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "背面座位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "256",
+      "erarkName": "对面立位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "对面立位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "257",
+      "erarkName": "背面立位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "背面立位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "258",
+      "erarkName": "对面抱位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "对面抱位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "259",
+      "erarkName": "背面抱位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "背面抱位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "260",
+      "erarkName": "对面卧位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "对面卧位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "261",
+      "erarkName": "背面卧位喜好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "背面卧位喜好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "271",
+      "erarkName": "勤劳",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "勤劳",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "272",
+      "erarkName": "懒散",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "懒散",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "273",
+      "erarkName": "脆弱",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "脆弱",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "274",
+      "erarkName": "坚强",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "坚强",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "275",
+      "erarkName": "热情",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "热情",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "276",
+      "erarkName": "孤僻",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "孤僻",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "277",
+      "erarkName": "羞耻",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "羞耻",
+      "note": "",
+      "neededBy": "stroke, touch_buttocks, raise_skirt, milk, make_masturebate, face_hug_sex, back_hug_sex, face_hug_cervix_sex"
+    },
+    {
+      "id": "278",
+      "erarkName": "开放",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "开放",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "304",
+      "erarkName": "博士信息素",
+      "source": "CharacterTalent",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "方舟世界观激素系统砍掉（master-list:543，激素教训：已撤销 3 个补回的定义）",
+      "neededBy": null
+    },
+    {
+      "id": "305",
+      "erarkName": "博士信息素集组",
+      "source": "CharacterTalent",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "同上",
+      "neededBy": null
+    },
+    {
+      "id": "306",
+      "erarkName": "博士信息素阵列",
+      "source": "CharacterTalent",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "同上",
+      "neededBy": null
+    },
+    {
+      "id": "307",
+      "erarkName": "内衣透视",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "内衣透视",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "308",
+      "erarkName": "腔内透视",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "腔内透视",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "309",
+      "erarkName": "生理透视",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "生理透视",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "310",
+      "erarkName": "隔衣触摸",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "隔衣触摸",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "311",
+      "erarkName": "透衣触摸",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "透衣触摸",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "312",
+      "erarkName": "隔空插入",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "隔空插入",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "316",
+      "erarkName": "窄域时停",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "窄域时停",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "317",
+      "erarkName": "广域时停",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "广域时停",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "318",
+      "erarkName": "精确时停",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "精确时停",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "331",
+      "erarkName": "猥亵催眠",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "猥亵催眠",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "332",
+      "erarkName": "性爱催眠",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "性爱催眠",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "333",
+      "erarkName": "集体催眠",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "集体催眠",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "334",
+      "erarkName": "心体催眠",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "心体催眠",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "351",
+      "erarkName": "回复慢",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "回复慢",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "352",
+      "erarkName": "回复快",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "回复快",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "353",
+      "erarkName": "酒量差",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "酒量差",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "354",
+      "erarkName": "酒量好",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "酒量好",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "355",
+      "erarkName": "千杯不醉",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "千杯不醉",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "356",
+      "erarkName": "灵活手指",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "灵活手指",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "357",
+      "erarkName": "灵活舌头",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "灵活舌头",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "358",
+      "erarkName": "教官",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "教官",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "359",
+      "erarkName": "厨艺",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "厨艺",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "360",
+      "erarkName": "一杯就倒",
+      "source": "CharacterTalent",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "未实装系统（饮酒）不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "401",
+      "erarkName": "持有博士把柄",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "持有博士把柄",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "402",
+      "erarkName": "被博士持有把柄",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "被博士持有把柄",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "411",
+      "erarkName": "信物",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "信物",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "451",
+      "erarkName": "女儿",
+      "source": "CharacterTalent",
+      "classification": "已对齐",
+      "normalized": "女儿",
+      "note": "",
+      "neededBy": null
+    },
+    {
+      "id": "hit_point",
+      "erarkName": "hit_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "体力",
+      "note": "体力（当前）",
+      "neededBy": null
+    },
+    {
+      "id": "hit_point_max",
+      "erarkName": "hit_point_max",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "体力上限",
+      "note": "体力上限",
+      "neededBy": null
+    },
+    {
+      "id": "mana_point",
+      "erarkName": "mana_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "气力",
+      "note": "气力（当前）",
+      "neededBy": null
+    },
+    {
+      "id": "mana_point_max",
+      "erarkName": "mana_point_max",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "气力上限",
+      "note": "气力上限",
+      "neededBy": null
+    },
+    {
+      "id": "sanity_point",
+      "erarkName": "sanity_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "精力",
+      "note": "理智（当前）→ 精力（语义近似，精力为闲置属性）",
+      "neededBy": null
+    },
+    {
+      "id": "sanity_point_max",
+      "erarkName": "sanity_point_max",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "理智上限——未迁移（精力无上限属性；h-hypnosis 精神 100 钳制为自研机制）",
+      "neededBy": null
+    },
+    {
+      "id": "eja_point",
+      "erarkName": "eja_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "射精欲",
+      "note": "射精槽（当前）",
+      "neededBy": null
+    },
+    {
+      "id": "eja_point_max",
+      "erarkName": "eja_point_max",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "射精欲上限",
+      "note": "射精槽上限",
+      "neededBy": null
+    },
+    {
+      "id": "semen_point",
+      "erarkName": "semen_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "精液量",
+      "note": "精液槽（当前）",
+      "neededBy": null
+    },
+    {
+      "id": "semen_point_max",
+      "erarkName": "semen_point_max",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "精液量上限",
+      "note": "精液槽上限（上限 999，erArk 同）",
+      "neededBy": null
+    },
+    {
+      "id": "tem_extra_semen_point",
+      "erarkName": "tem_extra_semen_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "额外精液量",
+      "note": "临时最大精液槽",
+      "neededBy": null
+    },
+    {
+      "id": "angry_point",
+      "erarkName": "angry_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "愤怒",
+      "note": "愤怒槽",
+      "neededBy": null
+    },
+    {
+      "id": "tired_point",
+      "erarkName": "tired_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "疲劳度",
+      "note": "疲劳值（erArk 6m=1点，16h=160 max）",
+      "neededBy": null
+    },
+    {
+      "id": "urinate_point",
+      "erarkName": "urinate_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "尿意",
+      "note": "尿意值（erArk 1m=1点，4h=240 max）",
+      "neededBy": null
+    },
+    {
+      "id": "hunger_point",
+      "erarkName": "hunger_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "饥饿值",
+      "note": "饥饿值（erArk 1m=1点，4h=240 max）",
+      "neededBy": null
+    },
+    {
+      "id": "sleep_point",
+      "erarkName": "sleep_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "熟睡值",
+      "note": "熟睡值（erArk 1m=10点，10min=100 max）",
+      "neededBy": null
+    },
+    {
+      "id": "desire_point",
+      "erarkName": "desire_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "欲望值",
+      "note": "欲望值（百分比 100 max）",
+      "neededBy": null
+    },
+    {
+      "id": "drunk_point",
+      "erarkName": "drunk_point",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "酒气",
+      "note": "醉酒度（百分比 100 max）",
+      "neededBy": null
+    },
+    {
+      "id": "favorability",
+      "erarkName": "favorability",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "好感度字典 → 单值属性 好感度（entity.base.好感度）",
+      "neededBy": null
+    },
+    {
+      "id": "trust",
+      "erarkName": "trust",
+      "source": "Character",
+      "classification": "已对齐",
+      "normalized": "信赖度",
+      "note": "信赖度（float，封顶 300 进 SettlementContext 钳制）",
+      "neededBy": null
+    },
+    {
+      "id": "ability",
+      "erarkName": "ability",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "能力字典 → entity.abilities.{名} = {level, xp}",
+      "neededBy": null
+    },
+    {
+      "id": "experience",
+      "erarkName": "experience",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "经验字典 → entity.experience（数值 id 直通）",
+      "neededBy": null
+    },
+    {
+      "id": "talent",
+      "erarkName": "talent",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "素质字典 → entity.talents.{名}",
+      "neededBy": null
+    },
+    {
+      "id": "status_data",
+      "erarkName": "status_data",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "状态字典 → entity.params（attributes.toml category=parameter）",
+      "neededBy": null
+    },
+    {
+      "id": "sp_flag",
+      "erarkName": "sp_flag",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "特殊 flag → entity.sp_flag（字段名一致）",
+      "neededBy": null
+    },
+    {
+      "id": "h_state",
+      "erarkName": "h_state",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "H 状态 → entity.h_state（字段名一致）",
+      "neededBy": null
+    },
+    {
+      "id": "dirty",
+      "erarkName": "dirty",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "污浊 → entity.dirty（body_semen/cloth_semen/penis_dirty_dict 等）",
+      "neededBy": null
+    },
+    {
+      "id": "first_record",
+      "erarkName": "first_record",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "初次记录 → entity.first_record（h-first-time 维护）",
+      "neededBy": null
+    },
+    {
+      "id": "pregnancy",
+      "erarkName": "pregnancy",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "怀孕 → entity.pregnancy（h-pregnancy 维护；排卵周期在 base）",
+      "neededBy": null
+    },
+    {
+      "id": "hypnosis",
+      "erarkName": "hypnosis",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "催眠 → entity.hypnosis（h-hypnosis 维护；精神在 base）",
+      "neededBy": null
+    },
+    {
+      "id": "action_info",
+      "erarkName": "action_info",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "行动记录 → entity.action_info（字段名一致）",
+      "neededBy": null
+    },
+    {
+      "id": "body_item",
+      "erarkName": "body_item",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "身体道具 → entity.body_items（h-core 读取）",
+      "neededBy": null
+    },
+    {
+      "id": "cloth",
+      "erarkName": "cloth",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "服装 → entity.cloth（clothing-system）",
+      "neededBy": null
+    },
+    {
+      "id": "relationship",
+      "erarkName": "relationship",
+      "source": "Character",
+      "classification": "替代处理",
+      "normalized": null,
+      "note": "社会关系 → entity.relations（relations.toml 定义关系类型）",
+      "neededBy": null
+    },
+    {
+      "id": "juel",
+      "erarkName": "juel",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "宝珠 → 收藏系统砍掉，不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "collection_character",
+      "erarkName": "collection_character",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "收藏角色 → 收藏系统砍掉，不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "pl_ability",
+      "erarkName": "pl_ability",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "玩家能力 → 玩家技能树（激素/透视/催眠/时停），随 B 批次评估（h-hypnosis/h-time-stop 已有运行时字段）",
+      "neededBy": null
+    },
+    {
+      "id": "pl_collection",
+      "erarkName": "pl_collection",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "玩家收藏品 → 收藏系统砍掉，不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "work",
+      "erarkName": "work",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "工作信息 → 方舟基建系统砍掉，不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "entertainment",
+      "erarkName": "entertainment",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "娱乐信息 → 随 B 批次评估（唱歌/读书等指令仅用经验，无娱乐结构）",
+      "neededBy": null
+    },
+    {
+      "id": "author_flag",
+      "erarkName": "author_flag",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "口上作者变量 → 不迁移（口上系统用独立机制）",
+      "neededBy": null
+    },
+    {
+      "id": "profession",
+      "erarkName": "profession",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "职业 → 世界观数据，不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "race",
+      "erarkName": "race",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "种族 → 世界观数据（兽人等），不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "token_text",
+      "erarkName": "token_text",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "信物文本 → 收藏系统砍掉，不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "assistant_character_id",
+      "erarkName": "assistant_character_id",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "助理 → 助理系统砍掉，不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "chara_setting",
+      "erarkName": "chara_setting",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "角色个人设置 → 设置面板未迁移",
+      "neededBy": null
+    },
+    {
+      "id": "assistant_services",
+      "erarkName": "assistant_services",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "助理服务 → 助理系统砍掉，不迁移",
+      "neededBy": null
+    },
+    {
+      "id": "body_manage",
+      "erarkName": "body_manage",
+      "source": "Character",
+      "classification": "有意删减",
+      "normalized": null,
+      "note": "身体管理 → 体检系统砍掉，不迁移",
+      "neededBy": null
+    }
+  ],
+  "unmappedEffects": [
+    {
+      "effectId": "1723",
+      "usedBy": [
+        "carry_target"
+      ]
+    },
+    {
+      "effectId": "1724",
+      "usedBy": [
+        "stop_carry_target"
+      ]
+    }
+  ],
+  "unmappedEffectCount": 2
+}

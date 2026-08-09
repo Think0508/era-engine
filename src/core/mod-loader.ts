@@ -6,6 +6,7 @@ import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
 import { conditionRegistry } from './condition-registry'
 import { errorReporter } from './error-reporter'
+import { getCharacterValidators } from './character-contract'
 
 export interface ModDependency {
   plugin: string
@@ -466,6 +467,152 @@ function applyAttributeDefaults(
   }
 }
 
+/**
+ * 读档/运行时补齐缺失属性（标准角色契约 spec §10.1 决策 11b）：
+ * 存档缺必需字段 → 用 attributes default 补齐 + warning（不静默）。
+ * 先全命名空间查重——旧存档把属性存在 base（契约前写法）时不重复补 canonical 命名空间。
+ * 供 save-system restoreFromSave 等恢复路径调用。
+ */
+export function fillMissingAttributes(
+  char: EntityData,
+  attributes: Record<string, AttributeDefinition>,
+  source: string,
+): void {
+  if (!char || !attributes) return
+  // 已有键查重：动态扫描角色全部对象命名空间（base/params/marks/abilities/flags/talents/
+  // social/economy/combat/...）——任何位置存在即视为"已有"，兼容契约前存档（base 写法）
+  // 与契约后存档（canonical 命名空间）。2026-08-09 第4轮修复：此前硬编码清单漏查
+  // social/economy/combat → 契约后存档读档时好感度被默认值覆盖（玩家真实值丢失）+ 虚假 warning
+  const nsMap: Record<string, string> = { parameter: 'params', mark: 'marks', ability: 'abilities' }
+  const hasAnywhere = (name: string): boolean => {
+    for (const container of Object.values(char)) {
+      if (!container || typeof container !== 'object' || Array.isArray(container)) continue
+      if (container[name] !== undefined) return true
+    }
+    return (char as any)[name] !== undefined
+  }
+  for (const [attrName, def] of Object.entries(attributes)) {
+    const defaultValue = def.default ?? 0
+    if (hasAnywhere(attrName)) continue
+    if (def.category === 'ability') {
+      if (!char.abilities) char.abilities = {}
+      char.abilities[attrName] = { level: defaultValue as number, xp: 0 }
+    } else {
+      const ns = nsMap[def.category] ?? def.category
+      if (!char[ns]) char[ns] = {}
+      char[ns][attrName] = defaultValue
+    }
+    errorReporter.report({
+      source: 'save-system',
+      severity: 'warning',
+      message: `${source}：角色 '${char.id}' 缺属性 '${attrName}'，已用默认值 ${defaultValue} 补齐（命名空间 ${def.category === 'ability' ? 'abilities' : (nsMap[def.category] ?? def.category)}）`,
+      suggestion: '旧存档缺字段属正常（契约补齐）；如需自定义初始值请更新存档或迁移规则',
+    })
+  }
+}
+
+/**
+ * 角色契约校验（标准角色契约 spec §10.1 决策 11a，加载时执行）：
+ * ① 裸字段检查（通用机制，core 不认具体名）：属性承载命名空间（base/params/marks/abilities/talents）
+ *    中的键必须在合并定义集（attributes/abilities/talents/status-effects/relations）中存在
+ * ② 插件注册的校验器（如 h-core 的"最小必需集"）——具体字段名在插件层声明
+ * 校验失败一律 warning+建议（errorReporter），不阻止加载
+ */
+function validateCharacterContract(mod: LoadedMod, modName: string): void {
+  const characters = mod.entities.get('character')
+  if (!characters) return
+
+  const knownAttrs = new Set(Object.keys(mod.attributes))
+  const knownAbilities = new Set(Object.keys(mod.abilities))
+  const knownTalents = new Set(Object.keys(mod.talentDefs))
+  const knownStatus = new Set(Object.keys(mod.statusEffects))
+  const knownRelations = new Set(Object.keys(mod.relationTypes))
+
+  // 属性承载命名空间：只允许已定义键（裸字段 = 契约违规）
+  const attributeNamespaces: Array<[string, Set<string>]> = [
+    ['base', knownAttrs],
+    ['params', knownAttrs],
+    ['marks', knownAttrs],
+    ['abilities', new Set([...knownAbilities, ...knownAttrs])],
+    ['talents', knownTalents],
+  ]
+
+  for (const [charId, rawChar] of characters) {
+    const char = rawChar as Record<string, any>
+
+    // ① 裸字段检查
+    for (const [ns, known] of attributeNamespaces) {
+      const container = char[ns]
+      if (!container || typeof container !== 'object') continue
+      for (const key of Object.keys(container)) {
+        if (known.has(key)) continue
+        errorReporter.report({
+          source: 'mod-loader',
+          severity: 'warning',
+          file: `mods/${modName}/characters/`,
+          message: `角色 '${charId}' 使用了未定义的属性 '${key}'（命名空间 ${ns}）`,
+          suggestion: `契约铁律：角色数据禁止裸字段——请先在 definitions/attributes.toml（或 abilities/talents.toml）定义 '${key}'，或在角色数据中删除该键`,
+        })
+      }
+    }
+    // status_effects 引用定义
+    for (const eff of (char.status_effects ?? []) as any[]) {
+      if (eff?.id && !knownStatus.has(eff.id)) {
+        errorReporter.report({
+          source: 'mod-loader',
+          severity: 'warning',
+          file: `mods/${modName}/characters/`,
+          message: `角色 '${charId}' 使用了未定义的状态效果 '${eff.id}'`,
+          suggestion: '状态效果需在 definitions/status-effects.toml 定义',
+        })
+      }
+    }
+    // relations 引用定义
+    if (char.relations && typeof char.relations === 'object') {
+      for (const relType of Object.values(char.relations)) {
+        if (!relType || typeof relType !== 'object') continue
+        for (const typeName of Object.keys(relType)) {
+          if (!knownRelations.has(typeName)) {
+            errorReporter.report({
+              source: 'mod-loader',
+              severity: 'warning',
+              file: `mods/${modName}/characters/`,
+              message: `角色 '${charId}' 使用了未定义的关系类型 '${typeName}'`,
+              suggestion: '关系类型需在 definitions/relations.toml 定义',
+            })
+          }
+        }
+      }
+    }
+
+    // ② 插件注册的校验器（具体字段契约在插件层）
+    for (const validator of getCharacterValidators()) {
+      try {
+        validator.validate(charId, rawChar, mod)
+      } catch (e) {
+        // 校验器自身异常不允许拖垮加载（契约：校验失败 warning，不 throw）
+        errorReporter.report({
+          source: `character-contract:${validator.id}`,
+          severity: 'warning',
+          message: `角色 '${charId}' 契约校验异常：${e instanceof Error ? e.message : String(e)}`,
+        })
+      }
+    }
+  }
+}
+
+/**
+ * 角色契约校验补跑（启动顺序兼容，spec §10.1 决策 11a）：
+ * main.ts 实际顺序 = loadMod（先）→ 插件 onLoad（后）——首次加载时插件校验器未注册，
+ * 必需集校验永不执行。插件（h-core）注册校验器后调用本函数补跑已加载 mod 的角色。
+ * 插件先行的启动顺序（AGENTS 文档序）无需补跑（parseModData 时校验器已注册）。
+ */
+export function revalidateCharacterContract(): void {
+  const mod = modLoader.getMod()
+  if (!mod) return
+  validateCharacterContract(mod, mod.id)
+}
+
 export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod {
   const metaPath = `/mods/${modName}/meta.toml`
   if (!(metaPath in rawTomlMap)) {
@@ -573,7 +720,9 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
           )
         }
       }
-      applyAttributeDefaults(resolved, mod.attributes)
+      // 注释：契约最终化（默认值 + abilities 展开 + talents 初始化）——
+      // pendingSpawns 也在此完成（spawn 激活时数据已完整）
+      finalizeCharacterData(resolved, mod)
 
       if (spawnCondition) {
         // 注释：条件激活角色——暂不注册，等待条件满足后动态创建
@@ -605,7 +754,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
         )
       }
     }
-    applyAttributeDefaults(resolved, mod.attributes)
+    // 注释：契约最终化（默认值 + abilities 展开 + talents 初始化）
+    finalizeCharacterData(resolved, mod)
     characters.set(charId, resolved)
   }
 
@@ -831,6 +981,13 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   // TODO(phase-6): ability-progression 插件 onEnable 时用 max_level 做升级逻辑，不用于展开
   expandCharacterAbilities(mod)
   initializeTalents(mod)
+  // 注释：契约最终化补全——pendingSpawns 的 abilities 默认条目/talents 初始化
+  // （roster 循环里 finalize 时 abilities.toml 尚未加载，此处补全；幂等）
+  if (mod.pendingSpawns) {
+    for (const p of mod.pendingSpawns) {
+      finalizeCharacterData(p.data, mod)
+    }
+  }
 
   // 注释：加载 h-config.toml（插件默认 + mod 覆盖，字段级 deepMerge）
   for (const path of Object.keys(rawTomlMap).filter(p => p.endsWith('/h-config.toml'))) {
@@ -872,32 +1029,58 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   // 注释：校验 locations——exit.target 和 parent 必须存在
   validateLocations(mod, modName)
   validateTalents(mod, modName)
+  // 注释：角色契约校验（裸字段 warning + 插件注册的必需集校验器）
+  validateCharacterContract(mod, modName)
 
   return mod
 }
 
 // 注释：展开角色 abilities 简写（数字→{level, xp:0}），已是对象则保持
+// per-char 版本（运行时生成角色也走同一逻辑，见 finalizeCharacterData）
+function expandCharacterAbilitiesForChar(char: any, abilityDefs: Record<string, AbilityDef>): void {
+  if (!char) return
+  if (!char.abilities) char.abilities = {}
+  const expanded: Record<string, { level: number; xp: number | null }> = {}
+  // 注释：先填入 abilities.toml 中定义的所有能力默认值
+  for (const abilityId of Object.keys(abilityDefs)) {
+    expanded[abilityId] = { level: 0, xp: 0 }
+  }
+  // 注释：再用角色已有数据覆盖（roster 简写 → {level, xp}）
+  for (const [abilityId, value] of Object.entries(char.abilities)) {
+    if (typeof value === 'number') {
+      expanded[abilityId] = { level: value, xp: 0 }
+    } else if (typeof value === 'object' && value !== null) {
+      expanded[abilityId] = value as { level: number; xp: number | null }
+    }
+  }
+  char.abilities = expanded
+}
+
 function expandCharacterAbilities(mod: LoadedMod): void {
   const characters = mod.entities.get('character')
   if (!characters) return
-  // 注释：给所有角色初始化 abilities.toml 中定义的默认能力（level=0, xp=0）
   for (const [, char] of characters) {
-    const c = char as any
-    if (!c.abilities) c.abilities = {}
-    const expanded: Record<string, { level: number; xp: number | null }> = {}
-    // 注释：先填入 abilities.toml 中定义的所有能力默认值
-    for (const abilityId of Object.keys(mod.abilities)) {
-      expanded[abilityId] = { level: 0, xp: 0 }
-    }
-    // 注释：再用角色已有数据覆盖（roster 简写 → {level, xp}）
-    for (const [abilityId, value] of Object.entries(c.abilities)) {
-      if (typeof value === 'number') {
-        expanded[abilityId] = { level: value, xp: 0 }
-      } else if (typeof value === 'object' && value !== null) {
-        expanded[abilityId] = value as { level: number; xp: number | null }
-      }
-    }
-    c.abilities = expanded
+    expandCharacterAbilitiesForChar(char as any, mod.abilities)
+  }
+}
+
+/**
+ * 角色数据最终化（标准角色契约：任何进入 entity-system 的角色都必须经过）：
+ * ① applyAttributeDefaults（attributes.toml 默认值落位）② abilities 简写展开
+ * ③ talents 初始化 0。加载（roster/named/pendingSpawns）与运行时生成
+ * （npc.toml 路人/pending 激活）统一走此函数——防止"生成路径漏初始化"静默缺口。
+ * G5 决策 2026-08-09：新角色愤怒初始化 rand(1,35)（erArk character.py:99）——
+ * 原始数据无愤怒键 → 随机；有键（模板/roster 显式写/存档权威）→ 保留。
+ */
+export function finalizeCharacterData(char: EntityData, mod: LoadedMod): void {
+  if (!char) return
+  const hasAngry = (char as any).base?.['愤怒'] !== undefined
+  applyAttributeDefaults(char, mod.attributes)
+  expandCharacterAbilitiesForChar(char as any, mod.abilities)
+  initializeTalentsForChar(char as any, mod.talentDefs)
+  if (!hasAngry) {
+    if (!(char as any).base) (char as any).base = {}
+    ;(char as any).base['愤怒'] = 1 + Math.floor(Math.random() * 35)
   }
 }
 
@@ -945,19 +1128,25 @@ function validateLocations(mod: LoadedMod, modName: string): void {
   }
 }
 
+// per-char 版本（运行时生成角色也走同一逻辑，见 finalizeCharacterData）
+function initializeTalentsForChar(char: any, talentDefs: Record<string, TalentDef>): void {
+  if (!char) return
+  if (Object.keys(talentDefs).length === 0) return
+  if (!char.talents) char.talents = {}
+  for (const talentId of Object.keys(talentDefs)) {
+    if (char.talents[talentId] === undefined) {
+      char.talents[talentId] = 0
+    }
+  }
+}
+
 function initializeTalents(mod: LoadedMod): void {
   const defs = mod.talentDefs
   if (Object.keys(defs).length === 0) return
   const characters = mod.entities.get('character')
   if (!characters) return
   for (const [, char] of characters) {
-    const c = char as any
-    if (!c.talents) c.talents = {}
-    for (const talentId of Object.keys(defs)) {
-      if (c.talents[talentId] === undefined) {
-        c.talents[talentId] = 0
-      }
-    }
+    initializeTalentsForChar(char as any, defs)
   }
 }
 

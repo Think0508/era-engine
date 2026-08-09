@@ -21,8 +21,8 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "体力上限" = { type = "number", default = 2500, category = "base", display = true, display_group = "status" }
 "气力上限" = { type = "number", default = 2000, category = "base", display = true, display_group = "status" }
 "欲望值" = { type = "number", default = 0, category = "base", display = true, display_group = "h" }
-"射精槽" = { type = "number", default = 0, category = "base", display = true, display_group = "h" }
-"射精槽上限" = { type = "number", default = 1000, category = "base", display = true, display_group = "h" }
+"射精欲" = { type = "number", default = 0, category = "base", display = true, display_group = "h" }
+"射精欲上限" = { type = "number", default = 1000, category = "base", display = true, display_group = "h" }
 "精液量" = { type = "number", default = 100, category = "base", display = true, display_group = "h" }
 "精液量上限" = { type = "number", default = 100, category = "base", display = true, display_group = "h" }
 "愤怒" = { type = "number", default = 0, category = "base", display = true, display_group = "emotion" }
@@ -117,3 +117,11 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "金钱" = { type = "number", default = 0, category = "economy", display = true, display_group = "economy" }
 "好感度" = { type = "number", default = 30, category = "social", display = true, display_group = "social" }
 "信赖度" = { type = "number", default = 0, category = "social", display = true, display_group = "social" }
+
+# ════════════════════════════════════════
+# 示范：mod 自定义属性（标准角色契约 spec §10.1 —— mod 扩展规则演示）
+# 气血/内力：武侠世界观通用属性，condition-registry 测试引用（player.气血 < 30 等）。
+# 按契约：mod 新增属性必须经 definitions/attributes.toml 定义，禁止角色数据裸字段。
+# ════════════════════════════════════════
+"气血" = { type = "number", default = 100, category = "base", display = true, display_group = "status", description = "武侠概念属性（test-mod 示范：mod 自定义属性）" }
+"内力" = { type = "number", default = 50, category = "base", display = true, display_group = "status", description = "武侠概念属性（test-mod 示范：mod 自定义属性）" }

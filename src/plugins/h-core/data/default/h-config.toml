@@ -35,10 +35,11 @@
 12 = { name = "背面卧位", pleasure_coefficient = -0.2 }
 
 # 饥饿系统配置（由 hunger-system 插件读取）
+# G1 决策（2026-08-09）：饥饿值增长已收敛到引擎行动级结算（core realtimeSettle.settleHunger，
+# erArk 公式：rand(0.8~1.2×分钟)×(2-hp/max)×(2-mp/max)，上限 240）——
+# growth_per_min/growth_random 参数已删除（小时级增长与行动级重叠 = 双倍 bug）
 [hunger]
-max = 240                       # 饥饿值上限
-growth_per_min = 1.0            # 每分基础增长
-growth_random = [0.8, 1.2]      # 随机波动范围
+max = 240                       # 饥饿值上限（行动级结算同值）
 digestion_per_hour = 60         # 每小时消化速度(min)
 npc_auto_eat_threshold = 190    # NPC 自动进食阈值(80%)
 daily_ration_id = "干粮"        # NPC 每日口粮（空=不发放）

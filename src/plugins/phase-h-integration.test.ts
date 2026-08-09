@@ -6,6 +6,38 @@ import { entitySystem } from '../core/entity-system'
 // 完整的端到端 H 流程测试需要 browser 环境，这里测可独立验证的部分
 
 describe('Phase H 集成测试', () => {
+  it('G1 饥饿行动级结算：erArk 系数公式（2-hp/max × 2-mp/max），仅行动级增长', async () => {
+    // G1 决策 2026-08-09：饥饿增长收敛到行动级（hunger-system hour_changed 增长已删——
+    // 双轨=双倍）。公式对齐 erArk realtime_settle.py:126-135
+    const { realtimeSettle } = await import('../core/realtime-settle')
+    // 满血角色（系数 2-1=1 × 2-1=1）→ 10 分钟：floor(10×rand(0.8~1.2)×1×1) ∈ [8,12]
+    entitySystem.register('character', 'hunger_test_full', {
+      id: 'hunger_test_full', name: '满血',
+      base: { 体力: 100, 体力上限: 100, 气力: 100, 气力上限: 100, 饥饿值: 0 },
+    })
+    realtimeSettle(entitySystem.get('character', 'hunger_test_full') as any, 10)
+    const full = entitySystem.get('character', 'hunger_test_full') as any
+    expect(full.base['饥饿值']).toBeGreaterThanOrEqual(8)
+    expect(full.base['饥饿值']).toBeLessThanOrEqual(12)
+    // 濒死角色（hp=0 → 系数 2-0=2，mp=0 → 2）→ 10 分钟：floor(10×rand×4) ∈ [32,48]
+    entitySystem.register('character', 'hunger_test_low', {
+      id: 'hunger_test_low', name: '濒死',
+      base: { 体力: 0, 体力上限: 100, 气力: 0, 气力上限: 100, 饥饿值: 0 },
+    })
+    realtimeSettle(entitySystem.get('character', 'hunger_test_low') as any, 10)
+    const low = entitySystem.get('character', 'hunger_test_low') as any
+    expect(low.base['饥饿值']).toBeGreaterThanOrEqual(32)
+    expect(low.base['饥饿值']).toBeLessThanOrEqual(48)
+    // 上限 240 钳制
+    entitySystem.register('character', 'hunger_test_cap', {
+      id: 'hunger_test_cap', name: '封顶',
+      base: { 体力: 100, 体力上限: 100, 气力: 100, 气力上限: 100, 饥饿值: 235 },
+    })
+    realtimeSettle(entitySystem.get('character', 'hunger_test_cap') as any, 600)
+    expect((entitySystem.get('character', 'hunger_test_cap') as any).base['饥饿值']).toBe(240)
+    entitySystem.clear()
+  })
+
   it('getLevel 查阈值表正确', () => {
     const thresholds = [0, 100, 500, 1000, 2500]
     expect(getLevel(0, thresholds)).toBe(0)
@@ -526,6 +558,34 @@ describe('Phase H 集成测试', () => {
     expect(char2.base['快乐']).toBe(40)
 
     commandRegistry.clear()
+    entitySystem.clear()
+  })
+
+  it('eja_shoot 直接射精链路：精液扣减 + just_shoot/day_first/last_eaj 写入（2026-08-09 审查修复）', async () => {
+    // 2026-08-09 审查发现：eja_shoot 原缺精液扣减/标记（与 eja_climax 不一致）——
+    // 未来 B3 指令用上时射精不扣精液 + G3 射精欲消退永不触发 = 静默失效
+    const { effectTypeRegistry } = await import('../core/effect-type-registry')
+    const { onLoad: ejOnLoad } = await import('../plugins/h-ejaculation/index')
+    const { gameContext, gameTimeToTotalMinutes } = await import('../core/game-context')
+    effectTypeRegistry.clear()
+    ejOnLoad({} as any)
+    entitySystem.register('character', 'shooter', {
+      id: 'shooter', base: { 精液量: 80, 精液量上限: 100 },
+      action_info: { day_first_shoot_semen: true },
+      h_state: { is_h: true, target_character_id: 'shooter', insert_position: 0 },
+    })
+    await effectTypeRegistry.getHandler('eja_shoot')!(
+      { level: 'normal', positionId: 6 },
+      { _targetIds: ['shooter'] } as any,
+    )
+    const ch = entitySystem.get('character', 'shooter') as any
+    expect(ch.base['精液量']).toBeLessThan(80) // 精液扣减
+    expect(ch.h_state.just_shoot).toBe(1)
+    expect(ch.action_info.day_first_shoot_semen).toBe(false)
+    expect(ch.action_info.last_eaj_add_time).toBe(gameTimeToTotalMinutes(gameContext.getContext().time))
+    // 插入位置重置（射精后）
+    expect(ch.h_state.insert_position).toBe(-1)
+    effectTypeRegistry.clear()
     entitySystem.clear()
   })
 })

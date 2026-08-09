@@ -10,6 +10,8 @@
     "typecheck": "vue-tsc -b --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "scan:attrs": "node scripts/scan-attr-refs.cjs",
+    "scan:erark": "node scripts/scan-erark-defs.cjs",
     "tauri": "tauri"
   },
   "dependencies": {

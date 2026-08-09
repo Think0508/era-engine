@@ -7,7 +7,7 @@ import Dexie, { type Table } from 'dexie'
 import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
 import { narrativeLog } from './narrative-log'
-import { modLoader } from './mod-loader'
+import { modLoader, fillMissingAttributes } from './mod-loader'
 import type { EntityData } from './types'
 
 export interface SaveSlot {
@@ -133,7 +133,13 @@ export async function autoSave(uiState: any, label?: string): Promise<void> {
 // 注释：从 SaveData 恢复角色到 entity-system
 export function restoreFromSave(data: SaveData): void {
   entitySystem.clear()
+  // 注释：契约补齐（标准角色契约 spec §10.1 决策 11b）——旧存档缺字段按 attributes default
+  // 补齐 + warning（不静默）。补齐在注册前执行，保证 entity-system 里的数据完整
+  const mod = modLoader.getMod()
   for (const char of data.characters) {
+    if (mod?.attributes) {
+      fillMissingAttributes(char, mod.attributes, `读档 ${data.modId}@${data.gameTime}`)
+    }
     entitySystem.register('character', char.id, char)
   }
   // 注释：恢复游戏时间

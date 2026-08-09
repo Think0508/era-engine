@@ -14,7 +14,7 @@ import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
 import { narrativeLog } from '../../core/narrative-log'
 import { premiseRegistry } from '../../core/premise-registry'
-import { gameContext } from '../../core/game-context'
+import { gameContext, gameTimeToTotalMinutes } from '../../core/game-context'
 import { modLoader } from '../../core/mod-loader'
 import { BODY_PART_CID } from './body-parts'
 
@@ -164,8 +164,13 @@ export function onLoad(_ctx: PluginContext): void {
       }
       // 注释：精液量扣减（erArk：优先扣临时额外精液，再扣基础精液）
       deductSemen(char, semenResult.amount)
-      // 注释：每日首射标记
-      if (char.action_info) char.action_info.day_first_shoot_semen = false
+      // 注释：每日首射标记 + 上次射精时间（G3 决策 2026-08-09：射精欲自然消退的
+      // 30 分钟门控依赖 last_eaj_add_time——erArk realtime_settle.py:144-149；
+      // 此前无写入 → 消退无从实现）
+      if (char.action_info) {
+        char.action_info.day_first_shoot_semen = false
+        char.action_info.last_eaj_add_time = gameTimeToTotalMinutes(gameContext.getContext().time)
+      }
     }
     return true
   })
@@ -188,6 +193,26 @@ export function onLoad(_ctx: PluginContext): void {
       if (targetChar?.h_state) targetChar.h_state.shoot_position_body = params.positionId ?? 6
       if (id === 'player' || id === '0') setPenisSemenDirty(char, true)
       narrativeLog.write(`射精 ${result.amount}ml`, 'system', 'h-ejaculation')
+      // 射精后状态更新（2026-08-09 审查修复：与 eja_climax 对齐——原缺精液扣减/
+      // just_shoot/day_first_shoot_semen/last_eaj_add_time，未来 B3 指令用上时
+      // 射精不扣精液 + G3 射精欲消退永不触发 = 静默失效）
+      if (char.h_state) {
+        const hs = char.h_state
+        hs.orgasm_level = hs.orgasm_level ?? {}
+        hs.orgasm_level[3] = (hs.orgasm_level[3] ?? 0) + 1
+        hs.just_shoot = 1
+        hs.endure_not_shoot_count = 0
+        hs.shoot_semen_amount = (hs.shoot_semen_amount ?? 0) + result.amount
+        if (hs.insert_position !== undefined) hs.insert_position = -1
+        if (targetChar?.h_state && targetChar !== char) {
+          if (targetChar.h_state.insert_position !== undefined) targetChar.h_state.insert_position = -1
+        }
+      }
+      deductSemen(char, result.amount)
+      if (char.action_info) {
+        char.action_info.day_first_shoot_semen = false
+        char.action_info.last_eaj_add_time = gameTimeToTotalMinutes(gameContext.getContext().time)
+      }
     }
     return true
   })
@@ -301,7 +326,7 @@ export function onEnable(ctx: PluginContext): void {
         const currentMl = c.body_semen[partId]?.[1] ?? 0
         if (currentMl <= 0) continue
         const maxVol = BODY_PART_MAX_VOLUME[partId] ?? 100
-        const hunger = c.base?.['饥饿度'] ?? 0
+          const hunger = c.base?.['饥饿值'] ?? 0
         const result = calcSemenAbsorb(currentMl, addTime, maxVol, hunger)
         if (!result) continue
         c.body_semen[partId][1] = result.remaining
@@ -337,7 +362,7 @@ export function onEnable(ctx: PluginContext): void {
         const currentMl = char.body_semen[partId]?.[1] ?? 0
         if (currentMl <= 0) continue
         const maxVol = BODY_PART_MAX_VOLUME[partId] ?? 100
-        const hunger = char.base?.['饥饿度'] ?? 0
+          const hunger = char.base?.['饥饿值'] ?? 0
         const result = calcSemenAbsorb(currentMl, addTime, maxVol, hunger)
         if (!result) continue
         char.body_semen[partId][1] = result.remaining

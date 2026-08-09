@@ -412,7 +412,9 @@ async function renderNode(nodeId: string, speakerOverride?: string): Promise<voi
 }
 
 // 注释：玩家选择 choice——由 UI 调用
-// TODO: 暴露此方法供 NarrativeLog 的 choice 交互调用
+// ⚠️ 标记（2026-08-09）：selectChoice 已导出但未注册到 API/事件通道——插件间禁止直接
+// import，UI 实际无法调用 → 对话分支推进（choices.next / 分支节点 effects）当前不可达。
+// 依赖 dialogue UI 交互通道设计（随 dialogue-system 补齐，勿局部修补）。
 export async function selectChoice(entryId: string, choiceIndex: number): Promise<void> {
   if (!currentConversation) return
   const node = currentConversation.nodes.get(currentConversation.nodeId)

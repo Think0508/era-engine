@@ -29,6 +29,9 @@ class GameContextManager {
   private fieldAliases: Record<string, string> = {}
   // 注释：当前选中角色（UI 层通过 bridge 同步；条件引擎 selected/target 根路径使用）
   private selectedCharacterId: string | null = null
+  // 注释：关系组（关系系统 v2）——mod 加载后注入的展开后组定义（组名 → 类型名列表），
+  // 条件引擎聚合路径 any(group:xxx) 求值用。core 不认知具体组名。
+  private relationGroups: Record<string, string[]> = {}
 
   getContext(): GameContext {
     return {
@@ -38,7 +41,13 @@ class GameContextManager {
       getEntity: (type: string, id: string) => entitySystem.get(type, id),
       selectedCharacterId: this.selectedCharacterId ?? undefined,
       fieldAliases: this.fieldAliases,
+      relationGroups: this.relationGroups,
     }
+  }
+
+  // 注释：注入展开后的关系组（mod-loader loadMod 后调用；组名 → 类型名列表）
+  setRelationGroups(groups: Record<string, string[]>): void {
+    this.relationGroups = groups ?? {}
   }
 
   // 注释：注册实体字段别名（供条件路径解析，如 status → status_effects）
@@ -187,6 +196,7 @@ class GameContextManager {
     this.executionState = 'IDLE'
     this.modeStack = ['exploration']
     this.completedScenes.clear()
+    this.relationGroups = {}
   }
 }
 

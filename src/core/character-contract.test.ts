@@ -109,6 +109,118 @@ abilities = { "降龙十八掌" = 3 }
     expect(bare!.message).toContain('abilities')
   })
 
+  it('marks 归一化：角色数据写 marks → abilities.level 生效（abilities 优先，ADR-0007）', () => {
+    // 2026-08-09：刻印 canonical 存储 = abilities；角色数据写 marks（值>0）在 finalize 时拷贝进
+    // abilities.{名}.level——mod 作者按「刻印」直觉写法也生效；两者都写则 abilities 优先
+    const map = makeMinimalMod(`
+[[roster]]
+id = "npc_m1"
+name = "甲"
+marks = { "快乐刻印" = 2 }
+[[roster]]
+id = "npc_m2"
+name = "乙"
+abilities = { "快乐刻印" = 3 }
+marks = { "快乐刻印" = 1 }
+[[roster]]
+id = "npc_m3"
+name = "丙"
+marks = { "快乐刻印" = 0 }
+`, {
+      '/mods/test-mod/definitions/attributes.toml': `
+[attributes]
+"体力" = { type = "number", default = 100, category = "base" }
+"快乐刻印" = { type = "number", default = 0, category = "mark" }
+`,
+      '/mods/test-mod/definitions/abilities.toml': `
+[abilities]
+[abilities."快乐刻印"]
+name = "快乐刻印"
+type = "passive"
+max_level = 5
+`,
+    })
+    const mod = parseModData('test-mod', map) as LoadedMod
+    const chars = mod.entities.get('character') as Map<string, any>
+    // 写 marks → abilities.level 生效
+    expect(chars.get('npc_m1')!.abilities['快乐刻印']).toEqual({ level: 2, xp: 0 })
+    // 两者都写 → abilities 优先（marks 只补缺）
+    expect(chars.get('npc_m2')!.abilities['快乐刻印']).toEqual({ level: 3, xp: 0 })
+    // 值 0 不拷贝（保持默认 level 0）
+    expect(chars.get('npc_m3')!.abilities['快乐刻印']).toEqual({ level: 0, xp: 0 })
+    // marks 镜像保留原值（死存储不动，读取方全走 abilities）
+    expect(chars.get('npc_m1')!.marks['快乐刻印']).toBe(2)
+    // 全程无裸字段误报（finalize 随机补的 愤怒 未定义属既有行为，排除）
+    const bare = errorReporter.getErrors().filter(e => e.message.includes('未定义') && !e.message.includes('愤怒'))
+    expect(bare).toHaveLength(0)
+  })
+
+  it('真实 test-mod：contract_demo 的 marks 归一化到 abilities（快乐刻印 = 1）', async () => {
+    const { modLoader } = await import('./mod-loader')
+    entitySystem.clear()
+    await modLoader.loadMod('test-mod')
+    const demo = entitySystem.get('character', 'contract_demo') as any
+    expect(demo.abilities['快乐刻印']).toEqual({ level: 1, xp: 0 })
+  })
+
+  it('字段分层 L3：引擎独占字段 → warning（写入无效，ADR-0007）', () => {
+    const map = makeMinimalMod(`
+[[roster]]
+id = "npc_l3"
+name = "甲"
+base = { "体力" = 100 }
+h_state = { turn_count = 3 }
+body_items = { 2 = "vib" }
+`)
+    parseModData('test-mod', map)
+    const warnings = errorReporter.getErrors().filter(e => e.severity === 'warning')
+    expect(warnings.some(w => w.message.includes('h_state') && w.message.includes('引擎独占'))).toBe(true)
+    expect(warnings.some(w => w.message.includes('body_items') && w.message.includes('引擎独占'))).toBe(true)
+  })
+
+  it('字段分层 L2：非平凡字段 → warning（sp_flag / params / 未知顶层键）', () => {
+    const map = makeMinimalMod(`
+[[roster]]
+id = "npc_l2"
+name = "甲"
+base = { "体力" = 100 }
+sp_flag = { hidden_sex_mode = 1 }
+params = { "皮肤" = 5 }
+unknown_ns = { x = 1 }
+`)
+    parseModData('test-mod', map)
+    const warnings = errorReporter.getErrors().filter(e => e.severity === 'warning')
+    expect(warnings.some(w => w.message.includes('sp_flag') && w.message.includes('非平凡'))).toBe(true)
+    expect(warnings.some(w => w.message.includes('params') && w.message.includes('daily_reset'))).toBe(true)
+    expect(warnings.some(w => w.message.includes('unknown_ns') && w.message.includes('未知顶层字段'))).toBe(true)
+  })
+
+  it('字段分层 L1：合法字段不误报（全命名空间写一遍）', () => {
+    const map = makeMinimalMod(`
+[[roster]]
+id = "npc_l1"
+name = "甲"
+base = { "体力" = 100 }
+marks = { "快乐刻印" = 1 }
+experience = { 80 = 5 }
+status_effects = [{ id = "醉意", remaining_duration = 60 }]
+relations = { player = { "好感度" = 30 } }
+behavior = { activity = 0.5, home_locations = { town = 1.0 } }
+equipment = { upper = "布衣" }
+current_location = "town"
+dead = false
+first_times = { virgin_V = true }
+pregnancy = { daysPregnant = 5 }
+talents = { "剑骨" = 1 }
+abilities = { "华山剑法" = 3 }
+`)
+    parseModData('test-mod', map)
+    const layerWarnings = errorReporter.getErrors().filter(
+      e => e.message.includes('引擎独占') || e.message.includes('非平凡') || e.message.includes('未知顶层字段'),
+    )
+    expect(layerWarnings).toHaveLength(0)
+  })
+
   it('未定义状态效果/关系类型 → warning', () => {
     const map = makeMinimalMod(`
 [[roster]]
@@ -437,6 +549,7 @@ talents = { "剑骨" = 1 }
     errorReporter.clear()
     effectTypeRegistry.clear() // 测试隔离：前面的全插件加载已注册过 handler（重复注册会被拒）
     await modLoader.loadMod('test-mod')
+    errorReporter.clear() // 注释：loadMod 的契约校验 warning（contract_demo params 教学展示，ADR-0007）与本测试无关
     effectOnLoad({} as any) // 注册 modify_attribute/set_attribute handler
     entitySystem.register('character', 'ab_tester', {
       id: 'ab_tester', base: { '体力': 100 }, abilities: { '技巧': { level: 1, xp: 0 } },
@@ -481,6 +594,38 @@ talents = { "剑骨" = 1 }
     expect(ch.marks['快乐刻印']).toBe(0)
     const warnings = errorReporter.getErrors().filter(e => e.severity === 'warning' && e.message.includes('缺属性'))
     expect(warnings.length).toBeGreaterThan(10) // 补了多个字段，警告不静默
+  })
+
+  it('restoreFromSave：旧存档 marks 值归一化到 abilities（ADR-0007 恢复路径）', async () => {
+    // 本改动前保存的旧存档形态：marks 有值、abilities 刻印恒 0 → 恢复时不静默丢失
+    const { modLoader } = await import('./mod-loader')
+    entitySystem.clear()
+    errorReporter.clear()
+    await modLoader.loadMod('test-mod')
+    const data = {
+      modId: 'test-mod', modVersion: '1.0.0',
+      gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
+      characters: [
+        {
+          id: 'old_marks_plain', name: '旧角色甲',
+          base: { '体力': 80 },
+          marks: { '快乐刻印': 2, '屈服刻印': 0 },
+          abilities: { '快乐刻印': { level: 0, xp: 0 } },
+        },
+        {
+          id: 'old_marks_real', name: '旧角色乙',
+          base: { '体力': 80 },
+          marks: { '快乐刻印': 2 },
+          abilities: { '快乐刻印': { level: 3, xp: 0 } }, // 运行时真实值 → abilities 优先
+        },
+      ],
+      gameState: {}, uiState: { foldStates: {} },
+    }
+    restoreFromSave(data as any)
+    const plain = entitySystem.get('character', 'old_marks_plain') as any
+    expect(plain.abilities['快乐刻印']).toEqual({ level: 2, xp: 0 })
+    const real = entitySystem.get('character', 'old_marks_real') as any
+    expect(real.abilities['快乐刻印']).toEqual({ level: 3, xp: 0 }) // 不覆盖已有真实等级
   })
 
   it('revalidateCharacterContract：插件注册校验器后补跑（main.ts 启动顺序兼容链）', async () => {

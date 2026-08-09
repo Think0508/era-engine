@@ -1,0 +1,45 @@
+# ═══════════════════════════════════════════════════════════════════
+# characters/named/角色示例/base.toml —— 第④层：重要角色（完整示例）
+# ═══════════════════════════════════════════════════════════════════
+# named/{角色ID}/base.toml = 重要角色的完整数据文件，与 roster 条目同构
+# （字段字典见 characters/roster.toml 文件头注释——每个字段填什么、来自哪里）。
+# 同名 ID 规则：named 覆盖 roster 的同名条目（升级路径：roster → named）。
+# 本文件按「照猫画虎」分区组织，照抄结构、去掉注释、改数值即可：
+#   前段：必写/常写字段（真实值——本模组被 validate 校验，所以不加 #）
+#   中段：不必需但常见的字段（同样真实值）
+#   末段：几乎不会写的字段 → 只注释不写
+# ═══════════════════════════════════════════════════════════════════
+
+# ── 前段：必写/常写 ──
+id = "角色示例"                     # 角色 ID（文件夹名一致，全局唯一）
+name = "示例侠客"
+template = "base-human"             # 继承模板（可选）
+base = { "体力" = 300, "气力" = 200, "体力上限" = 2500, "气力上限" = 2000, "好感度" = 50, "信赖度" = 30, "性别" = 1, "气血" = 150, "内力" = 100 }
+
+# ── 中段：不必需但常见的字段 ──
+abilities = { "吐纳术" = 3, "技巧" = 2 }       # 能力简写；带等级的读 {level, xp}
+talents = { "天生神力" = 1 }                   # 天赋
+relations = { player = { "好感度" = 50, "师徒值" = 20, "夫妻" = "正面" }, "山贼_张三" = { "父母子女（为小）" = "正面" }, "猎户" = { "父母子女（为小）" = "正面" } }
+# ↑ 关系三档示范（关系系统 v2）：
+#   - 夫妻 对 player：对称类型（无大小端）+ 字符串档位
+#   - 父母子女（为小）对 山贼_张三/猎户：段誉式"两个父亲"（角色示例都是小端）；
+#     反向（父母子女（为大））写在对方 roster 条目里——双向无不对称 warning
+marks = { "快乐刻印" = 2 }                     # 刻印（自动归一化到 abilities，等价写法）
+experience = { 0 = 12, 10 = 3 }               # 经验数值（0=皮肤经验、10=皮肤绝顶经验；键名禁改）
+status_effects = [{ id = "振奋", remaining_duration = 60, stack = 1 }]  # 初始状态
+inventory = [{ itemId = "回气丹", count = 5 }]  # 初始背包（数组格式；对象写法自动转换）
+equipment = { upper = "布衣", lower = "长裤" }
+behavior = { activity = 0.5, home_locations = { "山村" = 1.0 } }
+current_location = "山村"                      # 初始位置（运行时引擎接管）
+dead = false                                   # 死亡标记（undefined = 存活）
+pregnancy = { daysPregnant = 5 }               # 孕妇设定示例（h-pregnancy 尊重初始值）
+assets = { portrait = "assets/char/example.png" }
+
+# ── 末段：几乎不会写的字段（L3 引擎独占，别写）──────────────────────
+# h_state / body_items / first_records / dirty / hypnosis /
+# action_info / achievement / equipment_off / equipment_visible / equipment_blood
+# 写了 → 加载 warning「引擎独占字段，写入无效」。
+#
+# 预置 first_times.virgin_* = true 的小知识：
+#   引擎不会自动补 first_records 详情记录；若需要 getRecord 类条件命中，
+#   自行写 first_records = { virgin_V = { time = "1-1-1 8:0", place = "山村", position = "" } }

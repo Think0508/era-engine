@@ -8,7 +8,7 @@ import { entitySystem } from '../../core/entity-system'
 import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
-import { gameContext } from '../../core/game-context'
+import { gameContext, gameTimeToTotalMinutes } from '../../core/game-context'
 
 // 注释：onLoad——注册 apply_status/remove_status effect type
 export function onLoad(_ctx: PluginContext): void {
@@ -178,8 +178,9 @@ function scaleEffectsByStack(effects: any[], stack: number): any[] {
   return result
 }
 
-// 注释：获取当前游戏时间（分钟）——简化用 hour*60
+// 注释：获取当前游戏时间（分钟）——2026-08-09 example-mod 验证修复：原实现恒返回 0
+// （TODO 未接 gameContext）→ tick_interval 检查 `last_tick + interval <= 0` 永假 →
+// 所有 tick_effects 静默死代码。改为真实游戏时间（gameTimeToTotalMinutes 跨年月日累计）。
 function getCurrentGameMinutes(): number {
-  // TODO: 从 gameContext 获取精确时间
-  return 0
+  return gameTimeToTotalMinutes(gameContext.getContext().time)
 }

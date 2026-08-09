@@ -1,0 +1,77 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/instructions/打坐.toml —— mod 自定义指令（玩法入口）
+# ═══════════════════════════════════════════════════════════════════
+# 指令 = 玩家在指令栏点的功能按钮，是 mod 自定义玩法的主要入口。
+# 一条 [[instructions]] = 一个指令。本示例演示「definitions 定义的东西怎么被用起来」：
+#   - 自定义属性（气血）→ modify_attribute 效果
+#   - 自定义状态（振奋）→ apply_status 效果
+#   - 时间推进 → 由指令的 time_cost 字段负责（⚠️ 不要再用 advance_time effect——
+#     会与 time_cost 重复推进，时间双倍）；叙事输出 → narrative_output
+#
+# 字段语义：
+#   id：指令 ID（全局唯一）；label：按钮显示名
+#   category：分组（新字段，如 "daily"日常/"obscenity"淫秽…）；旧字段 type 兼容
+#   time_cost：耗时分钟（自动推进游戏时间）；priority：排序（越小越靠前）
+#   premises：前提 ID 数组——h-core 注册的判定（如 NOT_H=不在 H 中、HAVE_TARGET=有选中
+#     角色）；完整清单见 docs/premises.md；不写 = 无条件
+#   condition：条件表达式（字段须在「可用条件属性手册」中）
+#   effects：效果链（按顺序执行；效果类型见 docs/effect-system.md）
+#   效果 target：self（自己）/ selected（选中角色）/ player / …
+# 校验：condition 引用未注册字段 → 该指令被注销（error）；unknown 效果类型 → warning
+# ═══════════════════════════════════════════════════════════════════
+
+[[instructions]]
+id = "meditate"
+label = "打坐"
+type = "daily"
+time_cost = 30
+priority = 30
+# 条件示例：气血不足 200 时才能打坐（引用 example-mod 自定义属性）
+condition = "player.气血 < 200"
+effects = [
+  { type = "modify_attribute", target = "self", params = { attr = "气血", value = 10 } },
+  { type = "apply_status", target = "self", params = { status = "振奋" } },
+  { type = "narrative_output", params = { text = "你盘膝打坐，吐纳调息，气息渐长。" } }
+]
+
+# ═══════════════════════════════════════════════════════════════════
+# 写法变体：effect_blocks 复用（同一文件内定义效果块，多条指令引用）
+# 上面的打坐是"效果内联"写法；下面演示"效果块 + 引用"写法——
+# 适合多条指令共用同一段效果的场景（改一处全生效）。
+# [effect_blocks] 段定义块，指令 effects 里写字符串引用块名。
+# ═══════════════════════════════════════════════════════════════════
+
+[effect_blocks]
+drink_wine_effects = [
+  { type = "modify_attribute", target = "self", params = { attr = "气血", value = -5 } },
+  { type = "apply_status", target = "self", params = { status = "力竭" } },
+  { type = "narrative_output", params = { text = "你一饮而尽，酒劲上头，身子有些发虚。" } }
+]
+
+[[instructions]]
+id = "drink_wine"
+label = "饮酒"
+category = "daily"
+time_cost = 10
+priority = 20
+# 无 condition 无 premises 的写法（最简指令）
+effects = ["drink_wine_effects"]
+
+# ═══════════════════════════════════════════════════════════════════
+# 写法变体：关系聚合条件（关系系统 v2）——"寻仇"指令只在选中角色对玩家有负面关系
+# 时可用（any_negative = 任一关系为负面；group:死对头 = 关系组内类型）。
+# 行为推导的典型用法：搞仇人直接搞（condition 拦）、搞亲人要查对方是否视我为正面。
+# ═══════════════════════════════════════════════════════════════════
+
+[[instructions]]
+id = "seek_revenge"
+label = "寻仇"
+category = "daily"
+time_cost = 20
+priority = 80
+# selected 根 = UI 选中角色；聚合条件：选中角色对玩家有任一负面关系（死对头组内）
+condition = "selected.relations.player.any_negative(group:死对头) == true"
+effects = [
+  { type = "modify_attribute", target = "selected", params = { attr = "体力", value = -10 } },
+  { type = "narrative_output", params = { text = "你与对方有仇，出手毫不留情！" } }
+]

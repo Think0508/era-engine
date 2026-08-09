@@ -37,14 +37,16 @@ entity
 ├── pregnancy: { … }                  # 怀孕（fertilization_rate/reproduction_period/milk/…）
 ├── hypnosis: { … }                   # 催眠（hypnosis_degree/increase_body_sensitivity/…）
 ├── action_info: { … }                # 行动记录（talk_count/talk_time/day_first_shoot_semen/…）
-├── relations: { 对方ID: { 关系类型: 数值 } }  # 关系（relations.toml 定义类型）
-├── inventory: { 物品ID: count }      # 背包（inventory-system）
-├── cloth: { … }                      # 服装（clothing-system，L1.4）
+├── relations: { 对方ID: { 关系类型: 档位 } }  # 关系（relations.toml 定义类型；三档 -1/0/1 或 sentiment 数值，见 §3.5）
+├── inventory: [{ itemId: string, count: number }]  # 背包（数组格式；对象写法 { 物品ID: count } 加载时自动转换）
+├── equipment: { 槽位: 物品ID }       # 装备/服装（h-core 换装 + inventory-system）
+├── assets: { portrait: string, … }  # 立绘/素材引用（可选）
 ├── achievement: { … }                # 成就（h-hidden/h-group-sex 记录）
 ├── behavior: { … }                   # 行为状态（移动/等待）
 ├── current_location: string          # 运行时位置（存档权威）
 └── dead: boolean                     # 死亡（undefined=存活）
 ```
+> 注：`cloth` 是早期文档中的过时命名空间，实际实现为 `equipment`（2026-08-09 分层审查修正）。
 
 **写字段的合法路径**（引擎 API）：
 - 属性：`ctx.api.call('engine', 'bindings.get/set', …)` 或 `ATTR` 常量 + `getEntityAttr/setEntityAttr`（禁止裸写中文属性名）
@@ -158,6 +160,22 @@ entity
 - 条件路径：`character.{id}.experience.{数值id}` / `player.experience.{id}`——是**经验值（累计次数）**不是等级
 - 禁改：经验键名禁止改动（引擎结算硬编码数值 id，对账表 A 骨架保证一致）
 
+### 3.5 关系（关系系统 v2，2026-08-10 定稿）
+
+> 权威：AGENTS.md §23 关系数据格式。三段定义（types/pairs/groups）+ 有向 + 双维度（种类×档位）。
+
+- **有向**：A→B 与 B→A 独立，不自动双向（单方面关系合法）
+- **两型**：`kind="sentiment"`（数值，好感度）/ `kind="relation"`（三档：正面/中立/负面 = 1/0/-1）
+- **类型 = 端对×端**：`pair`（称呼词表）+ `side`（big/small；对称省略）；`reverse` 默认"同名换端"自动推导
+- **称呼两层**：panel 成对名（父子/父女/母子/母女）/ address 单方称呼（父亲/儿子…）——`{relation_display}` 口上插值
+- **groups 集中定义**：元素 = 类型名 或 `{ pair }`（展开为引用该 pair 的全部已定义类型）
+- **条件路径**：单类型 `character.{A}.relations.{B}.{类型}`（-1/0/1）；聚合
+  `...any(列表/group:组)` / `...any_positive(列表)` / `...any_negative(列表)`（无括号=全部）
+- **修改**：`modify_relation`（relation 型=直接设档）/ `remove_relation`（删除条目=解除关系）
+- **事件**：`relation:added` / `relation:changed`（类型级）/ `relation:removed`，
+  payload `{character, target, type, sentiment, panel, address}`
+- **角色数据**：字符串档位（"正面"）或 1/0/-1 都收，加载统一存 -1/0/1；非法值 → error
+
 ---
 
 ## 4. 实体结构契约（字段表）
@@ -229,6 +247,10 @@ body_items: { 槽位string: { itemId: string, active: boolean, expiry?: number }
 | action_info.day_first_shoot_semen | 每日首射标记 | h-ejaculation |
 | first_times.virgin_V/A/U/W/M/OTHER/KISS | true=已破处/已初吻 | h-first-time |
 | first_records.{key}.time / .place / … | 初次详情 | h-first-time |
+
+> **预置缺口（2026-08-09 分层审计）**：mod 预置 `first_times.virgin_V = true`（非处女设定）后，
+> h-first-time 的 `setFirstTime` 会跳过（已破），**不会自动生成 first_records 详情记录**。
+> 若需 `getRecord` 类条件（FIRST_SEX_IN_TODAY 等）命中，须自行写 first_records（含 time/place/position 结构）。
 
 ### 4.5 经验键位速查（写入方对照）
 - 部位经验 0-7（皮肤…子宫）：h_experience effect 按指令写
@@ -376,10 +398,59 @@ h_state: 全部（H 会话内由引擎创建）
 | 理智 | 精力 | base | sanity_point 语义近似（精力为闲置属性） |
 | 好感度字典（favorability[charId]） | 好感度（单值属性） | 结构 | 替代处理 |
 | status_data / ability / experience / talent 字典 | params / abilities / experience / talents 命名空间 | 结构 | 替代处理 |
-| 处女天赋（阴道处女/肛门处女/尿道处女/子宫处女/无接吻经验） | first_times.virgin_V/A/U/W/KISS | 结构 | 替代处理（true=已破，语义取反） |
+| 处女天赋（阴道处女/肛门处女/尿道处女/子宫处女/无接吻经验） | first_times.virgin_V/A/U/W/KISS | 结构 | 替代处理（true=已破，语义取反）。**双源标注（2026-08-09 分层审查）**：talents.toml 中的处女天赋定义仍存在（talk-common 口上条件大量引用 `talents.肛门处女 == 0`），h-first-time 破处时已同步删除对应天赋（V→阴道处女、A→肛门处女、U→尿道处女、W→子宫处女、初吻→无接吻经验）——有天赋 = 仍处，与 first_times 保持联动 |
 | 尿道感度 / 尿道扩张 / 尿道经验系 | （无） | 删减 | 尿道方案A（ADR-0004）：指令全砍，仅保留尿道 status 属性 display=false |
 | 兽部 / 兽部感度 / 兽部经验系 | （无） | 删减 | 兽部全砍（tech_adjust/settle_state 遇兽部 warning+跳过） |
 | 博士信息素 304-306 | （无） | 删减 | 方舟激素系统砍掉（激素教训：禁止补回） |
 | 指挥/战斗/料理/音乐/学识/医术/农业/制造/绘画技能 | （无） | 删减 | 技能系列 L2.13 记录不做实现（B 扫描确认无保留指令引用） |
 | 源石病感染者/体表源石结晶/水分身/生育模组/一杯就倒 | （无） | 删减 | 方舟世界观/未实装 |
 | 透视/触觉系能力（307-312） | （无） | 删减 | 方舟能力未实装 |
+
+---
+
+## 11. 字段分层表（作者写入层，ADR-0007）
+
+> **2026-08-09 定稿（ADR-0007）**。与 §2 属性类别（决定存储位置/显示）正交的第二个维度：
+> **mod 作者写角色/模板时"哪个字段该写、哪个别碰"**。判据：引擎会**重置/接管**（写了无意义）→ L3；
+> 引擎只**累加/尊重初值** → L1；其余按平凡度分 L1/L2。
+> 校验落地：mod-loader 加载角色时按本表检查，L3/L2 命中 → warning+建议（不阻止加载）。
+
+### 11.1 L1 —— 角色层直接写（初始值有意义，引擎累加/不覆盖）
+
+| 顶层字段 | 说明 |
+|----------|------|
+| `id` / `name` | 角色 ID/显示名 |
+| `base` | 属性卡（体力/气力/好感度/自定义属性…），键须在 attributes.toml 定义 |
+| `abilities` | 能力等级（简写 `{ 华山剑法 = 3 }` 或 `{level, xp}`），**刻印也写这里**（`快乐刻印 = 2`） |
+| `marks` | 刻印的直观写法，**加载时自动归一化到 abilities**（ADR-0007；两者都写则 abilities 优先） |
+| `talents` / `experience`（仅 erArk 已知 id） | 天赋；经验数值初始（键名禁改是文档约定） |
+| `first_times.virgin_*` | 非处女设定（预置 true 后引擎尊重；详见 §4.4 预置缺口） |
+| `status_effects`（初始）/ `relations` / `inventory` / `equipment` / `assets` | 初始状态/关系/背包/装备/立绘 |
+| `behavior` / `current_location`（初始，运行时权威）/ `dead` | 行为/初始位置/死亡 |
+| `pregnancy.*`（初始） | 孕妇设定有意义（审计确认：h-pregnancy 不重置初始值，只累加） |
+
+### 11.2 L2 —— 非平凡字段（可写但罕见，写了给提示）
+
+| 顶层字段 | 原因 | 正确做法 |
+|----------|------|----------|
+| `params` | 全部 daily_reset（每日清零），初始值仅首日意义 | 正常不写；改初始值经 definitions/attributes.toml 的 default |
+| `sp_flag` | 自定义 flag 需插件声明 | 经插件声明后写 |
+| 未知顶层键 | 不在契约字段字典 | 插件声明自定义命名空间；否则检查拼写 |
+
+### 11.3 L3 —— 引擎独占（系统运行时管理，写了无效，禁止）
+
+```
+h_state / body_items / first_records / dirty / hypnosis / action_info
+achievement / equipment_off / equipment_visible / equipment_blood
+```
+
+- 这些命名空间由对应系统（h-core/h-ejaculation/h-pregnancy/h-hypnosis/h-first-time…）运行时管理
+- 写了 → 加载 warning「引擎独占字段，写入无效」，删除即可
+- 例外说明：`first_records` 在预置 `first_times.virgin_* = true` 且需要详情记录时可自行写（见 §4.4）
+
+### 11.4 与既有机制的关系
+
+- **不改 §2 属性类别**：category 决定命名空间落位与显示；分层只决定"角色数据里能不能写"
+- **不改 §5 最小必需集**：缺失补齐逻辑不变；分层 warning 与缺字段 warning 并存
+- **marks 归一化**：§2.3「禁止写 marks」约束引擎/插件运行时；mod 角色数据入口经 finalize 归一化（ADR-0007）
+- 校验器：`src/core/character-contract.ts`（`ENGINE_OWNED_TOP_KEYS` / `NONTRIVIAL_TOP_KEYS` / `AUTHOR_WRITABLE_TOP_KEYS`），mod-loader `validateCharacterContract` 调用

@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/relations.toml —— 关系定义（关系系统 v2）
+# ═══════════════════════════════════════════════════════════════════
+# 三段：types（关系类型）/ pairs（称呼词表）/ groups（关系组）
+#
+# 核心概念：
+# - 关系有向：A→B 与 B→A 独立（A 视 B 为 X，B 未必回视——单方面关系合法）
+# - 两个正交维度：种类（类型名，方向编码）+ 档位（kind=relation：正面/中立/负面 = 1/0/-1）
+# - 两型并存：kind="sentiment"（数值 0-100，如好感度）/ kind="relation"（三档）
+# - 类型 = 端对（pair）× 端（side: big 大端 / small 小端；对称类型省略）
+# - 称呼两层：panel 成对名（关系面板显示：父子/父女/母子/母女，按双方性别组合）/
+#   address 单方称呼（口上 {relation_display}：父亲/儿子…，按端+自己性别）
+# - 档位只影响行为阈值（正面：对方被威胁时愿牺牲）——具体行为推导由 mod 指令
+#   condition 用聚合路径实现（见下）
+#
+# 角色数据写法（三档）：
+#   relations = { 段延庆 = { "父母子女（为小）" = "正面" }, 段正淳 = { "父母子女（为小）" = "正面" } }
+#   （字符串 "正面"/"中立"/"负面" 或 1/0/-1 都收，加载统一存 -1/0/1）
+#
+# 条件路径（指令 condition）：
+#   单类型：character.{A}.relations.{B}.父母子女（为大） == 1
+#   聚合（跨种类）：character.{A}.relations.{B}.any(group:血亲) == true
+#                  character.{A}.relations.{B}.any_negative(仇人,被仇) == true
+#                  character.{A}.relations.{B}.any_positive == true（无括号=全部类型）
+# ═══════════════════════════════════════════════════════════════════
+
+[types]
+# ── 数值型（kind=sentiment，默认）——保留现有写法 ──
+"好感度" = { min = 0, max = 100, default = 30, name = "好感度" }
+"师徒值" = { min = 0, max = 100, default = 0, name = "师徒值" }
+"情义值" = { min = 0, max = 100, default = 10, name = "情义值" }
+
+# ── 三档型（kind=relation）——写法变体 ──
+# 端对型（有大端/小端）：side = big（为大）/ small（为小）
+"父母子女（为大）" = { kind = "relation", pair = "parent_child", side = "big" }
+"父母子女（为小）" = { kind = "relation", pair = "parent_child", side = "small" }
+# 对称型（无大小端，称呼按自己性别）：不写 side
+"夫妻" = { kind = "relation", pair = "spouse" }
+# 纯类型（无 pair，称呼 = 类型名）：reverse 显式声明（默认"同名换端"只对 为大/为小 后缀自动）
+"仇人" = { kind = "relation", reverse = "被仇" }
+"被仇" = { kind = "relation", reverse = "仇人" }
+
+# ── 称呼词表（pairs）——h-core 已内置 parent_child/sibling/grandparent/
+#    teacher_student/master_servant/spouse/lover；这里示范 mod 自定义 ──
+[pairs]
+[pairs.sworn]
+panel = { big_male = "兄", big_female = "姐", small_male = "弟", small_female = "妹" }
+address = { big_male = "大哥", big_female = "大姐", small_male = "贤弟", small_female = "贤妹" }
+
+# ── 关系组（groups）——集中定义，一处增删调；元素 = 类型名 或 { pair } 引用 ──
+[groups]
+# 内置 血亲 组（h-core 默认，按 pair 引用）已存在——这里示范 mod 自定义组：
+"死对头" = ["仇人", "被仇"]

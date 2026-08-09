@@ -499,7 +499,7 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 
 ## 角色字段速查（标准角色契约）
 
-> 权威契约：`docs/character-schema.md`（10 节：属性表/最小必需集/字段字典/校验规则/改名记录）。
+> 权威契约：`docs/character-schema.md`（11 节：属性表/最小必需集/字段字典/校验规则/**字段分层表**/改名记录）。
 > 写角色数据（roster/named/base.toml）前必读。速查要点：
 
 - **定义权威**：`definitions/attributes.toml`（h-core 提供全套默认，mod 可覆写/新增）——角色数据禁止裸字段，未定义键 → 加载 warning
@@ -511,8 +511,12 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
   - abilities：技巧/顺从/亲密/欲望/露出/施虐/受虐
   - 其余（疲劳度/饥饿值/感度组/扩张/话术/隐蔽/性技/排卵周期/精神…）缺失 = 对应功能静默关闭
 - **默认值**：全部在 `docs/character-schema.md` §2 属性表（mod 不写 → 用 default；读档缺字段自动补齐 + warning）
+- **字段分层（ADR-0007，schema §11）——写角色数据前先对号入座**：
+  - ✅ **L1 能写**：`base`（气力/好感度/自定义属性）、`abilities`（含刻印：`快乐刻印 = 2`）、`marks`（自动归一化到 abilities）、`talents`、`experience`、`first_times`（`virgin_V = true` = 非处女）、`status_effects`（初始）、`relations`、`inventory`、`equipment`、`assets`、`behavior`、`current_location`（初始）、`dead`、`pregnancy`（孕妇初始设定）
+  - ⚠️ **L2 罕见**：`params`（daily_reset 每日清零，写了仅首日意义）、`sp_flag`（需插件声明）——写了有 warning，正常不写
+  - 🚫 **L3 别碰**：`h_state` / `body_items` / `first_records` / `dirty` / `hypnosis` / `action_info` / `achievement` / `equipment_off` / `equipment_visible` / `equipment_blood`——系统运行时管理，写了无效
 - **经验**：`experience = { 数值id = 次数 }`（erArk 数值直通，禁改键名）
-- **改名对照**（erArk ↔ 我们）：肛肠→后穴、心理快感→心理、射精槽→射精欲、精液槽→精液量、疲劳值→疲劳度、醉酒度→酒气、处女天赋→`first_times.virgin_*`——完整表见 schema §10 + `scripts/erark-name-map.json`
+- **改名对照**（erArk ↔ 我们）：肛肠→后穴、心理快感→心理、射精槽→射精欲、精液槽→精液量、疲劳值→疲劳度、醉酒度→酒气、处女天赋→`first_times.virgin_*`（h-first-time 破处时同步删对应天赋）——完整表见 schema §10 + `scripts/erark-name-map.json`
 - **禁止**：数字键能力（读 `abilities['技巧']` 不是 `abilities[30]`）、手动写 h_state/body_items（引擎管理）、改 experience 键名、补回已砍字段（兽部/尿道感度/激素/技能系列，见对账表"有意删减"）
 
 ## 对接什么

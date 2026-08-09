@@ -1,0 +1,51 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/talents.toml —— 第②层：天赋定义（新增）
+# h-core 已提供 170+ 天赋（性素质/体质/性格…）；这里示范新增 mod 自定义天赋。
+# 角色数据里写 talents = { "天生神力" = 1 } 前，必须先在此定义。
+# 引用未定义天赋 → 加载报错（error，阻止加载）。
+#
+# 字段字典（每个字段能填什么）：
+#   name：显示名（自由填）
+#   description：说明（自由填）
+#   max：天赋等级上限——1 = 有/无型（0 或 1）；n = 等级型（0-n 级，如 3 = 三级天赋）
+#   tags：自由字符串【数组，可多个】——如 tags = ["体质", "力量"]
+#         ⚠️ 目前没有系统按 talents.tags 查询（仅作分类/未来扩展用）——随便填，不报错
+#   ── 生效字段（天赋怎么起作用，三选一或组合）──
+#   state_adjusts：状态结算系数修正（h-core 消费）——
+#         [{ states = ["好意", "快乐"], value = 0.3 }]  # states=["*"]=全部状态
+#         （例：有"天生神力"的角色，苦痛结算 -0.2）
+#   favorability_adjusts：好感/信赖系数修正（h-core 消费）——
+#         [{ group = "love1", value = 0.25 }]  # 同 group 取最大，无 group 累加
+#   favorite_position：体位喜好（h-core 消费）——填数字 1-12（体位 ID，见 h-config
+#         sex_positions 表）；角色拥有该天赋 = 喜欢对应体位（体位修正 +0.5）
+#   ── 条件引用（另一种"使用"方式）──
+#   任何条件表达式可引用天赋：character.{id}.talents.{天赋}（数值=等级）
+#   ——比如口上 condition = "selected.talents.天生神力 >= 1"
+# ═══════════════════════════════════════════════════════════════════
+
+[talents."天生神力"]
+name = "天生神力"
+description = "力大无穷，战斗相关判定获得加成"
+max = 1
+tags = ["体质", "力量"]
+
+# 生效示例（取消注释即真实生效）：
+# state_adjusts = [{ states = ["苦痛"], value = -0.2 }]
+
+# ── 写法变体：等级型天赋（max = n，0-n 级）──
+# 与 max = 1（有/无型）的区别：角色数据 talents = { "酒量" = 3 } 可写 0-3 任意等级，
+# 条件引用 character.{id}.talents.酒量 得到数值等级（>= 2 等判断可用）
+[talents."酒量"]
+name = "酒量"
+description = "海量，等级越高越不易醉"
+max = 3
+tags = ["体质"]
+
+# ── 写法变体：生效字段三选一（都真实生效，可组合）──
+# 写法 A：state_adjusts（状态结算系数修正，h-core 消费）
+#   state_adjusts = [{ states = ["快乐"], value = 0.2 }]
+# 写法 B：favorability_adjusts（好感/信赖系数修正，h-core 消费）
+#   favorability_adjusts = [{ group = "love1", value = 0.25 }]
+# 写法 C：favorite_position（体位喜好 1-12，h-core 消费）
+#   favorite_position = 3
+# 写法 D：不写生效字段，只作为条件标记（口上/指令 condition 里引用）

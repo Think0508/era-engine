@@ -1,0 +1,29 @@
+# ═══════════════════════════════════════════════════════════════════
+# quests/side/打探消息.toml —— 支线任务（写法变体：talk_to objective）
+# 与主线「初入江湖」（reach_location objective）的区别：
+#   主线 = 移动类目标；本任务 = 对话类目标（与指定角色交谈即推进）
+# 步骤类型还有 dialogue（直接起对话）/combat/reward/spawn/condition/goto——
+# 本任务只用 objective + reward 两种，展示"目标类型不同写法不同"。
+# ═══════════════════════════════════════════════════════════════════
+
+id = "打探消息"
+title = "打探消息"
+description = "找示例侠客打听山道的消息。"
+type = "side"
+auto_start_condition = "location.id == '山村'"
+
+[[steps]]
+id = "talk"
+type = "objective"
+description = "与示例侠客交谈"
+# talk_to：与指定角色完成一次对话（监听 dialogue:end）即推进
+objective = { type = "talk_to", character = "角色示例" }
+next = "reward"
+
+[[steps]]
+id = "reward"
+type = "reward"
+effects = [
+  { type = "modify_attribute", params = { attr = "好感度", value = 10 }, target = "player" },
+  { type = "narrative_output", params = { text = "示例侠客的话让你心里有了底，好感度 +10。" } }
+]

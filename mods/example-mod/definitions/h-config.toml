@@ -1,0 +1,26 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/h-config.toml —— H 公式系数（mod 可覆盖/扩展）
+# ═══════════════════════════════════════════════════════════════════
+# h-core 已提供全套默认（state_ability 状态映射 / sex_positions 体位表 /
+# hunger 饥饿配置 / talk 口上配置 / judge.adjustments 判定修正表）。
+# 本文件 = 只写你想改的键（对象键 deepMerge 合并；⚠️ 数组整表替换——
+# judge.adjustments 的「性交」数组写了就替换默认的全部条目，须写全）。
+# 本示例演示 3 种典型修改：
+# ═══════════════════════════════════════════════════════════════════
+
+# 1. 改现有键的值：NPC 每日口粮换成 mod 自定义物品（须在 items.toml 定义）
+[hunger]
+daily_ration_id = "回气丹"
+
+# 2. 数组整表替换示例：把「性交」判定修正写全 = 默认处女惩罚 + 新增一条
+#    （新增的「吐纳术 ≥3 级 +30」是 mod 自定义能力条件——条件字段须已注册）
+[judge.adjustments]
+"性交" = [
+  { condition = "target.first_times.virgin_V != true && target.talents.性无知 != 1", value = -250 },
+  { condition = "target.abilities.吐纳术.level >= 3", value = 30 },
+]
+
+# 3. 扩展状态映射（settle_state 计算某状态时用的能力等级）：
+# [state_ability]
+# "欲情" = "欲望"
+# （h-core 已有完整映射，只写你要改/新增的键）

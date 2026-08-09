@@ -1,0 +1,116 @@
+# ═══════════════════════════════════════════════════════════════════
+# characters/roster.toml —— 第④层：具体角色（批量清单）
+# ═══════════════════════════════════════════════════════════════════
+# 每个 [[roster]] 条目 = 一个角色。相对第③层（模板）只写差分：
+#   - 没写的字段 → 自动继承模板（模板也没有 → 用属性默认值）
+#   - 写了 → 覆盖
+#   - 不写 template → 无模板，全部自己写
+#
+# 条目字段字典（每个字段填什么、来自哪里）：
+#   id / name：角色 ID（同类型内唯一）/ 显示名【自由填】
+#   template：templates/character/ 下的模板 ID
+#   base = {}：属性——键必须是 definitions/attributes.toml 定义的属性名
+#   abilities = {}：能力——键必须是 definitions/abilities.toml 定义的能力名
+#         （简写数字 = 等级，加载展开为 {level, xp}；刻印也写这里）
+#   talents = {}：天赋——键必须是 definitions/talents.toml 定义的天赋名
+#   relations = { 对方ID = { 类型 = 值 } }：关系——类型必须是 definitions/relations.toml
+#         定义的关系名；对方ID 是角色 ID（跨模组引用玩家用 "player"）
+#   marks = {}：刻印——键是 attributes.toml 里 category = "mark" 的属性名
+#         （写法与 abilities 等价：加载时自动归一化到 abilities）
+#   experience = {}：经验数值——键是 erArk 经验数值 ID（如 0=皮肤经验、4=阴道经验、
+#         10=皮肤绝顶经验；完整键位见 character-schema §4.5）——【禁改键名】
+#   status_effects = []：初始状态——id 必须是 definitions/status-effects.toml 定义的状态
+#   inventory = []：初始背包——数组 [{ itemId, count }]，itemId 必须是 items.toml 定义的物品
+#   equipment = {}：初始装备——键 = 装备槽位（equipment.toml）、值 = items.toml 定义的物品
+#   assets = {}：立绘等素材路径【自由填，文件不存在不影响加载】
+#   behavior = {}：行为——activity 填 0~1（活跃度）；home_locations 键 = 地点 ID
+#         （在 maps/locations/ 定义）、值 = 权重（该角色常驻各地点的概率）
+#   current_location：初始位置【地点 ID】
+#   dead：true/false（undefined = 存活）
+#   pregnancy = {}：孕妇初始设定——键是 h-pregnancy 维护的字段（daysPregnant 等，
+#         自由填，引擎尊重初始值）
+#   first_times = {}：初次标记——键只有 virgin_V/A/U/W/M/OTHER/KISS（预定义），
+#         true = 已破处/已初吻
+#   spawn_condition：条件满足才创建该角色（条件表达式）
+#
+# 字段分区（照此习惯组织你的文件）：
+#   前段：必写/常写字段（id/name/template + base 核心属性）
+#   中段：不必需但常见（社交/能力/天赋/关系/装备/行为/初始位置…）
+#   末段：几乎不会写的字段不写出来——见文件尾注释
+# ═══════════════════════════════════════════════════════════════════
+
+# ── 玩家：必写区 ──────────────────────────────────────────────────
+[[roster]]
+id = "player"                       # 玩家 ID（meta.toml player_character 指向它）
+name = "无名少年"
+template = "base-human"             # 继承模板（可选；不写 = 无模板）
+# base 键 = attributes.toml 定义过的属性名。区间/默认参考 character-schema §2；
+# 这里只写和默认不一样的（体力默认 100，写 1200 = 加强版主角）
+base = { "体力" = 1200, "气力" = 800, "体力上限" = 2500, "气力上限" = 2000, "好感度" = 30, "信赖度" = 10, "性别" = 1, "气血" = 200, "内力" = 100 }
+
+# ── 山贼：模板差分的示范（第③层模板 山贼 + 这一行差异）───────────────
+[[roster]]
+id = "山贼_张三"
+name = "张三"
+template = "山贼"                   # 继承 山贼 → 山贼 → base-human 三层链
+base = { "好感度" = 10 }            # 只写差异：attack/体力 来自模板，好感度覆盖默认
+behavior = { activity = 0.3, home_locations = { "山村" = 1.0 } }   # 常驻山村
+equipment = { upper = "布衣", lower = "长裤" }                     # 初始装备（槽位 id = equipment.toml）
+# 关系三档（关系系统 v2）：数值档位写法 + 与角色示例的双向父子（段誉两父模式的另一半）
+relations = { "角色示例" = { "父母子女（为大）" = 1 } }
+
+# ── 小师妹：中段可选区的完整示范 ───────────────────────────────────
+[[roster]]
+id = "小师妹"
+name = "小师妹"
+template = "base-human"
+base = { "体力" = 100, "气力" = 100, "好感度" = 60, "信赖度" = 20, "性别" = 2, "气血" = 120, "内力" = 80 }
+# ── 中段：不必需但常见的字段 ──
+abilities = { "吐纳术" = 2, "技巧" = 1 }        # 能力简写（数字 = 等级，加载展开为 {level,xp}）
+talents = { "天生神力" = 1 }                    # 天赋（须在 talents.toml 定义）
+relations = { player = { "好感度" = 60, "师徒值" = 10 } }  # 对玩家的关系（键须在 relations.toml 定义）
+marks = { "快乐刻印" = 1 }                      # 刻印：写 marks 或 abilities 都行（自动归一化）
+experience = { 0 = 5 }                         # 经验数值（0=皮肤经验；erArk id 直通，键名禁改）
+status_effects = [{ id = "振奋", remaining_duration = 120, stack = 1 }]  # 初始状态
+inventory = [{ itemId = "回气丹", count = 3 }]   # 初始背包（数组格式 [{itemId, count}]；对象写法 { 物品ID = 数量 } 加载时自动转换）
+equipment = { upper = "布衣", lower = "长裤" }
+behavior = { activity = 0.5, home_locations = { "山村" = 1.0 } }
+current_location = "山村"                       # 初始位置（运行时由引擎接管）
+first_times = { virgin_V = true }              # true = 已破处（非处女设定；引擎尊重不覆盖）
+assets = { portrait = "assets/char/xiaoshimei.png" }  # 立绘（可选，文件不存在不影响加载）
+
+# ── 写法变体 A：不写 template（无模板，所有字段自己写全——也完全合法）──
+[[roster]]
+id = "货郎"
+name = "货郎"
+base = { "体力" = 80, "气力" = 60, "好感度" = 40, "性别" = 1, "气血" = 90, "内力" = 30 }
+equipment = { upper = "布衣" }
+behavior = { activity = 0.6, home_locations = { "集市" = 1.0 } }
+current_location = "集市"
+
+# ── 写法变体 B：完整对象写法（abilities 写 {level, xp} 而非简写数字）──
+# 简写 abilities = { "吐纳术" = 3 } 与完整 abilities = { "吐纳术" = { level = 3, xp = 0 } }
+# 等价——完整写法可以带初始经验（xp），简写不能。两种都合法。
+[[roster]]
+id = "猎户"
+name = "猎户"
+template = "base-human"
+base = { "体力" = 150, "气力" = 120 }
+abilities = { "吐纳术" = { level = 1, xp = 50 }, "技巧" = 0 }
+# ── 写法变体 C：inventory 对象写法（{ 物品ID = 数量 }）——加载时自动转换数组，
+# 与数组写法 [{ itemId, count }] 等价，两种都合法（旧文档写法兼容）──
+inventory = { "草药" = 5 }
+equipment = { upper = "布衣", lower = "长裤" }
+behavior = { activity = 0.4, home_locations = { "山村" = 0.6, "集市" = 0.4 } }
+# ── 关系三档示范（关系系统 v2）：字符串档位 + 反向关系（避免不对称 warning）──
+relations = { "角色示例" = { "父母子女（为大）" = "正面" } }
+
+# ── 几乎不会写的字段（不写在这里）─────────────────────────────────
+# 字段分层（ADR-0007 / character-schema §11）：
+#   L3 引擎独占——写了也无效/被重写，加载时 warning：
+#     h_state / body_items / first_records / dirty / hypnosis /
+#     action_info / achievement / equipment_off / equipment_visible / equipment_blood
+#   L2 非平凡——正常角色不写：
+#     params（行为参数，daily_reset 每日清零，写了仅首日意义）
+#     sp_flag（自定义 flag 需插件声明）
+# 分层警告不会阻止加载，但会提示你写错了地方。

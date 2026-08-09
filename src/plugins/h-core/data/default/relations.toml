@@ -1,2 +1,51 @@
+# 关系定义（h-core 默认层）——三段：types（关系类型）/ pairs（称呼词表）/ groups（关系组）
+# 关系系统 v2（2026-08-10 grill 定稿）：
+# - 关系有向（A→B 与 B→A 独立，不自动双向）
+# - 两个正交维度：种类（类型名）+ 档位（kind=relation：正面/中立/负面 = 1/0/-1；
+#   kind=sentiment：数值，如好感度）
+# - 类型 = 端对（pair）× 端（side: big 大端 / small 小端；对称类型省略 side）
+# - 称呼两层：panel 成对名（关系面板显示，big 词+small 词按性别组合）/
+#   address 单方称呼（口上 {relation_display}，按端+性别）
+# - groups 集中定义：元素 = 类型名 或 { pair }（展开为引用该 pair 的全部已定义类型）
+# 角色数据写法：relations = { 段延庆 = { "父母子女（为小）" = "正面" } }（或 1/0/-1）
+
 [types]
 "好感度" = { min = 0, max = 100, default = 30, name = "好感度" }
+
+# ═══ 内置称呼词表（pairs）——mod 可覆盖/新增 ═══
+[pairs]
+[pairs.parent_child]
+panel = { big_male = "父", big_female = "母", small_male = "子", small_female = "女" }
+address = { big_male = "父亲", big_female = "母亲", small_male = "儿子", small_female = "女儿" }
+
+[pairs.sibling]
+panel = { big_male = "兄", big_female = "姐", small_male = "弟", small_female = "妹" }
+address = { big_male = "兄长", big_female = "姐姐", small_male = "弟弟", small_female = "妹妹" }
+
+[pairs.grandparent]
+panel = { big_male = "爷", big_female = "奶", small_male = "孙", small_female = "孙女" }
+address = { big_male = "祖父", big_female = "祖母", small_male = "孙子", small_female = "孙女" }
+
+[pairs.teacher_student]
+panel = "师徒"
+address = { big_male = "师父", big_female = "师父", small_male = "徒弟", small_female = "徒弟" }
+
+[pairs.master_servant]
+panel = "主仆"
+address = { big_male = "主人", big_female = "主人", small_male = "仆从", small_female = "仆从" }
+
+[pairs.spouse]
+panel = "夫妻"
+address = { male = "丈夫", female = "妻子" }
+
+[pairs.lover]
+panel = "恋人"
+address = { male = "恋人", female = "恋人" }
+
+# ═══ 内置关系组（groups）——血亲组按 pair 引用，不依赖 mod 的类型命名 ═══
+[groups]
+"血亲" = [
+  { pair = "parent_child" },
+  { pair = "sibling" },
+  { pair = "grandparent" }
+]

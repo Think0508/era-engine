@@ -155,8 +155,11 @@ ctx.api.call('character', 'getLocation', charId)              // → string | nu
 ctx.api.call('character', 'getAttribute', charId, attr)       // → any（走命名空间搜索）
 ctx.api.call('character', 'setAttribute', charId, attr, value)// → void
 ctx.api.call('character', 'setField', charId, path, value)    // → void（直接设 entity.field）
-ctx.api.call('character', 'getRelation', charId, targetId, type) // → number
-ctx.api.call('character', 'setRelation', charId, targetId, type, value) // → void
+ctx.api.call('character', 'getRelation', charId, targetId, type) // → number（-1/0/1 或 sentiment 数值）
+ctx.api.call('character', 'setRelation', charId, targetId, type, value) // → void（relation 型收 1/0/-1 或 "正面"/"中立"/"负面"；发 relation:added/changed）
+ctx.api.call('character', 'removeRelation', charId, targetId, type) // → void（删除条目=解除关系；发 relation:removed）
+ctx.api.call('character', 'getRelationPanel', charId, targetId, type) // → string（成对名：父子/父女…）
+ctx.api.call('character', 'getRelationAddress', charId, targetId, type) // → string（单方称呼：父亲/儿子…）
 ctx.api.call('character', 'moveTo', charId, locationId)       // → void（角色瞬移，无事件）
 ```
 

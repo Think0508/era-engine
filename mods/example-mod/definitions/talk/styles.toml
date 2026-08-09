@@ -1,0 +1,10 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/talk/styles.toml —— 口上样式（可选）
+# 台词渲染样式，在口上文本里用 [style]…[/style] 包裹引用。
+# 字段：trigger（点击）/ display（打字机等）/ speed（打字速度）/
+#       color / size / font。
+# ═══════════════════════════════════════════════════════════════════
+
+[styles]
+emphasis = { trigger = "click", display = "typewriter", speed = 30, color = "#CC4444" }
+whisper = { display = "typewriter", speed = 70, color = "#888888", size = "small" }

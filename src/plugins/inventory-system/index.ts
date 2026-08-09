@@ -103,7 +103,8 @@ export function onEnable(ctx: PluginContext): void {
   })
 
   // 注释：tags 驱动指令注册——有 has_shop tag 显示交易，有 has_gather 显示采集
-  // TODO: 完整的 tags 驱动指令，MVP 先注册采集指令占位
+  // ⚠️ 标记（2026-08-09）：tags 驱动指令系统未做完——仅 gather 占位（无交易指令、
+  // herb 硬编码未校验物品存在）。依赖 inventory tags 驱动指令系统补齐（勿局部修补）。
   const gatherCmd: CommandDef = {
     id: 'gather',
     label: '采集',

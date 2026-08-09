@@ -1,0 +1,29 @@
+# ═══════════════════════════════════════════════════════════════════
+# characters/npc.toml —— 路人 NPC 生成规则
+# 首次进入 at_locations 列出的地点时，按模板随机生成 count 个路人。
+# 生成后角色存入存档（存档权威：之后模板改动不影响已生成的路人）。
+# ⚠️ 已知缺口（2026-08-09 标记）：已生成记录机制未做——目前每次进入地点都会
+# 重复生成（数量膨胀），依赖 spawn 记录系统补齐。
+#
+# 字段字典：
+#   template：templates/character/ 下的模板 ID
+#   at_locations：生成地点【数组，地点 ID】
+#   count：{ min, max } 随机数量
+#   names：随机姓名池【数组，自由填】
+#   overrides：覆盖模板的具体字段（键 = 角色字段，如 base/好感度——见 roster 字段字典）
+#   name_generator：JS 脚本（未支持，待实现）
+# ═══════════════════════════════════════════════════════════════════
+
+[[spawns]]
+template = "base-human"             # 用哪个模板（templates/character/ 下的 id）
+at_locations = ["山村"]            # 在哪些地点生成
+count = { min = 1, max = 3 }       # 随机数量
+names = ["路人甲", "路人乙", "路人丙"]   # 随机姓名池（不写 = 模板名）
+# overrides = { "好感度" = 20 }     # 可选：覆盖模板的具体值
+
+# ── 写法变体：overrides + 无 names（用模板名，固定覆盖某些字段）──
+[[spawns]]
+template = "山贼"                   # 用 山贼 模板（extends base-human）
+at_locations = ["集市"]
+count = { min = 1, max = 2 }
+overrides = { base = { "好感度" = 5 } }   # 覆盖模板的具体字段（键 = 角色字段）

@@ -1,0 +1,60 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/abilities.toml —— 第②层：能力定义（新增）
+# h-core 已提供全套等级能力（技巧/感度/刻印/性技…）；这里示范新增 mod 自定义能力。
+# 角色数据里写 abilities = { "吐纳术" = 3 } 前，必须先在此定义。
+#
+# 字段字典（每个字段能填什么）：
+#   name / description：显示名/说明（自由填）
+#   type："active"（主动使用，配合 time_cost/condition）/ "passive"（被动生效）
+#   max_level：等级上限——0 = 无等级能力（存 {level:1, xp:null}）；>0 = 升级能力
+#         （存 {level, xp}，xp 由 gain_ability_xp 效果增加）
+#   tags：自由字符串【数组，可多个】——标签是插件按类型查询能力的通道：
+#         combat-wuxia 查 "combat_active"/"sword"/"internal"；其他插件可查任意标签。
+#         ⚠️ 没有插件查询的标签 = 无害但没人用（h-core 默认能力标签如 "abl"/"h_mark"）
+#   effects：被动效果【数组，效果类型见 docs/effect-system.md】——
+#         active 能力使用/被动能力常驻时的效果（示例：每级 +5 攻击）
+#   time_cost：主动使用耗时（分钟）；condition：主动使用条件（条件表达式）
+#   xp_curve："linear"/"exponential"/"custom"（升级曲线）
+#   xp_per_level：linear/exponential 填数字（每级 XP）；custom 填【数组】
+#         （如 [100, 200, 400, 800] = 各级所需 XP）
+#   [[unlocks]]：技能树——at_level 达成时自动解锁子能力/天赋（引用的
+#         ability/talent 必须已定义）
+# ═══════════════════════════════════════════════════════════════════
+
+[abilities."吐纳术"]
+name = "吐纳术"
+description = "江湖基础内功心法，打坐调息用"
+type = "passive"
+max_level = 10
+tags = ["internal"]
+xp_curve = "linear"
+xp_per_level = 100
+# 被动效果示例（取消注释即生效）：每级 +2 气血上限
+# effects = [{ type = "modify_attribute", params = { attr = "气血", value = 2 }, target = "self" }]
+
+# 技能树：升到 5 级自动解锁「龟息功」（ability-progression 插件执行 unlocks）
+[[abilities."吐纳术".unlocks]]
+at_level = 5
+ability = "龟息功"
+
+[abilities."龟息功"]
+name = "龟息功"
+description = "吐纳术进阶，气血恢复更快"
+type = "passive"
+max_level = 5
+tags = ["internal"]
+
+# ── 写法变体：max_level = 0 的无等级能力（存 {level:1, xp:null}，不升级）──
+# 适合"会/不会"型能力（如 轻功、暗器 这类只问有没有的）：
+# [abilities."轻功"]
+# name = "轻功"
+# type = "passive"
+# max_level = 0
+# tags = ["movement"]
+# 角色数据写法：abilities = { "轻功" = 1 }（有）或 0/不写（无）
+
+# ── 写法变体：xp_per_level 数组（xp_curve = "custom"）──
+# 各级所需经验不同：xp_curve = "custom" + xp_per_level = [100, 200, 400, 800]
+# （linear/exponential 则只填一个数字，每级固定）
+# 写法 A：linear + 数字 → 每级 100 XP
+# 写法 B：custom + 数组 → 第 1 级 100、第 2 级 200、第 3 级 400…

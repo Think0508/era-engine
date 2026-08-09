@@ -1,0 +1,50 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/attributes.toml —— 第②层：属性定义（改默认值 / 新增）
+# ═══════════════════════════════════════════════════════════════════
+# h-core 已提供全套默认属性（体力/气力/好感度/技巧/快乐刻印…），
+# 你不写本文件 = 全部用默认。写本文件 = 只写差异：
+#   - 改默认值：同 key 覆盖（default 字段）
+#   - 新增自定义属性：加新 key
+#   - 删除：写 = null
+#
+# 字段字典（每个字段能填什么）：
+#   type："number"（默认，支持 > < >= <= == != 比较）/"string"（只支持 == !=）/
+#         "boolean"（只支持 == !=）——游戏数值结算按 number 处理，布尔/字符串用于条件
+#   default：不写时角色的初始值（number 默认 0）
+#   category：决定属性存到实体哪个命名空间 + 条件路径——
+#         "base"（体力/气力/欲望值…）→ 写角色数据 base = {}
+#         "parameter"（快感/行为状态，daily_reset 每日清零）→ params = {}
+#         "mark"（刻印）→ marks = {}（自动归一化到 abilities）
+#         "ability"（感度/性技/技巧…）→ abilities = {}
+#         "social"/"economy" → social/economy = {}
+#         ⚠️ 也可以填任意自定义分类（如 "combat"）→ 落到 entity.combat
+#   display：true/false——是否显示在属性面板
+#   display_group：面板分组名（自由填，如 "status"/"身体快感"）
+#   daily_reset：true/false——每天睡眠结算时归零（只用于 parameter 类）
+#   sex："female"/"male"——性别过滤（该属性只对对应性别角色生效/显示）
+#   level_thresholds：【数组 10 个】10 级制阈值（parameter 快感用，如
+#         [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 100000]）
+# ═══════════════════════════════════════════════════════════════════
+
+[attributes]
+# ── 例 1：改默认值 ────────────────────────────────────────────────
+# 不写这一行，体力默认就是 100；写了，新角色初始体力 = 120
+"体力" = { type = "number", default = 120, category = "base", display = true, display_group = "status" }
+
+# ── 例 2：新增 mod 自定义属性 ──────────────────────────────────────
+# 新增属性完全自由命名（英文/中文都行，内容文本用中文）。
+# 注意：attributes.toml 是权威——角色数据里写的每个属性名必须先在这里定义，
+# 否则加载时 warning「裸字段」（角色数据禁止裸字段，契约铁律）。
+# 自定义属性 = 你自己的玩法，不需要绑定系统（绑定只服务插件声明的属性）。
+"气血" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
+"内力" = { type = "number", default = 50, category = "base", display = true, display_group = "status" }
+
+# ── 写法变体：type 不只 number，category 也可以自定义 ───────────────
+# 写法 A：string 类型属性（只支持 == != 比较）——用于身份/标签类设定
+# "出身" = { type = "string", default = "山村少年", category = "base", display = true }
+# 写法 B：boolean 类型属性（只支持 == != 比较）——用于是/否设定
+# "已婚" = { type = "boolean", default = false, category = "base", display = true }
+# 写法 C：自定义 category（引擎不预设，落到 entity.{自定义名}）——
+#         比如 category = "combat" → 角色数据写 combat = {}，条件 player.命中率
+# "命中率" = { type = "number", default = 0, category = "combat" }
+# 三种写法与上面的 number/base 写法完全等价地合法——按需选择。

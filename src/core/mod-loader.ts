@@ -6,7 +6,8 @@ import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
 import { conditionRegistry } from './condition-registry'
 import { errorReporter } from './error-reporter'
-import { getCharacterValidators } from './character-contract'
+import { gameContext } from './game-context'
+import { getCharacterValidators, validateTopLevelLayers } from './character-contract'
 
 export interface ModDependency {
   plugin: string
@@ -302,6 +303,35 @@ export interface Quest {
   steps: QuestStep[]
 }
 
+// 注释：关系类型定义（关系系统 v2，2026-08-10 grill 定稿）
+// 两个正交维度：种类（类型名，方向编码）+ 档位（正面/中立/负面 = 1/0/-1）
+// kind = "sentiment"（数值型，0-100，现有好感度）/ "relation"（三档型）
+// 端对（pair）承载称呼词表；类型声明 pair + side（大端/小端；对称类型省略）
+export type RelationKind = 'sentiment' | 'relation'
+export type RelationSide = 'big' | 'small'
+
+export interface RelationTypeDef {
+  name: string
+  kind?: RelationKind          // 默认 sentiment（数值型，兼容现有）
+  min?: number                 // sentiment 型：数值区间
+  max?: number
+  default?: number
+  pair?: string                // relation 型：端对（称呼词表，pairs 段定义）
+  side?: RelationSide          // relation 型：本类型是端对的哪一端（对称类型省略）
+  reverse?: string             // 反向类型（默认自动=同名换端；显式覆盖）
+}
+
+// 端对词表：panel（成对名，关系面板显示）+ address（单方称呼，口上 {relation_display}）
+// 端对型按 端 × 性别 运行时组合（父子/父女/母子/母女…）；对称型固定名/按自己性别
+export interface RelationPairDef {
+  panel?: string | { big_male: string; big_female: string; small_male: string; small_female: string }
+  address?: { male: string; female: string } | { big_male: string; big_female: string; small_male: string; small_female: string }
+}
+
+// 关系组（[groups] 段，集中定义）：元素 = 类型名（字符串）或 { pair } 引用
+// （{ pair } 加载时展开为引用该 pair 的所有已定义类型名）
+export type RelationGroupDef = (string | { pair: string })[]
+
 export interface LoadedMod {
   id: string
   name: string
@@ -342,8 +372,12 @@ export interface LoadedMod {
   talentDefs: Record<string, TalentDef>
   // 注释：命名样式——[styles] 注册表
   styles: Record<string, Record<string, any>>
-  // 注释：关系类型定义
-  relationTypes: Record<string, { min: number; max: number; default: number; name: string }>
+  // 注释：关系类型定义（关系系统 v2）
+  relationTypes: Record<string, RelationTypeDef>
+  // 注释：端对词表（pairs 段）——称呼生成（panel 成对名 / address 单方称呼）
+  relationPairs: Record<string, RelationPairDef>
+  // 注释：关系组（groups 段）——展开后的 组名 → 类型名列表（pair 引用已展开）
+  relationGroups: Record<string, string[]>
   // 注释：Phase H — H 系统
   hConfig: HConfig
 
@@ -528,6 +562,13 @@ function validateCharacterContract(mod: LoadedMod, modName: string): void {
   const knownStatus = new Set(Object.keys(mod.statusEffects))
   const knownRelations = new Set(Object.keys(mod.relationTypes))
 
+  // category 命名空间（social/economy/combat…）动态纳入分层已知集
+  const categoryNamespaces = new Set<string>()
+  const attrNsMap: Record<string, string> = { parameter: 'params', mark: 'marks', ability: 'abilities' }
+  for (const def of Object.values(mod.attributes)) {
+    categoryNamespaces.add(attrNsMap[def.category] ?? def.category)
+  }
+
   // 属性承载命名空间：只允许已定义键（裸字段 = 契约违规）
   const attributeNamespaces: Array<[string, Set<string>]> = [
     ['base', knownAttrs],
@@ -569,7 +610,7 @@ function validateCharacterContract(mod: LoadedMod, modName: string): void {
     }
     // relations 引用定义
     if (char.relations && typeof char.relations === 'object') {
-      for (const relType of Object.values(char.relations)) {
+      for (const [targetId, relType] of Object.entries(char.relations)) {
         if (!relType || typeof relType !== 'object') continue
         for (const typeName of Object.keys(relType)) {
           if (!knownRelations.has(typeName)) {
@@ -580,10 +621,30 @@ function validateCharacterContract(mod: LoadedMod, modName: string): void {
               message: `角色 '${charId}' 使用了未定义的关系类型 '${typeName}'`,
               suggestion: '关系类型需在 definitions/relations.toml 定义',
             })
+            continue
+          }
+          // 注释：reverse 不对称检查（关系系统 v2）——A 有 kind=relation 类型 T 对 B，
+          // T.reverse（或同名换端自动推导）=R → 提示 B 侧是否应有 R（单方面关系合法——仅提示确认，不阻止）
+          const def = mod.relationTypes[typeName]
+          const rev = def?.kind === 'relation' ? resolveReverseType(typeName, def) : undefined
+          if (rev) {
+            const targetChar = characters.get(targetId) as Record<string, any> | undefined
+            if (targetChar && !targetChar.relations?.[charId]?.[rev]) {
+              errorReporter.report({
+                source: 'mod-loader',
+                severity: 'warning',
+                file: `mods/${modName}/characters/`,
+                message: `角色 '${charId}' 视 '${targetId}' 为 '${typeName}'，但 '${targetId}' 侧没有对 '${charId}' 的 '${rev}'`,
+                suggestion: `若是单方面关系（如单恋/失散）可忽略；若应双向，请在 '${targetId}' 的 relations 中补写`,
+              })
+            }
           }
         }
       }
     }
+
+    // ①.5 字段分层检查（ADR-0007：L3 引擎独占 / L2 非平凡 / 未知顶层键）
+    validateTopLevelLayers(charId, rawChar, mod, categoryNamespaces)
 
     // ② 插件注册的校验器（具体字段契约在插件层）
     for (const validator of getCharacterValidators()) {
@@ -664,6 +725,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     talentDefs: {},
     styles: {},
     relationTypes: {},
+    relationPairs: {},
+    relationGroups: {},
     moveConfig: { parent_time_cost: 10, child_time_cost: 5, edge_default_time_cost: 10 },
     // 注释：Phase H
     hConfig: {},
@@ -932,9 +995,19 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   const ablData = loadMerged<Record<string, AbilityDef>>('abilities.toml', 'abilities')
   if (ablData) mod.abilities = ablData
 
-  // 注释：加载 relations.toml
+  // 注释：加载 relations.toml 三段（types/pairs/groups，关系系统 v2）
   const relData = loadMerged<Record<string, any>>('relations.toml', 'types')
   if (relData) mod.relationTypes = relData
+  const pairData = loadMerged<Record<string, any>>('relations.toml', 'pairs')
+  if (pairData) mod.relationPairs = pairData
+  const groupData = loadMerged<Record<string, any>>('relations.toml', 'groups')
+  if (groupData) mod.relationGroups = normalizeRelationGroups(mod, groupData)
+  validateRelations(mod, modName)
+  // 注释：关系三档转换补全（关系系统 v2）——roster/named 角色在 finalize 时 relations.toml
+  // 尚未加载（loadCharacters 先于本段），此处补转换（幂等：数值不变，字符串 "正面"→1 等）
+  for (const [, char] of mod.entities.get('character') ?? []) {
+    normalizeRelations(char as any, mod.relationTypes, `mods/${modName}/characters/`)
+  }
 
   // 注释：加载 talents.toml（插件默认 + mod 定义 deepMerge）
   const talentData = loadMerged<Record<string, TalentDef>>('talents.toml', 'talents')
@@ -1077,10 +1150,151 @@ export function finalizeCharacterData(char: EntityData, mod: LoadedMod): void {
   const hasAngry = (char as any).base?.['愤怒'] !== undefined
   applyAttributeDefaults(char, mod.attributes)
   expandCharacterAbilitiesForChar(char as any, mod.abilities)
+  normalizeMarksToAbilities(char as any)
+  normalizeInventoryToArray(char as any)
+  normalizeRelations(char as any, mod.relationTypes)
   initializeTalentsForChar(char as any, mod.talentDefs)
   if (!hasAngry) {
     if (!(char as any).base) (char as any).base = {}
     ;(char as any).base['愤怒'] = 1 + Math.floor(Math.random() * 35)
+  }
+}
+
+// 注释：reverse 自动推导（关系系统 v2）——未显式声明 reverse 时按"同名换端"：
+// "父母子女（为大）" ↔ "父母子女（为小）"；无（为大/为小）后缀 → 无反向
+export function resolveReverseType(typeName: string, def: RelationTypeDef | undefined): string | undefined {
+  if (def?.reverse) return def.reverse
+  if (typeName.endsWith('（为大）')) return `${typeName.slice(0, -4)}（为小）`
+  if (typeName.endsWith('（为小）')) return `${typeName.slice(0, -4)}（为大）`
+  return undefined
+}
+
+// 注释：关系三档转换（关系系统 v2，2026-08-10）——
+// kind=relation 类型：角色数据写 "正面"/"中立"/"负面"（推荐）或 1/0/-1（脚本用），
+// 统一存 -1/0/1。非法值 → errorReporter error（禁止静默失败），值原样保留。
+const SENTIMENT_MAP: Record<string, number> = { '正面': 1, '中立': 0, '负面': -1 }
+
+function normalizeRelations(char: any, relationTypes: Record<string, RelationTypeDef>, file?: string): void {
+  if (!char.relations || typeof char.relations !== 'object') return
+  const reportFile = file ?? ''
+  for (const rels of Object.values(char.relations) as Record<string, any>[]) {
+    if (!rels || typeof rels !== 'object') continue
+    for (const [type, value] of Object.entries(rels)) {
+      const def = relationTypes[type]
+      // kind 未声明 = 默认 sentiment（数值型，兼容现有好感度）——不转换
+      if (!def || (def.kind ?? 'sentiment') === 'sentiment') continue
+      if (typeof value === 'string') {
+        const num = SENTIMENT_MAP[value]
+        if (num !== undefined) {
+          rels[type] = num
+        } else {
+          errorReporter.report({
+            source: 'mod-loader',
+            severity: 'error',
+            file: reportFile,
+            message: `关系 '${type}' 的档位值 '${value}' 非法（kind=relation 类型只接受 正面/中立/负面 或 1/0/-1）`,
+            suggestion: '修正角色数据中的关系档位值',
+          })
+        }
+      } else if (typeof value === 'number' && value !== -1 && value !== 0 && value !== 1) {
+        errorReporter.report({
+          source: 'mod-loader',
+          severity: 'error',
+          file: reportFile,
+          message: `关系 '${type}' 的档位值 ${value} 非法（kind=relation 类型只接受 正面/中立/负面 或 1/0/-1）`,
+          suggestion: '修正角色数据中的关系档位值',
+        })
+      }
+    }
+  }
+}
+
+// 注释：关系组展开（关系系统 v2）——组元素 { pair } 引用展开为引用该 pair 的
+// 所有已定义类型名（这样内置组（血亲等）不依赖 mod 的具体类型命名）。
+// 未知 pair 引用 → throw（阻止加载）。
+function normalizeRelationGroups(mod: LoadedMod, rawGroups: Record<string, RelationGroupDef>): Record<string, string[]> {
+  const file = `mods/${mod.id}/definitions/relations.toml`
+  const result: Record<string, string[]> = {}
+  for (const [groupName, items] of Object.entries(rawGroups)) {
+    const flat: string[] = []
+    for (const item of items ?? []) {
+      if (typeof item === 'string') {
+        flat.push(item)
+      } else if (item && typeof item === 'object' && typeof item.pair === 'string') {
+        if (!mod.relationPairs[item.pair]) {
+          throw new Error(`${file}: 关系组 '${groupName}' 引用了不存在的 pair '${item.pair}'`)
+        }
+        for (const [typeName, def] of Object.entries(mod.relationTypes)) {
+          if (def.pair === item.pair) flat.push(typeName)
+        }
+      }
+    }
+    result[groupName] = flat
+  }
+  return result
+}
+
+// 注释：关系定义校验（关系系统 v2）——引用错误 throw（阻止加载，同 validateTalents）
+// ① kind/side 取值合法 ② relation 型的 pair 引用存在 ③ reverse 指向存在 ④ 组内类型/pair 存在
+function validateRelations(mod: LoadedMod, modName: string): void {
+  const file = `mods/${modName}/definitions/relations.toml`
+  for (const [typeName, def] of Object.entries(mod.relationTypes)) {
+    if (def.kind !== undefined && def.kind !== 'sentiment' && def.kind !== 'relation') {
+      throw new Error(`${file}: 关系类型 '${typeName}' 的 kind='${def.kind}' 非法（sentiment 数值型 / relation 三档型）`)
+    }
+    if (def.side !== undefined && def.side !== 'big' && def.side !== 'small') {
+      throw new Error(`${file}: 关系类型 '${typeName}' 的 side='${def.side}' 非法（big 大端 / small 小端；对称类型省略）`)
+    }
+    if (def.pair !== undefined && !mod.relationPairs[def.pair]) {
+      throw new Error(`${file}: 关系类型 '${typeName}' 引用了不存在的 pair '${def.pair}'（请先在 [pairs] 段定义）`)
+    }
+    if (def.reverse !== undefined && !mod.relationTypes[def.reverse]) {
+      throw new Error(`${file}: 关系类型 '${typeName}' 的 reverse 指向了不存在的类型 '${def.reverse}'`)
+    }
+  }
+  for (const [pairName] of Object.entries(mod.relationPairs)) {
+    // pairs 是称呼词表资源——不强制被类型引用（mod 可先定义词表后定义类型）
+    void pairName
+  }
+  // 注释：组校验——展开后的组是纯类型名列表（{pair} 引用已在 normalizeRelationGroups 校验）
+  for (const [groupName, typeNames] of Object.entries(mod.relationGroups)) {
+    for (const typeName of typeNames) {
+      if (!mod.relationTypes[typeName]) {
+        throw new Error(`${file}: 关系组 '${groupName}' 引用了不存在的类型 '${typeName}'`)
+      }
+    }
+  }
+}
+
+// 注释：inventory 归一化（2026-08-09 example-mod 验证暴露的真问题）——
+// 运行时 API（inventory-system add/remove/use、hunger、set-system、h-bondage）全部用
+// 数组形式 [{itemId, count}]；角色数据/旧文档的对象写法 { 物品ID: count } 加载时不转换
+// → addItem/removeItem/饥饿/套装检查对对象调用 .find/.some 抛 TypeError（崩溃链），
+// 且条件路径 inventory.{item}.count 恒 false。加载时统一转为数组（幂等）。
+function normalizeInventoryToArray(char: any): void {
+  const inv = char.inventory
+  if (!inv || Array.isArray(inv)) return
+  const arr: { itemId: string; count: number }[] = []
+  for (const [itemId, count] of Object.entries(inv)) {
+    if (typeof count === 'number' && count > 0) arr.push({ itemId, count })
+  }
+  char.inventory = arr
+}
+
+// 注释：marks 归一化（标准角色契约分层，ADR-0007，2026-08-09）——
+// 刻印 canonical 存储 = entity.abilities（h-mark 升级写、calcJudge 读，SEARCH_ORDER abilities 在前）；
+// 角色数据写 marks = {快乐刻印 = 2} 是直观写法（UI 分组即「刻印」），加载时拷贝进 abilities。
+// 规则：值 > 0 才拷贝；两者都写则 abilities 优先（marks 只补缺）。marks 镜像字段本身保留不动。
+// 导出供 save-system restoreFromSave 恢复路径复用（旧存档 marks 值不静默丢失）。
+export function normalizeMarksToAbilities(char: any): void {
+  const rawMarks = char.marks
+  if (!rawMarks || typeof rawMarks !== 'object') return
+  if (!char.abilities) char.abilities = {}
+  for (const [markName, value] of Object.entries(rawMarks) as [string, any][]) {
+    if (typeof value !== 'number' || value <= 0) continue
+    const existing = char.abilities[markName]
+    if (existing && typeof existing === 'object' && (existing.level ?? 0) > 0) continue
+    char.abilities[markName] = { level: value, xp: 0 }
   }
 }
 
@@ -1214,6 +1428,10 @@ export class ModLoader {
     conditionRegistry.clear()
     conditionRegistry.registerFromAttributes(mod.attributes)
     conditionRegistry.registerFromBindings(mod.bindings)
+    // 注释：关系组注入（关系系统 v2）——条件引擎聚合路径 any(group:xxx) 求值用
+    gameContext.setRelationGroups(mod.relationGroups)
+    // 注释：关系数据注入条件注册器（聚合路径参数校验用）
+    conditionRegistry.setRelationData(mod.relationTypes, mod.relationGroups)
     this.loadedMod = mod
     return mod
   }

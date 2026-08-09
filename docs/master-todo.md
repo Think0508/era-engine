@@ -134,9 +134,263 @@
     G6 尿意 240 零残留 ✓；rest 恢复走 recover_permil（数值对齐 settle_rest 留 B1 待办）✓
   - 【稳定性】新测试文件（realtime-settle/newday-settle/phase-h）3 连跑全稳定 48/48；
     全量 494 ×3 全绿（偶发 1 error 为 vitest pool 既有登记现象，重跑稳定）
-  验收: typecheck ✅ / test 494 通过 ✅（44 文件）/ 扫描 0 违规 / dev 冒烟干净
-  验收: typecheck ✅ / test 492 通过 ✅（44 文件，连跑 2 次稳定）/ 扫描 0 违规 / dev 冒烟干净
-  验收: npm run typecheck ✅ / npm run test 458 通过 ✅（42 文件）/ 扫描 exit 0 / dev 冒烟干净
+   验收: typecheck ✅ / test 494 通过 ✅（44 文件）/ 扫描 0 违规 / dev 冒烟干净
+   验收: typecheck ✅ / test 492 通过 ✅（44 文件，连跑 2 次稳定）/ 扫描 0 违规 / dev 冒烟干净
+   验收: npm run typecheck ✅ / npm run test 458 通过 ✅（42 文件）/ 扫描 exit 0 / dev 冒烟干净
+   字段分层审查（2026-08-09，用户 grill 定稿）✅：ADR-0007 角色字段作者分层
+   - 【设计】新增第四维度「作者写入层」（正交于 category）：L1 角色层直接写（初始值有意义、
+     引擎累加/不覆盖）/ L2 非平凡（需插件声明或动全局默认）/ L3 引擎独占（运行时管理、写无效）
+   - 【审计结论】pregnancy 初始值不被 h-pregnancy 重置（L1 成立，只读+累加）；预置
+     virgin_V=true 不自动生成 first_records（文档说明，schema §4.4）；experience 数值 L1
+     （键名禁改是文档约定——无定义文件可校验）；first_records L3；cloth → equipment 过时命名
+     修正 + assets 补入契约 §1
+   - 【双源漂移·已修】h-first-time 破处不删处女天赋（阴道处女/肛门处女/尿道处女/子宫处女/
+     无接吻经验）→ talk-common 口上条件 talents.肛门处女 == 0 永久失效 → first_time_check/
+     first_kiss_check 同步删对应天赋（VIRGIN_TALENT_MAP）+ 5 条测试
+   - 【marks 归一化·已修】刻印 canonical = abilities；角色数据写 marks（值>0）finalize 时拷贝
+     进 abilities.level（两者都写 abilities 优先，marks 只补缺）——mod 直觉写法也生效
+   - 【分层校验·已落地】character-contract.ts 导出三层表（AUTHOR_WRITABLE/NONTRIVIAL/
+     ENGINE_OWNED_TOP_KEYS）+ validateTopLevelLayers；mod-loader validateCharacterContract
+     接线：L3 命中 warning「引擎独占写入无效」/ L2 命中 warning「非平凡字段」（params 仅
+     值≠default 时提示，防 applyAttributeDefaults 自动填充误报；extends 模板元数据入白名单）
+   - 【文档】schema §11 字段分层表（L1/L2/L3 + 与既有机制关系）；mod-author-guide 速查改
+     分层视角；master-todo 索引补 character-schema + ADR-0007
+   - 【测试】h-first-time 5 条（新文件）+ character-contract +3（归一化×2/分层×3）+
+     boot-smoke 排除教学 warning（contract_demo params 教学展示）
+   - 【教学展示】contract_demo 保留 params 字段——加载时展示 L2 warning（示范"罕见写法"）
+   字段分层验收: typecheck ✅ / test 全量通过 ✅ / 扫描 0 违规 / dev 冒烟干净
+   字段分层复查（2026-08-09，改后自检抓 2 个静默缺口）✅：
+   - 【静默缺口·已修】setFirstTime 公共 API 只写 first_times 不删处女天赋（与 first_time_check
+     不一致）→ 双源漂移仍可从 API 路径发生 → 同步 removeVirginTalent + 测试
+   - 【静默缺口·已修】restoreFromSave 不跑 marks 归一化 → 本改动前保存的旧存档（marks 有值、
+     abilities 刻印恒 0）读档后刻印值静默丢失 → normalizeMarksToAbilities 导出 + 恢复路径接线
+     + 测试（值>0 拷贝、已有真实等级不覆盖）
+   - 【确认无碍】talents 删除后条件求值走 getDefaultValue 数值默认 0（talk-common 口上翻转正确）；
+     处女天赋 TS 读取方仅 h-first-time 自身；分层检查不跑运行时生成 NPC（只查加载 entities）；
+     revalidate 重复 warning 为既有行为
+   复查验收: typecheck ✅ / test 506 通过 ✅（+2）/ 扫描 0 违规
+   mod 范例与引导体系（2026-08-09，用户需求「照猫画虎」）✅：
+   - 【交付物 ①】mods/example-mod/ 教学范例模组——每个文件真实可跑 + 教学注释：
+     meta.toml 头注释画全项目数据层级图（插件默认层→mod 定义层→模板→角色→存档 + 合并规则）；
+     definitions（改默认值/新增属性/能力/天赋/关系/状态/物品示范）；templates 两级继承
+     （base-human + 山贼 extends 差分示范）；roster 分区（必写前段/可选后段/L3 末段只注释不写）；
+     named/角色示例 完整分区照猫画虎；npc/maps(山村+集市+graph 防不可达)/quests(objective+reward)
+   - 【交付物 ②】docs/mod-file-guide.md 逐文件字段字典（18 节 + 常见错误速查）：
+     每文件统一表（字段/类型/必填/默认/区间/说明 + 不写会怎样）；区间列人工维护（逻辑钳制标注）
+   - 【交付物 ③】npm run validate 接线：toml-validator.ts 实为空文件 → 改为 vitest 入口
+     src/core/mod-validate.test.ts（复用 parseModData 全链路校验零重复实现 + example-mod 加载冒烟）；
+     package.json 加 validate script
+   - 【交付物 ④】文档修正（改后自检发现 3 处文档-代码漂移）：mod-override.md 数组规则改「整表替换」
+     （原声称 ID 匹配/追加去重，代码只有 deepMerge 整表替换）；ADR-0003 同步；ADR-0001 标注
+     template_append 语法未实现（勿教作者使用）
+   - 【设计确认】差分语义 = 推荐写法非强制（写了即最终值；写全量脱离继承）；
+     「引擎原生」实为 h-core 插件默认层；bindings 不能改 h-core 硬编码属性名
+   - 【验证】npm run validate 4/4（test-mod 仅 1 条教学 warning；example-mod 0 warning）
+   范例体系验收: typecheck ✅ / test 全量通过 ✅ / validate 4/4 ✅ / 扫描 0 违规
+   example-mod 端到端验证（2026-08-09，用户担忧「写了录不进游戏」）✅：
+   - 【新增】src/plugins/example-mod-integration.test.ts（10 条）——镜像 boot-smoke 启动链
+     （loadMod example-mod → bindings/condition → 全插件加载），逐字段断言真实落位：
+     玩家（改默认 1200/自定义属性 气血/内力/getEntityAttr 可读）、山贼_张三（三层模板链
+     base-human→山贼→角色 差分覆盖）、小师妹（abilities 简写/talents/关系/刻印归一化/
+     experience/状态/背包/装备/位置/first_times 全落位）、角色示例（pregnancy/dead/marks=2）、
+     条件字典（自定义属性/关系路径/location.tags）、对话树/任务注册、移动链路（山村↔集市
+     graph 边）、路人生成契约化、存档闭环（保存→读档全保留含归一化）
+   - 【扫描器误判·已修】scan-attr-refs 把结构命名空间索引当属性引用（talents['天生神力']/
+     relations['player']['师徒值']/inventory['回气丹']/home_locations['山村']）→ 新增
+     STRUCTURAL_NS 链首识别（indexChainRoot）+ 条件路径 relations.{对方}.{类型} 段跳过——
+     与属性承载命名空间（base/params/social/abilities）明确区分，不吞真实违规
+   - 【结果】10/10 全通过——示例全部字段真实录进游戏，无静默错误（首轮仅测试自身
+     路径写法错 1 处：关系条件应为 character.{id}.relations.{对方}.{类型}）
+   端到端验收: typecheck ✅ / test 520 通过 ✅（47 文件）/ validate 4/4 / 扫描 0 违规
+   definitions 示例补全（2026-08-09，用户反馈「示例要完整，mod 作者不知道还能做什么」）✅：
+   - 【补齐 7 文件】calendar（文化月名/星期）/ scene-dialogue（场景旁白——修正
+     mod-workflow 的 {location.description} 错误变量，地点无该字段）/ character-dialogue
+     （角色通用口上 500 人 fallback）/ sets（粗布套：布衣+长裤→气血+20）/ talk/styles
+     （2 样式）/ equipment（**整表替换教学**：完整 9 槽 + 新增披风槽——loadMerged
+     skipDeepMerge 语义）/ h-config（改 hunger.daily_ration_id 引用 mod 物品 +
+     judge.adjustments **数组整表替换**写全示例：默认处女惩罚 + 自定义条件
+     target.abilities.吐纳术.level >= 3）
+   - 【明确不写】factions.toml 引擎无加载器（指南标注"未实现"防误导）；bondage/types.toml
+     整表替换 + 129 行默认表复制太重（指南给指引：完整复制默认 15 种再改）
+   - 【教学点】equipment.toml 与 judge.adjustments 数组都是「写了就整表替换」——
+     示例注释与指南都强调"要么不写、要么写全"
+   - 【验证】集成测试 +1（definitions 全类型加载断言：口上/日历/套装/样式/10 槽含 cape/
+     hConfig 覆盖/修正条件过插件校验）；example-mod 仍 0 warning
+   definitions 补全验收: typecheck ✅ / test 523 通过 ✅ / validate 4/4 / 扫描 0 违规
+   执行链路验证（2026-08-09，用户追问「能跑通、无静默错误」——挖出 7 个真问题）✅：
+   - 【真 bug·已修】inventory 双格式：运行时 API 用数组 [{itemId,count}]、mod 数据/文档写对象
+     {物品ID:count} → 加载不转换 → addItem/removeItem/hunger/set-system 对对象 .find/.some
+     TypeError 崩溃链 + 条件路径 inventory.{item}.count 恒 false → finalizeCharacterData 加
+     normalizeInventoryToArray（对象→数组，幂等）；condition.ts 数组对象匹配兼容 itemId；
+     example-mod/schema/mod-file-guide 统一数组格式（旧对象写法自动转换）
+   - 【真 bug·已修】condition.ts 单引号字符串右值抛错（"cannot be parsed as a number"）——
+     文档/示例惯用 'active'/'山村' 等单引号 → 所有含字符串比较的条件求值崩溃
+     （quest auto_start 静默失败、口上条件崩）→ 右值解析支持单引号
+   - 【真 bug·已修】条件引擎无 inventory 根（AGENTS §8 路径 inventory.{物品ID}.count
+     求值恒 0）→ 加根（= 玩家背包数组）
+   - 【死代码·已修】quest-system checkAutoStart 是 TODO（auto_start_condition 从不求值，
+     任务永不自动开始）→ 真实 evaluateCondition 求值
+   - 【竞态·已修】set-system applySetBonus 的 apiSystem.call 无 await（fire-and-forget——
+     套装效果与断言竞态，时序不稳）→ async 链 await
+   - 【死代码·已修】status-system getCurrentGameMinutes 恒返回 0（tick_interval 检查永假，
+     所有 tick_effects 静默死代码）→ 用 gameTimeToTotalMinutes 真实时间
+   - 【示例 bug·已修】任务 reward 的 add_item 参数名 item→itemId（物品静默加不进）；
+     打坐指令 effects 里 advance_time 与 time_cost 重复推进（时间双倍，8:00→9:00）；
+     任务补 auto_start_condition（此前无法启动）
+   - 【新增】执行链路测试 7 条（useItem/打坐指令/tick/任务 auto_start→objective→reward/
+     套装幂等/条件路径）——全部真实生效断言；存档测试改显式构造数据（不依赖运行状态，
+     执行链路中初始状态会自然到期）
+   - 【教训】vitest 测试间状态共享（同 beforeAll 实体系统）——套装测试先被移动/路人生成
+     流程触发（+20 已生效）→ 幂等断言；存 before 值须在副作用前（对象引用原地修改）
+   执行链路验收: typecheck ✅ / test 529 通过 ✅（47 文件，连跑 2 次）/ validate 4/4 / 扫描 0 违规
+   系统完整性审计（2026-08-09，用户「问题可能源于系统没建/没建好」）✅：
+   - 【已确认建好】unlocks 技能树（ability-progression:83）、NPC 初始位置（character-system
+     home_locations 最高权重）、NPC AI 移动（activity/time_rules/加权随机）、quest 步骤
+     dialogue/combat/objective/reward/condition/goto/scene、save 自动存档（autoSave 已实现）
+   - 【标记·勿局部修补（2026-08-09 用户指示：系统由用户系统性补齐，测试遇不全不通=正常）】
+     - 套装系统：定义/激活/加成已有，但失去件精确移除未实现（脱装备加成残留=已知缺口）、
+       钩子式效果未做（TODO Phase 11）——set-system 已标注 ⚠️ 标记
+     - 地图系统：平铺+parent+graph+移动 ✓，但 exits 字段仅校验未启用（语义未定，
+       待地图系统设计）——example-mod 地图文件已标注
+     - quest objective：kill_count/collect_items 匹配恒 true（半成品，事件到达即推进）
+       ——quest-system 已标注 ⚠️ 标记
+     - quest spawn 步骤空实现（只 next）；kill_count 依赖 combat payload 扩展；
+       sandbox 超时（phase-15）；H 系统 TODO 群（睡眠/无意识/群交面板/监狱/宝珠等）
+   - 【回退记录】上轮曾局部补全三处（collect_items 累计/exits 接入可达性/套装反向移除），
+     按用户指示回退为标记状态——相关测试断言同步删除（quest-objective.test.ts 移除、
+     集成测试 exits/套装移除断言移除）
+   完整性审计验收: typecheck ✅ / test 529 通过 ✅（47 文件）/ validate 4/4 / 扫描 0 违规
+   再度复检（2026-08-09，用户「不通时看是否仅是对应系统没做完」）✅：
+   - 【确认已建好】start_scene/start_quest effect（quest 启动方式）、quest scene 栈
+     （嵌套 scene pop 回父）、dialogue startConversation（进入+渲染+node effects 执行）、
+     narrativeLog 查询
+   - 【新增测试】对话树执行链路：startConversation → dialogue 模式 + start 节点 lines 渲染
+     + choices 交互条目（3 选项）——示例对话树"能进"已验证
+   - 【新增标记·勿局部修补】：
+     - dialogue selectChoice 已导出但未注册 API/事件通道（插件禁直接 import → UI 无法调用，
+       对话分支推进不可达）——dialogue-system ⚠️ 标记
+     - inventory tags 驱动指令半成品（仅 gather 占位：无交易指令、herb 硬编码未校验）——
+       inventory-system ⚠️ 标记
+     - NPC spawn 记录未做（每次进入地点重复生成路人，数量膨胀）——character-system ⚠️ 标记
+     - name_generator JS 脚本未支持（character-system TODO）
+   - 【复检结论】示例全链路可用部分（加载/字段/指令/物品/状态tick/任务auto_start→reward/
+     套装激活/条件路径/对话进入/存档）全部真实生效；不可达部分均为已标记的系统半成品
+   复检验收: typecheck ✅ / test 530 通过 ✅（47 文件）/ validate 4/4 / 扫描 0 违规
+   example-mod 注释字段字典增强（2026-08-09，用户以 fresh 作者视角 grill 注释）✅：
+   - 【问题】注释只讲"能写"不讲"能填什么/怎么填/来自哪或自由填/在哪消费/与哪挂钩"
+     ——如 talents.tags 用户疑惑"只能 1 个？体质哪定义的？随便填？在哪消费？"
+   - 【查证答案】talents.tags=自由数组无引擎消费（分类用）；talents 生效字段 =
+     state_adjusts/favorability_adjusts/favorite_position（h-core 消费）+ 条件引用；
+     abilities.tags 被 combat-wuxia/ability-progression 按标签查询（未启用则无人消费）；
+     abilities.effects（被动生效）/max_level=0/xp_per_level 数组；attributes type 可
+     number/string/boolean、category 可自定义（落 entity.{category}）；experience 80
+     不在已知键位（示例 80→0=皮肤经验，10=皮肤绝顶经验）；first_times 键预定义
+     V/A/U/W/M/OTHER/KISS；marks 定义源=attributes category=mark；指令新字段 category
+     （旧 type 兼容）+ premises 来源=h-core 注册前提；scene 自由命名+触发方同名匹配；
+     items type/use/attack_bonus 字段；meta dependencies 真实示例补上
+   - 【产出】example-mod 10 个文件注释升级为"字段字典"式（每字段：取值/来源/消费方/
+     自由或枚举），关键位置带 ⚠️ 提示；集成测试 experience 键位断言同步（80→0）
+   - 【教训】PowerShell 5.1 Set-Content 写 UTF-8 文件会乱码（两次损坏 TS 文件）——
+     文件写入必须用 write 工具，勿用 PowerShell 重写含中文的文件
+   注释增强验收: typecheck ✅ / test 530 通过 ✅ / validate 4/4 / 扫描 0 违规
+   example-mod 写法变体扩展（2026-08-09，用户「单个示例让人以为只能这么写」）✅：
+   - 【目的】每类字段给 2+ 种有区别的写法，侧面提示"还可以这么写"——x 种写法都合法
+   - 【真实新增条目】货郎（无 template 全量写——不继承也合法）、猎户（abilities 完整
+     {level,xp} 对象含初始 xp + inventory 对象写法自动转数组）、酒量（等级型天赋 max=3）、
+     情义值（第二关系类型）、力竭（debuff + on_apply_effects + 无 tick）、铁剑/草药
+     （weapon attack_bonus / material 无 use）、饮酒指令（effect_blocks 字符串引用写法）、
+     打探消息支线（talk_to objective 链路）、集市 spawn（overrides 变体）
+   - 【注释变体】attributes（string/boolean/自定义 category）、abilities（max_level=0
+     无等级 + xp_per_level 数组 custom）、talents（生效字段 A/B/C/D 四写法）、items
+     （type/加成字段）、status-effects（tick 有无/stackable/duration=-1）、roster
+     （对象 vs 数组 vs 简写 vs 完整）、地图（单文件多地点 vs 多文件）、对话树
+     （分支/自动跳转/终端三形态）、npc（names vs overrides）
+   - 【测试背书】集成测试 +2：变体断言（货郎/猎户 xp 保留/对象转数组/effect_blocks 指令/
+     支线注册/新增定义）+ 支线 talk_to 链路（dialogue:end → reward 好感度+10）
+   - 【教训】测试断言避免 mod.xxx['中文'] 索引（扫描器当属性引用误报）——
+     用 Object.keys + toContain
+   写法变体验收: typecheck ✅ / test 532 通过 ✅（47 文件）/ validate 4/4 / 扫描 0 违规
+   关系系统 v2（2026-08-10 grill 定稿 + 实施）✅：
+   - 【设计】有向关系（不自动双向）+ 双维度（种类×档位）+ 三档（正面/中立/负面=1/0/-1，
+     纯三档无程度——只影响行为阈值，推导做在武侠 mod）/ 两型（sentiment 数值 + relation 三档）/
+     类型=端对×端（pair+side，对称省略）/ reverse 默认同名换端 / groups 集中定义（含 {pair} 引用）/
+     称呼两层（panel 成对名 + address 单方称呼，按性别运行时生成）
+   - 【引擎】mod-loader（RelationTypeDef/PairDef/GroupDef + 三段加载 + 三档转换（字符串→-1/0/1，
+     非法值 error）+ validateRelations throw + reverse 不对称 warning + 组展开）；
+     core/relation-display.ts（称呼生成纯算法）；condition.ts 聚合路径
+     （any/any_positive/any_negative + 括号参数 + group: 展开 + 聚合括号保护）；
+     condition-registry（聚合模板注册 + 参数校验 setRelationData + extractFieldPaths 参数保护）；
+     character-system（setRelation 字符串档位/removeRelation/getRelationPanel/Address +
+     relation:added/changed/removed 事件）；effect-system（modify_relation 分类型设档 +
+     remove_relation）；h-core 默认 relations.toml（内置 7 pair 词表 + 血亲组按 pair 引用）；
+     gameContext/GameContext 注入 relationGroups；restoreFromSave 恢复组
+   - 【测试】relation-system.test.ts 15 条（转换/非法/组展开/pair 校验/reverse warning+自动推导/
+     称呼 panel+address/聚合求值+参数校验/API+事件）；集成测试 +1（段誉两父示范/聚合条件/
+     称呼/事件 payload）
+   - 【示例】example-mod relations.toml 三段示范（sentiment+三档端对+对称+纯类型 reverse+
+     自定义 pair sworn + 自定义组死对头）+ 角色数据段誉两父模式（角色示例 对 山贼_张三/猎户
+     父母子女（为小）+ 对方反向）+ 夫妻单边
+   - 【文档】AGENTS §23 关系数据格式重写 + §6 事件域表加 relation；character-schema §3.5 关系节；
+     mod-file-guide §7/§11；plugin-author-guide character API 表
+   - 【修复过程】TOML 中文裸键（血亲 须加引号）；kind 默认 sentiment（未声明不转换）；
+     parseModData 顺序（relations 加载在 characters 后 → 补全转换遍历）；
+     evaluateCondition 聚合括号保护（否则被当逻辑分组）；扫描器 STRUCTURAL_NS 加 mod 关系命名空间
+   关系系统验收: typecheck ✅ / test 548 通过 ✅（48 文件）/ validate 4/4 / 扫描 0 违规
+   关系系统自查（2026-08-10，用户「检查 bug/静默错误」）✅：
+   - 【静默错误·已修】类型名恰叫 any/any_positive/any_negative 时被聚合处理抢先吞掉
+     （单类型查询 `relations.b.any == 1` 返回 false）→ resolveValue 对象分支顺序调换：
+     `part in current`（类型名）优先，未命中才尝试聚合 + 测试（关键字冲突用例）
+   - 【缺陷·已修】normalizeRelations 非法值 error 无文件名（错误铁律：精准报文件名）→
+     加 file 参数（parseModData 补全遍历传 mods/{mod}/characters/；运行时生成无源留空）
+   - 【确认无碍】聚合括号保护（evaluateCondition 不被当逻辑分组）；负数字面量限制
+     （== -1 触发算术检查——既有行为，负面查询用 < 0，AGENTS §23 已注明）；
+     组空展开（mod 无类型引用 pair → 组空 → 聚合恒 false，数据问题非 bug）；
+     聚合段误用于非 relations 对象 → 返回默认 false；无括号聚合在类型名存在时让位
+     （part in current 优先）；存档/restore 三档数值兼容 + relationGroups 恢复；
+     sentiment 型（kind 未声明）不转换；reverse 检查仅 kind=relation
+   关系自查验收: typecheck ✅ / test 549 通过 ✅（48 文件）/ validate 4/4 / 扫描 0 违规
+   关系链路复检（2026-08-10，用户「链路通不通、加改删无 bug、半成品依赖标记」）✅：
+   - 【链路测试·新增】集成测试 +2：
+     ① 关系链路：modify_relation（relation 型设档，字符串"负面"/数值 1）→ 值 + relation:added/
+       changed 事件；remove_relation → 条目删除 + relation:removed
+     ② 寻仇指令（example-mod 新增示范：聚合条件 any_negative(group:死对头) 的完整指令链路）：
+       未结仇 condition 拦路不执行 → 结仇后执行 → 选中角色体力 -10
+     存档三档保留 + restore 后聚合条件仍可用（relationGroups 恢复）并入存档闭环测试
+   - 【测试发现·非 bug】selected 双通道：condition 求值读 gameContext.selectedCharacterId、
+     effect target=selected 读 execCtx.uiStore.selectedCharacterId（产品路径由 bridge 同步一致；
+     测试需两处都设——已在测试注明）
+   - 【半成品依赖·标记不修】口上系统（dialogue-system）不监听 relation:* 事件——
+     "B 成为了 A 的 父亲！"类关系变化口上当前无法由事件触发；quest objective 无 relation
+     类型。依赖 dialogue/quest 系统补齐（勿局部修补）
+   关系链路验收: typecheck ✅ / test 551 通过 ✅（48 文件）/ validate 4/4 / 扫描 0 违规
+   复杂条件组合复检（2026-08-10，用户「组合+组组合+与或非是否走通」）✅：
+   - 【新增测试】复杂组合 6 条：两侧组合（A 负面组 && B 血亲组）、括号分组内嵌聚合、
+     非运算、聚合+普通属性混合、组+类型混合参数、两层括号嵌套——relation-system.test.ts
+   - 【真 bug·已修 1】括号嵌套聚合：占位符表在分组递归中丢失（递归层还原把 \u0001n\u0001
+     替换成空，括号内嵌聚合的条件静默损坏）→ evaluateCondition 重构为闭包共享占位符表
+     （evalExpr 递归共享 aggPlaceholders）
+   - 【真 bug·已修 2】`(true && true) == true` 左值字面量：分组递归把子表达式替换成
+     'true'/'false' 后，evalSimple 把左值 'true' 当字段路径解析（resolveValue 返回 0 →
+     比较静默错误）→ evalSimple 左值字面量直接取值（既有缺陷，复杂组合暴露）
+   - 【确认无碍】①-⑤ 组合（无括号嵌套）重构前已正确；⑥ 两层括号修复后通过；
+     既有 condition/condition-registry 测试零回归
+   复杂组合验收: typecheck ✅ / test 552 通过 ✅（48 文件）/ validate 4/4 / 扫描 0 违规
+   复杂组合二次复检（2026-08-10，修复后边界验证）✅：
+   - 【新增测试】边界 6 条：三层括号嵌套 / !作用于聚合 / 单层 (x)==true 字面量 /
+     与或优先级（||外层&&内层）/ != 聚合结果 / 内层 false 字面量组合 +
+     condition-registry 复杂表达式校验（含未定义组 → ok:false）——全部一次通过
+   - 【确认无碍】占位符闭包共享（evalExpr 递归）覆盖：多层嵌套聚合同一表达式、
+     ! 前缀（还原先于 evalSimple 的 ! 递归）、!true/!false 替换顺序、evalSimple 左值
+     字面量（true/false 比较、与数值混合不崩）
+   二次复检验收: typecheck ✅ / test 553 通过 ✅（48 文件）/ validate 4/4 / 扫描 0 违规
+   关系系统手册（2026-08-10，使用手册铁律）✅：
+   - 【新增】docs/relation-system.md 独立使用手册（按系统手册统一结构）：
+     做什么/关键概念（有向/双维度/纯三档/端对/多关系）/ relations.toml 三段数据格式/
+     角色数据写法（字符串档位/段誉两父/反向 warning）/ Mod 作者使用（条件路径含行为推导
+     典型用法/修改 effect/称呼）/ API/事件（含 relation:* 口上待补标记）/ 校验规则表/
+     与其他系统交互（条件引擎/effect/事件/存档/契约）/ 参考索引
+   - 【索引】master-todo 顶部参考索引注册 relation-system.md
+   手册验收: typecheck ✅ / test 553 通过 ✅ / validate 4/4 / 扫描 0 违规
 ```
 
 ### 下一步（2026-08-09 定稿，串行顺序）:
@@ -920,6 +1174,11 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 | h-group-sex-design.md | docs/specs/ | H子 | 群交设计规格（**做群交时必读**） |
 | mod-override.md | docs/ | 全部 | **Mod override 规范**，所有系统手册引用此文档 |
 | 0003-mod-override-priority-layers.md | docs/adr/ | 全部 | ADR: 三层优先级 ID 匹配 |
+| character-schema.md | docs/ | 全部 | **标准角色契约**（11 节，含 §11 字段分层表 ADR-0007——写角色数据必读） |
+| 0007-character-field-authoring-layers.md | docs/adr/ | 全部 | ADR: 角色字段作者分层（L1/L2/L3 + marks 归一化 + 处女双源修复） |
+| mod-file-guide.md | docs/ | 全部 | **逐文件字段字典**（能写什么/形式/区间/默认——mod 作者查字段用） |
+| relation-system.md | docs/ | 全部 | **关系系统手册**（v2：有向/三档/端对/称呼/聚合条件/事件——写关系必读） |
+| example-mod | mods/example-mod/ | 全部 | **教学范例模组**（照猫画虎：每文件带注释、真实可跑、validate 验证） |
 
 ---
 

@@ -1,0 +1,20 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/sets.toml —— 套装定义（可选）
+# ═══════════════════════════════════════════════════════════════════
+# 广义套装：装备/物品组合，集齐 required_count 件即获得 bonuses 效果。
+# members.items：构成套装的物品 ID（须在 items.toml 定义）；
+# 还可有 members.abilities / members.talents（武功/天赋组合套装）。
+# ═══════════════════════════════════════════════════════════════════
+
+[[sets]]
+id = "rough_cloth_set"
+name = "粗布套装"
+
+[sets.members]
+items = ["布衣", "长裤"]
+
+[[sets.bonuses]]
+required_count = 2
+effects = [
+  { type = "modify_attribute", params = { attr = "气血", value = 20, target = "self" } }
+]

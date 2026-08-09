@@ -1,0 +1,19 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/scene-dialogue.toml —— 场景通用口上（旁白）
+# ═══════════════════════════════════════════════════════════════════
+# 旁白/环境描述：没有说话者，全模组通用（所有角色、所有场景都能触发）。
+# 触发方式：进入地点（enter）、指令执行后、时间变化、特殊事件。
+# 与 character-dialogue.toml 的区别：
+#   scene-dialogue = 旁白（不显示角色名）；character-dialogue = 角色通用台词
+# 字段：scene（场景名，自由命名——触发方按同名匹配，见 named 角色的 dialogue.toml
+#   头注释字段字典）/ condition（可选，满足才触发）/ text（文本）
+# 插值变量：{location.name} {character.name} 等（见 docs/dialogue-format.md §三）
+# ═══════════════════════════════════════════════════════════════════
+
+[[scene_lines]]
+scene = "enter"
+text = "你走进{location.name}，四下打量了一圈。"
+
+[[scene_lines]]
+scene = "rest"
+text = "你找了处干净地方坐下来，闭目调息。"

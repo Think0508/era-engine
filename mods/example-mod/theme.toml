@@ -1,0 +1,29 @@
+# ═══════════════════════════════════════════════════════════════════
+# theme.toml —— 主题变量（颜色/字体/圆角/间距）
+# 引擎 UI 只认这些变量名；模组可加自定义变量，但以下 26 个是最小必需集。
+# 全部映射为 CSS 变量（--color-primary / --font-body 等），组件不写死值。
+# ═══════════════════════════════════════════════════════════════════
+
+[colors]
+primary = "#8B4513"          # 主色调（按钮/高亮）
+secondary = "#D2B48C"        # 辅助色
+background = "#F5F0E1"       # 页面背景
+surface = "#FFF8E7"          # 卡片/面板背景
+text = "#2C1810"             # 主要文字
+text_secondary = "#8B7355"   # 次要文字
+border = "#A0866D"           # 边框
+success = "#4CAF50"          # 成功/正面
+danger = "#E53935"           # 危险/负面
+warning = "#FF9800"          # 警告
+
+[typography]
+font_body = "楷体, serif"    # 正文
+font_title = "隶书, serif"   # 标题
+font_size_base = "16px"
+
+[spacing]
+radius_button = "2px"        # 按钮圆角
+radius_panel = "4px"         # 面板圆角
+gap_small = "8px"            # 小间距
+gap_medium = "16px"          # 中间距
+gap_large = "32px"           # 大间距

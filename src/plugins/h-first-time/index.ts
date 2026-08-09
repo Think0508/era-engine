@@ -11,6 +11,24 @@ import { narrativeLog } from '../../core/narrative-log'
 
 const VIRGIN_KEYS = ['virgin_V', 'virgin_A', 'virgin_U', 'virgin_W', 'virgin_M', 'virgin_OTHER', 'virgin_KISS']
 
+// 注释：破处键 → 处女天赋 映射（标准角色契约分层审计 2026-08-09）：
+// 处女天赋与 first_times 双源漂移修复——talk-common 口上条件（talents.肛门处女 == 0 等）
+// 依赖破处后天赋翻转，此前只删性无知不删天赋 → 口上分支永久失效
+const VIRGIN_TALENT_MAP: Record<string, string> = {
+  virgin_V: '阴道处女',
+  virgin_A: '肛门处女',
+  virgin_U: '尿道处女',
+  virgin_W: '子宫处女',
+  virgin_KISS: '无接吻经验',
+}
+
+function removeVirginTalent(char: any, key: string): void {
+  const talentId = VIRGIN_TALENT_MAP[key]
+  if (talentId && char.talents?.[talentId] !== undefined) {
+    delete char.talents[talentId]
+  }
+}
+
 export function onLoad(_ctx: PluginContext): void {
   // 注释：第一次检查——对齐 erArk default.py（first sex effects 1101-1109）
   effectTypeRegistry.register('first_time_check', (params: any, ctx: any) => {
@@ -24,6 +42,9 @@ export function onLoad(_ctx: PluginContext): void {
 
       // 注释：标记已破
       char.first_times[key] = true
+
+      // 注释：破处 → 移除对应处女天赋（双源漂移修复，2026-08-09）
+      removeVirginTalent(char, key)
 
       // 注释：记录详情（对齐 erArk first_record）
       if (!char.first_records) char.first_records = {}
@@ -66,6 +87,8 @@ export function onLoad(_ctx: PluginContext): void {
       if (!char.first_times) char.first_times = {}
       if (char.first_times['virgin_KISS']) continue
       char.first_times['virgin_KISS'] = true
+      // 注释：初吻 → 移除无接吻经验天赋（双源漂移修复，2026-08-09）
+      removeVirginTalent(char, 'virgin_KISS')
       if (!char.first_records) char.first_records = {}
       const time = gameContext.getContext().time
       char.first_records['virgin_KISS'] = {
@@ -147,6 +170,8 @@ export function onEnable(ctx: PluginContext): void {
       if (!char) return
       if (!char.first_times) char.first_times = {}
       char.first_times[key] = true
+      // 注释：双源联动（ADR-0007）——与 first_time_check 一致，同步移除对应处女天赋
+      removeVirginTalent(char, key)
     },
   })
 }

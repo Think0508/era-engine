@@ -1,0 +1,40 @@
+# ═══════════════════════════════════════════════════════════════════
+# characters/named/角色示例/conversations/日常闲聊.toml —— 交互式对话树
+# ═══════════════════════════════════════════════════════════════════
+# 一个文件 = 一个对话树（id 全局唯一）。玩家点「交谈」指令 → dialogue-system
+# 自动选择 condition 满足的第一个对话树进入。
+# 节点规则（本文件示范全部三种节点形态，写法变体）：
+#   - 有 choices 的分支节点（start）——玩家选一个 next 走
+#   - 有 next 无 choices 的自动跳转节点（ask_news/ask_kungfu）——显示后自动跳
+#   - 无 choices 无 next 的终端节点（farewell）——对话结束
+#   - effects：到达节点时执行（如 ask_kungfu 传授能力——见下）
+# 完整格式见 docs/dialogue-format.md。
+# ═══════════════════════════════════════════════════════════════════
+
+id = "日常闲聊"
+condition = "selected != null"
+
+[[nodes]]
+id = "start"
+lines = ["示例侠客拱手道：请坐。", "山野粗茶，不成敬意。"]
+choices = [
+  { text = "打听村里的事", next = "ask_news" },
+  { text = "讨教吐纳术", next = "ask_kungfu" },
+  { text = "告辞", next = "farewell" }
+]
+
+[[nodes]]
+id = "ask_news"
+lines = ["最近山道不太平，听说有山贼出没。你出门在外，多加小心。"]
+next = "start"
+
+[[nodes]]
+id = "ask_kungfu"
+lines = ["吐纳术讲究气息绵长，每日晨起打坐半个时辰，日积月累自有进益。"]
+# effects：到达节点时执行（比如传授能力）
+effects = [{ type = "set_field", params = { path = "abilities.吐纳术", value = 1 } }]
+next = "start"
+
+[[nodes]]
+id = "farewell"
+lines = ["后会有期，一路顺风。"]

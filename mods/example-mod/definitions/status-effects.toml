@@ -1,0 +1,43 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/status-effects.toml —— 第②层：状态效果定义（新增）
+# h-core 已提供 中毒/醉意/攻击增益；这里示范新增 mod 自定义状态。
+# 角色数据里写 status_effects = [{ id = "振奋", ... }] 前，必须先在此定义。
+#
+# 字段语义：
+#   duration：持续分钟数；-1 = 永久
+#   tick_interval：每隔多少分钟触发一次 tick_effects；0 = 不触发
+#   stackable / max_stack：叠加规则（重新施加 = 刷新时长 + 叠加，上限 max_stack）
+#   tick_effects：每次 tick 执行的效果（数值类自动 × 层数）
+#   on_apply_effects / on_remove_effects：施加/移除时触发
+# 状态效果广泛用于战斗内外（醉意影响对话好感、中毒影响体力…）。
+# ═══════════════════════════════════════════════════════════════════
+
+[status-effects."振奋"]
+name = "振奋"
+description = "打坐调息后精神焕发，气血缓慢恢复"
+category = "buff"
+duration = 300
+tick_interval = 60
+stackable = false
+max_stack = 1
+tick_effects = [
+  { type = "modify_attribute", params = { attr = "气血", value = 5, target = "self" } }
+]
+
+# ── 写法变体：debuff + 无 tick + 到期移除效果 ──
+# 与 振奋（buff + tick_interval>0）的区别：没有 tick_effects 就不会周期触发；
+# on_apply/on_remove_effects 在施加/移除时各触发一次（如移除时扣属性）
+[status-effects."力竭"]
+name = "力竭"
+description = "过度劳累，体力恢复减半"
+category = "debuff"
+duration = 120
+tick_interval = 0
+stackable = false
+max_stack = 1
+on_apply_effects = [
+  { type = "modify_attribute", params = { attr = "体力", value = -10, target = "self" } }
+]
+
+# 写法变体：stackable = true 的叠加型（醉意等）——重新施加刷新时长 + 层数递增；
+# duration = -1 表示永久（如 体质类状态）。

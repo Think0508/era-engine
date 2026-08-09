@@ -8,6 +8,9 @@ interface ConditionField {
 
 class ConditionRegistry {
   private fields: ConditionField[] = []
+  // 注释：关系系统 v2 数据（setRelationData 注入）——聚合路径参数校验用
+  private relationTypes: Record<string, any> = {}
+  private relationGroups: Record<string, string[]> = {}
   // 注释：内置基础字段（AGENTS §21）——固定存在
   private builtinFields: ConditionField[] = [
     { path: 'location.id', type: 'string', description: 'Current location ID', operators: '== !=', source: 'engine' },
@@ -34,6 +37,12 @@ class ConditionRegistry {
     { path: 'character.{id}.status.{status}.stack', type: 'number', description: 'Status effect stack count', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.status.{status}.remaining', type: 'number', description: 'Status effect remaining minutes', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.relations.{other}.{type}', type: 'number', description: 'Character relation value', operators: '> < >= <= == !=', source: 'engine' },
+    // 注释：关系聚合路径（关系系统 v2，2026-08-10）——跨种类查询，括号参数 = 类型列表
+    // 或 group:组名（组在 relations.toml [groups] 段集中定义）；无括号 = 全部类型
+    // 模板 {list} 通配带括号与不带括号两种写法（pathMatch 对含 { 段跳过比较）
+    { path: 'character.{id}.relations.{other}.any({list})', type: 'boolean', description: 'Any relation of listed types exists (any sentiment)', operators: '== !=', source: 'engine' },
+    { path: 'character.{id}.relations.{other}.any_positive({list})', type: 'boolean', description: 'Any relation of listed types is positive', operators: '== !=', source: 'engine' },
+    { path: 'character.{id}.relations.{other}.any_negative({list})', type: 'boolean', description: 'Any relation of listed types is negative', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.experience.{exp}', type: 'number', description: 'Character experience counter', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.first_times.{key}', type: 'boolean', description: 'Character first-time flag', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.first_records.{key}', type: 'object', description: 'Character first-time record', operators: '== !=', source: 'engine' },
@@ -90,6 +99,13 @@ class ConditionRegistry {
     }
   }
 
+  // 注释：注入关系数据（关系系统 v2）——mod 加载后调用，聚合路径参数校验用
+  // （类型名存在性 / group:组名存在性；数据未注入时聚合路径只查结构、不查参数）
+  setRelationData(types: Record<string, any>, groups: Record<string, string[]>): void {
+    this.relationTypes = types ?? {}
+    this.relationGroups = groups ?? {}
+  }
+
   getAllFields(): ConditionField[] {
     return [...this.builtinFields, ...this.structuralFields, ...this.fields]
   }
@@ -97,7 +113,22 @@ class ConditionRegistry {
   validateField(path: string): boolean {
     const allFields = this.getAllFields()
     if (allFields.some(f => f.path === path)) return true
-    return allFields.some(f => f.path.includes('{') && pathMatch(f.path, path))
+    const matched = allFields.some(f => f.path.includes('{') && pathMatch(f.path, path))
+    if (!matched) return false
+    // 注释：聚合路径参数校验（关系系统 v2）——any(类型列表/group:组名) 的参数必须存在
+    // 数据未注入（relationTypes 为空）时只查结构，避免测试/早期环境误报
+    const agg = extractAggregateArgs(path)
+    if (agg && Object.keys(this.relationTypes).length > 0) {
+      for (const item of agg.args) {
+        if (item.startsWith('group:')) {
+          const groupName = item.slice('group:'.length)
+          if (!this.relationGroups[groupName]) return false
+        } else if (!this.relationTypes[item]) {
+          return false
+        }
+      }
+    }
+    return true
   }
 
   // 注释：校验一个条件表达式——提取所有字段路径并逐个 validateField
@@ -147,16 +178,35 @@ function pathMatch(pattern: string, actual: string): boolean {
 // 不做根白名单过滤——插件自定义根字段直接走 validateField 精确匹配
 const STRING_RE = /"[^"]*"|'[^']*'/g
 const TOKEN_SPLIT_RE = /&&|\|\||[()!<>=]+|\s+/
+// 聚合路径段（关系系统 v2）：any(恩人,有恩) / any_positive(group:亲属)——括号与参数需保护，
+// 否则被 TOKEN_SPLIT_RE 的括号切分切碎
+const AGG_SEG_RE = /(any|any_positive|any_negative)\([^)]*\)/g
+
+/** 提取聚合路径段的参数列表（如 any(恩人,有恩) → ['恩人','有恩']）；非聚合段 → null */
+function extractAggregateArgs(path: string): { args: string[] } | null {
+  const m = path.match(/(?:^|\.)(any|any_positive|any_negative)\(([^)]*)\)/)
+  if (!m) return null
+  const raw = m[2].trim()
+  if (!raw) return { args: [] }
+  return { args: raw.split(',').map(s => s.trim()).filter(Boolean) }
+}
 
 function extractFieldPaths(expr: string): string[] {
   const stripped = expr.replace(STRING_RE, '')
-  const tokens = stripped.split(TOKEN_SPLIT_RE).map(t => t.trim()).filter(Boolean)
+  // 保护聚合参数段（any(恩人,有恩)）——占位符避免括号切分
+  const placeholders: string[] = []
+  const protectedStr = stripped.replace(AGG_SEG_RE, (m) => {
+    placeholders.push(m)
+    return `\u0001${placeholders.length - 1}\u0001`
+  })
+  const tokens = protectedStr.split(TOKEN_SPLIT_RE).map(t => t.trim()).filter(Boolean)
   const paths: string[] = []
   for (const token of tokens) {
     if (!token.includes('.')) continue
     // 注释：首字符须为字母（数字/负号字面量如 0.5、-5 不是字段路径）
     if (!/[A-Za-z]/.test(token[0])) continue
-    if (!paths.includes(token)) paths.push(token)
+    const restored = token.replace(/\u0001(\d+)\u0001/g, (_m, i) => placeholders[Number(i)] ?? '')
+    if (!paths.includes(restored)) paths.push(restored)
   }
   return paths
 }

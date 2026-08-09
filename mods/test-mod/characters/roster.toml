@@ -62,6 +62,8 @@ abilities = { "基础攻击" = 1 }
 # 全部键均有定义（attributes/abilities/talents/status-effects/relations.toml），
 # 裸字段会被加载校验 warning（可运行 npm run dev 观察 console）
 # 注意：TOML 内联表不能跨行（以下均为单行）
+# 注意：params 属字段分层 L2（ADR-0007）——daily_reset 每日清零，正常角色不写；
+#       此处保留为教学展示，加载时会看到预期 warning（"初始值仅首日生效"）
 # ════════════════════════════════════════════════════════════
 [[roster]]
 id = "contract_demo"

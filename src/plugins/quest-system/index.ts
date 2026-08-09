@@ -12,6 +12,7 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { gameContext } from '../../core/game-context'
 import type { Quest, ConversationRef } from '../../core/mod-loader'
 import { parseConversationRef } from '../../core/mod-loader'
+import { evaluateCondition } from '../../core/condition'
 
 // 注释：scene 运行时状态
 interface SceneRuntime {
@@ -261,9 +262,14 @@ async function checkObjectives(objectiveType: string, payload: any): Promise<voi
         matched = obj.target === payload.target
         break
       case 'kill_count':
+        // ⚠️ 标记（2026-08-09）：kill_count 未实现——combat:end payload {winner, outcome}
+        // 无敌人数量信息，且 objective 累计机制依赖 quest 系统整体设计。当前恒 true
+        // （事件到达即推进）= 已知半成品（勿局部修补，随 quest 系统补齐）。
         matched = true
         break
       case 'collect_items':
+        // ⚠️ 标记（2026-08-09）：collect_items 未实现——真实匹配（itemId + count 累计）
+        // 依赖 quest objective 系统整体设计。当前恒 true = 已知半成品（勿局部修补）。
         matched = true
         break
       case 'talk_to':
@@ -286,8 +292,15 @@ function checkAutoStart(): void {
     if (gameContext.isCompleted(id)) continue
     const cond = scene.auto_start_condition ?? scene.condition
     if (!cond) continue
-    // TODO: condition 求值——需 GameContext
-    // 当前简化：由 dialogue-system 的拦截逻辑处理
+    // 2026-08-09 example-mod 验证修复：原为 TODO 死代码（auto_start_condition 从不求值，
+    // 任务永不自动开始）→ 用条件引擎真实求值
+    try {
+      if (evaluateCondition(cond, gameContext.getContext())) {
+        startScene(id)
+      }
+    } catch {
+      narrativeLog.write(`Scene '${id}' auto_start 条件求值失败：${cond}`, 'system', 'quest-system')
+    }
   }
 }
 

@@ -12,15 +12,16 @@ Data in era-engine can come from three layers. When the same ID appears in multi
 
 ## Merge rules
 
-All data types follow the same set of rules regardless of which system owns them:
+All data types follow the same set of rules regardless of which system owns them. These rules are implemented by the single `deepMerge` in `src/core/template.ts` (shared by layer merging and template inheritance):
 
 | Type | Rule |
 |------|------|
 | Basic (number/string/bool) | Higher layer overwrites lower |
 | Object (key-value map) | Deep merge: higher-layer keys overwrite, lower-layer unique keys preserve |
-| Object array (with `id` field) | ID-matched replacement: same ID → higher replaces lower; new ID → appended |
-| Primitive array (tags, strings) | Append + deduplicate: higher-layer items appended after lower, duplicates removed keeping higher's position |
+| Array (incl. object arrays) | **Full replacement**: higher-layer array replaces lower-layer array entirely (no append, no ID matching) |
 | `= null` | Removes the field from merged result entirely |
+
+> **2026-08-09 correction**: the original table claimed ID-matched replacement for object arrays and append+dedup for primitive arrays; the actual implementation replaces arrays wholesale at every layer. ADR-0001 documents this for template inheritance; the same rule applies here.
 
 ## Cross-layer vs same-layer
 

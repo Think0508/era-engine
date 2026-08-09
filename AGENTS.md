@@ -357,6 +357,7 @@ extends = "combat-base"
 | `dialogue` | `dialogue:line`、`dialogue:end` | 口上触发/对话结束 |
 | `quest` | `quest:started`、`quest:updated`、`quest:completed` | 任务状态变更 |
 | `character` | `character:changed` | 角色属性变化 |
+| `relation` | `relation:added`、`relation:changed`、`relation:removed` | 关系变更（payload 含 type/sentiment/panel/address） |
 | `game` | `game:new_day`、`game:hour_changed`、`game:night_start`、`game:save`、`game:load` | 时间/存档 |
 | `save` | （由 `game:save`/`game:load` 覆盖） | 存档相关走 game 域 |
 
@@ -895,26 +896,65 @@ behavior = { activity = 0.5, home_locations = { 华山_练武场 = 0.7 } }
 - **地图系统不存角色列表**——角色系统按 `current_location == target_location_id` 反向查询
 - `activity = 0` 的角色永不动
 
-### 角色关系数据格式
+### 角色关系数据格式（关系系统 v2，2026-08-10 grill 定稿）
 
-`definitions/relations.toml` 定义有哪些关系种类（双向）：
+`definitions/relations.toml` 三段：types（关系类型）/ pairs（称呼词表）/ groups（关系组）。
+
+**核心语义**：
+- 关系**有向**：A→B 与 B→A 独立（A 视 B 为 X，B 未必回视——单方面关系合法，引擎不做自动双向同步）
+- 两个正交维度：**种类**（类型名，方向编码）+ **档位**（kind=relation：正面/中立/负面 = 1/0/-1）
+- 两型并存：`kind="sentiment"`（数值 0-100，好感度等）/ `kind="relation"`（三档）
+- 一角色对另一角色**多关系**（父亲+仇人+炮友）与**多对象**（段誉两个父亲）天然支持
+- 档位只影响行为阈值（正面：对方被威胁时愿牺牲）——行为推导由 mod 指令 condition 用聚合路径实现
 
 ```toml
-# definitions/relations.toml
 [types]
-好感度 = { min = 0, max = 100, default = 30, name = "好感度" }
-师徒值 = { min = 0, max = 100, default = 0, name = "师徒值" }
-仇恨值 = { min = 0, max = 100, default = 0, name = "仇恨值" }
+# 数值型（kind=sentiment，默认）：
+"好感度" = { min = 0, max = 100, default = 30, name = "好感度" }
+# 三档型（kind=relation）：端对×端（side: big 为大 / small 为小；对称类型省略）
+"父母子女（为大）" = { kind = "relation", pair = "parent_child", side = "big" }
+"父母子女（为小）" = { kind = "relation", pair = "parent_child", side = "small" }
+"夫妻" = { kind = "relation", pair = "spouse" }
+# 纯类型（无 pair，称呼=类型名）：reverse 显式声明（默认"同名换端"自动推导）
+"仇人" = { kind = "relation", reverse = "被仇" }
+
+[pairs]   # 称呼词表（h-core 内置 parent_child/sibling/grandparent/teacher_student/
+          # master_servant/spouse/lover；mod 可覆盖/新增）
+[pairs.parent_child]
+panel = { big_male = "父", big_female = "母", small_male = "子", small_female = "女" }
+address = { big_male = "父亲", big_female = "母亲", small_male = "儿子", small_female = "女儿" }
+
+[groups]  # 关系组（集中定义，一处增删调）；元素 = 类型名 或 { pair } 引用（展开为引用该 pair 的全部已定义类型）
+"死对头" = ["仇人", "被仇"]
+"血亲" = [{ pair = "parent_child" }, { pair = "sibling" }]   # 内置组（h-core 默认层）
 ```
 
-单个角色的关系值写在角色 `base.toml`（或 roster 条目）的 `relations` 字段中：
+角色数据（字符串档位或 1/0/-1 都收，加载统一存 -1/0/1）：
 
 ```toml
-# 角色的 base.toml
-relations = { 岳不群 = { 好感度 = 60, 师徒值 = 80 }, 岳灵珊 = { 好感度 = 75 } }
+relations = { 岳不群 = { 好感度 = 60, "师徒值" = 80, "父母子女（为小）" = "正面" }, 岳灵珊 = { "夫妻" = "正面" } }
 ```
 
-关系值可作为条件字段（`character.{角色ID}.relations.{对方ID}.{关系类型}`）。引擎自动处理双向关系同步。
+**称呼两层**：panel 成对名（关系面板显示：父子/父女/母子/母女，按双方性别组合）/
+address 单方称呼（口上 `{relation_display}`：父亲/儿子…，按端+自己性别）。API：
+`ctx.api.call('character','getRelationPanel/Address', A, B, type)`。
+
+**条件路径**：
+- 单类型：`character.{A}.relations.{B}.{类型}`（-1/0/1 或 sentiment 数值）——
+  注意条件引擎不支持负数字面量（`== -1` 会触发算术检查），负面档位用 `< 0`
+- 聚合（括号参数，跨种类）：`...any(类型,类型或group:组)`（存在）/ `...any_positive(列表)` /
+  `...any_negative(列表)`；无括号 = 全部类型；组合用 `&& || !`
+
+**修改/事件**：
+- `modify_relation` effect：kind=relation 类型 = **直接设档**（value 收 -1/0/1 或 "正面"）；
+  sentiment 保持加减；`remove_relation` effect 删除条目（解除关系，与设 0=中立区分）
+- 标准事件：`relation:added` / `relation:changed`（类型级，payload 必带 type）/
+  `relation:removed`，payload `{character, target, type, sentiment, panel, address}`
+- ⚠️ 标记（2026-08-10）：口上系统暂不监听 relation:* 事件——"B 成为了 A 的 父亲！"类
+  关系变化口上需 dialogue-system 支持事件触发（待补）；quest objective 暂无 relation 类型
+
+**校验**：reverse 不对称 → warning（单方面关系合法，仅提示确认）；聚合引用未定义类型/组 → error；
+三档值非法 → error。
 
 ---
 
@@ -1669,6 +1709,15 @@ starting_location = "华山_正殿"       # 可选：创建完成后起始地点
 - 沙箱脚本禁止访问 DOM/全局对象/文件系统，只能调用受限公共API
 - 脚本超时保护（5秒自动终止）
 - LLM API key 只能通过环境变量或游戏设置面板输入，禁止写死在代码或配置文件里
+
+## 开发环境注意（Windows，2026-08-10）
+- **bash 工具固定用 PowerShell 5.1**：opencode 1.18.15 在 Windows 上 bash 工具不遵循 `shell: pwsh` 配置
+  （配置对交互终端生效、对 agent bash 工具无效——已报 upstream issue；全局配置已改名
+  `~/.config/opencode/opencode.json`，`debug config` 确认 shell 字段已加载）
+- **需要 pwsh 7 语义时**（UTF-8 无 BOM、现代语法）：显式 `pwsh -NoProfile -Command '...'`——
+  ⚠️ 内层命令**必须用单引号**包裹（外层 5.1 会先展开 `$` 变量，导致命令损坏）
+- **写文件一律用 write 工具**：禁止 PowerShell `Set-Content`/重定向写含中文的文件
+  （5.1 默认编码会把 UTF-8 中文写坏——已两次损坏 TS 文件）
 
 ## Agent skills
 

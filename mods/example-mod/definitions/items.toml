@@ -1,0 +1,61 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/items.toml —— 第②层：物品定义
+# h-core 默认层不含物品（物品是 mod 内容），需要自己定义。
+# 角色数据里 inventory = [{ itemId = "回气丹", count = 3 }] 前，必须先在此定义。
+#
+# 字段字典（每个字段能填什么）：
+#   id / name / description：标识/显示名/说明（id 全局唯一，自由命名）
+#   type：物品大类（自由字符串，但建议用约定值）——
+#         "consumable"（消耗品，用后消失）/ "weapon"（武器）/ "armor"（护甲）/
+#         "clothing"（服装，可穿到装备槽）/ "material"（材料）
+#         （完整清单见 docs/item-system.md——还有 h_drug/玩具等 H 道具）
+#   stackable：true/false——可堆叠
+#   use："self"（点使用直接生效）/ "equip"（装备到对应槽位）……
+#   effects：使用效果【数组，效果类型见 docs/effect-system.md】——
+#         例：modify_attribute 回气血
+#   attack_bonus / defense_bonus：装备时提供的攻防加成（weapon/armor 用）
+# ═══════════════════════════════════════════════════════════════════
+
+[items."回气丹"]
+id = "回气丹"
+name = "回气丹"
+description = "恢复少量气血"
+type = "consumable"
+stackable = true
+use = "self"
+effects = [{ type = "modify_attribute", params = { attr = "气血", value = 30, target = "self" } }]
+
+[items."布衣"]
+id = "布衣"
+name = "布衣"
+type = "clothing"
+stackable = false
+use = "equip"
+defense_bonus = 2
+
+[items."长裤"]
+id = "长裤"
+name = "长裤"
+type = "clothing"
+stackable = false
+use = "equip"
+
+# ── 写法变体：武器 / 材料（type 和加成字段不同）──
+# 写法 A：武器（type = "weapon" + attack_bonus 装备加成）
+[items."铁剑"]
+id = "铁剑"
+name = "铁剑"
+type = "weapon"
+stackable = false
+use = "equip"
+attack_bonus = 15
+
+# 写法 B：材料（type = "material"，无 use 无 effects——纯素材/任务物品）
+[items."草药"]
+id = "草药"
+name = "草药"
+type = "material"
+stackable = true
+
+# 其他 type 取值见 docs/item-system.md（armor/h_drug/玩具等）；
+# 装备的 defense_bonus 同理（见 布衣）——加成字段按装备类型选择。

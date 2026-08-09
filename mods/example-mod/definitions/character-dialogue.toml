@@ -1,0 +1,22 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/character-dialogue.toml —— 角色通用口上（500 人 fallback）
+# ═══════════════════════════════════════════════════════════════════
+# 所有「没有专属口上」的角色都用这里面的台词（批量角色的默认对白）。
+# 一个角色有了专属口上（characters/named/{id}/dialogue.toml）就优先用专属的。
+# 触发方式：指令执行后触发对口上（greet/hurt/rest 等 scene——scene 名自由命名，
+# 触发方按同名匹配，见 named 角色的 dialogue.toml 头注释字段字典）。
+# 字段：scene / condition（可选）/ text；插值变量 {character.name} 等。
+# 这就是"500 个角色先共用一套口上"的核心文件（见 docs/mod-workflow.md 第 1 步）。
+# ═══════════════════════════════════════════════════════════════════
+
+[[character_lines]]
+scene = "greet"
+text = "{character.name}对你拱手致意。"
+
+[[character_lines]]
+scene = "hurt"
+text = "{character.name}闷哼一声。"
+
+[[character_lines]]
+scene = "rest"
+text = "{character.name}盘膝坐下，调息片刻。"

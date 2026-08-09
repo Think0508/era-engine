@@ -1,0 +1,87 @@
+# ═══════════════════════════════════════════════════════════════════
+# definitions/equipment.toml —— 装备槽定义（整表替换！）
+# ═══════════════════════════════════════════════════════════════════
+# ⚠️ 重要：本文件是「整表替换」——只要写了，就**完全替换** h-core 默认的
+# 9 个槽位。所以要么不写（用默认 9 槽），要么写全（默认 9 槽 + 你的新增）。
+# 本示例 = 完整复制 h-core 默认 9 槽 + 新增 1 个自定义槽「披风」（cape）。
+#
+# 槽位字段：
+#   id：槽位 ID（角色数据 equipment = { "披风" = 物品ID } 用它——物品的
+#       type=clothing 且按槽位穿）
+#   name：显示名；category：clothing/underwear/accessory
+#   removable：是否可脱下；auto_off：H 时自动脱下（内衣用）
+#   semen_capacity：精液容量（H 液体追踪用）
+# ═══════════════════════════════════════════════════════════════════
+
+[[slots]]
+id = "head"
+name = "头"
+category = "clothing"
+removable = true
+semen_capacity = 2000
+
+[[slots]]
+id = "upper"
+name = "上身"
+category = "clothing"
+removable = true
+semen_capacity = 4000
+
+[[slots]]
+id = "coat"
+name = "外套"
+category = "clothing"
+removable = true
+semen_capacity = 4000
+
+[[slots]]
+id = "bra"
+name = "胸罩"
+category = "underwear"
+removable = true
+semen_capacity = 1000
+auto_off = true
+
+[[slots]]
+id = "hand"
+name = "手"
+category = "accessory"
+removable = false
+semen_capacity = 1000
+
+[[slots]]
+id = "panties"
+name = "内裤"
+category = "underwear"
+removable = true
+semen_capacity = 1000
+auto_off = true
+
+[[slots]]
+id = "lower"
+name = "下身"
+category = "clothing"
+removable = true
+semen_capacity = 4000
+
+[[slots]]
+id = "foot"
+name = "脚"
+category = "clothing"
+removable = true
+semen_capacity = 4000
+
+[[slots]]
+id = "accessory"
+name = "饰品"
+category = "accessory"
+removable = false
+semen_capacity = 1000
+
+# ── 新增自定义槽（示例）：披风 ──
+[[slots]]
+id = "cape"
+name = "披风"
+category = "clothing"
+removable = true
+semen_capacity = 4000

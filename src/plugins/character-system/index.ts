@@ -7,6 +7,11 @@ import { entitySystem } from '../../core/entity-system'
 import { bindingResolver } from '../../core/binding-resolver'
 import { eventBus } from '../../core/event-bus'
 import { modLoader, finalizeCharacterData } from '../../core/mod-loader'
+import { errorReporter } from '../../core/error-reporter'
+import { resolveRelationPanel, resolveRelationAddress } from '../../core/relation-display'
+
+// 注释：关系三档字符串映射（关系系统 v2）——与 mod-loader 的转换一致
+const RELATION_SENTIMENT_MAP: Record<string, number> = { '正面': 1, '中立': 0, '负面': -1 }
 
 // 注释：onLoad——character-system 无需提前声明
 export function onLoad(_ctx: PluginContext): void {
@@ -57,18 +62,83 @@ export function onEnable(ctx: PluginContext): void {
       obj[parts[parts.length - 1]] = value
       eventBus.emit('character:changed', { id: charId })
     },
-    // 注释：角色关系
+    // 注释：角色关系（关系系统 v2）——有向、多关系；kind=relation 三档（-1/0/1 或 字符串）
     getRelation: (charId: string, targetId: string, relationType: string): number => {
       const char = entitySystem.get('character', charId) as any
       return char?.relations?.[targetId]?.[relationType] ?? 0
     },
-    setRelation: (charId: string, targetId: string, relationType: string, value: number): void => {
+    // 注释：设置关系——value 接受数值（sentiment 任意数；relation 型 -1/0/1）
+    // 或字符串档位（"正面"/"中立"/"负面"，仅 relation 型）。新类型 → relation:added；
+    // 已存在类型 → relation:changed。payload 带 panel（成对名）/address（单方称呼）。
+    setRelation: (charId: string, targetId: string, relationType: string, value: number | string): void => {
       const char = entitySystem.get('character', charId) as any
       if (!char) return
+      const def = modLoader.getMod()?.relationTypes?.[relationType]
+      let numValue: number
+      if (typeof value === 'string') {
+        // 字符串档位：三档 map 转换（kind=relation）；sentiment 型明确报错；
+        // def 未知（测试/未定义类型）时按三档宽松处理
+        const mapped = RELATION_SENTIMENT_MAP[value]
+        if (mapped === undefined) {
+          errorReporter.report({
+            source: 'character-system',
+            severity: 'error',
+            message: `关系 '${relationType}' 的档位值 '${value}' 非法（只接受 正面/中立/负面 或 1/0/-1）`,
+          })
+          return
+        }
+        if (def?.kind === 'sentiment') {
+          errorReporter.report({
+            source: 'character-system',
+            severity: 'error',
+            message: `关系 '${relationType}' 是数值型（kind=sentiment），不接受字符串档位`,
+          })
+          return
+        }
+        numValue = mapped
+      } else {
+        numValue = value
+      }
       if (!char.relations) char.relations = {}
       if (!char.relations[targetId]) char.relations[targetId] = {}
-      char.relations[targetId][relationType] = value
+      const existed = char.relations[targetId][relationType] !== undefined
+      char.relations[targetId][relationType] = numValue
+      const display = relationDisplayOf(charId, targetId, relationType)
+      eventBus.emit(existed ? 'relation:changed' : 'relation:added', {
+        character: charId,
+        target: targetId,
+        type: relationType,
+        sentiment: numValue,
+        panel: display.panel,
+        address: display.address,
+      })
       eventBus.emit('character:changed', { id: charId })
+    },
+    // 注释：删除关系条目（解除关系——与设 0=中立 区分）。发 relation:removed。
+    removeRelation: (charId: string, targetId: string, relationType: string): void => {
+      const char = entitySystem.get('character', charId) as any
+      if (!char?.relations?.[targetId]) return
+      if (char.relations[targetId][relationType] === undefined) return
+      delete char.relations[targetId][relationType]
+      if (Object.keys(char.relations[targetId]).length === 0) {
+        delete char.relations[targetId]
+      }
+      const display = relationDisplayOf(charId, targetId, relationType)
+      eventBus.emit('relation:removed', {
+        character: charId,
+        target: targetId,
+        type: relationType,
+        panel: display.panel,
+        address: display.address,
+      })
+      eventBus.emit('character:changed', { id: charId })
+    },
+    // 注释：关系称呼（关系系统 v2）——panel 成对名（关系面板显示）/ address 单方称呼
+    getRelationPanel: (charId: string, targetId: string, relationType: string): string => {
+      return relationDisplayOf(charId, targetId, relationType).panel
+    },
+    getRelationAddress: (charId: string, targetId: string, relationType: string): string => {
+      return relationDisplayOf(charId, targetId, relationType).address
     },
     // 注释：强制移动角色（AI 或脚本用）
     moveTo: (charId: string, locationId: string): void => {
@@ -173,8 +243,44 @@ function weightedRandom(items: { target: string; weight: number }[]): string | n
   return items[items.length - 1].target
 }
 
+// 注释：关系称呼生成（关系系统 v2）——按 类型 → pair 词表 + 端 + 双方性别 生成
+// panel 成对名（关系面板显示，big 词+small 词组合）+ address 单方称呼（口上 {relation_display}）
+// 纯类型（无 pair）：panel/address = 类型显示名
+function relationDisplayOf(charId: string, targetId: string, relationType: string): { panel: string; address: string } {
+  const mod = modLoader.getMod()
+  const def = mod?.relationTypes?.[relationType]
+  const pair = def?.pair ? mod?.relationPairs?.[def.pair] : undefined
+  const genderOf = (id: string): number => {
+    const c = entitySystem.get('character', id) as any
+    return c?.base?.['性别'] ?? 0
+  }
+  if (!pair) {
+    // 纯类型（无端对词表）：panel/address 都用类型显示名
+    const name = def?.name ?? relationType
+    return { panel: name, address: name }
+  }
+  if (!def?.side) {
+    // 对称类型（夫妻/恋人）：panel 固定；address 按 charId 性别（丈夫/妻子）
+    return {
+      panel: typeof pair.panel === 'string' ? pair.panel : relationType,
+      address: resolveRelationAddress(pair, null, genderOf(charId)),
+    }
+  }
+  // 端对型：charId 是 side 端（big/small）
+  const charGender = genderOf(charId)
+  const targetGender = genderOf(targetId)
+  const bigGender = def.side === 'big' ? charGender : targetGender
+  const smallGender = def.side === 'big' ? targetGender : charGender
+  return {
+    panel: resolveRelationPanel(pair, { bigGender, smallGender }),
+    address: resolveRelationAddress(pair, def.side, charGender),
+  }
+}
+
 // 注释：NPC spawns——首次进入地点时随机生成路人
 // TODO(phase-x): name_generator JS 脚本支持，当前只支持内联 names 列表
+// ⚠️ 标记（2026-08-09）：NPC spawn 记录机制未做——已生成记录（game-state 实体）未实现，
+// 每次进入地点都会重复生成路人（数量膨胀）。依赖 spawn 记录系统补齐（勿局部修补）。
 function handleNpcSpawns(locationId: string): void {
   if (!locationId) return
   const mod = modLoader.getMod()

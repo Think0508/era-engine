@@ -1,13 +1,13 @@
 // 注释：save-system — 存档系统（Dexie.js + IndexedDB）
 // 存档全量保存所有角色，不保存 locations/definitions（从 TOML 重新加载）
 // 存档权威模型：读档时角色从存档恢复，模板不覆盖存档数据
-// TODO: 自动存档
+// 自动存档：autoSave（bridge/location:enter/combat:start/end/new_day 触发）
 
 import Dexie, { type Table } from 'dexie'
 import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
 import { narrativeLog } from './narrative-log'
-import { modLoader, fillMissingAttributes } from './mod-loader'
+import { modLoader, fillMissingAttributes, normalizeMarksToAbilities } from './mod-loader'
 import type { EntityData } from './types'
 
 export interface SaveSlot {
@@ -140,10 +140,15 @@ export function restoreFromSave(data: SaveData): void {
     if (mod?.attributes) {
       fillMissingAttributes(char, mod.attributes, `读档 ${data.modId}@${data.gameTime}`)
     }
+    // 注释：marks 归一化（ADR-0007）——旧存档（本改动前保存）的 marks 值在恢复时拷入
+    // abilities，防止刻印值静默丢失（读取方全走 abilities）
+    normalizeMarksToAbilities(char as any)
     entitySystem.register('character', char.id, char)
   }
   // 注释：恢复游戏时间
   gameContext.reset()
+  // 注释：关系组恢复（reset 清空了 relationGroups——聚合条件 any(group:xxx) 需要）
+  gameContext.setRelationGroups(mod?.relationGroups ?? {})
   const t = data.gameTime
   gameContext.advanceTime(0)
   Object.assign(gameContext.getContext().time, t)

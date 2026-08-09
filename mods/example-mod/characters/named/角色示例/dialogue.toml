@@ -1,0 +1,34 @@
+# ═══════════════════════════════════════════════════════════════════
+# characters/named/角色示例/dialogue.toml —— 反应式口上（短台词）
+# ═══════════════════════════════════════════════════════════════════
+# 场景触发的短台词，无分支无玩家选择。触发时按 scene 匹配，多条同 scene
+# 且条件满足 → 随机选一条。没有专属口上的角色用 definitions/character-dialogue.toml
+# 的通用 fallback（见 mod-workflow.md 第 1 步）。
+#
+# 字段字典：
+#   scene：场景名【自由命名】——由触发方按同名匹配：
+#         - 指令 effects 里 trigger_dialogue 的 scene（建议与指令 id 一致，如 "rest"）
+#         - 系统触发的事件场景（greet=打招呼/hurt=受伤/farewell=告别…）
+#         自定义场景名 = 自定义触发点（在你的指令效果里 trigger_dialogue 同名即可）
+#   condition：可选，满足才触发（条件表达式，字段用「可用条件属性手册」）
+#   text：台词【自由填】；插值变量 {character.name} 等（见 docs/dialogue-format.md §三）
+# 完整字段语义见 docs/dialogue-format.md。
+# ═══════════════════════════════════════════════════════════════════
+
+[[lines]]
+scene = "greet"
+# condition 可选：满足才触发（字段路径用「可用条件属性手册」里的）
+condition = "player.好感度 >= 40"
+text = "侠士有礼了。若有需要，尽管开口。"
+
+[[lines]]
+scene = "greet"
+text = "这位朋友，面生得很。"
+
+[[lines]]
+scene = "hurt"
+text = "嘶……下手倒是不轻。"
+
+[[lines]]
+scene = "farewell"
+text = "后会有期。"

@@ -152,18 +152,42 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：modify_relation——调 character API
+  // 注释：modify_relation——调 character API（关系系统 v2）
+  // kind=relation（三档型）：直接设档（value 接受 -1/0/1 或 "正面"/"中立"/"负面"——设值而非加减）
+  // kind=sentiment（数值型，如好感度）：保持加减语义
   effectTypeRegistry.register('modify_relation', async (params: any, ctx: any) => {
     const targetIds = ctx._targetIds as string[]
     for (const id of targetIds) {
       try {
-        const current = await apiSystem.call('character', 'getRelation', id, params.target, params.relation) ?? 0
-        await apiSystem.call('character', 'setRelation', id, params.target, params.relation, current + params.value)
+        const def = modLoader.getMod()?.relationTypes?.[params.relation]
+        if (def?.kind === 'relation') {
+          await apiSystem.call('character', 'setRelation', id, params.target, params.relation, params.value)
+        } else {
+          const current = await apiSystem.call('character', 'getRelation', id, params.target, params.relation) ?? 0
+          await apiSystem.call('character', 'setRelation', id, params.target, params.relation, current + params.value)
+        }
       } catch {
         errorReporter.report({
           source: 'effect-system',
           severity: 'warning',
           message: `modify_relation 失败：character 未注册`,
+        })
+      }
+    }
+    return true
+  })
+
+  // 注释：remove_relation——删除关系条目（解除关系；与设 0=中立 区分，关系系统 v2）
+  effectTypeRegistry.register('remove_relation', async (params: any, ctx: any) => {
+    const targetIds = ctx._targetIds as string[]
+    for (const id of targetIds) {
+      try {
+        await apiSystem.call('character', 'removeRelation', id, params.target, params.relation)
+      } catch {
+        errorReporter.report({
+          source: 'effect-system',
+          severity: 'warning',
+          message: `remove_relation 失败：character 未注册`,
         })
       }
     }
@@ -225,7 +249,6 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
   // （如嵌套链里 target='self' 的效果会把 _targetIds 写成 ['player']），无 target 的效果必须读初始值
   // 而不是被污染的当前值，否则静默结算到错误目标
   const initialTargetIds = execCtx._targetIds
-
   for (const effect of effects) {
     // 注释：depends_on 检查——前置成功才执行
     if (effect.depends_on) {

@@ -2,6 +2,9 @@
 
 > 从零做一个 ERA 模组的完整路径。以"500 个角色先用通用口上，
 > 逐渐升级十几个名角到专属剧情"的常见场景为例。
+>
+> **新手先看**：`mods/example-mod/`（教学范例模组——每个文件带注释，复制改 id 即用）
+> + `docs/mod-file-guide.md`（逐文件字段字典：能写什么/形式/区间/默认）。
 
 ---
 
@@ -28,7 +31,7 @@
 
 完成 0 步意味着游戏能启动、能看到玩家角色。
 
-参考：`docs/mod-author-guide.md`、`mods/test-mod/`
+参考：`docs/mod-author-guide.md`、`docs/mod-file-guide.md`（逐文件字段字典）、`mods/example-mod/`（教学范例）、`mods/test-mod/`（测试模组）
 
 ---
 

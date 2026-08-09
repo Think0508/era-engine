@@ -1,0 +1,37 @@
+# ═══════════════════════════════════════════════════════════════════
+# quests/main/初入江湖.toml —— 主线任务示例
+# 一个任务一个文件。步骤类型（7 种）：
+#   dialogue（委托对话）/ combat（战斗）/ objective（目标追踪）/
+#   reward（效果）/ spawn（生成）/ condition（分支）/ goto（跳转）
+# 完整格式见 AGENTS.md §31 / quest-system 文档。
+# ═══════════════════════════════════════════════════════════════════
+
+id = "初入江湖"
+title = "初入江湖"
+description = "去集市逛逛，见识见识世面。"
+type = "main"
+# 启动方式示例：条件满足自动开始（进入山村即开始；也可用 start_quest effect 手动开始）
+auto_start_condition = "location.id == '山村'"
+
+[[steps]]
+id = "go_to_market"
+type = "objective"                       # 目标追踪：事件驱动自动检查
+description = "前往集市"
+objective = { type = "reach_location", target = "集市" }   # 监听 location:enter
+next = "reward_step"
+
+[[steps]]
+id = "reward_step"
+type = "reward"                          # 执行效果
+effects = [
+  { type = "modify_attribute", params = { attr = "气血", value = 50 }, target = "player" },
+  { type = "add_item", params = { itemId = "回气丹", count = 2 }, target = "player" },
+  { type = "narrative_output", params = { text = "你初窥江湖门径，气血 +50，获得回气丹 ×2。" } }
+]
+next = "complete"
+
+[[steps]]
+id = "complete"
+type = "objective"                       # 终点（目标满足即完成）
+description = "任务完成"
+objective = { type = "reach_location", target = "山村" }

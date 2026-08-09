@@ -88,6 +88,27 @@ const STRUCTURAL_WHITELIST = new Set([
   '剑骨',
 ])
 
+// 结构命名空间（实体上的非属性承载容器）——`ns['中文']` 索引不是属性引用：
+// 键的权威校验在各自系统（talents 加载报错 / relations warning / inventory 物品定义…），
+// 不查 attributes.toml 定义集。属性承载命名空间（base/params/social/economy/combat/
+// abilities/flags）继续查 defined。2026-08-09：example-mod 集成测试暴露该误判。
+const STRUCTURAL_NS = new Set([
+  'talents', 'relations', 'inventory', 'home_locations', 'equipment',
+  'equipment_off', 'equipment_visible', 'equipment_blood', 'assets', 'behavior',
+  'experience', 'status_effects', 'marks', 'first_times', 'first_records',
+  'pregnancy', 'dirty', 'body_items', 'h_state', 'sp_flag', 'achievement',
+  'action_info', 'hypnosis', 'cloth', 'dialogue', 'conversations', 'quests',
+  'scenes', 'styles', 'sets', 'schedules',
+  // mod 数据访问（关系系统 v2，2026-08-10）——mod.xxx['中文'] 是定义数据不是属性
+  'relationGroups', 'relationTypes', 'relationPairs',
+])
+
+// 形如 ns['a'] / ns['a']['b'] 的索引链（最后一段可未闭合）→ 返回链首命名空间
+function indexChainRoot(before) {
+  const m = before.slice(-160).match(/([\w$]+)(?:\[(?:'[^']*'|"[^"]*"|\w*)\]?)+\s*$/)
+  return m ? m[1] : null
+}
+
 // ========== 工具 ==========
 function lineOf(src, at) {
   let line = 1
@@ -157,8 +178,10 @@ function conditionSegs(literal) {
     for (let i = 0; i < parts.length; i++) {
       const seg = parts[i]
       if (!/[\u4e00-\u9fa5]/.test(seg)) continue
-      // 实体 ID 位置段跳过：character.{id} / relations.{id} / quest.{id} / inventory.{itemId}
-      if (['character', 'relations', 'quest', 'inventory'].includes(parts[i - 1])) continue
+      // 实体 ID 位置段跳过：character.{id} / quest.{id} / inventory.{itemId}
+      if (['character', 'quest', 'inventory'].includes(parts[i - 1])) continue
+      // relations.{对方}.{类型} 结构路径（对方 ID 与关系类型都不查 attributes 定义集）
+      if (parts[i - 1] === 'relations' || parts[i - 2] === 'relations') continue
       if (seg === '能力' || seg === '天赋') continue // 占位符段（abilities.{能力}）
       out.push(seg)
     }
@@ -213,6 +236,9 @@ function scan() {
       }
 
       if (isCallArg(before) || isIndexAccess(before) || isEffectParam(before)) {
+        // 结构命名空间索引（talents['天生神力'] / relations['player']['师徒值'] 等）非属性引用
+        const chainRoot = isIndexAccess(before) ? indexChainRoot(before) : null
+        if (chainRoot && STRUCTURAL_NS.has(chainRoot)) continue
         if (!defined.has(literal) && !STRUCTURAL_WHITELIST.has(literal)) {
           violations.push({ file: rel(file), line, seg: literal, ctx: lineText.slice(0, 110) })
         }

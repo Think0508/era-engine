@@ -73,6 +73,8 @@ export interface GameContext {
   selectedCharacterId?: string
   // 注释：实体字段别名（插件注册，如 status → status_effects）——core 不认知具体别名
   fieldAliases?: Record<string, string>
+  // 注释：关系组（关系系统 v2）——组名 → 展开后的类型名列表（mod 加载后注入）
+  relationGroups?: Record<string, string[]>
 }
 
 export interface UISlotItem {

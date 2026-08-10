@@ -509,6 +509,17 @@
     - 【修复·静默·高】游戏内读档后挂起选项残留（pending + 选项条 UI 不清）——旧选项在
       恢复后的游戏状态执行语义错位 → restoreFromSave 广播标准事件 game:load（AGENTS 标准
       事件表补实现），插件清 pending + bridge 清选项条 UI
+    随机事件系统第四轮排查（2026-08-10，用户「再审查检查一遍」）✅：
+    - 【修复·静默·高】事件 condition 运行时抛错中断整个事件系统——事件的 condition 无加载时
+      校验（ai-targets/指令才有）→ collect 内 try/catch 单事件跳过 + validateEventData 补
+      condition 字段合法性校验（引用未注册字段 → warning）
+    - 【修复·静默·中】事件前提 strict=false 静默放行未知前提（拼错前提 id = 少一个条件，
+      与 npc-ai target-search strict=true 不一致）→ strict=true 淘汰（数据错误显式暴露为
+      "事件不触发"）
+    - 【修复·静默·低】NaN 权重静默选中最后候选（weightedRandom total=NaN fallback）→
+      Number.isFinite 过滤；restore(undefined) 抛错 → 默认参数
+    - 【修复·低】saveGame 的 provider serialize 单段失败会中断存档 → try/catch 隔离
+    - 【修复·低】校验扩展：type/side/trigger_guard/adv 非法值 → warning（加载时显式暴露）
     NPC 行为系统排查修复（2026-08-10，用户「检查是否有 bug 或静默错误」）✅：
     - 【修复·静默】nearbyLocations apiSystem.call 恒返回 Promise——"玩家所在+相邻优先当轮"
       永不生效（相邻永不加入）→ await 化

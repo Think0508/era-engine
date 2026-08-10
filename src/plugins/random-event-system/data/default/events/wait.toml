@@ -1,0 +1,8 @@
+# 插件默认层——wait 行为通用事件（玩家等待时触发；mod 可在 definitions/events/ 覆盖/新增）
+
+[[events]]
+id = "wait_notice_bird"
+behavior = "wait"
+type = 0
+text = "一只飞鸟掠过，落下一片羽毛。"
+effects = [{ type = "noop", params = {} }]

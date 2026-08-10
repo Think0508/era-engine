@@ -15,6 +15,7 @@ import { premiseRegistry } from '../../core/premise-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { narrativeLog } from '../../core/narrative-log'
 import { randomEventEngine } from '../../core/random-event'
+import { getGameStateProviders } from '../../core/save-system'
 import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
 
@@ -146,13 +147,26 @@ describe('random-event-system 集成', () => {
   })
 
   it('文本插值：talk-common 变量替换 / 未知变量原样 / 实体占位符替换', async () => {
-    vi.spyOn(Math, 'random').mockReturnValue(0)
-    await apiSystem.call('random-event', 'triggerFor', 'player', 'talk_var_test', null)
+    vi.spyOn(Math, 'random').mockReturnValue(0.75)
+    // wait 桶候选：[wait_notice_bird（默认层）, move_talk_var（mods）]——random 0.75 选中第二个
+    await apiSystem.call('random-event', 'triggerFor', 'player', 'wait', null)
     const logs = narrativeLog.getEntries().filter(e => e.type === 'event')
     expect(logs.length).toBe(1)
     const text = logs[0].text
     expect(text).toContain('玩家')          // {self.name}
     expect(text).not.toContain('{penis}')   // talk-common 词库替换
     expect(text).toContain('{no_such_var}') // 未知变量原样保留
+  })
+
+  it('存档接线：random-event gameState provider 的 serialize/restore 往返', () => {
+    const provider = getGameStateProviders().find(p => p.id === 'random-event')
+    expect(provider).toBeDefined()
+    randomEventEngine.recordTriggered('move_see_swordsman')
+    randomEventEngine.recordTodayTriggered('chat_gossip')
+    const data = provider!.serialize()
+    randomEventEngine.restore({ all: [], today: [] })
+    provider!.restore(data)
+    expect(randomEventEngine.isTriggered('move_see_swordsman')).toBe(true)
+    expect(randomEventEngine.isTodayTriggered('chat_gossip')).toBe(true)
   })
 })

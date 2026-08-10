@@ -34,7 +34,7 @@ effects = [{ type = "noop", params = {} }]
 
 [[events]]
 id = "move_talk_var"
-behavior = "talk_var_test"
+behavior = "wait"
 type = 0
 # 插值测试：{penis} 走 talk-common 词库；{no_such_var} 未知原样保留；{self.name} 实体替换
 text = "{self.name}的{penis}与{no_such_var}。"

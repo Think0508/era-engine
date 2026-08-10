@@ -10,6 +10,7 @@ import { narrativeLog } from '../../core/narrative-log'
 import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { gameContext } from '../../core/game-context'
+import { eventBus } from '../../core/event-bus'
 import { randomEventEngine, interpolateEventText } from '../../core/random-event'
 import type { RandomEventDef } from '../../core/mod-loader'
 import type { PendingOption } from './types'
@@ -17,7 +18,12 @@ import type { PendingOption } from './types'
 let pending: PendingOption | null = null
 
 export function getPendingOption(): PendingOption | null { return pending }
-export function clearPendingOptions(): void { pending = null }
+export function clearPendingOptions(): void {
+  if (pending) {
+    pending = null
+    eventBus.emit('random-event:options_clear', {})
+  }
+}
 
 /** 触发一次事件选择与结算（无候选事件 → 静默返回） */
 export async function triggerEventFor(subjectId: string, behaviorId: string, targetId: string | null): Promise<void> {
@@ -35,6 +41,7 @@ export async function choosePendingOption(index: number): Promise<boolean> {
   if (!son) return false
   const { subjectId, targetId } = pending
   pending = null
+  eventBus.emit('random-event:options_clear', {})
   await runEvent(son, subjectId, targetId)
   return true
 }
@@ -74,6 +81,11 @@ async function executeEventEffects(event: RandomEventDef, subjectId: string, tar
           text: interpolateEventText(s.text?.split('|')[0] ?? s.id, subjectId, targetId),
         })),
       }
+      // 注释：通知 UI 渲染选项条（engine-ui-bridge 同步到 ui-store）
+      eventBus.emit('random-event:options', {
+        fatherId: event.id,
+        options: pending.options,
+      })
     }
   }
   // 注释：按顺序执行其余效果——target 解析走 effect-system（省略 target 默认 selected，

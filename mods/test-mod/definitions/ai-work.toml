@@ -1,0 +1,8 @@
+# 注释：test-mod AI 演示数据——工种（npc-ai-system 消费）
+# 格式：Record keyed by 工种 ID（mod definitions/ 覆盖插件默认层）
+
+[work_types.gate_duty]
+name = "站岗"
+place = "town_square"
+time_slots = [[8, 12], [14, 18]]
+auto_ai = true

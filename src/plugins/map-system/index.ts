@@ -65,6 +65,74 @@ function getReachable(
   return results
 }
 
+// 注释：NPC AI 寻路（npc-ai-system 消费）——dijkstra，图 = parent 链 + graph 边
+// 返回 { path（含起点不含终点? 含起点到终点）, total_minutes }；不可达 → null
+// 与 getReachable 的代价规则一致：parent/child 用 moveConfig 代价，graph 边用 time_cost
+function findPath(
+  fromId: string,
+  toId: string,
+  gc: GameContext,
+  graph: Edge[],
+  cfg: MoveConfig,
+): { path: string[]; total_minutes: number } | null {
+  if (fromId === toId) return { path: [fromId], total_minutes: 0 }
+  const allLocations = entitySystem.getAll('location')
+  const locIds = new Set<string>(allLocations.map(l => (l as any).id))
+  if (!locIds.has(fromId) || !locIds.has(toId)) return null
+
+  // 注释：邻接表——节点 → [{to, cost}]
+  const adj = new Map<string, { to: string; cost: number }[]>()
+  const addEdge = (a: string, b: string, cost: number): void => {
+    if (!adj.has(a)) adj.set(a, [])
+    adj.get(a)!.push({ to: b, cost })
+  }
+  // parent/child 链（双向）
+  for (const loc of allLocations) {
+    const l = loc as any as LocationData
+    if (l.parent) {
+      addEdge(l.id, l.parent, cfg.parent_time_cost)
+      addEdge(l.parent, l.id, cfg.child_time_cost)
+    }
+  }
+  // graph 边（含条件——不满足的边不参与）
+  for (const edge of graph) {
+    if (!edge.condition || evaluateCondition(edge.condition, gc)) {
+      addEdge(edge.from, edge.to, edge.time_cost ?? cfg.edge_default_time_cost)
+    }
+  }
+
+  // 注释：dijkstra（边权全正）
+  const dist = new Map<string, number>([[fromId, 0]])
+  const prev = new Map<string, string>()
+  const visited = new Set<string>()
+  const pq: { id: string; d: number }[] = [{ id: fromId, d: 0 }]
+  while (pq.length > 0) {
+    pq.sort((a, b) => a.d - b.d)
+    const cur = pq.shift()!
+    if (visited.has(cur.id)) continue
+    visited.add(cur.id)
+    if (cur.id === toId) break
+    for (const edge of adj.get(cur.id) ?? []) {
+      if (visited.has(edge.to)) continue
+      const nd = cur.d + edge.cost
+      if (nd < (dist.get(edge.to) ?? Infinity)) {
+        dist.set(edge.to, nd)
+        prev.set(edge.to, cur.id)
+        pq.push({ id: edge.to, d: nd })
+      }
+    }
+  }
+  if (!dist.has(toId)) return null
+  // 注释：回溯路径
+  const path: string[] = []
+  let cur: string | undefined = toId
+  while (cur !== undefined) {
+    path.unshift(cur)
+    cur = prev.get(cur)
+  }
+  return { path, total_minutes: dist.get(toId)! }
+}
+
 // 注释：onLoad——map-system 无需提前声明
 export function onLoad(_ctx: PluginContext): void {
 }
@@ -85,6 +153,13 @@ export function onEnable(ctx: PluginContext): void {
       const mod = modLoader.getMod()
       const cfg = mod?.moveConfig ?? { parent_time_cost: 10, child_time_cost: 5, edge_default_time_cost: 10 }
       return getReachable(id, gc, mod?.graph ?? [], cfg)
+    },
+    // 注释：NPC AI 寻路（dijkstra，parent 链 + graph 边）——不可达 → null
+    findPath: (fromId: string, toId: string): { path: string[]; total_minutes: number } | null => {
+      const gc = gameContext.getContext()
+      const mod = modLoader.getMod()
+      const cfg = mod?.moveConfig ?? { parent_time_cost: 10, child_time_cost: 5, edge_default_time_cost: 10 }
+      return findPath(fromId, toId, gc, mod?.graph ?? [], cfg)
     },
     // 注释：获取子地点（parent === locationId 的地点）
     getChildren: (locationId: string): LocationData[] => {

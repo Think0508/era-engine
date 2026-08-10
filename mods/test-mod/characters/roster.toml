@@ -23,7 +23,7 @@ id = "guard"
 template = "base-human"
 name = "卫兵"
 base = { hp = 120, attack = 12 }
-behavior = { activity = 0.3, home_locations = { town_square = 0.7, tavern = 0.3 } }
+behavior = { activity = 0.3, home_locations = { town_square = 0.7, tavern = 0.3 }, work = { work_type = "gate_duty" }, entertainment = { types = { evening = "drink" } } }
 equipment = { upper = "布衣", lower = "长裤" }
 assets = { portrait = "assets/char/guard.png" }
 

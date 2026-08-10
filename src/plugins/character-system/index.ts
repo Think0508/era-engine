@@ -1,15 +1,17 @@
-// 注释：character-system 插件——角色属性管理、AI移动、NPC生成
-// 职责：初始化角色 current_location、AI 移动、NPC spawns、character API
-// 不注册任何指令——纯服务插件
+// 注释：character-system 插件——角色属性管理、生命周期、character API
+// 职责：初始化角色 current_location、离线/在线生命周期、character API
+// （getLocation/moveTo/关系/离线/属性读写）。不注册任何指令——纯服务插件
+// 瘦身（2026-08-10 npc-ai-system 归位）：AI 移动 → npc-ai-system（行为块模型）；
+// NPC spawns（npc.toml 路人生成）→ npc-ai-system；每日欲望增长 → npc-ai-system
+// （原 core newday-settle 归位）。本插件只保留属性/生命周期/API 服务。
 
 import type { PluginContext, EntityData } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { bindingResolver } from '../../core/binding-resolver'
 import { eventBus } from '../../core/event-bus'
-import { modLoader, finalizeCharacterData } from '../../core/mod-loader'
+import { modLoader } from '../../core/mod-loader'
 import { errorReporter } from '../../core/error-reporter'
 import { resolveRelationPanel, resolveRelationAddress } from '../../core/relation-display'
-import { apiSystem } from '../../core/api'
 
 // 注释：关系三档字符串映射（关系系统 v2）——与 mod-loader 的转换一致
 const RELATION_SENTIMENT_MAP: Record<string, number> = { '正面': 1, '中立': 0, '负面': -1 }
@@ -24,8 +26,7 @@ export function onEnable(ctx: PluginContext): void {
   initCharacterLocations()
 
   // 注释：2. 注册 character API
-  ctx.api.register('character', {
-    // 注释：获取某地点的角色列表
+  ctx.api.register('character', {    // 注释：获取某地点的角色列表
     getCharactersAt: (locationId: string): EntityData[] => {
       const result: EntityData[] = []
       for (const char of entitySystem.getAll('character')) {
@@ -177,16 +178,6 @@ export function onEnable(ctx: PluginContext): void {
       return char?.sp_flag?.offline === true
     },
   })
-
-  // 注释：3. 监听 game:hour_changed → AI 移动（await：handleAiMovement 内部有 follow API 查询）
-  ctx.events.on('game:hour_changed', async (payload: any) => {
-    await handleAiMovement(payload?.hour ?? 0)
-  })
-
-  // 注释：4. 监听 location:enter → NPC spawns
-  ctx.events.on('location:enter', (payload: any) => {
-    handleNpcSpawns(payload?.to)
-  })
 }
 
 // 注释：初始化所有角色 current_location——home_locations 按权重选最高
@@ -214,83 +205,6 @@ function pickBestHomeLocation(c: any): string | null {
     }
   }
   return bestLocation
-}
-
-// 注释：是否被跟随系统接管（模式 1/2 的角色由 follow-system 控制移动，普通 AI 跳过；
-// mode 4 召唤 TODO 不冻结 NPC）
-// 可选依赖：follow 插件未启用/未注册 → 降级 false（零影响）
-async function isFollowControlled(charId: string): Promise<boolean> {
-  if (!apiSystem.has('follow', 'isControlled')) return false
-  try {
-    return (await apiSystem.call('follow', 'isControlled', charId)) as boolean
-  } catch {
-    return false
-  }
-}
-
-// 注释：AI 移动——所有角色都处理（不只当前+相邻）
-async function handleAiMovement(hour: number): Promise<void> {
-  for (const char of entitySystem.getAll('character')) {
-    const c = char as any
-    const behavior = c.behavior
-    if (!behavior) continue
-    // 注释：离线角色不移动
-    if (c.sp_flag?.offline) continue
-    // 注释：跟随中的角色由 follow-system 控制，普通 AI 跳过
-    if (await isFollowControlled(c.id)) continue
-    const activity = behavior.activity ?? 0
-    // 注释：activity=0 永不动
-    if (activity === 0) continue
-    // 注释：activity<0.3 降频——每 5 小时检查一次
-    if (activity < 0.3 && hour % 5 !== 0) continue
-    // 注释：概率检查
-    if (Math.random() >= activity) continue
-
-    // 注释：移动决策——time_rules 优先
-    const timeRules = behavior.time_rules as any[] | undefined
-    if (timeRules && timeRules.length > 0) {
-      // 注释：查匹配当前 hour 的 time_rule
-      const matched = timeRules.filter(
-        (rule: any) => hour >= rule.hour_range[0] && hour <= rule.hour_range[1],
-      )
-      if (matched.length > 0) {
-        // 注释：按 weight 加权随机选一个
-        const target = weightedRandom(matched.map((r: any) => ({ target: r.target, weight: r.weight ?? 1 })))
-        if (target) {
-          c.current_location = target
-          eventBus.emit('character:changed', { id: c.id })
-          continue
-        }
-      }
-    }
-
-    // 注释：无匹配 time_rule → home_locations 加权随机
-    const homeLocations = behavior.home_locations
-    if (homeLocations) {
-      const entries = Object.entries(homeLocations).map(([locId, weight]) => ({
-        target: locId,
-        weight: weight as number,
-      }))
-      const target = weightedRandom(entries)
-      if (target) {
-        c.current_location = target
-        eventBus.emit('character:changed', { id: c.id })
-      }
-    }
-  }
-}
-
-// 注释：加权随机选择
-function weightedRandom(items: { target: string; weight: number }[]): string | null {
-  if (items.length === 0) return null
-  const total = items.reduce((sum, item) => sum + item.weight, 0)
-  if (total <= 0) return items[0].target
-  let r = Math.random() * total
-  for (const item of items) {
-    r -= item.weight
-    if (r <= 0) return item.target
-  }
-  return items[items.length - 1].target
 }
 
 // 注释：关系称呼生成（关系系统 v2）——按 类型 → pair 词表 + 端 + 双方性别 生成
@@ -327,58 +241,3 @@ function relationDisplayOf(charId: string, targetId: string, relationType: strin
   }
 }
 
-// 注释：NPC spawns——首次进入地点时随机生成路人
-// TODO(phase-x): name_generator JS 脚本支持，当前只支持内联 names 列表
-// ⚠️ 标记（2026-08-09）：NPC spawn 记录机制未做——已生成记录（game-state 实体）未实现，
-// 每次进入地点都会重复生成路人（数量膨胀）。依赖 spawn 记录系统补齐（勿局部修补）。
-function handleNpcSpawns(locationId: string): void {
-  if (!locationId) return
-  const mod = modLoader.getMod()
-  if (!mod) return
-
-  for (const spawn of mod.npcSpawns) {
-    // 注释：查 spawns 中 at_locations 包含当前地点的条目
-    if (!spawn.at_locations.includes(locationId)) continue
-
-    // 注释：检查已生成记录（game-state 实体）
-    // TODO: 用 game-state 实体记录已生成 NPC，当前简化——每次都生成（测试用）
-    const count = randomInt(spawn.count.min, spawn.count.max)
-    for (let i = 0; i < count; i++) {
-      const npcId = `npc_${locationId}_${Date.now()}_${i}`
-      // 注释：用 template 实例化 + overrides
-      const templates = mod.entities.get('__templates_character__')
-      let npcData: EntityData = { id: npcId, template: spawn.template }
-      if (templates && templates.has(spawn.template)) {
-        const template = templates.get(spawn.template)
-        npcData = { ...template, ...npcData }
-      }
-      // 注释：应用 overrides
-      if (spawn.overrides) {
-        npcData = { ...npcData, ...spawn.overrides }
-      }
-      // 注释：生成姓名
-      if (spawn.names && spawn.names.length > 0) {
-        npcData.name = spawn.names[randomInt(0, spawn.names.length - 1)]
-      }
-      npcData.current_location = locationId
-      // 注释：先克隆 finalize 会触及的命名空间——template 是共享对象，浅拷贝下
-      // applyAttributeDefaults 会污染模板（base 被加默认键）；克隆后各自独立
-      for (const ns of ['base', 'params', 'marks', 'abilities', 'talents']) {
-        if (npcData[ns] && typeof npcData[ns] === 'object') {
-          npcData[ns] = { ...npcData[ns] }
-        }
-      }
-      // 注释：契约最终化（标准角色契约 spec §10.1）——attributes 默认值落位 +
-      // abilities 简写展开 + talents 初始化。此前缺失：路人 NPC 的 abilities 是裸数字
-      // （.level 恒 undefined → 结算系数静默 0）、marks/params 缺默认（面板不显示）
-      finalizeCharacterData(npcData, mod)
-      // 注释：注册到 entity-system
-      entitySystem.register('character', npcId, npcData)
-    }
-  }
-}
-
-// 注释：随机整数 [min, max] 含两端
-function randomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}

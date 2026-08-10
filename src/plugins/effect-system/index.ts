@@ -309,7 +309,10 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
   }
 
   // 注释：输出结算变化到日志
-  if (!settlement.isEmpty) {
+  // 注释：_silent 标志（NPC AI 行为完成结算用）——玩家不在场时 NPC 的属性变化结算
+  // 仍执行，但不输出叙事日志（erArk show_info_flag 同图检查同义；在场时由调用方
+  // 去掉 _silent 正常输出）
+  if (!settlement.isEmpty && !execCtx._silent) {
     narrativeLog.write(settlement.format(), 'system', 'effect-system')
   }
 }

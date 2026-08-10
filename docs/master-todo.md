@@ -4,6 +4,23 @@
 > - **L0 架构层**：影响整个代码库的架构决策，必须先做
 > - **L1 系统层**：完整的系统/插件实现
 
+## 参考文档索引（使用手册铁律——新系统手册在此登记）
+
+| 系统 | 手册 | 插件/核心 |
+|------|------|-----------|
+| NPC 行为系统 | `docs/npc-ai-system.md` | src/plugins/npc-ai-system/ |
+| 跟随/同行 | `docs/follow-system.md` | src/plugins/follow-system/ |
+| 关系系统 | `docs/relation-system.md` | src/core/relation-* + character-system |
+| 地图系统 | `docs/map-system.md` | src/plugins/map-system/ |
+| 对话/口上 | `docs/dialogue-format.md` | src/plugins/dialogue-system/ + talk-common-system |
+| 战斗 | `docs/combat-system.md` | src/plugins/combat-base/ + combat-wuxia/ |
+| 状态效果 | `docs/status-system.md` | src/plugins/status-system/ |
+| 任务 | `docs/quest-system.md` | src/plugins/quest-system/ |
+| 能力升级 | `docs/ability-progression.md` | src/plugins/ability-progression/ |
+| 效果系统 | `docs/effect-system.md` | src/plugins/effect-system/ |
+| 道具/背包 | `docs/item-system.md` / `docs/inventory-system.md` | src/plugins/inventory-system/ |
+| H 系 | `docs/h-core.md` 等 h-*.md | src/plugins/h-*/ |
+
 ## 会话交接摘要（2026-07-14）
 
 > 新会话开始时先读此节。
@@ -415,6 +432,119 @@
     - 【范围外】mode 3 砍掉（方舟专属）/ mode 4 TODO（召唤，IS_FOLLOW_4 前提注册提醒）/ 困倦度
       （睡眠系统后）/ 助理睡醒跟随（方舟概念）/ follow_count 上限（erArk 死字段）/ follow_bias（阶段14）
     跟随系统验收: typecheck ✅ / test 573 通过 ✅（50 文件）/ dev 冒烟
+     NPC 行为系统（2026-08-10，grill 定稿复刻 erArk NPC AI）✅：
+    - 【新增】src/plugins/npc-ai-system/：行为块时间模型（behavior{id,type,start_time,duration}，
+      erArk character_behavior）/ 前提权重目标搜索（searchTarget：getWeightSum 求和语义 + layer 分层 +
+      轮内缓存 + get_first_only + 无候选延后重试）/ 行为状态机（9 种日常处理器注册表：
+      wait/stay/move/rest/sleep/work/entertainment/socialize/wander；缝切方案——固定常量进 TOML、
+      状态依赖计算进处理器）/ 工作娱乐排班（time_rules → 工作 auto_ai → 娱乐三时段，erArk 顺序）/
+      前置门控（tired 标记/监禁禁移动/跟随接管，可插拔注册表）/ 带耗时移动（map findPath dijkstra）/
+      行为完成结算（on_complete_effects 数据驱动 + move 到达 npc:arrived）/ 窗口自动结算
+      （erArk get_true_add_time：行为窗口∩玩家窗口；疲劳/饥饿/尿意/休息恢复/睡眠积累）/
+      wait_flag pin（交互中不结算）/ 同地叙事 / 每日欲望结算（core newday-settle 归位）
+    - 【core 前置】game:time_advanced 事件（advanceTime 窗口末尾发）/ premiseRegistry.getWeightSum
+      （erArk search_target 求和语义，与口上 getWeight 区分）/ skip-registry（通用跳过谓词注册表：
+      npc-ai 注册 dead/offline/unconscious，combat-base 注册 in_combat）/ realtime-settle 导出
+      settleTired/settleUrine/settleHunger + sleepPassSettle（睡眠逐段结算）/ sleepSettle 提取共享
+    - 【重构归位】character-system 瘦身（AI 移动 + NPC spawns 移出，保留 API/生命周期/关系）；
+      NPC spawns → npc-ai spawns.ts；core newday-settle.ts 删除（欲望增长 → npc-ai dailySettle）；
+      command-executor NPC 实时结算循环删除（npc-ai time_advanced 统一）
+    - 【数据】插件默认层 data/default/（ai-behaviors.toml 9 规格 + ai-targets.toml 4 目标）+
+      mod definitions/（ai-targets 累积式 / ai-behaviors/ai-work/ai-entertainment 字段级 deepMerge）；
+      test-mod 演示：站岗工种 + 喝酒娱乐 + guard 排班数据
+    - 【API】npc-ai 命名空间：getBehavior/getState/setBehavior/isSkipped/registerBehaviorHandler/
+      registerPreCheck；事件 npc:behavior_started / npc:arrived；条件字段 character.{id}.state /
+      current_behavior（实体顶层镜像，L3 引擎独占）
+    - 【文档】docs/npc-ai-system.md 使用手册 + plugin-author-guide（npc-ai + map findPath）+
+      master-todo 顶部参考索引 + AGENTS §13（性能模型修订：全量同步+阈值分帧，否决追算）/
+      §23（角色-地点关联扩展）
+    - 【测试】target-search.test.ts 8 条（权重/分层/缓存/延后/get_first_only/未知前提）+ 
+      npc-ai-system.test.ts 11 条（初始决策/窗口结算/排班/连锁移动到达/门控/战斗冻结/pin/
+      每日结算/500 NPC 性能冒烟）
+    - 【范围外/后置】H 内 NPC AI（handle_npc_ai_in_h，依赖 H 成熟度）/ 行为期随机事件
+      （event.py，独立大系统）/ NPC 自然醒 wake 侧（daily_reset/愤怒，erArk 仅玩家睡眠时
+      update_sleep 全员执行——待 L1.7 睡眠系统）/ 助理问安（目标前提数据实现，无机制位）/
+      follow_bias（关系前提目标 = mod 内容）/ 监禁送宿舍（原地等待简化）
+    NPC 行为系统验收: typecheck ✅ / test 597 通过 ✅（51 文件，11 条 npc-ai 集成 + 8 条目标搜索）/
+      三层合规扫描（无跨插件 import、core 零玩法逻辑）
+    NPC 行为系统排查修复（2026-08-10，用户「检查是否有 bug 或静默错误」）✅：
+    - 【修复·静默】nearbyLocations apiSystem.call 恒返回 Promise——"玩家所在+相邻优先当轮"
+      永不生效（相邻永不加入）→ await 化
+    - 【修复·静默】AI 目标 condition 用全局上下文——selected.* 解析到 UI 选中/undefined，
+      mod 写 `selected.current_location == 'X'` 目标静默淘汰 → AI 上下文注入
+      selectedCharacterId=被决策 NPC（self 引用语义，文档+测试）
+    - 【修复·静默】move 寻路失败（不可达地点）→ 等待 30 分钟且不报错（静默失败）→
+      去重上报（同 NPC+目的地只报一次，上限 200 条）
+    - 【修复·逻辑】排班时段闭区间 [start,end] 与娱乐/工作半开不一致——12:00 仍算"在班"且
+      班末+1 小时 → 统一半开 [start, end)（schedule/workHandler/AI_WORK_TIME/文档+边界测试）
+    - 【修复·逻辑】minutesUntilHourSafe ≤5 兜底把"班末 1 分钟"变 24 小时（静默超长工作）→ ≤0
+    - 【修复·逻辑】stayHandler 剩 <5 分钟顺延到"下一小时"——[20,23] 规则 23:58 越界到次日
+      01:00 → 改为待满 5 分钟
+    - 【修复·逻辑】sleepHandler 最短 60 → 30（5:30 的 30 分钟小睡被拉长）
+    - 【修复·逻辑】AI_WORK_TIME 前提闭区间（与排班不一致）→ 半开
+    - 【补漏】H 中 NPC（sp_flag.is_h）缺跳过谓词——日常 AI 会与 H 会话竞争 → 注册 in_h 谓词
+    - 【防御】resolveDuration 下限 1 分钟（duration=0 → 无限连锁）
+    - 【清理】followGate 死代码 API 调用（apiSystem.call 恒 Promise，同步分支永不执行）/
+      freshStart 死变量 / skip-registry 空 if / index/schedule 防告警 export hack / 死导出
+      behaviorEndTime/getBehaviorData
+    - 【测试】+5 条边界回归（12:00 不在班 / workHandler 半开 / stayHandler 5 分钟 /
+      sleepHandler 30 分钟 / selected.* self 引用）
+    排查修复验收: typecheck ✅ / test 602 通过 ✅（51 文件）/ validate 4/4
+    第二轮排查（2026-08-10，用户「再检查：bug/静默错误/链路错误/不合理」）✅：
+    - 【修复·静默·重要】AI 前提注册在模块顶层副作用 + registerAiPremises 空壳——测试隔离/
+      模组重载的 premiseRegistry.clear() 之后前提永久丢失，前提目标（go_home_night 等）
+      静默失效（链路测试当场暴露：searchTarget 结果 wander 而非 go_home）→ 全部注册
+      移入 registerAiPromises()（onLoad 调用）+ 回归测试（clear 后重载前提存在）
+    - 【修复·链路】玩家不在场时 NPC 行为完成效果里的 narrative_output 泄漏到叙事日志
+      （_silent 只挡结算摘要）→ 不在场过滤 narrative_output
+    - 【修复·链路】门控接管（监禁/跟随等待）不宣告行为变更——NPC 状态陈旧 → announceBehavior
+    - 【补缺·设计】默认夜间睡眠无"先回家"——NPC 在酒馆原地睡，home_locations 形同虚设 →
+      新增 go_home 处理器 + go_home_night 目标（层 39）+ AI_NOT_AT_HOME 前提（erArk 睡宿舍语义）
+    - 【清理】minutesUntilHourInRange 死包装导出；"8 种"注释过时改 10 种
+    - 【文档】手册 §3.1 完成效果三条注意（narrative_output 过滤/condition 的 selected.*
+      指 UI 选中/禁 advance_time 重入）；§9 前提表 + 默认目标集
+    第二轮排查验收: typecheck ✅ / test 604 通过 ✅（51 文件）/ validate 4/4
+    第三轮排查（2026-08-10，用户「再审查：bug 与静默错误」）✅：
+    - 【修复·静默·重要】AI 目标引用未注册前提/拼错条件字段路径——strict 规则/条件默认值
+      把它们**静默淘汰**（目标永不触发且零痕迹）→ 运行时去重校验：未知前提 → 上报一次；
+      条件字段路径 validateExpression 校验 → 上报一次；条件表达式抛错 → 去重上报
+      （此前每 NPC 每 pass 刷屏）
+    - 【补注册】condition_fields 增加 character.{id}.current_location——手册推荐的
+      selected.current_location 写法此前不在条件字典（会误报/校验失败）
+    - 【测试】+3 条（未知前提去重上报/拼错字段上报/合法字段不误报）+ resetSearchReports
+      测试隔离导出（修复去重集合跨测试泄漏——同 id 目标第二次校验被跳过）
+    第三轮排查验收: typecheck ✅ / test 607 通过 ✅（51 文件）/ validate 4/4
+    第四轮排查（2026-08-10，用户「再看看」）✅：
+    - 【修复·链路】pendingQueue 合并 bug——持续超预算时未入队 NPC 永不结算（行为静默
+      过期）→ 每 pass 合并 上轮遗留 + 本轮全员（对象引用去重）
+    - 【清理】behavior-block 死 export（EntityData）/ 文档"9 种"过时改 10 种
+    第四轮排查验收: typecheck ✅ / test 608 通过 ✅（51 文件）/ validate 4/4
+    第五轮排查（2026-08-10，用户「再检查一遍」）✅：
+    - 【修复·真 bug】in_h 跳过谓词读 sp_flag.is_h（按 erArk 字段名猜）——本引擎 H 标志
+      实际在 h_state.is_h（h-core 写入）→ 谓词永不触发，H 中 NPC 照常跑日常 AI →
+      改 h_state.is_h + 集成回归测试（H 中冻结/解除恢复）
+    - 【修复·静默误报】tiredGate 对无"体力"属性的角色（getEntityAttr 缺失返回 0）恒判
+      HP≤1 → sp_flag.tired 永远 true → 加 hasAttr 存在性检查
+    - 【补校验·静默失效】validateAiData 新增：角色 work_type/娱乐类型引用存在性、
+      time_rules 时段格式（[start,end) 0-23）与目标地点存在性、工种时段格式——
+      非法/缺失引用此前静默不生效
+    第五轮排查验收: typecheck ✅ / test 608 通过 ✅（51 文件）/ validate 4/4
+    第六轮排查（2026-08-10，用户「确认无 bug 与静默错误、链路错误」）✅：
+    - 【修复·静默刷屏】前提 handler 抛错上报未去重（坏前提 × 500 NPC × 每 pass = 刷屏）
+      → reportOnce 去重（与未知前提/条件抛错一致）
+    - 【验证·端到端】新增昼夜循环链路测试（两段真实节奏 pass：23:00 go_home→sleep →
+      6:00 起床 → 8:00 上班 → 11:00 在班；断言位置/行为类型/疲劳削减/饥饿积累/时间线连续）
+      ——验证过程确认：单 pass 内连锁决策用 pass 时刻上下文是 erArk 固有语义
+      （cache.game_time 固定），非缺陷；测试场景必须拆真实节奏 pass，手册已注明
+    第六轮排查验收: typecheck ✅ / test 609 通过 ✅（51 文件）/ validate 4/4
+    偶发失败排查（2026-08-10，用户「跑一下测试」）✅：
+    - 【观察】全量测试偶发 1 次 "1 error"（598 tests）与 1 次 "1 failed"（608）——
+      连续 4 次复跑全部 51 文件 / 609 测试通过；singleFork 串行 + 高负载下
+      重集成文件（全插件加载，单文件 40-50s）接近 60s 超时边缘
+    - 【修复·负载敏感断言】npc-ai 500 NPC 性能冒烟 `elapsed < 3000` 放宽到 8000
+      （唯一由 npc-ai 引入的负载敏感断言；预算 100ms/轮 + 后续轮兜底，上限只验证不失控）
+    - 【结论】无代码级失败；偶发为单 fork 串行 + 负载波动（既有测试基础设施特性）
+    偶发排查验收: typecheck ✅ / test 609 通过 ✅（51 文件）连续 4 次
    dev 控制台噪音清理（2026-08-10，用户「npm run 报很多错」）✅：
    - 【噪音·已修】premise-registry 重复注册 console.warn 删除——同名覆盖是设计特性
      （mod 插件覆盖通用插件前提，mod-override 运行时 override）+ 插件重复加载（HMR/测试）

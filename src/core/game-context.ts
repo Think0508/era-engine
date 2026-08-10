@@ -76,6 +76,7 @@ class GameContextManager {
   }
 
   async advanceTime(minutes: number): Promise<void> {
+    if (minutes <= 0) return
     let remaining = minutes
     while (remaining > 0) {
       const minutesToNextHour = 60 - this.time.minute
@@ -110,6 +111,12 @@ class GameContextManager {
         }
       }
     }
+    // 注释：窗口结束事件——NPC AI 结算通道（npc-ai-system 监听）。
+    // 通用机制（core 不认知具体消费方）：整段推进完成后的总分钟数，供
+    // 按窗口做结算（erArk character_behavior 循环：每 NPC 按玩家行动窗口
+    // realtime_settle.character_aotu_change_value，窗口 = 本次推进分钟数）。
+    // 注意：逐小时事件（hour_changed/new_day）已先发完，本事件在窗口末尾发。
+    await eventBus.emit('game:time_advanced', { minutes })
   }
 
   // 注释：移动到目标地点——command-executor 的 move 指令调用

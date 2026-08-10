@@ -71,6 +71,29 @@ export class PremiseRegistry {
     return Array.from(this.handlers.keys())
   }
 
+  // 注释：权重求和（erArk search_target 语义，handle_npc_ai.py search_target：
+  // `now_weight += premise_judge`，前提返回值即权重，任一个 <=0 整目标淘汰）——
+  // NPC AI 目标搜索用。与 getWeight（口上权重：满足 +1 / high_N +N）语义不同：
+  // 动态前提（如"疲劳度"返回疲劳等级数值）权重随状态变化，是 AI 偏好（疲惫越重
+  // 越想休息）的来源。boolean 前提通过计 1。空前提集 → 1（无条件目标默认权重）。
+  // 未知前提：strict=true 时返回 0（淘汰）；strict=false 时跳过。
+  getWeightSum(premises: string[], ctx: any, strict = false): number {
+    if (!premises || premises.length === 0) return 1
+    let sum = 0
+    for (const premiseId of premises) {
+      const handler = this.handlers.get(premiseId.toLowerCase())
+      if (!handler) {
+        if (strict) return 0
+        continue
+      }
+      const result = handler(ctx)
+      const ok = typeof result === 'boolean' ? result : result > 0
+      if (!ok) return 0
+      sum += typeof result === 'boolean' ? 1 : result
+    }
+    return sum
+  }
+
   clear(): void {
     this.handlers.clear()
   }

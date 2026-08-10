@@ -35,6 +35,8 @@ export const ENGINE_OWNED_TOP_KEYS: ReadonlySet<string> = new Set([
   'h_state', 'body_items', 'first_records',
   'dirty', 'hypnosis', 'action_info', 'achievement',
   'equipment_off', 'equipment_visible', 'equipment_blood',
+  // 注释：npc-ai-system 运行时字段——行为块本体 + 条件镜像（state/current_behavior）
+  'ai_behavior', 'state', 'current_behavior',
 ])
 
 /** 引擎结构命名空间（非 attributes 定义，但合法存在的顶层键） */

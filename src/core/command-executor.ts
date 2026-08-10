@@ -11,7 +11,6 @@ import { errorReporter } from './error-reporter'
 import { gameContext } from './game-context'
 import { entitySystem } from './entity-system'
 import { realtimeSettle } from './realtime-settle'
-import { newDaySettle } from './newday-settle'
 import { processPendingSpawns } from './spawn-system'
 import { checkTalentGain } from './talent-utils'
 
@@ -176,7 +175,10 @@ export class CommandExecutor {
             message: `指令 '${id}' 是 effects 类指令，但 effect-system 未注册`,
           })
         }
-        // 注释：实时结算（疲劳/饥饿/尿意等）
+        // 注释：实时结算（疲劳/饥饿/尿意等）——仅玩家
+        // NPC 的窗口结算已由 npc-ai-system 在 game:time_advanced（advanceTime 末尾）统一执行
+        // （erArk character_behavior 循环：每 NPC 按玩家行动窗口 character_aotu_change_value）；
+        // 每日欲望增长由 npc-ai-system 监听 game:new_day 执行（原 core newday-settle 归位）。
         if (timeCost > 0) {
           const isRest = cmd.id === 'rest' || cmd.id === 'sleep'
           const isSleep = cmd.id === 'sleep'
@@ -187,13 +189,6 @@ export class CommandExecutor {
             const player = entitySystem.get('character', playerId) as any
             if (player) realtimeSettle(player, timeCost, settleOpts)
           }
-          for (const char of entitySystem.getAll('character')) {
-            const c = char as any
-            if (c.id && c.id !== playerId && c.current_location) {
-              realtimeSettle(c, timeCost, settleOpts)
-            }
-          }
-          newDaySettle()
           processPendingSpawns()
         }
       } else {

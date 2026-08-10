@@ -140,12 +140,32 @@ ctx.api.call('map', 'getChildren', locationId)                // → LocationDat
 ctx.api.call('map', 'getAncestors', locationId)               // → LocationData[]
 ctx.api.call('map', 'getLocation', locationId)                // → LocationData | null
 ctx.api.call('map', 'hasTag', locationId, tag)                // → boolean
+ctx.api.call('map', 'findPath', fromId, toId)                 // → { path: string[], total_minutes } | null（NPC AI 寻路，dijkstra）
 ctx.api.call('map', 'moveTo', targetLocationId)               // → void（校验可达性后移动，触发生成 location:enter）
 ```
 
 - `getReachable` 替代旧 `getExits`，综合 parent 链 + graph 边返回可达地点。`ReachableLocation` 包含 `{ target, name, time_cost, via }`，其中 `via` 为 `'parent' | 'child' | 'graph'`
 - `moveTo` 内部调用 `getReachable` 获取耗时，不可达则抛错。移动逻辑委托给 `gameContext.moveTo(targetId, timeCost)`
+- `findPath`（2026-08-10，npc-ai-system 消费）：dijkstra 最短路径（parent 链 + graph 边，边权 = time_cost），`total_minutes` = 总耗时；不可达返回 `null`。图条件边按当前游戏上下文求值
 - 移动耗时可在 `definitions/move.toml` 中自定义（详见 `docs/map-system.md`）
+
+#### npc-ai — NPC 行为系统（2026-08-10）
+
+```typescript
+ctx.api.call('npc-ai', 'getBehavior', charId)                          // → BehaviorBlock | null（{id,type,start_time,duration,target?,move_path?,move_final_target?,params?}）
+ctx.api.call('npc-ai', 'getState', charId)                             // → string | null（wait/move/rest/sleep/work/entertainment/socialize/wander…）
+ctx.api.call('npc-ai', 'setBehavior', charId, specId, params?)         // → boolean（强制设定行为：按行为规格+处理器生成行为块，从现在开始；发 npc:behavior_started）
+ctx.api.call('npc-ai', 'isSkipped', charId)                            // → boolean（dead/离线/无意识/插件跳过谓词）
+ctx.api.call('npc-ai', 'registerBehaviorHandler', type, handler)       // → void（扩展新行为类型；H 期注册 h_*）
+ctx.api.call('npc-ai', 'registerPreCheck', id, handler)                // → void（扩展前置门控）
+```
+
+- 行为处理器签名：`(ctx: { charId, char, spec, params, start_time, now }) => BehaviorBlock | Promise<BehaviorBlock>`——`spec` 是 ai-behaviors.toml 规格（含 duration/on_complete_effects/narrative），处理器负责状态依赖计算（时长/目标/路径）
+- 前置门控签名：`(charId, char, now) => { handled: boolean }`——`handled=true` 表示接管决策（须已设行为块）
+- 事件：`npc:behavior_started` `{character, behavior_id, type, duration, target?}`、`npc:arrived` `{character, from, to}`（移动完成到达）
+- 条件字段：`character.{id}.state`（行为类型）、`character.{id}.current_behavior`（行为规格 ID）、`character.{id}.current_location`（NPC 当前位置）——口上/任务/目标条件可直接用（如 `character.令狐冲.state == 'sleep'`、AI 目标条件 `selected.current_location == 'X'`）
+- AI 前提 handler ctx 约定：`{ sourceId: 被决策的 NPC id }`，返回数值即权重（0 = 淘汰）
+- 完整说明见 `docs/npc-ai-system.md`
 
 #### character — 角色服务
 

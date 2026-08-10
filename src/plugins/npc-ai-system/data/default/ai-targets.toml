@@ -1,0 +1,45 @@
+# 注释：AI 目标默认层（插件默认——mod 在 definitions/ai-targets.toml 追加，累积式）
+# 语义（erArk search_target）：前提返回数值即权重（疲惫越重越想休息）；
+# 按 layer 升序逐层搜索，首个有候选的层胜出，层内加权随机。
+# 分层约定：layer 5 危急（送医等）/ 40 基本需求（休息/睡眠）/
+#           100 自由活动（闲逛兜底）——mod 自定义目标按需取层。
+
+# 休息——疲惫等级 ≥2（权重 = 疲劳等级：越累越想休息）
+[[targets]]
+id = "rest_tired"
+name = "休息（疲惫）"
+layer = 40
+premises = ["AI_TIRED_LEVEL_2"]
+behavior = { type = "rest" }
+
+# 睡眠——疲惫等级 ≥3（快撑不住）
+[[targets]]
+id = "sleep_tired"
+name = "睡眠（疲惫）"
+layer = 40
+premises = ["AI_TIRED_LEVEL_3"]
+behavior = { type = "sleep" }
+
+# 睡眠——夜晚（22:00-5:59）
+[[targets]]
+id = "sleep_night"
+name = "睡眠（夜晚）"
+layer = 40
+premises = ["AI_NIGHT"]
+behavior = { type = "sleep" }
+
+# 回家——夜晚且不在家（家 = home_locations 最高权重；回房睡觉前先到家——
+# 2026-08-10 补缺：默认睡眠目标不含"先回家"，NPC 会在酒馆原地睡）
+[[targets]]
+id = "go_home_night"
+name = "回家（夜晚）"
+layer = 39
+premises = ["AI_NIGHT", "AI_NOT_AT_HOME"]
+behavior = { type = "go_home" }
+
+# 闲逛——自由活动兜底（home_locations 加权随机；activity 越低越倾向原地）
+[[targets]]
+id = "wander"
+name = "闲逛"
+layer = 100
+behavior = { type = "wander" }

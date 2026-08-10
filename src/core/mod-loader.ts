@@ -332,6 +332,54 @@ export interface RelationPairDef {
 // （{ pair } 加载时展开为引用该 pair 的所有已定义类型名）
 export type RelationGroupDef = (string | { pair: string })[]
 
+// ── NPC AI 数据定义（npc-ai-system 插件消费；core 仅作通用数据加载，不认知语义）──
+
+// 目标定义（ai-targets.toml [[targets]]）——erArk config_target（前提集合 + state_machine_id）
+export interface AITargetDef {
+  id: string
+  name?: string
+  /** 优先级层（升序搜索，首个有候选的层胜出——erArk config_target_type_index 分层） */
+  layer: number
+  /** 前提 ID 列表（premiseRegistry，权重求和语义） */
+  premises?: string[]
+  /** 可选布尔条件（现有条件引擎） */
+  condition?: string
+  /** 决策结果：{ type: <行为规格ID>, params } */
+  behavior: { type: string; params?: Record<string, any> }
+  /** 本层只取第一个通过目标（erArk get_first_only） */
+  get_first_only?: boolean
+}
+
+// 行为规格（ai-behaviors.toml [behaviors.xxx]）——固定常量侧（时长/效果/显示名）
+export interface AIBehaviorSpec {
+  /** 行为类型（处理器注册表 key）——状态依赖计算由处理器覆盖 */
+  type: string
+  name: string
+  /** 固定或随机时长（分钟）——处理器不覆盖时使用 */
+  duration?: { fixed?: number; min?: number; max?: number }
+  /** 行为完成时执行的效果 */
+  on_complete_effects?: Effect[]
+  /** 行为开始叙事模板（{name}/{place} 占位；仅玩家同地点时输出） */
+  narrative?: string
+}
+
+// 工种定义（ai-work.toml [work_types.xxx]）——erArk config_work_type
+export interface AIWorkTypeDef {
+  name?: string
+  place: string
+  time_slots: [number, number][]
+  auto_ai: boolean
+}
+
+// 娱乐类型定义（ai-entertainment.toml [entertainment_types.xxx]）——erArk config_entertainment
+export type AIEntertainmentPeriod = 'morning' | 'afternoon' | 'evening'
+
+export interface AIEntertainmentTypeDef {
+  name?: string
+  place: string
+  period: AIEntertainmentPeriod
+}
+
 export interface LoadedMod {
   id: string
   name: string
@@ -384,6 +432,12 @@ export interface LoadedMod {
   relationGroups: Record<string, string[]>
   // 注释：Phase H — H 系统
   hConfig: HConfig
+
+  // 注释：NPC AI（npc-ai-system 消费）
+  aiTargets: AITargetDef[]
+  aiBehaviors: Record<string, AIBehaviorSpec>
+  aiWorkTypes: Record<string, AIWorkTypeDef>
+  aiEntertainmentTypes: Record<string, AIEntertainmentTypeDef>
 
   // 注释：指令（插件默认层 + mod 定义层，按 id 去重，mod 胜出）
   instructions: HInstruction[]
@@ -737,6 +791,11 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     // 注释：Phase H
     hConfig: {},
     instructions: [],
+    // 注释：NPC AI（npc-ai-system 消费）
+    aiTargets: [],
+    aiBehaviors: {},
+    aiWorkTypes: {},
+    aiEntertainmentTypes: {},
   }
 
   // 注释：合并插件默认 + mod 定义的属性
@@ -1104,6 +1163,35 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   }
   mod.instructions = [...instructionsMap.values()]
   mod.effectBlocks = effectBlocks
+
+  // 注释：加载 NPC AI 数据（npc-ai-system 消费）——插件默认（Layer 1）+ mod 定义（Layer 3）
+  // ai-targets：累积式追加（插件默认 + mod 定义全部并入——erArk config_target 单表语义；
+  // 注意与 loadMerged"后写胜出"不同，目标表是注册表不是覆盖表）
+  const aiTargets: AITargetDef[] = []
+  for (const path of Object.keys(rawTomlMap)) {
+    if (!path.endsWith('/ai-targets.toml')) continue
+    const data = parseFile(path, rawTomlMap[path])
+    const targets = (data.targets as AITargetDef[]) ?? []
+    for (const t of targets) {
+      if (!t?.id) {
+        errorReporter.report({ source: 'mod-loader', severity: 'error', file: path, message: 'ai-targets.toml 目标缺少 id 字段，跳过' })
+        continue
+      }
+      if (aiTargets.some(existing => existing.id === t.id)) {
+        errorReporter.report({ source: 'mod-loader', severity: 'warning', file: path, message: `AI 目标 id '${t.id}' 重复，后者覆盖` })
+        aiTargets.splice(aiTargets.findIndex(e => e.id === t.id), 1)
+      }
+      aiTargets.push(t)
+    }
+  }
+  mod.aiTargets = aiTargets
+  // 注释：ai-behaviors/ai-work/ai-entertainment：字段级 deepMerge（mod 覆盖插件默认）
+  const aiBehaviorsData = loadMerged<Record<string, AIBehaviorSpec>>('ai-behaviors.toml', 'behaviors')
+  if (aiBehaviorsData) mod.aiBehaviors = aiBehaviorsData
+  const aiWorkData = loadMerged<Record<string, AIWorkTypeDef>>('ai-work.toml', 'work_types')
+  if (aiWorkData) mod.aiWorkTypes = aiWorkData
+  const aiEntertainmentData = loadMerged<Record<string, AIEntertainmentTypeDef>>('ai-entertainment.toml', 'entertainment_types')
+  if (aiEntertainmentData) mod.aiEntertainmentTypes = aiEntertainmentData
 
   // 注释：校验 locations——exit.target 和 parent 必须存在
   validateLocations(mod, modName)

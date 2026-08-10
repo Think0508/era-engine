@@ -1,0 +1,22 @@
+[meta]
+id = "npc-ai-system"
+name = "NPC 行为系统"
+version = "1.0.0"
+description = "NPC AI——行为块时间模型/前提权重目标搜索/行为状态机/工作娱乐排班/前置门控/带耗时移动/行为完成结算（复刻 erArk handle_npc_ai + character_behavior + StateMachine 日常部分；H 内 AI 后置）"
+
+[condition_fields]
+"character.{id}.state" = { type = "string", description = "NPC 当前行为状态（wait/move/rest/sleep/work/entertainment/socialize/wander…）" }
+"character.{id}.current_behavior" = { type = "string", description = "NPC 当前行为规格 ID（ai-behaviors.toml 键名）" }
+"character.{id}.current_location" = { type = "string", description = "NPC 当前位置（AI 目标条件常用：selected.current_location == 'X'）" }
+
+[data_dependencies]
+provides = ["npc-ai:ready"]
+depends_on = ["characters:initialized", "map:loaded"]
+
+[[events.listen]]
+name = "game:time_advanced"
+description = "NPC 结算通道：窗口自动结算（疲劳/饥饿/尿意/休息恢复/睡眠积累）+ 行为到期结算 + 决策下一行为（连锁）"
+
+[[events.listen]]
+name = "game:new_day"
+description = "NPC 每日结算（欲望增长——原 core newday-settle 归位）"

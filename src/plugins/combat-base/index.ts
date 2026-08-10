@@ -9,6 +9,7 @@ import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { bindingResolver } from '../../core/binding-resolver'
+import { registerSkipRule } from '../../core/skip-registry'
 import type { CommandDef } from '../../core/command-registry'
 
 // 注释：战斗运行时状态
@@ -51,6 +52,12 @@ export function onLoad(_ctx: PluginContext): void {
 }
 
 export function onEnable(ctx: PluginContext): void {
+  // 注释：注册跳过谓词——战斗参与者冻结 NPC AI（npc-ai-system 的跳过集；
+  // core skip-registry 中介，不直接 import 插件）
+  registerSkipRule('in_combat', (charId: string) => {
+    return !!currentCombat && currentCombat.participants.includes(charId)
+  })
+
   // 注释：注册 combat API
   ctx.api.register('combat', {
     // 注释：获取战斗上下文（供 effect-system target 解析）

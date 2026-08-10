@@ -498,11 +498,14 @@ transform = { field = "attack", script = "recalc_attack.js" }
 
 ---
 
-### 13. NPC性能模型
+### 13. NPC性能模型（2026-08-10 修订——行为块模型）
 
-- **计算范围**：只处理「玩家当前所在地 + 直接相邻（exits可达）」的角色AI。远方角色冻结
-- **分帧调度**：每帧最多执行 10ms 的AI计算，未完成的角色延迟到下一帧
-- **活跃度降频**：`activity < 0.3` 的角色，AI检查间隔从0.1秒降到5秒
+- **全量同步结算**：每次 `game:time_advanced`（玩家行动推进时间后）对所有 NPC 结算——行为窗口属性积累 + 到期行为完成结算 + 决策下一个（npc-ai-system 的 settle-pass）。**决策永远用真实时刻上下文，无"追算"**（冻结后补算会产生延迟计算的叙事/状态错位——已否决该方案）
+- **成本控制**：行为未到期只做窗口结算（微成本）；到期才做目标搜索（前提结果轮内缓存 + 目标层短路——erArk 同款）；估算每轮几十 ms/500 NPC
+- **分帧兜底**：单轮超预算（100ms）→ 剩余 NPC 排入后续轮次（玩家所在+直接相邻优先当轮）；每 NPC 结算自包含，分帧不产生上下文漂移
+- **跳过集**：dead/离线/无意识（时停）/战斗中/插件注册谓词 → 不结算
+- **活跃度**：`activity` 影响闲逛决策（越低越倾向原地停留），不影响排班与休息/睡眠需求
+- **连锁上限**：单轮连锁决策上限 60 次（超长窗口 + 短行为链属正常，如睡 12 小时；超限防御性强制等待）
 
 ---
 
@@ -874,9 +877,9 @@ game.time.month  — 当前月份
 
 ---
 
-### 23. 角色-地点关联
+### 23. 角色-地点关联（2026-08-10 修订——npc-ai-system 行为块模型）
 
-角色出现在哪个地点，全部通过角色的 `behavior` 定义：
+角色出现在哪个地点，全部通过角色的 `behavior` 定义（作者数据）+ 运行时行为块（`ai_behavior`，引擎独占）：
 
 ```toml
 # characters/named/linghuchong/behavior.toml
@@ -886,15 +889,18 @@ time_rules = [
   { hour_range = [20, 23], target = "华山_酒馆", weight = 0.9 },
   { hour_range = [0, 6], target = "华山_卧室", weight = 1.0 }
 ]
+work = { work_type = "gate_duty" }                    # 工种引用（ai-work.toml）
+entertainment = { types = { evening = "drink" } }     # 三时段槽娱乐（morning/afternoon/evening）
 
 # roster.toml 里
 behavior = { activity = 0.5, home_locations = { 华山_练武场 = 0.7 } }
 ```
 
-- **启动/读档时**：角色初始放在权重最高的 home_location
-- **运行时 `current_location`**：是运行时状态，存于存档
+- **启动/读档时**：角色初始放在权重最高的 home_location（character-system）；行为块初始化后由 npc-ai-system 接管
+- **运行时 `current_location` / `ai_behavior`**：运行时状态，存于存档（存档权威模型）
 - **地图系统不存角色列表**——角色系统按 `current_location == target_location_id` 反向查询
-- `activity = 0` 的角色永不动
+- **npc-ai-system**（`docs/npc-ai-system.md`）：每次 `game:time_advanced` 全量结算——窗口属性积累 + 行为到期（`start + duration ≤ now`）→ 完成结算 + 决策下一个（门控 → 排班：time_rules/工作/娱乐 → 目标搜索：前提权重+分层）。`activity` 影响闲逛决策（越低越倾向原地停留），**不影响排班与休息/睡眠需求**
+- 条件字段：`character.{id}.state`（行为类型）、`character.{id}.current_behavior`（行为规格 ID）
 
 ### 角色关系数据格式（关系系统 v2，2026-08-10 grill 定稿）
 
@@ -1715,14 +1721,8 @@ loading_image = "assets/loading.gif"
 - 脚本超时保护（5秒自动终止）
 - LLM API key 只能通过环境变量或游戏设置面板输入，禁止写死在代码或配置文件里
 
-## 开发环境注意（Windows，2026-08-10）
-- **bash 工具固定用 PowerShell 5.1**：opencode 1.18.15 在 Windows 上 bash 工具不遵循 `shell: pwsh` 配置
-  （配置对交互终端生效、对 agent bash 工具无效——已报 upstream issue；全局配置已改名
-  `~/.config/opencode/opencode.json`，`debug config` 确认 shell 字段已加载）
-- **需要 pwsh 7 语义时**（UTF-8 无 BOM、现代语法）：显式 `pwsh -NoProfile -Command '...'`——
-  ⚠️ 内层命令**必须用单引号**包裹（外层 5.1 会先展开 `$` 变量，导致命令损坏）
-- **写文件一律用 write 工具**：禁止 PowerShell `Set-Content`/重定向写含中文的文件
-  （5.1 默认编码会把 UTF-8 中文写坏——已两次损坏 TS 文件）
+## 开发环境注意（Windows）
+- 默认 shell 为 pwsh 7（UTF-8 无 BOM），写文件仍一律用 write 工具，禁止 `Set-Content`/重定向写含中文的文件
 
 ## Agent skills
 

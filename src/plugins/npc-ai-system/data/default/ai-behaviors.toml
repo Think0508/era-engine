@@ -1,0 +1,54 @@
+# 注释：AI 行为规格默认层（插件默认——mod 在 definitions/ai-behaviors.toml 覆盖/新增）
+# 缝切方案：固定常量在此（时长/完成效果/叙事模板），状态依赖计算在处理器
+# （sleep 算起床、work 算班末、move 算路径时长）
+
+[behaviors.wait]
+type = "wait"
+name = "等待"
+
+[behaviors.move]
+type = "move"
+name = "移动"
+
+[behaviors.stay]
+type = "stay"
+name = "停留"
+
+[behaviors.rest]
+type = "rest"
+name = "休息"
+duration = { fixed = 120 }
+narrative = "{name}找了个地方休息。"
+
+[behaviors.sleep]
+type = "sleep"
+name = "睡眠"
+narrative = "{name}睡着了。"
+# 起床时刻默认 6:00（处理器计算）；mod 可写 duration 或目标 params.wake_hour
+
+[behaviors.work]
+type = "work"
+name = "工作"
+narrative = "{name}开始工作。"
+
+[behaviors.entertainment]
+type = "entertainment"
+name = "娱乐"
+narrative = "{name}去消遣了。"
+
+[behaviors.socialize]
+type = "socialize"
+name = "社交"
+duration = { min = 30, max = 60 }
+narrative = "{name}去找人聊天。"
+
+[behaviors.wander]
+type = "wander"
+name = "闲逛"
+duration = { min = 30, max = 60 }
+narrative = "{name}四处闲逛。"
+
+[behaviors.go_home]
+type = "go_home"
+name = "回家"
+narrative = "{name}回家了。"

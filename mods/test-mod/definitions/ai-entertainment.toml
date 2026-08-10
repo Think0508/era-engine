@@ -1,0 +1,7 @@
+# 注释：test-mod AI 演示数据——娱乐类型（npc-ai-system 消费）
+# 时段槽（erArk judge_entertainment_time）：morning 9-12 / afternoon 14-18 / evening 19-22
+
+[entertainment_types.drink]
+name = "喝酒"
+place = "tavern"
+period = "evening"

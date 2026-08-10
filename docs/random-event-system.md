@@ -84,7 +84,7 @@ effects = [{ type = "modify_attribute", params = { attr = "hp", value = -5 } }]
 
 | 触发点 | 说明 |
 |--------|------|
-| **玩家** | 每次指令/移动/等待结算后（`game:execution_end`）——基于**刚完成的指令 id** 选择事件 |
+| **玩家** | 每次指令/移动/等待结算后（`game:execution_end`）——基于**刚完成的指令 id** 选择事件。`move` 指令例外：它只打开地图界面（map 模式）不经 commandExecutor，移动事件由**到达信号** `location:enter {from}` 触发（挂载键 `move`） |
 | **NPC** | 每次新行为开始时（`npc:behavior_started`）——基于行为块 id 选择 |
 
 **地点门控**：NPC 的**文本事件**仅当玩家与该 NPC 同地点时触发；**静默事件**（`text` 空）任意地点触发（效果照常结算，如破处标记类状态）。玩家不可见时（NPC 远处静默事件）效果数值结算**不输出**叙事日志（`_silent` + `narrative_output` 过滤，与 npc-ai 行为完成效果同语义）。
@@ -119,7 +119,7 @@ effects = [{ type = "modify_attribute", params = { attr = "hp", value = -5 } }]
 | `record_event` | 10008 | 记全时触发记录（机制保留；erArk 数据零使用） |
 | `record_event_today` | 10009 | 记今日触发记录 |
 | `open_son_options` | 10001 | 挂起子事件选项条（需同行为存在通过筛选的子事件） |
-| `set_interactant` | 10002/10005/10006/10007/10013 | 改写后续效果的交互对象：`mode = "player"`（目标改玩家）/ `"self"`（目标改自己）/ `"player_target_to_me"`（玩家选中改自己）/ `"masturbator"`（同地点手淫者）/ `"most_desire"`（同地点欲望最高者） |
+| `set_interactant` | 10002/10005/10006/10007/10013 | 改写后续效果的交互对象：`mode = "player"`（目标改玩家）/ `"self"`（目标改自己）/ `"player_target_to_me"`（玩家选中改自己——gameContext 立即生效 + 广播 `random-event:select_character` 供 bridge 同步 UI 选中）/ `"masturbator"`（同地点手淫者）/ `"most_desire"`（同地点 `ATTR.DESIRE` 最高者） |
 | `interrupt_activity` | 10000 | 中断目标活动（npc-ai setBehavior wait；无规格降级跳过） |
 
 **与 erArk 的有意偏差**（记录在案）：多层事件（CVP_A1_Son/Father 数据零使用）、效果 10008 数据零使用（机制保留）、10010/10011（群交开关）/10012（跳过口上）数据零使用不实现、DIY 指令（CHARA_DIY_INSTRUCT）不在本系统。

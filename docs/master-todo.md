@@ -491,6 +491,17 @@
     - 【修复·中】registerSystemEffects 重复注册会 throw（effectTypeRegistry 拒绝重复）→
       HMR/测试重载场景插件被禁 → has 检查幂等
     - 【修复·低】玩家 current_behavior 写入后补 character:changed（其他系统监听刷新）
+    随机事件系统链路/架构审查（2026-08-10，用户「检查链路不通、架构不合理」）✅：
+    - 【修复·链路·高】玩家移动事件断点——move 指令只打开地图界面（map 模式）不经
+      commandExecutor，实际移动走 gameContext.moveTo → 原 execution_end 挂钩永收不到
+      移动完成信号 → 移动事件改由 location:enter {from} 触发（到达信号）+ execution_end
+      跳过 move（防"打开地图就触发移动事件"）+ location:enter 挂钩补 clearPendingOptions
+      （防 map 模式连续移动遗留过期选项）
+    - 【修复·链路·中】player_target_to_me 的 UI 同步断点——bridge 的 selectedCharacterId
+      watch 单向（uiStore→gameContext），效果只改 gameContext 则 UI 选中不更新 →
+      效果广播 random-event:select_character，bridge 监听 → uiStore.selectCharacter
+    - 【修复·架构·中】most_desire 硬编码中文属性名 '欲望值'（违反属性名铁律）→ ATTR.DESIRE
+      常量（entity-utils）；顺手修 npc-ai dailySettle 同款硬编码
     NPC 行为系统排查修复（2026-08-10，用户「检查是否有 bug 或静默错误」）✅：
     - 【修复·静默】nearbyLocations apiSystem.call 恒返回 Promise——"玩家所在+相邻优先当轮"
       永不生效（相邻永不加入）→ await 化

@@ -11,6 +11,7 @@ import { gameContext } from '../../core/game-context'
 import { eventBus } from '../../core/event-bus'
 import { randomEventEngine } from '../../core/random-event'
 import { commandRegistry } from '../../core/command-registry'
+import { conditionRegistry } from '../../core/condition-registry'
 import { registerGameStateProvider } from '../../core/save-system'
 import { registerSystemEffects } from './system-effects'
 import {
@@ -122,12 +123,18 @@ export function onEnable(ctx: PluginContext): void {
   })
 }
 
-// 注释：事件数据校验（onEnable 时执行——warning：挂载键存在性提示；效果类型由加载时的 effect 校验兜底）
+// 注释：事件数据校验（onEnable 时执行——warning：挂载键/condition/字段合法值提示；
+// 效果类型由加载时的 effect 校验兜底；premises 未知前提由运行时 strict 淘汰兜底）
 // 挂载键合法来源：内置 move/wait、commandRegistry 已注册指令（native-instructions 或 mod 指令）、
 // NPC 行为规格（ai-behaviors.toml）
 function validateEventData(): void {
   const mod = modLoader.getMod() as any
   if (!mod?.events?.length) return
+  const charIds = new Set<string>()
+  for (const [id] of mod.entities.get('character') ?? []) charIds.add(id)
+  const validTypes = new Set([0, 1, 2])
+  const validSides = new Set(['self', 'target', 'any', 'both'])
+  const validGuards = new Set(['seen_once', 'unseen_once', 'seen_today', 'unseen_today'])
   for (const ev of mod.events) {
     if (['move', 'wait'].includes(ev.behavior)) continue
     if (commandRegistry.getById(ev.behavior)) continue
@@ -138,6 +145,50 @@ function validateEventData(): void {
       message: `事件 '${ev.id}' 挂载键 '${ev.behavior}' 未匹配已知指令/行为`,
       suggestion: '挂载键应为指令 id（native-instructions 或 mod 指令）、NPC 行为规格 id，或内置 move/wait',
     })
+  }
+  for (const ev of mod.events) {
+    if (!validTypes.has(ev.type)) {
+      errorReporter.report({
+        source: 'random-event-system',
+        severity: 'warning',
+        message: `事件 '${ev.id}' 的 type 非法：${String(ev.type)}`,
+        suggestion: 'type 取值：0/1 结算事件（合并语义），2 静默事件',
+      })
+    }
+    if (ev.side !== undefined && !validSides.has(ev.side)) {
+      errorReporter.report({
+        source: 'random-event-system',
+        severity: 'warning',
+        message: `事件 '${ev.id}' 的 side 非法：'${ev.side}'`,
+        suggestion: 'side 取值：self/target/any/both（省略=any）',
+      })
+    }
+    if (ev.trigger_guard !== undefined && !validGuards.has(ev.trigger_guard)) {
+      errorReporter.report({
+        source: 'random-event-system',
+        severity: 'warning',
+        message: `事件 '${ev.id}' 的 trigger_guard 非法：'${ev.trigger_guard}'`,
+        suggestion: 'trigger_guard 取值：seen_once/unseen_once/seen_today/unseen_today',
+      })
+    }
+    if (ev.adv && !charIds.has(ev.adv)) {
+      errorReporter.report({
+        source: 'random-event-system',
+        severity: 'warning',
+        message: `事件 '${ev.id}' 的 adv 引用不存在的角色：'${ev.adv}'`,
+        suggestion: 'adv 应为角色 id（characters/ 下定义的实体）',
+      })
+    }
+    if (!ev.condition) continue
+    const res = conditionRegistry.validateExpression(ev.condition)
+    if (!res.ok) {
+      errorReporter.report({
+        source: 'random-event-system',
+        severity: 'warning',
+        message: `事件 '${ev.id}' 的条件引用了未注册字段：${res.unknown.join(', ')}`,
+        suggestion: '检查 condition 拼写；可用字段见 可用条件属性手册.md',
+      })
+    }
   }
 }
 

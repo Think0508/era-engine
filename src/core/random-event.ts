@@ -84,9 +84,9 @@ export class RandomEventEngine {
     return { all: [...this.all], today: [...this.today] }
   }
 
-  restore(data: { all: string[]; today: string[] }): void {
-    this.all = new Set(data.all ?? [])
-    this.today = new Set(data.today ?? [])
+  restore(data?: { all: string[]; today: string[] }): void {
+    this.all = new Set(data?.all ?? [])
+    this.today = new Set(data?.today ?? [])
   }
 
   private collect(
@@ -100,9 +100,19 @@ export class RandomEventEngine {
       if (!extraFilter(d)) continue
       if (!this.matchAdv(d, ctx)) continue
       if (!this.matchGuard(d)) continue
-      if (d.condition && !evaluateCondition(d.condition, this.condCtx(ctx))) continue
-      const weight = premiseRegistry.getWeightSum(d.premises ?? [], this.premiseCtx(ctx), false)
-      if (weight <= 0) continue
+      if (d.condition) {
+        // 注释：运行时防御——condition 合法性已由插件层加载校验（validateEventData），
+        // 此处防运行时不匹配的抛错中断整个事件系统：单事件条件异常 → 跳过该事件
+        try {
+          if (!evaluateCondition(d.condition, this.condCtx(ctx))) continue
+        } catch {
+          continue
+        }
+      }
+      // 注释：strict=true——未知前提整事件淘汰（与 npc-ai target-search 一致：数据错误
+      // 显式暴露为"事件不触发"，不静默放行）；NaN 权重防御（handler 异常返回值）
+      const weight = premiseRegistry.getWeightSum(d.premises ?? [], this.premiseCtx(ctx), true)
+      if (!Number.isFinite(weight) || weight <= 0) continue
       out.push({ event: d, weight })
     }
     return out

@@ -96,9 +96,21 @@ export async function saveGame(slotId: string, uiState: any, label?: string): Pr
     characters: allChars.map(c => JSON.parse(JSON.stringify(c))),
     gameState: {
       completedScenes: gameContext.getCompletedScenes(),
-      // 注释：插件注册的游戏状态段（random-event-system 的触发记录等）
+      // 注释：插件注册的游戏状态段（random-event-system 的触发记录等）——
+      // 单段 serialize 失败隔离（不阻断存档；与 restore 侧一致）
       ...(Object.fromEntries(
-        [...gameStateProviders.values()].map(p => [p.id, p.serialize()]),
+        [...gameStateProviders.values()].map(p => {
+          try {
+            return [p.id, p.serialize()] as const
+          } catch (e) {
+            errorReporter.report({
+              source: 'save-system',
+              severity: 'warning',
+              message: `游戏状态段 '${p.id}' 序列化失败：${e instanceof Error ? e.message : String(e)}`,
+            })
+            return [p.id, {}] as const
+          }
+        }),
       )),
     },
     uiState: { foldStates: uiState?.foldStates ?? {} },

@@ -7,7 +7,7 @@ import type { PluginContext } from '../../core/types'
 import { eventBus } from '../../core/event-bus'
 import { modLoader } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
-import { getEntityAttr, setEntityAttr } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
 import { errorReporter } from '../../core/error-reporter'
 import { registerBuiltinPreChecks } from './pre-check'
 import { registerBuiltinHandlers } from './behavior-handlers'
@@ -156,13 +156,13 @@ export function dailySettle(): void {
     if (!c?.id || c.id === playerId || c.id === '0') continue
     if (isSkipped(c.id, c)) continue
     const abl33 = c.abilities?.['欲望']?.level ?? 0
-    if (abl33 > 0) {
-      const add = abl33 + Math.floor(Math.random() * (abl33 + 1))
-      const desire = getEntityAttr(c, '欲望值')
-      if (typeof desire === 'number') {
-        setEntityAttr(c, '欲望值', Math.min(100, desire + add))
+      if (abl33 > 0) {
+        const add = abl33 + Math.floor(Math.random() * (abl33 + 1))
+        const desire = getEntityAttr(c, ATTR.DESIRE)
+        if (typeof desire === 'number') {
+          setEntityAttr(c, ATTR.DESIRE, Math.min(100, desire + add))
+        }
       }
-    }
   }
 }
 

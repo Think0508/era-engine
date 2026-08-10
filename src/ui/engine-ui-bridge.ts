@@ -143,6 +143,13 @@ export class EngineUIBridge {
     }
     eventBus.on('random-event:options_clear', eventOptionsClearHandler)
     this.handlers.push({ event: 'random-event:options_clear', handler: eventOptionsClearHandler })
+    // 注释：事件效果（set_interactant player_target_to_me）让玩家选中某角色——
+    // gameContext 已同步（条件层），此处同步 UI 选中（bridge 的 watch 是单向 uiStore→gameContext）
+    const selectCharacterHandler: BridgeHandler = (payload: any) => {
+      if (payload?.characterId) uiStore.selectCharacter(payload.characterId)
+    }
+    eventBus.on('random-event:select_character', selectCharacterHandler)
+    this.handlers.push({ event: 'random-event:select_character', handler: selectCharacterHandler })
   }
 
   // 注释：刷新当前地点角色列表

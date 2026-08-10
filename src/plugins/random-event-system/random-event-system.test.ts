@@ -122,8 +122,9 @@ describe('random-event-system 集成', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0.75)
     const player = entitySystem.get('character', PLAYER) as any
     player.current_behavior = 'wait'
-    // move 候选：[move_see_swordsman, move_washroom_sound]——random 0.75 选中父事件
-    await eventBus.emit('game:execution_end', { commandId: 'move', timeCost: 30 })
+    player.current_location = 'town_square'
+    // move 候选：[move_see_swordsman, move_washroom_sound]——random 0.75 选中父事件（移动链路触发）
+    await eventBus.emit('location:enter', { to: 'tavern', from: 'town_square' })
     const pending = await apiSystem.call('random-event', 'getPending')
     expect(pending).not.toBeNull()
     expect(pending.options.map((o: any) => o.eventId).sort()).toEqual(['move_washroom_enter', 'move_washroom_leave'])
@@ -171,5 +172,41 @@ describe('random-event-system 集成', () => {
     provider!.restore(data)
     expect(randomEventEngine.isTriggered('move_see_swordsman')).toBe(true)
     expect(randomEventEngine.isTodayTriggered('chat_gossip')).toBe(true)
+  })
+
+  it('玩家移动链路：location:enter {from} → move 行为事件 + current_behavior 镜像', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0)
+    const player = entitySystem.get('character', PLAYER) as any
+    player.current_location = 'town_square'
+    player.current_behavior = 'wait'
+    await eventBus.emit('location:enter', { to: 'tavern', from: 'town_square' })
+    expect(player.current_behavior).toBe('move')
+    const logs = narrativeLog.getEntries().filter(e => e.type === 'event')
+    expect(logs.some(l => l.text.includes('剑客'))).toBe(true)
+  })
+
+  it('move 指令的 execution_end 不触发事件（只打开地图界面，移动由 location:enter 触发）', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0)
+    const player = entitySystem.get('character', PLAYER) as any
+    player.current_behavior = 'wait'
+    await eventBus.emit('game:execution_end', { commandId: 'move', timeCost: 5 })
+    expect(player.current_behavior).toBe('wait')
+    expect(narrativeLog.getEntries().filter(e => e.type === 'event')).toHaveLength(0)
+  })
+
+  it('set_interactant player_target_to_me：gameContext 同步 + 广播 UI 选中事件', async () => {
+    const captured: any[] = []
+    const handler = (p: any) => { captured.push(p) }
+    eventBus.on('random-event:select_character', handler)
+    // 注入带 set_interactant 效果的静默事件（无文本 → NPC 任意地点触发）
+    randomEventEngine.registerAll([
+      { id: 'evt_invite', behavior: 'evt_invite_test', type: 2, effects: [{ type: 'set_interactant', params: { mode: 'player_target_to_me' } }] },
+    ])
+    await apiSystem.call('random-event', 'triggerFor', GUARD, 'evt_invite_test', null)
+    expect(gameContext.getContext().selectedCharacterId).toBe(GUARD)
+    expect(captured.length).toBe(1)
+    expect(captured[0].characterId).toBe(GUARD)
+    eventBus.off('random-event:select_character', handler)
+    randomEventEngine.registerAll(modLoader.getMod()?.events ?? [])
   })
 })

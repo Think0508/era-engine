@@ -52,6 +52,8 @@ export function onEnable(ctx: PluginContext): void {
     if (!playerId) return
     const commandId = payload?.commandId as string | undefined
     if (!commandId) return
+    // 注释：move 指令只打开地图界面（map 模式），不移动——移动事件由 location:enter 触发
+    if (commandId === 'move') return
     const player = entitySystem.get('character', playerId) as any
     if (!player) return
     // 注释：玩家行为镜像 = 刚完成的指令 id（与 NPC 的 current_behavior 同字段语义）
@@ -59,6 +61,21 @@ export function onEnable(ctx: PluginContext): void {
     eventBus.emit('character:changed', { id: playerId })
     const selected = gameContext.getContext().selectedCharacterId ?? null
     await triggerEventFor(playerId, commandId, selected)
+  })
+
+  // 注释：3b. 玩家移动事件挂钩——地图移动不经 commandExecutor（moveTo 直达），
+  // location:enter {from} 是移动完成的信号（erArk 移动行为事件挂载键 move）
+  ctx.events.on('location:enter', async (payload: any) => {
+    clearPendingOptions()
+    const playerId = modLoader.getMod()?.playerCharacter
+    if (!playerId) return
+    if (payload?.to === undefined || payload?.from === undefined) return
+    const player = entitySystem.get('character', playerId) as any
+    if (!player) return
+    player.current_behavior = 'move'
+    eventBus.emit('character:changed', { id: playerId })
+    const selected = gameContext.getContext().selectedCharacterId ?? null
+    await triggerEventFor(playerId, 'move', selected)
   })
 
   // 注释：4. NPC 事件挂钩——新行为开始时（npc:behavior_started 同点）

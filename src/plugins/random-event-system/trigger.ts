@@ -11,6 +11,7 @@ import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { gameContext } from '../../core/game-context'
 import { eventBus } from '../../core/event-bus'
+import { ATTR } from '../../core/entity-utils'
 import { randomEventEngine, interpolateEventText } from '../../core/random-event'
 import type { RandomEventDef } from '../../core/mod-loader'
 import type { PendingOption } from './types'
@@ -128,8 +129,11 @@ async function resolveInteractant(mode: string | undefined, subjectId: string, s
     case 'self':
       return subjectId
     case 'player_target_to_me':
-      // 注释：NPC 事件让玩家 UI 选中自己（bridge 的 selectedCharacterId → uiStore 同步 watch 负责 UI）
+      // 注释：NPC 事件让玩家 UI 选中自己——gameContext 是条件层源（立即生效），
+      // UI 同步走事件总线（engine-ui-bridge 监听 → uiStore.selectCharacter；
+      // bridge 的 selectedCharacterId watch 是单向 uiStore→gameContext，不能反向依赖）
       gameContext.setSelectedCharacterId(subjectId)
+      eventBus.emit('random-event:select_character', { characterId: subjectId })
       return selectedId
     case 'masturbator':
       return findMasturbatorAt(subjectId) ?? selectedId
@@ -153,7 +157,7 @@ function findMasturbatorAt(subjectId: string): string | null {
   return null
 }
 
-/** 当前地点欲望值（base.欲望值）最高者（erArk 10013） */
+/** 当前地点欲望值（ATTR.DESIRE）最高者（erArk 10013） */
 function findMostDesireAt(subjectId: string): string | null {
   const subject = entitySystem.get('character', subjectId) as any
   if (!subject?.current_location) return null
@@ -163,7 +167,7 @@ function findMostDesireAt(subjectId: string): string | null {
     const c = char as any
     if (!c?.id || c.id === subjectId) continue
     if (c.current_location !== subject.current_location) continue
-    const v = Number(c.base?.['欲望值'] ?? 0)
+    const v = Number(c.base?.[ATTR.DESIRE] ?? 0)
     if (v > bestValue) {
       bestValue = v
       best = c.id

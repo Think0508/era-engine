@@ -1,0 +1,16 @@
+# 随机事件测试数据——chat 行为（玩家聊天指令结算后触发）
+
+[[events]]
+id = "chat_gossip"
+behavior = "chat"
+type = 0
+text = "{target.name}与你闲聊了几句，心情不错。"
+effects = [{ type = "modify_attribute", params = { attr = "体力", value = -3 } }]
+
+[[events]]
+id = "chat_today_greeting"
+behavior = "chat"
+type = 0
+text = "今天也要加油哦。"
+trigger_guard = "unseen_today"
+effects = [{ type = "record_event_today", params = {} }]

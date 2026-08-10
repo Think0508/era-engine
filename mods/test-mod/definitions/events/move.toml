@@ -1,0 +1,33 @@
+# 随机事件测试数据——move 行为（玩家移动时触发）
+
+[[events]]
+id = "move_see_swordsman"
+behavior = "move"
+type = 0
+text = "{self.name}在赶路时遇到一位剑客。"
+effects = [
+  { type = "narrative_output", params = { text = "剑客向你点头致意。" } }
+]
+
+[[events]]
+id = "move_washroom_sound"
+behavior = "move"
+type = 0
+text = "浴室传来声响，要进去看看吗？|你推开门，里面空无一人。"
+effects = [{ type = "open_son_options", params = {} }]
+
+[[events]]
+id = "move_washroom_enter"
+behavior = "move"
+type = 0
+text = "进去看看|你悄悄走了进去。"
+option_son = true
+effects = [{ type = "modify_attribute", params = { attr = "hp", value = -5 } }]
+
+[[events]]
+id = "move_washroom_leave"
+behavior = "move"
+type = 0
+text = "转身离开|你离开了浴室。"
+option_son = true
+effects = [{ type = "noop", params = {} }]

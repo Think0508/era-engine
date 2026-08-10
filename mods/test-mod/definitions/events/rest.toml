@@ -1,0 +1,15 @@
+# 随机事件测试数据——rest 行为（NPC 行为块 id）
+
+[[events]]
+id = "rest_quiet"
+behavior = "rest"
+type = 0
+text = "{self.name}靠在墙边休息，看起来有些疲惫。"
+effects = [{ type = "narrative_output", params = { text = "微风拂过。" } }]
+
+[[events]]
+id = "rest_silent_mark"
+behavior = "rest"
+type = 2
+# 静默事件（无文本）：任意地点触发，仅效果结算
+effects = [{ type = "modify_attribute", params = { attr = "体力", value = -2 } }]

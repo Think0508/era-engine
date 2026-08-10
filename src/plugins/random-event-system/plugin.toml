@@ -1,0 +1,24 @@
+[meta]
+id = "random-event-system"
+name = "行为期随机事件系统"
+version = "1.0.0"
+description = "复刻 erArk event.py：行为挂钩 + 前提权重候选 + 加权随机 + 子事件选项 + 触发记录"
+
+dependencies = [
+  { plugin = "effect-system", version = ">=1.0.0" }
+]
+
+[condition_fields]
+"player.current_behavior" = { type = "string", description = "玩家当前行为（指令 id / move / wait）" }
+
+[[events.listen]]
+name = "game:execution_end"
+description = "玩家行为结算后触发玩家事件"
+
+[[events.listen]]
+name = "npc:behavior_started"
+description = "NPC 新行为开始时触发 NPC 事件"
+
+[[events.listen]]
+name = "game:new_day"
+description = "重置今日触发记录"

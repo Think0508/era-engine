@@ -11,7 +11,12 @@ import { premiseRegistry } from './premise-registry'
 import { evaluateCondition } from './condition'
 import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
+import { errorReporter } from './error-reporter'
 import { weightedRandom } from '../utils/weighted-random'
+
+// 注释：未知前提去重上报（npc-ai target-search reportOnce 同款）——strict 淘汰是
+// "事件不触发"的显式暴露，但拼错前提 id 的 mod 作者需要知道为什么——全局去重报一次
+const reportedUnknownPremises = new Set<string>()
 
 export interface EventTriggerContext {
   /** 触发者 id（玩家或 NPC） */
@@ -96,6 +101,8 @@ export class RandomEventEngine {
   ): { event: RandomEventDef; weight: number }[] {
     const list = this.byBehavior.get(behaviorId) ?? []
     const out: { event: RandomEventDef; weight: number }[] = []
+    // 注释：未知前提检测用注册表快照（每 collect 一次，避免每个前提都拷贝列表）
+    const registered = new Set(premiseRegistry.getRegisteredIds())
     for (const d of list) {
       if (!extraFilter(d)) continue
       if (!this.matchAdv(d, ctx)) continue
@@ -107,6 +114,19 @@ export class RandomEventEngine {
           if (!evaluateCondition(d.condition, this.condCtx(ctx))) continue
         } catch {
           continue
+        }
+      }
+      for (const p of d.premises ?? []) {
+        if (!registered.has(p.toLowerCase())) {
+          if (!reportedUnknownPremises.has(p.toLowerCase())) {
+            reportedUnknownPremises.add(p.toLowerCase())
+            errorReporter.report({
+              source: 'random-event',
+              severity: 'warning',
+              message: `事件前提 '${p}' 未注册（前提拼写错误或未在任何插件 onLoad 注册）`,
+              suggestion: '检查事件 premises 拼写；已注册前提见插件文档（可用：' + premiseRegistry.getRegisteredIds().join(', ') + '）',
+            })
+          }
         }
       }
       // 注释：strict=true——未知前提整事件淘汰（与 npc-ai target-search 一致：数据错误

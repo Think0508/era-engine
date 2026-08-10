@@ -9,6 +9,9 @@ import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
 
 export function registerSystemEffects(): void {
+  // 注释：幂等注册（重复 onLoad——HMR/测试重载场景：effectTypeRegistry.register 对重复注册
+  // 会 throw，若插件被重载会因重复注册被禁——has 检查跳过）
+  if (effectTypeRegistry.has('noop')) return
   // 注释：erArk 9999 NOTHING——无操作空结算
   effectTypeRegistry.register('noop', () => true)
 

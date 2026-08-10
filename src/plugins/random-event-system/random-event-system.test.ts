@@ -113,6 +113,9 @@ describe('random-event-system 集成', () => {
     // rest 候选：[rest_quiet, rest_silent_mark]——random 0.75 选中第二个（静默）
     await eventBus.emit('npc:behavior_started', { character: INNKEEPER, behavior_id: 'rest', type: 'rest' })
     expect(innkeeper.base['体力']).toBe(98)
+    // 远处 NPC 静默事件的数值结算不得泄漏到叙事日志（_silent + narrative_output 过滤）
+    const logs = narrativeLog.getEntries().filter(e => e.type === 'event' || e.source === 'effect-system')
+    expect(logs.length).toBe(0)
   })
 
   it('父事件挂起子选项 → chooseOption 输出子事件文本并结算效果', async () => {

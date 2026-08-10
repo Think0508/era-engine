@@ -8,7 +8,9 @@ import { modLoader } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
 import { errorReporter } from '../../core/error-reporter'
 import { gameContext } from '../../core/game-context'
+import { eventBus } from '../../core/event-bus'
 import { randomEventEngine } from '../../core/random-event'
+import { commandRegistry } from '../../core/command-registry'
 import { registerGameStateProvider } from '../../core/save-system'
 import { registerSystemEffects } from './system-effects'
 import {
@@ -21,13 +23,15 @@ import type { PendingOption } from './types'
 
 export function onLoad(_ctx: PluginContext): void {
   registerSystemEffects()
-  validateEventData()
 }
 
 export function onEnable(ctx: PluginContext): void {
-  // 注释：1. 构建事件索引（幂等——HMR/重载安全）
+  // 注释：1. 构建事件索引 + 数据校验（幂等——HMR/重载安全）
+  // 注意：校验必须在 onEnable 执行——onLoad 时 mod 尚未加载（初始化顺序：插件 onLoad
+  // → 模组加载 → 插件 onEnable），getMod() 为 null 会静默跳过
   const mod = modLoader.getMod() as any
   randomEventEngine.registerAll(mod?.events ?? [])
+  validateEventData()
 
   // 注释：2. API
   ctx.api.register('random-event', {
@@ -52,6 +56,7 @@ export function onEnable(ctx: PluginContext): void {
     if (!player) return
     // 注释：玩家行为镜像 = 刚完成的指令 id（与 NPC 的 current_behavior 同字段语义）
     player.current_behavior = commandId
+    eventBus.emit('character:changed', { id: playerId })
     const selected = gameContext.getContext().selectedCharacterId ?? null
     await triggerEventFor(playerId, commandId, selected)
   })
@@ -88,21 +93,22 @@ export function onEnable(ctx: PluginContext): void {
   })
 }
 
-// 注释：事件数据校验（加载时 warning——挂载键存在性提示；效果类型由加载时的 effect 校验兜底）
+// 注释：事件数据校验（onEnable 时执行——warning：挂载键存在性提示；效果类型由加载时的 effect 校验兜底）
+// 挂载键合法来源：内置 move/wait、commandRegistry 已注册指令（native-instructions 或 mod 指令）、
+// NPC 行为规格（ai-behaviors.toml）
 function validateEventData(): void {
   const mod = modLoader.getMod() as any
   if (!mod?.events?.length) return
-  const instructions = new Set((mod.instructions ?? []).map((i: any) => i.id))
-  const behaviors = new Set(Object.keys(mod.aiBehaviors ?? {}))
   for (const ev of mod.events) {
-    if (!['move', 'wait'].includes(ev.behavior) && !instructions.has(ev.behavior) && !behaviors.has(ev.behavior)) {
-      errorReporter.report({
-        source: 'random-event-system',
-        severity: 'warning',
-        message: `事件 '${ev.id}' 挂载键 '${ev.behavior}' 未匹配已知指令/行为`,
-        suggestion: '挂载键应为指令 id（native-instructions 或 mod 指令）、NPC 行为规格 id，或内置 move/wait',
-      })
-    }
+    if (['move', 'wait'].includes(ev.behavior)) continue
+    if (commandRegistry.getById(ev.behavior)) continue
+    if (mod.aiBehaviors?.[ev.behavior]) continue
+    errorReporter.report({
+      source: 'random-event-system',
+      severity: 'warning',
+      message: `事件 '${ev.id}' 挂载键 '${ev.behavior}' 未匹配已知指令/行为`,
+      suggestion: '挂载键应为指令 id（native-instructions 或 mod 指令）、NPC 行为规格 id，或内置 move/wait',
+    })
   }
 }
 

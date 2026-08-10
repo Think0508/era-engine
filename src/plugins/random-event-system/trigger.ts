@@ -49,8 +49,9 @@ export async function choosePendingOption(index: number): Promise<boolean> {
 async function runEvent(event: RandomEventDef, subjectId: string, targetId: string | null): Promise<void> {
   const playerId = modLoader.getMod()?.playerCharacter ?? null
   const isPlayer = subjectId === playerId
+  const playerSees = isPlayer || samePlace(subjectId, playerId)
   // 注释：地点门控——NPC 文本事件需玩家同地点（静默事件任意地点）
-  if (!isPlayer && event.text && !samePlace(subjectId, playerId)) return
+  if (!isPlayer && event.text && !playerSees) return
   // 注释：文本输出——子事件/父事件用正文段（split('|')[1]），普通事件全文
   if (event.text) {
     const isSon = event.option_son === true
@@ -59,11 +60,11 @@ async function runEvent(event: RandomEventDef, subjectId: string, targetId: stri
     const text = await interpolateText(body, subjectId, targetId)
     narrativeLog.write(text, 'event', 'random-event-system')
   }
-  await executeEventEffects(event, subjectId, targetId)
+  await executeEventEffects(event, subjectId, targetId, playerSees)
 }
 
 /** 效果结算：open_son_options 挂起选项；set_interactant 改写后续效果目标；其余走 effect-system */
-async function executeEventEffects(event: RandomEventDef, subjectId: string, targetId: string | null): Promise<void> {
+async function executeEventEffects(event: RandomEventDef, subjectId: string, targetId: string | null, playerSees: boolean): Promise<void> {
   const effects = event.effects ?? []
   if (effects.length === 0) return
   // 注释：open_son_options 特判——收集子事件候选并挂起（erArk 效果 10001 + Event_option_Panel）
@@ -90,7 +91,10 @@ async function executeEventEffects(event: RandomEventDef, subjectId: string, tar
   }
   // 注释：按顺序执行其余效果——target 解析走 effect-system（省略 target 默认 selected，
   // selected = interactant ?? 触发者自己——erArk 事件效果默认作用于触发者）；
-  // set_interactant 改写后续效果的 selected（erArk 目标改写效果）
+  // set_interactant 改写后续效果的 selected（erArk 目标改写效果）。
+  // 玩家不可见（NPC 远处静默事件）：过滤 narrative_output + _silent（数值结算不输出，
+  // 对齐 npc-ai settleCompletion 的同地点语义——远处 NPC 属性变化不可见）
+  const visibleEffects = playerSees ? effects : effects.filter(e => e.type !== 'narrative_output')
   let selectedId = targetId ?? subjectId
   let batch: any[] = []
   const flush = async (): Promise<void> => {
@@ -98,11 +102,12 @@ async function executeEventEffects(event: RandomEventDef, subjectId: string, tar
     await apiSystem.call('effect-system', 'execute', batch, {
       sourceId: subjectId,
       _eventId: event.id,
+      _silent: !playerSees,
       uiStore: { selectedCharacterId: selectedId },
     })
     batch = []
   }
-  for (const eff of effects) {
+  for (const eff of visibleEffects) {
     if (eff.type === 'open_son_options') continue
     if (eff.type === 'set_interactant') {
       await flush()

@@ -20,6 +20,7 @@
 | 效果系统 | `docs/effect-system.md` | src/plugins/effect-system/ |
 | 道具/背包 | `docs/item-system.md` / `docs/inventory-system.md` | src/plugins/inventory-system/ |
 | H 系 | `docs/h-core.md` 等 h-*.md | src/plugins/h-*/ |
+| H 内 NPC AI | `docs/h-npc-ai.md` | src/plugins/h-npc-ai/ |
 
 ## 会话交接摘要（2026-07-14）
 
@@ -1494,6 +1495,23 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 
 - TOML + effect 实现
 - 时间推进整合
+
+### L1.10 H 内 NPC AI 后置项（2026-08-11 h-npc-ai 插件交付后登记）
+
+**本次交付**（`src/plugins/h-npc-ai/`，复刻 erArk handle_npc_ai_in_h.py）：① 每时间片 H 状态判定 + 完整疲劳/HP 退出；⑤ 逆推 AI（部位喜好加权 + 过滤链 + 3 配套指令）；⑥⑦ 群交 AI（type 1/2/3）+ 群交执行管道。详见 `docs/h-npc-ai.md`。
+
+**后置项**（按依赖排序）：
+
+1. **无意识组 ②④③**（erArk recover_from_unconscious_h / judge_weak_up_in_sleep_h / handle_npc_instruct_condition / settle_unconscious_semen_and_cloth）——三者绑定一起做，依赖 L1.7 睡眠系统（`unconscious_h=1`、sleep_point、装睡）：
+   - 睡奸醒来判定（睡眠阈值概率 → recover）
+   - 无意识恢复结算（继续 H 判定：监禁→继续 / 陷落分流 ≥3 继续 / >0 降级轻度骚扰 / <0 愤怒+100 / 无→高级性骚扰 / 实行值不足→DO_H_FAIL）
+   - 无意识期间精液/服装偷窃二段行为
+2. **性爱助手 sex_assist**（监狱长群交自动陪玩 AI，settle_behavior.py:72-84 + handle_npc_ai_in_h.py:137-140）——依赖监禁调教系统 + 缺失源码 confinement_and_training.py
+3. **催眠体控-逆推自动触发 H**（erArk 效果 1228：扣 10 理智 + 自动设置 npc_active_h + 拉入 H）——归 h-hypnosis 插件
+4. **群交玩法大改**（用户计划）+ 群交模板编辑器 UI（npcAiType 选择面板）+ 群交加入/邀请流程（ask_group_sex/join 指令 TODO）+ A/B 轮流（run_all_group_sex_template）+ 群交结束指令（group_sex_end）——注：run_group_sex_template 已于 2026-08-11 注册（模板执行 + type 3 抢占链路接通）
+5. **SEX 指令数据批次落地**（B3-B6，内容审校 + 补 part:/flag: tag——逆推/群交 AI 的数据基础；h-npc-ai 自带测试指令可先行验证机制）
+6. **h_scene UI 完整版**（部位/子类分组渲染、逆推面板完整呈现——CommandBar 前提过滤为最小版，2026-08-11 标注）
+7. **逆推前提补全**：change_top_and_bottom 的 T_NORMAL_5_6（L1.7 意识异常）/ TARGET_NOT_BONDAGE（绳艺）/ GROUP_SEX_MODE_OFF（群交大改时）
 
 ### L1.8 `settle_state` 加 ability_level 参数
 

@@ -408,12 +408,28 @@ ctx.api.call('h-hidden', 'checkAchievements', charId)         // → void
 
 ```typescript
 ctx.api.call('h-group-sex', 'isActive')                       // → boolean
-ctx.api.call('h-group-sex', 'getTemplate', charId)            // → GroupTemplate | null
+ctx.api.call('h-group-sex', 'getTemplate', charId)            // → GroupTemplate | null（返回可变引用，槽位可直改）
 ctx.api.call('h-group-sex', 'setTemplate', charId, template)  // → void
 ctx.api.call('h-group-sex', 'setNpcAiType', charId, type)     // → void
 ctx.api.call('h-group-sex', 'getNpcAiType', charId)           // → string
 ctx.api.call('h-group-sex', 'getNpcAiName', type)             // → string
 ```
+
+> 槽位行为标识 = **指令 id（string）**（2026-08-11，取代 erArk 数字 behaviorId）；
+> 模板执行走 commandRegistry 取指令 effects（废弃 h_execute_behavior）。
+
+#### h-npc-ai — H 内 NPC AI（2026-08-11）
+
+```typescript
+ctx.api.call('h-npc-ai', 'isActiveH', charId)                 // → boolean（NPC 逆推状态，含催眠 active_h）
+ctx.api.call('h-npc-ai', 'setActiveH', charId, on)            // → void（手动开关逆推）
+ctx.api.call('h-npc-ai', 'triggerActiveH', npcId)             // → Promise<boolean>（触发一次逆推执行器：NPC 选行为赋给玩家执行）
+ctx.api.call('h-npc-ai', 'tryActiveH', npcId, judgeBase?)     // → Promise<boolean>（尝试夺回主动权，默认 base=100）
+```
+
+效果类型（指令/脚本可调用）：`npc_active_h_on` / `npc_active_h_off`（开关目标逆推）、
+`npc_active_h_act`（触发逆推执行器）、`try_pl_active_h`（夺回判定，`params.base` 默认 100）。
+指令 tag 词表（part:/flag:）与逆推/群交 AI 机制详见 `docs/h-npc-ai.md`。
 
 #### h-bondage — 紧缚
 

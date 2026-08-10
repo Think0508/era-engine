@@ -994,6 +994,9 @@ export function onEnable(ctx: PluginContext): void {
   const endHCmd: CommandDef = {
     id: 'end_h', label: '结束H', group: 'character_commands',
     modes: ['h_scene'], priority: 1, source: 'plugin:h-core',
+    // 注释：逆推中隐藏（erArk h_end 带 T_NPC_NOT_ACTIVE_H 前提，08-指令集-H内.md:25-42）——
+    // 前提由 h-npc-ai 注册真语义；未注册时非严格求值跳过 = 显示（插件未加载的兜底）
+    premises: ['T_NPC_NOT_ACTIVE_H'],
     handler: async (execCtx: any) => {
       const p = execCtx?.gameStore?.player?.id
       if (p) await endHScene(p)

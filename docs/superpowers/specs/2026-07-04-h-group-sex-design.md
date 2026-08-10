@@ -26,9 +26,12 @@ cache.group_sex_mode: boolean = false   // 群交主模式开关
 ### 玩家模板字段（存于 h_state）
 
 ```typescript
+// 注释：2026-08-11 变更——behaviorId 由 number 改为 string（指令 id）：
+// 本引擎指令体系一统（CommandDef.id），模板执行走 commandRegistry 取指令 effects，
+// 废弃未注册的 h_execute_behavior 效果（grill Q10 定案，见 docs/h-npc-ai.md §9）
 interface GroupSexSlot {
   targetId: string | null    // -1 = 未分配
-  behaviorId: number | null  // 具体 H 行为 ID
+  behaviorId: string | null  // 指令 id（CommandDef.id）
 }
 
 interface GroupSexTemplate {

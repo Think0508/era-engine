@@ -82,9 +82,13 @@ function calcAdjustments(judgeClass: string | undefined, charId: string): number
 
 // 注释：S 类判定族（erArk InstructJudge.csv need_type == "S"）——天赋个性修正只对 S 类生效
 // 亲吻(D) 等日常类不吃 淫乱/性好奇/性冷漠/性无知 修正（instuct_judege.py 162-178 行）
+// 2026-08-11：'掌握主动权' 加入（h-npc-ai try_pl_active_h 专用——夺回主导权吃天赋个性
+// 修正但不吃 [judge.adjustments] 处女惩罚：处女 -250 语义是"拒绝性交"，套在交还主导权
+// 上会错位——处女逆推反而不可夺回）
 const S_TYPE_JUDGE_CLASSES = new Set([
   '初级骚扰', '严重骚扰', '性交', 'A性交', 'W性交', 'U开发', 'U性交',
   '口交', '道具', '药物', 'SM', '群交', '隐奸', '露出',
+  '掌握主动权',
 ])
 
 export function calcJudge(

@@ -1,0 +1,33 @@
+# h-npc-ai 插件——H 内 NPC AI（复刻 erArk handle_npc_ai_in_h.py + handle_npc_ai.py H 分支）
+# 本次范围（2026-08-11 grill 定案）：
+#   ① 每时间片 H 状态判定（锁死 h_wait / 不同地点结束 H / 木头人锁死）+ 完整疲劳/HP 退出
+#   ⑤ 逆推 AI（部位喜好加权 → 指令过滤链 → 随机选行为赋给玩家执行）+ change_top_and_bottom/keep_enjoy/try_pl_active_h
+#   ⑥⑦ 群交 AI（type 1 自慰 / 2 补位 / 3 抢占）+ 群交执行管道
+# 后置（见 docs/master-todo.md）：②④③ 无意识组（睡奸恢复/醒来/继续H判定，依赖睡眠系统）、
+#   性爱助手（依赖监禁系统）、催眠体控-逆推自动触发 H（归 h-hypnosis）
+
+[meta]
+id = "h-npc-ai"
+name = "H 内 NPC AI"
+version = "1.0.0"
+description = "H 场景中的 NPC AI——时间片状态判定/疲劳退出/逆推（主动H）/群交 AI（复刻 erArk handle_npc_ai_in_h.py）"
+
+[data_dependencies]
+provides = ["h-npc-ai:ready"]
+depends_on = ["h:ready", "group-sex:ready", "npc-ai:ready", "effects:ready"]
+
+[[events.listen]]
+name = "game:time_advanced"
+description = "每时间片 H 状态判定：锁死确认/不同地点结束 H/群交 AI 触发/疲劳与 HP 退出检查"
+
+[[events.listen]]
+name = "h:start"
+description = "H 开始：将参与角色行为块置为 h_wait（冻结日常 AI，跳过集已排除 is_h）"
+
+[[events.listen]]
+name = "h:end"
+description = "H 结束：参与角色行为块置为 h_end（立即过期，下次 settle-pass 自动重新决策）"
+
+[[events.listen]]
+name = "group_sex:template_execute"
+description = "群交模板执行前触发 type 3 抢占 AI（h-group-sex 发事件，本插件响应——单向依赖）"

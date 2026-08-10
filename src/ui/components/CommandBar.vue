@@ -19,6 +19,8 @@ const uiStore = useUIStore()
 const lastCommand = ref<string | null>(null)
 const actComFolded = ref(false)
 const exComFolded = ref(false)
+// 注释：指令求值器（前提/条件实时求值——h_scene 前提过滤与执行共用）
+const evaluators = createCommandEvaluators({ uiStore, gameStore })
 
 // 注释：所有 Act_COM 指令（按模式+分组过滤）
 const rawActCommands = computed<CommandDef[]>(() => {
@@ -30,19 +32,34 @@ const rawActCommands = computed<CommandDef[]>(() => {
 })
 
 // 注释：按分类过滤——只显示 activeCategories 中为 true 的分类
+// 【最小版·2026-08-11】H 场景（h_scene）下追加前提实时过滤——指令满足 premises 才显示
+// （erArk see_instruct_panel 隐藏制：前提不满足 = 不可见，非置灰）。
+// 效果：逆推中（T_NPC_ACTIVE_H）普通 H 指令因 T_NPC_NOT_ACTIVE_H 失败而隐藏，
+// 只剩 keep_enjoy / try_pl_active_h 等逆推专属指令（erArk 同款自洽，08-指令集-H内.md）。
+// ⚠️ 此为临时最小实现——完整版（部位/子类分组渲染、逆推面板完整呈现等）由后续扩展
 const actCommands = computed<CommandDef[]>(() => {
-  return rawActCommands.value.filter(cmd => {
+  const filtered = rawActCommands.value.filter(cmd => {
     const cat = cmd.category ?? 'custom'
     return uiStore.commandCategories[cat] !== false
+  })
+  if (gameStore.currentMode !== 'h_scene') return filtered
+  // 注释：h_scene 前提过滤——evaluators 在 setup 已创建（读取实时 selectedCharacterId）
+  return filtered.filter(cmd => {
+    if (!cmd.premises || cmd.premises.length === 0) return true
+    return evaluators.evaluatePremises(cmd.premises)
   })
 })
 
 // 注释：收藏夹——从所有 raw 指令中取收藏的，额外显示一份
+// h_scene 模式同样应用前提过滤（收藏的普通 H 指令在逆推中不显示——与 actCommands 一致）
 const favoriteCommands = computed<CommandDef[]>(() => {
   if (!uiStore.commandCategories.favorite) return []
-  return rawActCommands.value.filter(cmd =>
-    uiStore.favorites.includes(cmd.id)
-  ).sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0))
+  const isHScene = gameStore.currentMode === 'h_scene'
+  return rawActCommands.value.filter(cmd => {
+    if (!uiStore.favorites.includes(cmd.id)) return false
+    if (isHScene && cmd.premises?.length && !evaluators.evaluatePremises(cmd.premises)) return false
+    return true
+  }).sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0))
 })
 
 // 注释：类别列表（从所有指令中收集出现的 category）
@@ -72,8 +89,6 @@ const numberToCommand = computed<Map<number, string>>(() => {
   numberedExCommands.value.forEach(c => map.set(c.number, c.id))
   return map
 })
-
-const evaluators = createCommandEvaluators({ uiStore, gameStore })
 
 async function executeCommand(commandId: string) {
   lastCommand.value = commandId

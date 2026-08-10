@@ -7,11 +7,16 @@ import { entitySystem } from '../../core/entity-system'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { narrativeLog } from '../../core/narrative-log'
 import { apiSystem } from '../../core/api'
+import { commandRegistry, type CommandDef } from '../../core/command-registry'
+import { eventBus } from '../../core/event-bus'
+import { gameContext } from '../../core/game-context'
 
 // 注释：群交模板——5 个单目标槽位 + 1 个多目标侍奉槽
+// 槽位行为标识 = 指令 id（string，2026-08-11 grill Q10 定案——取代 erArk 数字 behaviorId，
+// 废弃未注册的 h_execute_behavior 效果；模板执行 = 取指令 effects 走 effect-system 结算）
 interface GroupSexSlot {
   targetId: string | null
-  behaviorId: number | null
+  behaviorId: string | null
 }
 
 interface GroupSexTemplate {
@@ -20,7 +25,7 @@ interface GroupSexTemplate {
   R_hand: GroupSexSlot
   penis: GroupSexSlot
   anal: GroupSexSlot
-  worship: { targetIds: string[]; behaviorId: number | null }
+  worship: { targetIds: string[]; behaviorId: string | null }
 }
 
 // 注释：全局模式
@@ -39,7 +44,6 @@ function getTargetId(ctx: any): string | null {
 
 // 注释：保留引用，供后续任务使用
 void getTargetId
-void executeGroupSexTemplate
 void applyGroupSexCostReduction
 void applyGroupSexAudienceBonus
 void applyGroupSexRealtimeTick
@@ -68,33 +72,48 @@ function defaultTemplate() {
 
 async function executeGroupSexTemplate(charId: string, useTemplateB: boolean): Promise<void> {
   const tmpl = getOrCreateTemplate(charId)
+
+  // 注释：模板执行前通知 h-npc-ai（type 3 抢占 AI 响应——抢占改的是模板引用，
+  // 结算前触发保证本轮执行用最新分配；单向依赖：本插件只发事件，不依赖 h-npc-ai）
+  await eventBus.emit('group_sex:template_execute', { charId, useTemplateB })
+
   const template = useTemplateB ? tmpl.B : tmpl.A
   const slots = [template.mouth, template.L_hand, template.R_hand, template.penis, template.anal]
 
+  // 注释：每个槽位取指令 effects 结算（时间推进由调用指令 run_group_sex_template 的
+  // time_cost 统一完成——本函数不重复 advanceTime；erArk 群P结算同语义）
   for (const slot of slots) {
     if (!slot.targetId || !slot.behaviorId) continue
+    const cmd = commandRegistry.getById(slot.behaviorId)
+    if (!cmd) {
+      narrativeLog.write(`群交槽位引用了不存在的指令 '${slot.behaviorId}'`, 'system', 'h-group-sex')
+      continue
+    }
     const target = entitySystem.get('character', slot.targetId) as any
     if (!target) continue
-    await apiSystem.call('effect-system', 'execute', [
-      { type: 'h_execute_behavior', params: { behaviorId: slot.behaviorId, target: 'self' } }
-    ], {
-      sourceId: charId,
-      _targetIds: [slot.targetId],
-      _timeCost: 10,
-    })
+    if (cmd.effects && cmd.effects.length > 0) {
+      await apiSystem.call('effect-system', 'execute', cmd.effects, {
+        sourceId: charId,
+        uiStore: { selectedCharacterId: slot.targetId },
+        _targetIds: [slot.targetId],
+        _timeCost: 10,
+      })
+    }
   }
 
   if (template.worship.targetIds.length > 0 && template.worship.behaviorId) {
+    const cmd = commandRegistry.getById(template.worship.behaviorId)
     for (const worshipId of template.worship.targetIds) {
       const target = entitySystem.get('character', worshipId) as any
       if (!target) continue
-      await apiSystem.call('effect-system', 'execute', [
-        { type: 'h_execute_behavior', params: { behaviorId: template.worship.behaviorId, target: 'self' } }
-      ], {
-        sourceId: charId,
-        _targetIds: [worshipId],
-        _timeCost: 10,
-      })
+      if (cmd?.effects && cmd.effects.length > 0) {
+        await apiSystem.call('effect-system', 'execute', cmd.effects, {
+          sourceId: charId,
+          uiStore: { selectedCharacterId: worshipId },
+          _targetIds: [worshipId],
+          _timeCost: 10,
+        })
+      }
     }
   }
 
@@ -357,18 +376,35 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     }
   })
 
-  // 群交中检查角色疲劳退出
-  // 对应 erArk handle_npc_ai.py:55-94
+  // 群交中检查角色疲劳退出——已由 h-npc-ai 实现（per-tick 每时间片检查，2026-08-11）：
+  //   NPC 体力≤1 → 移出模板 → 剩余 1 转单人 H / 剩余 0 结束群交（erArk handle_npc_ai.py:55-94）
   ctx.events.on('game:mode_changed', (payload: any) => {
     if (!groupSexMode || payload?.mode !== 'h_scene') return
-    // TODO: 当NPC疲劳时自动执行group_sex_npc_hp_0_end
-    // TODO: 剩余1NPC → 转单人H，剩余0 → 结束群交
+    // TODO: 玩家体力≤1 的群交退出检查由 h-npc-ai checkPlayerFatigueExit 覆盖（含群交关模式）
   })
 
-  // 注释：Step 10 — 指令注册（待 h-core 指令加载器就绪）
+  // 注释：Step 10 — 指令注册
+  // 注释：run_group_sex_template——执行一次群交模板（erArk run_group_sex_temple，08-指令集-H内.md:218-232）
+  // 2026-08-11 接线：此前 executeGroupSexTemplate 无调用者（h_execute_behavior 未注册 +
+  // 指令 TODO）→ 模板执行/type 3 抢占链路实际断着；注册后链路通（时间推进 10 分钟由
+  // timeCost 统一，槽位 effects 不重复推进；事件 group_sex:template_execute 触发 h-npc-ai type 3）
+  const runGroupSexCmd: CommandDef = {
+    id: 'run_group_sex_template', label: '进行一次群交', group: 'character_commands',
+    modes: ['h_scene'], priority: 30, timeCost: 10, source: 'plugin:h-group-sex',
+    premises: ['HAVE_TARGET', 'TARGET_IS_H', 'GROUP_SEX_MODE_ON', 'T_NPC_NOT_ACTIVE_H', 'TIME_STOP_OFF', 'ALL_GROUP_SEX_TEMPLE_RUN_OFF'],
+    handler: async (execCtx: any) => {
+      const p = execCtx?.gameStore?.player?.id ?? execCtx?.sourceId
+      if (!p) return
+      // 注释：handler 类指令不自动推进时间（command-executor 仅 effects 类推进）——
+      // 手动推进 10 分钟（erArk run_group_sex_temple 一次模板执行 = 10 分钟）
+      await gameContext.advanceTime(10)
+      await executeGroupSexTemplate(p, false)
+    },
+  }
+  ctx.commands.register(runGroupSexCmd)
   // TODO: 注册 ask_group_sex 指令（前提+效果链）
   // TODO: 注册 group_sex_end 指令（前提+效果链）
-  // TODO: 注册 run_group_sex_template 指令（调用 executeGroupSexTemplate）
+  // TODO: 注册 run_all_group_sex_template 指令（A/B 轮流）
   // TODO: 注册 edit_group_sex_template 指令（打开模板编辑器面板）
 
   // 注释：Step 11 — 注册 UI 插槽 — 群交状态标签

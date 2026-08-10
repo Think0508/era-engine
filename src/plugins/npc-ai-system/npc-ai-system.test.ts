@@ -278,6 +278,9 @@ describe('npc-ai-system 集成', () => {
     guard.ai_behavior = { id: 'wait', type: 'wait', start_time: nowMin - 10, duration: 5 }
     guard.behavior.home_locations = { town_square: 1.0 }
     guard.current_location = 'tavern'
+    // 注释：显式清零疲劳——rest_tired（层40）与 sleep_night（层40）同层加权竞争，
+    // 前置测试的窗口结算会隐式积累疲劳（settleTired 含随机）→ flaky（2026-08-11 加固）
+    guard.base['疲劳度'] = 0
     await gameContext.advanceTime(60)
     // 连锁：go_home（move 回 town_square）→ 到家 → 夜晚睡眠（不再在酒馆原地睡）
     expect(guard.current_location).toBe('town_square')

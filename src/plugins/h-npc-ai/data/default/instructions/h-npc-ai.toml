@@ -1,0 +1,58 @@
+# h-npc-ai 插件默认指令（Layer 1）——逆推（NPC 主动H）3 条指令
+# 复刻 erArk 08-指令集-H内.md 152-186（change_top_and_bottom/keep_enjoy/try_pl_active_h）
+# 效果类型由 h-npc-ai 插件注册（npc_active_h_on/npc_active_h_off/npc_active_h_act/try_pl_active_h）
+# mod 可覆盖：mods/[模组名]/definitions/instructions/ 下同 id 胜出
+
+# ── 交给对方（erArk change_top_and_bottom，152-164）──
+# 玩家开启逆推：目标 h_state.npc_active_h = true
+# erArk 前提：HAVE_TARGET/T_NORMAL_5_6/T_NPC_NOT_ACTIVE_H/GROUP_SEX_MODE_OFF/TARGET_NOT_BONDAGE/TARGET_IS_H
+# 偏差（TODO）：T_NORMAL_5_6（意识异常，随 L1.7）、TARGET_NOT_BONDAGE（绳艺）、
+#   GROUP_SEX_MODE_OFF（群交玩法大改时补回）未含——见 docs/h-npc-ai.md
+# time_cost=0：控制类指令不推进时间（erArk 无耗时——耗时在 NPC 选中的行为上）
+# flag:control：逆推/群交 AI 过滤链排除（防止 NPC 选到控制指令自循环）
+[[instructions]]
+id = "change_top_and_bottom"
+label = "交给对方"
+category = "sex"
+sub_category = "base"
+time_cost = 0
+priority = 60
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-npc-ai", "flag:control"]
+effects = [
+  { type = "npc_active_h_on" },
+  { type = "narrative_output", params = { text = "你决定把主动权交给对方。" } },
+]
+
+# ── 继续享受（erArk keep_enjoy，166-175）──
+# 逆推中触发 npc_active_h 执行器：NPC 按部位喜好选行为赋给玩家执行
+[[instructions]]
+id = "keep_enjoy"
+label = "继续享受"
+category = "sex"
+sub_category = "base"
+time_cost = 0
+priority = 55
+premises = ["HAVE_TARGET", "T_NPC_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-npc-ai", "flag:control"]
+effects = [
+  { type = "npc_active_h_act", params = {} },
+]
+
+# ── 尝试掌握主动权（erArk try_pl_active_h，177-186）──
+# 复用实行判定（calcJudge，judge_class=性交）：成功 → 关闭 NPC 逆推；失败 → 继续逆推（纯叙事）
+# erArk 数据完全无记录（无行为ID/效果ID/判定表），本引擎设计：judge_base 默认 150（可覆盖）
+# 数值说明：心情修正愤怒≤5 保底 +20 → base=100 时恒成功（失败路径死代码）；150 需
+# 好感/信赖/陷落/状态支撑才能夺回（好感 Lv3=1000 起 +50 才稳过）——2026-08-11 链路审查修正
+[[instructions]]
+id = "try_pl_active_h"
+label = "尝试掌握主动权"
+category = "sex"
+sub_category = "base"
+time_cost = 0
+priority = 54
+premises = ["HAVE_TARGET", "T_NPC_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-npc-ai", "flag:control"]
+effects = [
+  { type = "try_pl_active_h", params = { base = 150 } },
+]

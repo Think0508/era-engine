@@ -1,0 +1,171 @@
+# ════════════════════════════════════════════════════════════════════════
+# h-npc-ai 测试指令——【仅用于验证 NPC AI 机制，非正式游戏内容】
+# 正式 H 指令由 docs/instruction-replication 批次落地（B3-B6，含部位 tag），
+# 批次落地后本文件的指令将被 mod 层同 id 覆盖或作者自行删除。
+# 用途：逆推/群交 AI 的部位过滤链、前提评估、执行管道的测试夹具。
+# ════════════════════════════════════════════════════════════════════════
+
+# 逆推部位 tag 词表（h-npc-ai 校验）：part:breast|clit|vagina|anus|urethra|womb（逆推）
+#                                        part:mouth|hand|penis|worship（群交槽位）
+# flag:first-time = 破处类（逆推对处女跳过）；flag:no-active = 非逆推类（逆推排除）
+
+[[instructions]]
+id = "h_npc_test_mouth"
+label = "【测试】口交"
+category = "sex"
+sub_category = "base"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:mouth", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）你低头服侍，对方呼吸急促起来。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+[[instructions]]
+id = "h_npc_test_hand"
+label = "【测试】手交"
+category = "sex"
+sub_category = "base"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:hand", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）你的手指轻轻抚过，对方微微一颤。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+[[instructions]]
+id = "h_npc_test_penis"
+label = "【测试】侍奉"
+category = "sex"
+sub_category = "base"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:penis", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）对方俯下身来，温热的呼吸靠近。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+[[instructions]]
+id = "h_npc_test_worship"
+label = "【测试】阴茎侍奉"
+category = "sex"
+sub_category = "base"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:worship", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）多双唇舌交替服侍着。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+[[instructions]]
+id = "h_npc_test_breast"
+label = "【测试】胸侍奉"
+category = "sex"
+sub_category = "base"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:breast", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）柔软的触感贴了上来。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+[[instructions]]
+id = "h_npc_test_vagina"
+label = "【测试】阴道性交"
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:vagina", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）你缓缓进入，对方发出一声轻哼。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+[[instructions]]
+id = "h_npc_test_anal"
+label = "【测试】肛交"
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:anus", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）你的动作让身后的人绷紧了身体。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+[[instructions]]
+id = "h_npc_test_clit"
+label = "【测试】阴蒂爱抚"
+category = "sex"
+sub_category = "base"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:clit", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）指尖在敏感处打着转。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+# ── 破处类（flag:first-time）：目标部位未破时逆推跳过 ──
+[[instructions]]
+id = "h_npc_test_first_time"
+label = "【测试】破处插入"
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:vagina", "flag:first-time", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）破处插入！" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+# ── 非逆推类（flag:no-active）：逆推始终排除 ──
+[[instructions]]
+id = "h_npc_test_no_active"
+label = "【测试】非逆推行为"
+category = "sex"
+sub_category = "base"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:vagina", "flag:no-active", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）这是非逆推行为，不应被 NPC 选中。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+# ── 道具类（sub_category=item）：逆推排除（erArk tag 含"道具"）──
+[[instructions]]
+id = "h_npc_test_item"
+label = "【测试】道具使用"
+category = "sex"
+sub_category = "item"
+time_cost = 10
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:vagina", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）道具类行为，不应被逆推选中。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]
+
+# ── 带条件（condition）：过滤链与执行一致性（选中必执行，防经验空加）──
+[[instructions]]
+id = "h_npc_test_cond"
+label = "【测试】午后限定"
+category = "sex"
+sub_category = "base"
+time_cost = 10
+condition = "game.time.hour >= 12"
+premises = ["HAVE_TARGET", "TARGET_IS_H"]
+tags = ["part:vagina", "system:h-npc-ai-test"]
+effects = [
+  { type = "narrative_output", params = { text = "（测试指令）午后限定行为。" } },
+  { type = "modify_attribute", params = { attr = "体力", value = -5 } },
+]

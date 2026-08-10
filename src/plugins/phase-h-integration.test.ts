@@ -450,10 +450,13 @@ describe('Phase H 集成测试', () => {
       id: 'bad_cond_cmd', label: '坏条件指令', type: 'daily', time_cost: 10,
       condition: 'location.bogus_field == 1',
     })
-    // 注释：注册 h-core 前提（镜像 onEnable 行为，NOT_H/HAVE_TARGET/TIRED_LE_84）
+    // 注释：注册 h-core 前提（镜像 onEnable 行为，NOT_H/HAVE_TARGET/TIRED_LE_84；
+    // 2026-08-11 补 registerInstructPremises——h-npc-ai 逆推指令的 T_NPC_ACTIVE_H 域）
     const { premiseRegistry } = await import('../core/premise-registry')
     const { registerHPremises } = await import('../plugins/h-core/premise/premise-h')
+    const { registerInstructPremises } = await import('../plugins/h-core/premise/premise-instruct')
     registerHPremises(premiseRegistry)
+    registerInstructPremises(premiseRegistry)
     commandRegistry.clear()
     errorReporter.clear()
     loadInstructions()

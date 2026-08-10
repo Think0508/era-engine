@@ -350,6 +350,28 @@ export function registerInstructPremises(registry: any): void {
     return !!p?.dirty?.penis_dirty_dict?.semen
   })
 
+  // ── 逆推前提（erArk handle_premise_H.py:2031-2044）──
+  // 2026-08-11：从恒 false 占位升级为真语义（h-npc-ai 插件消费；npc_active_h 属 h_state
+  // 类型域 = h-core；逆推中普通 H 指令因 T_NPC_NOT_ACTIVE_H 失败而隐藏，keep_enjoy 等
+  // 逆推专属指令因 T_NPC_ACTIVE_H 通过——erArk 同款前提过滤隐藏制）
+  const npcActive = (char: any): boolean =>
+    char?.h_state?.npc_active_h === true || char?.hypnosis?.active_h === true
+  registry.register('T_NPC_ACTIVE_H', (ctx: any) => {
+    const id = targetId(ctx)
+    if (!id) return false
+    return npcActive(entitySystem.get('character', id))
+  })
+  registry.register('T_NPC_NOT_ACTIVE_H', (ctx: any) => {
+    const id = targetId(ctx)
+    if (!id) return false
+    return !npcActive(entitySystem.get('character', id))
+  })
+  registry.register('NPC_ACTIVE_H', (ctx: any) => {
+    const id = ctx?.sourceId
+    if (!id) return false
+    return npcActive(entitySystem.get('character', id))
+  })
+
   // ── 依赖未实装系统 → 恒 false（情境不存在，地文不可达）──
   // TODO 各系统落地时补语义（校验测试会盯防新未注册前提）：
   //   子宫体位（B3）/ 露出 / 隐奸 / 群交 / 逆推 / 催眠逆推·木头人 / 精液·射精（h-ejaculation 对接）
@@ -360,7 +382,6 @@ export function registerInstructPremises(registry: any): void {
     'GROUP_SEX_MODE_ON',
     'HIDDEN_SEX_MODE_1', 'HIDDEN_SEX_MODE_2', 'HIDDEN_SEX_MODE_3', 'HIDDEN_SEX_MODE_4',
     'T_HIDDEN_SEX_MODE_1_OR_3', 'T_HIDDEN_SEX_MODE_2_OR_4',
-    'T_NPC_ACTIVE_H',
     'T_HYPNOSIS_ACTIVE_H', 'T_HYPNOSIS_BLOCKHEAD',
     'T_FIRST_A_SEX_IN_TODAY', 'T_FIRST_SEX_IN_TODAY', 'T_FIRST_U_SEX_IN_TODAY',
     'TARGET_TIME_STOP_ORGASM_RELASE',

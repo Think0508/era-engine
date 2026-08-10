@@ -98,6 +98,19 @@ export function registerHPremises(registry: any): void {
     return player?.h_state?.is_h === true || target?.h_state?.is_h === true
   })
 
+  // 注释：TARGET_IS_H——目标（selected）在 H 中（erArk TARGET_IS_H；
+  // H 指令基础前提——绝大多数 H 内指令前置，h-npc-ai 过滤链依赖）
+  registry.register('TARGET_IS_H', (ctx: any) => {
+    const target = getTargetChar(ctx)
+    return target?.h_state?.is_h === true
+  })
+
+  // 注释：TARGET_NOT_IS_H——目标不在 H 中
+  registry.register('TARGET_NOT_IS_H', (ctx: any) => {
+    const target = getTargetChar(ctx)
+    return target?.h_state?.is_h !== true
+  })
+
   registry.register('SCENE_ONLY_TWO', (_ctx: any) => {
     const loc = gameContext.getContext().location
     if (!loc) return false

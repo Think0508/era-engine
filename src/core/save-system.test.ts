@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, beforeEach } from 'vitest'
-import { restoreFromSave, migrateSaveData } from './save-system'
+import { restoreFromSave, migrateSaveData, registerGameStateProvider, getGameStateProviders } from './save-system'
 import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
 import { narrativeLog } from './narrative-log'
@@ -99,7 +99,48 @@ describe('save-system', () => {
     const result = migrateSaveData(data, [
       { from: '1.0.0', to: '2.0.0', steps: [{ rename: { old: 'hp', new: 'hit_point' } }] },
     ])
-    // 注释：版本已是 2.0.0，不执行迁移
+    // ע�ͣ��汾���� 2.0.0����ִ��Ǩ��
     expect(result.characters[0].base?.hp).toBe(100)
+  })
+
+  describe('gameState providers', () => {
+    it('registers and lists providers', () => {
+      const p = { id: 'p1', serialize: () => ({ a: 1 }), restore: () => {} }
+      registerGameStateProvider(p)
+      expect(getGameStateProviders().some(x => x.id === 'p1')).toBe(true)
+    })
+
+    it('restoreFromSave dispatches to providers by id', () => {
+      const calls: string[] = []
+      registerGameStateProvider({
+        id: 'test-provider',
+        serialize: () => ({ value: 42 }),
+        restore: (data) => { calls.push(`restored:${data?.value}`) },
+      })
+      const data = {
+        modId: 'test', modVersion: '1.0.0',
+        gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
+        characters: [],
+        gameState: { 'test-provider': { value: 42 } },
+        uiState: { foldStates: {} },
+      }
+      restoreFromSave(data)
+      expect(calls).toContain('restored:42')
+    })
+
+    it('restoreFromSave tolerates missing provider data', () => {
+      let called = false
+      registerGameStateProvider({
+        id: 'empty-provider',
+        serialize: () => ({}),
+        restore: () => { called = true },
+      })
+      restoreFromSave({
+        modId: 'test', modVersion: '1.0.0',
+        gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
+        characters: [], gameState: {}, uiState: { foldStates: {} },
+      })
+      expect(called).toBe(true)
+    })
   })
 })

@@ -7,6 +7,7 @@ import Dexie, { type Table } from 'dexie'
 import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
 import { narrativeLog } from './narrative-log'
+import { errorReporter } from './error-reporter'
 import { modLoader, fillMissingAttributes, normalizeMarksToAbilities } from './mod-loader'
 import type { EntityData } from './types'
 
@@ -28,6 +29,25 @@ export interface SaveData {
   characters: EntityData[]
   gameState: Record<string, any>
   uiState: { foldStates: Record<string, boolean> }
+}
+
+// 注释：游戏状态段提供器注册表（通用机制）——插件注册 {id, serialize, restore}，
+// 存档时 serialize 结果写入 gameState[id]，读档时按 id 分发 restore。
+// core 不认任何具体段语义（completedScenes 为既有先例，保留原路径）
+export interface GameStateProvider {
+  id: string
+  serialize: () => Record<string, any>
+  restore: (data: Record<string, any>) => void
+}
+
+const gameStateProviders = new Map<string, GameStateProvider>()
+
+export function registerGameStateProvider(provider: GameStateProvider): void {
+  gameStateProviders.set(provider.id, provider)
+}
+
+export function getGameStateProviders(): GameStateProvider[] {
+  return [...gameStateProviders.values()]
 }
 
 class SaveDatabase extends Dexie {
@@ -75,6 +95,10 @@ export async function saveGame(slotId: string, uiState: any, label?: string): Pr
     characters: allChars.map(c => JSON.parse(JSON.stringify(c))),
     gameState: {
       completedScenes: gameContext.getCompletedScenes(),
+      // 注释：插件注册的游戏状态段（random-event-system 的触发记录等）
+      ...(Object.fromEntries(
+        [...gameStateProviders.values()].map(p => [p.id, p.serialize()]),
+      )),
     },
     uiState: { foldStates: uiState?.foldStates ?? {} },
   }
@@ -155,6 +179,18 @@ export function restoreFromSave(data: SaveData): void {
   // 注释：恢复已完成 scene
   if (data.gameState?.completedScenes) {
     gameContext.setCompletedScenes(data.gameState.completedScenes)
+  }
+  // 注释：分发到插件注册的游戏状态段（try/catch 隔离——单段失败不阻断读档）
+  for (const provider of gameStateProviders.values()) {
+    try {
+      provider.restore(data.gameState?.[provider.id])
+    } catch (e) {
+      errorReporter.report({
+        source: 'save-system',
+        severity: 'warning',
+        message: `游戏状态段 '${provider.id}' 恢复失败：${e instanceof Error ? e.message : String(e)}`,
+      })
+    }
   }
 }
 

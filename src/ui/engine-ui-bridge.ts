@@ -46,6 +46,8 @@ export class EngineUIBridge {
     // 注释：监听 game:execution_start/end → setExecutionState
     const execStartHandler: BridgeHandler = () => {
       gameStore.setExecutionState('EXECUTING')
+      // 注释：新行动开始 → 作废挂起的随机事件选项
+      uiStore.setEventOptions(null)
     }
     eventBus.on('game:execution_start', execStartHandler)
     this.handlers.push({ event: 'game:execution_start', handler: execStartHandler })
@@ -129,6 +131,18 @@ export class EngineUIBridge {
     eventBus.on('game:new_day', timeHandler)
     this.handlers.push({ event: 'game:hour_changed', handler: timeHandler })
     this.handlers.push({ event: 'game:new_day', handler: timeHandler })
+
+    // 注释：随机事件选项条——挂起/清除同步到 ui-store
+    const eventOptionsHandler: BridgeHandler = (payload: any) => {
+      uiStore.setEventOptions(Array.isArray(payload?.options) ? payload.options : null)
+    }
+    eventBus.on('random-event:options', eventOptionsHandler)
+    this.handlers.push({ event: 'random-event:options', handler: eventOptionsHandler })
+    const eventOptionsClearHandler: BridgeHandler = () => {
+      uiStore.setEventOptions(null)
+    }
+    eventBus.on('random-event:options_clear', eventOptionsClearHandler)
+    this.handlers.push({ event: 'random-event:options_clear', handler: eventOptionsClearHandler })
   }
 
   // 注释：刷新当前地点角色列表

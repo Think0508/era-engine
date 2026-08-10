@@ -107,12 +107,17 @@ export const useUIStore = defineStore('ui', () => {
   const isFolded = (section: string) => foldStates.value[section] ?? false
 
   // Actions
-  function selectCharacter(id: string) {
-    selectedCharacterId.value = id
-  }
-  function clearSelection() {
-    selectedCharacterId.value = null
-  }
+    function selectCharacter(id: string) {
+      selectedCharacterId.value = id
+    }
+    function clearSelection() {
+      selectedCharacterId.value = null
+    }
+    // 注释：随机事件选项条（random-event-system 挂起的子事件选项；新行动开始时清除）
+    const eventOptions = ref<{ id: string; text: string }[] | null>(null)
+    function setEventOptions(opts: { id: string; text: string }[] | null) {
+      eventOptions.value = opts
+    }
   function toggleFold(section: string) {
     foldStates.value[section] = !foldStates.value[section]
   }
@@ -244,9 +249,11 @@ export const useUIStore = defineStore('ui', () => {
   }
 
   return {
-    theme,
-    selectedCharacterId,
-    foldStates,
+      theme,
+      selectedCharacterId,
+      eventOptions,
+      setEventOptions,
+      foldStates,
     sidebarOpen,
     sidebarMode,
     sidebarWidth,

@@ -9,6 +9,7 @@ import StatusSection from '../components/StatusSection.vue'
 import ParameterSection from '../components/ParameterSection.vue'
 import LookSection from '../components/LookSection.vue'
 import CommandBar from '../components/CommandBar.vue'
+import EventOptionBar from '../components/EventOptionBar.vue'
 import SystemPanel from '../components/SystemPanel.vue'
 import ScreenNumpad from '../components/ScreenNumpad.vue'
 
@@ -40,6 +41,7 @@ const uiStore = useUIStore()
       </div>
     </div>
     <div class="command-bar-container">
+      <EventOptionBar />
       <CommandBar />
     </div>
     <SystemPanel />

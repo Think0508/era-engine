@@ -103,4 +103,14 @@ describe('ui-store', () => {
     store.toggleSidebarMode()
     expect(store.sidebarMode).toBe('overlay')
   })
+
+  it('eventOptions set/clear', () => {
+    const store = useUIStore()
+    expect(store.eventOptions).toBeNull()
+    store.setEventOptions([{ id: 'e1', text: '进去看看' }, { id: 'e2', text: '转身离开' }])
+    expect(store.eventOptions).toHaveLength(2)
+    expect(store.eventOptions![0].text).toBe('进去看看')
+    store.setEventOptions(null)
+    expect(store.eventOptions).toBeNull()
+  })
 })

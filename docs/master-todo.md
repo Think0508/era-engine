@@ -520,6 +520,13 @@
       Number.isFinite 过滤；restore(undefined) 抛错 → 默认参数
     - 【修复·低】saveGame 的 provider serialize 单段失败会中断存档 → try/catch 隔离
     - 【修复·低】校验扩展：type/side/trigger_guard/adv 非法值 → warning（加载时显式暴露）
+    随机事件系统第五轮排查（2026-08-10，用户「再检查一次吧」）✅：
+    - 【修复·静默·中】未知前提 strict 淘汰是静默的（事件不触发但 mod 作者不知道为什么）
+      → 补全局去重上报（npc-ai target-search reportOnce 同款），注册表快照每 collect 一次
+    - 确认无问题：game:load 无其他监听者（新增 emit 无副作用）；'event' 日志类型 UI 正常
+      渲染；插件 onEnable 顺序（data_dependencies 拓扑 + 字母序）保证 native 指令先注册；
+      前提缓存对事件系统价值低（每次 pick 单一行为桶，前提不跨事件共享）——与 target-search
+      （多目标共享前提）不同，不引入
     NPC 行为系统排查修复（2026-08-10，用户「检查是否有 bug 或静默错误」）✅：
     - 【修复·静默】nearbyLocations apiSystem.call 恒返回 Promise——"玩家所在+相邻优先当轮"
       永不生效（相邻永不加入）→ await 化

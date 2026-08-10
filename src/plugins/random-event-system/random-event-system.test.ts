@@ -209,4 +209,42 @@ describe('random-event-system 集成', () => {
     eventBus.off('random-event:select_character', handler)
     randomEventEngine.registerAll(modLoader.getMod()?.events ?? [])
   })
+
+  it('NPC 选项在玩家指令结算中挂起 → execution_end 不清（保留到 IDLE 显示）', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.75)
+    const player = entitySystem.get('character', PLAYER) as any
+    player.current_location = 'town_square'
+    const guard = entitySystem.get('character', GUARD) as any
+    guard.current_location = 'town_square'
+    // NPC 行为开始（玩家指令 advanceTime 中）→ 挂起选项
+    await eventBus.emit('npc:behavior_started', { character: GUARD, behavior_id: 'rest', type: 'rest' })
+    // 等等——rest 桶无父事件，用 move 桶验证：NPC 挂 move 事件？改用直接验证：NPC 父事件挂起后
+    // 玩家 execution_end 不清（guard 在 town_square，挂 NPC 事件需挂载键含父事件——rest 无，
+    // 用 triggerFor 直接触发 move 桶的父事件模拟 NPC 侧挂起）
+    randomEventEngine.registerAll([
+      { id: 'npc_father', behavior: 'npc_father_test', type: 0, text: '远处招呼|NPC 向你招手。', effects: [{ type: 'open_son_options', params: {} }] },
+      { id: 'npc_son', behavior: 'npc_father_test', type: 0, text: '过去看看|你走了过去。', option_son: true, effects: [] },
+    ])
+    await apiSystem.call('random-event', 'triggerFor', GUARD, 'npc_father_test', PLAYER)
+    expect(await apiSystem.call('random-event', 'getPending')).not.toBeNull()
+    // 玩家指令结算 → 不清 NPC 选项
+    await eventBus.emit('game:execution_end', { commandId: 'chat', timeCost: 10 })
+    expect(await apiSystem.call('random-event', 'getPending')).not.toBeNull()
+    // 玩家主动行动开始 → 作废
+    await eventBus.emit('game:execution_start', { commandId: 'chat' })
+    expect(await apiSystem.call('random-event', 'getPending')).toBeNull()
+    randomEventEngine.registerAll(modLoader.getMod()?.events ?? [])
+  })
+
+  it('读档（game:load）清挂起选项', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.75)
+    const player = entitySystem.get('character', PLAYER) as any
+    player.current_behavior = 'wait'
+    player.current_location = 'town_square'
+    // move 候选：[move_see_swordsman, move_washroom_sound]——random 0.75 选中父事件
+    await eventBus.emit('location:enter', { to: 'tavern', from: 'town_square' })
+    expect(await apiSystem.call('random-event', 'getPending')).not.toBeNull()
+    await eventBus.emit('game:load', {})
+    expect(await apiSystem.call('random-event', 'getPending')).toBeNull()
+  })
 })

@@ -143,6 +143,12 @@ export class EngineUIBridge {
     }
     eventBus.on('random-event:options_clear', eventOptionsClearHandler)
     this.handlers.push({ event: 'random-event:options_clear', handler: eventOptionsClearHandler })
+    // 注释：读档后清选项条 UI（旧选项在恢复的游戏状态下执行会语义错位）
+    const gameLoadHandler: BridgeHandler = () => {
+      uiStore.setEventOptions(null)
+    }
+    eventBus.on('game:load', gameLoadHandler)
+    this.handlers.push({ event: 'game:load', handler: gameLoadHandler })
     // 注释：事件效果（set_interactant player_target_to_me）让玩家选中某角色——
     // gameContext 已同步（条件层），此处同步 UI 选中（bridge 的 watch 是单向 uiStore→gameContext）
     const selectCharacterHandler: BridgeHandler = (payload: any) => {

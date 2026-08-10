@@ -8,6 +8,7 @@ import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
 import { narrativeLog } from './narrative-log'
 import { errorReporter } from './error-reporter'
+import { eventBus } from './event-bus'
 import { modLoader, fillMissingAttributes, normalizeMarksToAbilities } from './mod-loader'
 import type { EntityData } from './types'
 
@@ -192,6 +193,8 @@ export function restoreFromSave(data: SaveData): void {
       })
     }
   }
+  // 注释：读档完成广播（标准事件 game:load——插件清理运行时瞬态状态，如随机事件挂起选项）
+  eventBus.emit('game:load', {})
 }
 
 // 注释：导出存档（JSON 字符串）

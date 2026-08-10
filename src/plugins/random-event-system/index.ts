@@ -47,7 +47,6 @@ export function onEnable(ctx: PluginContext): void {
 
   // 注释：3. 玩家事件挂钩——每次指令/移动/等待结算后
   ctx.events.on('game:execution_end', async (payload: any) => {
-    clearPendingOptions()
     const playerId = modLoader.getMod()?.playerCharacter
     if (!playerId) return
     const commandId = payload?.commandId as string | undefined
@@ -61,6 +60,14 @@ export function onEnable(ctx: PluginContext): void {
     eventBus.emit('character:changed', { id: playerId })
     const selected = gameContext.getContext().selectedCharacterId ?? null
     await triggerEventFor(playerId, commandId, selected)
+  })
+
+  // 注释：3a. 玩家主动行动开始 → 挂起选项作废（设计 Q15：不选就去执行其他指令 = 放弃）。
+  // 注意：不清 execution_end 里的——玩家指令结算中（advanceTime）NPC 事件挂起的选项
+  // 必须保留到玩家 IDLE 显示（execution_end 不再清——2026-08-10 排查：无条件清会把
+  // 玩家从未见到的 NPC 选项静默丢弃）
+  ctx.events.on('game:execution_start', () => {
+    clearPendingOptions()
   })
 
   // 注释：3b. 玩家移动事件挂钩——地图移动不经 commandExecutor（moveTo 直达），
@@ -95,6 +102,11 @@ export function onEnable(ctx: PluginContext): void {
   // 注释：5. 触发记录——今日记录每日重置
   ctx.events.on('game:new_day', () => {
     randomEventEngine.resetToday()
+  })
+
+  // 注释：5b. 读档后清挂起选项（瞬态状态不入存档——旧选项在恢复的游戏状态下执行会语义错位）
+  ctx.events.on('game:load', () => {
+    clearPendingOptions()
   })
 
   // 注释：6. 存档集成（触发记录随存档，gameState provider）

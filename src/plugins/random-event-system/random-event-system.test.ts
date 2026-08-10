@@ -144,4 +144,15 @@ describe('random-event-system 集成', () => {
     expect(logs2.some(l => l.text.includes('闲聊'))).toBe(true)
     expect(logs2.some(l => l.text.includes('加油'))).toBe(false)
   })
+
+  it('文本插值：talk-common 变量替换 / 未知变量原样 / 实体占位符替换', async () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0)
+    await apiSystem.call('random-event', 'triggerFor', 'player', 'talk_var_test', null)
+    const logs = narrativeLog.getEntries().filter(e => e.type === 'event')
+    expect(logs.length).toBe(1)
+    const text = logs[0].text
+    expect(text).toContain('玩家')          // {self.name}
+    expect(text).not.toContain('{penis}')   // talk-common 词库替换
+    expect(text).toContain('{no_such_var}') // 未知变量原样保留
+  })
 })

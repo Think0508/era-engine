@@ -167,6 +167,22 @@ ctx.api.call('npc-ai', 'registerPreCheck', id, handler)                // → vo
 - AI 前提 handler ctx 约定：`{ sourceId: 被决策的 NPC id }`，返回数值即权重（0 = 淘汰）
 - 完整说明见 `docs/npc-ai-system.md`
 
+#### random-event — 行为期随机事件（2026-08-10）
+
+```typescript
+ctx.api.call('random-event', 'triggerFor', subjectId, behaviorId, targetId)  // → Promise<void>（手动触发一次事件选择与结算）
+ctx.api.call('random-event', 'chooseOption', index)                          // → Promise<boolean>（玩家选择子事件选项；index 非法 false）
+ctx.api.call('random-event', 'getPending')                                  // → PendingOption | null（{behaviorId, subjectId, targetId, fatherId, options: [{eventId, text}]}）
+ctx.api.call('random-event', 'clearPending')                                // → void（作废挂起选项）
+```
+
+- 事件数据：`definitions/events/*.toml` 按行为分文件（`[[events]]`：id/behavior/type/adv/side/text/premises/condition/trigger_guard/option_son/effects）
+- 触发：玩家每次指令结算（`game:execution_end`，挂载键 = 指令 id）+ NPC 新行为开始（`npc:behavior_started`，挂载键 = 行为块 id）；NPC 文本事件需玩家同地点，静默事件（text 空）任意地点
+- 系统效果：`noop` / `record_event` / `record_event_today` / `open_son_options` / `set_interactant`（mode: player/self/player_target_to_me/masturbator/most_desire）/ `interrupt_activity`
+- UI 事件：`random-event:options` `{fatherId, options}`、`random-event:options_clear`（engine-ui-bridge 同步选项条）
+- 条件字段：`player.current_behavior`（玩家当前行为 = 指令 id / move / wait）
+- 完整说明见 `docs/random-event-system.md`
+
 #### character — 角色服务
 
 ```typescript

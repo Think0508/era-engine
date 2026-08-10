@@ -84,7 +84,8 @@ src/
 │   ├── dialogue-system/     # 口上与对话系统（反应式口上 + 交互式对话树）
 │   ├── inventory-system/    # 背包物品系统
 │   ├── quest-system/        # 任务剧情系统
-│   └── effect-system/       # 统一效果执行器
+│   ├── effect-system/       # 统一效果执行器
+│   └── random-event-system/ # 行为期随机事件（行为挂钩/加权候选/子事件选项/触发记录）
 ├── ui/                      # UI层
 │   ├── layout/              # 响应式整体布局（PC左右分栏、手机上下堆叠）
 │   ├── components/          # 全定制游戏组件（属性条、头像、日志、按钮）

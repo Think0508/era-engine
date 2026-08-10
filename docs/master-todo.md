@@ -461,12 +461,26 @@
     - 【测试】target-search.test.ts 8 条（权重/分层/缓存/延后/get_first_only/未知前提）+ 
       npc-ai-system.test.ts 11 条（初始决策/窗口结算/排班/连锁移动到达/门控/战斗冻结/pin/
       每日结算/500 NPC 性能冒烟）
-    - 【范围外/后置】H 内 NPC AI（handle_npc_ai_in_h，依赖 H 成熟度）/ 行为期随机事件
-      （event.py，独立大系统）/ NPC 自然醒 wake 侧（daily_reset/愤怒，erArk 仅玩家睡眠时
+    - 【范围外/后置】H 内 NPC AI（handle_npc_ai_in_h，依赖 H 成熟度）/ NPC 自然醒 wake 侧（daily_reset/愤怒，erArk 仅玩家睡眠时
       update_sleep 全员执行——待 L1.7 睡眠系统）/ 助理问安（目标前提数据实现，无机制位）/
       follow_bias（关系前提目标 = mod 内容）/ 监禁送宿舍（原地等待简化）
     NPC 行为系统验收: typecheck ✅ / test 597 通过 ✅（51 文件，11 条 npc-ai 集成 + 8 条目标搜索）/
       三层合规扫描（无跨插件 import、core 零玩法逻辑）
+    ✅ 行为期随机事件系统（2026-08-10，复刻 erArk event.py——grill 16 项决策 + 计划
+      docs/superpowers/plans/2026-08-10-random-event-system.md）：
+    - core/random-event.ts 通用引擎（行为桶/adv 分桶/前提权重候选/加权随机/trigger_guard/
+      全时+今日触发记录/{self.X} 插值）+ mod-loader events 数据桶（definitions/events/*.toml
+      按行为分文件，累积式）+ save-system gameState provider 注册表（插件段随存档）
+    - plugins/random-event-system：玩家 execution_end / NPC behavior_started 挂钩（玩家
+      current_behavior 镜像自维护）、地点门控（文本需同地点/静默全地点）、子事件选项
+      （open_son_options 非阻塞挂起 + EventOptionBar 选项条 UI + bridge 同步）、系统效果
+      （noop/record_event/record_event_today/set_interactant 五种/interrupt_activity）、
+      文本插值（talk-common 词库 + 实体占位符）、每日记录重置、存档 provider
+    - 文档：docs/random-event-system.md 手册 + ADR-0008 + plugin-author-guide random-event 节
+    - 测试：core 14 条（分桶/权重/守卫/记录/插值）+ 集成 7 条（玩家/NPC 触发/门控/静默/
+      选项流/记录/插值/存档接线）——全量 637 通过 ✅
+    - 与 erArk 有意偏差（ADR-0008）：多层事件/10008 效果/群交开关/跳过口上 = 数据零使用
+      死代码不实现；DIY 指令独立规划；远处 NPC 文本事件需同地点（mod 免写位置前提）
     NPC 行为系统排查修复（2026-08-10，用户「检查是否有 bug 或静默错误」）✅：
     - 【修复·静默】nearbyLocations apiSystem.call 恒返回 Promise——"玩家所在+相邻优先当轮"
       永不生效（相邻永不加入）→ await 化

@@ -481,6 +481,16 @@
       选项流/记录/插值/存档接线）——全量 637 通过 ✅
     - 与 erArk 有意偏差（ADR-0008）：多层事件/10008 效果/群交开关/跳过口上 = 数据零使用
       死代码不实现；DIY 指令独立规划；远处 NPC 文本事件需同地点（mod 免写位置前提）
+    随机事件系统排查修复（2026-08-10，用户「检查是否有 bug 或静默错误」）✅：
+    - 【修复·静默·高】validateEventData 在 onLoad 执行——初始化顺序（插件 onLoad → mod 加载
+      → 插件 onEnable）下 getMod() 为 null，挂载键校验永不生效 → 移至 onEnable + 挂载键改用
+      commandRegistry 查询（native 指令在 commandRegistry 而非 mod.instructions，原校验会误报 chat）
+    - 【修复·静默·高】远处 NPC 静默事件的效果数值文本泄漏到叙事日志（玩家看不到 NPC 却看到
+      "体力 -2"）——npc-ai 行为完成效果有 _silent:!sameLocation + narrative_output 过滤，
+      事件效果缺同样处理 → playerSees + 过滤 + _silent
+    - 【修复·中】registerSystemEffects 重复注册会 throw（effectTypeRegistry 拒绝重复）→
+      HMR/测试重载场景插件被禁 → has 检查幂等
+    - 【修复·低】玩家 current_behavior 写入后补 character:changed（其他系统监听刷新）
     NPC 行为系统排查修复（2026-08-10，用户「检查是否有 bug 或静默错误」）✅：
     - 【修复·静默】nearbyLocations apiSystem.call 恒返回 Promise——"玩家所在+相邻优先当轮"
       永不生效（相邻永不加入）→ await 化

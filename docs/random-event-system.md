@@ -87,7 +87,7 @@ effects = [{ type = "modify_attribute", params = { attr = "hp", value = -5 } }]
 | **玩家** | 每次指令/移动/等待结算后（`game:execution_end`）——基于**刚完成的指令 id** 选择事件 |
 | **NPC** | 每次新行为开始时（`npc:behavior_started`）——基于行为块 id 选择 |
 
-**地点门控**：NPC 的**文本事件**仅当玩家与该 NPC 同地点时触发；**静默事件**（`text` 空）任意地点触发（效果照常结算，如破处标记类状态）。
+**地点门控**：NPC 的**文本事件**仅当玩家与该 NPC 同地点时触发；**静默事件**（`text` 空）任意地点触发（效果照常结算，如破处标记类状态）。玩家不可见时（NPC 远处静默事件）效果数值结算**不输出**叙事日志（`_silent` + `narrative_output` 过滤，与 npc-ai 行为完成效果同语义）。
 
 **交互对象（interactant）**：玩家事件 = 当前选中角色（`selectedCharacterId`）；NPC 事件 = 同地点玩家（无则 null）。事件效果省略 `target` 时默认作用于 interactant（无 interactant 时作用于触发者自己）。
 

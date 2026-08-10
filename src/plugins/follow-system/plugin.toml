@@ -1,0 +1,29 @@
+[meta]
+id = "follow-system"
+name = "跟随系统"
+version = "1.0.0"
+description = "同行/跟随系统——复刻 erArk is_follow 语义（0不跟随/1智能跟随/2强制跟随/3已移除/4召唤TODO）"
+
+# 可选绑定：mod 绑定了 hp（如 体力）→ 疲劳自动解除生效；未绑定 → warning + 跳过
+[optional_attributes]
+hp = { type = "number", description = "疲劳解除判定用体力（≤1 时自动解除跟随）" }
+
+[condition_fields]
+"character.{id}.following" = { type = "boolean", description = "是否正在跟随玩家（is_follow ≠ 0）" }
+"character.{id}.follow_mode" = { type = "number", description = "跟随模式 0-4（erArk is_follow）" }
+
+[data_dependencies]
+provides = ["follow:ready"]
+depends_on = ["characters:initialized", "dialogue:ready"]
+
+[[events.listen]]
+name = "location:enter"
+description = "玩家移动 → 原地点跟随者瞬移同步（priority -100，先于 dialogue greet）"
+
+[[events.listen]]
+name = "game:hour_changed"
+description = "跟随 AI 轮询：疲劳解除 / 强制跟随（mode 2）"
+
+[[events.listen]]
+name = "character:offline"
+description = "角色离线 → 解除跟随（reason=offline）"

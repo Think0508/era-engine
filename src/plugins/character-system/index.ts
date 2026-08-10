@@ -9,6 +9,7 @@ import { eventBus } from '../../core/event-bus'
 import { modLoader, finalizeCharacterData } from '../../core/mod-loader'
 import { errorReporter } from '../../core/error-reporter'
 import { resolveRelationPanel, resolveRelationAddress } from '../../core/relation-display'
+import { apiSystem } from '../../core/api'
 
 // 注释：关系三档字符串映射（关系系统 v2）——与 mod-loader 的转换一致
 const RELATION_SENTIMENT_MAP: Record<string, number> = { '正面': 1, '中立': 0, '负面': -1 }
@@ -147,11 +148,39 @@ export function onEnable(ctx: PluginContext): void {
       char.current_location = locationId
       eventBus.emit('character:changed', { id: charId })
     },
+    // 注释：角色离线生命周期（2026-08-10 前置）——离线 = 角色从活动世界消失
+    // （装袋搬走/外勤/逃跑等未来指令的落点）。通用契约：只清位置 + 发事件，
+    // 各"在场活动状态"属主（follow/h-core/status…）监听 character:offline 清自己的领域。
+    setOffline: (charId: string, reason?: string): void => {
+      const char = entitySystem.get('character', charId) as any
+      if (!char) return
+      if (char.sp_flag?.offline) return // 幂等
+      if (!char.sp_flag) char.sp_flag = {}
+      char.sp_flag.offline = true
+      char.current_location = null
+      eventBus.emit('character:offline', { id: charId, reason })
+      eventBus.emit('character:changed', { id: charId })
+    },
+    // 注释：恢复在线——缺省位置用 home_locations 最高权重
+    setOnline: (charId: string, locationId?: string): void => {
+      const char = entitySystem.get('character', charId) as any
+      if (!char) return
+      if (!char.sp_flag?.offline) return // 幂等
+      char.sp_flag.offline = false
+      char.current_location = locationId ?? pickBestHomeLocation(char)
+      eventBus.emit('character:online', { id: charId })
+      eventBus.emit('character:changed', { id: charId })
+    },
+    // 注释：查询角色是否离线
+    isOffline: (charId: string): boolean => {
+      const char = entitySystem.get('character', charId) as any
+      return char?.sp_flag?.offline === true
+    },
   })
 
-  // 注释：3. 监听 game:hour_changed → AI 移动
-  ctx.events.on('game:hour_changed', (payload: any) => {
-    handleAiMovement(payload?.hour ?? 0)
+  // 注释：3. 监听 game:hour_changed → AI 移动（await：handleAiMovement 内部有 follow API 查询）
+  ctx.events.on('game:hour_changed', async (payload: any) => {
+    await handleAiMovement(payload?.hour ?? 0)
   })
 
   // 注释：4. 监听 location:enter → NPC spawns
@@ -165,29 +194,50 @@ function initCharacterLocations(): void {
   for (const char of entitySystem.getAll('character')) {
     const c = char as any
     if (c.current_location) continue // 注释：已有值跳过（读档情况）
-    const homeLocations = c.behavior?.home_locations
-    if (!homeLocations) continue
-    // 注释：选权重最高的 home_location
-    let bestLocation: string | null = null
-    let bestWeight = -1
-    for (const [locId, weight] of Object.entries(homeLocations)) {
-      if ((weight as number) > bestWeight) {
-        bestWeight = weight as number
-        bestLocation = locId
-      }
+    // 注释：离线角色不重放回地图（读档/启动时 sp_flag.offline 持久化）
+    if (c.sp_flag?.offline) continue
+    const best = pickBestHomeLocation(c)
+    if (best) c.current_location = best
+  }
+}
+
+// 注释：选 home_locations 权重最高的地点（null = 无 home_locations）
+function pickBestHomeLocation(c: any): string | null {
+  const homeLocations = c.behavior?.home_locations
+  if (!homeLocations) return null
+  let bestLocation: string | null = null
+  let bestWeight = -1
+  for (const [locId, weight] of Object.entries(homeLocations)) {
+    if ((weight as number) > bestWeight) {
+      bestWeight = weight as number
+      bestLocation = locId
     }
-    if (bestLocation) {
-      c.current_location = bestLocation
-    }
+  }
+  return bestLocation
+}
+
+// 注释：是否被跟随系统接管（模式 1/2 的角色由 follow-system 控制移动，普通 AI 跳过；
+// mode 4 召唤 TODO 不冻结 NPC）
+// 可选依赖：follow 插件未启用/未注册 → 降级 false（零影响）
+async function isFollowControlled(charId: string): Promise<boolean> {
+  if (!apiSystem.has('follow', 'isControlled')) return false
+  try {
+    return (await apiSystem.call('follow', 'isControlled', charId)) as boolean
+  } catch {
+    return false
   }
 }
 
 // 注释：AI 移动——所有角色都处理（不只当前+相邻）
-function handleAiMovement(hour: number): void {
+async function handleAiMovement(hour: number): Promise<void> {
   for (const char of entitySystem.getAll('character')) {
     const c = char as any
     const behavior = c.behavior
     if (!behavior) continue
+    // 注释：离线角色不移动
+    if (c.sp_flag?.offline) continue
+    // 注释：跟随中的角色由 follow-system 控制，普通 AI 跳过
+    if (await isFollowControlled(c.id)) continue
     const activity = behavior.activity ?? 0
     // 注释：activity=0 永不动
     if (activity === 0) continue

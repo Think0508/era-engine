@@ -121,15 +121,17 @@ class GameContextManager {
     }
     // 注释：timeCost 默认 5 分钟
     const cost = timeCost ?? 5
+    // 注释：记录出发地——enter payload 带 from（跟随系统等按"同位置"判定的消费方用）
+    const from = this.location.id
     // 注释：先 leave 后 enter，符合"离开→到达"直觉
-    await eventBus.emit('location:leave', { from: this.location.id })
+    await eventBus.emit('location:leave', { from })
     await this.advanceTime(cost)
     // 注释：从 entity-system 获取目标地点数据
     const targetEntity = entitySystem.get('location', targetLocationId)
     if (targetEntity) {
       this.location = targetEntity as unknown as LocationData
     }
-    await eventBus.emit('location:enter', { to: targetLocationId })
+    await eventBus.emit('location:enter', { to: targetLocationId, from })
   }
 
   // 注释：设置执行状态——command-executor 调用

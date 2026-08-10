@@ -291,8 +291,14 @@ export function onLoad(_ctx: PluginContext): void {
       if (!ch) continue
       if (!ch.sp_flag) ch.sp_flag = {}
       ch.sp_flag.hidden_sex_mode = mode
-      // 注释：目标取消跟随（erArk: is_follow = 0）
-      if (ch.sp_flag) ch.sp_flag.is_follow = 0
+      // 注释：目标取消跟随（erArk: is_follow = 0）——走 follow API（2026-08-10 重构：
+      // 直写 sp_flag.is_follow 会绕过 follow:ended 事件与条件镜像字段 following/follow_mode）
+      try {
+        apiSystem.call('follow', 'end', id, 'hidden_sex')
+      } catch {
+        // 注释：follow-system 未启用 → 直写兜底（erArk 语义：隐奸开始必解除跟随）
+        ch.sp_flag.is_follow = 0
+      }
       // 注释：设置不正常 flag 3
       if (!ch.sp_flag.abnormal_flags) ch.sp_flag.abnormal_flags = {}
       ch.sp_flag.abnormal_flags['3'] = true

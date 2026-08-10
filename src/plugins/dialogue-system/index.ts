@@ -28,6 +28,12 @@ interface ConversationRuntime {
   nodes: Map<string, ConversationNode>
 }
 
+// 注释：场景角色过滤器（2026-08-10）——按 scene 分组注册，触发某场景的某角色时
+// 任一过滤器返回 true 即跳过整段输出（口上 + talk-common 兜底）。
+// follow-system 用它实现"跟随者到达不打招呼"（erArk talk.py:56 NOT_FOLLOW 过滤）。
+// 通用机制：未来送别/移动场景、其他插件（隐奸隐藏等）均可注册。
+const sceneCharFilters = new Map<string, Array<(charId: string) => boolean>>()
+
 let currentConversation: ConversationRuntime | null = null
 
 // 注释：onLoad——注册 effect types
@@ -74,6 +80,19 @@ export function onEnable(ctx: PluginContext): void {
     // 注释：插值工具——{var} 替换
     interpolate: (text: string, context: any): string => {
       return interpolateText(text, context)
+    },
+    // 注释：注册场景角色过滤器（2026-08-10）——scene+charId 命中任一过滤器则跳过该角色口上。
+    // filter 签名 (charId) => boolean；返回注销函数。
+    registerSceneCharFilter: (scene: string, filter: (charId: string) => boolean): (() => void) => {
+      const list = sceneCharFilters.get(scene) ?? []
+      list.push(filter)
+      sceneCharFilters.set(scene, list)
+      return () => {
+        const cur = sceneCharFilters.get(scene)
+        if (!cur) return
+        const idx = cur.indexOf(filter)
+        if (idx >= 0) cur.splice(idx, 1)
+      }
     },
   })
 
@@ -177,6 +196,10 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
       }
     }
   } catch { /* quest API 未就绪，跳过 */ }
+
+  // 注释：场景角色过滤（2026-08-10）——命中任一过滤器 → 跳过该角色的口上输出
+  // 放在 quest 自动触发之后、口上选择之前：场景级任务触发不被抑制，角色说话被抑制
+  if (charId && sceneCharFilters.get(scene)?.some((f) => f(charId))) return
 
   // 注释：1+2. 口上选择——同池权重竞争（erArk handle_talk_sub：通用 + 角色专属合并候选池，
   // 专属权重 ×draw_setting[14]（默认10）；pickWeightedLine 按权重区间随机选一）

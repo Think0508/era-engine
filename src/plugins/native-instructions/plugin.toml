@@ -1,0 +1,8 @@
+[meta]
+id = "native-instructions"
+name = "系统级原生指令"
+version = "1.0.0"
+description = "系统级原生指令的唯一数据家（2026-08-10 建立）——通用日常/系统指令集中存放，不散落在各系统插件文件夹。数据放 data/default/instructions/，mod 可 override"
+
+[data_dependencies]
+provides = ["native-instructions:ready"]

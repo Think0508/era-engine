@@ -291,8 +291,10 @@ class PluginManager {
       },
       parent: parentApi ? { api: parentApi } : null,
       events: {
-        on: (event: string, handler: Function) =>
-          this.eventBus.on(event, handler as any),
+        // 注释：priority 第三参转发（types.ts 已声明；此前丢失——follow-system 等
+        // 需要"先于默认 0 优先级的监听器"（如先瞬移跟随者再触发对话 greet））
+        on: (event: string, handler: Function, priority?: number) =>
+          this.eventBus.on(event, handler as any, priority),
         off: (event: string, handler: Function) =>
           this.eventBus.off(event, handler as any),
         emit: (event: string, payload: any) =>

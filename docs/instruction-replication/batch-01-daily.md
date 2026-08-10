@@ -22,8 +22,8 @@
 | 9 | 1016 | buy_h_item | 购买成人用品 | DAILY | 待筛选（IN_H_SHOP → has_h_shop） |
 | 10 | 1017 | buy_food | 购买食物 | DAILY | 待筛选（IN_FOOD_SHOP → has_food_shop，**CSV 核对**） |
 | 11 | 1018 | all_npc_position | 角色位置一览 | DAILY | 待筛选（功能指令） |
-| 12 | 1019 | follow | 邀请同行 | DAILY | 待筛选 |
-| 13 | 1020 | end_follow | 结束同行 | DAILY | 待筛选 |
+| 12 | 1019 | follow | 邀请同行 | DAILY | 跟随系统已做（2026-08-10），指令复刻延后——数据入 native-instructions 插件；效果走 `set_follow`（=erArk 363）；前提含 TARGET_NOT_FOLLOW/NO_TARGET_OR_TARGET_CAN_COOPERATE（已注册） |
+| 13 | 1020 | end_follow | 结束同行 | DAILY | 跟随系统已做（2026-08-10），指令复刻延后——同上；效果走 `set_follow`（=erArk 365）；前提 TARGET_IS_FOLLOW（已注册） |
 | 14 | 1021 | ask_target_rest | 让对方休息 | DAILY | 待筛选 |
 | 15 | 1022 | ask_target_sleep | 让对方去睡觉 | DAILY | 待筛选 |
 | 16 | 1023 | apologize | 道歉 | DAILY | 待筛选 |

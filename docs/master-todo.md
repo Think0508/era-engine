@@ -389,8 +389,32 @@
      角色数据写法（字符串档位/段誉两父/反向 warning）/ Mod 作者使用（条件路径含行为推导
      典型用法/修改 effect/称呼）/ API/事件（含 relation:* 口上待补标记）/ 校验规则表/
      与其他系统交互（条件引擎/effect/事件/存档/契约）/ 参考索引
-   - 【索引】master-todo 顶部参考索引注册 relation-system.md
-   手册验收: typecheck ✅ / test 553 通过 ✅ / validate 4/4 / 扫描 0 违规
+    - 【索引】master-todo 顶部参考索引注册 relation-system.md
+    手册验收: typecheck ✅ / test 553 通过 ✅ / validate 4/4 / 扫描 0 违规
+    跟随系统（2026-08-10，grill 定稿复刻 erArk is_follow）✅：
+    - 【新增】src/plugins/follow-system/（plugin.toml + index.ts + premise/follow.ts）：
+      API follow（isFollowing/getMode/setMode/invite/end/getFollowers/isControlled）、
+      事件 follow:started/ended（reason: instruction/fatigue/offline）、
+      条件字段 character.{id}.following/follow_mode（实体顶层镜像字段，与 sp_flag.is_follow 单点同步）、
+      效果 set_follow（等价 erArk 363/365）、前提 6 个（TARGET_IS_FOLLOW 族 + NO_TARGET_OR_TARGET_CAN_COOPERATE
+      身体状态检查忠实复刻）、瞬移同步（location:enter payload 新增 from，priority -100 先于对话 greet）、
+      疲劳解除（可选绑定 hp ≤1）、强制跟随（mode 2 每小时）、离线归零、时停冻结、greet 口上抑制
+    - 【新增】character-system 离线生命周期（前置）：setOffline/setOnline/isOffline +
+      character:offline/online 事件 + AI 跳过 offline + init 读档不重放 + follow isControlled 跳过
+      （character-system 通过 API 查询，可选依赖降级 false）；h-core/hidden/status offline 清理挂 TODO 钩子
+    - 【新增】dialogue-system registerSceneCharFilter（通用场景角色过滤钩子，follow 注册 greet）
+    - 【重构】h-hidden 隐奸开始改走 follow API（曾直写 sp_flag.is_follow，绕过事件与镜像字段）
+    - 【新增】src/plugins/native-instructions/ 骨架（系统级原生指令唯一数据家；follow/end_follow
+      指令复刻批次落地于此，chat/rest 届时从 h-core 迁入）
+    - 【新增】docs/follow-system.md 使用手册 + plugin-author-guide API 速查（follow 命名空间 +
+      dialogue registerSceneCharFilter + character 离线三方法）
+    - 【核心修复】plugin-manager createContext events.on 转发 priority 第三参（types 已声明此前丢失）
+    - 【测试】follow-system.test.ts 16 条（全插件加载集成：状态机/事件/瞬移/疲劳/强制/冻结/离线/
+      前提矩阵/set_follow/口上抑制/payload from/条件字段）+ character-system.test.ts 4 条（离线生命周期）；
+      test-mod 新增 test_girl 专属口上（greet 抑制测试用）
+    - 【范围外】mode 3 砍掉（方舟专属）/ mode 4 TODO（召唤，IS_FOLLOW_4 前提注册提醒）/ 困倦度
+      （睡眠系统后）/ 助理睡醒跟随（方舟概念）/ follow_count 上限（erArk 死字段）/ follow_bias（阶段14）
+    跟随系统验收: typecheck ✅ / test 573 通过 ✅（50 文件）/ dev 冒烟
    dev 控制台噪音清理（2026-08-10，用户「npm run 报很多错」）✅：
    - 【噪音·已修】premise-registry 重复注册 console.warn 删除——同名覆盖是设计特性
      （mod 插件覆盖通用插件前提，mod-override 运行时 override）+ 插件重复加载（HMR/测试）
@@ -1199,6 +1223,7 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 | 0007-character-field-authoring-layers.md | docs/adr/ | 全部 | ADR: 角色字段作者分层（L1/L2/L3 + marks 归一化 + 处女双源修复） |
 | mod-file-guide.md | docs/ | 全部 | **逐文件字段字典**（能写什么/形式/区间/默认——mod 作者查字段用） |
 | relation-system.md | docs/ | 全部 | **关系系统手册**（v2：有向/三档/端对/称呼/聚合条件/事件——写关系必读） |
+| follow-system.md | docs/ | 全部 | **跟随系统手册**（同行：is_follow 0-4/瞬移同步/疲劳解除/离线归零/口上抑制/前提——写同行相关必读） |
 | example-mod | mods/example-mod/ | 全部 | **教学范例模组**（照猫画虎：每文件带注释、真实可跑、validate 验证） |
 
 ---

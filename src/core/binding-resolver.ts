@@ -25,6 +25,22 @@ class BindingResolver {
     return entity.base?.[attrKey] ?? null
   }
 
+  // 注释：按插件读自己的绑定映射（2026-08-10）——get() 跨插件搜索首个含 key 的映射，
+  // 多个插件绑同名通用键（如 combat-base 与 follow-system 都绑 hp）时会读错属性（静默）。
+  // 语义归属明确的读取方（本插件声明的绑定）必须用此方法。
+  getForPlugin(pluginId: string, entityId: string, pluginKey: string): any {
+    const entity = entitySystem.get('character', entityId)
+    if (!entity) return null
+
+    const mapping = this.bindings.get(pluginId)
+    if (!mapping) return null
+
+    const attrKey = mapping[pluginKey]
+    if (!attrKey) return null
+
+    return entity.base?.[attrKey] ?? null
+  }
+
   set(entityId: string, pluginKey: string, value: any): void {
     const entity = entitySystem.get('character', entityId)
     if (!entity) throw new Error(`角色 ${entityId} 不存在`)

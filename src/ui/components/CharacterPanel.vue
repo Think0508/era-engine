@@ -99,11 +99,20 @@ function filterAbilities(isTechnique: boolean) {
 
 const techniqueAttrs = filterAbilities(true)
 const skillAttrs = filterAbilities(false)
+
+// 注释：同行中标记（follow-system 运行时写 sp_flag.is_follow）
+const isFollowing = computed(() => {
+  const ch = character.value as any
+  return (ch?.sp_flag?.is_follow ?? 0) !== 0
+})
 </script>
 
 <template>
   <div class="character-panel">
-    <h3 class="panel-character-name">{{ character?.name ?? '未知角色' }}</h3>
+    <h3 class="panel-character-name">
+      {{ character?.name ?? '未知角色' }}
+      <span v-if="isFollowing" class="follow-tag">同行中</span>
+    </h3>
     <div class="tab-bar">
       <button v-for="tab in tabs" :key="tab" class="tab-button"
         :class="{ active: activeTab === tab }" @click="activeTab = tab">{{ tab }}</button>
@@ -196,6 +205,15 @@ const skillAttrs = filterAbilities(false)
 <style scoped>
 .character-panel { display: flex; flex-direction: column; gap: var(--gap-small); }
 .panel-character-name { font-family: var(--font-title); color: var(--color-primary); text-align: center; }
+.follow-tag {
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: var(--radius-button);
+  background-color: var(--color-success);
+  color: var(--color-surface);
+  font-size: 0.7rem;
+  vertical-align: middle;
+}
 .tab-bar { display: flex; gap: 2px; flex-wrap: wrap; border-bottom: 1px solid var(--color-border); }
 .tab-button { padding: var(--gap-small); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-button) var(--radius-button) 0 0; color: var(--color-text); cursor: pointer; font-size: 0.75rem; min-height: 44px; }
 .tab-button.active { background: var(--color-primary); color: var(--color-surface); }

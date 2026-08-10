@@ -161,7 +161,13 @@ ctx.api.call('character', 'removeRelation', charId, targetId, type) // → void�
 ctx.api.call('character', 'getRelationPanel', charId, targetId, type) // → string（成对名：父子/父女…）
 ctx.api.call('character', 'getRelationAddress', charId, targetId, type) // → string（单方称呼：父亲/儿子…）
 ctx.api.call('character', 'moveTo', charId, locationId)       // → void（角色瞬移，无事件）
+// 离线生命周期（2026-08-10）——角色从活动世界消失（装袋搬走/外勤等指令的落点）
+ctx.api.call('character', 'setOffline', charId, reason?)      // → void（置 sp_flag.offline + 清位置 + 发 character:offline {id, reason}，幂等）
+ctx.api.call('character', 'setOnline', charId, locationId?)   // → void（恢复在线；缺省位置 = home_locations 最高权重；发 character:online）
+ctx.api.call('character', 'isOffline', charId)                // → boolean
 ```
+
+- 离线生命周期契约：`character:offline` 是统一清理信号——各"在场活动状态"属主监听它清自己的领域（follow-system 已接入：解除跟随 reason=offline）。只清位置，不动身份持久数据（属性/关系/物品/经验）
 
 #### dialogue — 口上/对话
 
@@ -170,11 +176,34 @@ ctx.api.call('dialogue', 'triggerScene', scene, charId?)      // → void（演�
 ctx.api.call('dialogue', 'startConversation', charId, convId?)// → void（交互对话）
 ctx.api.call('dialogue', 'getConversations', charId)          // → Conversation[]
 ctx.api.call('dialogue', 'interpolate', text, context)        // → string（{var} 插值）
+// 场景角色过滤器（2026-08-10）——scene+charId 命中任一过滤器则跳过该角色口上（含 talk-common 兜底）
+ctx.api.call('dialogue', 'registerSceneCharFilter', scene, (charId) => boolean) // → () => void（注销函数）
 ```
 
 - `triggerScene` 自动匹配三层口上：场景通用 → 角色专属 → 角色通用 fallback
 - `triggerScene` 无 charId 时只查场景通用口上
 - `startConversation` 不传 convId 时自动选第一个 condition 满足的对话
+- `registerSceneCharFilter`：通用抑制机制——follow-system 注册 `greet` 过滤器实现"跟随者到达不打招呼"；未来送别/移动口上场景建立后同样注册
+
+#### follow — 跟随/同行系统（2026-08-10）
+
+```typescript
+ctx.api.call('follow', 'isFollowing', charId)                 // → boolean（is_follow ≠ 0）
+ctx.api.call('follow', 'getMode', charId)                     // → number（0-4）
+ctx.api.call('follow', 'setMode', charId, mode)               // → boolean（0/1/2/4；3 已移除会报错）
+ctx.api.call('follow', 'invite', charId)                      // → boolean（智能跟随，= setMode(1)）
+ctx.api.call('follow', 'end', charId, reason?)                // → boolean（解除；reason: instruction/fatigue/offline）
+ctx.api.call('follow', 'getFollowers')                        // → string[]（所有跟随中的角色 ID）
+ctx.api.call('follow', 'isControlled', charId)                // → boolean（跟随中——character-system AI 移动跳过查询）
+```
+
+- 模式语义（复刻 erArk `is_follow`）：0 不跟随 / 1 智能跟随（玩家移动时同位置跟随者瞬移同步）/ 2 强制跟随（每小时移动到玩家位置）/ 3 已移除（方舟专属）/ 4 召唤 TODO（存储 + warning，AI 未实现）
+- 事件：`follow:started` `{character, mode}`、`follow:ended` `{character, reason}`（自定义域，带插件前缀）
+- 条件字段：`character.{id}.following`（boolean）、`character.{id}.follow_mode`（number）——数据存实体顶层镜像字段（`following`/`follow_mode`），与 `sp_flag.is_follow` 单点同步
+- 前提：`TARGET_IS_FOLLOW` / `TARGET_NOT_FOLLOW` / `IS_FOLLOW` / `NOT_FOLLOW` / `IS_FOLLOW_4` / `NO_TARGET_OR_TARGET_CAN_COOPERATE`
+- 效果：`set_follow`（params: `mode` 0-4 **必填**、target——指令效果链用，等价 erArk 效果 363/365；缺 mode 报错拒绝，防漏写参数静默变"结束同行"）
+- 自动解除：疲劳（可选绑定 `hp` ≤1，未绑定则跳过）、角色离线（character:offline）、隐奸开始（h-hidden 走 follow API）
+- 完整说明见 `docs/follow-system.md`
 
 #### effect-system — 效果执行
 

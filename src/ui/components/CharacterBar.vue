@@ -30,6 +30,11 @@ watch(() => gameStore.charactersAtLocation.length, () => {
 function getCharacterName(char: any): string {
   return char.name ?? char.id ?? '未知'
 }
+
+// 注释：是否跟随中（同行中标记——read sp_flag.is_follow，follow-system 运行时写入）
+function isFollowing(char: any): boolean {
+  return (char?.sp_flag?.is_follow ?? 0) !== 0
+}
 </script>
 
 <template>
@@ -42,6 +47,7 @@ function getCharacterName(char: any): string {
       @click="uiStore.selectCharacter(char.id)"
     >
       {{ getCharacterName(char) }}
+      <span v-if="isFollowing(char)" class="follow-tag">同行</span>
     </span>
   </div>
 </template>
@@ -76,5 +82,15 @@ function getCharacterName(char: any): string {
 .character-name.selected {
   background-color: var(--color-primary);
   color: var(--color-surface);
+}
+
+.follow-tag {
+  margin-left: 4px;
+  padding: 0 4px;
+  border-radius: var(--radius-button);
+  background-color: var(--color-success);
+  color: var(--color-surface);
+  font-size: 0.6rem;
+  line-height: 1.4;
 }
 </style>

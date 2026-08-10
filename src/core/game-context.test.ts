@@ -123,7 +123,8 @@ describe('game-context', () => {
 
     expect(leaveHandler).toHaveBeenCalledBefore(enterHandler)
     expect(leaveHandler).toHaveBeenCalledWith({ from: 'town' })
-    expect(enterHandler).toHaveBeenCalledWith({ to: 'forest' })
+    // 注释：2026-08-10 enter payload 增加 from（跟随系统按"同位置"判定的消费方）
+    expect(enterHandler).toHaveBeenCalledWith({ to: 'forest', from: 'town' })
     expect(gameContext.getContext().location?.id).toBe('forest')
     expect(gameContext.getContext().time.minute).toBe(10)
   })

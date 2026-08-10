@@ -380,6 +380,35 @@ export interface AIEntertainmentTypeDef {
   period: AIEntertainmentPeriod
 }
 
+// ── 随机事件定义（events.toml / events/*.toml [[events]]）——random-event-system 插件消费；
+// core 仅作通用数据桶，不认识事件语义——behavior 挂载键是任意字符串（玩家指令 id /
+// NPC 行为块 id / move / wait），语义与校验在插件层。erArk Character_Event.json 等价物
+export interface RandomEventDef {
+  /** 事件唯一 id（英文 kebab） */
+  id: string
+  /** 挂载键：玩家指令 id / NPC 行为块 id / move / wait（字符串，引擎不预设） */
+  behavior: string
+  /** 0|1 结算事件（合并语义）；2 = 静默事件 */
+  type: number
+  /** 空=通用；非空=角色专属（角色 id） */
+  adv?: string
+  /** 分桶（erArk sys_1/sys_0/any/both）：self=匹配触发者 adv；target=匹配交互对象 adv */
+  side?: 'self' | 'target' | 'any' | 'both'
+  /** "选项文本|正文"（父/子事件用分隔） */
+  text?: string
+  /** 前提 ID 列表（premiseRegistry 权重通道，0 淘汰，返回值即权重） */
+  premises?: string[]
+  /** 现有条件表达式（布尔门） */
+  condition?: string
+  /** 触发记录守卫：seen/unseen × once/today */
+  trigger_guard?: 'seen_once' | 'unseen_once' | 'seen_today' | 'unseen_today'
+  /** 子事件标记（父子匹配：子前提 ⊇ 父前提） */
+  option_son?: boolean
+  /** 效果列表（effectTypeRegistry） */
+  effects?: Effect[]
+  comment?: string
+}
+
 export interface LoadedMod {
   id: string
   name: string
@@ -433,11 +462,14 @@ export interface LoadedMod {
   // 注释：Phase H — H 系统
   hConfig: HConfig
 
-  // 注释：NPC AI（npc-ai-system 消费）
-  aiTargets: AITargetDef[]
-  aiBehaviors: Record<string, AIBehaviorSpec>
-  aiWorkTypes: Record<string, AIWorkTypeDef>
-  aiEntertainmentTypes: Record<string, AIEntertainmentTypeDef>
+    // 注释：NPC AI（npc-ai-system 消费）
+    aiTargets: AITargetDef[]
+    aiBehaviors: Record<string, AIBehaviorSpec>
+    aiWorkTypes: Record<string, AIWorkTypeDef>
+    aiEntertainmentTypes: Record<string, AIEntertainmentTypeDef>
+
+    // 注释：随机事件（random-event-system 消费）
+    events: RandomEventDef[]
 
   // 注释：指令（插件默认层 + mod 定义层，按 id 去重，mod 胜出）
   instructions: HInstruction[]
@@ -796,6 +828,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     aiBehaviors: {},
     aiWorkTypes: {},
     aiEntertainmentTypes: {},
+    // 注释：随机事件（random-event-system 消费）
+    events: [],
   }
 
   // 注释：合并插件默认 + mod 定义的属性
@@ -1192,6 +1226,32 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   if (aiWorkData) mod.aiWorkTypes = aiWorkData
   const aiEntertainmentData = loadMerged<Record<string, AIEntertainmentTypeDef>>('ai-entertainment.toml', 'entertainment_types')
   if (aiEntertainmentData) mod.aiEntertainmentTypes = aiEntertainmentData
+
+  // 注释：加载随机事件（random-event-system 消费）——累积式追加（插件默认层 +
+  // mod 定义全部并入，同 ai-targets 注册表语义；文件按行为分：definitions/events/*.toml）
+  const events: RandomEventDef[] = []
+  for (const path of Object.keys(rawTomlMap)) {
+    const isEventsFile = path.endsWith('/events.toml') || path.includes('/events/')
+    if (!isEventsFile || !path.endsWith('.toml')) continue
+    const data = parseFile(path, rawTomlMap[path])
+    const list = (data.events as RandomEventDef[]) ?? []
+    for (const ev of list) {
+      if (!ev?.id) {
+        errorReporter.report({ source: 'mod-loader', severity: 'error', file: path, message: 'events 文件条目缺 id 字段，跳过' })
+        continue
+      }
+      if (!ev?.behavior) {
+        errorReporter.report({ source: 'mod-loader', severity: 'error', file: path, message: `事件 '${ev.id}' 缺 behavior 字段，跳过` })
+        continue
+      }
+      if (events.some(existing => existing.id === ev.id)) {
+        errorReporter.report({ source: 'mod-loader', severity: 'warning', file: path, message: `事件 id '${ev.id}' 重复，后者覆盖` })
+        events.splice(events.findIndex(e => e.id === ev.id), 1)
+      }
+      events.push(ev)
+    }
+  }
+  mod.events = events
 
   // 注释：校验 locations——exit.target 和 parent 必须存在
   validateLocations(mod, modName)

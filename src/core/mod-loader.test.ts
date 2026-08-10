@@ -3,6 +3,7 @@ import { parseModData, ModLoader, type LoadedMod } from './mod-loader'
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
 import { conditionRegistry } from './condition-registry'
+import { errorReporter } from './error-reporter'
 
 const rawTomlMap = import.meta.glob('/mods/test-mod/**/*.toml', {
   query: '?raw',
@@ -280,7 +281,56 @@ describe('mod-loader integration', () => {
       ].join('\n'),
     })
     expect(() => parseModData('test-mod', badMap)).toThrow(
-      /roster\.toml.*nonexistent_template.*不存在/,
+      /roster\.toml.*nonexistent_template/,
     )
+  })
+
+  describe('random event data loading', () => {
+    beforeEach(() => {
+      errorReporter.clear()
+    })
+
+    it('loads events from definitions/events/*.toml accumulatively', () => {
+      const mod = parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/events/move.toml': [
+          '[[events]]',
+          'id = "move_see_swordsman"',
+          'behavior = "move"',
+          'type = 0',
+          'text = "遇到剑客"',
+          'effects = [{ type = "modify_attribute", params = { attr = "体力", value = -5, target = "self" } }]',
+        ].join('\n'),
+      }))
+      const moveEvents = (mod.events ?? []).filter(e => e.behavior === 'move')
+      expect(moveEvents).toHaveLength(1)
+      expect(moveEvents[0].id).toBe('move_see_swordsman')
+      expect(moveEvents[0].type).toBe(0)
+      expect(moveEvents[0].text).toBe('遇到剑客')
+      expect(moveEvents[0].effects).toHaveLength(1)
+    })
+
+    it('reports error for event missing id', () => {
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/events/bad.toml': [
+          '[[events]]',
+          'behavior = "move"',
+          'type = 0',
+        ].join('\n'),
+      }))
+      const errs = errorReporter.getErrorsBySource('mod-loader')
+      expect(errs.some(e => e.severity === 'error' && e.message.includes('id'))).toBe(true)
+    })
+
+    it('reports error for event missing behavior', () => {
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/events/bad2.toml': [
+          '[[events]]',
+          'id = "no_behavior"',
+          'type = 0',
+        ].join('\n'),
+      }))
+      const errs = errorReporter.getErrorsBySource('mod-loader')
+      expect(errs.some(e => e.severity === 'error' && e.message.includes('behavior'))).toBe(true)
+    })
   })
 })

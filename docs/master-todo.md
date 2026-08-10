@@ -502,6 +502,13 @@
       效果广播 random-event:select_character，bridge 监听 → uiStore.selectCharacter
     - 【修复·架构·中】most_desire 硬编码中文属性名 '欲望值'（违反属性名铁律）→ ATTR.DESIRE
       常量（entity-utils）；顺手修 npc-ai dailySettle 同款硬编码
+    随机事件系统第三轮排查（2026-08-10，用户「再检查一次」）✅：
+    - 【修复·静默·高】NPC 选项在玩家指令结算中挂起（advanceTime 内 settle-pass）→
+      execution_end 挂钩无条件 clearPendingOptions → 玩家从未见到选项就被丢弃 →
+      清挂起移至 execution_start（玩家主动行动 = 放弃，Q15 语义）+ NPC 选项保留到 IDLE
+    - 【修复·静默·高】游戏内读档后挂起选项残留（pending + 选项条 UI 不清）——旧选项在
+      恢复后的游戏状态执行语义错位 → restoreFromSave 广播标准事件 game:load（AGENTS 标准
+      事件表补实现），插件清 pending + bridge 清选项条 UI
     NPC 行为系统排查修复（2026-08-10，用户「检查是否有 bug 或静默错误」）✅：
     - 【修复·静默】nearbyLocations apiSystem.call 恒返回 Promise——"玩家所在+相邻优先当轮"
       永不生效（相邻永不加入）→ await 化

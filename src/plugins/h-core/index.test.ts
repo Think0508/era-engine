@@ -36,7 +36,7 @@ describe('body_item 归还语义', () => {
     bindingResolver.loadBindings(mod.bindings)
     await bootPlugins()
     gameContext.setPlayer('player')
-    for (const id of ['toy1', 'toy2', 'toy3']) {
+    for (const id of ['toy1', 'toy2', 'toy3', 'gift_target']) {
       entitySystem.register('character', id, { id, name: id, inventory: [], base: { hp: 100 } })
     }
   })
@@ -84,5 +84,39 @@ describe('body_item 归还语义', () => {
     const after = entitySystem.get('character', 'toy3') as any
     expect(after.body_items['4']).toBeUndefined()
     expect(after.inventory.find((i: any) => i.itemId === '挤奶器').count).toBe(2)
+  })
+
+  // 注释：礼物基础版（2026-08-12 Task 6，erArk 22-礼物与咖啡系统.md：1.2 礼物类别/1.3 好感礼物公式）
+  describe('give_gift 礼物效果', () => {
+    function setupGiftChars() {
+      const target = entitySystem.get('character', 'gift_target') as any
+      if (!target) return
+      target.base['好感度'] = 30
+      target.base['信赖度'] = 0
+      target.base['好意'] = 0
+      target.base['愤怒'] = 80
+    }
+
+    it('favor 礼物：好感按 calcFavorability 管线增加', async () => {
+      setupGiftChars()
+      const target = entitySystem.get('character', 'gift_target') as any
+      const before = target.base['好感度']
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'give_gift', params: { mode: 'favor', favor_base: 30, target: 'selected' } },
+      ], { sourceId: 'player', _targetIds: ['gift_target'] })
+      // calcFavorability(30) 在无状态修正时为 floor(1.0×30)=30
+      expect(target.base['好感度']).toBe(before + 30)
+    })
+
+    it('apology 礼物：愤怒清零 + 好感+10 + 好意+10', async () => {
+      setupGiftChars()
+      const target = entitySystem.get('character', 'gift_target') as any
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'give_gift', params: { mode: 'apology', target: 'selected' } },
+      ], { sourceId: 'player', _targetIds: ['gift_target'] })
+      expect(target.base['愤怒']).toBe(0)
+      expect(target.base['好感度']).toBe(40)
+      expect(target.base['好意']).toBe(10)
+    })
   })
 })

@@ -92,3 +92,26 @@ type = "clothing"
 stackable = false
 use = "equip"
 cloth_tag = 6
+
+# ═══════════════════════════════════════════════════════════
+# 礼物（Task 6：give_gift effect 测试物品）
+# ═══════════════════════════════════════════════════════════
+[items."玉佩"]
+id = "玉佩"
+name = "玉佩"
+type = "consumable"
+use = ["gift"]
+tags = ["gift", "jewelry"]
+stackable = false
+consume = true
+effects = [{ type = "give_gift", params = { mode = "favor", favor_base = 30, talk_multiplier = 2, target = "selected" } }]
+
+[items."道歉信"]
+id = "道歉信"
+name = "道歉信"
+type = "consumable"
+use = ["gift"]
+tags = ["gift"]
+stackable = false
+consume = true
+effects = [{ type = "give_gift", params = { mode = "apology", target = "selected" } }]

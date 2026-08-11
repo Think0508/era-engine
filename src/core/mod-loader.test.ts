@@ -451,3 +451,80 @@ describe('mod-loader integration', () => {
     })
   })
 })
+
+// ═══════ 物品存储（2026-08-12：目录拆分 + 插件默认 + 重复校验）═══════
+describe('item storage（目录拆分 + 覆盖 + 重复校验）', () => {
+  it('definitions/items/ 目录拆分合并 + 单文件兼容 + 插件默认覆盖', () => {
+    const mod = parseModData('test-mod', makeMap({
+      '/src/plugins/h-core/data/default/items/h-drugs.toml': [
+        '[items]',
+        '[items."媚药"]',
+        'name = "媚药"',
+        'type = "consumable"',
+        'use = ["h_drug"]',
+        'body_slot = -1',
+        'price = 100',
+      ].join('\n'),
+      '/mods/test-mod/definitions/items/drugs.toml': [
+        '[items]',
+        '[items."金疮药"]',
+        'name = "金疮药"',
+        'type = "consumable"',
+        'use = ["self"]',
+        'effects = [{ type = "modify_attribute", params = { attr = "hp", value = 20, target = "self" } }]',
+      ].join('\n'),
+      '/mods/test-mod/definitions/items/misc.toml': [
+        '[items]',
+        '[items."江湖令"]',
+        'name = "江湖令"',
+        'type = "key"',
+        'use = []',
+      ].join('\n'),
+    }))
+    expect(mod.items['金疮药']).toBeDefined()   // 目录文件 1
+    expect(mod.items['江湖令']).toBeDefined()   // 目录文件 2
+    expect(mod.items['媚药']).toBeDefined()     // 插件默认
+    expect(mod.items['媚药'].price).toBe(100)
+    // 单文件 items.toml 兼容（test-mod items.toml 现有物品）
+    expect(mod.items['布衣']).toBeDefined()
+  })
+
+  it('mod 覆盖插件默认：同 id 深合并 mod 优先', () => {
+    const mod = parseModData('test-mod', makeMap({
+      '/src/plugins/h-core/data/default/items/h-drugs.toml': [
+        '[items]',
+        '[items."媚药"]',
+        'name = "媚药"',
+        'type = "consumable"',
+        'price = 100',
+      ].join('\n'),
+      '/mods/test-mod/definitions/items/drugs.toml': [
+        '[items]',
+        '[items."媚药"]',
+        'name = "媚药"',
+        'price = 200',
+      ].join('\n'),
+    }))
+    expect(mod.items['媚药'].price).toBe(200)
+  })
+
+  it('mod 文件间同 id 重复 → error 上报', () => {
+    errorReporter.clear()
+    parseModData('test-mod', makeMap({
+      '/mods/test-mod/definitions/items/drugs.toml': [
+        '[items]',
+        '[items."金疮药"]',
+        'name = "金疮药"',
+        'type = "consumable"',
+      ].join('\n'),
+      '/mods/test-mod/definitions/items/food.toml': [
+        '[items]',
+        '[items."金疮药"]',
+        'name = "金疮药"',
+        'type = "consumable"',
+      ].join('\n'),
+    }))
+    const err = errorReporter.getErrors().find(e => e.severity === 'error' && e.message.includes('金疮药') && e.message.includes('重复'))
+    expect(err).toBeDefined()
+  })
+})

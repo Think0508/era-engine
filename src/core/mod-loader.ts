@@ -1149,12 +1149,51 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     }
   }
 
-  // 注释：加载 items.toml
-  const itemsPath = `/mods/${modName}/definitions/items.toml`
-  if (itemsPath in rawTomlMap) {
-    const data = parseFile(itemsPath, rawTomlMap[itemsPath])
-    mod.items = (data.items as Record<string, ItemDef>) ?? {}
+  // 注释：加载 items——单文件 items.toml（插件默认 + mod definitions）+ 目录拆分
+  // definitions/items/*.toml 与 data/default/items/*.toml（2026-08-12：物品按类别分文件）；
+  // 合并规则：插件默认先合并（同 id 覆盖合法），mod 文件间同 id 重复 → error（文件名+行号）
+  function loadItemDefs(): Record<string, ItemDef> {
+    let result: Record<string, ItemDef> = {}
+    // 注释：插件默认层已合并过的 id——mod 覆盖插件默认合法（deepMerge mod 优先），不触发重复 error
+    const pluginIds = new Set<string>()
+    const isItemFile = (path: string) =>
+      path.endsWith('/items.toml')
+      || path.includes('/definitions/items/')
+      || path.includes('/data/default/items/')
+    const mergeInto = (path: string, raw: string, checkDuplicate: boolean) => {
+      const data = parseFile(path, raw)
+      const items = (data as any).items as Record<string, ItemDef> | undefined
+      if (!items) return
+      for (const [id, def] of Object.entries(items)) {
+        if (!def || typeof def !== 'object') continue
+        if (checkDuplicate && !pluginIds.has(id) && id in result) {
+          errorReporter.report({
+            source: 'mod-loader',
+            severity: 'error',
+            message: `物品 '${id}' 重复定义（${path}）——物品 id 必须在整个模组内唯一`,
+            suggestion: '检查 definitions/items/ 下多个文件是否定义了同名物品，合并或改名',
+          })
+          continue
+        }
+        result[id] = deepMerge(result[id] ?? {}, def) as ItemDef
+        if (!checkDuplicate) pluginIds.add(id)
+      }
+    }
+    // 插件默认层（data/default/items/*.toml + 插件内 items.toml）——同 id 覆盖合法
+    for (const [path, raw] of Object.entries(rawTomlMap)) {
+      if (!path.startsWith('/src/plugins/')) continue
+      if (!isItemFile(path)) continue
+      mergeInto(path, raw, false)
+    }
+    // mod 层（definitions/items.toml + definitions/items/*.toml）——文件间重复 error
+    for (const [path, raw] of Object.entries(rawTomlMap)) {
+      if (!path.startsWith(`/mods/${modName}/`)) continue
+      if (!isItemFile(path)) continue
+      mergeInto(path, raw, true)
+    }
+    return result
   }
+  mod.items = loadItemDefs()
 
   // 注释：加载 sets.toml
   const setsPath = `/mods/${modName}/definitions/sets.toml`

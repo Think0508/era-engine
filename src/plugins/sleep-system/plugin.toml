@@ -1,0 +1,23 @@
+[meta]
+id = "sleep-system"
+name = "睡眠系统"
+version = "1.0.0"
+description = "睡眠系统——睡觉指令（跨天跳转）、睡眠结算对全员（erArk sleep_settle.update_sleep）、睡眠等级、睡眠状态管理（sp_flag.sleeping/unnormal_flag）、睡醒自动存档"
+
+# 可选绑定：无（睡眠数值结算走实体属性直读：疲劳度/熟睡值/体力/气力——与 core realtime-settle 同源）
+
+# 可选绑定：理智（add_small_sanity_point 效果 1504 用——15%/h 恢复；未绑定 → warning + 跳过）
+[optional_attributes]
+sanity = { type = "number", description = "理智/精力（erArk sanity_point），睡眠时 15%/h 恢复" }
+
+[condition_fields]
+"character.{id}.sleeping" = { type = "boolean", description = "是否正在睡眠（sp_flag.sleeping——睡觉指令/NPC 睡眠行为期间）" }
+"character.{id}.sleep_h_awake" = { type = "boolean", description = "睡奸中醒来标记（sp_flag.sleep_h_awake，醒来后 5 分钟反应窗口）" }
+
+[[events.listen]]
+name = "game:execution_end"
+description = "睡觉指令收尾：睡眠结算对全员（updateSleepAll——erArk update_sleep）+ 玩家醒来状态清除 + 睡醒自动存档"
+
+[[events.listen]]
+name = "npc:behavior_started"
+description = "NPC 睡眠行为开始/结束 → sp_flag.sleeping + unnormal_flag bit5,6 维护（睡奸前提 T_ACTION_SLEEP 依赖）"

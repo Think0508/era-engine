@@ -227,22 +227,27 @@ describe('Phase H 集成测试', () => {
     expect(judgeOrgasmEdgeSuccess({ 4: 3 }, 0)).toBe(false)
   })
 
-  it('射精系统——睡眠额外精液累积（realtime-settle）', async () => {
-    const { realtimeSettle } = await import('../core/realtime-settle')
+  it('射精系统——睡眠额外精液累积（sleep-system updateSleepAll，erArk update_sleep 玩家分支）', async () => {
+    const { updateSleepAll } = await import('../plugins/sleep-system/update-sleep')
     const { entitySystem } = await import('../core/entity-system')
+    const { gameContext } = await import('../core/game-context')
     entitySystem.register('character', 'semen_test_1', {
       id: 'semen_test_1', name: '玩家',
-      base: { 精液量: 80, 精液量上限: 100, 额外精液量: 0 },
-      h_state: { is_h: false },
+      base: { 精液量: 80, 精液量上限: 100, 额外精液量: 0, 射精欲: 50 },
+      action_info: {},
     })
-    // 睡 8 小时（480分钟 ≥ 360）
-    realtimeSettle(entitySystem.get('character', 'semen_test_1') as any, 480, { isSleep: true })
+    gameContext.setPlayer('semen_test_1')
+    // 睡 8 小时（480分钟 ≥ 360）——updateSleepAll 对全员结算（erArk update_sleep）
+    await updateSleepAll(480)
     const char = entitySystem.get('character', 'semen_test_1') as any
     // 额外精液 = 0 + 80/2 = 40
     expect(char.base['额外精液量']).toBe(40)
-    // 今日首射标记已重置
+    // 今日首射标记已重置（erArk :57 无条件）
     expect(char.action_info?.day_first_shoot_semen).toBe(true)
+    // 射精欲清零（erArk :56 无条件）
+    expect(char.base['射精欲']).toBe(0)
     entitySystem.clear()
+    gameContext.reset()
   })
 
   it('calcTrust 信赖度（复刻 calculation_trust，common_default.py:752-813）', async () => {
@@ -455,8 +460,13 @@ describe('Phase H 集成测试', () => {
     const { premiseRegistry } = await import('../core/premise-registry')
     const { registerHPremises } = await import('../plugins/h-core/premise/premise-h')
     const { registerInstructPremises } = await import('../plugins/h-core/premise/premise-instruct')
+    // 2026-08-11 补 sleep-system 前提 + 时停前提（sleep 指令跨天——plugin defaults 已并入 instructions）
+    const { registerSleepPremises } = await import('../plugins/sleep-system/premise/sleep')
     registerHPremises(premiseRegistry)
     registerInstructPremises(premiseRegistry)
+    registerSleepPremises(premiseRegistry)
+    premiseRegistry.register('TIME_STOP_ON', () => false)
+    premiseRegistry.register('TIME_STOP_OFF', () => true)
     commandRegistry.clear()
     errorReporter.clear()
     loadInstructions()

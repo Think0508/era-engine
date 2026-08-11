@@ -386,7 +386,10 @@ export function registerInstructPremises(registry: any): void {
     'T_FIRST_A_SEX_IN_TODAY', 'T_FIRST_SEX_IN_TODAY', 'T_FIRST_U_SEX_IN_TODAY',
     'TARGET_TIME_STOP_ORGASM_RELASE',
     'T_IS_ASSISTANT', 'T_IMPRISONMENT_1', 'TARGET_IS_PLAYER_DAUGHTER', 'TARGET_VISITOR_FLAG_1',
-    'TARGET_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', 'TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP',
+    // 注释：★1 修复（2026-08-11 第七轮）：TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP 两条
+    // **已从 placeholder 列表移除**——真语义由 sleep-system 在 onLoad 注册（语义所有者），
+    // 本列表在 onEnable 注册会最后覆盖它（生命周期：全部 onLoad 先行、全部 onEnable 后行）→
+    // 装睡/醒来地文 7700+ 条静默死亡（第六轮修复因此无效，第七轮确认并移除）
     'PLACE_SOMEONE_NOT_IN_HIDDEN_AND_CONSCIOUS',
     // 注释：目标精液污染 > 1（erArk Dirty 类型 CVP，hair 地文用）——依赖精液系统（h-ejaculation）落地
     'CVP_A2_DIRTY|B0_G_1',

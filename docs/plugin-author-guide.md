@@ -424,12 +424,31 @@ ctx.api.call('h-group-sex', 'getNpcAiName', type)             // → string
 ctx.api.call('h-npc-ai', 'isActiveH', charId)                 // → boolean（NPC 逆推状态，含催眠 active_h）
 ctx.api.call('h-npc-ai', 'setActiveH', charId, on)            // → void（手动开关逆推）
 ctx.api.call('h-npc-ai', 'triggerActiveH', npcId)             // → Promise<boolean>（触发一次逆推执行器：NPC 选行为赋给玩家执行）
-ctx.api.call('h-npc-ai', 'tryActiveH', npcId, judgeBase?)     // → Promise<boolean>（尝试夺回主动权，默认 base=100）
+ctx.api.call('h-npc-ai', 'tryActiveH', npcId, judgeBase?)     // → Promise<boolean>（尝试夺回主动权，默认 base=150——M20 修正，与代码一致）
+ctx.api.call('h-npc-ai', 'recoverFromUnconsciousH', actorId, infoText?)  // → Promise<void>（从无意识H中恢复：erArk recover_from_unconscious_h，2026-08-11 无意识组）
 ```
 
 效果类型（指令/脚本可调用）：`npc_active_h_on` / `npc_active_h_off`（开关目标逆推）、
 `npc_active_h_act`（触发逆推执行器）、`try_pl_active_h`（夺回判定，`params.base` 默认 100）。
 指令 tag 词表（part:/flag:）与逆推/群交 AI 机制详见 `docs/h-npc-ai.md`。
+无意识H（睡奸结算/醒来判定/恢复流程）详见 `docs/sleep-system.md` §7。
+
+#### sleep-system — 睡眠系统（2026-08-11）
+
+```typescript
+ctx.api.call('sleep-system', 'isSleeping', charId)            // → boolean（正在睡眠，sp_flag.sleeping）
+ctx.api.call('sleep-system', 'getSleepLevel', charId)         // → number（睡眠等级 0-3，熟睡值按 sleep.toml 阈值推导）
+ctx.api.call('sleep-system', 'getSleepLevelInfo', sleepPoint) // → {level, name}
+ctx.api.call('sleep-system', 'isSleepTimeWindow')             // → boolean（睡眠时间窗口：≥ plan_to_sleep_time 或 < plan_to_wake_time）
+ctx.api.call('sleep-system', 'setAsleep', charId)             // → void（入睡标记 + unnormal bit5,6）
+ctx.api.call('sleep-system', 'clearAsleep', charId)           // → void（醒来标记清除）
+```
+
+效果类型（指令/脚本可调用）：`add_small_sanity_point`（1504：理智 15%/h 恢复，绑定 sanity
+可选——未绑定 warning+跳过）、`add_small_semen_point`（1505：精液 15%/h 恢复，仅玩家）、
+`unconscious_h_set`（设目标无意识等级 0-7 + unnormal 位）、`unconscious_h_clear`
+（清 0 + unnormal 位）。前提（TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1 / T_ACTION_SLEEP /
+T_NORMAL_1/2/6 / SCENE_ALL_UNCONSCIOUS_OR_SLEEP 等）与数据格式详见 `docs/sleep-system.md`。
 
 #### h-bondage — 紧缚
 

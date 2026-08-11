@@ -9,4 +9,4 @@ id = "tavern"
 name = "酒馆"
 parent = "town_square"
 type = "building"
-tags = ["has_drink", "rest"]
+tags = ["has_drink", "rest", "has_bedroom"]

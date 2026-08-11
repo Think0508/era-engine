@@ -144,13 +144,17 @@ export class CommandExecutor {
     }
 
     const timeCost = cmd.timeCost ?? (cmd.effects ? 10 : 0)
-    // 注释：timeCost <= 0（如 -1 = handler 自定义耗时）→ 引擎不自动推进时间，也不进结算公式
-    const settleTimeCost = timeCost > 0 ? timeCost : 0
+    // 注释：advance_to_hour（如睡觉跨天到次日 6:00）→ 真实时长由引擎按目标小时计算
+    // （minutesUntilHour 跨天语义）；其余指令用 time_cost（-1 = handler 自定义耗时，不推进）
+    const duration = cmd.advanceToHour != null
+      ? gameContext.minutesUntilHour(cmd.advanceToHour)
+      : timeCost
+    const settleTimeCost = duration > 0 ? duration : 0
 
     try {
       // 注释：推进时间（effects 类指令才推进）
-      if (timeCost > 0 && cmd.effects) {
-        await gameContext.advanceTime(timeCost)
+      if (duration > 0 && cmd.effects) {
+        await gameContext.advanceTime(duration)
       }
 
       if (cmd.handler) {
@@ -179,15 +183,17 @@ export class CommandExecutor {
         // NPC 的窗口结算已由 npc-ai-system 在 game:time_advanced（advanceTime 末尾）统一执行
         // （erArk character_behavior 循环：每 NPC 按玩家行动窗口 character_aotu_change_value）；
         // 每日欲望增长由 npc-ai-system 监听 game:new_day 执行（原 core newday-settle 归位）。
-        if (timeCost > 0) {
-          const isRest = cmd.id === 'rest' || cmd.id === 'sleep'
-          const isSleep = cmd.id === 'sleep'
+        if (duration > 0) {
+          // 注释：结算模式数据驱动（指令 TOML settle_mode）——rest 不积累疲劳、
+          // sleep 额外 2 倍削减疲劳 + 熟睡值积累 + 体力/气力公式恢复（erArk settle_sleep）
+          const isRest = cmd.settleMode === 'rest'
+          const isSleep = cmd.settleMode === 'sleep'
           const settleOpts = { isRest, isSleep }
 
           const playerId = gameContext.getContext().player?.id
           if (playerId) {
             const player = entitySystem.get('character', playerId) as any
-            if (player) realtimeSettle(player, timeCost, settleOpts)
+            if (player) realtimeSettle(player, duration, settleOpts)
           }
           processPendingSpawns()
         }

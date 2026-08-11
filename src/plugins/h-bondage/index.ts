@@ -13,6 +13,7 @@ import { gameContext } from '../../core/game-context'
 import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { narrativeLog } from '../../core/narrative-log'
+import { errorReporter } from '../../core/error-reporter'
 
 export interface BondageType {
   id: number
@@ -173,8 +174,19 @@ export function onLoad(_ctx: PluginContext): void {
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
   // 通过插件 API 注册
+  let premiseRegWarned = false
   const reg = async (id: string, fn: (c: any) => boolean) => {
-    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch (err) {
+      if (!premiseRegWarned) {
+        premiseRegWarned = true
+        errorReporter.report({
+          source: 'h-bondage',
+          severity: 'warning',
+          message: "前提注册失败（h-core 未就绪？）：" + (err instanceof Error ? err.message : String(err)),
+          suggestion: 'h-core plugin may not be loaded (registerPremise API) - this plugin premises will be unavailable',
+        })
+      }
+    }
   }
 
   reg('HAVE_BONDAGE', (ctx2: any) => {

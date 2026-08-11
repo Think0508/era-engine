@@ -10,6 +10,7 @@ import { narrativeLog } from '../../core/narrative-log'
 import { commandRegistry } from '../../core/command-registry'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
+import { premiseRegistry } from '../../core/premise-registry'
 
 let timeStopActive = false
 let lastActionTimeCost = 10  // 注释：缺省 10 分钟
@@ -30,14 +31,25 @@ function getUnconsciousH(charId: string): number {
 }
 
 export function onLoad(_ctx: PluginContext): void {
+  // 注释：时停前提（erArk TIME_STOP_ON/OFF——读模块级状态，睡眠等指令的 TIME_STOP_OFF 前提依赖）
+  premiseRegistry.register('TIME_STOP_ON', () => timeStopActive)
+  premiseRegistry.register('TIME_STOP_OFF', () => !timeStopActive)
+
+  // 注释：时停前无意识快照（★3 修复（第六轮））——time_stop_on 全图覆写 unconscious_h=3，
+  // 原 time_stop_off 全清 0 会把睡奸标记(1)/催眠(4-7)静默抹掉（催眠需重新催眠、睡奸标记丢失
+  // 且 settleSleepH 因 !==1 永久早退）——off 时恢复时停前的值
+  let prevUnconscious = new Map<string, number>()
+
   // 注释：time_stop_on——开启时停（对齐 erArk 效果 1241）
   effectTypeRegistry.register('time_stop_on', (_p: any, _execCtx: any) => {
     if (timeStopActive) return true
     timeStopActive = true
     frozenTime = { ...gameContext.getContext().time }
+    prevUnconscious = new Map()
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
       if (!c.sp_flag) c.sp_flag = {}
+      prevUnconscious.set(c.id, c.sp_flag.unconscious_h ?? 0)
       c.sp_flag.unconscious_h = 3
       if (c.h_state) {
         c.h_state.time_stop_orgasm_count = {}
@@ -59,8 +71,12 @@ export function onLoad(_ctx: PluginContext): void {
       const c = ch as any
       // 注释：清除搬运/自由数据（对齐 1244 + 1246）
       if (c.time_stop_data) { c.time_stop_data = {} }
-      // 注释：清除时停状态（对齐 1242）
-      if (c.sp_flag) c.sp_flag.unconscious_h = 0
+      // 注释：恢复时停前无意识值（★3 修复——原全清 0 抹掉睡奸/催眠标记）。
+      // ★3 边缘修复（第七轮）：只恢复快照内角色——时停中 spawn 的新角色不在快照，
+      // 不触碰其标记（原 `?? 0` 会把新角色带的无意识标记抹成 0）
+      if (c.sp_flag && prevUnconscious.has(c.id)) {
+        c.sp_flag.unconscious_h = prevUnconscious.get(c.id) ?? 0
+      }
       // 注释：绝顶释放（对齐 527 / erArk TIME_STOP_ORGASM_RELEASE，default.py:6764-6800）
       // 2026-08-08 修复：原只输出日志无数值——时停累计的绝顶被静默丢弃。
       // 经 effect 通道调 h-core 的 release_time_stop_orgasm（跨插件禁止直接 import），
@@ -83,7 +99,8 @@ export function onLoad(_ctx: PluginContext): void {
         }
       }
     }
-    if (frozenTime) gameContext.setTime(frozenTime)
+    // 注释：死代码清理（第七轮）——frozenTime 在 :68 已置 null，此判断恒假；
+    // 时停恢复时刻的回拨语义由 time_stop_off 的调用方（指令链）处理，此处不恢复
     narrativeLog.write('时间重新流动', 'system', 'h-time-stop')
     return true
   })
@@ -144,8 +161,19 @@ export function onLoad(_ctx: PluginContext): void {
 }
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
+  let premiseRegWarned = false
   const reg = async (id: string, fn: (c: any) => boolean) => {
-    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch (err) {
+      if (!premiseRegWarned) {
+        premiseRegWarned = true
+        errorReporter.report({
+          source: 'h-time-stop',
+          severity: 'warning',
+          message: "前提注册失败（h-core 未就绪？）：" + (err instanceof Error ? err.message : String(err)),
+          suggestion: 'h-core plugin may not be loaded (registerPremise API) - this plugin premises will be unavailable',
+        })
+      }
+    }
   }
 
   // 时停状态前提
@@ -210,6 +238,13 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     return (entitySystem.get('character', id) as any)?.h_state?.time_stop_release === true
   })
   reg('TARGET_TIME_STOP_ORGASM_RELEASE', (ctx2: any) => {
+    const tId = getTargetId(ctx2); if (!tId) return false
+    return (entitySystem.get('character', tId) as any)?.h_state?.time_stop_release === true
+  })
+  // ★ 修复（第七轮）：地文数据 180 条引用拼错版本 `target_time_stop_orgasm_relase`
+  // （erArk 源码同拼错，handle_premise_sp_flag.py:2449）——真语义别名注册，
+  // 否则时停解放口上全部静默死亡（h-core placeholder 注册的是错拼版，恒 false）
+  reg('TARGET_TIME_STOP_ORGASM_RELASE', (ctx2: any) => {
     const tId = getTargetId(ctx2); if (!tId) return false
     return (entitySystem.get('character', tId) as any)?.h_state?.time_stop_release === true
   })

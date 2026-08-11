@@ -293,6 +293,9 @@ export function onEnable(ctx: PluginContext): void {
   // 注释：阴茎大小前提（jj_0~3）——查 actor（行为发起者）的阴茎大小
   // erArk handle_premise_other.py:1912-1966
   // actorId 从 talk-common premiseCtx 传入，默认查玩家
+  // ⚠️ 半成品标记（2026-08-11 第八轮）：阴茎大小属性全库无写入方（attributes.toml default=1）
+  // → 运行时恒为 1 → jj_1 恒 true、jj_0 恒 false（1418 条 jj_0 地文不可达 + 1418 条 jj_1
+  // 错误常显——宝珠等级近似失真）。阴茎大小成长/写入系统落地后修正；宝珠系统已砍，勿此时改语义
   for (let size = 0; size <= 3; size++) {
     const targetSize = size
     premiseRegistry.register(`jj_${size}`, (ctx: any) => {

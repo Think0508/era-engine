@@ -53,6 +53,23 @@ class BindingResolver {
     entity.base[attrKey] = value
   }
 
+  // 注释：按插件写自己的绑定映射（2026-08-11，与 getForPlugin 对称）——
+  // set() 跨插件 findMapping 首键胜出，多插件绑同名通用键时写入目标可能错属性
+  setForPlugin(pluginId: string, entityId: string, pluginKey: string, value: any): boolean {
+    const entity = entitySystem.get('character', entityId)
+    if (!entity) return false
+
+    const mapping = this.bindings.get(pluginId)
+    if (!mapping) return false
+
+    const attrKey = mapping[pluginKey]
+    if (!attrKey) return false
+
+    if (!entity.base) entity.base = {}
+    entity.base[attrKey] = value
+    return true
+  }
+
   private findMapping(pluginKey: string): Record<string, string> | null {
     for (const mapping of this.bindings.values()) {
       if (pluginKey in mapping) return mapping

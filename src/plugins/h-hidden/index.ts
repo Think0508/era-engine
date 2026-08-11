@@ -23,6 +23,7 @@ import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
+import { errorReporter } from '../../core/error-reporter'
 import { commandRegistry } from '../../core/command-registry'
 import { apiSystem } from '../../core/api'
 
@@ -217,8 +218,10 @@ async function applyHiddenSexTick(charId: string, addTime: number): Promise<void
   const othersCount = Math.max(0, sceneCount - 2)
   // 周围有清醒未睡他人（erArk handle_scene_others_conscious——unconscious_h===0 近似，
   // 睡眠/催眠等状态未实装部分随 L1.7 细化）
+  // A2 修复（第三轮，2026-08-11）：睡眠者（sp_flag.sleeping）不算清醒旁观者——
+  // 睡眠系统落地后纯睡眠者 unconscious_h=0 + sleeping=true 会被误计为清醒（隐奸羞耻/心理多算）
   const hasConsciousOthers = entitySystem.getAll('character').some((c: any) =>
-    c.id !== charId && c.current_location === locId && (c.sp_flag?.unconscious_h ?? 0) === 0)
+    c.id !== charId && c.current_location === locId && (c.sp_flag?.unconscious_h ?? 0) === 0 && !c.sp_flag?.sleeping)
   const exposeLv = ch?.abilities?.['露出']?.level ?? 0
   const opts = { abilityLevel: exposeLv, tenthsAdd: false }
 
@@ -262,8 +265,11 @@ function checkHiddenSexAchievements(charId: string): number[] {
   if ((rec[3] ?? 0) >= 1) achieved.push(911)
   if ((rec[3] ?? 0) >= 3 && (rec[4] ?? 0) >= 3) achieved.push(912)
   if (rec[1] === 1 && (rec[5] ?? 0) !== 1 && (rec[3] ?? 0) >= 3 && (rec[4] ?? 0) >= 3) {
+    // A2 修复：无感知角色含睡眠者；D 修复（第四轮）：同地点（"在场"语义——全图计数可被
+    // 夜间睡眠 NPC 凑满，成就失去场景基础）
+    const locId = ch?.current_location
     const unconsciousCount = entitySystem.getAll('character').filter((c: any) =>
-      c?.sp_flag?.unconscious_h
+      c?.current_location === locId && (c?.sp_flag?.unconscious_h || c?.sp_flag?.sleeping)
     ).length
     if (unconsciousCount >= 10) achieved.push(913)
   }
@@ -276,16 +282,24 @@ export function onLoad(_ctx: PluginContext): void {
   // 对应 erArk Select_Hidden_Sex_Mode_Panel 的模式设置逻辑
   effectTypeRegistry.register('hidden_sex_set_mode', (params: any, execCtx: any) => {
     const mode = Math.max(1, Math.min(4, params.mode ?? 1))
+    const targetIds = execCtx._targetIds as string[]
     // 注释：检查模式 2/3/4 的条件（场景仅 2 人或所有人无意识）
+    // C 修复（第四轮）：睡眠者不算清醒（与 A2 三处语义一致——sleeping=true, unconscious_h=0）
+    // Find 1 修复（第五轮）：同地点过滤——原全图扫描在 500 NPC mod 下 consciousCount>2 且
+    // every()==false 近乎恒真 → mode 2/3/4 静默不可用（erArk 语义 = 场景 = 同地点，
+    // 与本项目 SCENE_ALL_UNCONSCIOUS_OR_SLEEP 前提一致）
     if (mode >= 2) {
-      const allChars = entitySystem.getAll('character')
-      const consciousCount = allChars.filter((c: any) => !c?.sp_flag?.unconscious_h).length
-      if (consciousCount > 2 && !allChars.every((c: any) => c?.sp_flag?.unconscious_h || c.id === 'player' || c.id === '0')) {
+      const firstTarget = targetIds[0] ? entitySystem.get('character', targetIds[0]) as any : null
+      const locId = gameContext.getContext().location?.id ?? firstTarget?.current_location ?? null
+      const allChars = locId
+        ? entitySystem.getAll('character').filter((c: any) => c.current_location === locId)
+        : []
+      const consciousCount = allChars.filter((c: any) => !c?.sp_flag?.unconscious_h && !c?.sp_flag?.sleeping).length
+      if (consciousCount > 2 && !allChars.every((c: any) => c?.sp_flag?.unconscious_h || c?.sp_flag?.sleeping || c.id === 'player' || c.id === '0')) {
         narrativeLog.write('场景条件不满足隐奸模式 ' + mode + '（需仅 2 人或所有人无意识）', 'system', 'h-hidden')
         return false
       }
     }
-    const targetIds = execCtx._targetIds as string[]
     for (const id of targetIds) {
       const ch = entitySystem.get('character', id) as any
       if (!ch) continue
@@ -305,11 +319,16 @@ export function onLoad(_ctx: PluginContext): void {
       // 注释：初始化发现度（存于 h_state）
       if (!ch.h_state) ch.h_state = {}
       ch.h_state.hidden_sex_discovery_dregree = 0
-      // 注释：初始化成就记录
+      // 注释：初始化成就记录——rec[1]=模式、rec[2]=场景在场人数（Find 3 修复（第五轮）：
+      // 同地点——原全图计数在 500 NPC mod 下恒为全图人数，"在场"语义失真）
       if (!ch.achievement) ch.achievement = {}
       if (!ch.achievement.hidden_sex_record) ch.achievement.hidden_sex_record = {}
       ch.achievement.hidden_sex_record[1] = mode
-      ch.achievement.hidden_sex_record[2] = Math.max(0, entitySystem.getAll('character').length - 2)
+      const sceneLoc = ch.current_location
+      const sceneCount = entitySystem.getAll('character').filter((c: any) =>
+        c.current_location === sceneLoc
+      ).length
+      ch.achievement.hidden_sex_record[2] = Math.max(0, sceneCount - 2)
     }
     // 注释：模式 1(双不隐) 或模式 2(女隐) → 男不隐藏 → 清除玩家 H 标记
     if (mode === 1 || mode === 2) {
@@ -362,8 +381,21 @@ export function onLoad(_ctx: PluginContext): void {
 }
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
+  // Find 4 修复（第五轮）：空 catch 静默吞掉注册失败——h-core 未就绪时 25+ 前提全部
+  // 静默消失；上报一次（去重）不阻断
+  let premiseRegWarned = false
   const reg = async (id: string, fn: (c: any) => boolean) => {
-    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch (err) {
+      if (!premiseRegWarned) {
+        premiseRegWarned = true
+        errorReporter.report({
+          source: 'h-hidden',
+          severity: 'warning',
+          message: `隐奸前提注册失败（h-core 未就绪？）：${err instanceof Error ? err.message : String(err)}`,
+          suggestion: '检查 h-core 插件是否已加载（registerPremise API）——隐奸前提将全部不可用',
+        })
+      }
+    }
   }
 
   function getTargetMode(ctx2: any): number {
@@ -398,6 +430,15 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   reg('TARGET_HIDDEN_SEX_MODE_4', (ctx2: any) => getTargetMode(ctx2) === 4)
   reg('TARGET_HIDDEN_SEX_MODE_1_OR_2', (ctx2: any) => { const m = getTargetMode(ctx2); return m === 1 || m === 2 })
   reg('TARGET_HIDDEN_SEX_MODE_3_OR_4', (ctx2: any) => { const m = getTargetMode(ctx2); return m === 3 || m === 4 })
+  // ★ 修复（第八轮）：数据引用 T_ 前缀版（t_hidden_sex_mode_1_or_3 等，58+46 行）——
+  // 原只注册了 self 版与 TARGET_ 版，T_ 版挂在 h-core pendingFalse 恒 false 占位上静默死亡。
+  // T_ 前缀语义 = 查目标（replicating skill 规则），与 TARGET_ 版同 handler
+  reg('T_HIDDEN_SEX_MODE_1_OR_3', (ctx2: any) => { const m = getTargetMode(ctx2); return m === 1 || m === 3 })
+  reg('T_HIDDEN_SEX_MODE_2_OR_4', (ctx2: any) => { const m = getTargetMode(ctx2); return m === 2 || m === 4 })
+  // ★ 修复（第九轮）：TARGET_ 版 1_OR_3/2_OR_4——h-config talk.situations 权重条目
+  // （target_hidden_sex_mode_1_or_3 等）引用此名，原缺失 → getWeight 非严格静默跳过 → 权重永不生效
+  reg('TARGET_HIDDEN_SEX_MODE_1_OR_3', (ctx2: any) => { const m = getTargetMode(ctx2); return m === 1 || m === 3 })
+  reg('TARGET_HIDDEN_SEX_MODE_2_OR_4', (ctx2: any) => { const m = getTargetMode(ctx2); return m === 2 || m === 4 })
 
   // 注释：TARGET_NOT_IN_HIDDEN_SEX_MODE — 目标不在隐奸中
   reg('TARGET_NOT_IN_HIDDEN_SEX_MODE', (ctx2: any) => getTargetMode(ctx2) === 0)
@@ -418,16 +459,19 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   })
 
   // 注释：复合前提
+  // ★ 修复（第七轮）：SLEEP_H_OR_HIDDEN_SEX 的"睡眠 H"判定原用 unconscious_h===3（时停）——
+  // erArk 语义是 unconscious_flag==1（睡奸=1，handle_premise_sp_flag.py:2387）；3 是时停，
+  // 会导致时停中误触发睡奸口上、睡奸中不触发（潜伏静默错误，睡眠系统落地后暴露）
   reg('SLEEP_H_OR_HIDDEN_SEX', (ctx2: any) => {
     const id = getSelfId(ctx2); if (!id) return false
     const ch = entitySystem.get('character', id) as any
-    // 注释：睡眠 H（unconscious_h=3）或 hidden_sex_mode >= 1
-    return (ch?.sp_flag?.unconscious_h === 3) || (getMode(id) >= 1)
+    // 注释：睡眠 H（unconscious_h=1 睡奸）或 hidden_sex_mode >= 1
+    return (ch?.sp_flag?.unconscious_h === 1) || (getMode(id) >= 1)
   })
   reg('TARGET_SLEEP_H_OR_HIDDEN_SEX', (ctx2: any) => {
     const id = getTargetId(ctx2); if (!id) return false
     const ch = entitySystem.get('character', id) as any
-    return (ch?.sp_flag?.unconscious_h === 3) || (getMode(id) >= 1)
+    return (ch?.sp_flag?.unconscious_h === 1) || (getMode(id) >= 1)
   })
 
   reg('PLAYER_NOT_H_OR_HIDDEN_SEX_MODE', (_ctx2: any) => {
@@ -448,20 +492,28 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   })
 
   reg('PLACE_SOMEONE_H_BUT_NOT_HIDDEN_SEX', (_ctx2: any) => {
-    // 注释：场景中有他人处于非隐奸 H 模式
+    // 注释：场景中有他人处于非隐奸 H 模式（Find 2 修复（第五轮）：同地点——全图扫描在
+    // 500 NPC mod 下恒真，前提失去场景语义）
+    const locId = gameContext.getContext().location?.id
+    if (!locId) return false
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
+      if (c.current_location !== locId) continue
       if (c?.h_state?.is_h && (getMode(c.id) === 0)) return true
     }
     return false
   })
 
   reg('PLACE_SOMEONE_NOT_IN_HIDDEN_AND_CONSCIOUS', (_ctx2: any) => {
-    // 注释：场景中有他人不在隐奸中且有意识
+    // 注释：场景中有他人不在隐奸中且有意识（A2 修复：睡眠者不算有意识；
+    // Find 2 修复（第五轮）：同地点）
+    const locId = gameContext.getContext().location?.id
+    if (!locId) return false
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
+      if (c.current_location !== locId) continue
       if (c.id === 'player' || c.id === '0') continue
-      if (getMode(c.id) === 0 && !c?.sp_flag?.unconscious_h) return true
+      if (getMode(c.id) === 0 && !c?.sp_flag?.unconscious_h && !c?.sp_flag?.sleeping) return true
     }
     return false
   })

@@ -720,7 +720,19 @@ export function onLoad(_ctx: PluginContext): void {
     // 注释：扣 source 背包
     const srcId = execCtx.sourceId
     if (srcId && itemId) {
-      try { await apiSystem.call('inventory', 'removeItem', srcId, itemId, 1) } catch { }
+      try {
+        await apiSystem.call('inventory', 'removeItem', srcId, itemId, 1)
+      } catch (err) {
+        // ★ 修复（第七轮）：静默吞掉会使物品既在背包又在身体槽（重复）
+        errorReporter.report({
+          source: 'h-core',
+          severity: 'warning',
+          message: `body_item_equip 从背包移除 '${itemId}' 失败：${err instanceof Error ? err.message : String(err)}`,
+        })
+      }
+      // ⚠️ 半成品注记（第八轮）：inventory removeItem 返回 void 且从不 throw（缺物品/缺角色
+      // 静默 return）→ 上述 catch 实际不可达，真实失败（物品不在背包）仍无痕。
+      // 修正需 removeItem 改返回 boolean 后在调用处前置检查——随背包系统迭代处理
     }
     // 注释：设 target 的 body_items[slot]
     for (const id of execCtx._targetIds as string[]) {
@@ -1058,7 +1070,17 @@ async function endHScene(allyId: string): Promise<void> {
       }
     }
   }
-  await gameContext.exitMode()
+  // Find5/★2 修复（第五/六轮）：模式栈弹至 h_scene 出栈——H 结束中止 H 内嵌套模式
+  // （AGENTS §29：执行不嵌套；H 中嵌套 dialogue 等由 endHScene 一并中止）。
+  // 语义：弹掉 h_scene 之上全部嵌套 + h_scene 本身；h_scene 之下的模式（如战斗打断 H
+  // 的 [exploration, combat, h_scene] → 弹 h_scene 后回战斗）保留。
+  // 终止性：getCurrentMode 空栈兜底 'exploration' → while 必终止。
+  // 原无条件 pop 会误弹 exploration 栈基；条件单 pop 会漏 H 中嵌套的 dialogue（泄漏）
+  while (gameContext.getCurrentMode() !== 'exploration') {
+    const mode = gameContext.getCurrentMode()
+    await gameContext.exitMode()
+    if (mode === 'h_scene') break
+  }
   await eventBus.emit('h:end', { ally: allyId })
   narrativeLog.write('结束 H', 'dialogue', 'h-core')
 }

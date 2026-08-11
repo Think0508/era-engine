@@ -10,6 +10,7 @@ import { apiSystem } from '../../core/api'
 import { commandRegistry, type CommandDef } from '../../core/command-registry'
 import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
+import { errorReporter } from '../../core/error-reporter'
 
 // 注释：群交模板——5 个单目标槽位 + 1 个多目标侍奉槽
 // 槽位行为标识 = 指令 id（string，2026-08-11 grill Q10 定案——取代 erArk 数字 behaviorId，
@@ -274,8 +275,19 @@ export function onLoad(_ctx: PluginContext): void {
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
   // 注释：helper — 注册前提
+  let premiseRegWarned = false
   const reg = async (id: string, fn: (c: any) => boolean) => {
-    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch (err) {
+      if (!premiseRegWarned) {
+        premiseRegWarned = true
+        errorReporter.report({
+          source: 'h-group-sex',
+          severity: 'warning',
+          message: "前提注册失败（h-core 未就绪？）：" + (err instanceof Error ? err.message : String(err)),
+          suggestion: 'h-core plugin may not be loaded (registerPremise API) - this plugin premises will be unavailable',
+        })
+      }
+    }
   }
 
   // 注释：Step 2 — 全局模式前提

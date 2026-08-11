@@ -8,6 +8,7 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
+import { errorReporter } from '../../core/error-reporter'
 
 const VIRGIN_KEYS = ['virgin_V', 'virgin_A', 'virgin_U', 'virgin_W', 'virgin_M', 'virgin_OTHER', 'virgin_KISS']
 
@@ -104,8 +105,19 @@ export function onLoad(_ctx: PluginContext): void {
 
 export function onEnable(ctx: PluginContext): void {
   // 注释：注册前提
-  const reg = (id: string, fn: (c: any) => boolean) => {
-    try { (ctx.api as any).call('h-core', 'registerPremise', id, fn) } catch { }
+  let premiseRegWarned = false
+  const reg = async (id: string, fn: (c: any) => boolean) => {
+    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch (err) {
+      if (!premiseRegWarned) {
+        premiseRegWarned = true
+        errorReporter.report({
+          source: 'h-first-time',
+          severity: 'warning',
+          message: "前提注册失败（h-core 未就绪？）：" + (err instanceof Error ? err.message : String(err)),
+          suggestion: 'h-core plugin may not be loaded (registerPremise API) - this plugin premises will be unavailable',
+        })
+      }
+    }
   }
 
   function getTargetId(ctx2: any): string | null {
@@ -116,7 +128,12 @@ export function onEnable(ctx: PluginContext): void {
     return ctx2.gameStore?.player?.id ?? ctx2.sourceId ?? null
   }
 
-  reg('FIRST_SEX_IN_TODAY', (ctx2: any) => {
+  // 注释：目标今天是否有首次记录（FIRST_SEX_IN_TODAY 族共用——Minor 3 修复（第九轮）合并重复）
+  // ⚠️ 部位变体近似（T_FIRST_A/U_SEX_IN_TODAY）：first_records 的部位维度（position）
+  // 未细分解析——A/U 变体暂用"今天有首次记录"同 handler 近似，部位细化随 h-first-time 扩展；
+  // ⚠️ 无前缀 FIRST_SEX_IN_TODAY 数据零引用（erArk 无前缀应查自己——本实现查目标，
+  // 保留为 T_ 族的共享 handler，语义差异随 h-first-time 迭代修正）
+  const firstSexToday = (ctx2: any) => {
     const charId = getTargetId(ctx2)
     if (!charId) return false
     const char = entitySystem.get('character', charId) as any
@@ -125,7 +142,14 @@ export function onEnable(ctx: PluginContext): void {
     const now = gameContext.getContext().time
     const today = `${now.year}-${now.month}-${now.day}`
     return Object.values(records).some((r: any) => r?.time?.startsWith(today))
-  })
+  }
+  reg('FIRST_SEX_IN_TODAY', firstSexToday)
+  // ★ 修复（第八轮）：数据引用 T_ 前缀版（t_first_sex_in_today 等，400-735 行/条）——
+  // 原只有无前缀版（FIRST_SEX_IN_TODAY 语义即查目标，命名不一致）；T_ 版挂在 h-core
+  // pendingFalse 恒 false 占位上静默死亡。补别名激活。
+  reg('T_FIRST_SEX_IN_TODAY', firstSexToday)
+  reg('T_FIRST_A_SEX_IN_TODAY', firstSexToday)
+  reg('T_FIRST_U_SEX_IN_TODAY', firstSexToday)
 
   reg('FIRST_SEX_BEFORE_TODAY', (ctx2: any) => {
     const charId = getTargetId(ctx2)

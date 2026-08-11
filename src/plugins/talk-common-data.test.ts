@@ -13,6 +13,10 @@ import { registerTargetPremises } from './h-core/premise/premise-target'
 import { registerClothingPremises } from './h-core/premise/premise-clothing'
 import { registerBodyItemPremises } from './h-core/premise/premise-body-item'
 import { registerInstructPremises } from './h-core/premise/premise-instruct'
+// ★ 修复（第七轮）：镜像 sleep-system onLoad——数据引用 target_sleep_h_awake_but_pretend_sleep
+// 等（7700+ 条），真语义在 sleep-system（h-core placeholder 已移除——onEnable 注册会覆盖
+// onLoad 真语义，见 premise-instruct.ts 注释）
+import { registerSleepPremises } from './sleep-system/premise/sleep'
 
 // 注释：与 talk-common index.ts loadTomlDir 相同的数据收集逻辑（避免跨插件耦合）
 const defaultModules = import.meta.glob<string>(
@@ -58,6 +62,7 @@ describe('T2 talk-common 全量数据校验', () => {
     registerClothingPremises(premiseRegistry)
     registerBodyItemPremises(premiseRegistry)
     registerInstructPremises(premiseRegistry)
+    registerSleepPremises(premiseRegistry)
   })
 
   it('数据文件可解析（完整 TOML 解析——description 损坏即失败）', () => {

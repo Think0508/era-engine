@@ -2,3 +2,6 @@
 hp = "hp"
 mp = "mp"
 attack = "attack"
+
+[bindings.sleep-system]
+sanity = "精力"

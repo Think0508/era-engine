@@ -46,6 +46,12 @@ export interface HInstruction {
   sub_category?: string       // sex 子类：base/foreplay/wait_upon/insert/item/drug/sm/arts
   sub_type?: string           // 旧别名
   time_cost?: number          // 分钟；-1 = handler 自定义耗时（引擎不自动推进）
+  // 注释：实时结算模式——"rest"（休息：不积累疲劳，恢复走 effects）/ "sleep"（睡眠：
+  // 不积累疲劳 + 2 倍削减疲劳 + 熟睡值积累 + 体力/气力公式恢复，erArk settle_sleep）
+  settle_mode?: 'rest' | 'sleep'
+  // 注释：跨天推进到目标小时（0-23）——time_cost=-1 时配合使用（如睡觉到次日 6:00）。
+  // 引擎按 minutesUntilHour 计算真实时长并推进（逐步发射 hour_changed/new_day 事件）
+  advance_to_hour?: number
   priority?: number
   modes?: string[]
   premises?: string[]         // 前提（premiseRegistry 注册的 ID；位置前提已迁到 condition）
@@ -409,8 +415,18 @@ export interface RandomEventDef {
   comment?: string
 }
 
-export interface LoadedMod {
-  id: string
+// 注释：睡眠配置（sleep-system 插件消费；core 仅作通用数据桶，不认知语义）
+export interface SleepConfig {
+  /** 计划醒来时刻 [时, 分]（erArk plan_to_wake_time 默认 [6,0]）——睡觉跨天目标时刻 */
+  plan_to_wake_time?: [number, number]
+  /** 计划睡觉时刻 [时, 分]（erArk plan_to_sleep_time 默认 [18,0]）——睡眠窗口起点 */
+  plan_to_sleep_time?: [number, number]
+  /** 睡眠等级阈值（升序，LV0 起；get_sleep_level 语义：值 ≤ 阈值 → 该级，否则下一级；
+   *  最后一项为封顶级。erArk Sleep_Level.csv：LV0 30 / LV1 60 / LV2 80 / LV3 100） */
+  sleep_levels?: { name: string; sleep_point: number }[]
+}
+
+export interface LoadedMod {  id: string
   name: string
   version: string
   dependencies: ModDependency[]
@@ -470,6 +486,9 @@ export interface LoadedMod {
 
     // 注释：随机事件（random-event-system 消费）
     events: RandomEventDef[]
+
+    // 注释：睡眠配置（sleep-system 消费）——plan_to_wake_time/plan_to_sleep_time/睡眠等级
+    sleepConfig: SleepConfig
 
   // 注释：指令（插件默认层 + mod 定义层，按 id 去重，mod 胜出）
   instructions: HInstruction[]
@@ -789,6 +808,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     playerCharacter: (metaSection.player_character as string) ?? undefined,
     loadingImage: (metaSection.loading_image as string) ?? undefined,
     loadingVideo: (metaSection.loading_video as string) ?? undefined,
+    sleepConfig: {},
     entities: new Map(),
     locations: new Map(),
     graph: [],
@@ -1226,6 +1246,12 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   if (aiWorkData) mod.aiWorkTypes = aiWorkData
   const aiEntertainmentData = loadMerged<Record<string, AIEntertainmentTypeDef>>('ai-entertainment.toml', 'entertainment_types')
   if (aiEntertainmentData) mod.aiEntertainmentTypes = aiEntertainmentData
+
+  // 注释：加载睡眠配置（sleep-system 消费）——顶层字段，字段级 deepMerge（mod 覆盖插件默认）
+  for (const path of Object.keys(rawTomlMap).filter(p => p.endsWith('/sleep.toml'))) {
+    const data = parseFile(path, rawTomlMap[path])
+    mod.sleepConfig = deepMerge(mod.sleepConfig, data) as SleepConfig
+  }
 
   // 注释：加载随机事件（random-event-system 消费）——累积式追加（插件默认层 +
   // mod 定义全部并入，同 ai-targets 注册表语义；文件按行为分：definitions/events/*.toml）

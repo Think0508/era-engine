@@ -61,29 +61,25 @@ describe('realtimeSettle（G3：射精欲自然消退）', () => {
   })
 })
 
-describe('realtimeSettle（G4：睡眠快感清零——daily_reset 标记消费）', () => {
+describe('realtimeSettle（G4/G5 迁移注记）', () => {
   beforeEach(() => {
     entitySystem.clear()
     gameContext.reset()
   })
 
-  it('睡眠结算：daily_reset=true 属性归零，非 daily_reset 保留', async () => {
-    // 加载 mod 使 attributes 可用（daily_reset 标记来自 attributes.toml）
+  it('睡眠结算的 wake 侧（daily_reset 清零/愤怒重置）已迁移至 sleep-system updateSleepAll——core 只留数值', async () => {
     const { modLoader } = await import('./mod-loader')
     await modLoader.loadMod('test-mod')
-    // 注意：loadMod 已注册 test-mod 的 player，用不冲突的 id；体力上限须给足
-    // （clampHpMp 会把超上限的体力钳到上限，上限缺失=0 会钳掉体力）
     const char = registerChar('sleep_npc', {
       体力: 50, 体力上限: 100, 气力: 50, 气力上限: 100,
-      好感度: 60,          // 非 daily_reset → 保留
-      皮肤: 500, 胸部: 200, 心理: 300, // daily_reset（快感部位）→ 归零
+      皮肤: 500, 胸部: 200, 心理: 300, 愤怒: 88, 疲劳度: 40,
     })
     realtimeSettle(char, 60, { isSleep: true })
-    expect(char.base['皮肤']).toBe(0)
-    expect(char.base['胸部']).toBe(0)
-    expect(char.base['心理']).toBe(0)
-    expect(char.base['体力']).toBe(50)
-    expect(char.base['好感度']).toBe(60)
+    // daily_reset 清零（G4）与愤怒重置（G5）不在 core——由 sleep-system updateSleepAll 对全员执行
+    expect(char.base['皮肤']).toBe(500)
+    expect(char.base['愤怒']).toBe(88)
+    // core 只保留 settle_sleep 数值：疲劳 2 倍削减 + 熟睡积累 + 体力/气力公式恢复
+    expect(char.base['疲劳度']).toBe(20) // 40 - max(1, 60/6)×2 = 40-20
   })
 
   it('非睡眠结算不清零（休息不清）', async () => {
@@ -103,24 +99,41 @@ describe('realtimeSettle（G4：睡眠快感清零——daily_reset 标记消费
   })
 })
 
-describe('realtimeSettle（G5：愤怒重置——睡眠醒来 rand(1,35)）', () => {
+describe('realtimeSettle（睡眠体力/气力公式恢复——erArk settle_sleep realtime_settle.py:388-391）', () => {
   beforeEach(() => {
     entitySystem.clear()
     gameContext.reset()
   })
 
-  it('睡眠结算 → 愤怒重置为 rand(1,35)', () => {
-    const char = registerChar('sleep_angry', { 愤怒: 88 })
+  it('体力恢复 = (上限×0.0025+3)/分钟，气力 = (上限×0.005+6)/分钟，封顶上限', () => {
+    // 上限 100：体力 base=0.25+3=3.25/分 → 60 分钟 = floor(195)=195 → 钳 100
+    const char = registerChar('sleep_recover', { 体力: 50, 体力上限: 100, 气力: 50, 气力上限: 100 })
     realtimeSettle(char, 60, { isSleep: true })
-    const angry = char.base['愤怒']
-    expect(angry).toBeGreaterThanOrEqual(1)
-    expect(angry).toBeLessThanOrEqual(35)
+    expect(char.base['体力']).toBe(100) // 50 + 195 → 钳 100
+    expect(char.base['气力']).toBe(100) // 50 + floor(0.5+6)×60 = 50+390 → 钳 100
   })
 
-  it('非睡眠结算不重置愤怒', () => {
-    const char = registerChar('rest_angry', { 愤怒: 88 })
+  it('恢复量精确：上限 1000 → 体力 5.5/分，60 分钟 = floor(330)=330；气力 11/分 → 660', () => {
+    const char = registerChar('sleep_recover_exact', { 体力: 100, 体力上限: 1000, 气力: 100, 气力上限: 1000 })
+    realtimeSettle(char, 60, { isSleep: true })
+    expect(char.base['体力']).toBe(430) // 100 + floor((2.5+3)×60)
+    expect(char.base['气力']).toBe(760) // 100 + floor((5+6)×60)
+  })
+
+  it('非睡眠结算不按睡眠公式恢复（休息恢复走指令 effects）', () => {
+    const char = registerChar('rest_no_recover', { 体力: 50, 体力上限: 100, 气力: 50, 气力上限: 100 })
     realtimeSettle(char, 60, { isRest: true })
-    expect(char.base['愤怒']).toBe(88)
+    expect(char.base['体力']).toBe(50)
+    expect(char.base['气力']).toBe(50)
+  })
+
+  it('NPC 睡眠窗口（sleepPassSettle）同样恢复（erArk 全员同构）', async () => {
+    const { sleepPassSettle } = await import('./realtime-settle')
+    const char = registerChar('npc_sleeper', { 体力: 50, 体力上限: 100, 气力: 50, 气力上限: 100, 熟睡值: 0, 疲劳度: 60 })
+    sleepPassSettle(char, 60)
+    expect(char.base['体力']).toBe(100)
+    expect(char.base['疲劳度']).toBe(40) // 60 - 20
+    expect(char.base['熟睡值']).toBe(90) // 60 × 1.5（无 tired_adjust，I6 修复）
   })
 })
 
@@ -136,11 +149,11 @@ describe('realtimeSettle（G6：尿意上限 300 + 熟睡 tired_adjust/深睡区
     expect(char.base['尿意']).toBe(300)
   })
 
-  it('浅睡熟睡积累含 tired_adjust（1+疲劳/160）：疲劳 80 → 60 分钟 ×(1+0.5)×1.5 = 135 → 上限 100', () => {
+  it('浅睡熟睡积累无 tired_adjust（erArk :362-367 源码无系数，I6 修复）：疲劳 80 → 60 分钟 ×1.5 = 90', () => {
     const char = registerChar('sleep_shallow', { 熟睡值: 0, 疲劳度: 80, 体力: 100, 体力上限: 100, 气力: 100, 气力上限: 100 })
     realtimeSettle(char, 60, { isSleep: true })
-    // floor(60×1.5×1.5)=135 → min(100)
-    expect(char.base['熟睡值']).toBe(100)
+    // floor(60×1.5)=90（旧实现含 tired_adjust=1.5 → 135 封顶 100，已修正）
+    expect(char.base['熟睡值']).toBe(90)
   })
 
   it('浅睡无疲劳 → 60 分钟 ×1×1.5 = 90（tired_adjust=1）', () => {

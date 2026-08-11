@@ -1,0 +1,39 @@
+# 无意识H 结束/道具（sleep-system 插件默认层；mod 可覆盖）
+# 来源：erArk InstructConfig.csv 6005/6106
+
+[[instructions]]
+id = "unconscious_h_end"
+label = "结束无意识奸"
+type = "sex"
+sub_category = "base"
+time_cost = 5
+priority = 50
+# erArk behavior: UNCONSCIOUS_H_END（6005，SEX/base）
+# C3 修复（2026-08-11）：前提收紧为 T_UNCONSCIOUS_FLAG_1（睡眠无意识）——原 T_UNCONSCIOUS_FLAG(≥1)
+# 会放行时停(3)/催眠(4-7)目标，而结束效果 unconscious_h_clear 无条件清 0 → 与其他结束路径
+# （onHEnd 保留时停/催眠）语义打架；睡奸场景目标恒为睡眠(1)
+premises = ["HAVE_TARGET", "T_UNCONSCIOUS_FLAG_1", "TIRED_LE_74"]
+effects = [
+  # 结束 H（h-core h_end_h——双方 H 状态重置）
+  { type = "h_end_h", params = {} },
+  # 目标恢复清醒（unconscious_h = 0 + unnormal 清 + sleeping 清）
+  { type = "unconscious_h_clear", params = {}, target = "selected" },
+  { type = "trigger_dialogue", params = { scene = "unconscious_h_end" } },
+]
+
+[[instructions]]
+id = "sleeping_pills"
+label = "安眠药"
+type = "sex"
+sub_category = "drug"
+time_cost = 5
+priority = 50
+# erArk behavior: SLEEPING_PILLS（6106，SEX/drug）
+# 效果 TARGET_ADD_TIRED_TO_SLEEP（1007：目标疲劳=160、熟睡=100、进入 8h 睡眠）依赖身体管理道具
+# （body_item[9]）——道具系统未实装：前提恒不满足（HAVE_SLEEPING_PILLS 未注册真语义 → 指令不可见）
+# TODO(sleep-system)：道具落地后接入（body_item[9] 佩戴判定 + 疲劳/熟睡设置 + 8h 睡眠行为）
+premises = ["HAVE_TARGET", "TARGET_IS_H", "HAVE_SLEEPING_PILLS", "TIRED_LE_74"]
+effects = [
+  { type = "nop", params = {} },
+  { type = "trigger_dialogue", params = { scene = "sleeping_pills" } },
+]

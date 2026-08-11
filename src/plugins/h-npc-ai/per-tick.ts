@@ -18,9 +18,10 @@ import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
 import { commandRegistry } from '../../core/command-registry'
 import { behaviorHistory } from '../../core/command-executor'
-import { settleTired, settleUrine, settleHunger } from '../../core/realtime-settle'
+import { settleTired, settleUrine, settleHunger, sleepPassSettle } from '../../core/realtime-settle'
 import { getPlayerId, isInH, isTimeStopped, isBlockhead, exitHBlock, getStamina, nowMinutes } from './state'
 import { runGroupSexAi } from './group-sex-ai'
+import { settleSleepH } from './sleep-h'
 
 // 注释：疲劳等级 ≥2 的疲劳度阈值（erArk get_tired_level：疲劳度/160，≤0.74→0，
 // ≤0.84→1，<1→2，≥1→3 → level≥2 ⟺ 疲劳度 > 134.4）——handle_npc_ai.py:57
@@ -114,17 +115,24 @@ export async function groupSexModeOff(): Promise<void> {
 }
 
 // 注释：结束整个 H（h-core endHScene 等价物——经 API 通道，grill Q9 确认复用）
+// Find 6 修复（第五轮）：失败上报（原 catch 吞掉 + 写"结束 H"误导叙事）
 async function endHScene(playerId: string): Promise<void> {
   try {
     await apiSystem.call('h-core', 'endHScene', playerId)
-  } catch {
-    narrativeLog.write('结束 H', 'dialogue', 'h-npc-ai')
+  } catch (err) {
+    errorReporter.report({
+      source: 'h-npc-ai',
+      severity: 'warning',
+      message: `结束 H 失败：${err instanceof Error ? err.message : String(err)}`,
+    })
+    narrativeLog.write('H 中断了。', 'dialogue', 'h-npc-ai')
   }
 }
 
 // 注释：NPC 疲劳/HP 退出（erArk handle_npc_ai.py:38-134 judge_character_tired_sleep）
 // 退出条件：体力≤1（tired 标记等价）**或** 疲劳等级 ≥2（疲劳度 >134.4，:57）
 // 普通 H：→ 结束 H；群交：移出模板 → 剩余 1 转单人 / 剩余 0 结束
+// 无意识 H 例外（erArk :96-102）：无意识目标只检测 HP，不检测疲劳（睡奸不被疲劳中断）
 export async function checkNpcFatigueExit(npcId: string): Promise<void> {
   const playerId = getPlayerId()
   if (!playerId) return
@@ -132,7 +140,9 @@ export async function checkNpcFatigueExit(npcId: string): Promise<void> {
   if (!npc || !isInH(npc)) return
   // 注释：时停 NPC 跳过（时停 = 时间停止，体力不因 H 行动变化——erArk 时停特判）
   if (isTimeStopped(npc)) return
-  const tired = (npc.base?.['疲劳度'] ?? 0) > TIRED_LEVEL_2_THRESHOLD
+  // 无意识 H（睡眠/醉酒/催眠/时停）→ 只查 HP（erArk :96-102：无意识不检测疲劳）
+  const unconscious = (npc.sp_flag?.unconscious_h ?? 0) >= 1
+  const tired = !unconscious && (npc.base?.['疲劳度'] ?? 0) > TIRED_LEVEL_2_THRESHOLD
   if (getStamina(npc) > 1 && !tired) return
 
   const inGroup = await isGroupSexMode()
@@ -267,6 +277,25 @@ export async function judgeCharacterHStateTick(minutes = 0): Promise<void> {
     if (isInH(c) || isBlockhead(c)) {
       // 时停 NPC 跳过锁死判定（grill Q5 定案：时停 = 时间停止，行为块本就冻结）
       if (isTimeStopped(c)) continue
+      // 睡奸例外（erArk :123-124）：睡眠中的 H 角色不参与锁死逻辑——
+      // B5 注记（第三轮）：h:start 的 enterHBlocksForAllInH 实际已把参与方覆写为 h_wait
+      // 块（运行时靠 sp_flag.sleeping 分支识别睡奸目标 + 下方显式 sleepPassSettle 补偿
+      // erArk 的 SLEEP 行为结算——注释此前误述为"保持睡眠行为"，已修正）
+      if (isInH(c) && (c.sp_flag?.sleeping === true)) {
+        // I4 修复：睡奸目标窗口结算补齐（erArk 目标行为=SLEEP → character_aotu_change_value
+        // 照常 settle_sleep：疲劳 2 倍削减 + 熟睡值积累 + 体力恢复——settle_sleep_h 扣 3t
+        // 与积累 1.5t 相抵 = 净 -1.5t/分；跳过集冻结了 npc-ai 窗口，此处显式补）
+        if (minutes > 0) {
+          sleepPassSettle(c, minutes)
+        }
+        // M16 修复：睡眠目标仍查 HP 退出（erArk :96-102 无意识 H 只查 HP 不查疲劳——
+        // 睡眠中目标不被行动扣体力，但体力 ≤1 必须能退出 H，防止死锁）
+        if (getStamina(c) <= 1) {
+          narrativeLog.write(`${c.name ?? c.id} 体力不支，睡奸结束了。`, 'system', 'h-npc-ai')
+          await endHScene(playerId)
+        }
+        continue
+      }
       // 群交中 + AI type 1/2 → 群交 AI（erArk :129-135；type 3 由模板执行事件触发）
       if (isInH(c) && await isGroupSexMode()) {
         await runGroupSexAi(c.id)
@@ -291,5 +320,12 @@ export async function judgeCharacterHStateTick(minutes = 0): Promise<void> {
 
     // 注释：疲劳/HP 退出（每时间片检查——erArk judge_character_tired_sleep）
     await checkNpcFatigueExit(c.id)
+  }
+
+  // 注释：睡奸实时结算（② erArk realtime_settle.py:436-464 settle_sleep_h——
+  // 玩家 H 中 + 目标睡眠 + unconscious_h==1 → 熟睡值扣除 + 吵醒判定；挂玩家分支）
+  // await（I3 修复）：吵醒恢复流程含时间推进，不得 fire-and-forget
+  if (minutes > 0 && isInH(playerChar)) {
+    await settleSleepH(minutes)
   }
 }

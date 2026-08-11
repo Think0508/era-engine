@@ -8,3 +8,5 @@ dependencies = [
   { plugin = "h-core", version = "^1.0.0" },
   { plugin = "effect-system", version = "^1.0.0" }
 ]
+[data_dependencies]
+depends_on = ["h:ready"]

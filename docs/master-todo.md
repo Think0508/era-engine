@@ -21,6 +21,7 @@
 | 道具/背包 | `docs/item-system.md` / `docs/inventory-system.md` | src/plugins/inventory-system/ |
 | H 系 | `docs/h-core.md` 等 h-*.md | src/plugins/h-*/ |
 | H 内 NPC AI | `docs/h-npc-ai.md` | src/plugins/h-npc-ai/ |
+| 睡眠系统 | `docs/sleep-system.md` | src/plugins/sleep-system/ |
 
 ## 会话交接摘要（2026-07-14）
 
@@ -1493,8 +1494,23 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 
 **来源**：上会话遗留
 
-- TOML + effect 实现
-- 时间推进整合
+> **已完成（2026-08-11，grill 定案 + 全链实现）**：
+> - `src/plugins/sleep-system/`：睡觉指令（1014 跨天跳转 advance_to_hour=6 + 14 效果链 + settle_mode）、
+>   让对方去睡觉（1022）、睡奸系指令数据（5045/5046/5052/6005/6106——安眠药前提恒 false TODO）
+> - 睡眠结算对全员（updateSleepAll：daily_reset 清零/愤怒重置/射精欲清零/首射标记/精液转化/
+>   H状态重置/素质获得/自动存档）、睡眠等级（sleep.toml 阈值 30/60/80/100）、
+>   睡眠状态（sp_flag.sleeping/unnormal_flag bit5,6/sleep_h_awake）
+> - 前提 12 条族（TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1 四象限/窗口/GAME_TIME_IS_SLEEP_TIME/
+>   T_ACTION_SLEEP/T_NORMAL_1/2/6/SCENE_ALL_UNCONSCIOUS_OR_SLEEP 等）+ h-time-stop TIME_STOP_ON/OFF
+> - core：realtime-settle 睡眠体力/气力公式恢复（settle_sleep :388-391）、sleepPassSettle 导出、
+>   game-context advanceToHour/minutesUntilHour、HInstruction settle_mode/advance_to_hour 字段
+> - h-npc-ai 无意识组 ②④③（settleSleepH/judgeWeakUpInSleepH/recoverFromUnconsciousH/
+>   装睡/二段结算/睡奸锁定例外/无意识疲劳退出只查 HP）
+> - 验收：typecheck 绿 / test 695 通过（新增 sleep-system 16 条 + core 恢复公式 + 全流程集成）/
+>   文档 docs/sleep-system.md + plugin-author-guide（sleep-system + h-npc-ai recover API）+
+>   character-schema（sleeping/unnormal_flag/sleep_h_awake/pretend_sleep/wake_time）
+> - TODO 项（未实装依赖，见 docs/sleep-system.md §11）：理智成长/能力升级检测/妊娠检查/
+>   安眠药 body_item[9]/陷落继续H判定三分支/无意识二段行为/睡奸经验映射
 
 ### L1.10 H 内 NPC AI 后置项（2026-08-11 h-npc-ai 插件交付后登记）
 

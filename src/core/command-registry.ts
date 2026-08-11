@@ -10,6 +10,11 @@ export interface CommandDef {
   category?: string
   sub_category?: string  // 子系统分类（foreplay/insert/item/drug/sm/wait_upon 等）
   timeCost?: number
+  // 注释：实时结算模式——"rest" 不积累疲劳（恢复走 effects）/ "sleep" 额外 2 倍削减疲劳
+  // + 熟睡值积累 + 体力/气力公式恢复（erArk settle_sleep）。由指令 TOML settle_mode 驱动
+  settleMode?: 'rest' | 'sleep'
+  // 注释：跨天推进到目标小时（0-23）——advance_to_hour 字段驱动（睡觉到次日 6:00 等）
+  advanceToHour?: number
   premises?: string[]   // 前提 ID 列表（premiseRegistry 求值；位置前提已迁到 condition）
   condition?: string
   priority?: number

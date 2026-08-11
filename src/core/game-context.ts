@@ -119,6 +119,24 @@ class GameContextManager {
     await eventBus.emit('game:time_advanced', { minutes })
   }
 
+  // 注释：到指定小时（0-23）的分钟数——跨天语义：当前已过该小时（含恰好等于）
+  // → 到次日该小时（delta==0 → 24h，对应"正好在起床时刻入睡"睡到次日）
+  minutesUntilHour(hour: number): number {
+    const currentTotal = this.time.hour * 60 + this.time.minute
+    const target = hour * 60
+    let delta = target - currentTotal
+    if (delta <= 0) delta += 24 * 60
+    return delta
+  }
+
+  // 注释：推进时间到指定小时（跨天）——通用原语（睡眠等"睡到某时刻"指令用）。
+  // 返回实际推进的分钟数（调用方用于结算窗口时长）
+  async advanceToHour(hour: number): Promise<number> {
+    const delta = this.minutesUntilHour(hour)
+    await this.advanceTime(delta)
+    return delta
+  }
+
   // 注释：移动到目标地点——command-executor 的 move 指令调用
   // 注释：可达性检查由 map-system 插件的 getReachable() 完成
   // 注释：此方法只做移动 + 时间推进 + 事件发射

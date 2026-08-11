@@ -143,6 +143,26 @@ export class EngineUIBridge {
     }
     eventBus.on('random-event:options_clear', eventOptionsClearHandler)
     this.handlers.push({ event: 'random-event:options_clear', handler: eventOptionsClearHandler })
+
+    // 注释：睡醒自动存档（sleep-system 发出——插件无 uiState，UI 层提供存档数据）
+    // 对齐 erArk pl_sleep_save_flag → sleep_settle.update_save()（auto 槽）
+    const autosaveHandler: BridgeHandler = async (payload: any) => {
+      try {
+        const { autoSave } = await import('../core/save-system')
+        await autoSave(uiStore.toSaveData(), payload?.label ?? '睡醒自动存档')
+      } catch (err) {
+        // M14 修复：错误处理铁律——UI 层同样走 errorReporter（console.warn 静默无痕）
+        const { errorReporter } = await import('../core/error-reporter')
+        errorReporter.report({
+          source: 'engine-ui-bridge',
+          severity: 'warning',
+          message: `睡醒自动存档失败：${err instanceof Error ? err.message : String(err)}`,
+        })
+      }
+    }
+    eventBus.on('game:autosave_requested', autosaveHandler)
+    this.handlers.push({ event: 'game:autosave_requested', handler: autosaveHandler })
+
     // 注释：读档后清选项条 UI（旧选项在恢复的游戏状态下执行会语义错位）
     const gameLoadHandler: BridgeHandler = () => {
       uiStore.setEventOptions(null)

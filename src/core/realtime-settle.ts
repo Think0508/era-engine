@@ -1,7 +1,7 @@
 // 实时结算——每次指令执行后自动触发
 // 对齐 erark Script/Settle/realtime_settle.py
 
-import { getEntityAttr, setEntityAttr } from './entity-utils'
+import { getEntityAttr, setEntityAttr, ATTR } from './entity-utils'
 import { gameContext, gameTimeToTotalMinutes } from './game-context'
 import { modLoader } from './mod-loader'
 
@@ -29,8 +29,9 @@ export function settleTired(entity: any, minutes: number, opts: SettleOptions = 
 // erArk sleep_settle.py:124-128：睡眠结算时清零快感（type=0 部位，性别过滤）；
 // 转宝珠部分因宝珠系统已砍（对账表 juel 有意删减）只留清零。
 // 实现：按 attributes.toml daily_reset=true 标记清零（契约字段语义，mod 可控——
-// daily_reset 标记首次有消费方）；机制挂 isSleep 分支，L1.7 sleep 指令化时自动生效
-function settleDailyReset(entity: any): void {
+// daily_reset 标记首次有消费方）；对全员执行由 sleep-system 插件 updateSleepAll 编排
+// （erArk update_sleep 对 npc_id_got + 玩家全量跑），core 只提供机制
+export function settleDailyReset(entity: any): void {
   const attributes = modLoader.getMod()?.attributes
   if (!attributes) return
   for (const [attrName, def] of Object.entries(attributes)) {
@@ -42,91 +43,55 @@ function settleDailyReset(entity: any): void {
   }
 }
 
-// ── 睡眠中的逐段结算（erArk realtime_settle.settle_sleep，:397-417）──
-// NPC 睡眠行为期间的每 pass 窗口结算：疲劳 2 倍削减 + 熟睡值积累（乘 tired_adjust）。
-// 与 sleepSettle（玩家睡眠一次性的完整结算，含 wake 侧 daily_reset/愤怒/精液）区分：
-// erArk 中 wake 侧效果（daily_reset 清零/愤怒重置/精液累积）只在 update_sleep 里跑
-// （玩家睡眠时对全员执行），NPC 自然醒（玩家没睡）不触发 wake 侧——本函数即"NPC
-// 睡眠期间的逐段积累"，行为完成时不再补 wake 侧（erArk 同构）。
-export function sleepPassSettle(entity: any, minutes: number): void {
-  if (!entity || minutes <= 0) return
-  const tired = getEntityAttr(entity, '疲劳度')
-  if (typeof tired === 'number' && tired > 0) {
-    const reduce = Math.max(1, Math.floor(minutes / 6) * 2)
-    setEntityAttr(entity, '疲劳度', Math.max(0, tired - reduce))
+// ── 睡眠体力/气力恢复（erArk settle_sleep，realtime_settle.py:388-391）──
+// hp_base = 体力上限×0.0025 + 3；mp_base = 气力上限×0.005 + 6；恢复 = base × 分钟
+// 方舟世界观修正（天赋 351/352、监禁、宿舍设施、管理员知识）为世界观专属，不搬（Q4 定案）
+function sleepRecovery(entity: any, minutes: number): void {
+  const hpMax = getEntityAttr(entity, ATTR.HP_MAX)
+  const hp = getEntityAttr(entity, ATTR.HP)
+  if (typeof hpMax === 'number' && hpMax > 0 && typeof hp === 'number' && hp < hpMax) {
+    const hpBase = hpMax * 0.0025 + 3
+    setEntityAttr(entity, ATTR.HP, Math.min(hpMax, hp + Math.floor(hpBase * minutes)))
   }
-  const sleepVal = getEntityAttr(entity, '熟睡值')
-  if (typeof sleepVal === 'number') {
-    const tiredAdjust = 1 + (typeof tired === 'number' ? tired : 0) / 160
-    const add = sleepVal <= 60
-      ? Math.floor(minutes * tiredAdjust * 1.5)
-      : Math.floor(minutes * tiredAdjust * (-0.3 + Math.random() * 0.9))
-    setEntityAttr(entity, '熟睡值', Math.min(100, Math.max(0, sleepVal + add)))
+  const mpMax = getEntityAttr(entity, ATTR.MP_MAX)
+  const mp = getEntityAttr(entity, ATTR.MP)
+  if (typeof mpMax === 'number' && mpMax > 0 && typeof mp === 'number' && mp < mpMax) {
+    const mpBase = mpMax * 0.005 + 6
+    setEntityAttr(entity, ATTR.MP, Math.min(mpMax, mp + Math.floor(mpBase * minutes)))
   }
 }
 
-// ── 睡眠结算（共享函数，G4/G5/G6 决策 2026-08-09 对齐 erArk）──
-// erArk sleep_settle.py 对应物：玩家睡眠（isSleep 分支）与 NPC 睡眠行为完成（npc-ai-system）
-// 共用同一逻辑——玩家与 NPC 的睡眠结算必须一致（erArk sleep_settle 对全部角色同构）。
-// 包含：daily_reset 清零（:124-128）、愤怒重置（:80 rand(1,35)）、疲劳 2 倍削减、
-// 熟睡值积累（:409-418）、射精欲清零 + 今日首射标记 + 额外精液累积 + 浓厚精液天赋（:56-57/:124-128）
-export function sleepSettle(entity: any, minutes: number): void {
+// ── 睡眠中的逐段结算（erArk realtime_settle.settle_sleep，:347-391）──
+// 玩家睡眠（isSleep 分支）与 NPC 睡眠行为窗口（npc-ai-system windowSettle）共用：
+// 疲劳 2 倍削减 + 熟睡值积累 + 体力/气力公式恢复。
+// 熟睡积累（I6 修复 2026-08-11）：erArk 源码无 tired_adjust 系数（:362-367
+// `add = int(t×1.5)` / `randint(int(t×-0.3), int(t×0.6))`）——2026-08-09 G6 旧决策
+// 引用的 :409-418 行号在权威源码中对应不存在的系数，已修正为无系数（忠实源码）
+// wake 侧（daily_reset 清零/愤怒重置/精液累积）不在本函数——erArk 只在 update_sleep 里跑
+// （玩家睡眠时对全员执行），NPC 自然醒（玩家没睡）不触发 wake 侧（sleep-system 编排）。
+export function sleepPassSettle(entity: any, minutes: number): void {
   if (!entity || minutes <= 0) return
-  // 快感清零（G4：daily_reset 标记属性睡眠结算归零——erArk sleep_settle.py:124-128）
-  settleDailyReset(entity)
-  // 愤怒重置（G5：erArk sleep_settle.py:80——睡眠醒来愤怒回到 rand(1,35)，不睡不重置）
-  if (!entity.base) entity.base = {}
-  entity.base['愤怒'] = 1 + Math.floor(Math.random() * 35)
-  const tired = getEntityAttr(entity, '疲劳度')
+  const tired = getEntityAttr(entity, ATTR.FATIGUE)
   if (typeof tired === 'number' && tired > 0) {
     const reduce = Math.max(1, Math.floor(minutes / 6) * 2)
-    setEntityAttr(entity, '疲劳度', Math.max(0, tired - reduce))
+    setEntityAttr(entity, ATTR.FATIGUE, Math.max(0, tired - reduce))
   }
-  // 熟睡值积累（erArk realtime_settle.py:409-418——G6 决策 2026-08-09 对齐）：
-  // 两分支都乘 tired_adjust = 1 + 疲劳/160；浅睡 +1.5/分钟，深睡 rand(-0.3~0.6)（可为负，
-  // 下界钳 0 防御——erArk 未钳下界属其瑕疵）
-  const sleepVal = getEntityAttr(entity, '熟睡值')
+  const sleepVal = getEntityAttr(entity, ATTR.SLEEP)
   if (typeof sleepVal === 'number') {
-    const tiredAdjust = 1 + (typeof tired === 'number' ? tired : 0) / 160
     const add = sleepVal <= 60
-      ? Math.floor(minutes * tiredAdjust * 1.5)
-      : Math.floor(minutes * tiredAdjust * (-0.3 + Math.random() * 0.9))
-    setEntityAttr(entity, '熟睡值', Math.min(100, Math.max(0, sleepVal + add)))
+      ? Math.floor(minutes * 1.5)
+      : Math.floor(minutes * (-0.3 + Math.random() * 0.9))
+    setEntityAttr(entity, ATTR.SLEEP, Math.min(100, Math.max(0, sleepVal + add)))
   }
-  // 额外精液累积（对齐 erArk sleep_settle.py refresh_temp_semen_max）
-  // 睡≥6h(360分钟)：额外精液 += 当前精液/2，上限 精液上限×4；满则获得"浓厚精液"天赋
-  if (minutes >= 360) {
-    // 清零射精欲（erArk sleep_settle.py:56）
-    setEntityAttr(entity, '射精欲', 0)
-    // 重置今日首射标记（erArk sleep_settle.py:57——睡醒后今日首射翻倍）
-    if (!entity.action_info) entity.action_info = {}
-    entity.action_info.day_first_shoot_semen = true
-    const semen = getEntityAttr(entity, '精液量')
-    const semenMax = getEntityAttr(entity, '精液量上限')
-    if (typeof semen === 'number' && semen > 0 && typeof semenMax === 'number' && semenMax > 0) {
-      const extraMax = semenMax * 4
-      const extra = getEntityAttr(entity, '额外精液量')
-      const newExtra = Math.min(extraMax, (typeof extra === 'number' ? extra : 0) + Math.floor(semen / 2))
-      setEntityAttr(entity, '额外精液量', newExtra)
-      // 浓厚精液天赋（erArk talent[33]：额外精液满上限时获得）
-      if (!entity.talents) entity.talents = {}
-      if (newExtra >= extraMax) {
-        entity.talents['浓厚精液'] = 1
-      } else {
-        delete entity.talents['浓厚精液']
-      }
-    }
-  }
+  sleepRecovery(entity, minutes)
 }
 
 // ── 休息/睡眠恢复体力气力（erark settle_rest/settle_sleep）──
 function settleRestRecovery(entity: any, minutes: number, opts: SettleOptions): void {
-  // 注释：HP/MP 恢复由指令 effect 处理（recover_permil），实时结算不重复恢复
-
-  // 睡眠时额外减少疲劳（erark: 2倍速度）
+  // 注释：休息的 HP/MP 恢复由指令 effect 处理（recover_permil），实时结算不重复恢复；
+  // 睡眠例外——erArk settle_sleep 按公式恢复（上限×0.0025+3 / 上限×0.005+6 每分钟）
   if (opts.isSleep) {
-    // 注释：睡眠结算统一走共享函数（玩家/ NPC 同构，G4/G5/G6 决策）
-    sleepSettle(entity, minutes)
+    sleepPassSettle(entity, minutes)
   }
 }
 

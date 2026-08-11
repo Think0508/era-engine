@@ -1,0 +1,27 @@
+# 睡眠配置（sleep-system 插件默认层；mod 可覆盖——mods/[mod]/definitions/sleep.toml 同字段覆盖）
+# 来源：erArk game_type.py:601-603（action_info.plan_to_wake_time/plan_to_sleep_time 默认值）
+
+# 计划醒来时刻 [时, 分]——睡觉指令跨天跳转的目标时刻（指令 TOML advance_to_hour 与此保持一致的默认值）
+plan_to_wake_time = [6, 0]
+
+# 计划睡觉时刻 [时, 分]——睡眠时间窗口起点（TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1 的 SLEEP_TIME 语义：
+# 当前时间 ≥ plan_to_sleep_time 或 < plan_to_wake_time 即"到点该睡了"）
+plan_to_sleep_time = [18, 0]
+
+# 睡眠等级阈值（升序）——get_sleep_level 语义（erArk attr_calculation.py:783-798 get_sleep_level）：
+# 值 ≤ 阈值 → 该级；否则下一级；最后一项为封顶级。来源：erArk data/csv/Sleep_Level.csv（11-睡眠与无意识H.md §3.1）
+[[sleep_levels]]
+name = "半梦半醒"
+sleep_point = 30
+
+[[sleep_levels]]
+name = "浅睡"
+sleep_point = 60
+
+[[sleep_levels]]
+name = "熟睡"
+sleep_point = 80
+
+[[sleep_levels]]
+name = "完全深眠"
+sleep_point = 100

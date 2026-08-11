@@ -30,7 +30,16 @@ export function onLoad(_ctx: PluginContext): void {
   // erArk 对应：character_behavior.py dead 跳过 / 离线生命周期 / settle-gate 无意识）
   registerSkipRule('dead', (_id, entity) => !!entity?.dead)
   registerSkipRule('offline', (_id, entity) => !!entity?.sp_flag?.offline)
-  registerSkipRule('unconscious', (_id, entity) => (entity?.sp_flag?.unconscious_h ?? 0) >= 1)
+  // ★4 修复（第六轮）：睡眠猥亵标记的睡眠者（unconscious_h===1 && sleeping）**不跳过**——
+  // erArk 中该标记只表示"睡奸可发起"，NPC 睡眠行为照常结算（6:00 自然醒）；
+  // 原规则冻结其行为块 → 永不醒（要等玩家睡觉 updateSleepAll 兜底，NPC 可能睡数天）。
+  // 睡奸中（H 内）由 in_h 规则冻结；时停(3)/催眠(4-7)/醉酒(2) 照常跳过
+  registerSkipRule('unconscious', (_id, entity) => {
+    const u = entity?.sp_flag?.unconscious_h ?? 0
+    if (u >= 1 && u !== 1) return true
+    if (u === 1 && !entity?.sp_flag?.sleeping) return true
+    return false
+  })
   // 注释：H 中的 NPC 不跑日常 AI（erArk：H 中 NPC 进 over_behavior_character 跳过；
   // H 内 AI 后置——日常决策不与该会话竞争；交互 pin 已覆盖选中者，此谓词兜底全员。
   // 2026-08-10 排查修复：H 标志在 h_state.is_h（h-core 写入）——此前误用 erArk 的

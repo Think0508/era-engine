@@ -2,7 +2,7 @@
 
 > 复刻 erArk `handle_npc_ai_in_h.py`（711 行）+ `handle_npc_ai.py` 的 H 分支。
 > 本次交付（2026-08-11 grill 定案）：① 每时间片 H 状态判定 + 完整疲劳/HP 退出；
-> ⑤ 逆推 AI（NPC 主动 H）；⑥⑦ 群交 AI。后置项见文末。
+> ⑤ 逆推 AI（NPC 主动 H）；⑥⑦ 群交 AI；**②④③ 无意识组**（2026-08-11 随睡眠系统 L1.7 落地）。后置项见文末。
 
 ## 1. 概念与定位
 
@@ -12,9 +12,12 @@ H 场景中玩家执行 H 指令时，NPC 不是木偶——它们被"锁定"在
 | 能力 | erArk 对照 | 本引擎机制 |
 |------|-----------|-----------|
 | ① 每时间片 H 状态判定 | `judge_character_h_obscenity_unconscious` | 挂 `game:time_advanced`，锁死确认/不同地点结束 H/群交 AI 触发 |
-| 疲劳/HP 退出 | `handle_npc_ai.py:38-134` | 三路分流：NPC 普通 H / NPC 群交 / 玩家 |
+| 疲劳/HP 退出 | `handle_npc_ai.py:38-134` | 三路分流：NPC 普通 H / NPC 群交 / 玩家；无意识目标只查 HP（睡奸不被疲劳中断） |
 | ⑤ 逆推 AI | `npc_active_h` + `evaluate_npc_body_part_prefs` | 部位喜好加权 → 指令过滤链 → 随机选赋给玩家执行 |
 | ⑥⑦ 群交 AI | `npc_ai_in_group_sex` + `_type_3` | type 1 自慰 / 2 补位 / 3 抢占 |
+| ② 睡奸实时结算 | `realtime_settle.settle_sleep_h` | `settleSleepH`（per-tick 玩家分支：熟睡值 -= 3t，WAIT/安眠药规避吵醒） |
+| ④ 醒来判定 | `judge_weak_up_in_sleep_h` | `judgeWeakUpInSleepH`（weak_rate 公式 + randint(1,100)） |
+| ③ 恢复流程 | `recover_from_unconscious_h` + `handle_npc_instruct_condition` + `settle_unconscious_semen_and_cloth` | `recoverFromUnconsciousH`（装睡继续/结束 + 二段结算 + 时间推进 5 分钟） |
 
 **核心模型（grill Q4 定案）**：H 中 NPC 的行为状态复用 npc-ai-system 的
 `ai_behavior` 行为块，注册 `h_*` 类型：
@@ -207,7 +210,8 @@ CommandBar 在 `h_scene` 模式下对指令做**前提实时过滤**（满足才
 
 ## 10. 后置项（master-todo L1.10）
 
-1. 无意识组 ②④③（睡奸恢复/醒来/继续 H 判定 + 无意识二段结算）——依赖 L1.7 睡眠系统
+1. ~~无意识组 ②④③（睡奸恢复/醒来/继续 H 判定 + 无意识二段结算）~~ **已完成（2026-08-11，随 L1.7 睡眠系统）**——
+   继续H判定简化（陷落系统未实装 → 恒装睡继续，TODO 接真实判定）；无意识二段行为（second-behavior 未实装 → 数据清零 + TODO）
 2. 性爱助手 sex_assist——依赖监禁调教系统 + 缺失源码
 3. 催眠体控-逆推自动触发 H（效果 1228）——归 h-hypnosis
 4. 群交玩法大改 + 模板编辑器 UI + 加入流程 + run_group_sex_template 指令

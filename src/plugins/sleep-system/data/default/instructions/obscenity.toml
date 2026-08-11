@@ -1,0 +1,48 @@
+# 睡奸系指令（sleep-system 插件默认层；mod 可覆盖）
+# 来源：erArk InstructConfig.csv 5045/5046/5052（07-指令集-猥亵期.md + 11-睡眠与无意识H.md）
+# 效果链：设目标无意识标记（unconscious_h_set/clear）+ H 开始/结束（h-core h_start_h/h_end_h）+ 口上
+# 注：完整 H 效果链（经验/状态结算）随 SEX 指令批次（B2+）与 H UI 面板对齐时补全
+
+[[instructions]]
+id = "sleep_obscenity"
+label = "睡眠猥亵"
+type = "obscenity"
+time_cost = 10
+priority = 50
+# erArk behavior: SLEEP_OBSCENITY
+# I5 修复（2026-08-11）：对齐 erArk——5045 只设目标 unconscious_h=1+unnormal（11-睡眠与无意识H.md §2），
+# 不启动 H（H 由 unconscious_h 无意识奸指令发起，前提 T_UNCONSCIOUS_FLAG 已就绪）；
+# 原 h_start_h 会让 5046 的 NOT_H 前提恒假（睡奸中 is_h=true）——指令链自相矛盾
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_ACTION_SLEEP", "T_UNCONSCIOUS_FLAG_0", "TIRED_LE_74"]
+effects = [
+  # 目标 unconscious_h = 1（睡眠）+ unnormal bit5,6
+  { type = "unconscious_h_set", params = { level = 1 }, target = "selected" },
+  { type = "trigger_dialogue", params = { scene = "sleep_obscenity" } },
+]
+
+[[instructions]]
+id = "stop_sleep_obscenity"
+label = "停止睡眠猥亵"
+type = "obscenity"
+time_cost = 5
+priority = 50
+# erArk behavior: STOP_SLEEP_OBSCENITY
+premises = ["HAVE_TARGET", "NOT_H", "T_ACTION_SLEEP", "T_UNCONSCIOUS_FLAG_1", "TIRED_LE_74"]
+effects = [
+  # A1 修复：wake=false——只清无意识奸标记，目标继续睡（行为=SLEEP 保留；清醒判定靠 sleeping）
+  { type = "unconscious_h_clear", params = { wake = false }, target = "selected" },
+  { type = "trigger_dialogue", params = { scene = "stop_sleep_obscenity" } },
+]
+
+[[instructions]]
+id = "unconscious_h"
+label = "无意识奸"
+type = "obscenity"
+time_cost = 10
+priority = 50
+# erArk behavior: UNCONSCIOUS_H——对任意无意识目标（睡眠/醉酒/时停/催眠）发起无意识 H
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_UNCONSCIOUS_FLAG", "TIRED_LE_74"]
+effects = [
+  { type = "h_start_h", params = {} },
+  { type = "trigger_dialogue", params = { scene = "unconscious_h" } },
+]

@@ -222,6 +222,28 @@ function registerInstruction(raw: HInstruction, blocks: Record<string, Effect>):
       suggestion: 'time_cost 必须查 Behavior_Data.csv + handle_instruct.py 后填写（SOP §5），-1 需查 handler 真实值',
     })
   }
+  // 注释：M9 校验（2026-08-11）——advance_to_hour 越界/settle_mode 非法会静默按普通指令处理
+  if (raw.advance_to_hour !== undefined) {
+    const h = Number(raw.advance_to_hour)
+    if (!Number.isInteger(h) || h < 0 || h > 23) {
+      errorReporter.report({
+        source: 'instruction-loader',
+        severity: 'error',
+        message: `指令 '${raw.id}' 的 advance_to_hour=${raw.advance_to_hour} 非法（合法 0-23），指令注销`,
+        suggestion: 'advance_to_hour 是跨天推进的目标小时（如 6 = 睡到次日 6:00）',
+      })
+      return
+    }
+  }
+  if (raw.settle_mode !== undefined && raw.settle_mode !== 'rest' && raw.settle_mode !== 'sleep') {
+    errorReporter.report({
+      source: 'instruction-loader',
+      severity: 'error',
+      message: `指令 '${raw.id}' 的 settle_mode='${raw.settle_mode}' 非法（合法 rest/sleep），指令注销`,
+      suggestion: 'settle_mode 驱动实时结算：rest 不积累疲劳；sleep 额外 2 倍削减疲劳+熟睡积累+体力恢复',
+    })
+    return
+  }
 
   const cmdDef: CommandDef = {
     id: raw.id,
@@ -231,6 +253,8 @@ function registerInstruction(raw: HInstruction, blocks: Record<string, Effect>):
     category,
     sub_category: subCategory,
     timeCost: raw.time_cost ?? 30,
+    settleMode: raw.settle_mode,
+    advanceToHour: raw.advance_to_hour,
     priority: raw.priority ?? 50,
     premises: raw.premises,
     condition: raw.condition,

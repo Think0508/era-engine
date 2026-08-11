@@ -6,6 +6,7 @@ import type { PluginContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { narrativeLog } from '../../core/narrative-log'
+import { errorReporter } from '../../core/error-reporter'
 
 const MODE_NAMES = ['无', '室内露出', '室外露出', '人前露出', '无意识露出']
 
@@ -51,8 +52,19 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   })
 
   // 注释：注册所有露出前提——对齐 erArk 9 个
+  let premiseRegWarned = false
   const reg = async (id: string, fn: (c: any) => boolean) => {
-    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch { }
+    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch (err) {
+      if (!premiseRegWarned) {
+        premiseRegWarned = true
+        errorReporter.report({
+          source: 'h-exposure',
+          severity: 'warning',
+          message: "前提注册失败（h-core 未就绪？）：" + (err instanceof Error ? err.message : String(err)),
+          suggestion: 'h-core plugin may not be loaded (registerPremise API) - this plugin premises will be unavailable',
+        })
+      }
+    }
   }
 
   function getTargetId(ctx2: any): string | null {

@@ -71,7 +71,7 @@ entity
 | 疲劳度 | 0 | 前提 TIRED_LE_74/84、群交 SCENE_ALL_NOT_TIRED | 前提恒满足（不疲劳） | 可删（前提降级） |
 | 饥饿值 | 0 | hunger-system、h-ejaculation 精液吸收 | 饥饿不增长；吸收系数按 0 | 可删（关饥饿） |
 | 消化剩余 | 0 | hunger-system 消化 CD | 消化即时完成 | 可删 |
-| 熟睡值 | 0 | 睡眠结算积累（上限 100，G6 对齐 tired_adjust/深睡区间） | 睡眠逻辑失效 | 可删 |
+| 熟睡值 | 0 | 睡眠结算积累（上限 100，I6 修正 2026-08-11：erArk 源码无 tired_adjust——浅睡 +1.5/分、深睡 rand(-0.3~0.6)/分） | 睡眠逻辑失效 | 可删 |
 | 尿意 | 0 | 实时结算增长（上限 **300**，G6：erArk 代码为准）+ 解手指令 | 解手前提失效 | 可删 |
 | 体力上限 | 2500 | H 结束奖励/战斗 HP 计算 | 上限恒 2500 | 不可删（战斗/H） |
 | 气力上限 | 2000 | 同上 | 上限恒 2000 | 不可删（战斗/H） |
@@ -221,6 +221,13 @@ entity
 | go_to_join_group_sex | boolean | 前往群交 | h-group-sex |
 | masturebate | number | 自慰状态 | 前提 |
 | abnormal_flags | object | 异常状态位掩码 | 前提 |
+| sleeping | boolean | 正在睡眠（2026-08-11 睡眠系统：玩家睡觉指令/NPC 睡眠行为期间） | T_ACTION_SLEEP 前提/sleep-system |
+| unnormal_flag | number | 位掩码：bit5=0x10 意识模糊/弱交互、bit6=0x20 完全意识不清醒（睡眠中置位；11-睡眠与无意识H.md §6） | sleep-system/h-npc-ai |
+| sleep_h_awake | boolean | 睡奸中醒来标记（醒来后装睡/结束判定） | 睡奸指令前提/h-npc-ai |
+| pajamas | boolean | 穿着睡衣（睡觉效果链 634 设置） | 服装系统 |
+| shower_state | number | 淋浴状态（睡觉效果链 301 清零） | 前提 |
+| tired | boolean | 疲劳标记（体力≤1 时置位；睡觉效果链 31 NOT_TIRED 清除） | follow-system/h-npc-ai |
+| masturebate_before_sleep | boolean | 睡前自慰标记（睡觉效果链 457 清零） | 前提 |
 | （其余见 erArk SPECIAL_FLAG，未实装字段留空即可） | | | |
 
 ### 4.3 body_items（身体道具）
@@ -244,7 +251,10 @@ body_items: { 槽位string: { itemId: string, active: boolean, expiry?: number }
 | pregnancy.fertilization_rate / reproduction_period / milk / milk_max / lactation_flag / … | 妊娠/涨奶 | h-pregnancy |
 | hypnosis.hypnosis_degree / increase_body_sensitivity / force_ovulation / blockhead / active_h / pain_as_pleasure / roleplay | 催眠 | h-hypnosis |
 | action_info.talk_count / talk_time | 聊天计数/时间 | h-core（decayTalkCount） |
-| action_info.day_first_shoot_semen | 每日首射标记 | h-ejaculation |
+| action_info.day_first_shoot_semen | 每日首射标记（睡眠结算无条件重置 true，醒来第一发翻倍） | h-ejaculation / sleep-system |
+| action_info.wake_time | 醒来时间（睡眠结算记录，erArk RECORD_WAKE_TIME） | sleep-system |
+| action_info.h_interrupt | H 被撞破标记（睡眠结算清零，erArk sleep_settle.py:82） | h-core / sleep-system |
+| h_state.pretend_sleep | 装睡（睡奸中醒来但继续无意识H，2026-08-11） | h-npc-ai |
 | first_times.virgin_V/A/U/W/M/OTHER/KISS | true=已破处/已初吻 | h-first-time |
 | first_records.{key}.time / .place / … | 初次详情 | h-first-time |
 
@@ -354,7 +364,8 @@ h_state: 全部（H 会话内由引擎创建）
 > - 饥饿增长（**行动级唯一源**，G1：hunger-system 小时级增长已删——双轨=双倍）：
 >   `floor(t×rand(0.8~1.2)×(2-hp/max)×(2-mp/max))` 上限 240
 > - 尿意增长 上限 **300**（G6：erArk 代码 min(...,300)，注释 240 以代码为准）
-> - 熟睡积累（G6）：两分支乘 tired_adjust=1+疲劳/160；浅睡 +1.5/分、深睡 rand(-0.3~0.6)/分（下界钳 0）
+> - 熟睡积累（I6 修正 2026-08-11）：浅睡 +1.5/分、深睡 rand(-0.3~0.6)/分（下界钳 0）——
+>   erArk realtime_settle.py:362-367 源码无 tired_adjust 系数（G6 旧决策引用的行号对应不存在的系数，已修正）
 > - 精液恢复 +1/20分；射精欲自然消退（G3）：仅玩家、非 H、距上次射精 >30 分 → -10/分
 > - 睡眠结算：快感清零（G4：daily_reset 标记属性归零——该标记首次有消费方）+ 愤怒重置
 >   （G5：rand(1,35)，erArk sleep_settle.py:80）+ 熟睡/减疲劳/精液逻辑（sleep 指令 L1.7 时自动生效）

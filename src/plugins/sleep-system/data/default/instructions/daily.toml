@@ -1,0 +1,64 @@
+# 睡觉指令（sleep-system 插件默认层；mod 可覆盖）
+# 来源：erArk InstructConfig.csv 1014（06-指令集-攻略期.md）+ Behavior_Effect.csv
+# 效果链 14 ID 按 constant_effect.py + default.py handler 逐一翻译（归档 _erark_source 的旧链有误，已弃用）
+
+[[instructions]]
+id = "sleep"
+label = "睡觉"
+type = "daily"
+time_cost = -1
+advance_to_hour = 6
+settle_mode = "sleep"
+priority = 50
+# erArk behavior: SLEEP
+premises = ["IN_DORMITORY_OR_HOTEL", "NOT_H", "TIME_STOP_OFF", "TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1"]
+# 效果时序（引擎 order：advanceToHour 跨天 → 效果链 → realtimeSettle(sleep 结算) → execution_end 收尾）——
+# 与 erArk 相对顺序一致（效果在行为开始/熟睡值归零先于积累结算）
+effects = [
+  # 31 NOT_TIRED——疲劳标记清除（default.py handle_not_tired：sp_flag.tired = False）
+  { type = "set_field", params = { path = "sp_flag.tired", value = false }, target = "self" },
+  # 36 SLEEP_POINT_ZERO——熟睡值归零（default.py handle_sleep_point_zero：sleep_point = 0；
+  #   unnormal bit5 的设置由 sleep-system 状态管理统一处理，效果链不做位运算）
+  { type = "set_field", params = { path = "base.熟睡值", value = 0 }, target = "self" },
+  # 301 SHOWER_FLAG_TO_0——淋浴状态清零（sp_flag.shower_state = 0）
+  { type = "set_field", params = { path = "sp_flag.shower_state", value = 0 }, target = "self" },
+  # 321 SLEEP_FLAG_TO_0——erArk 语义是清"要睡眠请求标记"（sp_flag.sleep，handle_premise_sp_flag.py:292/308），
+  #   非"正在睡眠"运行时标记。本引擎无请求标记概念 → 不翻译；
+  #   "正在睡眠"（sp_flag.sleeping）由 sleep-system 在 execution_start 置位、execution_end 醒来清除
+  # 489 HYPNOSIS_FLAG_TO_0——TODO(sleep-system)：催眠状态清零（h-hypnosis 字段盘点后接入）
+  # 457 MASTUREBATE_BEFORE_SLEEP_FLAG_TO_0——睡前自慰标记清零
+  { type = "set_field", params = { path = "sp_flag.masturebate_before_sleep", value = false }, target = "self" },
+  # 509 SLEEP_ADD_ADJUST——TODO(sleep-system)：宿舍换睡衣+50% 几率关门（关门机制未实装；
+  #   换睡衣由 634 GET_SLEEP_CLOTH 承担）
+  # 606 CLOTH_SEE_ZERO——TODO(sleep-system)：服装可见性全清（634 已设睡衣可见，语义近似）
+  # 634 GET_SLEEP_CLOTH——换睡衣（erArk clothing.py get_sleep_cloth：552/553+852/853+内衣）
+  # target=self：睡衣/可见性只作用于自己（I1 修复——缺 target 会静默结算到 UI 选中角色）
+  { type = "set_field", params = { path = "sp_flag.pajamas", value = true }, target = "self" },
+  { type = "cloth_set_visible", params = { slot = "睡衣", visible = true }, target = "self" },
+  { type = "cloth_wear_all", target = "self" },
+  # 648 CLEAN_LOCKER_CLOTH_SEMEN——TODO(sleep-system)：储物柜服装精液清理（储物柜未实装）
+  # 932 ADJUST_BODY_MANAGE_SLEEP_ITEM——TODO(sleep-system)：身体管理睡觉道具（未实装）
+  # 1504 ADD_SMALL_SANITY_POINT——理智恢复 15%/h（default.py handle_add_small_sanity_point，
+  #   add_small_sanity_point 效果由 sleep-system 注册）
+  { type = "add_small_sanity_point", params = {}, target = "self" },
+  # 1505 ADD_SMALL_SEMEN_POINT——精液恢复 15%/h，仅玩家（default.py handle_add_small_semen_point，
+  #   add_small_semen_point 效果由 sleep-system 注册）
+  { type = "add_small_semen_point", params = {}, target = "self" },
+  # 1751 FACILITY_DAMAGE_CHECK——TODO(sleep-system)：设施损坏检查（方舟世界观专属，不搬）
+  { type = "trigger_dialogue", params = { scene = "sleep" }, target = "self" },
+]
+
+[[instructions]]
+id = "ask_target_sleep"
+label = "让对方去睡觉"
+type = "daily"
+time_cost = 10
+priority = 50
+# erArk behavior: （InstructConfig 1022）
+premises = ["HAVE_TARGET", "NOT_H", "TARGET_TIRED_GE_75", "T_NORMAL_1", "T_NORMAL_2", "T_NORMAL_6"]
+# M11 修复（2026-08-11）：ask_sleep 效果经 npc-ai setBehavior 设 sleep 行为块（目标真实入睡，
+# 睡到 wake_hour 6:00）——setBehavior 发 npc:behavior_started(type=sleep) → 睡眠标记自动置位
+effects = [
+  { type = "ask_sleep", params = {}, target = "selected" },
+  { type = "trigger_dialogue", params = { scene = "ask_target_sleep" } },
+]

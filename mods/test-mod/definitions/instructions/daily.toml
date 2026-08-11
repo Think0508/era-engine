@@ -12,6 +12,7 @@ id = "rest"
 label = "休息"
 type = "daily"
 time_cost = 60
+settle_mode = "rest"
 priority = 50
 premises = ["NOT_H", "TIRED_LE_84"]
 effects = [

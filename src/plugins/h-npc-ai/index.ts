@@ -3,26 +3,46 @@
 //   ① 每时间片 H 状态判定（锁死 h_wait / 不同地点结束 H / 木头人锁死）+ 完整疲劳/HP 退出
 //   ⑤ 逆推 AI（部位喜好加权 → 指令过滤链 → 随机选行为赋给玩家执行）+ change_top_and_bottom/keep_enjoy/try_pl_active_h
 //   ⑥⑦ 群交 AI（type 1 自慰 / 2 补位 / 3 抢占）
-// 后置：②④③ 无意识组（睡奸恢复/醒来/继续H判定，依赖睡眠系统）、性爱助手（依赖监禁系统）、
-//   催眠体控-逆推自动触发 H（归 h-hypnosis）——见 docs/master-todo.md
+//   ②④③ 无意识组（2026-08-11 随睡眠系统 L1.7 落地）：睡奸实时结算（settleSleepH）/
+//     醒来判定（judgeWeakUpInSleepH）/ 恢复流程（recoverFromUnconsciousH：装睡/二段结算/继续H判定）
+// 后置：性爱助手（依赖监禁系统）、催眠体控-逆推自动触发 H（归 h-hypnosis）——见 docs/master-todo.md
 
 import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { getNpcActiveH, setNpcActiveH, enterHBlocksForAllInH, exitHBlock } from './state'
 import { judgeCharacterHStateTick, groupSexModeOff } from './per-tick'
+import { recoverFromUnconsciousH } from './sleep-h'
 import { npcActiveH, tryPlActiveH } from './active-h'
 import { onTemplateExecute } from './group-sex-ai'
 import { validateTagVocabulary } from './filter'
 
 // 注释：h:end 时把所有 h_* 行为块转 h_end（立即过期）——endHScene 会清空 is_h，
 // 遍历 is_h 会漏；按行为块类型兜底（任何 H 退出路径都收敛到这里）
+// 同时兜底清除 H 参与方的睡眠无意识残留（C1/C2 修复 2026-08-11）：
+//   睡奸中 unconscious_h=1 由玩家 end_h/体力退出/距离退出等任意路径结束时，
+//   若只有 6005 指令清标记 → 残留让 NPC 被跳过集永久冻结 + 前提误判。
+//   C2 修复：清理**只限 H 参与方**（ai_behavior.type 以 h_ 开头者）且**只清 ===1**
+//   （睡眠无意识）——全图遍历会误清催眠(4-7)/醉酒(2) NPC（催眠无自动恢复机制，
+//   且 erArk 催眠 unconscious 跨 H 持久）；时停(===3)由 h-time-stop 模块状态权威管理
 function onHEnd(): void {
   for (const char of entitySystem.getAll('character')) {
     const c = char as any
     const type = c?.ai_behavior?.type
     if (typeof type === 'string' && type.startsWith('h_') && type !== 'h_end') {
       exitHBlock(c)
+      // 清睡眠无意识残留（只清 ===1；保留 sleeping——真睡眠者继续睡，erArk 同构）
+      if (c.sp_flag && c.sp_flag.unconscious_h === 1) {
+        c.sp_flag.unconscious_h = 0
+        // B1 修复：清 0x30 后若仍 sleeping（真睡眠者）→ 重新置位，保持
+        // sleeping ⟺ unnormal bit5|6 不变量（sleep-state setAsleep/clearAsleep 成对语义）
+        c.sp_flag.unnormal_flag = c.sp_flag.sleeping
+          ? ((c.sp_flag.unnormal_flag ?? 0) | 0x30)
+          : ((c.sp_flag.unnormal_flag ?? 0) & ~0x30)
+        c.sp_flag.sleep_h_awake = false
+        c.sleep_h_awake = false
+        if (c.h_state) c.h_state.pretend_sleep = false
+      }
     }
   }
 }
@@ -103,6 +123,9 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     // 注释：尝试夺回主动权（复用实行判定，默认 base=150——100 时恒成功，见 active-h.ts）
     tryActiveH: (npcId: string, judgeBase?: number): Promise<boolean> =>
       tryPlActiveH(npcId, judgeBase ?? 150),
+    // 注释：从无意识H中恢复（sleep-system 吵醒判定后调用——erArk recover_from_unconscious_h）
+    recoverFromUnconsciousH: (actorId: string, infoText?: string): Promise<void> =>
+      recoverFromUnconsciousH(actorId, infoText),
   })
 
   // 注释：tag 词表校验（未知 part:/flag: 值 → warning；指令数据驱动 AI，词表是契约）

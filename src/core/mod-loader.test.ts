@@ -562,4 +562,48 @@ describe('item 校验', () => {
     const warn = errorReporter.getErrors().find(e => e.severity === 'warning' && e.message.includes('不明物品'))
     expect(warn).toBeDefined()
   })
+
+  it('use 非法类型（数字）→ warning 不抛异常，物品正常加载', () => {
+    errorReporter.clear()
+    let mod!: LoadedMod
+    expect(() => {
+      mod = parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/items/misc.toml': [
+          '[items]',
+          '[items."怪药"]',
+          'name = "怪药"',
+          'type = "consumable"',
+          'use = 123',
+        ].join('\n'),
+      }))
+    }).not.toThrow()
+    expect(mod.items['怪药']).toBeDefined()
+    const warn = errorReporter.getErrors().find(e => e.severity === 'warning' && e.message.includes('怪药'))
+    expect(warn).toBeDefined()
+  })
+
+  it('mod 覆盖 body_slot 但插件默认有 body_auto_remove → 合并结果合法不误报 error', () => {
+    errorReporter.clear()
+    const mod = parseModData('test-mod', makeMap({
+      '/src/plugins/h-core/data/default/items/h-drugs.toml': [
+        '[items]',
+        '[items."媚药"]',
+        'name = "媚药"',
+        'type = "consumable"',
+        'body_slot = 2',
+        'body_auto_remove = "manual"',
+      ].join('\n'),
+      '/mods/test-mod/definitions/items/drugs.toml': [
+        '[items]',
+        '[items."媚药"]',
+        'name = "媚药"',
+        'type = "consumable"',
+        'body_slot = 3',
+      ].join('\n'),
+    }))
+    expect(mod.items['媚药'].body_slot).toBe(3)
+    expect(mod.items['媚药'].body_auto_remove).toBe('manual')
+    const err = errorReporter.getErrors().find(e => e.severity === 'error' && e.message.includes('媚药') && e.message.includes('body_auto_remove'))
+    expect(err).toBeUndefined()
+  })
 })

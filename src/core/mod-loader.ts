@@ -1191,8 +1191,9 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
         result[id] = deepMerge(result[id] ?? {}, def) as ItemDef
         if (!checkDuplicate) pluginIds.add(id)
         if (!shouldValidate) continue
-        // 注释：物品字段校验（grill Q8 定案）
-        if (typeof def.body_slot === 'number' && def.body_slot >= 0 && !def.body_auto_remove) {
+        // 注释：物品字段校验（grill Q8 定案）——用合并结果判断（mod 覆盖插件默认时继承未覆盖字段）
+        const merged = result[id] as ItemDef | undefined
+        if (typeof merged?.body_slot === 'number' && merged.body_slot >= 0 && !merged.body_auto_remove) {
           errorReporter.report({
             source: 'mod-loader',
             severity: 'error',
@@ -1200,7 +1201,14 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
           })
         }
         // 注释：use 兼容字符串与数组两种写法（grill Q2：use 数组化；旧数据有字符串写法）
-        const useList = typeof def.use === 'string' ? [def.use] : ((def.use as string[] | undefined) ?? [])
+        const useList = Array.isArray(def.use) ? def.use : typeof def.use === 'string' ? [def.use] : []
+        if (def.use !== undefined && !Array.isArray(def.use) && typeof def.use !== 'string') {
+          errorReporter.report({
+            source: 'mod-loader',
+            severity: 'warning',
+            message: `物品 '${id}' 的 use 必须是 string 或数组（${path}）`,
+          })
+        }
         for (const u of useList) {
           if (!useRegistry.has(u)) {
             errorReporter.report({

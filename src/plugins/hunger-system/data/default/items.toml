@@ -1,12 +1,15 @@
-# hunger-system 默认食物道具
+# hunger-system 默认食物道具（2026-08-12 静默审计修复：旧 [[items]] 数组格式会被 loader
+# 畸形加载成 id="0"/"1"/"2"——改为 [items."名称"] 表格式 + use 数组化）
 # 通过三层 patch 机制，mod 可覆盖/新增食物
 
-[[items]]
+[items."干粮"]
 id = "干粮"
 name = "干粮"
 description = "耐储存的干粮，能快速补充体力"
-use = "food"
+use = ["food"]
+tags = ["food"]
 stackable = true
+consume = true
 food_quality = 3
 hunger_reduction = 40
 digestion_time = 120      # 消化 2 小时
@@ -14,12 +17,14 @@ hp_recovery = 1.0
 mp_recovery = 1.0
 time_cost = 15
 
-[[items]]
+[items."饮水"]
 id = "饮水"
 name = "饮水"
 description = "干净的饮用水"
-use = "food"
+use = ["food"]
+tags = ["food"]
 stackable = true
+consume = true
 food_quality = 1
 hunger_reduction = 5
 digestion_time = 15
@@ -27,12 +32,14 @@ hp_recovery = 0.3
 mp_recovery = 1.5
 time_cost = 5
 
-[[items]]
+[items."甜点"]
 id = "甜点"
 name = "甜点"
 description = "精致的小甜点"
-use = "food"
+use = ["food"]
+tags = ["food"]
 stackable = true
+consume = true
 food_quality = 6
 hunger_reduction = 20
 digestion_time = 60

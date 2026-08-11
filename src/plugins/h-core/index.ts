@@ -48,6 +48,8 @@ let hCoreTalkDecayListener = false
 // 注释：execution_end 二段结算监听器只注册一次——2026-08-08 eja 重构后此监听器
 // 承担射精欲积累 + 绝顶判定，重复注册会双倍结算（plugin-manager 的 loadPlugins 无幂等守卫）
 let hCoreExecutionEndListener = false
+// 注释：expiry 到期清理监听器只注册一次（同 talk_decay 模式）
+let hCoreExpiryListener = false
 
 // 注释：处理二段结算结果——输出绝顶/多重绝顶日志与事件（execution_end 与 h_orgasm_check 共用）
 // 2026-08-08 对齐 erArk orgasm_settle_flag 去重（second_behavior.py:168-195）：
@@ -991,6 +993,28 @@ export function onEnable(ctx: PluginContext): void {
   if (!hCoreExecutionEndListener) {
     hCoreExecutionEndListener = true
     ctx.events.on('game:execution_end', handleExecutionEnd)
+  }
+
+  // 注释：expiry 到期清槽（2026-08-12 复刻 erArk realtime_settle.py:270-283）——
+  // 安眠药/事前避孕药等 body_auto_remove=expiry 的物品到点自动清除槽位
+  // （不归还背包，药已消耗——grill Q4 定案）。每次游戏小时变化检查。
+  if (!hCoreExpiryListener) {
+    hCoreExpiryListener = true
+    ctx.events.on('game:hour_changed', () => {
+      const ct = gameContext.getContext().time
+      const nowMin = ct.hour * 60 + ct.minute
+      for (const ch of entitySystem.getAll('character')) {
+        const c = ch as any
+        if (!c?.body_items) continue
+        for (const [slotKey, slotData] of Object.entries(c.body_items) as [string, any][]) {
+          const sd = slotData as BodyItemSlot
+          if (sd.active && typeof sd.expiry === 'number' && sd.expiry <= nowMin) {
+            delete c.body_items[slotKey]
+            eventBus.emit('character:changed', { id: c.id })
+          }
+        }
+      }
+    })
   }
 
   ctx.api.register('h-core', {

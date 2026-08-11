@@ -8,12 +8,26 @@ import { entitySystem } from '../../core/entity-system'
 import { apiSystem } from '../../core/api'
 import { modLoader } from '../../core/mod-loader'
 import { narrativeLog } from '../../core/narrative-log'
+import { useRegistry } from '../../core/use-registry'
 
 const HUNGER_ATTR = '饥饿值'
 const DIGESTION_ATTR = '消化剩余'
 
 function getHungerConfig(): any {
   return (modLoader.getMod()?.hConfig as any)?.hunger ?? {}
+}
+
+// 注释：use 兼容（2026-08-12 静默审计修复）——use 已数组化（grill Q2 定案），
+// 旧 `=== 'food'` 严格比较对 use=["food"] 恒 false → 进食/自动进食静默失效
+function getUseList(itemDef: any): string[] {
+  if (!itemDef) return []
+  if (Array.isArray(itemDef.use)) return itemDef.use
+  if (typeof itemDef.use === 'string') return [itemDef.use]
+  return []
+}
+
+function isFood(itemDef: any): boolean {
+  return getUseList(itemDef).includes('food')
 }
 
 // 注释：获取角色某个物品的数量
@@ -29,12 +43,15 @@ function findFirstFood(charId: string): string | null {
   const mod = modLoader.getMod()
   for (const entry of ch.inventory) {
     const def = (mod?.items as any)?.[entry.itemId]
-    if (def?.use === 'food' && (entry.count ?? 0) > 0) return entry.itemId
+    if (isFood(def) && (entry.count ?? 0) > 0) return entry.itemId
   }
   return null
 }
 
 export function onLoad(_ctx: PluginContext): void {
+  // 注释：注册 food use 值（2026-08-12 静默审计修复——否则食物物品加载时"use 未注册"warning）
+  useRegistry.register('food')
+
   // 注释：eat_food——进食效果
   // params: { itemId: string }
   // 需要背包有对应食物，消化剩余为 0
@@ -44,7 +61,7 @@ export function onLoad(_ctx: PluginContext): void {
     if (!itemId) return true
     const mod = modLoader.getMod()
     const itemDef = (mod?.items as any)?.[itemId]
-    if (itemDef?.use !== 'food') return true
+    if (!isFood(itemDef)) return true
 
     const timeCost = execCtx._timeCost ?? itemDef.time_cost ?? 30
     const ids = execCtx._targetIds as string[]
@@ -72,9 +89,14 @@ export function onLoad(_ctx: PluginContext): void {
         continue
       }
 
-      // 注释：减饥饿值
+      // 注释：减饥饿值（2026-08-12 静默审计修复：原直写 + settlement.applyChange 双扣——
+      // settlement 是"记录+写入"一体机制（applyChange 直接写实体并 clamp 上限 240），只走一处）
       const reduction = itemDef.hunger_reduction ?? 240
-      ch.base[HUNGER_ATTR] = Math.max(0, (ch.base[HUNGER_ATTR] ?? 0) - reduction)
+      if (execCtx.settlement) {
+        execCtx.settlement.applyChange(id, HUNGER_ATTR, -reduction)
+      } else {
+        ch.base[HUNGER_ATTR] = Math.max(0, (ch.base[HUNGER_ATTR] ?? 0) - reduction)
+      }
 
       // 注释：设消化CD（受天赋影响）
       const digestTime = itemDef.digestion_time ?? 240
@@ -91,7 +113,6 @@ export function onLoad(_ctx: PluginContext): void {
       ch.base['体力'] = Math.min(hpMax, (ch.base['体力'] ?? 0) + hpGain)
       ch.base['气力'] = Math.min(mpMax, (ch.base['气力'] ?? 0) + mpGain)
 
-      execCtx.settlement?.applyChange?.(id, HUNGER_ATTR, -reduction)
       narrativeLog.write(`${ch.name ?? id} 吃完了${itemDef.name ?? itemId}，HP+${hpGain} MP+${mpGain}`, 'system', 'hunger-system')
     }
     return true

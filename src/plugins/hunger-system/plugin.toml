@@ -1,0 +1,20 @@
+[meta]
+id = "hunger-system"
+name = "饥饿系统"
+version = "1.0.0"
+description = "饥饿值增长/进食效果/消化CD/NPC口粮"
+
+# 2026-08-12 静默审计修复：此插件此前缺 plugin.toml → 从未被 plugin-manager 发现加载
+# （eat_food 未注册/自动进食/口粮监听全部静默失效——只有 core 的饥饿值增长在跑）
+dependencies = [
+  { plugin = "inventory-system", version = ">=1.0.0" },
+  { plugin = "effect-system", version = ">=1.0.0" }
+]
+
+[[events.listen]]
+name = "game:hour_changed"
+description = "消化衰减 + NPC 自动进食"
+
+[[events.listen]]
+name = "game:new_day"
+description = "每日口粮发放"

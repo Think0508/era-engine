@@ -139,4 +139,34 @@ describe('body_item 归还语义', () => {
       expect(target.base['好意']).toBe(10)
     })
   })
+
+  // 注释：expiry 到期清槽（2026-08-12 复刻 erArk realtime_settle.py:270-283）——
+  // 安眠药 480 分钟 / 事前避孕药 43200 分钟到点自动清除（不归还背包，药已消耗）
+  describe('expiry 到期清槽', () => {
+    function makeExpiryChar(id: string, bodyItems: Record<string, any>) {
+      entitySystem.register('character', id, { id, name: id, body_items: bodyItems })
+    }
+
+    it('expiry 已到期 → hour_changed 清槽（安眠药）', async () => {
+      await gameContext.advanceTime(120) // 推进到 hour 2（nowMin=120）
+      makeExpiryChar('exp1', { '9': { itemId: '安眠药', active: true, expiry: 100 } })
+      await eventBus.emit('game:hour_changed', { hour: 2 })
+      const ch = entitySystem.get('character', 'exp1') as any
+      expect(ch.body_items['9']).toBeUndefined()
+    })
+
+    it('expiry 未到期 → 保留', async () => {
+      makeExpiryChar('exp2', { '9': { itemId: '安眠药', active: true, expiry: 999999 } })
+      await eventBus.emit('game:hour_changed', { hour: 1 })
+      const ch = entitySystem.get('character', 'exp2') as any
+      expect(ch.body_items['9']?.active).toBe(true)
+    })
+
+    it('无 expiry 字段（manual 玩具）→ 不受影响', async () => {
+      makeExpiryChar('exp3', { '0': { itemId: '乳头夹', active: true } })
+      await eventBus.emit('game:hour_changed', { hour: 1 })
+      const ch = entitySystem.get('character', 'exp3') as any
+      expect(ch.body_items['0']?.active).toBe(true)
+    })
+  })
 })

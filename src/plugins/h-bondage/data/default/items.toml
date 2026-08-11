@@ -1,0 +1,11 @@
+# h-bondage 默认道具（2026-08-12 第三轮审计：绳子此前在 test-mod（mod 层）却被 h-bondage/
+# h-core premise 硬编码引用——武侠 mod 无此物品则 SM 玩法静默失效。迁至插件默认层，mod 可 override 数值）
+[items."绳子"]
+id = "绳子"
+name = "绳子"
+type = "tool"
+use = ["key"]
+tags = ["rope", "bondage"]
+stackable = false
+consume = false
+description = "用于绳艺捆绑的特殊纤维绳"

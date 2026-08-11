@@ -639,4 +639,22 @@ describe('item 校验', () => {
     const err = errorReporter.getErrors().find(e => e.severity === 'error' && e.message.includes('媚药') && e.message.includes('body_auto_remove'))
     expect(err).toBeUndefined()
   })
+
+  it('角色 equipment 引用不存在的物品 → error（不静默穿不存在的衣服）', () => {
+    errorReporter.clear()
+    parseModData('test-mod', makeMap({
+      '/mods/test-mod/characters/roster.toml': [
+        '[[roster]]',
+        'id = "ghost_wear"',
+        'name = "幽灵穿着"',
+        'template = "base-human"',
+        'equipment = { upper = "幽灵外衣", lower = "布衣" }',
+      ].join('\n'),
+    }))
+    const err = errorReporter.getErrors().find(e => e.severity === 'error' && e.message.includes('幽灵外衣') && e.message.includes('equipment'))
+    expect(err).toBeDefined()
+    // 合法引用（布衣存在）不报错
+    const err2 = errorReporter.getErrors().find(e => e.severity === 'error' && e.message.includes('布衣'))
+    expect(err2).toBeUndefined()
+  })
 })

@@ -12,7 +12,7 @@ import { bindingResolver } from '../core/binding-resolver'
 import { conditionRegistry } from '../core/condition-registry'
 import { premiseRegistry } from '../core/premise-registry'
 import { errorReporter } from '../core/error-reporter'
-import { PluginManager } from '../core/plugin-manager'
+import { PluginManager, warnMissingPluginTomls } from '../core/plugin-manager'
 import { SlotRegistry } from '../ui/slots/slot-registry'
 import { evaluateCondition } from '../core/condition'
 
@@ -39,6 +39,7 @@ describe('引擎 boot 冒烟测试（全插件加载）', () => {
     if (startLoc) gameContext.setLocation(startLoc)
 
     // 注释：4. 全量加载插件（与 main.ts 一致）
+    warnMissingPluginTomls()
     const pluginManager = new PluginManager(apiSystem, eventBus, new SlotRegistry(), commandRegistry)
     const pluginModules = import.meta.glob('/src/plugins/*/index.ts', { eager: true }) as Record<string, any>
     const pluginTomls = import.meta.glob('/src/plugins/*/plugin.toml', { query: '?raw', import: 'default', eager: true }) as Record<string, string>

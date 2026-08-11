@@ -1279,6 +1279,24 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   // 注释：mod 层物品 id 集合——revalidateItemUses 补跑用（use 校验时序：插件注册后执行）
   mod.modItemLayerIds = modLayerIds
 
+  // 注释：角色 equipment 引用物品存在性校验（2026-08-12 第三轮审计）——
+  // roster/named 穿不存在的物品 → 服装前提恒显示"已穿"但物品定义缺失（静默），精准报错
+  // 注意：放在 items 合并之后（角色加载先于 items，此处补校验）
+  for (const [, char] of mod.entities.get('character') ?? []) {
+    const equip = (char as any)?.equipment as Record<string, string> | undefined
+    if (!equip) continue
+    for (const [slot, itemId] of Object.entries(equip)) {
+      if (!mod.items[itemId]) {
+        errorReporter.report({
+          source: 'mod-loader',
+          severity: 'error',
+          message: `角色 '${(char as any).id ?? '?'}' 的 equipment.${slot} 引用了不存在的物品 '${itemId}'`,
+          suggestion: `检查 items.toml / definitions/items/ 是否定义了该物品（可用物品示例：${Object.keys(mod.items).slice(0, 5).join('、')}）`,
+        })
+      }
+    }
+  }
+
   // 注释：加载 sets.toml
   const setsPath = `/mods/${modName}/definitions/sets.toml`
   if (setsPath in rawTomlMap) {

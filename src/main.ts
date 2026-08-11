@@ -13,7 +13,7 @@ import { apiSystem } from './core/api'
 import { commandRegistry } from './core/command-registry'
 import { bindingResolver } from './core/binding-resolver'
 import { conditionRegistry } from './core/condition-registry'
-import { PluginManager } from './core/plugin-manager'
+import { PluginManager, warnMissingPluginTomls } from './core/plugin-manager'
 import { EngineUIBridge } from './ui/engine-ui-bridge'
 import { themeManager } from './ui/theme/theme-manager'
 import { SlotRegistry, SLOT_REGISTRY_KEY } from './ui/slots/slot-registry'
@@ -104,6 +104,9 @@ async function main(): Promise<void> {
 
   // 注释：7. 创建 PluginManager 并发现引擎插件
   const pluginManager = new PluginManager(apiSystem, eventBus, slotRegistry, commandRegistry)
+
+  // 注释：孤儿插件检测（2026-08-12：有 index.ts 无 plugin.toml → 静默不加载，warning 上报）
+  warnMissingPluginTomls()
 
   // 注释：动态扫描 src/plugins/ 下所有插件的 plugin.toml + index.ts
   const pluginModules = import.meta.glob('/src/plugins/*/index.ts', { eager: true }) as Record<string, any>

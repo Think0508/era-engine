@@ -6,6 +6,45 @@ import { conditionRegistry } from './condition-registry'
 import type { SlotRegistry } from '../ui/slots/slot-registry'
 import type { CommandRegistry, CommandDef } from './command-registry'
 import { resolveDataDependencies, type DataDependencyInfo } from './data-dependencies'
+import { errorReporter } from './error-reporter'
+
+// 注释：孤儿插件检测（2026-08-12 第二轮审计——hunger-system 曾只有 index.ts 缺 plugin.toml，
+// plugin-manager 扫描不到 → 整个插件静默未加载（effect/监听器全部失效）且无任何警告）
+// 生产路径 main.ts 与 boot 冒烟测试在构建 enginePlugins 前调用；发现孤儿 → warning 上报
+export function warnMissingPluginTomls(): void {
+  const indexModules = import.meta.glob('/src/plugins/*/index.ts')
+  const pluginTomls = import.meta.glob('/src/plugins/*/plugin.toml')
+  const withToml = new Set(
+    Object.keys(pluginTomls)
+      .map(p => p.match(/\/src\/plugins\/([^/]+)\//)?.[1])
+      .filter((d): d is string => !!d),
+  )
+  const orphans: string[] = []
+  for (const p of Object.keys(indexModules)) {
+    const dir = p.match(/\/src\/plugins\/([^/]+)\//)?.[1]
+    if (dir && !withToml.has(dir)) orphans.push(dir)
+  }
+  // 注释：模组专属插件目录同样检测（mods/[mod]/plugins/）
+  const modIndexModules = import.meta.glob('/mods/*/plugins/*/index.ts')
+  const modPluginTomls = import.meta.glob('/mods/*/plugins/*/plugin.toml')
+  const modWithToml = new Set(
+    Object.keys(modPluginTomls)
+      .map(p => p.match(/\/mods\/[^/]+\/plugins\/([^/]+)\//)?.[1])
+      .filter((d): d is string => !!d),
+  )
+  for (const p of Object.keys(modIndexModules)) {
+    const dir = p.match(/\/mods\/[^/]+\/plugins\/([^/]+)\//)?.[1]
+    if (dir && !modWithToml.has(dir)) orphans.push(`${dir}（mod 插件）`)
+  }
+  if (orphans.length > 0) {
+    errorReporter.report({
+      source: 'plugin-manager',
+      severity: 'warning',
+      message: `发现孤儿插件目录（有 index.ts 无 plugin.toml，永远不会被加载）：${orphans.join(', ')}`,
+      suggestion: '为这些目录补 plugin.toml（[meta] id/name/version 必填），或删除目录',
+    })
+  }
+}
 
 interface PluginMeta {
   id: string

@@ -214,6 +214,7 @@ pleasure = tick_base × ability_adjust × toy_adjust
 | `tags` 内容 | 不校验 | 自由字符串，引擎不消费 |
 | `attack_bonus`/`defense_bonus` | 不校验 | 顶层数字，引擎不认识语义 |
 | body_slot 槽位冲突 | 不校验 | 槽位号自由扩展，mod 自行规划 |
+| 角色 equipment 引用不存在的物品 | **error** | roster/named 穿未定义物品 → 精准报错（第三轮审计，2026-08-12） |
 | 引用未定义物品（指令/状态/任务） | 运行时 warning | 各消费方处理 |
 
 ## 八、礼物基础版（give_gift）

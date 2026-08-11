@@ -1,7 +1,8 @@
 # mods/test-mod/definitions/items.toml
-# 注释：物品定义——服装 + SM 道具 + 测试消耗品
+# 注释：物品定义——服装 + 测试消耗品 + 礼物
 # H 原生物品（药物/玩具/避孕套）已迁至 h-core 插件默认层
 # （src/plugins/h-core/data/default/items/），加载时自动合并，mod 可 override
+# 绳子（SM）已迁至 h-bondage 插件默认层（src/plugins/h-bondage/data/default/items.toml）
 
 # ═══════════════════════════════════════════════════════════
 # 测试消耗品（补 healing_potion 被删的测试缺口，供 inventory/useItem 测试）
@@ -14,17 +15,6 @@ use = ["self"]
 stackable = true
 consume = true
 effects = [{ type = "modify_attribute", params = { attr = "hp", value = 50, target = "self" } }]
-
-# ═══════════════════════════════════════════════════════════
-# SM 道具
-# ═══════════════════════════════════════════════════════════
-[items."绳子"]
-id = "绳子"
-name = "绳子"
-type = "tool"
-stackable = false
-use = "key"
-description = "用于绳艺捆绑的特殊纤维绳"
 
 # ═══════════════════════════════════════════════════════════
 # 服装

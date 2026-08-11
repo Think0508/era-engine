@@ -110,7 +110,7 @@ mods/武侠/
 │   ├── attributes.toml      # 所有自定义属性定义
 │   ├── talents.toml         # 天赋/特质定义
 │   ├── abilities.toml       # 技能/能力定义
-│   ├── items.toml           # 物品/装备定义
+│   ├── items.toml           # 物品/装备定义（可拆为 definitions/items/*.toml 按类别分文件）
 │   ├── factions.toml        # 势力/门派定义
 │   ├── relations.toml       # 关系类型定义
 │   └── status-effects.toml  # 状态/buff定义

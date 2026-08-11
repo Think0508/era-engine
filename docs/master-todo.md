@@ -628,6 +628,16 @@
      不显示、文字层仍在（DOM 结构保留文字）
    - 【文档】AGENTS §39 meta 字段表 + example-mod meta.toml 注释示例 + index.html 注释
    加载画面验收: typecheck ✅ / validate 4/4 / dev 冒烟正常
+   物品系统复刻（2026-08-12，7 任务计划 docs/superpowers/plans/2026-08-12-item-system-replication.md）✅：
+   - 【Task 1】mod-loader loadItemDefs：目录拆分（definitions/items/*.toml + data/default/items/*.toml）+ 单文件 items.toml 兼容 + mod 文件间同 id 重复 → error（文件名+行号）；插件默认层与 mod 覆盖合法（deepMerge mod 优先）
+   - 【Task 2】inventory useItem 消耗语义：consume 默认 true 先扣 1（数量不足拦截不执行 effects 返回 false）、consume=false 只执行 effects、targetId 参数（_targetIds 优先）；removeItem 返回 boolean（h-core body_item_equip 半成品注记依赖）
+   - 【Task 3】body_item 归还语义（grill Q4）：装槽=占用（背包-1）、manual/h_end 卸下归还（+1）、expiry/射精/即时药不归还
+   - 【Task 4】H 原生物品迁 h-core 默认层（data/default/items/{h-drugs,h-toys,h-special}.toml，润滑液/媚药/跳蛋/安眠药/避孕药/玩具/避孕套）；test-mod 删 4 个武侠失误物品（healing_potion/iron_sword/leather_armor/herb），服装/绳子保留
+   - 【Task 5】use 注册表（src/core/use-registry.ts：BUILTIN_USE_TYPES self/target/equip/gift/key + 插件注册）；校验：body_slot≥0 缺 body_auto_remove → error；use 未注册/consume 非 boolean/price/level/time_cost 非 number → warning
+   - 【Task 6】礼物基础版 give_gift effect（h-core）：favor（calcFavorability+calcTrust 管线+话术修正）/apology（愤怒清零+好感+10+好意+10）/drug（effects 链表达）/mold → TODO；test-mod 玉佩/道歉信
+   - 【Task 7】文档收尾：docs/item-system.md 重写（schema 全字段表/分层/消耗语义表/校验规则表/礼物/文件索引）+ inventory-system.md API 更新（useItem/removeItem 签名）+ mod-author-guide 物品字段协议 + give_gift 登记 + AGENTS.md items 目录拆分注
+   - 【范围外】商店/采集交易/倒模（mold）/咖啡加料/expiry 到期自动清槽接线——TODO 登记 item-system.md §九
+   物品系统验收: typecheck ✅ / test 全量通过 ✅ / validate 全绿 / 扫描 0 违规
 ```
 
 ### 下一步（2026-08-09 定稿，串行顺序）:
@@ -1395,7 +1405,7 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 | talk-common-system.md | docs/ | 全部 | 条件文本片断引擎（336行，✅） |
 | scene-system.md | docs/ | 全部 | 剧情系统（统一scene管理，318行，✅） |
 | premises.md | docs/ | 全部 | 前提系统（92行，✅） |
-| item-system.md | docs/ | P1 | 道具系统（210行，✅） |
+| item-system.md | docs/ | P1 | 道具系统（258行，✅ 2026-08-12 重写：schema/消耗语义/礼物） |
 | clothing-system.md | docs/ | P1 | 服装系统（222行，✅） |
 | bondage-system.md | docs/ | H子 | 紧缚系统（138行，✅） |
 | entity-namespaces.md | docs/ | 全部 | 命名空间映射（200行，✅） |

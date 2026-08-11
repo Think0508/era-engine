@@ -18,7 +18,7 @@ mods/武侠/
 │   ├── attributes.toml       # 所有属性定义
 │   ├── talents.toml          # 天赋
 │   ├── abilities.toml        # 技能（带 tags）
-│   ├── items.toml            # 物品
+│   ├── items.toml            # 物品（可拆为 items/ 目录按类别分文件）
 │   ├── factions.toml         # 势力/门派
 │   ├── relations.toml        # 关系类型
 │   ├── status-effects.toml   # 状态效果
@@ -511,6 +511,59 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 > 射精欲积累的另一种途径（自动）：任何 P 部位快感结算后，二段结算自动按
 > `射精欲 += 100 + int(射精欲×0.4)` 积累（erArk Second_effect.py:657-679），无需手写效果。
 
+### 礼物效果（h-core 注册）
+
+| 效果 type | 参数 | 语义 |
+|-----------|------|------|
+| `give_gift` | `mode` | **favor** = 好感公式管线 / **apology** = 道歉（愤怒清零+好感+10+好意+10）/ **drug** = 不处理（药物效果由物品 effects 链表达）/ **mold** = TODO 未实装 |
+| | `favor_base`（favor） | 好感基础值，默认 10；最终好感 = calcFavorability(target, floor(favor_base × talk_multiplier × 话术修正)) |
+| | `talk_multiplier`（favor） | 话术倍率（小×1.5/中×2/大×3，mod 按礼物价值给） |
+| | `trust_base`（favor，可选） | >0 时信赖 += calcTrust(target, floor(trust_base × 话术修正)) |
+| | `target` | 礼物接收者（同 effect 通用 target 协议） |
+
+> 话术修正：目标有 hConfig `gift_talk_ability_id`（默认"话术技能"）能力时乘 `ability_lv_adjust` 表。
+> 完整说明见 `docs/item-system.md` §八。测试物品：test-mod `玉佩`（favor）/ `道歉信`（apology）。
+
+## 物品字段协议
+
+> 物品定义在 `definitions/items.toml`（**可拆为 `definitions/items/*.toml` 按类别分文件**，加载时合并）。
+> H 原生物品（药物/玩具/避孕套）在 h-core 插件默认层 `data/default/items/`，mod 可 override。完整手册见 `docs/item-system.md`。
+
+### schema 速查
+
+| 字段 | 必填 | 取值 | 说明 |
+|------|------|------|------|
+| `id` | ✅ | 中文，整个模组唯一 | 跨文件重复 → 加载 error |
+| `name` | — | 显示名 | 省略时用 id |
+| `type` | ✅ | `consumable`/`equipment`/`tool`/`material`/`key` | 五枚举 |
+| `use` | ✅ | 数组（兼容字符串单值） | `self`/`target`/`equip`/`gift`/`key`（内置）+ `h_drug`/`h_toy`/`h_special`（h-core 注册）+ 插件自定义（useRegistry.register） |
+| `tags` | — | 自由字符串数组 | 引擎不校验不消费 |
+| `stackable` | — | boolean | 是否可堆叠 |
+| `consume` | — | boolean，默认 true | 使用后扣数量（false = 可重复使用） |
+| `effects` | — | 效果组 | 使用/装备时执行（effect-system） |
+| `description`/`price`/`level`/`time_cost` | — | 数字（后三者） | 描述/价格/需求等级/耗时；price/level/time_cost 非数字 → warning |
+| `body_slot` | H 专属 | 数字；-1 = 即时药 | 身体物品槽位号，槽位自由扩展 |
+| `body_auto_remove` | body_slot≥0 时必填 | `manual`/`h_end`/`expiry` | 缺失 → 加载 error |
+| `duration` | — | 分钟 | expiry 药品持续时间（装槽时写 expiry 时间戳） |
+| `tick_base`/`tick_part` | — | 数字 / `{ability, params}` | 玩具 H 中持续快感（body_item_tick） |
+| `attack_bonus`/`defense_bonus` | — | 顶层数字 | 装备加值，引擎不识别语义，由消费方插件读取 |
+
+### 消耗语义
+
+| 场景 | 背包 |
+|------|------|
+| 使用（consume=true） | -1（数量不足拦截） |
+| 使用（consume=false） | 0 |
+| 装槽（body_item_equip） | -1（占用） |
+| 手动卸下 / H 结束（h_end） | +1（归还） |
+| expiry 到期 / 避孕套射精消耗 / 即时药（body_slot=-1） | 不归还 |
+
+### 校验规则（加载时）
+
+- **error**：mod 文件间同 id 重复；`body_slot ≥ 0` 缺 `body_auto_remove`
+- **warning**：`use` 值未注册（useRegistry）；`consume` 非 boolean；`price`/`level`/`time_cost` 非 number
+- **不校验**：tags 内容、attack_bonus/defense_bonus、槽位冲突
+
 ## 角色字段速查（标准角色契约）
 
 > 权威契约：`docs/character-schema.md`（11 节：属性表/最小必需集/字段字典/校验规则/**字段分层表**/改名记录）。
@@ -542,6 +595,7 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 | 绑定插件属性 | `bindings.toml` | — |
 | 创建角色 | `roster.toml`（次要）或 `templates/`+`roster`（重要） | — |
 | 装备槽 | `definitions/equipment.toml` | ✅ h-core 提供 9 槽 |
+| 物品 | `definitions/items.toml`（可拆 `definitions/items/`） | ✅ h-core 提供 H 物品默认（药物/玩具/避孕套） |
 | 状态效果 | `definitions/status-effects.toml` | ✅ h-core 提供通用 |
 | 关系类型 | `definitions/relations.toml` | ✅ h-core 提供好感度 |
 | 角色口上 | `characters/dialogue/{ID}/dialogue.toml` | — |

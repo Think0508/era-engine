@@ -38,6 +38,7 @@ import { apiSystem } from '../../core/api'
 import { ATTR } from '../../core/entity-utils'
 import { registerNoSaveMode } from '../../core/save-system'
 import { registerCharacterValidator } from '../../core/character-contract'
+import { useRegistry } from '../../core/use-registry'
 import type { SecondSettleResult } from './settle/orgasm'
 
 // 注释：game:plugins_loaded 监听器只注册一次（onEnable 重复执行时不重复监听）
@@ -72,6 +73,10 @@ async function handleOrgasmResults(id: string, ch: any, result: SecondSettleResu
 }
 
 export function onLoad(_ctx: PluginContext): void {
+  // 注释：注册 H 物品 use 值（grill Q2/Q8）
+  useRegistry.register('h_drug')
+  useRegistry.register('h_toy')
+  useRegistry.register('h_special')
   // 注释：角色契约校验器（标准角色契约 spec §10.1——最小必需集）
   registerCharacterContractValidator()
   // 注释：补跑已加载 mod 的角色校验——main.ts 顺序 = loadMod 先、插件 onLoad 后，

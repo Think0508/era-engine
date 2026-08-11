@@ -528,3 +528,38 @@ describe('item storage（目录拆分 + 覆盖 + 重复校验）', () => {
     expect(err).toBeDefined()
   })
 })
+
+// ═══════ 物品加载校验（2026-08-12：body_auto_remove 必填 / use 未注册 warning / 类型校验）═══════
+describe('item 校验', () => {
+  it('body_slot≥0 无 body_auto_remove → error', () => {
+    errorReporter.clear()
+    parseModData('test-mod', makeMap({
+      '/mods/test-mod/definitions/items/drugs.toml': [
+        '[items]',
+        '[items."迷魂香"]',
+        'name = "迷魂香"',
+        'type = "consumable"',
+        'use = ["h_drug"]',
+        'body_slot = 15',
+      ].join('\n'),
+    }))
+    const err = errorReporter.getErrors().find(e => e.severity === 'error' && e.message.includes('迷魂香') && e.message.includes('body_auto_remove'))
+    expect(err).toBeDefined()
+  })
+
+  it('use 未注册 → warning 不阻止加载', () => {
+    errorReporter.clear()
+    const mod = parseModData('test-mod', makeMap({
+      '/mods/test-mod/definitions/items/misc.toml': [
+        '[items]',
+        '[items."不明物品"]',
+        'name = "不明物品"',
+        'type = "tool"',
+        'use = ["some_custom_use"]',
+      ].join('\n'),
+    }))
+    expect(mod.items['不明物品']).toBeDefined()
+    const warn = errorReporter.getErrors().find(e => e.severity === 'warning' && e.message.includes('不明物品'))
+    expect(warn).toBeDefined()
+  })
+})

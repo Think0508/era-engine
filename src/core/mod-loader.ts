@@ -8,6 +8,7 @@ import { conditionRegistry } from './condition-registry'
 import { errorReporter } from './error-reporter'
 import { gameContext } from './game-context'
 import { getCharacterValidators, validateTopLevelLayers } from './character-contract'
+import { useRegistry } from './use-registry'
 
 export interface ModDependency {
   plugin: string
@@ -139,7 +140,17 @@ export interface ItemDef {
   effects?: any[]       // 使用效果（consumable 类）
   attack_bonus?: number
   defense_bonus?: number
-  [key: string]: any    // 各 type 可扩展字段
+  // 2026-08-12 schema 定稿新增（grill Q2/Q8 + erArk 字段）：
+  use?: string | string[]   // 使用类别（self/target/equip/gift/key/h_drug/...插件可扩展，useRegistry 注册）
+  consume?: boolean         // 默认 true：使用后扣 1；false = 非消耗品
+  tags?: string[]           // 弹性分类（drug/alcohol/weapon/...自由扩展）
+  price?: number            // erArk 字段：商店后续用
+  level?: number            // 等级/品级
+  time_cost?: number        // 使用耗时（分钟）
+  description?: string      // 描述（erArk info）
+  body_slot?: number        // 身体物品槽位（≥0 时必须声明 body_auto_remove）
+  body_auto_remove?: string // manual/h_end/expiry——body_slot≥0 时必填（加载校验）
+  [key: string]: any        // 各 type 可扩展字段
 }
 
 // 注释：天赋 modifier 声明
@@ -1164,6 +1175,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       const data = parseFile(path, raw)
       const items = (data as any).items as Record<string, ItemDef> | undefined
       if (!items) return
+      // 注释：字段校验只对 mod 层生效（插件默认数据假设自检合格）——与 checkDuplicate 独立
+      const shouldValidate = path.startsWith('/mods/')
       for (const [id, def] of Object.entries(items)) {
         if (!def || typeof def !== 'object') continue
         if (checkDuplicate && !pluginIds.has(id) && id in result) {
@@ -1177,6 +1190,35 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
         }
         result[id] = deepMerge(result[id] ?? {}, def) as ItemDef
         if (!checkDuplicate) pluginIds.add(id)
+        if (!shouldValidate) continue
+        // 注释：物品字段校验（grill Q8 定案）
+        if (typeof def.body_slot === 'number' && def.body_slot >= 0 && !def.body_auto_remove) {
+          errorReporter.report({
+            source: 'mod-loader',
+            severity: 'error',
+            message: `物品 '${id}' 缺少 body_auto_remove（${path}）——body_slot≥0 的物品必须声明 manual/h_end/expiry`,
+          })
+        }
+        // 注释：use 兼容字符串与数组两种写法（grill Q2：use 数组化；旧数据有字符串写法）
+        const useList = typeof def.use === 'string' ? [def.use] : ((def.use as string[] | undefined) ?? [])
+        for (const u of useList) {
+          if (!useRegistry.has(u)) {
+            errorReporter.report({
+              source: 'mod-loader',
+              severity: 'warning',
+              message: `物品 '${id}' 的 use 值 '${u}' 未注册（${path}）——无默认 UI 入口，请用指令或插件注册`,
+            })
+          }
+        }
+        if (def.consume !== undefined && typeof def.consume !== 'boolean') {
+          errorReporter.report({ source: 'mod-loader', severity: 'warning', message: `物品 '${id}' 的 consume 必须是 boolean（${path}）` })
+        }
+        for (const f of ['price', 'level', 'time_cost'] as const) {
+          const v = (def as any)[f]
+          if (v !== undefined && typeof v !== 'number') {
+            errorReporter.report({ source: 'mod-loader', severity: 'warning', message: `物品 '${id}' 的 ${f} 必须是 number（${path}）` })
+          }
+        }
       }
     }
     // 插件默认层（data/default/items/*.toml + 插件内 items.toml）——同 id 覆盖合法

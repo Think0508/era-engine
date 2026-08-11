@@ -1,0 +1,102 @@
+# 注释：H 原生药物（grill Q1：原生通用 = H 系统依赖批，plugins 层默认数据，mod 可 override）
+# 数值来源：复刻攻略-猥亵-H系统专用/03-道具系统.md（erArk Item ID 100-108 公式逐条核对）
+
+[items."润滑液"]
+name = "润滑液"
+type = "consumable"
+use = ["h_drug"]
+tags = ["drug", "h_drug"]
+stackable = true
+consume = true
+body_slot = -1
+effects = [{ type = "apply_lubricant", params = { target = "selected" } }]
+
+[items."媚药"]
+name = "媚药"
+type = "consumable"
+use = ["h_drug"]
+tags = ["drug", "h_drug"]
+stackable = true
+consume = true
+body_slot = -1
+effects = [{ type = "apply_aphrodisiac", params = { target = "selected" } }]
+
+[items."跳蛋"]
+name = "跳蛋"
+type = "consumable"
+use = ["h_drug"]
+tags = ["toy", "h_drug"]
+stackable = true
+consume = true
+body_slot = -1
+effects = [{ type = "apply_instant_toy", params = { target = "selected", part = "clit", base = 50 } }]
+
+[items."灌肠液"]
+name = "灌肠液"
+type = "consumable"
+use = ["h_drug"]
+tags = ["drug", "h_drug"]
+stackable = true
+consume = true
+body_slot = -1
+# TODO: 灌肠液效果待 h-core 注册 apply_enema 后补充（当前留空 = 使用无效果；
+# 避免写未注册 effect type 触发加载 warning + 运行时跳过）
+effects = []
+
+[items."利尿剂"]
+name = "利尿剂"
+type = "consumable"
+use = ["h_drug"]
+tags = ["drug", "h_drug"]
+stackable = true
+consume = true
+body_slot = -1
+# TODO: 利尿剂效果待 h-core 注册 apply_diuretic 后补充（当前留空 = 使用无效果；
+# 避免写未注册 effect type 触发加载 warning + 运行时跳过）
+effects = []
+
+[items."安眠药"]
+name = "安眠药"
+type = "consumable"
+use = ["h_drug"]
+tags = ["drug", "h_drug"]
+stackable = true
+consume = true
+body_slot = 9
+body_auto_remove = "expiry"
+duration = 480
+effects = [{ type = "body_item_equip", params = { slot = 9 } }]
+
+[items."排卵促进药"]
+name = "排卵促进药"
+type = "consumable"
+use = ["h_drug"]
+tags = ["drug", "h_drug"]
+stackable = true
+consume = true
+body_slot = 10
+body_auto_remove = "manual"
+effects = [{ type = "body_item_equip", params = { slot = 10 } }]
+
+[items."事前避孕药"]
+name = "事前避孕药"
+type = "consumable"
+use = ["h_drug"]
+tags = ["drug", "h_drug"]
+stackable = true
+consume = true
+body_slot = 11
+body_auto_remove = "expiry"
+duration = 43200
+effects = [{ type = "body_item_equip", params = { slot = 11 } }]
+
+[items."事后避孕药"]
+name = "事后避孕药"
+type = "consumable"
+use = ["h_drug"]
+tags = ["drug", "h_drug"]
+stackable = true
+consume = true
+body_slot = 12
+body_auto_remove = "manual"
+effects = [{ type = "body_item_equip", params = { slot = 12 } }]

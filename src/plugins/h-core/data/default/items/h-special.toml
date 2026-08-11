@@ -1,0 +1,13 @@
+# 注释：H 原生特殊道具（避孕套——grill Q4：射精消耗清槽不回背包，h-ejaculation 消费）
+# 数值来源：复刻攻略-猥亵-H系统专用/03-道具系统.md（erArk Item ID 100-108 公式逐条核对）
+
+[items."避孕套"]
+name = "避孕套"
+type = "consumable"
+use = ["h_special"]
+tags = ["h_special"]
+stackable = true
+consume = true
+body_slot = 13
+body_auto_remove = "h_end"
+effects = [{ type = "body_item_equip", params = { slot = 13 } }]

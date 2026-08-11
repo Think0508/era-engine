@@ -33,18 +33,18 @@ describe('inventory-system 消耗语义', () => {
     await bootPlugins()
   })
 
-  // 注释：healing_potion 的 effects = modify_attribute hp +50（test-mod items.toml）
+  // 注释：回血丹的 effects = modify_attribute hp +50（test-mod items.toml）
   function makeChar(id: string, inventory: { itemId: string; count: number }[] = []) {
     const ch = entitySystem.register('character', id, { name: id, inventory, base: { hp: 100 } }) as any
     return ch
   }
 
   it('useItem 消耗品：先扣 1 再执行 effects（现有 bug：useItem 不扣数量）', async () => {
-    makeChar('u1', [{ itemId: 'healing_potion', count: 2 }])
+    makeChar('u1', [{ itemId: '回血丹', count: 2 }])
     const before = (entitySystem.get('character', 'u1') as any).base?.hp ?? 100
-    await apiSystem.call('inventory', 'useItem', 'u1', 'healing_potion')
+    await apiSystem.call('inventory', 'useItem', 'u1', '回血丹')
     const ch = entitySystem.get('character', 'u1') as any
-    expect(ch.inventory.find((i: any) => i.itemId === 'healing_potion').count).toBe(1)
+    expect(ch.inventory.find((i: any) => i.itemId === '回血丹').count).toBe(1)
     expect(ch.base.hp).toBeGreaterThan(before)
   })
 
@@ -52,10 +52,10 @@ describe('inventory-system 消耗语义', () => {
     makeChar('u2', [])
     const ch = entitySystem.get('character', 'u2') as any
     ch.base.hp = 100
-    const ok = await apiSystem.call('inventory', 'useItem', 'u2', 'healing_potion')
+    const ok = await apiSystem.call('inventory', 'useItem', 'u2', '回血丹')
     expect(ok).toBe(false) // 数量不足：效果不执行（hp 不变）
     expect(ch.base.hp).toBe(100)
-    expect(ch.inventory.find((i: any) => i.itemId === 'healing_potion')).toBeUndefined()
+    expect(ch.inventory.find((i: any) => i.itemId === '回血丹')).toBeUndefined()
   })
 
   it('removeItem 返回 boolean：缺物品返回 false（h-core body_item_equip 半成品注记依赖）', async () => {
@@ -67,10 +67,10 @@ describe('inventory-system 消耗语义', () => {
   })
 
   it('useItem 带 targetId：effects 的 _targetIds 用目标', async () => {
-    makeChar('u5', [{ itemId: 'healing_potion', count: 1 }])
+    makeChar('u5', [{ itemId: '回血丹', count: 1 }])
     makeChar('u6', [])
     // 回血丹 effects 显式 target="self"——此处只验证扣减与事件，_targetIds 行为由 h_drug 指令覆盖
-    await apiSystem.call('inventory', 'useItem', 'u5', 'healing_potion', 'u6')
+    await apiSystem.call('inventory', 'useItem', 'u5', '回血丹', 'u6')
     const ch = entitySystem.get('character', 'u5') as any
     expect(ch.inventory).toHaveLength(0)
   })

@@ -77,6 +77,28 @@ describe('引擎 boot 冒烟测试（全插件加载）', () => {
     expect(commandRegistry.getById('h_rest')).toBeUndefined()
   })
 
+  it('物品迁移（Task 4）：h-core 默认层 H 物品加载，武侠失误物品已删', () => {
+    // 注释：loadMod 生产路径（pluginDefaultModules 并入 rawTomlMap）——验证真实磁盘文件
+    // Object.keys + toContain 断言（避免 ['中文'] 索引被扫描器当属性引用，见 example-mod-integration）
+    const mod = modLoader.getMod()!
+    const itemIds = Object.keys(mod.items)
+    // h-core 默认层（src/plugins/h-core/data/default/items/）——药物/玩具/避孕套
+    expect(itemIds).toContain('媚药')
+    expect(itemIds).toContain('润滑液')
+    expect(itemIds).toContain('安眠药')
+    expect(itemIds).toContain('避孕套')
+    expect(itemIds).toContain('口球')
+    // mod 层保留：服装 + 绳子 + 测试消耗品（回血丹补 healing_potion 缺口）
+    expect(itemIds).toContain('布衣')
+    expect(itemIds).toContain('绳子')
+    expect(itemIds).toContain('回血丹')
+    // 删除的 4 个武侠失误物品
+    expect(itemIds).not.toContain('healing_potion')
+    expect(itemIds).not.toContain('iron_sword')
+    expect(itemIds).not.toContain('leather_armor')
+    expect(itemIds).not.toContain('herb')
+  })
+
   it('h-core 原生指令注册（do_h/end_h）', () => {
     expect(commandRegistry.getById('do_h')).toBeDefined()
     expect(commandRegistry.getById('end_h')).toBeDefined()

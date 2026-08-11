@@ -1,0 +1,100 @@
+# 注释：H 原生玩具（grill Q1/Q4：装槽=占用，manual/h_end 卸下归还背包）
+# 数值来源：复刻攻略-猥亵-H系统专用/03-道具系统.md（erArk Item ID 100-108 公式逐条核对）
+
+[items."乳头夹"]
+name = "乳头夹"
+type = "equipment"
+use = ["h_toy"]
+tags = ["toy", "h_toy"]
+stackable = false
+consume = true
+body_slot = 0
+body_auto_remove = "manual"
+tick_base = 20
+tick_part = { ability = "B感觉", params = ["胸部"] }
+effects = [{ type = "body_item_equip", params = { slot = 0 } }]
+
+[items."阴蒂夹"]
+name = "阴蒂夹"
+type = "equipment"
+use = ["h_toy"]
+tags = ["toy", "h_toy"]
+stackable = false
+consume = true
+body_slot = 1
+body_auto_remove = "manual"
+tick_base = 20
+tick_part = { ability = "C感觉", params = ["阴蒂"] }
+effects = [{ type = "body_item_equip", params = { slot = 1 } }]
+
+[items."V震动棒"]
+name = "V震动棒"
+type = "equipment"
+use = ["h_toy"]
+tags = ["toy", "h_toy"]
+stackable = false
+consume = true
+body_slot = 2
+body_auto_remove = "manual"
+tick_base = 20
+tick_part = { ability = "V感觉", params = ["阴道"] }
+effects = [{ type = "body_item_equip", params = { slot = 2 } }]
+
+[items."A震动棒"]
+name = "A震动棒"
+type = "equipment"
+use = ["h_toy"]
+tags = ["toy", "h_toy"]
+stackable = false
+consume = true
+body_slot = 3
+body_auto_remove = "manual"
+tick_base = 20
+tick_part = { ability = "A感觉", params = ["后穴"] }
+effects = [{ type = "body_item_equip", params = { slot = 3 } }]
+
+[items."挤奶器"]
+name = "挤奶器"
+type = "equipment"
+use = ["h_toy"]
+tags = ["toy", "h_toy"]
+stackable = false
+consume = true
+body_slot = 4
+body_auto_remove = "h_end"
+tick_base = 20
+tick_part = { ability = "B感觉", params = ["胸部"] }
+effects = [{ type = "body_item_equip", params = { slot = 4 } }]
+
+[items."眼罩"]
+name = "眼罩"
+type = "equipment"
+use = ["h_toy"]
+tags = ["toy", "h_toy"]
+stackable = false
+consume = true
+body_slot = 6
+body_auto_remove = "h_end"
+effects = [{ type = "body_item_equip", params = { slot = 6 } }]
+
+[items."肛门拉珠"]
+name = "肛门拉珠"
+type = "equipment"
+use = ["h_toy"]
+tags = ["toy", "h_toy"]
+stackable = false
+consume = true
+body_slot = 7
+body_auto_remove = "h_end"
+effects = [{ type = "body_item_equip", params = { slot = 7 } }]
+
+[items."口球"]
+name = "口球"
+type = "equipment"
+use = ["h_toy"]
+tags = ["toy", "h_toy"]
+stackable = false
+consume = true
+body_slot = 14
+body_auto_remove = "h_end"
+effects = [{ type = "body_item_equip", params = { slot = 14 } }]

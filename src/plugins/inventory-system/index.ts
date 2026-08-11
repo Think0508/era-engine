@@ -112,7 +112,7 @@ export function onEnable(ctx: PluginContext): void {
 
   // 注释：tags 驱动指令注册——有 has_shop tag 显示交易，有 has_gather 显示采集
   // ⚠️ 标记（2026-08-09）：tags 驱动指令系统未做完——仅 gather 占位（无交易指令、
-  // herb 硬编码未校验物品存在）。依赖 inventory tags 驱动指令系统补齐（勿局部修补）。
+  // 回血丹硬编码未校验物品存在）。依赖 inventory tags 驱动指令系统补齐（勿局部修补）。
   const gatherCmd: CommandDef = {
     id: 'gather',
     label: '采集',
@@ -122,10 +122,10 @@ export function onEnable(ctx: PluginContext): void {
     condition: 'location.tags.has_gather == true',
     source: 'plugin:inventory-system',
     handler: async (execCtx: any) => {
-      // TODO: 完整采集逻辑——给草药等物品
+      // TODO: 完整采集逻辑——正式采集管线后续规划，当前给回血丹作占位
       const charId = execCtx?.gameStore?.player?.id
       if (charId) {
-        await apiSystem.call('inventory', 'addItem', charId, 'herb', 1)
+        await apiSystem.call('inventory', 'addItem', charId, '回血丹', 1)
       }
     },
   }

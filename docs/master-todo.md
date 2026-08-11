@@ -636,7 +636,7 @@
    - 【Task 5】use 注册表（src/core/use-registry.ts：BUILTIN_USE_TYPES self/target/equip/gift/key + 插件注册）；校验：body_slot≥0 缺 body_auto_remove → error；use 未注册/consume 非 boolean/price/level/time_cost 非 number → warning
    - 【Task 6】礼物基础版 give_gift effect（h-core）：favor（calcFavorability+calcTrust 管线+话术修正）/apology（愤怒清零+好感+10+好意+10）/drug（effects 链表达）/mold → TODO；test-mod 玉佩/道歉信
    - 【Task 7】文档收尾：docs/item-system.md 重写（schema 全字段表/分层/消耗语义表/校验规则表/礼物/文件索引）+ inventory-system.md API 更新（useItem/removeItem 签名）+ mod-author-guide 物品字段协议 + give_gift 登记 + AGENTS.md items 目录拆分注
-   - 【范围外】商店/采集交易/倒模（mold）/咖啡加料/expiry 到期自动清槽接线——TODO 登记 item-system.md §九
+   - 【已接线】expiry 到期自动清槽（第二轮审计，h-core hour_changed 监听）；【范围外】商店/采集交易/倒模（mold）/咖啡加料——TODO 登记 item-system.md §九
    物品系统验收: typecheck ✅ / test 全量通过 ✅ / validate 全绿 / 扫描 0 违规
 ```
 

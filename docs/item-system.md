@@ -90,8 +90,9 @@ defense_bonus = 3         # 可选：防御加值
 | 排卵促进药（槽10） | 0 | 受孕判定时消耗清槽（h-pregnancy，×5 后消耗） |
 | 即时药（body_slot=-1） | 已扣 | **不归还**（一次性效果） |
 
-> ⚠️ expiry 到期自动清槽为设计语义：`expiry` 时间戳在装槽时写入
-> （`body_items[slot].expiry = 当前分钟 + duration`），**运行时到期清理尚未接线**（TODO，见 §九）。
+> ✅ expiry 到期清槽已接线（2026-08-12 第二轮审计）：`h-core` 监听 `game:hour_changed`，
+> 遍历角色 `body_items`，`expiry <= 当前分钟` 的槽位自动清除（不归还背包——药已消耗）。
+> 对应 erArk realtime_settle.py:270-283。安眠药 480 分钟 / 事前避孕药 30 天到点自动失效。
 
 ## 五、body_item 槽位与前提
 
@@ -235,7 +236,7 @@ effects = [{ type = "give_gift", params = { mode = "apology", target = "selected
 
 ## 九、TODO
 
-- **expiry 到期自动清槽**：`body_items[slot].expiry` 已写入，运行时到期清理未接线（安眠药/事前避孕药到点不清除）
+- ~~**expiry 到期自动清槽**~~（2026-08-12 已接线——见 §四 ✅ 说明；h-core `game:hour_changed` 监听）
 - **mold 倒模礼物**：give_gift mode=mold 未实装（依赖自定义物品生成）
 - **商店**：`price` 字段已预留，商店系统未实现
 - **采集/交易**：inventory tags 驱动指令半成品（仅 gather 占位，无交易指令）

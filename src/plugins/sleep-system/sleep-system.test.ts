@@ -501,4 +501,67 @@ describe('sleep-system 集成', () => {
       expect(premiseRegistry.evaluate(['TARGET_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP'], premiseCtx(GIRL))).toBe(false)
     })
   })
+
+  // ═══════ 成长结算链（2026-08-11：睡眠触发能力升级/素质获得/精力成长/宝珠转换）═══════
+  describe('成长结算链（睡眠触发）', () => {
+    it('NPC 睡眠触发能力升级（condition 模式 needs + 扣宝珠）', async () => {
+      const girl = getChar(GIRL)
+      girl.abilities['顺从'] = { level: 0, xp: 0 }
+      girl.juel = { '10': 100 } // 恭顺珠（顺从 0→1 主需求 J10 100）
+      await updateSleepAll(600)
+      expect(girl.abilities['顺从'].level).toBe(1)
+      expect(girl.juel['10']).toBe(0)
+    })
+
+    it('NPC 睡眠触发 gain_type=3 素质获得（恋慕：亲密4+思慕+信赖100，替换思慕）', async () => {
+      const girl = getChar(GIRL)
+      girl.abilities['亲密'] = { level: 4, xp: 0 }
+      girl.talents['思慕'] = 1
+      girl.base['信赖度'] = 100
+      await updateSleepAll(600)
+      expect(girl.talents['恋慕']).toBe(1)
+      expect(girl.talents['思慕']).toBeUndefined() // replace 思慕
+    })
+
+    it('睡眠只检查 gain_type=3 的素质（gain_type=0 不误触发）', async () => {
+      const girl = getChar(GIRL)
+      // 技巧（test-mod 无 gain_type = 0 随时）——满足条件也不应在睡眠时获得
+      girl.abilities['技巧'] = { level: 10, xp: 0 }
+      await updateSleepAll(600)
+      expect(girl.talents['剑骨'] ?? 0).toBe(0)
+    })
+
+    it('玩家睡眠触发精力成长（today_sanity_point_cost ≥50 → 精力上限 += round/50）', async () => {
+      const player = getChar(PLAYER)
+      if (!player.action_info) player.action_info = {}
+      player.action_info.today_sanity_point_cost = 50
+      const before = player.base['精力上限'] ?? 100
+      await updateSleepAll(600)
+      expect(player.action_info.today_sanity_point_cost).toBe(0)
+      expect(player.base['精力上限']).toBe(before + 1)
+    })
+
+    it('睡眠宝珠转换：daily_reset 状态值 → 宝珠 + 清零', async () => {
+      const girl = getChar(GIRL)
+      girl.juel = {}
+      // 快感规范存储 = base（h-core settle_state 写 ch.base；params 是 attributes 落位的死存储）
+      girl.base['皮肤'] = 50
+      await updateSleepAll(600)
+      expect(girl.juel['0']).toBe(50) // 皮肤快感珠（level 0 → 100%）
+      expect(girl.base['皮肤']).toBe(0)
+    })
+
+    it('完整闭环：状态值 → 转珠 → 能力升级消耗珠（一条链）', async () => {
+      const girl = getChar(GIRL)
+      // 恭顺状态 100（level 1 → 100%）→ 恭顺珠(10) = 100；顺从 0→1 需 J10 100（扣光）
+      girl.abilities['顺从'] = { level: 0, xp: 0 }
+      girl.juel = {}
+      girl.base['恭顺'] = 100
+      await updateSleepAll(600)
+      // 转珠：恭顺 100 → 恭顺珠 100（升级前）
+      expect(girl.juel['10']).toBe(0) // 被升级消耗
+      expect(girl.base['恭顺']).toBe(0) // 状态清零
+      expect(girl.abilities['顺从'].level).toBe(1) // 升级成功
+    })
+  })
 })

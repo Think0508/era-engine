@@ -17,7 +17,7 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { premiseRegistry } from '../../core/premise-registry'
 import { bindingResolver } from '../../core/binding-resolver'
 import { errorReporter } from '../../core/error-reporter'
-import { getEntityAttr, setEntityAttr } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
 import { registerSleepPremises, isSleepTimeWindow } from './premise/sleep'
 import { updateSleepAll } from './update-sleep'
 import { setAsleep, clearAsleep, isSleeping, getSleepLevel, getSleepLevelInfo } from './sleep-state'
@@ -27,7 +27,7 @@ export function onLoad(_ctx: PluginContext): void {
   // 1504 ADD_SMALL_SANITY_POINT——理智恢复 15%/h（erArk default.py handle_add_small_sanity_point：
   // add = int(add_time/60 × 0.15 × sanity_point_max)，上限 max）
   // 本引擎：理智 = 精力属性，经绑定系统读取（mod 在 bindings.toml 绑定 sanity → 实际属性）；
-  // 未绑定 → 跳过（可选绑定语义，warning 提示）。上限缺省 100（mod 可扩展"精力上限"属性）
+  // 未绑定 → 跳过（可选绑定语义，warning 提示）。上限 = "精力上限"属性（缺省 100）
   effectTypeRegistry.register('add_small_sanity_point', (_params: any, execCtx: any) => {
     const ids = (execCtx._targetIds as string[]) ?? []
     const addTime = execCtx._timeCost ?? 0
@@ -45,10 +45,42 @@ export function onLoad(_ctx: PluginContext): void {
         })
         continue
       }
-      const max = 100
-      const add = Math.floor(addTime / 60 * 0.15 * max)
+      // 2026-08-11：上限读"精力上限"属性（erArk sanity_point_max，缺省 100）——不再硬编码
+      const max = getEntityAttr(char, ATTR.STAMINA_MAX)
+      const staminaMax = typeof max === 'number' && max > 0 ? max : 100
+      const add = Math.floor(addTime / 60 * 0.15 * staminaMax)
       // 注释：绑定写入走插件作用域（setForPlugin，M7 修复——set() 跨插件首键胜出会写错属性）
-      bindingResolver.setForPlugin('sleep-system', id, 'sanity', Math.min(max, Number(cur) + add))
+      bindingResolver.setForPlugin('sleep-system', id, 'sanity', Math.min(staminaMax, Number(cur) + add))
+    }
+    return true
+  })
+
+  // consume_sanity——精力消耗（erArk 源石技艺/催眠/体控指令的理智消耗，default.py 867-911 段：
+  // 透视 1/催眠按公式/强制高潮 50 等；结算时扣当前值 + 累加今日消耗 today_sanity_point_cost，
+  // 供睡眠精力成长（sanity_point_grow）使用）。未绑定 sanity → warning + 跳过。
+  // 2026-08-11 完整复刻：h-hypnosis 原"精神"属性已删，催眠系指令消耗走本 effect
+  effectTypeRegistry.register('consume_sanity', (params: any, execCtx: any) => {
+    const ids = (execCtx._targetIds as string[]) ?? []
+    const amount = Number(params?.amount ?? 0)
+    if (amount <= 0) return true
+    for (const id of ids) {
+      const char = entitySystem.get('character', id) as any
+      if (!char) continue
+      const cur = bindingResolver.getForPlugin('sleep-system', id, 'sanity')
+      if (cur === null || cur === undefined) {
+        errorReporter.report({
+          source: 'sleep-system',
+          severity: 'warning',
+          message: `consume_sanity：角色 '${id}' 未绑定 sanity 属性（bindings.toml [bindings.sleep-system].sanity），跳过`,
+          suggestion: 'mod 在 bindings.toml 中把 sanity 绑定到实际属性（如 精力）',
+        })
+        continue
+      }
+      const down = Math.min(amount, Number(cur))
+      bindingResolver.setForPlugin('sleep-system', id, 'sanity', Number(cur) - down)
+      // 今日消耗累计（erArk pl_ability.today_sanity_point_cost）
+      if (!char.action_info) char.action_info = {}
+      char.action_info.today_sanity_point_cost = (char.action_info.today_sanity_point_cost ?? 0) + down
     }
     return true
   })

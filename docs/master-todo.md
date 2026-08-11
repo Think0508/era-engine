@@ -1509,8 +1509,50 @@ h-core/data/default/ 提供全套 erArk 标准数据:
 > - 验收：typecheck 绿 / test 695 通过（新增 sleep-system 16 条 + core 恢复公式 + 全流程集成）/
 >   文档 docs/sleep-system.md + plugin-author-guide（sleep-system + h-npc-ai recover API）+
 >   character-schema（sleeping/unnormal_flag/sleep_h_awake/pretend_sleep/wake_time）
-> - TODO 项（未实装依赖，见 docs/sleep-system.md §11）：理智成长/能力升级检测/妊娠检查/
+> - TODO 项（未实装依赖，见 docs/sleep-system.md §11）：~~理智成长/能力升级检测~~（2026-08-11 成长
+>   系统已实现：精力成长 + checkUpgrade 结算点，ADR-0009）/妊娠检查/
 >   安眠药 body_item[9]/陷落继续H判定三分支/无意识二段行为/睡奸经验映射
+
+### 成长系统完整复刻（2026-08-11，ADR-0009）
+
+**已完成（批 1 引擎+数据层）**：
+- 双模式升级（mode xp/condition + per-level needs 全类型 A/T/J/E/F/X/ability_sum + 主备选 +
+  特殊判定数据化 extra_needs + sex_need）、checkUpgrade API、结算点链（睡眠双分支 + h:end NPC，
+  mod 三开关 upgrade_on_player_sleep/npc_sleep/npc_h_end）
+- 宝珠系统恢复（23 种定义 juels.toml + entity.juel + 睡眠转换链 衰减/特殊 17-19/反感抵消 +
+  升级扣珠）、gain_type 过滤（0 随时/3 睡觉；2 死代码不实现）、精力成长（删"精神"属性 +
+  consume_sanity 消耗 + today 计数 + 精力上限属性 + 成长公式）、528 H 结束上限成长
+- 数据：提取 AbilityUp/TalentGain/Juel/Ability/Talent/Experience.csv + talent_up_panel.py；
+  转换脚本 scripts/convert-erark-growth.cjs（幂等）；h-core 默认层 ability-upgrades.toml/juels.toml/talent-gains.toml
+- 值域约束：max_level 对齐 erArk（感度/ABL/性技 8、刻印 3、无觉 6）；upgrades 长度软约束
+- 验收：typecheck 绿 / test 716 通过（新增 growth 16 条 + sleep 集成 5 条）/ 扫描 0 违规
+- 文档：ADR-0009 / ability-progression.md / plugin-author-guide（checkUpgrade + consume_sanity）/
+  attr-ledger 重对账（juel/理智上限/精神）
+
+**批 2（UI 层）**：
+- 手动面板（talent_up_panel 复刻：陷落系素质 201-204/211-214 爱情/隶属二选一路线、共通前提、
+  路线前提、needs 显示、gainTalentManual 跳过条件直接获得）
+- 动态失去类素质（精液膨腹 6000ml 阈值/未初潮失去/罩杯变化/饮精绝顶——handle_talent.py 硬编码分支）
+- 告白/戴上项圈指令迁移（恋人/宠物获得途径——gain_type 2 数据在此消费）
+- 设置面板系统（base_setting 全数组承载，升级三开关并入）
+
+### 能力存储架构（2026-08-11 批：目录拆分 + 按需展开 + display）
+
+**已完成**：
+- abilities 目录拆分：`definitions/abilities/*.toml` 与插件默认层 `data/default/abilities/` 合并加载，
+  单文件 `abilities.toml` 兼容（loadAbilityDefs）
+- 按需展开：角色只拥有「数据写了 + attributes category=ability/mark 落位」的能力——几百技能 × NPC
+  存档体积问题消除；未拥有 = 无条目/不显示/条件语义 0 级；旧存档全量条目保留；
+  **condition 模式能力全量注入 0 级条目**（经验→升级联动：checkUpgrade 遍历入口，2026-08-11 联动修复）
+- 刻印落位保证：normalizeMarksToAbilities 对 category=mark 全量补 abilities 0 级条目
+  （h-mark 升级写路径需要条目存在）
+- `display = false`：拥有但不在面板显示（结算/条件/查询照常）
+- 面板：技能（非卡能力）0 级不显示兜底
+- 验收：typecheck 绿 / test 717 通过（新增目录拆分 + 按需展开 2 条 + 契约/集成断言更新）/
+  文档 ability-progression.md + mod-author-guide
+
+**后置**：技能按 tag 分组显示 UI（几百技能单分组优化）、expand 字段（如未来有"无需 attributes
+条目也想全员拥有"的场景）
 
 ### L1.10 H 内 NPC AI 后置项（2026-08-11 h-npc-ai 插件交付后登记）
 
@@ -1780,7 +1822,7 @@ L2.9 已统一 scene 管理、事件拦截、嵌套、持久化、ConversationRe
 - 动态体位切换（15 体位 × 5 部位）
 - NPC H AI — H 内自动行动
 - 二段行为 — 绝顶/射精后连锁
-- 宝珠系统 — 24 种宝珠睡眠结算
+- 宝珠系统 — 23 种宝珠睡眠结算
 - 口上三层加权随机 — 通用/角色/特殊情境
 
 **做以上任一项前必读**：

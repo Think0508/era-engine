@@ -400,7 +400,7 @@
 | dirty | dirty | Character | 污浊 → entity.dirty（body_semen/cloth_semen/penis_dirty_dict 等） |  |
 | first_record | first_record | Character | 初次记录 → entity.first_record（h-first-time 维护） |  |
 | pregnancy | pregnancy | Character | 怀孕 → entity.pregnancy（h-pregnancy 维护；排卵周期在 base） |  |
-| hypnosis | hypnosis | Character | 催眠 → entity.hypnosis（h-hypnosis 维护；精神在 base） |  |
+| hypnosis | hypnosis | Character | 催眠 → entity.hypnosis（h-hypnosis 维护） |  |
 | action_info | action_info | Character | 行动记录 → entity.action_info（字段名一致） |  |
 | body_item | body_item | Character | 身体道具 → entity.body_items（h-core 读取） |  |
 | cloth | cloth | Character | 服装 → entity.cloth（clothing-system） |  |
@@ -440,8 +440,8 @@
 | 博士信息素集组 | 305 | CharacterTalent | 同上 |
 | 博士信息素阵列 | 306 | CharacterTalent | 同上 |
 | 一杯就倒 | 360 | CharacterTalent | 未实装系统（饮酒）不迁移 |
-| sanity_point_max | sanity_point_max | Character | 理智上限——未迁移（精力无上限属性；h-hypnosis 精神 100 钳制为自研机制） |
-| juel | juel | Character | 宝珠 → 收藏系统砍掉，不迁移 |
+| sanity_point_max | sanity_point_max | Character | 理智上限 → 精力上限（2026-08-11 完整复刻：新增属性，睡眠成长公式） |
+| juel | juel | Character | 宝珠 → entity.juel（2026-08-11 完整复刻：23 种定义（兽部快感珠 22 兽部全砍不产出）+ 睡眠转换链 + 升级/手动消耗；此前砍除已撤销，ADR-0009） |
 | collection_character | collection_character | Character | 收藏角色 → 收藏系统砍掉，不迁移 |
 | pl_ability | pl_ability | Character | 玩家能力 → 玩家技能树（激素/透视/催眠/时停），随 B 批次评估（h-hypnosis/h-time-stop 已有运行时字段） |
 | pl_collection | pl_collection | Character | 玩家收藏品 → 收藏系统砍掉，不迁移 |

@@ -1,7 +1,7 @@
 /** 属性名常量——插件代码引用属性的唯一途径，禁止直接写字符串 */
 export const ATTR = {
   // 基础
-  HP: '体力', MP: '气力', STAMINA: '精力',
+  HP: '体力', MP: '气力', STAMINA: '精力', STAMINA_MAX: '精力上限',
   FATIGUE: '疲劳度', HUNGER: '饥饿值', SLEEP: '熟睡值', URINE: '尿意',
   HP_MAX: '体力上限', MP_MAX: '气力上限',
   DESIRE: '欲望值', EJA_GAUGE: '射精欲', EJA_GAUGE_MAX: '射精欲上限',

@@ -178,8 +178,9 @@ export function restoreFromSave(data: SaveData): void {
       fillMissingAttributes(char, mod.attributes, `读档 ${data.modId}@${data.gameTime}`)
     }
     // 注释：marks 归一化（ADR-0007）——旧存档（本改动前保存）的 marks 值在恢复时拷入
-    // abilities，防止刻印值静默丢失（读取方全走 abilities）
-    normalizeMarksToAbilities(char as any)
+    // abilities，防止刻印值静默丢失（读取方全走 abilities）；category=mark 属性同时保证
+    // abilities 0 级条目（2026-08-11 按需展开——h-mark 升级写路径需要条目存在）
+    normalizeMarksToAbilities(char as any, mod ?? undefined)
     entitySystem.register('character', char.id, char)
   }
   // 注释：恢复游戏时间

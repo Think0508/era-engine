@@ -446,7 +446,9 @@ talents = { "剑骨" = 1 }
     const char: any = { id: 'runtime_npc', template: 'x', abilities: { '技巧': 2 } }
     finalizeCharacterData(char, mod)
     expect(char.abilities['技巧']).toEqual({ level: 2, xp: 0 }) // 简写展开
-    expect(char.abilities['华山剑法']).toEqual({ level: 0, xp: 0 }) // 定义能力默认条目
+    // 按需展开（2026-08-11）：未拥有的能力不注入（几百技能 × NPC 存档体积）；卡能力由
+    // attributes.toml category=ability/mark 落位保证（本 mod 无卡能力定义 → 无条目）
+    expect(char.abilities['华山剑法']).toBeUndefined()
     expect(char.base['体力']).toBe(100) // attributes 默认
     expect(char.talents['剑骨']).toBe(0) // talents 初始化 0
     expect(char.marks).toBeUndefined() // 该 mod 无 marks 定义 → 不创建（契约不强制空壳）
@@ -512,8 +514,8 @@ talents = { "剑骨" = 1 }
     expect(testSpawn).toBeDefined()
     // abilities 简写已展开（加载时 finalize）
     expect(testSpawn.data.abilities['基础攻击']).toEqual({ level: 1, xp: 0 })
-    // 定义能力默认条目已补全（abilities 加载后的二次 finalize）
-    expect(testSpawn.data.abilities['华山剑法']).toEqual({ level: 0, xp: 0 })
+    // 按需展开（2026-08-11）：未拥有的能力不注入（卡能力由 attributes 落位）
+    expect(testSpawn.data.abilities['华山剑法']).toBeUndefined()
   })
 
   it('刻印读取链：getEntityAttr 命中 abilities 真实等级（marks 死存储不遮蔽）', async () => {

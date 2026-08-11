@@ -79,16 +79,30 @@ tags = ["sensation"]
 
 ## 能力管理工作流
 
+> **存储组织（2026-08-11）**：大量技能建议用**目录拆分**——`definitions/abilities/` 下按类别建文件
+> （如 `sword.toml`/`internal.toml`/`craft.toml`），与单文件 `abilities.toml` 等价合并。
+> **按需展开**：角色只拥有「数据写了 + 角色卡（attributes 落位）」的能力——mod 技能没写 = 无条目
+> （不进存档/不显示/条件语义 0 级）。**display = false**：拥有但不在面板显示（参与结算）。
+
 ### 新增一个能力
 
 ```toml
-# definitions/abilities.toml（Layer 3，覆盖插件默认或新增）
+# definitions/abilities/sword.toml（目录拆分示范，Layer 3）
 [abilities."暗器精通"]
 name = "暗器精通"
 description = "暗器使用技巧"
 type = "passive"
 max_level = 10
 tags = ["combat_active"]      # 面板分组由 tag 决定（此处显示在「其他技能」）
+# display = false            # 可选：拥有但不在面板显示（结算/条件照常）
+```
+
+### 用不到的默认能力不显示
+
+```toml
+# definitions/abilities.toml 覆盖 h-core 默认能力（如 话术技能 用不到）
+[abilities."话术技能"]
+display = false
 ```
 
 ### 改名一个能力

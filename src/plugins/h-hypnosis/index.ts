@@ -2,7 +2,6 @@ import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { narrativeLog } from '../../core/narrative-log'
-import { eventBus } from '../../core/event-bus'
 import { errorReporter } from '../../core/error-reporter'
 
 interface HypnosisData {
@@ -20,20 +19,8 @@ const DEFAULT_HYPNOSIS: HypnosisData = {
   blockhead: false, active_h: false, pain_as_pleasure: false, roleplay: [],
 }
 
-// 精神力 — 消耗资源，参考 h-time-stop TSP 模式
-const HYPNOSIS_SANITY_MAX = 100
-
-function getSanity(charId: string): number {
-  const ch = entitySystem.get('character', charId) as any
-  return ch?.base?.['精神'] ?? HYPNOSIS_SANITY_MAX
-}
-
-function setSanity(charId: string, val: number): void {
-  const ch = entitySystem.get('character', charId) as any
-  if (!ch) return
-  if (!ch.base) ch.base = {}
-  ch.base['精神'] = Math.max(0, Math.min(HYPNOSIS_SANITY_MAX, val))
-}
+// 2026-08-11 成长系统：删"精神"属性（对账表重对账）——erArk 理智 = 本引擎精力（sanity 绑定，
+// sleep-system 提供 15%/h 恢复 + consume_sanity 消耗 effect + 睡眠精力成长）；h-hypnosis 不再自持资源
 
 function getHypnosisXp(charId: string): number {
   const ch = entitySystem.get('character', charId) as any
@@ -129,7 +116,6 @@ function getRoleplayName(id: number): string {
   return ROLEPLAY_DATA.find(r => r.id === id)?.name ?? `未知(${id})`
 }
 
-void getSanity
 void addHypnosisXp
 
 function getSelfId(ctx: any): string | null { return ctx.gameStore?.player?.id ?? ctx.sourceId ?? null }
@@ -412,11 +398,8 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   reg('ADVANCED_HYPNOSIS', () => hasHypnosisTalent(333))
   reg('SPECIAL_HYPNOSIS', () => hasHypnosisTalent(334))
 
-  eventBus.on('game:new_day', () => {
-    for (const ch of entitySystem.getAll('character')) {
-      setSanity(ch.id, HYPNOSIS_SANITY_MAX)
-    }
-  })
+  // 2026-08-11：删 game:new_day 精神复位（自研行为，erArk 无此机制——理智不每日复位，
+  // 只靠睡眠 15%/h 恢复 + consume_sanity 消耗；h-hypnosis 不管理精力）
 
   reg('SELF_HYPNOSIS_0', (ctx2: any) => { const id = getSelfId(ctx2); return id ? getHypnosis(id).hypnosis_degree === 0 : false })
   reg('T_HYPNOSIS_0', (ctx2: any) => { const id = getTargetId(ctx2); return id ? getHypnosis(id).hypnosis_degree === 0 : false })

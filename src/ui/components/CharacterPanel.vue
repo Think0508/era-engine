@@ -53,6 +53,7 @@ function groupedByTag(tag: string) {
     for (const [name, val] of Object.entries(char.abilities as Record<string, any>)) {
       const def = mod.abilities[name]
       if (!def?.tags?.includes(tag)) continue
+      if (def.display === false) continue // 2026-08-11：display=false 的能力不在面板显示
       const level = typeof val === 'number' ? val : (val?.level ?? 0)
       result.push({ label: name, level })
     }
@@ -87,10 +88,12 @@ function filterAbilities(isTechnique: boolean) {
     const result: { label: string; level: number }[] = []
     for (const [name, val] of Object.entries(char.abilities as Record<string, any>)) {
       if (ablNames.has(name)) continue
+      const def = mod.abilities[name]
+      if (def?.display === false) continue // 2026-08-11：display=false 不在面板显示
       const isTech = tech.has(name)
       if (isTech !== isTechnique) continue
       const level = typeof val === 'number' ? val : (val?.level ?? 0)
-      if (isTechnique && level === 0) continue
+      if (level === 0) continue // 未拥有（0 级）不显示——按需展开后未拥有无条目，此处兜底
       result.push({ label: name, level })
     }
     return result

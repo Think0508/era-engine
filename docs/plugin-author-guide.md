@@ -268,7 +268,10 @@ ctx.api.call('status', 'remove', charId, statusId)            // → void
 ctx.api.call('abilities', 'getByTag', charId, tag)            // → {id, level, xp}[]
 ctx.api.call('abilities', 'hasTag', charId, tag)              // → boolean
 ctx.api.call('abilities', 'getLevel', charId, abilityId)      // → number
-ctx.api.call('abilities', 'gainXp', charId, abilityId, xp)    // → void（可能触发升级）
+ctx.api.call('abilities', 'gainXp', charId, abilityId, xp)    // → void（xp 模式即时升级）
+ctx.api.call('abilities', 'checkUpgrade', charId)             // → void（2026-08-11：结算点调用，
+                                                              //   condition 模式能力按 per-level needs
+                                                              //   升级 + 扣宝珠；睡眠/H结束调用）
 ```
 
 #### inventory — 背包物品
@@ -445,7 +448,9 @@ ctx.api.call('sleep-system', 'clearAsleep', charId)           // → void（醒�
 ```
 
 效果类型（指令/脚本可调用）：`add_small_sanity_point`（1504：理智 15%/h 恢复，绑定 sanity
-可选——未绑定 warning+跳过）、`add_small_semen_point`（1505：精液 15%/h 恢复，仅玩家）、
+可选——未绑定 warning+跳过；上限读"精力上限"属性）、`consume_sanity`（2026-08-11：精力消耗
++ `action_info.today_sanity_point_cost` 今日计数——催眠/体控系指令成本，供睡眠精力成长）、
+`add_small_semen_point`（1505：精液 15%/h 恢复，仅玩家）、
 `unconscious_h_set`（设目标无意识等级 0-7 + unnormal 位）、`unconscious_h_clear`
 （清 0 + unnormal 位）。前提（TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1 / T_ACTION_SLEEP /
 T_NORMAL_1/2/6 / SCENE_ALL_UNCONSCIOUS_OR_SLEEP 等）与数据格式详见 `docs/sleep-system.md`。

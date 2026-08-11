@@ -32,6 +32,7 @@ import { isSettleGated } from '../../utils/settle-gate'
 import { getContinuousAdjust } from '../../core/command-executor'
 import { getLevel, getEntityAttr } from '../../core/entity-utils'
 import { orgasmJudge, accumulateOrgasmFeel, ORGASM_ATTR_TO_PART, insertPositionToBodyCid, releaseOrgasmEdge, releaseTimeStopOrgasm, type OrgasmSettleOptions } from './settle/orgasm'
+import { settleEndHHpmpGrowth } from './settle/hpmp-growth'
 import { modLoader, revalidateCharacterContract } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { ATTR } from '../../core/entity-utils'
@@ -1042,6 +1043,14 @@ async function endHScene(allyId: string): Promise<void> {
     if (!c.h_state?.is_h) continue
     const released = releaseOrgasmEdge(c.id)
     if (released.orgasms.length > 0) await handleOrgasmResults(c.id, c, released)
+  }
+  // 注释：H 结束上限成长（erArk 528 END_H_ADD_HPMP_MAX，:6700-6753）——绝顶次数→体力/气力/
+  // 精液上限成长 + NPC 能力升级结算。必须在清 h_state 之前执行（orgasm_count 数据源）
+  for (const ch of entitySystem.getAll('character')) {
+    const c = ch as any
+    if (c.h_state?.is_h) {
+      await settleEndHHpmpGrowth(c.id)
+    }
   }
   for (const ch of entitySystem.getAll('character')) {
     const c = ch as any

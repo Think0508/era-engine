@@ -7,215 +7,215 @@
 [abilities."皮肤感度"]
 name = "皮肤感度"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 [abilities."胸部感度"]
 name = "胸部感度"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 [abilities."阴蒂感度"]
 name = "阴蒂感度"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 [abilities."阴茎感度"]
 name = "阴茎感度"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 [abilities."阴道感度"]
 name = "阴道感度"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 [abilities."后穴感度"]
 name = "后穴感度"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 [abilities."子宫感度"]
 name = "子宫感度"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 [abilities."口喉感度"]
 name = "口喉感度"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 [abilities."心理感度"]
 name = "心理感度"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 # ═══ 扩张 ═══
 [abilities."阴道扩张"]
 name = "阴道扩张"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 [abilities."后穴扩张"]
 name = "后穴扩张"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 [abilities."子宫扩张"]
 name = "子宫扩张"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["sensation"]
 
 # ═══ ABL — 性能力 ═══
 [abilities."技巧"]
 name = "技巧"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["abl"]
 
 [abilities."顺从"]
 name = "顺从"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["abl"]
 
 [abilities."亲密"]
 name = "亲密"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["abl"]
 
 [abilities."欲望"]
 name = "欲望"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["abl"]
 
 [abilities."施虐"]
 name = "施虐"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["abl"]
 
 [abilities."受虐"]
 name = "受虐"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["abl"]
 
 [abilities."露出"]
 name = "露出"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["abl"]
 
 [abilities."话术技能"]
 name = "话术技能"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["abl"]
 
 # ═══ 刻印 ═══
 [abilities."快乐刻印"]
 name = "快乐刻印"
 type = "passive"
-max_level = 5
+max_level = 3
 tags = ["h_mark"]
 
 [abilities."屈服刻印"]
 name = "屈服刻印"
 type = "passive"
-max_level = 5
+max_level = 3
 tags = ["h_mark"]
 
 [abilities."苦痛刻印"]
 name = "苦痛刻印"
 type = "passive"
-max_level = 5
+max_level = 3
 tags = ["h_mark"]
 
 [abilities."恐怖刻印"]
 name = "恐怖刻印"
 type = "passive"
-max_level = 5
+max_level = 3
 tags = ["h_mark"]
 
 [abilities."反发刻印"]
 name = "反发刻印"
 type = "passive"
-max_level = 5
+max_level = 3
 tags = ["h_mark"]
 
 [abilities."时姦刻印"]
 name = "时姦刻印"
 type = "passive"
-max_level = 5
+max_level = 3
 tags = ["h_mark"]
 
 [abilities."无觉刻印"]
 name = "无觉刻印"
 type = "passive"
-max_level = 5
+max_level = 6
 tags = ["h_mark"]
 
 # ═══ 性技术 ═══
 [abilities."指技"]
 name = "指技"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["technique"]
 
 [abilities."舌技"]
 name = "舌技"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["technique"]
 
 [abilities."足技"]
 name = "足技"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["technique"]
 
 [abilities."胸技"]
 name = "胸技"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["technique"]
 
 [abilities."膣技"]
 name = "膣技"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["technique"]
 
 [abilities."肛技"]
 name = "肛技"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["technique"]
 
 [abilities."腰技"]
 name = "腰技"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["technique"]
 
 [abilities."榨精"]
 name = "榨精"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["technique"]
 
 # ═══ 隐蔽（erArk ability 90，隐奸相关）═══
@@ -224,5 +224,5 @@ tags = ["technique"]
 [abilities."隐蔽"]
 name = "隐蔽"
 type = "passive"
-max_level = 10
+max_level = 8
 tags = ["technique"]

@@ -1,9 +1,10 @@
 import { entitySystem } from './entity-system'
 import { modLoader } from './mod-loader'
-import type { TalentModifier } from './mod-loader'
+import type { TalentDef, TalentModifier } from './mod-loader'
 import { evaluateCondition } from './condition'
 import { gameContext } from './game-context'
 import { narrativeLog } from './narrative-log'
+import { evaluateUpgradeNeeds } from './upgrade-needs'
 
 export interface TalentModifierContext {
   tag?: string
@@ -16,6 +17,75 @@ export function getTalentLevel(charId: string, talentId: string): number {
   const char = entitySystem.get('character', charId) as any
   if (!char?.talents) return 0
   return char.talents[talentId] ?? 0
+}
+
+/** 天赋获得核心逻辑（checkTalentGain / gainTalentManual 共用）——赋予 + 日志 + 替换 */
+function grantTalent(char: any, _charId: string, talentId: string, def: TalentDef): boolean {
+  if (char.talents[talentId]) return false
+  const newLevel = (char.talents[talentId] ?? 0) + 1
+  char.talents[talentId] = newLevel
+  narrativeLog.write(`习得天赋：${def.name ?? talentId}（Lv.${newLevel}）`, 'system', 'talent-utils')
+
+  // 替换类天赋（升级）：移除旧天赋
+  const replace = def.gain?.replace
+  if (replace) {
+    delete char.talents[replace]
+    const oldDef = modLoader.getMod()?.talentDefs?.[replace]
+    narrativeLog.write(`天赋 ${oldDef?.name ?? replace} 已被替换`, 'system', 'talent-utils')
+  }
+  return true
+}
+
+/** 按 gain_type 过滤的自动习得检查（erArk gain_talent）：
+ *  gain_type 0=随时自动（指令执行后）/ 3=睡觉自动；缺省 0（向后兼容现有 gain.condition 数据）
+ *  条件：gain.condition 表达式满足 或 gain.needs 语义化需求满足（erArk gain_need 是 AND 全满足）
+ */
+export function checkTalentGain(charId: string, gainType = 0): void {
+  const mod = modLoader.getMod()
+  if (!mod?.talentDefs) return
+
+  const char = entitySystem.get('character', charId) as any
+  if (!char) return
+  if (!char.talents) char.talents = {}
+
+  const gc = gameContext.getContext()
+
+  for (const [talentId, def] of Object.entries(mod.talentDefs)) {
+    if (!def.gain) continue
+    // 获得时机过滤（erArk gain_type；缺省 0 随时）
+    if ((def.gain.gain_type ?? 0) !== gainType) continue
+    // 已有该天赋，不重复获得
+    if (char.talents[talentId]) continue
+
+    try {
+      let satisfied = false
+      if (def.gain.condition) {
+        satisfied = evaluateCondition(def.gain.condition, gc)
+      }
+      if (!satisfied && def.gain.needs) {
+        satisfied = evaluateUpgradeNeeds(char, def.gain.needs).satisfied
+      }
+      if (satisfied) {
+        grantTalent(char, charId, talentId, def)
+      }
+    } catch {
+      // 条件求值错误不阻断
+    }
+  }
+}
+
+/**
+ * 手动获得天赋（erArk gain_talent now_gain_type=1）——面板确认后调用，跳过条件直接获得
+ * （面板层负责前置检查：共通前提/路线前提/needs 显示）。重复获得静默跳过。
+ */
+export function gainTalentManual(charId: string, talentId: string): boolean {
+  const mod = modLoader.getMod()
+  const def = mod?.talentDefs?.[talentId]
+  if (!def) return false
+  const char = entitySystem.get('character', charId) as any
+  if (!char) return false
+  if (!char.talents) char.talents = {}
+  return grantTalent(char, charId, talentId, def)
 }
 
 /** 对指定公式点的所有天赋 plus 值求和 */
@@ -77,39 +147,4 @@ function applyTalentModifiers(
   }
 
   return result
-}
-
-/** 检查并自动习得天赋（每次指令执行后调用） */
-export function checkTalentGain(charId: string): void {
-  const mod = modLoader.getMod()
-  if (!mod?.talentDefs) return
-
-  const char = entitySystem.get('character', charId) as any
-  if (!char) return
-  if (!char.talents) char.talents = {}
-
-  const gc = gameContext.getContext()
-
-  for (const [talentId, def] of Object.entries(mod.talentDefs)) {
-    if (!def.gain?.condition) continue
-    // 已有该天赋，不重复获得
-    if (char.talents[talentId]) continue
-
-    try {
-      if (evaluateCondition(def.gain.condition, gc)) {
-        const newLevel = (char.talents[talentId] ?? 0) + 1
-        char.talents[talentId] = newLevel
-        narrativeLog.write(`习得天赋：${def.name}（Lv.${newLevel}）`, 'system', 'talent-utils')
-
-        // 替换类天赋（升级）：移除旧天赋
-        if (def.gain.replace) {
-          delete char.talents[def.gain.replace]
-          const oldDef = mod.talentDefs[def.gain.replace]
-          narrativeLog.write(`天赋 ${oldDef?.name ?? def.gain.replace} 已被替换`, 'system', 'talent-utils')
-        }
-      }
-    } catch {
-      // 条件求值错误不阻断
-    }
-  }
 }

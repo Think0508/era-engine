@@ -127,13 +127,17 @@ effects = [ ... ]               # 14 效果链（erArk 1014，见 §4）
 
 玩家睡觉指令收尾（`game:execution_end` commandId==='sleep'）触发，对**全部已生成角色**：
 
-- **全员**：daily_reset 标记属性归零（快感清零——宝珠系统已砍只留清零）
+- **全员**：宝珠转换（daily_reset 状态值 → 宝珠 + 清零，2026-08-11 完整复刻 settle_character_juel：
+  衰减/特殊 17-19/反感抵消——此前只留清零）+ 其余 daily_reset 属性归零
 - **玩家**：射精欲=0（无条件）、day_first_shoot_semen=true（无条件，醒来第一发翻倍）、
   wake_time 记录、精液转化（≥6h：额外精液 += floor(精液/2)，上限 精液上限×4，
-  满则"浓厚精液"天赋）；TODO：理智成长（精力无消费方）、能力升级检测
+  满则"浓厚精液"天赋）、精力成长（today_sanity_point_cost ≥50 → 精力上限 += round/50，
+  cap 9999——erArk sanity_point_grow，2026-08-11）、能力升级检测（checkUpgrade，
+  mod 开关 upgrade_on_player_sleep）
 - **NPC**：愤怒=rand(1,35)、h_interrupt=0、day_first_meet=1（first_record 存在时）、
-  素质获得（checkTalentGain）、H 状态重置（h_state 置空）、sleep_h_awake=false；
-  TODO：妊娠检查（h-pregnancy 无 check_all 对等）、能力升级检测
+  素质获得（checkTalentGain gain_type=3）、能力升级检测（checkUpgrade，
+  mod 开关 upgrade_on_npc_sleep）、H 状态重置（h_state 置空）、sleep_h_awake=false；
+  TODO：妊娠检查（h-pregnancy 无 check_all 对等）
 - 睡醒自动存档：`game:autosave_requested` 事件 → bridge → `autoSave()`（auto 槽）
 
 **注意**：NPC 的 `sp_flag.sleeping` 由 `npc:behavior_started` 事件管理（type==='sleep' 入睡，
@@ -210,7 +214,8 @@ npc-ai setBehavior sleep 块，睡眠标记自动置位）。
 | 熟睡积累 | 浅睡 +1.5/分、深睡 rand(-0.3~0.6)/分（无系数） | 同 erArk | I6 修复（2026-08-11 删 tired_adjust——G6 旧决策引用了不存在的源码行号） |
 | 睡眠效果链 | 489/509/606/648/932/1751 | TODO 注释 | 催眠/关门/储物柜/道具/设施未实装 |
 | 安眠药（6106） | body_item[9] | 指令数据就绪，前提恒 false | 道具系统落地后接入 |
-| 理智成长/能力升级检测 | update_sleep 玩家分支 | TODO | 精力无消费方/ability-progression 无对等 API |
+| 理智成长 | sanity_point_grow（玩家分支） | ✅ 2026-08-11 | 精力上限属性 + today 计数 + consume_sanity 消耗（ADR-0009） |
+| 能力升级检测 | gain_ability（玩家/NPC 分支） | ✅ 2026-08-11 | checkUpgrade 结算点 + mod 三开关（ADR-0009） |
 | 妊娠检查 | check_all_pregnancy | TODO | h-pregnancy 无 check_all 对等 API |
 | 继续H判定 | 陷落等级三分支 | 恒继续（装睡） | 陷落系统未实装 |
 | 无意识二段行为 | second_behavior | 数据清零 + TODO | 二段行为机制未实装 |

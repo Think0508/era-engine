@@ -1,0 +1,28 @@
+# 生成文件（scripts/convert-erark-growth.cjs）——勿手改
+# 素质获得定义（erArk TalentGain.csv 复刻）：gain_type 0=随时 1=手动 2=指令绑定 3=睡觉
+# 注意：erArk gain_type=2 无调用方（死代码，告白/戴上项圈指令效果链直接给素质），机制不实现
+[talents]
+
+[talents."思慕"]
+gain = { gain_type = 1, needs = [{ type = "ability", id = "亲密", value = 2 }] }
+
+[talents."恋慕"]
+gain = { gain_type = 3, needs = [{ type = "ability", id = "亲密", value = 4 }, { type = "talent", id = "思慕" }, { type = "trust", value = 100 }], replace = "思慕" }
+
+[talents."恋人"]
+gain = { gain_type = 2, needs = [{ type = "ability", id = "亲密", value = 6 }, { type = "talent", id = "恋慕" }, { type = "trust", value = 200 }], replace = "恋慕" }
+
+[talents."爱侣"]
+gain = { gain_type = 3, needs = [{ type = "ability", id = "亲密", value = 8 }, { type = "talent", id = "恋人" }, { type = "trust", value = 300 }], replace = "恋人" }
+
+[talents."屈从"]
+gain = { gain_type = 1, needs = [{ type = "ability", id = "顺从", value = 2 }] }
+
+[talents."驯服"]
+gain = { gain_type = 3, needs = [{ type = "ability", id = "顺从", value = 4 }, { type = "talent", id = "屈从" }, { type = "trust", value = 100 }], replace = "屈从" }
+
+[talents."宠物"]
+gain = { gain_type = 2, needs = [{ type = "ability", id = "顺从", value = 6 }, { type = "talent", id = "驯服" }, { type = "trust", value = 200 }], replace = "驯服" }
+
+[talents."奴隶"]
+gain = { gain_type = 3, needs = [{ type = "ability", id = "顺从", value = 8 }, { type = "talent", id = "宠物" }, { type = "trust", value = 300 }], replace = "宠物" }

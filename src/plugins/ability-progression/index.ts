@@ -1,11 +1,16 @@
-// 注释：ability-progression 插件——能力升级（XP/等级/unlocks）
-// gain_ability_xp effect + 升级 + unlocks 自动给予 + character:ability_up 事件
+// 注释：ability-progression 插件——能力升级（XP/等级/unlocks + erArk 条件驱动升级）
+// 2026-08-11 成长系统：双模式升级——mode="xp"（缺省：gain_ability_xp 即时升级）/
+// mode="condition"（erArk 式：结算点按 per-level upgrades 检查 needs，满足即升、扣宝珠）
+// 结算点调用：sleep-system（睡眠全员）+ h-core（H结束 NPC）→ ctx.api.call('abilities', 'checkUpgrade', charId)
 
 import type { PluginContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
 import { modLoader } from '../../core/mod-loader'
+import { gameContext } from '../../core/game-context'
+import { narrativeLog } from '../../core/narrative-log'
+import { evaluateUpgradeNeeds } from '../../core/upgrade-needs'
 import type { AbilityDef } from '../../core/mod-loader'
 
 // 注释：onLoad——注册 gain_ability_xp effect type
@@ -54,10 +59,106 @@ export function onEnable(ctx: PluginContext): void {
     gainXp: (charId: string, abilityId: string, xp: number): void => {
       gainXp(charId, abilityId, xp)
     },
+    // 注释：条件驱动升级结算（erArk handle_ability.gain_ability）——遍历 mode=condition 能力，
+    // 按 per-level needs 循环连升（升级消耗宝珠）。结算点（睡眠/H结束）调用。
+    checkUpgrade: (charId: string): void => {
+      checkUpgrade(charId)
+    },
   })
 }
 
-// 注释：给予 XP + 升级逻辑
+// 注释：角色性别归一（本引擎 1=男 2=女；erArk sex 0=男 1=女）——sex_need 匹配用
+function sexMatches(char: any, sexNeed: number | undefined): boolean {
+  if (sexNeed === undefined || sexNeed === -1) return true
+  const sex = char?.base?.['性别'] ?? 0
+  const isFemale = sex >= 2
+  // erArk sex_need：0=男限定 1=女限定
+  return sexNeed === 0 ? !isFemale : isFemale
+}
+
+// 注释：能力级附加判定（erArk extra_ability_check 数据化）——全部满足才可升
+function evaluateExtraNeeds(char: any, charId: string, def: AbilityDef, currentLevel: number): boolean {
+  if (!def.extra_needs?.length) return true
+  for (const need of def.extra_needs) {
+    if (need.type === 'ability_sum') {
+      // sum(带 tag 的能力等级) ≥ 当前等级 × per_level（玩家）/ per_level_npc（NPC）
+      const mod = modLoader.getMod()
+      if (!mod) return false
+      const sum = Object.entries(char.abilities ?? {})
+        .filter(([abilityId]) => mod.abilities[abilityId]?.tags?.includes(need.tag as string))
+        .reduce((acc, [, data]) => acc + ((data as any)?.level ?? 0), 0)
+      const isPlayer = charId === gameContext.getContext().player?.id
+      const perLevel = isPlayer
+        ? (need.per_level ?? 1)
+        : (need.per_level_npc ?? need.per_level ?? 1)
+      if (sum < currentLevel * perLevel) return false
+    } else {
+      return false // 未知附加需求类型 → 视为不满足（不阻塞升级，保守跳过）
+    }
+  }
+  return true
+}
+
+// 注释：条件驱动升级结算（erArk handle_ability.gain_ability：遍历全能力 → 每能力 while 连升）
+// 主需求不满足时尝试备选需求（up_need2）；升级扣宝珠；触发 character:ability_up + 叙事日志
+// needs 求值走 core 共享器 evaluateUpgradeNeeds（与 talent-utils 素质获得统一，无重复实现）
+export function checkUpgrade(charId: string): void {
+  const char = entitySystem.get('character', charId) as any
+  if (!char?.abilities) return
+  const mod = modLoader.getMod()
+  if (!mod) return
+
+  for (const [abilityId, ability] of Object.entries(char.abilities)) {
+    const def = mod.abilities[abilityId]
+    if (def?.mode !== 'condition') continue
+    const entry = def.upgrades
+    if (!entry || entry.length === 0) continue
+    const data = ability as { level: number }
+
+    // 循环连升（erArk while True：升到不满足或达上限）
+    while (true) {
+      const currentLevel = data.level
+      // 性别限定（erArk sex_need）
+      if (!sexMatches(char, def.sex_need)) break
+      const next = entry[currentLevel]
+      if (!next) break // 缺升级条目 = 不可升（值域上限，upgrades 长度即天然上限——不硬编码 8）
+
+      // 主需求 → 备选需求
+      let judge = evaluateUpgradeNeeds(char, next.needs)
+      if (!judge.satisfied && next.backup_needs?.length) {
+        const backup = evaluateUpgradeNeeds(char, next.backup_needs)
+        if (backup.satisfied) judge = backup
+      }
+      // 能力级附加判定（技巧聚合等）
+      if (judge.satisfied && !evaluateExtraNeeds(char, charId, def, currentLevel)) {
+        judge = { satisfied: false, juelCosts: {} }
+      }
+      if (!judge.satisfied) break
+
+      // 升级 + 扣宝珠（erArk check_upgrade_requirements 的 jule_dict 扣减——全量 J 消耗）
+      data.level = currentLevel + 1
+      if (Object.keys(judge.juelCosts).length > 0) {
+        if (!char.juel) char.juel = {}
+        for (const [juelId, cost] of Object.entries(judge.juelCosts)) {
+          char.juel[juelId] = (char.juel[juelId] ?? 0) - cost
+        }
+      }
+
+      narrativeLog.write(
+        `${char.name ?? charId}的${def.name ?? abilityId}提升到${data.level}级`,
+        'system',
+        'ability-progression',
+      )
+      eventBus.emit('character:ability_up', {
+        character: charId,
+        ability: abilityId,
+        newLevel: data.level,
+      })
+    }
+  }
+}
+
+// 注释：给予 XP + 升级逻辑（xp 模式，即时）
 function gainXp(charId: string, abilityId: string, xp: number): void {
   const char = entitySystem.get('character', charId) as any
   if (!char?.abilities) return
@@ -71,6 +172,8 @@ function gainXp(charId: string, abilityId: string, xp: number): void {
   // 注释：无等级能力（max_level=0）——静默跳过
   if (def.max_level === 0) return
   if (ability.xp === null) return
+  // 注释：condition 模式能力不走 XP（升级唯一入口 = checkUpgrade 结算点；双通道会混乱）
+  if (def.mode === 'condition') return
 
   // 注释：加 XP
   ability.xp += xp

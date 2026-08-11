@@ -143,6 +143,20 @@ erArk 效果ID: 21   12   CVE_A2  CVE_A1  53  55  501
 | CVE_*(经验) | ✅ | h_experience（expId=80 对话经验已用） |
 | 501(TALK_ADD_ADJUST) | ✅ | talk_add_adjust（chat 专用，default.py:5813） |
 
+### 成长系统（2026-08-11，ADR-0009）已完成 vs TODO
+
+| 项 | 状态 | 说明 |
+|----|------|------|
+| 能力升级（handle_ability + AbilityUp.csv） | ✅ | 双模式（xp/condition）+ per-level needs 全类型 + 主备选 + 扣珠 + sex_need + extra_needs（技巧聚合/刻印门槛数据化） |
+| 结算点（gain_ability 触发） | ✅ | 睡眠玩家/NPC 分支 + H 结束 NPC（mod 三开关，base_setting[1]/[2] 语义） |
+| 素质获得（handle_talent + TalentGain.csv） | ✅ | gain_type 0/1/3（1 手动=批 2 面板）；gain_type 2 零调用方=死代码不实现 |
+| 宝珠链路（settle_character_juel + get_juel） | ✅ | 23 种定义 + 转换链（衰减/特殊 17-19/反感抵消）+ 升级消耗 |
+| 精力成长（sanity_point_grow） | ✅ | 删"精神"属性 + consume_sanity 消耗 + today 计数 + 精力上限成长（cap 9999） |
+| 528 H 结束上限成长 | ✅ | endHScene 清 h_state 前：绝顶次数 → 体力×2/气力×3/精液+1（玩家 cap 999） |
+| 手动面板（talent_up_panel） | 📝 批 2 | 陷落系素质（思慕→爱侣/屈从→奴隶）二选一路线 + 共通/路线前提 + needs 显示 |
+| 动态失去类素质 | 📝 批 2 | 精液膨腹/未初潮失去/罩杯变化/饮精绝顶（handle_talent.py 硬编码分支） |
+| 告白/戴上项圈指令 | 📝 TODO | 恋人/宠物获得途径（gain_type 2 数据在此消费） |
+
 ### 指令复刻（L1.6）已完成 vs TODO
 
 | 项 | 状态 | 说明 |

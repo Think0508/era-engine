@@ -67,7 +67,8 @@ entity
 |------|------|--------|----------|--------|
 | 体力 | 100 | settle_hp_mp/战斗/移动/H 内指令 | 消耗/恢复静默失效；死亡判定失效 | 不可删 |
 | 气力 | 100 | settle_hp_mp/战斗/H 内指令 | 同上 | 不可删 |
-| 精力 | 100 | （闲置属性，erArk 理智名义映射） | 无直接影响 | 可删 |
+| 精力 | 100 | sleep-system sanity 绑定（15%/h 恢复 + consume_sanity 消耗）、h-hypnosis 系指令成本 | 精力系统失效（绑定未配对 warning） | 可删（关精力） |
+| 精力上限 | 100 | sleep-system 恢复上限 + 睡眠精力成长（erArk sanity_point_max，成长 cap 9999，2026-08-11） | 恢复按缺省 100 钳制；成长失效 | 可删 |
 | 疲劳度 | 0 | 前提 TIRED_LE_74/84、群交 SCENE_ALL_NOT_TIRED | 前提恒满足（不疲劳） | 可删（前提降级） |
 | 饥饿值 | 0 | hunger-system、h-ejaculation 精液吸收 | 饥饿不增长；吸收系数按 0 | 可删（关饥饿） |
 | 消化剩余 | 0 | hunger-system 消化 CD | 消化即时完成 | 可删 |
@@ -159,6 +160,18 @@ entity
 - 写入：`h_experience` effect / 引擎二段结算自动写（绝顶经验、体位经验等）
 - 条件路径：`character.{id}.experience.{数值id}` / `player.experience.{id}`——是**经验值（累计次数）**不是等级
 - 禁改：经验键名禁止改动（引擎结算硬编码数值 id，对账表 A 骨架保证一致）
+- 2026-08-11：经验也是条件驱动升级（`needs` 的 E 类型）的判定源
+
+### 3.4b 宝珠（juel 字典，2026-08-11 成长系统 ADR-0009）
+- 存储：`juel: { 数值id: 数量 }` —— **与 erArk Juel.csv id 直通**（0-7 部位快感珠/8 润滑/9 习得/
+  10 恭顺/11 好意/12 欲情/13 快乐/14 先导/15 屈服/16 羞耻/17 苦痛/18 恐怖/19 抑郁/20 反感/
+  21 口喉/22 兽部(砍)/23 心理）
+- 定义：`juels.toml`（`[juels."id"]` name + status_attr——睡眠转珠时对应哪个 daily_reset 属性）
+- 获取：睡眠结算 `settleJuelConversion`——daily_reset 状态值按状态等级衰减（LV0-10 → 100%..10%）
+  转宝珠并清零；特殊 17/18/19（苦痛/恐怖/抑郁）1/4 到自身 + 1/2 到反感珠(20)；反感珠抵消
+  （1 好珠灭 2 反感珠，优先级 屈服→恭顺→好意→欲情→快乐）
+- 消耗：条件驱动能力升级（`needs` J 类型，升级时全量扣减）；手动面板检查（批 2）
+- 条件路径：`character.{id}.juel.{id}`
 
 ### 3.5 关系（关系系统 v2，2026-08-10 定稿）
 
@@ -251,6 +264,7 @@ body_items: { 槽位string: { itemId: string, active: boolean, expiry?: number }
 | pregnancy.fertilization_rate / reproduction_period / milk / milk_max / lactation_flag / … | 妊娠/涨奶 | h-pregnancy |
 | hypnosis.hypnosis_degree / increase_body_sensitivity / force_ovulation / blockhead / active_h / pain_as_pleasure / roleplay | 催眠 | h-hypnosis |
 | action_info.talk_count / talk_time | 聊天计数/时间 | h-core（decayTalkCount） |
+| action_info.today_sanity_point_cost | 今日精力消耗（consume_sanity 累计，睡眠精力成长依据，erArk pl_ability.today_sanity_point_cost） | sleep-system |
 | action_info.day_first_shoot_semen | 每日首射标记（睡眠结算无条件重置 true，醒来第一发翻倍） | h-ejaculation / sleep-system |
 | action_info.wake_time | 醒来时间（睡眠结算记录，erArk RECORD_WAKE_TIME） | sleep-system |
 | action_info.h_interrupt | H 被撞破标记（睡眠结算清零，erArk sleep_settle.py:82） | h-core / sleep-system |
@@ -406,7 +420,9 @@ h_state: 全部（H 会话内由引擎创建）
 | 临时最大精液槽 | 额外精液量 | base | tem_extra_semen_point |
 | 疲劳值 | 疲劳度 | base | tired_point |
 | 醉酒度 | 酒气 | base | drunk_point |
-| 理智 | 精力 | base | sanity_point 语义近似（精力为闲置属性） |
+| 理智 | 精力 | base | sanity_point 语义（2026-08-11 完整复刻：sanity 绑定 + consume_sanity 消耗 + 睡眠成长，ADR-0009） |
+| 理智上限 | 精力上限 | base | sanity_point_max（2026-08-11 新增属性） |
+| 宝珠 | juel | 结构 | 2026-08-11 完整复刻（23 种 + 转换链 + 消耗，ADR-0009；此前"收藏系统砍掉"撤销） |
 | 好感度字典（favorability[charId]） | 好感度（单值属性） | 结构 | 替代处理 |
 | status_data / ability / experience / talent 字典 | params / abilities / experience / talents 命名空间 | 结构 | 替代处理 |
 | 处女天赋（阴道处女/肛门处女/尿道处女/子宫处女/无接吻经验） | first_times.virgin_V/A/U/W/KISS | 结构 | 替代处理（true=已破，语义取反）。**双源标注（2026-08-09 分层审查）**：talents.toml 中的处女天赋定义仍存在（talk-common 口上条件大量引用 `talents.肛门处女 == 0`），h-first-time 破处时已同步删除对应天赋（V→阴道处女、A→肛门处女、U→尿道处女、W→子宫处女、初吻→无接吻经验）——有天赋 = 仍处，与 first_times 保持联动 |

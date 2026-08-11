@@ -67,9 +67,10 @@ describe('example-mod 端到端（字段真实落位）', () => {
     // 读取链路（h-core 读取方走 getEntityAttr）
     expect(getEntityAttr(player, '体力')).toBe(1200)
     expect(getEntityAttr(player, '气血')).toBe(200)
-    // 能力默认展开（h-core + example-mod 全部能力 level 0）
-    expect(player.abilities['吐纳术']).toEqual({ level: 0, xp: 0 })
-    expect(player.abilities['快乐刻印']).toEqual({ level: 0, xp: 0 })
+    // 按需展开（2026-08-11）：角色数据写了的能力才有条目；卡能力（刻印）由 attributes 落位
+    expect(player.abilities['吐纳术']).toBeUndefined() // 玩家数据未写（未拥有）
+    expect(player.abilities['快乐刻印']).toEqual({ level: 0, xp: 0 }) // category=mark 落位
+    expect(player.abilities['龟息功']).toBeUndefined() // 未拥有（unlocks 解锁后才存在）
   })
 
   it('山贼_张三：模板继承链生效（base-human → 山贼 → 角色，差分覆盖）', () => {
@@ -163,11 +164,12 @@ describe('example-mod 端到端（字段真实落位）', () => {
     expect(errors.some(e => e.message.includes('meditate'))).toBe(false)
   })
 
-  it('技能树：吐纳术 unlocks 龟息功 + 龟息功在角色 abilities 展开', () => {
+  it('技能树：吐纳术 unlocks 龟息功 + 龟息功按需展开（未拥有无条目）', () => {
     const touna = mod.abilities['吐纳术'] as any
     expect(touna.unlocks).toContainEqual(expect.objectContaining({ at_level: 5, ability: '龟息功' }))
     const girl = entitySystem.get('character', '小师妹') as any
-    expect(girl.abilities['龟息功']).toEqual({ level: 0, xp: 0 }) // 全部能力默认展开
+    // 按需展开（2026-08-11）：girl 没练吐纳术 → 龟息功无条目；unlocks 达到才动态创建
+    expect(girl.abilities['龟息功']).toBeUndefined()
   })
 
   it('definitions 全类型加载：口上/日历/套装/样式/装备槽/h-config', () => {
@@ -232,7 +234,9 @@ describe('example-mod 端到端（字段真实落位）', () => {
     const npcs = entitySystem.getAll('character').filter((c: any) => String(c.id).includes('山村'))
     expect(npcs.length).toBeGreaterThan(0)
     const npc = npcs[0] as any
-    expect(npc.abilities['吐纳术']).toEqual({ level: 0, xp: 0 }) // 契约最终化（非裸数字）
+    // 按需展开（2026-08-11）：模板未写的能力无条目；卡能力（刻印）由 attributes 落位
+    expect(npc.abilities['吐纳术']).toBeUndefined()
+    expect(npc.abilities['快乐刻印']).toEqual({ level: 0, xp: 0 })
     expect(npc.marks['快乐刻印']).toBe(0)
   })
 

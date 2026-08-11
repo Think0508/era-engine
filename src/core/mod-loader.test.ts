@@ -1,9 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { parseModData, ModLoader, type LoadedMod } from './mod-loader'
+import { parseModData, ModLoader, modLoader, type LoadedMod } from './mod-loader'
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
 import { conditionRegistry } from './condition-registry'
 import { errorReporter } from './error-reporter'
+import { checkUpgrade } from '../plugins/ability-progression/index'
 
 const rawTomlMap = import.meta.glob('/mods/test-mod/**/*.toml', {
   query: '?raw',
@@ -331,6 +332,122 @@ describe('mod-loader integration', () => {
       }))
       const errs = errorReporter.getErrorsBySource('mod-loader')
       expect(errs.some(e => e.severity === 'error' && e.message.includes('behavior'))).toBe(true)
+    })
+  })
+
+  // ═══════ 能力存储架构（2026-08-11 批：目录拆分 + 按需展开）═══════
+  describe('ability storage（目录拆分 + 按需展开）', () => {
+    it('definitions/abilities/ 目录拆分合并 + 单文件兼容 + mod 覆盖插件默认', () => {
+      const mod = parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/abilities/sword.toml': [
+          '[abilities]',
+          '[abilities."青峰剑法"]',
+          'name = "青峰剑法"',
+          'type = "passive"',
+          'max_level = 5',
+          'tags = ["combat_active", "sword"]',
+        ].join('\n'),
+        '/mods/test-mod/definitions/abilities/internal.toml': [
+          '[abilities]',
+          '[abilities."混元劲"]',
+          'name = "混元劲"',
+          'type = "passive"',
+          'max_level = 10',
+          'tags = ["internal"]',
+        ].join('\n'),
+      }))
+      expect(mod.abilities['青峰剑法']).toBeDefined()  // 目录文件 1
+      expect(mod.abilities['混元劲']).toBeDefined()    // 目录文件 2
+      expect(mod.abilities['华山剑法']).toBeDefined()  // 单文件兼容（test-mod abilities.toml）
+    })
+
+    it('按需展开：角色只拥有数据写了的能力（卡能力由 attributes 落位）', () => {
+      const mod = parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/abilities/condition.toml': [
+          '[abilities]',
+          '[abilities."房中术"]',
+          'name = "房中术"',
+          'type = "passive"',
+          'max_level = 3',
+          'tags = ["abl"]',
+          'mode = "condition"',
+          '[[abilities."房中术".upgrades]]',
+          'needs = [{ type = "experience", id = 80, value = 5 }]',
+        ].join('\n'),
+        '/mods/test-mod/characters/roster.toml': [
+          '[[roster]]',
+          'id = "on_demand_demo"',
+          'template = "base-human"',
+          'name = "按需示范"',
+          'abilities = { "华山剑法" = 3 }',
+          'marks = { "快乐刻印" = 1 }',
+        ].join('\n'),
+      }))
+      const char = mod.entities.get('character')!.get('on_demand_demo') as any
+      // 数据写了 → 展开
+      expect(char.abilities['华山剑法']).toEqual({ level: 3, xp: 0 })
+      // 未写的 xp 模式能力 → 无条目（按需，2026-08-11）
+      expect(char.abilities['采药']).toBeUndefined()
+      // condition 模式能力 → 全量注入 0 级（checkUpgrade 升级遍历入口，经验→升级联动依赖）
+      expect(char.abilities['房中术']).toEqual({ level: 0, xp: 0 })
+      // 刻印（category=mark 角色卡）→ attributes 落位 + marks 归一化
+      expect(char.abilities['快乐刻印']).toEqual({ level: 1, xp: 0 })
+      expect(char.marks['快乐刻印']).toBe(1)
+    })
+
+    it('经验→能力升级联动：condition 能力有经验门槛时无条目也能被 checkUpgrade 遍历', () => {
+      const mod = parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/abilities/condition.toml': [
+          '[abilities]',
+          '[abilities."房中术"]',
+          'name = "房中术"',
+          'type = "passive"',
+          'max_level = 3',
+          'tags = ["abl"]',
+          'mode = "condition"',
+          '[[abilities."房中术".upgrades]]',
+          'needs = [{ type = "experience", id = 80, value = 5 }]',
+        ].join('\n'),
+        '/mods/test-mod/characters/roster.toml': [
+          '[[roster]]',
+          'id = "link_demo"',
+          'template = "base-human"',
+          'name = "联动示范"',
+        ].join('\n'),
+      }))
+      const char = mod.entities.get('character')!.get('link_demo') as any
+      // 角色数据没写房中术——但 condition 注入保证条目存在（升级入口）
+      expect(char.abilities['房中术']).toEqual({ level: 0, xp: 0 })
+    })
+
+    it('注入链路端到端：目录 condition 能力 → 角色注入 → checkUpgrade 真实升级（经验门槛）', () => {
+      const map = makeMap({
+        '/mods/test-mod/definitions/abilities/condition.toml': [
+          '[abilities]',
+          '[abilities."房中术"]',
+          'name = "房中术"',
+          'type = "passive"',
+          'max_level = 3',
+          'tags = ["abl"]',
+          'mode = "condition"',
+          '[[abilities."房中术".upgrades]]',
+          'needs = [{ type = "experience", id = 80, value = 5 }]',
+        ].join('\n'),
+        '/mods/test-mod/characters/roster.toml': [
+          '[[roster]]',
+          'id = "link_e2e"',
+          'template = "base-human"',
+          'name = "联动端到端"',
+          'experience = { "80" = 5 }',
+        ].join('\n'),
+      })
+      const mod = parseModData('test-mod', map)
+      ;(modLoader as any).loadedMod = mod
+      const char = mod.entities.get('character')!.get('link_e2e') as any
+      entitySystem.register('character', 'link_e2e', char)
+      // 注入条目存在 → checkUpgrade 遍历 → 经验门槛满足 → 升级
+      checkUpgrade('link_e2e')
+      expect(char.abilities['房中术'].level).toBe(1)
     })
   })
 })

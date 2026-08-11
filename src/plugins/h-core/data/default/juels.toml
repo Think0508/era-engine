@@ -1,0 +1,96 @@
+# 生成文件（scripts/convert-erark-growth.cjs）——勿手改
+# 宝珠定义（erArk Juel.csv id 直通）。status_attr：睡眠转珠时该宝珠对应哪个 daily_reset 参数属性
+# 注：兽部快感珠(22) 兽部全砍不产出；尿道快感珠(6) 保留（尿道 status 属性 display=false，ADR-0004）
+[juels]
+
+[juels."0"]
+name = "皮肤快感珠"
+status_attr = "皮肤"
+
+[juels."1"]
+name = "胸部快感珠"
+status_attr = "胸部"
+
+[juels."2"]
+name = "阴蒂快感珠"
+status_attr = "阴蒂"
+
+[juels."3"]
+name = "阴茎快感珠"
+status_attr = "阴茎"
+
+[juels."4"]
+name = "阴道快感珠"
+status_attr = "阴道"
+
+[juels."5"]
+name = "后穴快感珠"
+status_attr = "后穴"
+
+[juels."6"]
+name = "尿道快感珠"
+status_attr = "尿道"
+
+[juels."7"]
+name = "子宫快感珠"
+status_attr = "子宫"
+
+[juels."8"]
+name = "润滑珠"
+status_attr = "润滑"
+
+[juels."9"]
+name = "习得珠"
+status_attr = "习得"
+
+[juels."10"]
+name = "恭顺珠"
+status_attr = "恭顺"
+
+[juels."11"]
+name = "好意珠"
+status_attr = "好意"
+
+[juels."12"]
+name = "欲情珠"
+status_attr = "欲情"
+
+[juels."13"]
+name = "快乐珠"
+status_attr = "快乐"
+
+[juels."14"]
+name = "先导珠"
+status_attr = "先导"
+
+[juels."15"]
+name = "屈服珠"
+status_attr = "屈服"
+
+[juels."16"]
+name = "羞耻珠"
+status_attr = "羞耻"
+
+[juels."17"]
+name = "苦痛珠"
+status_attr = "苦痛"
+
+[juels."18"]
+name = "恐怖珠"
+status_attr = "恐怖"
+
+[juels."19"]
+name = "抑郁珠"
+status_attr = "抑郁"
+
+[juels."20"]
+name = "反感珠"
+status_attr = "反感"
+
+[juels."21"]
+name = "口喉快感珠"
+status_attr = "口喉"
+
+[juels."23"]
+name = "心理快感珠"
+status_attr = "心理"

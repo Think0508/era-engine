@@ -38,8 +38,9 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 # 排卵周期：h-pregnancy 引用（erArk PREGNANCY.reproduction_period，0安全/1普通/2危险/3排卵，
 #   7 日周期 0011232，代码 %7 推进）；h-pregnancy 读 base 命名空间
 "排卵周期" = { type = "number", default = 0, category = "base", display = false }
-# 精神：h-hypnosis 引用（自研催眠精神力资源，默认 100 = HYPNOSIS_SANITY_MAX，上限钳制同）
-"精神" = { type = "number", default = 100, category = "base", display = false }
+# 精力上限：2026-08-11 成长系统（erArk sanity_point_max，100~9999 默认 100）——
+# 精力（sanity 绑定）的上限属性；睡眠精力成长（sanity_point_grow）增加此值
+"精力上限" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
 
 # ════════════════════════════════════════
 # PARAMETER — 行动参数（每日重置）

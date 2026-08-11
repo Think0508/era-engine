@@ -86,6 +86,8 @@ const STRUCTURAL_WHITELIST = new Set([
   // character-contract.test.ts 的 TOML fixture 引用（test-mod 已定义的真实天赋名——
   // `[talents."剑骨"]` 表头被属性索引启发式误判，实际是模组数据定义）
   '剑骨',
+  // growth.test.fixture.ts 的测试夹具能力（growth-test 假 mod 专用，非 test-mod 定义）
+  '吐纳', '玄功',
 ])
 
 // 结构命名空间（实体上的非属性承载容器）——`ns['中文']` 索引不是属性引用：

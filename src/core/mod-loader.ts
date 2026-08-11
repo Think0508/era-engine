@@ -153,10 +153,32 @@ export interface TalentModifier {
   multiply?: number         // 每级乘法系数（如 0.05 = +5%/级）
 }
 
+// 注释：能力升级需求（erArk need_string 语义化：A能力等级/T素质存在/J宝珠/E经验/F好感/X信赖）
+// ability_sum：聚合判定——sum(带 tag 的能力等级) ≥ 当前等级 × per_level（玩家）/ per_level_npc（NPC）
+export interface UpgradeNeed {
+  type: 'ability' | 'talent' | 'juel' | 'experience' | 'favorability' | 'trust' | 'ability_sum'
+  id?: string | number   // ability/talent 用名称；juel/experience 用 erArk 数字 id（直通）
+  value?: number         // 需求值（talent 类型 = 存在性检查，无 value）
+  tag?: string           // ability_sum 用
+  per_level?: number     // ability_sum 用（玩家倍率）
+  per_level_npc?: number // ability_sum 用（NPC 倍率）
+}
+
+// 注释：能力升级条目（per-level，erArk AbilityUp.csv）——第 i 项 = 从 i 级升 i+1 级的需求
+export interface AbilityUpgradeEntry {
+  needs: UpgradeNeed[]           // 主需求（全部满足才可升）
+  backup_needs?: UpgradeNeed[]   // 备选需求（主不满足时，备选全满足也可升）
+}
+
 // 注释：天赋自动习得条件
 export interface TalentGain {
-  condition: string        // 条件表达式，满足时自动获得
-  replace?: string         // 获得时替换已有天赋 ID（升级类天赋用）
+  condition?: string     // 条件表达式，满足时自动获得（gain_type 0 随时检查用）
+  replace?: string       // 获得时替换已有天赋 ID（升级类天赋用）
+  // 注释：获得类型（erArk TalentGain.csv gain_type）——0 随时自动 / 1 手动面板 / 2 指令绑定 /
+  // 3 睡觉自动。缺省 0（向后兼容，现有 gain.condition 数据不变）
+  gain_type?: number
+  // 注释：语义化获得需求（erArk gain_need 转换；A/T/E/F/X 同 UpgradeNeed，无 J）
+  needs?: UpgradeNeed[]
 }
 
 // 注释：天赋定义
@@ -220,7 +242,26 @@ export interface AbilityDef {
   xp_curve?: string     // linear/exponential/custom
   xp_per_level?: number | number[]
   unlocks?: { at_level: number; ability?: string; talent?: string }[]
+  // 注释：升级模式（2026-08-11 成长系统）——"xp"（缺省：gain_ability_xp 即时升级）/
+  // "condition"（erArk 式：结算点按 upgrades 逐级检查 needs）
+  mode?: 'xp' | 'condition'
+  // 注释：是否在角色面板显示（2026-08-11）——缺省 true；display=false 的能力参与结算/
+  // 条件/查询但不出现在面板（如 mod 用不到的默认能力）
+  display?: boolean
+  // 注释：条件升级路径（mode=condition）——第 i 项 = 从 i 级升 i+1 级；缺项 = 不可升
+  upgrades?: AbilityUpgradeEntry[]
+  // 注释：能力级附加判定（每级升级前都检查；erArk extra_ability_check 数据化）
+  extra_needs?: UpgradeNeed[]
+  // 注释：性别限定（erArk Ability.csv sex_need 原值）——-1 通用 / 0 男限定 / 1 女限定
+  sex_need?: number
   [key: string]: any
+}
+
+// 注释：宝珠定义（erArk Juel.csv id 直通）
+export interface JuelDef {
+  name: string
+  // 注释：对应 daily_reset 参数属性名——睡眠转珠时该状态值 → 此宝珠
+  status_attr?: string
 }
 
 // 注释：任务定义
@@ -437,6 +478,13 @@ export interface LoadedMod {  id: string
   // 路径相对 mod 根（如 "assets/loading.gif"）；未声明 → 引擎用 index.html 的闪烁文字 fallback
   loadingImage?: string
   loadingVideo?: string
+  // 注释：升级结算开关（2026-08-11 成长系统，erArk base_setting[1]/[2] 语义，mod 级配置）——
+  // 玩家睡眠 / NPC 睡眠 / NPC H结束 时是否执行能力升级+素质获得结算；缺省全开
+  upgradeSettings: {
+    player_sleep: boolean
+    npc_sleep: boolean
+    npc_h_end: boolean
+  }
   entities: Map<string, Map<string, EntityData>>
   locations: Map<string, LocationData>
   graph: Edge[]
@@ -463,6 +511,8 @@ export interface LoadedMod {  id: string
   sets: SetDef[]
   statusEffects: Record<string, StatusEffectDef>
   abilities: Record<string, AbilityDef>
+  // 注释：宝珠定义（2026-08-11 成长系统，erArk Juel.csv id 直通）
+  juelDefs: Record<string, JuelDef>
   // 注释：任务
   quests: Map<string, Quest>
   // 注释：天赋定义
@@ -808,6 +858,12 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     playerCharacter: (metaSection.player_character as string) ?? undefined,
     loadingImage: (metaSection.loading_image as string) ?? undefined,
     loadingVideo: (metaSection.loading_video as string) ?? undefined,
+    // 注释：升级结算开关（erArk base_setting[1]/[2] 语义）——缺省全开
+    upgradeSettings: {
+      player_sleep: (metaSection.upgrade_on_player_sleep as boolean | undefined) ?? true,
+      npc_sleep: (metaSection.upgrade_on_npc_sleep as boolean | undefined) ?? true,
+      npc_h_end: (metaSection.upgrade_on_npc_h_end as boolean | undefined) ?? true,
+    },
     sleepConfig: {},
     entities: new Map(),
     locations: new Map(),
@@ -832,6 +888,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     items: {},
     sets: [],
     statusEffects: {},
+    juelDefs: {},
     abilities: {},
     quests: new Map(),
     talentDefs: {},
@@ -1110,9 +1167,54 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   const statusData = loadMerged<Record<string, StatusEffectDef>>('status-effects.toml', 'status-effects')
   if (statusData) mod.statusEffects = statusData
 
-  // 注释：加载 abilities.toml（插件默认 + mod 定义 deepMerge）
-  const ablData = loadMerged<Record<string, AbilityDef>>('abilities.toml', 'abilities')
-  if (ablData) mod.abilities = ablData
+  // 注释：加载 abilities——单文件 abilities.toml（插件默认 + mod definitions）+ 目录拆分
+  // definitions/abilities/*.toml 与 data/default/abilities/*.toml（2026-08-11：几百技能按
+  // 类别/门派分文件维护）；同名字段 mod 覆盖插件默认（rawTomlMap 插件默认先插入）
+  function loadAbilityDefs(): Record<string, AbilityDef> {
+    let result: Record<string, AbilityDef> = {}
+    for (const [path, raw] of Object.entries(rawTomlMap)) {
+      const isPluginDefault = path.startsWith('/src/plugins/')
+      const isModData = path.startsWith(`/mods/${modName}/`)
+      if (!isPluginDefault && !isModData) continue
+      const isAbilityFile = path.endsWith('/abilities.toml')
+        || path.includes('/definitions/abilities/')
+        || path.includes('/data/default/abilities/')
+      if (!isAbilityFile || !path.endsWith('.toml')) continue
+      const data = parseFile(path, raw)
+      result = deepMerge(result, (data as any).abilities ?? {})
+    }
+    return result
+  }
+
+  // 注释：加载 abilities.toml（插件默认 + mod 定义 deepMerge；支持目录拆分）
+  mod.abilities = loadAbilityDefs()
+
+  // 注释：加载 juels.toml（宝珠定义，插件默认 + mod 覆盖）
+  const juelData = loadMerged<Record<string, JuelDef>>('juels.toml', 'juels')
+  if (juelData) mod.juelDefs = juelData
+
+  // 注释：加载 ability-upgrades.toml（condition 模式升级路径）——只并入升级相关字段
+  const upgradeData = loadMerged<Record<string, Partial<AbilityDef>>>('ability-upgrades.toml', 'abilities')
+  if (upgradeData) {
+    for (const [abilityId, patch] of Object.entries(upgradeData)) {
+      if (!patch || typeof patch !== 'object') continue
+      if (!mod.abilities[abilityId]) {
+        errorReporter.report({
+          source: 'mod-loader',
+          severity: 'warning',
+          message: `ability-upgrades.toml 定义了未声明的能力 '${abilityId}' 的升级路径（abilities.toml 无此能力），跳过`,
+        })
+        continue
+      }
+      const target = mod.abilities[abilityId]
+      // 注释：patch 只在 mod（abilities.toml）未显式写该字段时应用——否则 mod override 失效
+      // （插件默认层 ability-upgrades.toml 无条件覆盖 mod 的 mode/upgrades 会违反三层 override 铁律）
+      if (patch.mode !== undefined && target.mode === undefined) target.mode = patch.mode
+      if (patch.upgrades !== undefined && target.upgrades === undefined) target.upgrades = patch.upgrades
+      if (patch.extra_needs !== undefined && target.extra_needs === undefined) target.extra_needs = patch.extra_needs
+      if (patch.sex_need !== undefined && target.sex_need === undefined) target.sex_need = patch.sex_need
+    }
+  }
 
   // 注释：加载 relations.toml 三段（types/pairs/groups，关系系统 v2）
   const relData = loadMerged<Record<string, any>>('relations.toml', 'types')
@@ -1131,6 +1233,32 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   // 注释：加载 talents.toml（插件默认 + mod 定义 deepMerge）
   const talentData = loadMerged<Record<string, TalentDef>>('talents.toml', 'talents')
   if (talentData) mod.talentDefs = talentData
+
+  // 注释：加载 talent-gains.toml（素质获得：gain_type + needs）——并入已有天赋定义的 gain 字段
+  const talentGainData = loadMerged<Record<string, Partial<TalentDef>>>('talent-gains.toml', 'talents')
+  if (talentGainData) {
+    for (const [talentId, patch] of Object.entries(talentGainData)) {
+      if (!patch || typeof patch !== 'object' || !patch.gain) continue
+      if (!mod.talentDefs[talentId]) {
+        errorReporter.report({
+          source: 'mod-loader',
+          severity: 'warning',
+          message: `talent-gains.toml 定义了未声明的素质 '${talentId}' 的获得条件（talents.toml 无此素质），跳过`,
+        })
+        continue
+      }
+      const target = mod.talentDefs[talentId]
+      // 注释：字段级"已定义则不覆盖"——mod 在 talents.toml 写的 gain 优先于
+      // talent-gains.toml（插件默认层无条件覆盖会违反三层 override 铁律）
+      target.gain = { ...target.gain }
+      if (patch.gain.needs !== undefined && target.gain.needs === undefined) target.gain.needs = patch.gain.needs
+      if (patch.gain.gain_type !== undefined && target.gain.gain_type === undefined) target.gain.gain_type = patch.gain.gain_type
+      if (patch.gain.replace !== undefined && target.gain.replace === undefined) target.gain.replace = patch.gain.replace
+    }
+  }
+
+  // 注释：升级路径校验（须在 talents 加载之后——needs 引用 talent 名需要 talentDefs 就绪）
+  validateAbilityUpgrades(mod, modName)
 
   // 注释：加载 styles.toml（命名样式注册表）
   const stylesPath = `/mods/${modName}/definitions/talk/styles.toml`
@@ -1289,21 +1417,32 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
 }
 
 // 注释：展开角色 abilities 简写（数字→{level, xp:0}），已是对象则保持
+// 2026-08-11（ADR-0009 后续批）：按需展开——不再全量注入所有能力定义（几百技能 × NPC 会
+// 撑爆存档）。角色卡能力（感度/刻印/性技）由 attributes.toml category=ability 条目的默认值
+// 落位保证（applyAttributeDefaults 先于本函数执行）；mod 技能仅当角色数据写了才存在；
+// 存档读档不经过本函数（存档权威，全量条目保留）。未拥有的能力在 getByTag/checkUpgrade/
+// 条件路径中语义 = 0 级（缺失即 0）。
+// 例外（2026-08-11 联动修复）：mode="condition" 的能力**必须全量注入 0 级条目**——
+// checkUpgrade 遍历 char.abilities 做条件升级（经验/宝珠门槛），无条目 = 永不升级（静默）。
+// 经验→能力升级链路依赖此保证；xp 模式按需（获得/解锁时才建条目）。
 // per-char 版本（运行时生成角色也走同一逻辑，见 finalizeCharacterData）
 function expandCharacterAbilitiesForChar(char: any, abilityDefs: Record<string, AbilityDef>): void {
   if (!char) return
   if (!char.abilities) char.abilities = {}
   const expanded: Record<string, { level: number; xp: number | null }> = {}
-  // 注释：先填入 abilities.toml 中定义的所有能力默认值
-  for (const abilityId of Object.keys(abilityDefs)) {
-    expanded[abilityId] = { level: 0, xp: 0 }
-  }
-  // 注释：再用角色已有数据覆盖（roster 简写 → {level, xp}）
+  // 注释：只展开角色已有的（roster 简写 → {level, xp}；对象保持；attributes 落位的卡能力保留）
   for (const [abilityId, value] of Object.entries(char.abilities)) {
     if (typeof value === 'number') {
       expanded[abilityId] = { level: value, xp: 0 }
     } else if (typeof value === 'object' && value !== null) {
       expanded[abilityId] = value as { level: number; xp: number | null }
+    }
+  }
+  // 注释：condition 模式能力全量注入（升级遍历入口；缺条目则 checkUpgrade 静默不升）
+  for (const [abilityId, def] of Object.entries(abilityDefs)) {
+    if (def.mode !== 'condition') continue
+    if (expanded[abilityId] === undefined) {
+      expanded[abilityId] = { level: 0, xp: 0 }
     }
   }
   char.abilities = expanded
@@ -1330,7 +1469,7 @@ export function finalizeCharacterData(char: EntityData, mod: LoadedMod): void {
   const hasAngry = (char as any).base?.['愤怒'] !== undefined
   applyAttributeDefaults(char, mod.attributes)
   expandCharacterAbilitiesForChar(char as any, mod.abilities)
-  normalizeMarksToAbilities(char as any)
+  normalizeMarksToAbilities(char as any, mod)
   normalizeInventoryToArray(char as any)
   normalizeRelations(char as any, mod.relationTypes)
   initializeTalentsForChar(char as any, mod.talentDefs)
@@ -1465,11 +1604,23 @@ function normalizeInventoryToArray(char: any): void {
 // 刻印 canonical 存储 = entity.abilities（h-mark 升级写、calcJudge 读，SEARCH_ORDER abilities 在前）；
 // 角色数据写 marks = {快乐刻印 = 2} 是直观写法（UI 分组即「刻印」），加载时拷贝进 abilities。
 // 规则：值 > 0 才拷贝；两者都写则 abilities 优先（marks 只补缺）。marks 镜像字段本身保留不动。
+// 2026-08-11（按需展开批）：刻印是"角色卡"——attributes.toml 全部 category=mark 属性保证
+// abilities 有 0 级条目（h-mark 升级写 .level 需要条目存在，缺失会 TypeError；面板显示全貌）。
 // 导出供 save-system restoreFromSave 恢复路径复用（旧存档 marks 值不静默丢失）。
-export function normalizeMarksToAbilities(char: any): void {
+export function normalizeMarksToAbilities(char: any, mod?: LoadedMod): void {
+  if (!char) return
+  if (!char.abilities) char.abilities = {}
+  const attributes = mod?.attributes
+  if (attributes) {
+    for (const [attrName, def] of Object.entries(attributes)) {
+      if (def.category !== 'mark') continue
+      if (char.abilities[attrName] === undefined) {
+        char.abilities[attrName] = { level: 0, xp: 0 }
+      }
+    }
+  }
   const rawMarks = char.marks
   if (!rawMarks || typeof rawMarks !== 'object') return
-  if (!char.abilities) char.abilities = {}
   for (const [markName, value] of Object.entries(rawMarks) as [string, any][]) {
     if (typeof value !== 'number' || value <= 0) continue
     const existing = char.abilities[markName]
@@ -1562,6 +1713,63 @@ function validateTalents(mod: LoadedMod, modName: string): void {
   }
 }
 
+// 注释：能力升级路径校验（2026-08-11 成长系统）——
+// ① upgrades 条数超过 max_level → error（值域越界）
+// ② needs 引用的 ability/talent id 不存在 → error（对齐 §37 跨文件 ID 引用校验）
+// ③ needs 引用的 experience id / ability_sum 的 tag 无匹配 → warning（数字 id 直通无定义文件可查）
+function validateAbilityUpgrades(mod: LoadedMod, _modName: string): void {
+  const defs = mod.abilities
+  for (const [abilityId, def] of Object.entries(defs)) {
+    if (def.mode !== 'condition') continue
+    if (!def.upgrades || def.upgrades.length === 0) continue
+    if (def.max_level > 0 && def.upgrades.length > def.max_level) {
+      errorReporter.report({
+        source: 'mod-loader',
+        severity: 'error',
+        message: `能力 '${abilityId}' 的升级路径 ${def.upgrades.length} 条超过 max_level=${def.max_level}（值域越界，检查 ability-upgrades.toml 或 abilities.toml）`,
+      })
+    }
+    const checkNeed = (need: UpgradeNeed, where: string): void => {
+      if (!need) return
+      if (need.type === 'ability') {
+        if (!defs[need.id as string]) {
+          errorReporter.report({
+            source: 'mod-loader',
+            severity: 'error',
+            message: `能力 '${abilityId}' 升级需求引用了不存在的能力 '${need.id}'（${where}）`,
+            suggestion: `检查 abilities.toml 是否定义了该能力（可用：${Object.keys(defs).slice(0, 10).join(', ')}）`,
+          })
+        }
+      } else if (need.type === 'talent') {
+        if (!mod.talentDefs[need.id as string]) {
+          errorReporter.report({
+            source: 'mod-loader',
+            severity: 'error',
+            message: `能力 '${abilityId}' 升级需求引用了不存在的素质 '${need.id}'（${where}）`,
+          })
+        }
+      } else if (need.type === 'experience') {
+        // 数字 id 直通（erArk Experience.csv，与 experience 命名空间同序）——无定义文件可机器校验，
+        // 常规数据不报（E 需求是 erArk AbilityUp.csv 全量常态；报错只会刷屏）
+      } else if (need.type === 'ability_sum') {
+        const hasTag = Object.values(defs).some(d => d.tags?.includes(need.tag as string))
+        if (!hasTag) {
+          errorReporter.report({
+            source: 'mod-loader',
+            severity: 'warning',
+            message: `能力 '${abilityId}' 的聚合判定引用 tag '${need.tag}'，但没有任何能力带此标签（聚合结果恒 0）`,
+          })
+        }
+      }
+    }
+    for (const [idx, entry] of def.upgrades.entries()) {
+      for (const need of entry.needs ?? []) checkNeed(need, `第 ${idx} 级`)
+      for (const need of entry.backup_needs ?? []) checkNeed(need, `第 ${idx} 级备选`)
+    }
+    for (const need of def.extra_needs ?? []) checkNeed(need, '能力级附加判定')
+  }
+}
+
 const tomlModules = import.meta.glob('/mods/**/*.toml', {
   query: '?raw',
   import: 'default',
@@ -1583,11 +1791,23 @@ const layoutModules = import.meta.glob('/mods/**/maps/layout/*.json', {
 export class ModLoader {
   private loadedMod: LoadedMod | null = null
 
+  // 注释：插件默认层 rawTomlMap 缓存（2026-08-11 全量超时优化）——
+  // talk-common-system 默认层 165 个 TOML / 71.6MB，每次 loadMod 全量 await loader() 是
+  // 测试超时热点（单 fork 串行下每个文件重复解析）。loader() 结果（字符串）模块级缓存，
+  // 首次 loadMod 解析一次，后续复用。生产零影响（只 loadMod 一次）；插件默认层本不在
+  // HMR 监听范围（AGENTS §28 只监听 /mods/**），无热更新损失。
+  private pluginDefaultCache = new Map<string, string>()
+
   async loadMod(modName: string): Promise<LoadedMod> {
     const rawTomlMap: RawTomlMap = {}
-    // 注释：Layer 1——插件默认数据（优先级最低）
+    // 注释：Layer 1——插件默认数据（优先级最低；缓存复用，避免 71.6MB 重复解析）
     for (const [path, loader] of Object.entries(pluginDefaultModules)) {
-      rawTomlMap[path] = await loader()
+      let raw = this.pluginDefaultCache.get(path)
+      if (raw === undefined) {
+        raw = await loader()
+        this.pluginDefaultCache.set(path, raw)
+      }
+      rawTomlMap[path] = raw
     }
     // 注释：Layer 3——mod 定义数据（优先级最高，同名覆盖 plugin defaults）
     const prefix = `/mods/${modName}/`

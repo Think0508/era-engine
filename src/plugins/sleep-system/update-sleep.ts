@@ -1,10 +1,14 @@
 // 睡眠结算对全员（erArk sleep_settle.update_sleep()：npc_id_got + {0}——sleep_settle.py:45-100）
 // 玩家睡觉指令执行后调用（sleep-system execution_end 监听，时长为睡眠实际分钟数）：
-//   全员：settle_character_juel 的宝珠砍版（daily_reset 标记属性归零，:52/:124-128）
+//   全员：宝珠转换（settle_character_juel：状态值→宝珠+清零，:52/:103-151——2026-08-11
+//         完整复刻，此前宝珠系统被砍只留 daily_reset 清零）→ 其余 daily_reset 属性清零
 //   玩家：eja_point=0（:56，无条件）/ day_first_shoot_semen=True（:57，无条件）/
-//         醒来时间记录 / 精液转化（refresh_temp_semen_max，≥6h）/ 理智成长+能力升级（TODO）
+//         醒来时间记录 / 精液转化（refresh_temp_semen_max，≥6h）/ 精力成长（:55 sanity_point_grow，
+//         2026-08-11 完整复刻：today_cost ≥50 → 精力上限 += round/50，cap 9999）/
+//         能力升级（:75 gain_ability，mod 开关 upgrade_on_player_sleep）
 //   NPC：愤怒 rand(1,35)（:80）/ h_interrupt=0（:82）/ day_first_meet=1（:84）/
-//         妊娠检查（:88，TODO）/ 素质获得（:90）/ 能力升级（:92，TODO）/
+//         妊娠检查（:88，TODO）/ 素质获得（:90 gain_talent gain_type=3）/
+//         能力升级（:92，mod 开关 upgrade_on_npc_sleep）/
 //         H 状态完全重置（:95 get_h_state_reset）/ sleep_h_awake=False（:97）
 // 注：NPC 的 sp_flag.sleeping/unnormal 标记由 npc:behavior_started 管理（睡眠行为结束自然清除），
 // 本函数不清——玩家睡眠不代表 NPC 立即醒来（erArk 同构：update_sleep 不触碰行为）
@@ -13,10 +17,31 @@ import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
 import { eventBus } from '../../core/event-bus'
 import { errorReporter } from '../../core/error-reporter'
-import { getEntityAttr, setEntityAttr } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
 import { settleDailyReset } from '../../core/realtime-settle'
+import { settleJuelConversion } from '../../core/juel-settle'
 import { checkTalentGain } from '../../core/talent-utils'
+import { narrativeLog } from '../../core/narrative-log'
+import { apiSystem } from '../../core/api'
+import { modLoader } from '../../core/mod-loader'
 import { clearAsleep } from './sleep-state'
+
+// 精力成长（erArk sleep_settle.sanity_point_grow：today_cost ≥50 → 上限 += round/50，cap 9999）
+// 2026-08-11 完整复刻：精力消耗方 = h-hypnosis 催眠/体控指令（原"精神"属性已删，对账表重对账）
+function growStaminaMax(char: any): void {
+  if (!char.action_info) char.action_info = {}
+  const todayCost = char.action_info.today_sanity_point_cost ?? 0
+  char.action_info.today_sanity_point_cost = 0
+  if (todayCost < 50) return
+  const staminaMax = getEntityAttr(char, ATTR.STAMINA_MAX)
+  if (typeof staminaMax !== 'number' || staminaMax >= 9999) return
+  const grow = Math.round(todayCost / 50)
+  const next = Math.min(9999, staminaMax + grow)
+  setEntityAttr(char, ATTR.STAMINA_MAX, next)
+  const charName = (char as any).name ?? char.id
+  // 叙事输出（erArk "在刻苦的锻炼下，博士理智最大值成长了X点"）
+  narrativeLog.write(`在刻苦的锻炼下，${charName}精力最大值成长了${grow}点`, 'system', 'sleep-system')
+}
 
 // 精液转化（erArk sleep_settle.refresh_temp_semen_max：睡眠时长 ≥6h 且 当前精液 >0 →
 // 额外精液 += floor(精液/2)，上限 精液上限×4；满则获得"浓厚精液"天赋）
@@ -40,17 +65,37 @@ function refreshTempSemenMax(char: any, minutes: number): void {
   }
 }
 
+// 能力升级结算（erArk handle_ability.gain_ability）——经 API 调 ability-progression（跨插件通信铁律）
+async function settleAbilityUpgrade(charId: string): Promise<void> {
+  try {
+    await apiSystem.call('abilities', 'checkUpgrade', charId)
+  } catch (err) {
+    errorReporter.report({
+      source: 'sleep-system',
+      severity: 'warning',
+      message: `睡眠结算能力升级失败（${charId}）：${err instanceof Error ? err.message : String(err)}`,
+      suggestion: '检查 ability-progression 插件是否已加载',
+    })
+  }
+}
+
 export async function updateSleepAll(minutes: number): Promise<void> {
   const playerId = gameContext.getContext().player?.id
   const now = gameContext.getContext().time
+  const mod = modLoader.getMod()
+  const settings = mod?.upgradeSettings ?? { player_sleep: true, npc_sleep: true, npc_h_end: true }
 
   for (const char of entitySystem.getAll('character')) {
     const c = char as any
     if (!c?.id) continue
     const isPlayer = c.id === playerId
 
-    // 全员：快感清零（daily_reset 标记属性归零——宝珠系统已砍只留清零）
+    // 全员：宝珠转换（状态值→宝珠 + 清零，erArk :52/:103-151）+ 其余 daily_reset 清零
+    const juelTexts = settleJuelConversion(c)
     settleDailyReset(c)
+    if (juelTexts.length > 0) {
+      narrativeLog.write(`${c.name ?? c.id}：${juelTexts.join('，')}`, 'system', 'sleep-system')
+    }
 
     if (isPlayer) {
       // 玩家分支
@@ -63,8 +108,12 @@ export async function updateSleepAll(minutes: number): Promise<void> {
       c.action_info.wake_time = now
       // 精液转化（≥6h）
       refreshTempSemenMax(c, minutes)
-      // TODO(sleep-system)：理智成长（sanity_point_grow——精力/理智无消费方，源石技艺未实装）
-      // TODO(sleep-system)：能力升级检测（handle_ability.gain_ability，ability-progression 无对等 API）
+      // 精力成长（:55 sanity_point_grow——2026-08-11 完整复刻）
+      growStaminaMax(c)
+      // 能力升级检测（:75 gain_ability；mod 开关 upgrade_on_player_sleep）
+      if (settings.player_sleep) {
+        await settleAbilityUpgrade(c.id)
+      }
       clearAsleep(c)
     } else {
       // NPC 分支
@@ -80,10 +129,9 @@ export async function updateSleepAll(minutes: number): Promise<void> {
       }
       // TODO(sleep-system)：妊娠检查（pregnancy.check_all_pregnancy——h-pregnancy 无 check_all 对等 API，
       // 现有 isPregnant/getDays 为查询用；受精检查随 h-pregnancy 扩展接入）
-      // 素质获得（:90 gain_talent now_gain_type=3——checkTalentGain 按 gain.condition 自动习得，
-      // 睡觉时机对全部 NPC 执行；移除类/睡觉专属类型未实现）
+      // 素质获得（:90 gain_talent now_gain_type=3——checkTalentGain 按 gain_type=3 + needs/condition）
       try {
-        checkTalentGain(c.id)
+        checkTalentGain(c.id, 3)
       } catch (err) {
         // G 修复（第四轮）：错误处理铁律——禁止静默 catch
         errorReporter.report({
@@ -92,7 +140,10 @@ export async function updateSleepAll(minutes: number): Promise<void> {
           message: `睡眠结算素质获得失败（${c.id}）：${err instanceof Error ? err.message : String(err)}`,
         })
       }
-      // TODO(sleep-system)：能力升级检测（同玩家）
+      // 能力升级检测（:92；mod 开关 upgrade_on_npc_sleep）
+      if (settings.npc_sleep) {
+        await settleAbilityUpgrade(c.id)
+      }
       // H 状态完全重置（:95 get_h_state_reset——h_state 置空为无 H 状态规范表示）
       c.h_state = undefined
       // sleep_h_awake = False（:97——睡奸醒来标记清除）

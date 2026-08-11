@@ -58,3 +58,48 @@ tags = ["internal"]
 # （linear/exponential 则只填一个数字，每级固定）
 # 写法 A：linear + 数字 → 每级 100 XP
 # 写法 B：custom + 数组 → 第 1 级 100、第 2 级 200、第 3 级 400…
+
+# ═══════════════════════════════════════════════════════════════════
+# 条件驱动升级示范（mode = "condition"，2026-08-11 成长系统）
+# 与上面的 XP 模式（gain_ability_xp 即时升级）不同：condition 模式在结算点
+# （睡眠 / H结束）按 upgrades 逐级检查 needs，满足才升——erArk 式升级。
+# 字段说明：
+#   mode = "condition"：启用条件驱动（缺省 "xp"）
+#   [[upgrades]]：第 i 条 = 从 i 级升 i+1 级的需求；条数 = 值域上限（缺条不可升）
+#   needs：主需求（全部满足才升）；backup_needs：主不满足时备选（任一满足即可）
+#   need 类型（type 字段）：
+#     ability      → 能力等级达标   { type = "ability", id = "亲密", value = 2 }
+#     talent       → 拥有该素质     { type = "talent", id = "剑骨" }
+#     juel         → 宝珠数量达标    { type = "juel", id = 12, value = 100 }（升级时消耗）
+#     experience   → 经验数值达标    { type = "experience", id = 0, value = 5 }
+#                    （erArk 经验数字 id 直通：0=皮肤经验 42=口交经验 141-152=体位…）
+#     favorability → 好感度达标      { type = "favorability", value = 60 }
+#     trust        → 信赖度达标      { type = "trust", value = 50 }
+#   extra_needs：能力级附加判定（每级都检查；ability_sum = 带某 tag 的能力等级之和
+#     ≥ 当前等级 × per_level，per_level_npc 可另设 NPC 倍率——erArk 技巧升级同款）
+#   sex_need：性别限定（-1 通用 / 0 男限定 / 1 女限定，erArk 原值）
+# ═══════════════════════════════════════════════════════════════════
+
+[abilities."房中术"]
+name = "房中术"
+description = "双修之术，需性技与亲密达标方可精进（条件驱动升级示范）"
+type = "passive"
+max_level = 3
+tags = ["abl"]
+mode = "condition"
+sex_need = -1
+# 附加判定：内功（internal tag）能力等级之和 ≥ 当前等级×2（每级升级前都检查）
+extra_needs = [{ type = "ability_sum", tag = "internal", per_level = 2 }]
+
+[[abilities."房中术".upgrades]]
+# 0→1：皮肤经验 ≥ 5（E 类型，数字 id 直通）
+needs = [{ type = "experience", id = 0, value = 5 }]
+
+[[abilities."房中术".upgrades]]
+# 1→2：欲情珠(12) ≥ 100（升级时消耗）+ 亲密 ≥ 2；备选：好感度 ≥ 60
+needs = [{ type = "juel", id = 12, value = 100 }, { type = "ability", id = "亲密", value = 2 }]
+backup_needs = [{ type = "favorability", value = 60 }]
+
+[[abilities."房中术".upgrades]]
+# 2→3：拥有天生神力 + 信赖 ≥ 50
+needs = [{ type = "talent", id = "天生神力" }, { type = "trust", value = 50 }]

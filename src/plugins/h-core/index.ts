@@ -755,14 +755,18 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：body_item_unequip——卸下身体物品
-  effectTypeRegistry.register('body_item_unequip', (_p: any, execCtx: any) => {
+  // 注释：body_item_unequip——卸下身体物品（grill Q4：manual/h_end 卸下归还背包 +1）
+  effectTypeRegistry.register('body_item_unequip', async (_p: any, execCtx: any) => {
     const slot = (_p.slot as number) ?? -1
     if (slot < 0) return true
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.body_items) continue
+      const slotData = ch.body_items[String(slot)] as BodyItemSlot | undefined
       delete ch.body_items[String(slot)]
+      if (slotData?.itemId) {
+        await apiSystem.call('inventory', 'addItem', id, slotData.itemId, 1)
+      }
       eventBus.emit('character:changed', { id })
     }
     return true
@@ -1064,7 +1068,7 @@ async function endHScene(allyId: string): Promise<void> {
         }
         c.equipment_off = {}
       }
-      // 注释：H 结束自动清理 body_auto_remove=h_end 的 body_item
+      // 注释：H 结束自动清理 body_auto_remove=h_end 的 body_item（grill Q4：归还背包 +1）
       if (c.body_items) {
         const mod = modLoader.getMod()
         for (const [slotKey, slotData] of Object.entries(c.body_items) as [string, any][]) {
@@ -1073,6 +1077,9 @@ async function endHScene(allyId: string): Promise<void> {
             const itemDef = (mod?.items as any)?.[sd.itemId] as any
             if (itemDef?.body_auto_remove === 'h_end') {
               delete c.body_items[slotKey]
+              if (sd.itemId) {
+                await apiSystem.call('inventory', 'addItem', c.id, sd.itemId, 1)
+              }
             }
           }
         }

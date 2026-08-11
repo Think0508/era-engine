@@ -14,7 +14,7 @@ type = "consumable"
 use = ["self"]
 stackable = true
 consume = true
-effects = [{ type = "modify_attribute", params = { attr = "hp", value = 50, target = "self" } }]
+effects = [{ type = "modify_attribute", params = { attr = "hp", value = 50 } }]
 
 # ═══════════════════════════════════════════════════════════
 # 服装
@@ -94,7 +94,7 @@ use = ["gift"]
 tags = ["gift", "jewelry"]
 stackable = false
 consume = true
-effects = [{ type = "give_gift", params = { mode = "favor", favor_base = 30, talk_multiplier = 2, target = "selected" } }]
+effects = [{ type = "give_gift", params = { mode = "favor", favor_base = 30, talk_multiplier = 2 } }]
 
 [items."道歉信"]
 id = "道歉信"
@@ -104,4 +104,4 @@ use = ["gift"]
 tags = ["gift"]
 stackable = false
 consume = true
-effects = [{ type = "give_gift", params = { mode = "apology", target = "selected" } }]
+effects = [{ type = "give_gift", params = { mode = "apology" } }]

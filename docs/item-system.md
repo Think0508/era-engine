@@ -94,6 +94,15 @@ defense_bonus = 3         # 可选：防御加值
 > 遍历角色 `body_items`，`expiry <= 当前分钟` 的槽位自动清除（不归还背包——药已消耗）。
 > 对应 erArk realtime_settle.py:270-283。安眠药 480 分钟 / 事前避孕药 30 天到点自动失效。
 
+### 目标解析约定（2026-08-12 第四轮审计）
+
+**物品 effects 的执行目标由调用方 `_targetIds` 决定，不要在物品 effects 里写 `params.target`**：
+
+- `useItem(charId, itemId, targetId?)`：目标 = `targetId ?? charId`（给目标用药/送礼传 targetId）
+- 指令 effects：目标 = effect 顶层 `target` 字段（`{type = "x", target = "selected", params = {...}}`）或调用方注入的目标
+- 引擎所有 handler（modify_attribute/apply_lubricant/body_item_equip/...）统一读 `ctx._targetIds`——`params.target` 是死参数（曾写在数据里误导，已清理）
+- 例外：`give_gift` 支持 handler 级 `params.target`（'selected'/'player'/角色 id 直传）——多目标效果的特例
+
 ## 五、body_item 槽位与前提
 
 身体物品槽（H 相关，独立于服装 equipment），槽位编号由 mod 在 `body_slot` 字段定义，**引擎不硬编码**（机制绑定槽位，不绑定物品名）。运行时状态存角色实体：

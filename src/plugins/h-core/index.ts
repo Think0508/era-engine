@@ -753,6 +753,8 @@ export function onLoad(_ctx: PluginContext): void {
       }
       if (itemDef?.duration) {
         const ct = gameContext.getContext().time
+        // TODO(expiry 接线，2026-08-12)：erArk realtime_settle.py 的到期检查未实现——
+        // expiry 时间戳只写不读，安眠药/事前避孕药到点不清除（docs/item-system.md §九）
         slotData.expiry = ct.hour * 60 + ct.minute + itemDef.duration
       }
       ch.body_items[String(slot)] = slotData

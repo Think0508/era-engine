@@ -74,4 +74,37 @@ describe('inventory-system 消耗语义', () => {
     const ch = entitySystem.get('character', 'u5') as any
     expect(ch.inventory).toHaveLength(0)
   })
+
+  // ═══════ 静默错误审计修复（2026-08-12）═══════
+  it('equip 背包无物品：拒绝装备 + warning（不凭空写槽）', async () => {
+    errorReporter.clear()
+    makeChar('e1', [])
+    const ok = await apiSystem.call('inventory', 'equip', 'e1', '布衣', 'upper')
+    expect(ok).toBe(false)
+    const ch = entitySystem.get('character', 'e1') as any
+    expect(ch.equipment?.upper).toBeUndefined()
+    const warn = errorReporter.getErrors().find(e => e.severity === 'warning' && e.message.includes('布衣'))
+    expect(warn).toBeDefined()
+  })
+
+  it('equip 槽位已有物品：旧物品回背包（不丢失）再上新', async () => {
+    makeChar('e2', [{ itemId: '布衣', count: 1 }, { itemId: '浴衣', count: 1 }])
+    await apiSystem.call('inventory', 'equip', 'e2', '布衣', 'upper')
+    let ch = entitySystem.get('character', 'e2') as any
+    expect(ch.equipment.upper).toBe('布衣')
+    expect(ch.inventory.find((i: any) => i.itemId === '布衣')).toBeUndefined()
+    await apiSystem.call('inventory', 'equip', 'e2', '浴衣', 'upper')
+    ch = entitySystem.get('character', 'e2') as any
+    expect(ch.equipment.upper).toBe('浴衣')
+    // 旧布衣回背包
+    expect(ch.inventory.find((i: any) => i.itemId === '布衣')?.count).toBe(1)
+    expect(ch.inventory.find((i: any) => i.itemId === '浴衣')).toBeUndefined()
+  })
+
+  it('addItem 角色不存在：返回 false + warning（归还路径不再无痕丢物品）', async () => {
+    errorReporter.clear()
+    expect(await apiSystem.call('inventory', 'addItem', 'ghost_char', '乳头夹', 1)).toBe(false)
+    const warn = errorReporter.getErrors().find(e => e.severity === 'warning' && e.message.includes('ghost_char'))
+    expect(warn).toBeDefined()
+  })
 })

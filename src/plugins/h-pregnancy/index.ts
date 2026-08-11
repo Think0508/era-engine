@@ -27,15 +27,24 @@ export function onLoad(_ctx: PluginContext): void {
       const semenV = char.body_semen?.[6]?.[1] ?? 0
       const semenW = char.body_semen?.[7]?.[1] ?? 0
       if (semenV + semenW <= 0) continue
-      // 注释：避孕药检查
-      if (char.body_items?.['11']?.active || char.body_items?.['12']?.active) continue
+      // 注释：避孕药检查（2026-08-12 静默审计修复——对齐 erArk pregnancy.py:52-73）
+      // 事前（槽11）：30 天 expiry 属另一机制（TODO 接线），判定时不消耗
+      if (char.body_items?.['11']?.active) continue
+      // 事后（槽12）：受孕判定时失效（一次有效，pregnancy.py:57-59）
+      if (char.body_items?.['12']?.active) {
+        delete char.body_items['12']
+        continue
+      }
       // 注释：受精率计算
       const mainSemen = semenV > 0 ? char.body_semen[6] : char.body_semen[7]
       const semenCount = mainSemen[1]
       const semenLevel = mainSemen[2] ?? 1
       let rate = Math.pow(semenCount / 1000, 2) * 100 + semenLevel * 5
-      // 注释：排卵促进药 ×5
-      if (char.body_items?.['10']?.active) rate *= 5
+      // 注释：排卵促进药 ×5，判定后消耗（erArk 03-道具系统.md §2.7：消耗时机=受孕判定时）
+      if (char.body_items?.['10']?.active) {
+        rate *= 5
+        delete char.body_items['10']
+      }
       // TODO: 催眠强制排卵 ×5（需 h-hypnosis 子系统）
       // TODO: 浓厚精液 ×2（需 thick_semen 标记）
       rate = Math.min(100, Math.max(0, rate))
@@ -66,12 +75,22 @@ export function onEnable(ctx: PluginContext): void {
       const semenV = targetChar.body_semen?.[6]?.[1] ?? 0
       const semenW = targetChar.body_semen?.[7]?.[1] ?? 0
       if (semenV + semenW <= 0) return
-      if (targetChar.body_items?.['11']?.active || targetChar.body_items?.['12']?.active) return
+      // 注释：避孕药检查（同 pregnancy_check 效果——2026-08-12 静默审计修复）
+      if (targetChar.body_items?.['11']?.active) return
+      // 事后（槽12）：受孕判定时失效（一次有效）
+      if (targetChar.body_items?.['12']?.active) {
+        delete targetChar.body_items['12']
+        return
+      }
       const mainSemen = semenV > 0 ? targetChar.body_semen[6] : targetChar.body_semen[7]
       const semenCount = mainSemen[1]
       const semenLevel = mainSemen[2] ?? 1
       let rate = Math.pow(semenCount / 1000, 2) * 100 + semenLevel * 5
-      if (targetChar.body_items?.['10']?.active) rate *= 5
+      // 排卵促进药 ×5，判定后消耗
+      if (targetChar.body_items?.['10']?.active) {
+        rate *= 5
+        delete targetChar.body_items['10']
+      }
       rate = Math.min(100, Math.max(0, rate))
       if (targetChar.body_semen?.[6]) targetChar.body_semen[6][1] = 0
       if (targetChar.body_semen?.[7]) targetChar.body_semen[7][1] = 0

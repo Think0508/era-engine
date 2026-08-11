@@ -86,6 +86,8 @@ defense_bonus = 3         # 可选：防御加值
 | H 结束清理（body_auto_remove=h_end） | +1 | 归还背包 |
 | 到期（body_auto_remove=expiry） | 0 | **不归还**（已消耗） |
 | 避孕套射精消耗 | 0 | **不归还**（已消耗，h-ejaculation 清槽） |
+| 事后避孕药（槽12） | 0 | 受孕判定时失效清槽（h-pregnancy，一次有效） |
+| 排卵促进药（槽10） | 0 | 受孕判定时消耗清槽（h-pregnancy，×5 后消耗） |
 | 即时药（body_slot=-1） | 已扣 | **不归还**（一次性效果） |
 
 > ⚠️ expiry 到期自动清槽为设计语义：`expiry` 时间戳在装槽时写入

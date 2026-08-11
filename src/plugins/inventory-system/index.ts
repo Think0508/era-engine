@@ -17,9 +17,17 @@ export function onLoad(_ctx: PluginContext): void {
 export function onEnable(ctx: PluginContext): void {
   // 注释：注册 inventory API
   ctx.api.register('inventory', {
-    addItem: (charId: string, itemId: string, count: number = 1): void => {
+    addItem: (charId: string, itemId: string, count: number = 1): boolean => {
       const char = entitySystem.get('character', charId) as any
-      if (!char) return
+      if (!char) {
+        // 注释：静默错误审计修复（2026-08-12）——角色不存在不再静默（归还路径物品消失无痕）
+        errorReporter.report({
+          source: 'inventory-system',
+          severity: 'warning',
+          message: `addItem 失败：角色 '${charId}' 不存在（物品 '${itemId}' 未入包）`,
+        })
+        return false
+      }
       if (!char.inventory) char.inventory = []
       const existing = char.inventory.find((i: any) => i.itemId === itemId)
       if (existing) {
@@ -28,6 +36,7 @@ export function onEnable(ctx: PluginContext): void {
         char.inventory.push({ itemId, count })
       }
       eventBus.emit('item:added', { character: charId, itemId, count })
+      return true
     },
     removeItem: (charId: string, itemId: string, count: number = 1): boolean => {
       const char = entitySystem.get('character', charId) as any
@@ -76,23 +85,38 @@ export function onEnable(ctx: PluginContext): void {
       return char?.inventory ?? []
     },
     // 注释：装备穿着——从背包移除 + 设 equipment 字段
-    equip: (charId: string, itemId: string, slot: string): void => {
+    // 静默错误审计修复（2026-08-12）：背包无物品拒绝装备（不凭空写槽）；
+    // 槽位已有物品先回背包（旧装备不再被覆盖丢失）
+    equip: (charId: string, itemId: string, slot: string): boolean => {
       const char = entitySystem.get('character', charId) as any
-      if (!char) return
-      // 注释：从背包移除
-      if (char.inventory) {
-        const item = char.inventory.find((i: any) => i.itemId === itemId)
-        if (item) {
-          item.count--
-          if (item.count <= 0) {
-            char.inventory = char.inventory.filter((i: any) => i.itemId !== itemId)
-          }
-        }
+      if (!char) return false
+      // 注释：背包必须有该物品
+      const item = char.inventory?.find((i: any) => i.itemId === itemId)
+      if (!item || item.count < 1) {
+        errorReporter.report({
+          source: 'inventory-system',
+          severity: 'warning',
+          message: `equip 失败：背包没有物品 '${itemId}'（${slot} 槽未装备）`,
+        })
+        return false
       }
-      // 注释：设 equipment 字段
+      // 注释：槽位已有物品 → 先回背包（不丢失）
+      if (char.equipment?.[slot] && char.equipment[slot] !== itemId) {
+        const oldItemId = char.equipment[slot]
+        if (!char.inventory) char.inventory = []
+        const old = char.inventory.find((i: any) => i.itemId === oldItemId)
+        if (old) old.count++
+        else char.inventory.push({ itemId: oldItemId, count: 1 })
+      }
+      // 注释：从背包移除 + 设槽
+      item.count--
+      if (item.count <= 0) {
+        char.inventory = char.inventory.filter((i: any) => i.itemId !== itemId)
+      }
       if (!char.equipment) char.equipment = {}
       char.equipment[slot] = itemId
       eventBus.emit('character:changed', { id: charId })
+      return true
     },
     // 注释：装备卸下——反向
     unequip: (charId: string, slot: string): void => {

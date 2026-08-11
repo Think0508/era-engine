@@ -278,8 +278,10 @@ ctx.api.call('abilities', 'checkUpgrade', charId)             // → void（2026
 
 ```typescript
 ctx.api.call('inventory', 'addItem', charId, itemId, count)   // → void
-ctx.api.call('inventory', 'removeItem', charId, itemId, count)// → void
-ctx.api.call('inventory', 'useItem', charId, itemId)          // → void（执行物品 effects）
+ctx.api.call('inventory', 'removeItem', charId, itemId, count)// → boolean（成功 true；物品不存在/数量不足/角色不存在 false）
+ctx.api.call('inventory', 'useItem', charId, itemId, targetId?)// → Promise<boolean>（consume 默认 true 先扣 1，数量不足
+                                                              //   返回 false 不执行 effects；consume=false 只执行 effects；
+                                                              //   targetId 提供时 effects 目标用 targetId）
 ctx.api.call('inventory', 'getInventory', charId)             // → {itemId, count}[]
 ctx.api.call('inventory', 'equip', charId, itemId, slot)      // → void
 ctx.api.call('inventory', 'unequip', charId, slot)            // → void
@@ -525,7 +527,7 @@ ctx.api.call('h-core', 'registerPremise', 'MY_PREMISE_ID', (evalCtx) => {
 | combat:end | combat-base | `{ winner, outcome }` | 战斗结束 |
 | item:added | inventory-system | `{ charId, itemId, count }` | 物品添加 |
 | item:removed | inventory-system | `{ charId, itemId, count }` | 物品移除 |
-| item:used | inventory-system | `{ charId, itemId }` | 物品使用 |
+| item:used | inventory-system | `{ charId, itemId, targetId }` | 物品使用 |
 | narrative:written | narrative-log | `{ text, type, source }` | 日志条目写入 |
 
 你的插件自定义事件必须加插件名前缀（`myplugin:xxx`），防止冲突。标准事件不加前缀。

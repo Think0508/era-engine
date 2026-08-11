@@ -29,18 +29,19 @@ export function onEnable(ctx: PluginContext): void {
       }
       eventBus.emit('item:added', { character: charId, itemId, count })
     },
-    removeItem: (charId: string, itemId: string, count: number = 1): void => {
+    removeItem: (charId: string, itemId: string, count: number = 1): boolean => {
       const char = entitySystem.get('character', charId) as any
-      if (!char?.inventory) return
+      if (!char?.inventory) return false
       const existing = char.inventory.find((i: any) => i.itemId === itemId)
-      if (!existing) return
+      if (!existing || existing.count < count) return false
       existing.count -= count
       if (existing.count <= 0) {
         char.inventory = char.inventory.filter((i: any) => i.itemId !== itemId)
       }
       eventBus.emit('item:removed', { character: charId, itemId, count })
+      return true
     },
-    useItem: async (charId: string, itemId: string): Promise<void> => {
+    useItem: async (charId: string, itemId: string, targetId?: string): Promise<boolean> => {
       const mod = modLoader.getMod()
       const itemDef = mod?.items[itemId]
       if (!itemDef) {
@@ -49,16 +50,23 @@ export function onEnable(ctx: PluginContext): void {
           severity: 'warning',
           message: `物品 '${itemId}' 不存在`,
         })
-        return
+        return false
       }
-      // 注释：执行物品定义的 effects（调 effect-system）
+      // 注释：消耗语义（grill 定案）——consume 默认 true：先扣 1（数量不足则不执行效果）
+      const consume = itemDef.consume !== false
+      if (consume) {
+        const removed = await apiSystem.call('inventory', 'removeItem', charId, itemId, 1)
+        if (!removed) return false
+      }
+      // 注释：执行物品定义的 effects（effect-system）；targetId 优先（h_drug 给目标用药等）
       if (itemDef.effects) {
         await apiSystem.call('effect-system', 'execute', itemDef.effects, {
           sourceId: charId,
-          _targetIds: [charId],
+          _targetIds: [targetId ?? charId],
         })
       }
-      eventBus.emit('item:used', { character: charId, itemId })
+      eventBus.emit('item:used', { character: charId, itemId, targetId })
+      return true
     },
     getInventory: (charId: string): any[] => {
       const char = entitySystem.get('character', charId) as any

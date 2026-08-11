@@ -45,7 +45,7 @@ behavior = "move"                   # 挂载键：玩家指令 id / NPC 行为�
 type = 0                            # 0|1 结算事件（合并语义）；2 = 静默事件
 text = "{self.name}在赶路时遇到一位剑客。"   # 文本（{self.name}/{target.name}/{player.name}/{location.name} + talk-common {变量}）
 effects = [
-  { type = "modify_attribute", params = { attr = "体力", value = -5, target = "self" } }
+  { type = "modify_attribute", target = "self", params = { attr = "体力", value = -5 } }
 ]
 
 [[events]]

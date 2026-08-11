@@ -108,6 +108,16 @@ describe('body_item 归还语义', () => {
       expect(target.base['好感度']).toBe(before + 30)
     })
 
+    it('drug 礼物：不处理（药物效果由物品 effects 链直接表达），好感不变', async () => {
+      setupGiftChars()
+      const target = entitySystem.get('character', 'gift_target') as any
+      target.base['好感度'] = 50
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'give_gift', params: { mode: 'drug', target: 'selected' } },
+      ], { sourceId: 'player', _targetIds: ['gift_target'] })
+      expect(target.base['好感度']).toBe(50)
+    })
+
     it('apology 礼物：愤怒清零 + 好感+10 + 好意+10', async () => {
       setupGiftChars()
       const target = entitySystem.get('character', 'gift_target') as any

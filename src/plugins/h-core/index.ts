@@ -877,8 +877,9 @@ export function onLoad(_ctx: PluginContext): void {
         ? [execCtx.sourceId].filter(Boolean)
         : [targetParam]
     if (targets.length === 0) return true
-    if (mode === 'mold') {
+    if (mode === 'mold' || mode === 'drug') {
       // TODO 倒模礼物（erArk Gift_Items type 13）：目标获得道具 + 好感+100 + 羞耻+100——未实装
+      // drug：由物品 effects 链直接表达，本 effect 不处理
       return true
     }
     for (const id of targets) {

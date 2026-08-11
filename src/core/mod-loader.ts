@@ -135,7 +135,7 @@ export interface Conversation {
 export interface ItemDef {
   id: string
   name: string
-  type: string          // weapon/armor/consumable/material/etc
+  type: string          // 五枚举：consumable|equipment|tool|material|key
   stackable: boolean
   effects?: any[]       // 使用效果（consumable 类）
   attack_bonus?: number
@@ -560,6 +560,10 @@ export interface LoadedMod {  id: string
 
   // 注释：待激活角色——spawn_condition 满足后才注册到 entity-system
   pendingSpawns?: PendingSpawn[]
+
+  // 注释：mod 层文件定义的物品 id（revalidateItemUses 用）——use 未注册检查只在插件
+  // 注册 use 后对 mod 层补跑（插件默认层物品的 use 由各自插件负责，不参与）
+  modItemLayerIds?: Set<string>
 }
 
 export interface PendingSpawn {
@@ -842,6 +846,34 @@ export function revalidateCharacterContract(): void {
   const mod = modLoader.getMod()
   if (!mod) return
   validateCharacterContract(mod, mod.id)
+}
+
+/**
+ * 物品 use 值重校验（启动顺序兼容，与 revalidateCharacterContract 同模式）：
+ * main.ts 实际顺序 = loadMod（先）→ 插件 onLoad（后）——模组数据加载时插件自定义 use
+ * （h_drug/h_toy/h_special 等）尚未注册，解析阶段校验会误报。插件注册 use 后调用本函数
+ * 补跑（只检查 mod 层物品，插件默认层由各自插件负责）。插件先行的启动顺序（AGENTS
+ * 文档序）无需补跑（parseModData 时 use 已注册）。幂等：可重复调用，无新增注册不会补报。
+ */
+export function revalidateItemUses(): void {
+  const mod = modLoader.getMod()
+  if (!mod?.items) return
+  const modLayerIds = mod.modItemLayerIds
+  if (!modLayerIds) return
+  for (const itemId of modLayerIds) {
+    const def = mod.items[itemId]
+    if (!def) continue
+    const useList = Array.isArray(def.use) ? def.use : typeof def.use === 'string' ? [def.use] : []
+    for (const u of useList) {
+      if (!useRegistry.has(u)) {
+        errorReporter.report({
+          source: 'mod-loader',
+          severity: 'warning',
+          message: `物品 '${itemId}' 的 use 值 '${u}' 未注册（插件注册后重校验）——无默认 UI 入口，请用指令或插件注册`,
+        })
+      }
+    }
+  }
 }
 
 export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod {
@@ -1160,6 +1192,10 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     }
   }
 
+  // 注释：mod 层文件定义的物品 id（revalidateItemUses 用——只重校验 mod 层，
+  // 插件默认层物品的 use 由各自插件负责，不重复警告）
+  const modLayerIds = new Set<string>()
+
   // 注释：加载 items——单文件 items.toml（插件默认 + mod definitions）+ 目录拆分
   // definitions/items/*.toml 与 data/default/items/*.toml（2026-08-12：物品按类别分文件）；
   // 合并规则：插件默认先合并（同 id 覆盖合法），mod 文件间同 id 重复 → error（文件名+行号）
@@ -1188,6 +1224,10 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
           })
           continue
         }
+        // 注释：mod 层首个定义后从 pluginIds 移除——后续 mod 文件再定义同一 id 视为 mod 间重复
+        // （插件默认 + 一个 mod 文件 = 合法覆盖；插件默认 + 两个 mod 文件 = 第二个报重复 error）
+        if (checkDuplicate) pluginIds.delete(id)
+        if (checkDuplicate) modLayerIds.add(id)
         result[id] = deepMerge(result[id] ?? {}, def) as ItemDef
         if (!checkDuplicate) pluginIds.add(id)
         if (!shouldValidate) continue
@@ -1201,7 +1241,6 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
           })
         }
         // 注释：use 兼容字符串与数组两种写法（grill Q2：use 数组化；旧数据有字符串写法）
-        const useList = Array.isArray(def.use) ? def.use : typeof def.use === 'string' ? [def.use] : []
         if (def.use !== undefined && !Array.isArray(def.use) && typeof def.use !== 'string') {
           errorReporter.report({
             source: 'mod-loader',
@@ -1209,15 +1248,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
             message: `物品 '${id}' 的 use 必须是 string 或数组（${path}）`,
           })
         }
-        for (const u of useList) {
-          if (!useRegistry.has(u)) {
-            errorReporter.report({
-              source: 'mod-loader',
-              severity: 'warning',
-              message: `物品 '${id}' 的 use 值 '${u}' 未注册（${path}）——无默认 UI 入口，请用指令或插件注册`,
-            })
-          }
-        }
+        // 注释：use 未注册检查不在此处（时序——插件自定义 use 在插件 onLoad 注册，晚于
+        // mod 数据加载；见 revalidateItemUses()：插件注册后对 mod 层物品补跑，防误报）
         if (def.consume !== undefined && typeof def.consume !== 'boolean') {
           errorReporter.report({ source: 'mod-loader', severity: 'warning', message: `物品 '${id}' 的 consume 必须是 boolean（${path}）` })
         }
@@ -1244,6 +1276,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     return result
   }
   mod.items = loadItemDefs()
+  // 注释：mod 层物品 id 集合——revalidateItemUses 补跑用（use 校验时序：插件注册后执行）
+  mod.modItemLayerIds = modLayerIds
 
   // 注释：加载 sets.toml
   const setsPath = `/mods/${modName}/definitions/sets.toml`

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { parseModData, ModLoader, modLoader, type LoadedMod } from './mod-loader'
+import { parseModData, ModLoader, modLoader, revalidateItemUses, type LoadedMod } from './mod-loader'
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
 import { conditionRegistry } from './condition-registry'
@@ -508,6 +508,33 @@ describe('item storage（目录拆分 + 覆盖 + 重复校验）', () => {
     expect(mod.items['媚药'].price).toBe(200)
   })
 
+  it('插件默认 + 两个 mod 文件同 id → 第二个报重复 error（插件层 id 也需 mod 层去重）', () => {
+    errorReporter.clear()
+    parseModData('test-mod', makeMap({
+      '/src/plugins/h-core/data/default/items/h-drugs.toml': [
+        '[items]',
+        '[items."媚药"]',
+        'name = "媚药"',
+        'type = "consumable"',
+        'price = 100',
+      ].join('\n'),
+      '/mods/test-mod/definitions/items/drugs.toml': [
+        '[items]',
+        '[items."媚药"]',
+        'name = "媚药"',
+        'price = 200',
+      ].join('\n'),
+      '/mods/test-mod/definitions/items/food.toml': [
+        '[items]',
+        '[items."媚药"]',
+        'name = "媚药"',
+        'price = 300',
+      ].join('\n'),
+    }))
+    const err = errorReporter.getErrors().find(e => e.severity === 'error' && e.message.includes('媚药') && e.message.includes('重复'))
+    expect(err).toBeDefined()
+  })
+
   it('mod 文件间同 id 重复 → error 上报', () => {
     errorReporter.clear()
     parseModData('test-mod', makeMap({
@@ -547,7 +574,7 @@ describe('item 校验', () => {
     expect(err).toBeDefined()
   })
 
-  it('use 未注册 → warning 不阻止加载', () => {
+  it('use 未注册 → parseModData 不警告；插件注册 use 后 revalidateItemUses 补报 warning', () => {
     errorReporter.clear()
     const mod = parseModData('test-mod', makeMap({
       '/mods/test-mod/definitions/items/misc.toml': [
@@ -559,8 +586,14 @@ describe('item 校验', () => {
       ].join('\n'),
     }))
     expect(mod.items['不明物品']).toBeDefined()
+    // 解析阶段：插件 use 注册晚于 mod 数据加载（main.ts = loadMod 先、插件 onLoad 后）——不误报
+    expect(errorReporter.getErrors().find(e => e.message.includes('不明物品'))).toBeUndefined()
+    // 插件注册 use 后补跑（h-core onLoad 先 register 再 revalidate——同 revalidateCharacterContract 模式）
+    ;(modLoader as any).loadedMod = mod
+    revalidateItemUses()
     const warn = errorReporter.getErrors().find(e => e.severity === 'warning' && e.message.includes('不明物品'))
     expect(warn).toBeDefined()
+    ;(modLoader as any).loadedMod = null
   })
 
   it('use 非法类型（数字）→ warning 不抛异常，物品正常加载', () => {

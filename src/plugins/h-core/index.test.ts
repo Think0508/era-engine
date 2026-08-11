@@ -59,6 +59,16 @@ describe('body_item 归还语义', () => {
     expect(ch.body_items['0'].itemId).toBe('乳头夹')
   })
 
+  it('背包无物品时 body_item_equip 中止（不写槽位）', async () => {
+    const ch = entitySystem.get('character', 'toy1') as any
+    ch.inventory = []
+    ch.body_items = {}
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'body_item_equip', params: { slot: 0 } },
+    ], { sourceId: 'toy1', _itemId: '乳头夹', _targetIds: ['toy1'] })
+    expect(ch.body_items['0']).toBeUndefined()
+  })
+
   it('手动卸下归还：body_item_unequip → 背包 +1，槽清空', async () => {
     charWithToy('toy2')
     await apiSystem.call('effect-system', 'execute', [

@@ -33,7 +33,7 @@ import { getContinuousAdjust } from '../../core/command-executor'
 import { getLevel, getEntityAttr } from '../../core/entity-utils'
 import { orgasmJudge, accumulateOrgasmFeel, ORGASM_ATTR_TO_PART, insertPositionToBodyCid, releaseOrgasmEdge, releaseTimeStopOrgasm, type OrgasmSettleOptions } from './settle/orgasm'
 import { settleEndHHpmpGrowth } from './settle/hpmp-growth'
-import { modLoader, revalidateCharacterContract } from '../../core/mod-loader'
+import { modLoader, revalidateCharacterContract, revalidateItemUses } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { ATTR } from '../../core/entity-utils'
 import { registerNoSaveMode } from '../../core/save-system'
@@ -77,6 +77,10 @@ export function onLoad(_ctx: PluginContext): void {
   useRegistry.register('h_drug')
   useRegistry.register('h_toy')
   useRegistry.register('h_special')
+  // 注释：补跑已加载 mod 的物品 use 校验——main.ts 顺序 = loadMod 先、插件 onLoad 后，
+  // mod 层物品用 h_drug/h_toy/h_special 时解析阶段会误报"未注册"；注册后立即补跑。
+  // 插件先行的启动顺序无需补跑（parseModData 时 use 已注册，revalidate 幂等无害）
+  revalidateItemUses()
   // 注释：角色契约校验器（标准角色契约 spec §10.1——最小必需集）
   registerCharacterContractValidator()
   // 注释：补跑已加载 mod 的角色校验——main.ts 顺序 = loadMod 先、插件 onLoad 后，
@@ -726,19 +730,16 @@ export function onLoad(_ctx: PluginContext): void {
     // 注释：扣 source 背包
     const srcId = execCtx.sourceId
     if (srcId && itemId) {
-      try {
-        await apiSystem.call('inventory', 'removeItem', srcId, itemId, 1)
-      } catch (err) {
-        // ★ 修复（第七轮）：静默吞掉会使物品既在背包又在身体槽（重复）
+      // 注释：消费扣减——removeItem 返回 boolean（从不 throw），失败（背包数量不足/不存在）→ 装备中止
+      const removed = await apiSystem.call('inventory', 'removeItem', srcId, itemId, 1) as unknown as boolean
+      if (!removed) {
         errorReporter.report({
           source: 'h-core',
           severity: 'warning',
-          message: `body_item_equip 从背包移除 '${itemId}' 失败：${err instanceof Error ? err.message : String(err)}`,
+          message: `body_item_equip 从背包移除 '${itemId}' 失败（数量不足或不存在）——装备中止`,
         })
+        return true
       }
-      // ⚠️ 半成品注记（第八轮）：inventory removeItem 返回 void 且从不 throw（缺物品/缺角色
-      // 静默 return）→ 上述 catch 实际不可达，真实失败（物品不在背包）仍无痕。
-      // 修正需 removeItem 改返回 boolean 后在调用处前置检查——随背包系统迭代处理
     }
     // 注释：设 target 的 body_items[slot]
     for (const id of execCtx._targetIds as string[]) {

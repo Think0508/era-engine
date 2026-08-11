@@ -53,6 +53,9 @@ export function onEnable(ctx: PluginContext): void {
         return false
       }
       // 注释：消耗语义（grill 定案）——consume 默认 true：先扣 1（数量不足则不执行效果）
+      // ⚠️ 双扣陷阱注记（final review）：consume=true 已在此扣 1，物品 effects 里若再含扣减类
+      // 效果（如 body_item_equip 从背包再扣 1）会造成双扣。当前无调用方走此路（h-core 装玩具
+      // 不经 useItem），mod 作者勿在 effects 里重复扣减——装槽类物品建议 consume=false。
       const consume = itemDef.consume !== false
       if (consume) {
         const removed = await apiSystem.call('inventory', 'removeItem', charId, itemId, 1)

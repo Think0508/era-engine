@@ -20,8 +20,8 @@ on_apply_effects = []            # 施加时触发
 on_remove_effects = []           # 移除时触发
 ```
 
-施加：`effects = [{type = "apply_status", params = {status = "中毒", target = "selected"}}]`
-移除：`effects = [{type = "remove_status", params = {status = "中毒", target = "selected"}}]`
+施加：`effects = [{type = "apply_status", target = "selected", params = {status = "中毒"}}]`
+移除：`effects = [{type = "remove_status", target = "selected", params = {status = "中毒"}}]`
 
 ## Mod 作者使用
 

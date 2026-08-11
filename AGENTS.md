@@ -1294,18 +1294,18 @@ max_stack = 3
 
 **施加方式**（effect type，status-system 注册）：
 ```toml
-effects = [{type = "apply_status", params = {status = "中毒", target = "selected"}}]
+effects = [{type = "apply_status", target = "selected", params = {status = "中毒"}}]
 ```
 
 **移除方式**（effect type，status-system 注册）：
 ```toml
-effects = [{type = "remove_status", params = {status = "中毒", target = "selected"}}]
+effects = [{type = "remove_status", target = "selected", params = {status = "中毒"}}]
 ```
 - `remove_status` 触发 `on_remove_effects`（和自然到期一样）
 - 移除整个状态（所有 stack），不支持只减一层
 - 角色没有该状态 → 静默跳过（不报错）
 
-**target 字段合法取值**（所有 effect 通用，不只是 apply_status）：
+**target 字段合法取值**（所有 effect 通用，不只是 apply_status）——**写在 effect 顶层**（与 `type`/`params` 同级），不是 params 里：
 
 | target 值 | 含义 | 注册者 |
 |-----------|------|--------|
@@ -1316,6 +1316,8 @@ effects = [{type = "remove_status", params = {status = "中毒", target = "selec
 | `all_allies` | 战斗中所有友方 | combat-base |
 | `target` | 战斗中当前目标 | combat-base |
 
+- ⚠️ **`params.target` 是死参数**（2026-08-12 链路审计定案）：引擎 handler 统一读执行上下文 `_targetIds`，`params.target` 无人解析——写在 params 里的 target 不生效。目标解析优先级：effect 顶层 `target` 字段 → 调用方注入的 `_targetIds`（如 `useItem` 的 targetId 参数）→ 默认 `selected`
+- 例外：`give_gift` 等 handler 级多目标效果可读 `params.target`（'selected'/'player'/角色 id 直传），属 handler 自身约定
 - 非战斗场景下 `all_enemies`/`target` 不可用 → 静默跳过 + warning
 - `selected = null` 时 → 静默跳过 + warning
 
@@ -1461,11 +1463,11 @@ effects = [{type = "set_field", params = {path = "factions.华山派", value = "
 
 所有效果使用统一结构 `{type, params}`，可选 `id` 和 `depends_on` 字段。执行上下文携带 `sourceId`、`targetId`、`extraContext`。效果组内按数组顺序执行；`depends_on` 表示"仅在前置效果成功时执行"（引用 effect 的 `id`，前置失败则跳过，不报错）。循环依赖或引用不存在的 id → 加载时报错。未知效果类型 → 加载时 warning，运行时静默跳过。
 
-**effect 的 target 字段**（所有 effect 通用）：
+**effect 的 target 字段**（所有 effect 通用）——写在 effect 顶层，**不是 params 里**（`params.target` 是死参数，见 §32）：
 ```toml
 effects = [
-  {type = "apply_status", params = {status = "中毒", target = "selected"}},
-  {type = "modify_attribute", params = {attr = "hp", value = -10, target = "all_enemies"}}
+  {type = "apply_status", target = "selected", params = {status = "中毒"}},
+  {type = "modify_attribute", target = "all_enemies", params = {attr = "hp", value = -10}}
 ]
 ```
 省略 target 时默认 `"selected"`。`selected = null` 时静默跳过 + warning。
@@ -1556,7 +1558,7 @@ xp_per_level = 100            # linear: 每级固定 100 XP
 
 **增加经验值**：
 ```toml
-effects = [{type = "gain_ability_xp", params = {ability = "华山剑法", xp = 20, target = "player"}}]
+effects = [{type = "gain_ability_xp", target = "player", params = {ability = "华山剑法", xp = 20}}]
 ```
 
 **升级触发**：

@@ -82,6 +82,9 @@ export interface GameContext {
   mode?: string
   getEntity: (type: string, id: string) => EntityData | null
   selectedCharacterId?: string
+  // 注释：前提求值上下文——触发者/被判定者（如 NPC AI 中被决策的角色），
+  // 由调用方注入（gameContext.getContext() 不填，默认 undefined）
+  sourceId?: string | null
   // 注释：实体字段别名（插件注册，如 status → status_effects）——core 不认知具体别名
   fieldAliases?: Record<string, string>
   // 注释：关系组（关系系统 v2）——组名 → 展开后的类型名列表（mod 加载后注入）

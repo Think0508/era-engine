@@ -7,6 +7,7 @@
 import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { narrativeLog } from '../../core/narrative-log'
+import { getEntityAttr } from '../../core/entity-utils'
 
 // 注释：刻印 ID 映射
 const MARKS: Record<string, number> = {
@@ -139,8 +140,10 @@ export function onEnable(ctx: PluginContext): void {
 }
 
 // 注释：获取单次 H 检测值（快乐/无觉用绝顶次数）
+// 2026-08-12（audit-b C1）：屈服/苦痛/恐怖/反发直读 base 命名空间——但这些状态
+// category=parameter → canonical 在 entity.params → 刻印永不升级。改经 getEntityAttr
+// 跨命名空间读取（base/params 均可，params 优先于 base 的既有落位规则不变——SEARCH_ORDER base 在前）
 function getCheckValue(char: any, markId: number): number {
-  const base = char.base ?? {}
   const h = char.h_state
   switch (markId) {
     case 13: // 快乐——本次 H 绝顶次数
@@ -148,15 +151,15 @@ function getCheckValue(char: any, markId: number): number {
     case 19: // 无觉——本次 H 无意识绝顶次数
       return countUnconsciousOrgasmThisSession(h)
     case 14: // 屈服
-      return (base['屈服'] ?? 0) + (base['恭顺'] ?? 0) + (base['羞耻'] ?? 0) / 5
+      return (getEntityAttr(char, '屈服') ?? 0) + (getEntityAttr(char, '恭顺') ?? 0) + (getEntityAttr(char, '羞耻') ?? 0) / 5
     case 15: // 苦痛
-      return (base['苦痛'] ?? 0) * 5
+      return (getEntityAttr(char, '苦痛') ?? 0) * 5
     case 16: // 时姦——无自动升级
       return 0
     case 17: // 恐怖
-      return (base['恐怖'] ?? 0) * 5 + (base['苦痛'] ?? 0)
+      return (getEntityAttr(char, '恐怖') ?? 0) * 5 + (getEntityAttr(char, '苦痛') ?? 0)
     case 18: // 反发
-      return (base['反感'] ?? 0) * 5 + (base['抑郁'] ?? 0) + (base['恐怖'] ?? 0) + (base['苦痛'] ?? 0)
+      return (getEntityAttr(char, '反感') ?? 0) * 5 + (getEntityAttr(char, '抑郁') ?? 0) + (getEntityAttr(char, '恐怖') ?? 0) + (getEntityAttr(char, '苦痛') ?? 0)
     default:
       return 0
   }

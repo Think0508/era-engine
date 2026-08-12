@@ -1,4 +1,5 @@
 import { entitySystem } from './entity-system'
+import { getEntityAttr, setEntityAttr, hasEntityAttr } from './entity-utils'
 
 type RequiredAttr = { type: string; description: string }
 
@@ -22,7 +23,9 @@ class BindingResolver {
     const attrKey = mapping[pluginKey]
     if (!attrKey) return null
 
-    return entity.base?.[attrKey] ?? null
+    // 注释：audit-a I2——原只读 entity.base，绑定到 social/combat/economy 类属性读恒 null。
+    // 跨命名空间读取；缺失（任何命名空间都无此键）→ null（既有语义保留）
+    return hasEntityAttr(entity, attrKey) ? getEntityAttr(entity, attrKey) : null
   }
 
   // 注释：按插件读自己的绑定映射（2026-08-10）——get() 跨插件搜索首个含 key 的映射，
@@ -38,7 +41,7 @@ class BindingResolver {
     const attrKey = mapping[pluginKey]
     if (!attrKey) return null
 
-    return entity.base?.[attrKey] ?? null
+    return hasEntityAttr(entity, attrKey) ? getEntityAttr(entity, attrKey) : null
   }
 
   set(entityId: string, pluginKey: string, value: any): void {
@@ -49,8 +52,13 @@ class BindingResolver {
     if (!mapping) throw new Error(`找不到 ${pluginKey} 的绑定`)
 
     const attrKey = mapping[pluginKey]
-    if (!entity.base) entity.base = {}
-    entity.base[attrKey] = value
+    // 注释：audit-a I2——原直写 entity.base[attrKey]：属性存在于 social 等命名空间时
+    // 产生 base 副本双真相源。setEntityAttr 会写回键已存在的命名空间；键不存在于任何
+    // 命名空间时返回 false → 落 base（既有"无键落 base"语义保留）
+    if (!setEntityAttr(entity, attrKey, value)) {
+      if (!entity.base) entity.base = {}
+      entity.base[attrKey] = value
+    }
   }
 
   // 注释：按插件写自己的绑定映射（2026-08-11，与 getForPlugin 对称）——
@@ -65,8 +73,10 @@ class BindingResolver {
     const attrKey = mapping[pluginKey]
     if (!attrKey) return false
 
-    if (!entity.base) entity.base = {}
-    entity.base[attrKey] = value
+    if (!setEntityAttr(entity, attrKey, value)) {
+      if (!entity.base) entity.base = {}
+      entity.base[attrKey] = value
+    }
     return true
   }
 

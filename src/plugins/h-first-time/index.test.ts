@@ -28,8 +28,7 @@ describe('h-first-time', () => {
 
   it('first_time_check virgin_V：破处标记 + first_records + 移除阴道处女天赋', () => {
     const char = makeChar('t_v', {
-      talents: { '阴道处女': 1, '肛门处女': 1, '无接吻经验': 1 },
-      abilities: { '性无知': { level: 1, xp: 0 } },
+      talents: { '阴道处女': 1, '肛门处女': 1, '无接吻经验': 1, '性无知': 1 },
       equipment: { panties: '内裤' },
     })
     runEffect('first_time_check', { key: 'virgin_V' }, ['t_v'])
@@ -41,8 +40,8 @@ describe('h-first-time', () => {
     expect(char.talents['阴道处女']).toBeUndefined()
     expect(char.talents['肛门处女']).toBe(1)
     expect(char.talents['无接吻经验']).toBe(1)
-    // 既有行为回归：性无知移除 + 处女血
-    expect(char.abilities['性无知']).toBeUndefined()
+    // 性无知是 talents 天赋（talents.toml:744），破处后从 talents 删除（audit-b I3）
+    expect(char.talents['性无知']).toBeUndefined()
     expect(char.equipment_blood?.panties).toBe(true)
   })
 

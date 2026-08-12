@@ -556,6 +556,80 @@ describe('item storage（目录拆分 + 覆盖 + 重复校验）', () => {
   })
 })
 
+// ═══════ 模板共享引用（audit-a C1——同模板角色/模板缓存零共享）═══════
+describe('模板共享引用（audit-a C1）', () => {
+  it('同模板未写 base 字段的两个角色：base 对象零共享，写一方不影响另一方', () => {
+    const mod = parseModData('test-mod', makeMap({
+      '/mods/test-mod/characters/roster.toml': [
+        '[[roster]]',
+        'id = "twin_a"',
+        'template = "base-human"',
+        'name = "双生A"',
+        '[[roster]]',
+        'id = "twin_b"',
+        'template = "base-human"',
+        'name = "双生B"',
+      ].join('\n'),
+    }))
+    const a = mod.entities.get('character')!.get('twin_a') as any
+    const b = mod.entities.get('character')!.get('twin_b') as any
+    expect(a.base).toBeDefined()
+    expect(a.base).not.toBe(b.base)
+    a.base['hp'] = 42
+    expect(b.base['hp']).toBe(100)
+  })
+
+  it('模板缓存不被角色写污染：实体与模板原始对象零共享，两次解析结果独立', () => {
+    const map = makeMap({
+      '/mods/test-mod/characters/roster.toml': [
+        '[[roster]]',
+        'id = "twin_c"',
+        'template = "base-human"',
+        'name = "双生C"',
+      ].join('\n'),
+    })
+    const mod = parseModData('test-mod', map)
+    const templates = mod.entities.get('__templates_character__')!
+    const c = mod.entities.get('character')!.get('twin_c') as any
+    expect(c.base).not.toBe(templates.get('base-human')!.base)
+    c.base['hp'] = 777
+    expect((templates.get('base-human')!.base as any)['hp']).toBe(100)
+    // 再次解析同一模组 → 新实体与旧实体零共享
+    const mod2 = parseModData('test-mod', map)
+    const c2 = mod2.entities.get('character')!.get('twin_c') as any
+    expect(c2.base).not.toBe(c.base)
+    c2.base['hp'] = 3
+    expect(c.base['hp']).toBe(777)
+  })
+
+  it('模板内数组的元素对象零共享：inventory 元素不被同模板角色共用', () => {
+    const mod = parseModData('test-mod', makeMap({
+      '/mods/test-mod/templates/character/base-human.toml': [
+        'id = "base-human"',
+        'name = "基础人类"',
+        'base = { hp = 100, mp = 50 }',
+        'inventory = [{ itemId = "布衣", count = 1 }]',
+      ].join('\n'),
+      '/mods/test-mod/characters/roster.toml': [
+        '[[roster]]',
+        'id = "inv_a"',
+        'template = "base-human"',
+        'name = "背包A"',
+        '[[roster]]',
+        'id = "inv_b"',
+        'template = "base-human"',
+        'name = "背包B"',
+      ].join('\n'),
+    }))
+    const a = mod.entities.get('character')!.get('inv_a') as any
+    const b = mod.entities.get('character')!.get('inv_b') as any
+    expect(a.inventory).toBeDefined()
+    expect(a.inventory[0]).not.toBe(b.inventory[0])
+    a.inventory[0].count = 99
+    expect(b.inventory[0].count).toBe(1)
+  })
+})
+
 // ═══════ 物品加载校验（2026-08-12：body_auto_remove 必填 / use 未注册 warning / 类型校验）═══════
 describe('item 校验', () => {
   it('body_slot≥0 无 body_auto_remove → error', () => {

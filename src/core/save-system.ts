@@ -190,6 +190,27 @@ export function restoreFromSave(data: SaveData): void {
   const t = data.gameTime
   gameContext.advanceTime(0)
   Object.assign(gameContext.getContext().time, t)
+  // 注释：恢复 location 实体池与当前地点（audit-a C2）——entitySystem.clear() 清掉了
+  // character 和 location 两池，此前只重注册 character → 读档后移动静默无操作 /
+  // moveTo 抛"当前地点未设置"。地点数据不随存档保存（从 TOML 重新加载，见文件头注释）
+  if (mod) {
+    for (const [id, loc] of mod.locations) {
+      entitySystem.register('location', id, loc as any)
+    }
+    // 注释：当前地点恢复——玩家 current_location 优先（存档运行时字段），
+    // 缺省 → mod.meta.starting_location 兜底，再无 → 第一个地点（同 main.ts 兜底逻辑）
+    const playerId = mod.playerCharacter ?? 'player'
+    const player = entitySystem.get('character', playerId) as any
+    const currentId = player?.current_location as string | undefined
+    let loc = currentId ? (entitySystem.get('location', currentId) as any) : null
+    if (!loc && mod.startingLocation) {
+      loc = entitySystem.get('location', mod.startingLocation) as any
+    }
+    if (!loc) {
+      loc = mod.locations.values().next().value as any
+    }
+    if (loc) gameContext.setLocation(loc)
+  }
   // 注释：恢复已完成 scene
   if (data.gameState?.completedScenes) {
     gameContext.setCompletedScenes(data.gameState.completedScenes)

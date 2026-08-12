@@ -156,7 +156,8 @@ export function onLoad(_ctx: PluginContext): void {
       const timeBase = addTime * 3
       if (!ch.base) ch.base = {}
       // 注释：欲情(12) = standard adjust(ability[33]) + adjust
-      const lustAb = ch.abilities?.['欲情']?.level ?? 0
+      // 2026-08-12（audit-b I2）：读错键 '欲情'（ABL 无此能力，恒 0）→ 改 '欲望'（ability[33]，文件注释 :142 自证）
+      const lustAb = ch.abilities?.['欲望']?.level ?? 0
       const lustAdj = getAbilityAdjust(lustAb) + adjust
       ch.base['欲情'] = Math.min(99999, (ch.base['欲情'] ?? 0) + Math.floor(timeBase * lustAdj))
       // 注释：羞耻(16) = standard adjust(ability[34]) + adjust

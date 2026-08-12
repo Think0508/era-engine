@@ -165,10 +165,11 @@ function calculateHypnosisDegree(charId: string): number {
 function calculateSanityCost(charId: string): number {
   const target = entitySystem.get('character', charId) as any
   if (!target) return 20
-  if (!target.talent) target.talent = {}
-  if (target.talent[73]) return 1
-  if (target.talent[72]) return 30
-  if (target.talent[71]) return 25
+  // 注释：audit-b I4——原读 target.talent[71/72/73] 数值键（引擎按名存 talents），
+  // 恒 0 → 完全催眠目标催眠指令成本不降。改读按名天赋
+  if (target.talents?.['已催眠·极']) return 1
+  if (target.talents?.['已催眠·深']) return 30
+  if (target.talents?.['已催眠·浅']) return 25
   return 20
 }
 
@@ -183,35 +184,35 @@ function getHypnosisDegreeLimit(): number {
 // 注释：NPC 催眠天赋阈值 — 程度 ≥ 50→71, ≥ 100→72, ≥ 200→73
 // erArk Hypnosis_Talent_Of_Npc.csv + hypnosis_panel.py:107-158 + handle_talent.py:189-222
 // NPC 需要对应玩家天赋: 72→332, 73→334
+// 2026-08-12（audit-b I4）：原写 ch.talent[71/72/73] 数值键——引擎按名存 ch.talents
+// （talents.toml:280-296 已催眠·浅/深/极）→ 催眠天赋永不落账（judge 修正/口上/完全催眠
+// 不可达）。改按名写 ch.talents（值为 1，与引擎天赋存储一致）
+const HYPNOSIS_TALENT_BY_DEGREE: { minDegree: number; talentName: string }[] = [
+  { minDegree: 200, talentName: '已催眠·极' },
+  { minDegree: 100, talentName: '已催眠·深' },
+  { minDegree: 50, talentName: '已催眠·浅' },
+]
 function checkHypnosisCompletion(charId: string): boolean {
   const ch = entitySystem.get('character', charId) as any
   if (!ch) return false
   const h = getHypnosis(charId)
   const degree = h.hypnosis_degree
-  if (!ch.talent) ch.talent = {}
-  const talent = ch.talent
   let changed = false
 
-  // 注释：erArk 73 需要玩家有 334, 程度 ≥ 200
-  if (degree >= 200 && !talent[73] && hasHypnosisTalent(334)) {
-    talent[73] = true
-    narrativeLog.write(`${ch.name ?? charId} 被完全催眠了！`, 'system', 'h-hypnosis')
+  for (const tier of HYPNOSIS_TALENT_BY_DEGREE) {
+    if (degree < tier.minDegree || ch.talents?.[tier.talentName]) continue
+    const playerTalentNeeded = tier.minDegree >= 200 ? 334 : tier.minDegree >= 100 ? 332 : 331
+    if (!hasHypnosisTalent(playerTalentNeeded)) continue
+    if (!ch.talents) ch.talents = {}
+    ch.talents[tier.talentName] = 1
+    const msg = tier.minDegree >= 200
+      ? `${ch.name ?? charId} 被完全催眠了！`
+      : tier.minDegree >= 100
+        ? `${ch.name ?? charId} 被深度催眠了！`
+        : `${ch.name ?? charId} 被初级催眠了！`
+    narrativeLog.write(msg, 'system', 'h-hypnosis')
     // TODO: 触发二段行为 has_been_complete_hypnosis（需 second_behavior 系统）
     // TODO: 触发成就 achievement_flow("催眠")
-    changed = true
-  }
-  // 注释：erArk 72 需要玩家有 332, 程度 ≥ 100
-  if (degree >= 100 && !talent[72] && hasHypnosisTalent(332)) {
-    talent[72] = true
-    narrativeLog.write(`${ch.name ?? charId} 被深度催眠了！`, 'system', 'h-hypnosis')
-    // TODO: 触发二段行为 has_been_deep_hypnosis
-    changed = true
-  }
-  // 注释：erArk 71 需要玩家有 331, 程度 ≥ 50
-  if (degree >= 50 && !talent[71] && hasHypnosisTalent(331)) {
-    talent[71] = true
-    narrativeLog.write(`${ch.name ?? charId} 被初级催眠了！`, 'system', 'h-hypnosis')
-    // TODO: 触发二段行为 has_been_primary_hypnosis
     changed = true
   }
   // TODO: 空气催眠门锁检查（需要场景 close_type 支持）

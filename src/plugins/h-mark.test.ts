@@ -126,4 +126,17 @@ describe('h-mark 刻印存储（按名键统一）', () => {
     n.sp_flag = {}
     n.h_state = undefined
   })
+
+  it('苦痛刻印读 params 命名空间（audit-b C1）：params.苦痛=50000 → LV3 + judge 修正生效', async () => {
+    const n = entitySystem.get('character', 'npc_1') as any
+    n.abilities = {}
+    delete n.base['苦痛']
+    n.params = { 苦痛: 50000 }  // category=parameter → canonical 在 params
+    await apiSystem.call('h-mark', 'checkOne', 'npc_1', 15)
+    // 50000×5 = 250000 ≥ 20000/40000/80000 → 一路升到 LV3（此前读 base 恒 0 → 永不升级）
+    expect(n.abilities?.['苦痛刻印']?.level).toBe(3)
+    // judge 刻印修正读升级后的等级（LV3 → +30）
+    expect(await apiSystem.call('h-mark', 'getMarkAdjust', 'npc_1', 15)).toBe(30)
+    n.params = undefined
+  })
 })

@@ -65,8 +65,14 @@ export function onLoad(_ctx: PluginContext): void {
       // 注释：V 破处 → 移除性无知 + 处女血
       if (key === 'virgin_V') {
         // 注释：移除性无知（对齐 erArk talent[222] 移除）
-        if (char.abilities?.['性无知']) {
-          char.abilities['性无知'] = undefined
+        // 2026-08-12（audit-b I3）：性无知是 talents 天赋（h-core/data/default/talents.toml:744），
+        // 原删 char.abilities['性无知'] 删错命名空间 → 天赋永不移除（口上/判定 性无知 修正恒生效）。
+        // 顺带清理历史错误写入的 abilities 同名键（旧版本可能落过账）
+        if (char.talents?.['性无知'] !== undefined) {
+          delete char.talents['性无知']
+        }
+        if (char.abilities?.['性无知'] !== undefined) {
+          delete char.abilities['性无知']
         }
         // 注释：处女血——内裤沾血，若无内裤则收集血滴
         bloodPanties(char)

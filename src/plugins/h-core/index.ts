@@ -125,8 +125,10 @@ export function onLoad(_ctx: PluginContext): void {
     }
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any
-      const f = char?.base?.好感度 ?? 0
-      const t = char?.base?.信赖度 ?? 0
+      // 注释：audit-b I1——好感/信赖 canonical 在 social 命名空间，直读 base 恒丢修正。
+      // 经 getEntityAttr 跨命名空间读取（ATTR 常量引用，禁止硬编码字符串）
+      const f = getEntityAttr(char, ATTR.FAVORABILITY) ?? 0
+      const t = getEntityAttr(char, ATTR.TRUST) ?? 0
       const r = calcJudge(judgeBase + bonus, f, t, id, judgeClass)
       merged = mergeJudgeResult(merged, r)
       if (r.retreated) {

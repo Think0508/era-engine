@@ -11,7 +11,7 @@
 //   6. 陷落修正（爱情/隶属链）
 //   7. 天赋个性（淫乱/性好奇/底线/把柄等）
 
-import { getLevel } from '../../../core/entity-utils'
+import { getLevel, getEntityAttr } from '../../../core/entity-utils'
 import { entitySystem } from '../../../core/entity-system'
 import { modLoader } from '../../../core/mod-loader'
 import { gameContext } from '../../../core/game-context'
@@ -38,8 +38,11 @@ export function mergeJudgeResult(current: JudgeResult, next: JudgeResult): Judge
   return current
 }
 
+// 注释：状态等级读取（audit-b C2）——原只读 char.params，但欲情/快乐主写路径直写 base
+// （tech_adjust index.ts:338、orgasm 附加 state-settle.ts:147-154、apply_aphrodisiac index.ts:696）
+// → 判定状态修正静默丢失。改经 getEntityAttr 跨命名空间读取（base/params 均可）。
 function getStatLevel(char: any, name: string): number {
-  const v = (char.params?.[name] ?? 0) as number
+  const v = (getEntityAttr(char, name) ?? 0) as number
   return getLevel(v, LEVEL_10)
 }
 

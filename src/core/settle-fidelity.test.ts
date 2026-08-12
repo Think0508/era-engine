@@ -14,6 +14,7 @@ import { errorReporter } from '../core/error-reporter'
 import { onLoad as effectOnLoad, onEnable as effectOnEnable } from '../plugins/effect-system/index'
 import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from '../plugins/h-core/index'
 import { onLoad as ejacOnLoad, onEnable as ejacOnEnable } from '../plugins/h-ejaculation/index'
+import { calcJudge } from '../plugins/h-core/settle/judge'
 import { eventBus } from '../core/event-bus'
 import { behaviorHistory, clearBehaviorHistory, getContinuousAdjust } from './command-executor'
 import { effectTypeRegistry } from './effect-type-registry'
@@ -779,6 +780,51 @@ describe('结算保真补全（tenths_add / 连续减值 / 无意识门控）', 
       ], execCtx({ _timeCost: 5 }))
       expect(npc().base['兽部'] ?? 0).toBe(0)
       expect(errorReporter.getErrors().some(e => e.severity === 'warning' && e.message.includes('兽部'))).toBe(true)
+    })
+  })
+
+  // ═══════════════════════════════════════════════════════════════
+  // 2026-08-12 审计批A：判定状态修正跨命名空间（getStatLevel 只读 params → 全命名空间）
+  // ═══════════════════════════════════════════════════════════════
+
+  describe('judge 状态修正跨命名空间（audit-b C2）', () => {
+    it('base 命名空间的欲情/快乐/苦痛参与状态修正（params 无，对照 erArk 修正 ×5/×10）', () => {
+      const n = npc()
+      n.params = undefined
+      n.base['愤怒'] = 30
+      n.base['苦痛'] = 2000     // 等级 3 → ×-10 = -30
+      n.current_location = 'tavern'  // 隔离"他人存在"修正（只自己在此地）
+      // 仅负面修正：100 - 30 = 70 → partial（此前只读 params → 修正全丢 → success）
+      let r = calcJudge(100, 0, 0, 'npc_1')
+      expect(r.success).toBe(false)
+      expect(r.partial).toBe(true)
+      // 正面抵消：欲情+快乐 等级5 → +50 → 120 → success
+      n.base['欲情'] = 6000
+      n.base['快乐'] = 6000
+      r = calcJudge(100, 0, 0, 'npc_1')
+      expect(r.success).toBe(true)
+      expect(r.retreated).toBe(false)
+    })
+  })
+
+  describe('judge_check 好感/信赖读 social 命名空间（audit-b I1）', () => {
+    it('social.好感度=5000 → 判定修正 FAV_JUDGE_ADD Lv6 = +150 生效', async () => {
+      const n = npc()
+      n.params = undefined
+      n.base['愤怒'] = 30
+      delete n.base['好感度']  // base 优先于 social（SEARCH_ORDER）——移除契约残留让 social 生效
+      n.abilities = { 反发刻印: { level: 1, xp: 0 } }  // 刻印修正 -100（abilities 读不受本批其他修复影响）
+      n.social = { 好感度: 5000 }  // canonical 在 social → +150
+      n.current_location = 'tavern'
+      const ctx = execCtx({ _targetIds: ['npc_1'] })
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'judge_check', params: { base: 100 }, target: 'selected' },
+      ], ctx)
+      // buggy：base.好感度=0 → favAdd 0 → 100-100 = 0 → retreated
+      // fixed：social.好感度=5000 → favAdd 150 → 150 → success
+      expect(ctx._judgeResult).toMatchObject({ success: true, retreated: false })
+      delete n.social
+      n.abilities = {}
     })
   })
 

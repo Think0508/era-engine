@@ -68,6 +68,22 @@ export function getEntityAttr(entity: any, name: string): any {
   return 0
 }
 
+/** 检查属性是否存在于任一命名空间（区别于 getEntityAttr 的 0 兜底——区分"值为 0"与"不存在"） */
+export function hasEntityAttr(entity: any, name: string): boolean {
+  if (entity === null || entity === undefined) return false
+
+  if (Object.prototype.hasOwnProperty.call(entity, name)) return true
+
+  for (const ns of SEARCH_ORDER) {
+    const container = entity[ns]
+    if (container && typeof container === 'object') {
+      if (Object.prototype.hasOwnProperty.call(container, name)) return true
+    }
+  }
+
+  return false
+}
+
 /** 跨命名空间写入属性值 */
 export function setEntityAttr(entity: any, name: string, value: any): boolean {
   if (!entity) return false

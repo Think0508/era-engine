@@ -20,6 +20,8 @@ class ConditionRegistry {
     { path: 'game.time.hour', type: 'number', description: 'Current hour (0-23)', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'game.time.day', type: 'number', description: 'Current day', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'game.time.month', type: 'number', description: 'Current month', operators: '> < >= <= == !=', source: 'engine' },
+    // 注释：当前模式（模式栈栈顶，B1 修复）——战斗门控条件 game.mode == 'combat' 取值源
+    { path: 'game.mode', type: 'string', description: 'Current mode (mode stack top)', operators: '== !=', source: 'engine' },
     { path: 'quest.{id}.status', type: 'string', description: 'Quest status', operators: '== !=', source: 'engine' }
   ]
   // 注释：结构路径惯例（AGENTS §8 路径结构）——数据化字段（talents/abilities/relations 等）按结构校验

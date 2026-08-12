@@ -79,6 +79,14 @@ function recalcSemenLevel(char: any, positionId: number): void {
   char.body_semen[positionId][2] = calcSemenLevel(currentMl, maxVol)
 }
 
+// 注释：射精欲增加时写上次增加时间（B6 修复，audit-b I5）——
+// erArk add_eaj 语义：last_eaj_add_time 在射精欲增加时写入，30 分钟消退门控依赖此字段
+function touchLastEajAddTime(char: any): void {
+  if (!char) return
+  if (!char.action_info) char.action_info = {}
+  char.action_info.last_eaj_add_time = gameTimeToTotalMinutes(gameContext.getContext().time)
+}
+
 export function onLoad(_ctx: PluginContext): void {
   // 注释：射精积累由 h-core orgasmJudge 二段结算处理（ADD_SMALL_P_FEEL 公式，经本插件 API 写入）——
   // 见文件头注释；TOML 如需手动增加射精欲可用 addEja API 或 h_experience 类效果
@@ -228,6 +236,7 @@ export function onLoad(_ctx: PluginContext): void {
     if (!char?.base) return true
     const cur = char.base['射精欲'] ?? 0
     char.base['射精欲'] = Math.max(0, cur + Math.floor(tc + 10 + cur * 0.4))
+    touchLastEajAddTime(char)
     return true
   })
 
@@ -245,6 +254,7 @@ export function onLoad(_ctx: PluginContext): void {
       const sensLv = char?.abilities?.['阴茎感度']?.level ?? 0
       const adjust = tbl[Math.min(Math.max(0, sensLv), 10)] ?? 4.0
       char.base['射精欲'] = Math.max(0, (char.base['射精欲'] ?? 0) + Math.floor((tc + bv) * adjust))
+      touchLastEajAddTime(char)
     }
     return true
   })
@@ -305,14 +315,19 @@ export function onEnable(ctx: PluginContext): void {
     })
   }
 
-  // 注释：每小时衰减射精欲
+  // 注释：每小时衰减射精欲（B6 修复，audit-b I5——对齐 erArk realtime_settle.py:102-108）：
+  // 仅玩家、仅非 H、仅 (当前时间 - last_eaj_add_time) > 30 分钟才衰减；
+  // 衰减量 int(true_add_time×10)——引擎按整点结算每小时 60 分钟 = -600
   ctx.events.on('game:hour_changed', () => {
-    for (const ch of entitySystem.getAll('character')) {
-      const c = ch as any
-      if (!c?.base || c?.h_state?.is_h) continue
-      if ((c.base['射精欲'] ?? 0) > 0) {
-        c.base['射精欲'] = Math.max(0, c.base['射精欲'] - 600)
-      }
+    const playerId = gameContext.getContext().player?.id
+    if (!playerId) return
+    const ch = entitySystem.get('character', playerId) as any
+    if (!ch?.base || ch?.h_state?.is_h) return
+    const now = gameTimeToTotalMinutes(gameContext.getContext().time)
+    const lastAdd = ch.action_info?.last_eaj_add_time
+    if (lastAdd != null && now - lastAdd <= 30) return
+    if ((ch.base['射精欲'] ?? 0) > 0) {
+      ch.base['射精欲'] = Math.max(0, ch.base['射精欲'] - 600)
     }
   })
 
@@ -350,9 +365,13 @@ export function onEnable(ctx: PluginContext): void {
     },
     // 注释：射精欲增加（delta 可为负——非 H 衰减走本 API 的减法语义）
     // 射精欲字段的唯一写入口（h-core 结算经此 API 写入，禁止直接改字段）
+    // B6：增加时写 last_eaj_add_time（erArk add_eaj 语义——消退门控前提）
     addEja: (charId: string, delta: number) => {
       const char = entitySystem.get('character', charId) as any
-      if (char?.base) char.base['射精欲'] = Math.max(0, (char.base['射精欲'] ?? 0) + (delta ?? 0))
+      if (char?.base) {
+        char.base['射精欲'] = Math.max(0, (char.base['射精欲'] ?? 0) + (delta ?? 0))
+        if ((delta ?? 0) > 0) touchLastEajAddTime(char)
+      }
     },
     getSemenOnBody: (charId: string) => {
       const char = entitySystem.get('character', charId) as any

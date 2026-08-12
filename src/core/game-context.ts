@@ -38,6 +38,8 @@ class GameContextManager {
       player: this.player,
       location: this.location,
       time: { ...this.time },
+      // 注释：当前模式（模式栈栈顶）——条件引擎 game.mode 路径取值源（B1 修复）
+      mode: this.getCurrentMode(),
       getEntity: (type: string, id: string) => entitySystem.get(type, id),
       selectedCharacterId: this.selectedCharacterId ?? undefined,
       fieldAliases: this.fieldAliases,

@@ -182,7 +182,7 @@ export function interpolateEventText(text: string, subjectId: string, targetId: 
   if (!text) return text
   const playerId = gameContext.getContext().player?.id ?? null
   const locId = gameContext.getContext().location?.id ?? null
-  return text.replace(/\{(\w+)\.(\w+)\}/g, (match, obj, prop) => {
+  return text.replace(/\{([^.}]+)\.([^.}]+)\}/g, (match, obj, prop) => {
     let id: string | null = null
     if (obj === 'self') id = subjectId
     else if (obj === 'target') id = targetId

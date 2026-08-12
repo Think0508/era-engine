@@ -30,7 +30,8 @@ function resolveValue(path: string, ctx: GameContext): any {
       }
 
       if (part === 'game') {
-        current = { time: ctx.time }
+        // 注释：time + mode（B1 修复——game.mode 为模式栈栈顶，战斗门控条件取值源）
+        current = { time: ctx.time, mode: ctx.mode }
         continue
       }
 
@@ -106,9 +107,15 @@ function resolveValue(path: string, ctx: GameContext): any {
         if (agg) {
           return evaluateRelationAggregate(agg.kind, current, agg.args, ctx)
         }
-        if (ctx.fieldAliases?.[part] && ctx.fieldAliases[part] in current) {
+        if (ctx.fieldAliases?.[part]) {
           // 注释：字段别名（插件注册，如 status → status_effects）——core 不认知具体别名
-          current = current[ctx.fieldAliases[part]]
+          // B2 修复：别名容器键缺失（如角色无 status_effects）→ 返回 undefined 保持
+          // 缺失语义（`status.中毒 == false` 为 true、`== true` 为 false），不落入数值默认 0
+          if (ctx.fieldAliases[part] in current) {
+            current = current[ctx.fieldAliases[part]]
+          } else {
+            return undefined
+          }
         } else if ('base' in current && typeof current.base === 'object') {
           // 注释：实体对象 → 跨命名空间查找
           current = getEntityAttr(current, part)
@@ -213,7 +220,10 @@ function evalSimple(expr: string, ctx: GameContext): boolean {
       return op === '==' ? leftVal === true : (op === '!=' ? leftVal !== true : false)
     }
     if (right === 'false') {
-      return op === '==' ? leftVal === false : (op === '!=' ? leftVal !== false : false)
+      // 注释：B2 修复——`path == false` 容忍缺失（undefined/null）：
+      // 容器缺失的字段（如无 status_effects 时的 status.中毒）== false 应为 true
+      const isFalsey = leftVal === false || leftVal === undefined || leftVal === null
+      return op === '==' ? isFalsey : (op === '!=' ? !isFalsey : false)
     }
     // 注释：null/undefined 右值——存在性检查（`selected != null`、`player.字段 == null`）
     // resolveValue 对缺失根路径返回 undefined，对缺失数值字段返回 0（AGENTS §38 默认值）
@@ -240,6 +250,13 @@ function evalSimple(expr: string, ctx: GameContext): boolean {
       case '==': return leftNum === rightVal
       case '!=': return leftNum !== rightVal
     }
+  }
+
+  // 注释：裸路径求值（B2 修复）——`!character.x.status.中毒` 的 `!` 前缀递归到
+  // 无运算符表达式；仅根路径 token 形态回退为真值求值（保持非法表达式抛错语义）。
+  // 支持 selected/target 裸根（存在性检查：`!selected`）
+  if (/^(player|selected|target|character|location|game|inventory)(\.|\b)/.test(expr)) {
+    return !!resolveValue(expr, ctx)
   }
 
   throw new Error(`Condition expression '${expr}' is invalid: no valid operator found`)

@@ -335,15 +335,21 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     return getOrCreateTemplate(id).npcAiType === 3
   })
 
-  // 注释：Step 5 — 场景前提
-  reg('SCENE_OVER_TWO', (_ctx2: any) => {
-    return entitySystem.getAll('character').length > 2
+  // 注释：Step 5 — 场景前提（B7 修复，audit-b I6——原全图扫描：500 NPC mod 下
+  // SCENE_ALL_NOT_TIRED 恒 false（总有人疲劳）、SCENE_OVER_TWO 恒 true；
+  // erArk scene_data.character_list = 同场景，按当前地点过滤（h-hidden 同款修复模式））
+  const sceneCharacters = (): any[] => {
+    const locId = gameContext.getContext().location?.id
+    return locId
+      ? entitySystem.getAll('character').filter((c: any) => c.current_location === locId)
+      : []
+  }
+  reg('SCENE_OVER_TWO', () => sceneCharacters().length > 2)
+  reg('SCENE_ALL_NOT_H', () => {
+    return !sceneCharacters().some((c: any) => c?.h_state?.is_h)
   })
-  reg('SCENE_ALL_NOT_H', (_ctx2: any) => {
-    return !entitySystem.getAll('character').some((c: any) => c?.h_state?.is_h)
-  })
-  reg('SCENE_ALL_NOT_TIRED', (_ctx2: any) => {
-    return !entitySystem.getAll('character').some((c: any) => (c?.base?.['疲劳度'] ?? 0) > 74)
+  reg('SCENE_ALL_NOT_TIRED', () => {
+    return !sceneCharacters().some((c: any) => (c?.base?.['疲劳度'] ?? 0) > 74)
   })
 
   // 注释：Step 6 — 流程前提

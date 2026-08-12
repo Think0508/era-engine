@@ -577,15 +577,17 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
         if (discovered) break
       }
 
+      // 注释：隐奸经验（B9 修复，audit-b I8——原字符串键 hidden_sex 无消费方；
+      // erArk 数字 ID 35，settle_behavior.py:683-699 双方各 +1，能力升级表 experience 35 直读）
       if ((c.id === 'player' || c.id === '0') && isSexTag && !isWait) {
         if (!c.experience) c.experience = {}
-        c.experience['hidden_sex'] = (c.experience['hidden_sex'] ?? 0) + 1
+        c.experience['35'] = (c.experience['35'] ?? 0) + 1
         const targetId = c?.sp_flag?.target_character_id
         if (targetId) {
           const target = entitySystem.get('character', targetId) as any
           if (target) {
             if (!target.experience) target.experience = {}
-            target.experience['hidden_sex'] = (target.experience['hidden_sex'] ?? 0) + 1
+            target.experience['35'] = (target.experience['35'] ?? 0) + 1
           }
         }
       }

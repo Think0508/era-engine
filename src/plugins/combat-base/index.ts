@@ -95,13 +95,15 @@ export function onEnable(ctx: PluginContext): void {
   })
 
   // 注释：注册通用战斗指令（攻击/逃跑）
+  // B1 修复：condition 原为 combat.in_progress（插件声明但无取值源 → 恒 false，
+  // 战斗开始后无法攻击/逃跑 = 死锁）→ 改用内置 game.mode（模式栈栈顶由战斗模式管理）
   const attackCmd: CommandDef = {
     id: 'combat_attack',
     label: '攻击',
     group: 'character_commands',
     modes: ['combat'],
     priority: 5,
-    condition: 'combat.in_progress == true',
+    condition: "game.mode == 'combat'",
     source: 'plugin:combat-base',
     handler: async (execCtx: any) => {
       const actorId = execCtx?.gameStore?.player?.id

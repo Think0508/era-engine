@@ -6,6 +6,7 @@ const ctx: GameContext = {
   player: { base: { hp: 50, mp: 100 }, id: 'player' },
   location: { id: 'tavern', name: '酒馆', parent: null, type: 'building', tags: ['rest', 'has_drink'] },
   time: { minute: 0, hour: 20, day: 1, month: 1, year: 1 },
+  mode: 'exploration',
   selectedCharacterId: 'npc1',
   fieldAliases: { status: 'status_effects', remaining: 'remaining_duration' },
   getEntity: (type: string, id: string) => {
@@ -19,6 +20,13 @@ const ctx: GameContext = {
         status_effects: [
           { id: '醉意', remaining_duration: 120, stack: 2, last_tick_game_time: 1 },
         ],
+      }
+    }
+    if (type === 'character' && id === 'npc2') {
+      return {
+        base: { hp: 30 },
+        id: 'npc2',
+        // 注释：无 status_effects 容器（B2 修复：容器缺失保持 undefined 存在性语义）
       }
     }
     return null
@@ -166,5 +174,34 @@ describe('evaluateCondition', () => {
     // 无别名时不误解析（fieldAliases 缺失 → 未知字段默认 0）
     const ctxNoAlias = { ...ctx, fieldAliases: undefined }
     expect(evaluateCondition('selected.status.醉意 == true', ctxNoAlias)).toBe(false)
+  })
+
+  it('game.mode 根路径（B1：战斗模式门控——enterMode 后 game.mode == "combat"）', () => {
+    expect(evaluateCondition('game.mode == "exploration"', ctx)).toBe(true)
+    expect(evaluateCondition('game.mode == "combat"', ctx)).toBe(false)
+    const combatCtx = { ...ctx, mode: 'combat' }
+    expect(evaluateCondition('game.mode == "combat"', combatCtx)).toBe(true)
+    expect(evaluateCondition('game.mode == "exploration"', combatCtx)).toBe(false)
+    expect(evaluateCondition('game.mode != "combat"', combatCtx)).toBe(false)
+  })
+
+  it('B2：status 容器缺失——character.x.status.中毒 == false 为 true（undefined 存在性语义）', () => {
+    // 无 status_effects 容器的角色：== false 为 true、== true 为 false
+    expect(evaluateCondition('character.npc2.status.中毒 == false', ctx)).toBe(true)
+    expect(evaluateCondition('character.npc2.status.中毒 == true', ctx)).toBe(false)
+    // 有容器但无该状态：仍是 false（!= 语义）
+    expect(evaluateCondition('character.npc1.status.中毒 == false', ctx)).toBe(true)
+    expect(evaluateCondition('character.npc1.status.醉意 == false', ctx)).toBe(false)
+    expect(evaluateCondition('character.npc1.status.醉意 == true', ctx)).toBe(true)
+    // != 方向
+    expect(evaluateCondition('character.npc2.status.中毒 != true', ctx)).toBe(true)
+  })
+
+  it('B2：裸 ! 求反——!character.npc2.status.中毒 不抛且为 true', () => {
+    expect(evaluateCondition('!character.npc2.status.中毒', ctx)).toBe(true)
+    expect(evaluateCondition('!character.npc1.status.中毒', ctx)).toBe(true)
+    expect(evaluateCondition('!character.npc1.status.醉意', ctx)).toBe(false)
+    expect(evaluateCondition('!player.hp', ctx)).toBe(false)
+    expect(evaluateCondition('!player.不存在的属性', ctx)).toBe(true)
   })
 })

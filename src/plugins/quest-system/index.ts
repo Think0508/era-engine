@@ -82,6 +82,24 @@ export function onEnable(ctx: PluginContext): void {
   ctx.events.on('combat:end', async (payload: any) => {
     await checkObjectives('kill_count', payload)
     checkAutoStart()
+    // 注释：B3 修复（audit-c I3）——combat 步骤推进：当前步骤 type=combat 时按
+    // winner/outcome 前进（winner='allies' = 玩家方胜利 → on_win；'enemies' → on_lose；
+    // 缺 on_win/on_lose 时沿用 step.next 既有语义；逃跑（无胜负）不推进）
+    const playerId = gameContext.getContext().player?.id
+    const win = payload?.winner === 'allies' || (playerId != null && payload?.winner === playerId)
+    const lose = payload?.winner === 'enemies' || (payload?.outcome === 'lose')
+    for (const [sceneId, runtime] of activeScenes) {
+      const scene = getScene(sceneId)
+      if (!scene) continue
+      const step = scene.steps.find(s => s.id === runtime.currentStepId)
+      if (!step || step.type !== 'combat') continue
+      let nextStepId: string | undefined
+      if (win) nextStepId = step.on_win ?? step.next
+      else if (lose) nextStepId = step.on_lose ?? step.next
+      if (nextStepId) {
+        await advanceToStep(sceneId, nextStepId)
+      }
+    }
   })
   ctx.events.on('item:added', async (payload: any) => {
     await checkObjectives('collect_items', payload)
@@ -162,7 +180,10 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
       break
 
     case 'combat':
-      await apiSystem.call('combat', 'start', step.enemies ?? [], [])
+      // 注释：B3 修复（audit-c I3）——原 allies 传空数组：战斗瞬间"盟友全灭"结束
+      // （combat-base checkCombatEnd：allies=[] → alliesAlive=false → 立即 lose），
+      // 玩家永远无法参战，on_win/on_lose 永不读取。玩家加入参战者
+      await apiSystem.call('combat', 'start', step.enemies ?? [], [gameContext.getContext().player?.id].filter(Boolean) as string[])
       break
 
     case 'objective':

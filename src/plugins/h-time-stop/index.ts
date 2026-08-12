@@ -265,19 +265,24 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   })
 
   // 注释：每次 H 行动后，若时停中，给时姦经验（对齐 erArk common_default.py:938-941）
+  // B9 修复（audit-b I8）：原写自定义字符串键（time_stop_rape/time_stop_raped）——
+  // 能力升级表按 erArk 数字 ID 读（erark-attr-ledger：时姦=124、被时姦=125），
+  // 字符串键无消费方 → 经验永不能驱动升级。时停中玩家为施为方（得 124），
+  // 被冻结的 H 角色为受害方（得 125，11-睡眠与无意识H.md §5.2）
   ctx.events.on('game:execution_end', () => {
     if (!timeStopActive) return
+    const playerId = gameContext.getContext().player?.id
+    const player = playerId ? entitySystem.get('character', playerId) as any : null
+    if (player) {
+      if (!player.experience) player.experience = {}
+      player.experience['124'] = (player.experience['124'] ?? 0) + 1
+    }
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
       if (!c.h_state?.is_h || !c.sp_flag?.unconscious_h) continue
       if (!c.experience) c.experience = {}
-      // 注释：时姦经验 ID 124（erArk），被时姦经验 ID 125
-      c.experience['time_stop_rape'] = (c.experience['time_stop_rape'] ?? 0) + 1
-      // 注释：给玩家被时姦经验（简化——所有 H 角色都算）
-      if (c.id !== 'player') {
-        const p = entitySystem.get('character', 'player') as any
-        if (p) { if (!p.experience) p.experience = {}; p.experience['time_stop_raped'] = (p.experience['time_stop_raped'] ?? 0) + 1 }
-      }
+      // 注释：被时姦经验 125（erArk 数字 ID）
+      c.experience['125'] = (c.experience['125'] ?? 0) + 1
     }
   })
 

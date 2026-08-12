@@ -9,7 +9,7 @@ provides = ["combat:ready"]
 depends_on = ["status:ready", "abilities:ready", "effects:ready"]
 
 [condition_fields]
-"combat.in_progress" = { type = "boolean", description = "是否正在战斗中" }
+# 注释：combat.in_progress 已删除（B1 修复——无取值源，战斗门控改用内置 game.mode）
 "combat.turn_count" = { type = "number", description = "当前战斗回合数" }
 
 [[events.listen]]

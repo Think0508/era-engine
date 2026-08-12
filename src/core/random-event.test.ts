@@ -167,6 +167,19 @@ describe('interpolateEventText', () => {
     expect(text).toBe('玩家对令狐冲说')
   })
 
+  it('B5：中文属性名插值——{self.好感度} 输出属性值（原 \w+ 正则不匹配中文）', () => {
+    const linghu = entitySystem.get('character', 'linghu') as any
+    linghu['好感度'] = 72
+    const text = interpolateEventText('令狐冲的好感度是{target.好感度}，{self.name}很开心', 'player', 'linghu')
+    expect(text).toBe('令狐冲的好感度是72，玩家很开心')
+    // 无该属性 → 原样保留（不静默破坏）
+    const missing = interpolateEventText('{target.不存在属性}', 'player', 'linghu')
+    expect(missing).toBe('{target.不存在属性}')
+    // 英文属性不受影响
+    const eng = interpolateEventText('{self.name}', 'player', 'linghu')
+    expect(eng).toBe('玩家')
+  })
+
   it('leaves unknown placeholder untouched', () => {
     const text = interpolateEventText('{self.name}和{unknown.x}', 'player', 'linghu')
     expect(text).toBe('玩家和{unknown.x}')

@@ -128,4 +128,20 @@ describe('引擎 boot 冒烟测试（全插件加载）', () => {
     // target 根路径（judge adjustments）不抛
     expect(evaluateCondition('target.first_times.virgin_V != true', gameContext.getContext())).toBe(true)
   })
+
+  it('B1：战斗指令条件 game.mode == "combat" 在战斗模式下可满足（攻击/逃跑不锁死）', async () => {
+    // 探索模式：条件不满足
+    expect(evaluateCondition("game.mode == 'combat'", gameContext.getContext())).toBe(false)
+    // 进入战斗模式 → 条件满足（combat-base 攻击/逃跑指令依赖此门控）
+    await gameContext.enterMode('combat')
+    expect(evaluateCondition("game.mode == 'combat'", gameContext.getContext())).toBe(true)
+    expect(evaluateCondition("game.mode != 'combat'", gameContext.getContext())).toBe(false)
+    // 攻击/逃跑指令注册且条件改为 game.mode（不再引用已删除的 combat.in_progress）
+    const attack = commandRegistry.getById('combat_attack')
+    expect(attack).toBeDefined()
+    expect(attack!.condition).toBe("game.mode == 'combat'")
+    const flee = commandRegistry.getById('combat_flee')
+    expect(flee).toBeDefined()
+    await gameContext.exitMode()
+  })
 })

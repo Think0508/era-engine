@@ -11,50 +11,16 @@ import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
 import { narrativeLog } from '../../core/narrative-log'
 export function onLoad(_ctx: PluginContext): void {
-  // 注释：受孕判定——对齐 erArk pregnancy.py get_fertilization_rate
-  // 公式：rate = (semen/1000)² × 100 + semen_level × 5
-  // 仅在排卵日（period==5）可受精
+  // 注释：受孕判定——对齐 erArk pregnancy.py get_fertilization_rate + check_fertilization
+  // 公式：rate = (semen/1000)² × 100 + semen_level × 5（只取子宫 W(7) 精液，pregnancy.py:45-46）
+  // 排卵日（period==5）可受精；催眠强制排卵（hypnosis.force_ovulation）允许非排卵日判定
+  // 乘数：排卵促进药 ×5（消耗）→ 催眠排卵 ×5（消耗标志）→ 浓厚精液 ×2（射精方标记）
   effectTypeRegistry.register('pregnancy_check', (_params: any, ctx: any) => {
     const targetIds = ctx._targetIds as string[]
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any
       if (!char) continue
-      if (isPregnant(char)) continue
-      // 注释：仅排卵日可受精
-      const period = char.base?.['排卵周期'] ?? 0
-      if (period !== 5) continue
-      // 注释：检查 V(6) 和 W(7) 部位精液（body_part cid：6=阴道 7=子宫）
-      const semenV = char.body_semen?.[6]?.[1] ?? 0
-      const semenW = char.body_semen?.[7]?.[1] ?? 0
-      if (semenV + semenW <= 0) continue
-      // 注释：避孕药检查（2026-08-12 静默审计修复——对齐 erArk pregnancy.py:52-73）
-      // 事前（槽11）：30 天 expiry 属另一机制（TODO 接线），判定时不消耗
-      if (char.body_items?.['11']?.active) continue
-      // 事后（槽12）：受孕判定时失效（一次有效，pregnancy.py:57-59）
-      if (char.body_items?.['12']?.active) {
-        delete char.body_items['12']
-        continue
-      }
-      // 注释：受精率计算
-      const mainSemen = semenV > 0 ? char.body_semen[6] : char.body_semen[7]
-      const semenCount = mainSemen[1]
-      const semenLevel = mainSemen[2] ?? 1
-      let rate = Math.pow(semenCount / 1000, 2) * 100 + semenLevel * 5
-      // 注释：排卵促进药 ×5，判定后消耗（erArk 03-道具系统.md §2.7：消耗时机=受孕判定时）
-      if (char.body_items?.['10']?.active) {
-        rate *= 5
-        delete char.body_items['10']
-      }
-      // TODO: 催眠强制排卵 ×5（需 h-hypnosis 子系统）
-      // TODO: 浓厚精液 ×2（需 thick_semen 标记）
-      rate = Math.min(100, Math.max(0, rate))
-      // 注释：清空 V/W 部位精液（对齐 erArk pregnancy.py:102）
-      if (char.body_semen?.[6]) char.body_semen[6][1] = 0
-      if (char.body_semen?.[7]) char.body_semen[7][1] = 0
-      if (Math.random() * 100 < rate) {
-        initPregnancy(char)
-        narrativeLog.write(`${char.name ?? id} 怀孕了！`, 'system', 'h-pregnancy')
-      }
+      checkFertilization(char, ctx.sourceId)
     }
     return true
   })
@@ -67,37 +33,11 @@ export function onEnable(ctx: PluginContext): void {
     // 注释：精液接收方 = payload.target（eja_climax 已确定）；fallback 用遍历
     const targetId = payload?.target ?? getTargetForSemen(payload?.character, payload?.position)
     if (targetId) {
-      // 直接执行受孕判定
       const targetChar = entitySystem.get('character', targetId) as any
-      if (!targetChar || isPregnant(targetChar)) return
-      const period = targetChar.base?.['排卵周期'] ?? 0
-      if (period !== 5) return
-      const semenV = targetChar.body_semen?.[6]?.[1] ?? 0
-      const semenW = targetChar.body_semen?.[7]?.[1] ?? 0
-      if (semenV + semenW <= 0) return
-      // 注释：避孕药检查（同 pregnancy_check 效果——2026-08-12 静默审计修复）
-      if (targetChar.body_items?.['11']?.active) return
-      // 事后（槽12）：受孕判定时失效（一次有效）
-      if (targetChar.body_items?.['12']?.active) {
-        delete targetChar.body_items['12']
-        return
-      }
-      const mainSemen = semenV > 0 ? targetChar.body_semen[6] : targetChar.body_semen[7]
-      const semenCount = mainSemen[1]
-      const semenLevel = mainSemen[2] ?? 1
-      let rate = Math.pow(semenCount / 1000, 2) * 100 + semenLevel * 5
-      // 排卵促进药 ×5，判定后消耗
-      if (targetChar.body_items?.['10']?.active) {
-        rate *= 5
-        delete targetChar.body_items['10']
-      }
-      rate = Math.min(100, Math.max(0, rate))
-      if (targetChar.body_semen?.[6]) targetChar.body_semen[6][1] = 0
-      if (targetChar.body_semen?.[7]) targetChar.body_semen[7][1] = 0
-      if (Math.random() * 100 < rate) {
-        initPregnancy(targetChar)
-        narrativeLog.write(`${targetChar.name ?? targetId} 怀孕了！`, 'system', 'h-pregnancy')
-      }
+      if (!targetChar) return
+      // 注释：射精方 = payload.character（浓厚精液 ×2 判定用，erArk pregnancy.py:81-84
+      // pl_character_data.talent[33]）
+      checkFertilization(targetChar, payload?.character)
     }
   })
 
@@ -194,6 +134,64 @@ export function onEnable(ctx: PluginContext): void {
       c.pregnancy.milk = Math.min((c.pregnancy.milk ?? 0) + addMilk, c.pregnancy.milk_max)
     }
   })
+}
+
+// 注释：受孕判定核心（B8 修复，audit-b I7——pregnancy_check 效果与 h:shoot 双路径收敛共享，
+// 对齐 erArk pregnancy.py:33-149）：
+// 1. 只取子宫 W(7) 精液（pregnancy.py:45-46，删 V 优先分支）
+// 2. 排卵日（period==5）门控；催眠强制排卵（hypnosis.force_ovulation）允许非排卵日判定
+//    （erArk TARGET_HYPNOSIS_FORCE_OVULATION_ON 同时置 period=5 + 标志；标志判定后消耗）
+// 3. 乘数：排卵促进药 ×5（消耗）→ 催眠排卵 ×5（消耗）→ 浓厚精液 ×2（射精方）
+// 4. 清槽同时清 [1]（当前量）与 [2]（等级），pregnancy.py:102-105
+function checkFertilization(char: any, shooterId?: string): void {
+  if (!char || isPregnant(char)) return
+  const period = char.base?.['排卵周期'] ?? 0
+  const forceOvulation = char.hypnosis?.force_ovulation === true
+  // 注释：仅排卵日可受精；催眠强制排卵允许非排卵日判定
+  if (period !== 5 && !forceOvulation) return
+  // 注释：只取子宫 W(7) 精液（erArk pregnancy.py:45-46——V 内射不参与受精）
+  const semenW = char.body_semen?.[7]?.[1] ?? 0
+  if (semenW <= 0) return
+  // 注释：避孕药检查（对齐 erArk pregnancy.py:52-59）
+  // 事前（槽11）：30 天 expiry 属另一机制（TODO 接线），判定时不消耗
+  if (char.body_items?.['11']?.active) return
+  // 事后（槽12）：受孕判定时失效（一次有效，pregnancy.py:57-59）
+  if (char.body_items?.['12']?.active) {
+    delete char.body_items['12']
+    return
+  }
+  // 注释：受精率计算（base = (semen/1000)²×100 + 等级×5）
+  const semenCount = char.body_semen[7][1]
+  const semenLevel = char.body_semen[7][2] ?? 1
+  let rate = Math.pow(semenCount / 1000, 2) * 100 + semenLevel * 5
+  // 注释：排卵促进药 ×5，判定后消耗（erArk 03-道具系统.md §2.7）
+  if (char.body_items?.['10']?.active) {
+    rate *= 5
+    delete char.body_items['10']
+  }
+  // 注释：催眠强制排卵 ×5 + 消耗标志（erArk pregnancy.py:75-79, 108-109）
+  if (forceOvulation) {
+    rate *= 5
+    char.hypnosis.force_ovulation = false
+  }
+  // 注释：浓厚精液 ×2（erArk pregnancy.py:81-84 pl_character_data.talent[33]——
+  // 射精方标记；h_state.thick_semen 与 talents['浓厚精液'] 等价）
+  if (shooterId) {
+    const shooter = entitySystem.get('character', shooterId) as any
+    if (shooter && (shooter.talents?.['浓厚精液'] || shooter.h_state?.thick_semen)) {
+      rate *= 2
+    }
+  }
+  rate = Math.min(100, Math.max(0, rate))
+  // 注释：清空 W 部位精液当前量与等级（对齐 erArk pregnancy.py:102-105）
+  if (char.body_semen?.[7]) {
+    char.body_semen[7][1] = 0
+    char.body_semen[7][2] = 0
+  }
+  if (Math.random() * 100 < rate) {
+    initPregnancy(char)
+    narrativeLog.write(`${char.name ?? char.id} 怀孕了！`, 'system', 'h-pregnancy')
+  }
 }
 
 // 注释：获取精液的接收目标（对方角色 ID）

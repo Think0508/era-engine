@@ -242,8 +242,19 @@ function applyHypnosisSexExp(charId: string): void {
   if (u >= 4 && u <= 7) {
     const target = entitySystem.get('character', charId) as any
     if (target) {
-      if (!target.h_exp) target.h_exp = {}
-      target.h_exp.hypnosis = (target.h_exp.hypnosis ?? 0) + 1
+      // 注释：B9 修复（audit-b I8）——原写 h_exp.hypnosis（错误容器 + 自定义键，
+      // 无消费方）；erArk 数字 ID：被催眠姦经验=127（目标），催眠姦经验=126（玩家）
+      // （erark-attr-ledger，11-睡眠与无意识H.md §5.2）
+      if (!target.experience) target.experience = {}
+      target.experience['127'] = (target.experience['127'] ?? 0) + 1
+      const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
+      if (playerId && playerId !== charId) {
+        const player = entitySystem.get('character', playerId) as any
+        if (player) {
+          if (!player.experience) player.experience = {}
+          player.experience['126'] = (player.experience['126'] ?? 0) + 1
+        }
+      }
     }
   }
 }

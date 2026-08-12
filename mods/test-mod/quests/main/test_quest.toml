@@ -8,7 +8,9 @@ type = "main"
 id = "start"
 type = "dialogue"
 character = "innkeeper"
-conversation = "daily_chat"
+# B4 修复：原 "daily_chat" 无冒号被解析为 global 引用 → 对话不存在（任务静默推进）；
+# 改为角色引用格式（parseConversationRef: character:角色ID/文件名）
+conversation = "character:innkeeper/daily_chat"
 next = "go_to_square"
 
 [[steps]]
@@ -31,4 +33,4 @@ next = "complete"
 id = "complete"
 type = "dialogue"
 character = "innkeeper"
-conversation = "daily_chat"
+conversation = "character:innkeeper/daily_chat"

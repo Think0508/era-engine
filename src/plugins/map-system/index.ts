@@ -232,6 +232,15 @@ export function onEnable(ctx: PluginContext): void {
       const targetName = target?.name ?? targetLocationId
       narrativeLog.write(`你前往${targetName}...`, 'movement', 'map-system')
       await gameContext.moveTo(targetLocationId, r.time_cost)
+      // 注释：第 7 轮链路终审发现——玩家移动后 current_location 必须同步
+      // （gameContext.moveTo 只改核心 location；玩家实体字段不更新会导致：
+      // ① 存档恢复地点错位（save 恢复读 current_location）② NPC 同地点判定失真
+      // ③ follow-system 同位置判定失效——此前玩家移动后 current_location 永远停留在旧地点）
+      const playerId = gameContext.getContext().player?.id
+      if (playerId) {
+        const player = entitySystem.get('character', playerId) as any
+        if (player) player.current_location = targetLocationId
+      }
     },
   })
 

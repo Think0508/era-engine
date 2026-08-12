@@ -1,4 +1,4 @@
-// 注释：T1 权重系统测试——premiseRegistry.getWeight + 口上同池权重竞争（pickWeightedLine）
+// 注释：T1 权重系统测试——weightAllToOne（口上权重，erArk weight_all_to_1 语义）+ 口上同池权重竞争（pickWeightedLine）
 // erArk 依据：get_weight_from_premise_dict（handle_premise/__init__.py:246-300）+
 // choice_talk_from_talk_data（talk.py:225-260，权重区间随机 + 角色专属×draw_setting[14]）
 
@@ -7,9 +7,9 @@ import { modLoader } from '../core/mod-loader'
 import { gameContext } from '../core/game-context'
 import { entitySystem } from '../core/entity-system'
 import { apiSystem } from '../core/api'
-import { premiseRegistry } from '../core/premise-registry'
+import { conditionEngine } from '../core/condition-engine'
 import { narrativeLog } from '../core/narrative-log'
-import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable } from './dialogue-system/index'
+import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable, weightAllToOne } from './dialogue-system/index'
 import { onEnable as talkCommonOnEnable } from './talk-common-system/index'
 import { eventBus } from '../core/event-bus'
 import { commandRegistry } from '../core/command-registry'
@@ -35,9 +35,9 @@ describe('T1 口上权重系统', () => {
     p.current_location = 'town_square'
     entitySystem.register('character', 'npc_1', { id: 'npc_1', name: '测试NPC', base: { 体力: 80, 疲劳度: 0 }, current_location: 'town_square' })
     // 注释：high_N 权重前提（h-core 注册；本测试不加载 h-core，手动注册等价实现）
-    for (const n of [1, 2, 5, 10, 999]) premiseRegistry.register(`high_${n}`, () => true)
-    premiseRegistry.register('HAVE_TARGET', () => true)
-    premiseRegistry.register('t_unconscious_flag_3', (ctx: any) => {
+    for (const n of [1, 2, 5, 10, 999]) conditionEngine.registerPremise(`high_${n}`, () => true)
+    conditionEngine.registerPremise('HAVE_TARGET', () => true)
+    conditionEngine.registerPremise('t_unconscious_flag_3', (ctx: any) => {
       const ch = ctx.selectedCharacterId ? entitySystem.get('character', ctx.selectedCharacterId) as any : null
       return ch?.sp_flag?.unconscious_h === 3
     })
@@ -51,27 +51,27 @@ describe('T1 口上权重系统', () => {
     narrativeLog.clear()
   })
 
-  describe('premiseRegistry.getWeight（erArk weight_all_to_1 语义）', () => {
-    const ctx = { selectedCharacterId: 'npc_1', sourceId: 'player' }
+  describe('weightAllToOne（erArk weight_all_to_1 语义）', () => {
+    const ctx = { ...gameContext.getContext(), selectedCharacterId: 'npc_1', sourceId: 'player' }
 
     it('high_N → 权重 N', () => {
-      expect(premiseRegistry.getWeight(['high_1'], ctx)).toBe(1)
-      expect(premiseRegistry.getWeight(['high_5'], ctx)).toBe(5)
-      expect(premiseRegistry.getWeight(['high_999'], ctx)).toBe(999)
+      expect(weightAllToOne(['high_1'], ctx)).toBe(1)
+      expect(weightAllToOne(['high_5'], ctx)).toBe(5)
+      expect(weightAllToOne(['high_999'], ctx)).toBe(999)
     })
 
     it('high_N + 满足前提 → N + 前提数（weight_all_to_1：非 high 前提只加 1）', () => {
       // HAVE_TARGET 满足（selected 存在）→ 5 + 1
-      expect(premiseRegistry.getWeight(['high_5', 'HAVE_TARGET'], ctx)).toBe(6)
+      expect(weightAllToOne(['high_5', 'HAVE_TARGET'], ctx)).toBe(6)
     })
 
     it('任一前提不满足 → 0（整句淘汰）', () => {
-      premiseRegistry.register('TEST_FALSE', () => false)
-      expect(premiseRegistry.getWeight(['high_5', 'TEST_FALSE'], ctx)).toBe(0)
+      conditionEngine.registerPremise('TEST_FALSE', () => false)
+      expect(weightAllToOne(['high_5', 'TEST_FALSE'], ctx)).toBe(0)
     })
 
     it('空前提集 → 1（无条件口上默认权重）', () => {
-      expect(premiseRegistry.getWeight([], ctx)).toBe(1)
+      expect(weightAllToOne([], ctx)).toBe(1)
     })
   })
 
@@ -224,7 +224,7 @@ describe('T1 口上权重系统', () => {
       mod.sceneDialogue.push({ scene: 's_test', text: '普通台词', condition: 'premises:high_1' })
       mod.sceneDialogue.push({ scene: 's_test', text: '浴室台词', condition: 'premises:high_1&h_in_bathroom' })
       // 前提注册（h-in-bathroom 情境前提）
-      premiseRegistry.register('h_in_bathroom', () => true)
+      conditionEngine.registerPremise('h_in_bathroom', () => true)
       // 权重：普通 = max(1, high_1=1)×1 = 1；浴室 = max(1, high_1+h_in_bathroom=2)×1×5 = 10 → total 11
       const spy = vi.spyOn(Math, 'random')
       spy.mockReturnValue(0.05)  // < 1/11 → 普通行

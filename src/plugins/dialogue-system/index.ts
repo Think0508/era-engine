@@ -4,6 +4,7 @@
 // 优先级：角色专属 > 角色通用，场景通用独立输出
 
 import type { PluginContext } from '../../core/types'
+import type { GameContext } from '../../core/types'
 import type { ReactiveLine, Conversation, ConversationNode } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
@@ -13,7 +14,6 @@ import { modLoader } from '../../core/mod-loader'
 import { commandRegistry } from '../../core/command-registry'
 import type { CommandDef } from '../../core/command-registry'
 import { conditionEngine } from '../../core/condition-engine'
-import { premiseRegistry } from '../../core/premise-registry'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { weightedRandom } from '../../utils/weighted-random'
 import { apiSystem } from '../../core/api'
@@ -289,7 +289,7 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
 }
 
 // 注释：从匹配的候选池中按权重区间随机选一条（erArk choice_talk_from_talk_data + get_rand_value_for_value_region）
-// 权重 = 前提权重（high_N 累加 + 满足前提数，getWeight）× multiplier（角色专属×10）
+// 权重 = 前提权重（high_N 累加 + 满足前提数，weightAllToOne）× multiplier（角色专属×10）
 // 静态 weight 字段优先（等价 erArk CVP_Weight|0 固定权重，固定后仍乘 multiplier——erArk talk.py:159 同）
 // premiseTargetId — 触发口上的目标角色（用于 premise 求值，如 high_1 查谁的状态）
 interface WeightedCandidate {
@@ -298,11 +298,32 @@ interface WeightedCandidate {
   multiplier: number
 }
 
+// 注释：前提权重（erArk weight_all_to_1 语义，handle_premise/__init__.py:246-300）——
+// 口上权重区间随机用：high_N → 权重 +N；其余前提满足 → +1；任一不满足 → 0（整句淘汰）；
+// 空前提集 → 1（无条件口上默认权重）。erArk 规则由消费方持有，core 不认知 high_ 前缀。
+export function weightAllToOne(premiseList: string[], ctx: GameContext): number {
+  if (!premiseList || premiseList.length === 0) return 1
+  let weight = 0
+  for (const id of premiseList) {
+    const key = id.toLowerCase()
+    const value = conditionEngine.getPremiseValue(id, ctx)
+    const ok = typeof value === 'boolean' ? value : value > 0
+    if (!ok) return 0
+    if (key.startsWith('high_')) {
+      const n = parseInt(key.slice(5), 10)
+      weight += Number.isFinite(n) ? n : 1
+    } else {
+      weight += 1
+    }
+  }
+  return weight
+}
+
 function pickWeightedLine(pool: WeightedCandidate[], premiseTargetId?: string): { line: ReactiveLine; weight: number } | null {
   if (pool.length === 0) return null
   const gc = gameContext.getContext()
   const selectedId = premiseTargetId ?? gc.player?.id ?? null
-  const premiseCtx = { selectedCharacterId: selectedId, sourceId: gc.player?.id ?? null }
+  const premiseCtx = { ...gc, selectedCharacterId: selectedId ?? undefined, sourceId: gc.player?.id ?? null }
   // 注释：{id} 占位符 = 当前角色（角色口上惯例，如 character.{id}.好感度）——
   // 不求值替换会变成查找角色 '{id}'（恒不存在 → 条件恒 true，静默失效）
   const substituteId = (cond: string) => cond.replace(/\{id\}/g, selectedId ?? '')
@@ -324,7 +345,7 @@ function pickWeightedLine(pool: WeightedCandidate[], premiseTargetId?: string): 
   }
   for (const c of pool) {
     const line = c.line
-    // 筛选 condition（两种格式：纯表达式 / premises:XXX&YYY 前提集）
+    // 筛选 condition（两种格式：纯表达式 / premises:XXX&YYY 前提集——旧格式，数据迁移后删除）
     if (line.condition) {
       const cond = substituteId(line.condition)
       if (cond.startsWith('premises:')) {
@@ -333,9 +354,13 @@ function pickWeightedLine(pool: WeightedCandidate[], premiseTargetId?: string): 
           candidates.push({ line, weight: Math.max(1, line.weight ?? 1) * c.multiplier })
           continue
         }
-        // 注释：非严格——未知 erark 前提跳过（不阻塞）
-        if (!premiseRegistry.evaluate(premiseList, premiseCtx, false)) continue
-        const w = premiseRegistry.getWeight(premiseList, premiseCtx)
+        // 注释：未知前提（校验层拦截漏网）→ 跳过该候选，不崩口上
+        try {
+          if (!conditionEngine.evaluatePremises(premiseList, premiseCtx)) continue
+        } catch {
+          continue
+        }
+        const w = weightAllToOne(premiseList, premiseCtx)
         const base = Math.max(1, line.weight ?? w) * c.multiplier
         candidates.push({ line, weight: applySituation(premiseList, base) })
       } else {

@@ -22,6 +22,7 @@
 | H 系 | `docs/h-core.md` 等 h-*.md | src/plugins/h-*/ |
 | H 内 NPC AI | `docs/h-npc-ai.md` | src/plugins/h-npc-ai/ |
 | 睡眠系统 | `docs/sleep-system.md` | src/plugins/sleep-system/ |
+| 饥饿系统 | `docs/hunger-system.md` | src/plugins/hunger-system/ |
 
 ## 会话交接摘要（2026-07-14）
 

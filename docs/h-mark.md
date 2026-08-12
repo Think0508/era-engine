@@ -24,8 +24,8 @@ adjustments = { 口上好感度阈值 = -0.2, 服从指令率 = 0.15 }
 
 ```
 ctx.api.call('h-mark', 'getLevel', charId, markId)        → number
-ctx.api.call('h-mark', 'checkOne', charId, markId)        → boolean
-ctx.api.call('h-mark', 'checkAll', charId)                → {markId, level}[]
+ctx.api.call('h-mark', 'checkOne', charId, markId)        → void（检查并尝试升级指定刻印）
+ctx.api.call('h-mark', 'checkAll', charId)                → void（遍历全部刻印执行 checkOne）
 ctx.api.call('h-mark', 'getMarkAdjust', charId, markId)   → number
 ```
 

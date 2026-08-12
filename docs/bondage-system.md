@@ -113,10 +113,9 @@ adjust = 2 × 0.5 = 1.0
 ## 八、API
 
 ```typescript
-ctx.api.call('h-bondage', 'getBondage', charId)        // → int
+ctx.api.call('h-bondage', 'getBondage', charId)        // → number（捆绑类型 ID，0=未捆绑）
 ctx.api.call('h-bondage', 'getBondageName', charId)     // → string
-ctx.api.call('h-bondage', 'canBind', charId, bondageId) // → { ok, reason? }
-ctx.api.call('h-bondage', 'getBondageTypes')             // → BondageType[]
+ctx.api.call('h-bondage', 'getBondageTypes')            // → BondageType[]（捆绑类型配置列表）
 ```
 
 ## 九、TODO

@@ -13,7 +13,7 @@
 ```
 ctx.api.call('h-ejaculation', 'getEja', charId)             → number
 ctx.api.call('h-ejaculation', 'setEja', charId, val)        → void
-ctx.api.call('h-ejaculation', 'getSemenOnBody', charId)     → number
+ctx.api.call('h-ejaculation', 'getSemenOnBody', charId)     → object（body_semen 分布：{partId: [ml, level]}）
 ctx.api.call('h-ejaculation', 'absorbSemen', charId)        → void
 ```
 

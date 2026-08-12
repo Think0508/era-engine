@@ -120,12 +120,12 @@ extends = "combat-base"   # 最多继承一个父插件
 | `getEntity(type, id)` | `(string, string)` | 获取实体数据 |
 | `bindings.get(entityId, key)` | `(string, string)` | 读绑定属性 |
 | `bindings.set(entityId, key, value)` | `(string, string, any)` | 写绑定属性 |
-| `enterMode(id)` | `(string)` | push 模式到栈 |
+| `enterMode(mode)` | `(string)` | push 模式到栈 |
 | `exitMode()` | `()` | pop 模式出栈 |
-| `saveGame(slot)` | `(string)` | 手动存档 |
-| `loadGame(slot)` | `(string)` | 读档 |
-| `getSaveSlots()` | `()` | 获取存档列表 |
-| `deleteSave(slot)` | `(string)` | 删除存档 |
+| `saveGame(slot, label?)` | `(string, string?)` | 手动存档 |
+| `loadGame(slot)` | `(string)` | 读档（返回 SaveData \| null） |
+| `getSaveSlots(modId?)` | `(string?)` | 获取存档列表（返回 SaveSlot[]，按模组命名空间过滤） |
+| `deleteSave(slotId)` | `(string)` | 删除存档 |
 
 ## 插件 API 速查
 
@@ -209,8 +209,8 @@ ctx.api.call('character', 'isOffline', charId)                // → boolean
 
 ```typescript
 ctx.api.call('dialogue', 'triggerScene', scene, charId?)      // → void（演出管线）
-ctx.api.call('dialogue', 'startConversation', charId, convId?)// → void（交互对话）
-ctx.api.call('dialogue', 'getConversations', charId)          // → Conversation[]
+ctx.api.call('dialogue', 'startConversation', ref, speaker?)// → void（交互对话；ref = ConversationRef 或 "character:令狐冲/teach_sword" 简写，speaker 可选默认说话者）
+ctx.api.call('dialogue', 'getConversation', type, key, name?) // → Conversation | undefined（查找对话数据；type=character|global|quest|event）
 ctx.api.call('dialogue', 'interpolate', text, context)        // → string（{var} 插值）
 // 场景角色过滤器（2026-08-10）——scene+charId 命中任一过滤器则跳过该角色口上（含 talk-common 兜底）
 ctx.api.call('dialogue', 'registerSceneCharFilter', scene, (charId) => boolean) // → () => void（注销函数）
@@ -218,7 +218,7 @@ ctx.api.call('dialogue', 'registerSceneCharFilter', scene, (charId) => boolean) 
 
 - `triggerScene` 自动匹配三层口上：场景通用 → 角色专属 → 角色通用 fallback
 - `triggerScene` 无 charId 时只查场景通用口上
-- `startConversation` 不传 convId 时自动选第一个 condition 满足的对话
+- `startConversation` 需显式传 ref（ConversationRef 或简写字符串）；「交谈」指令自动选取选中角色第一个对话
 - `registerSceneCharFilter`：通用抑制机制——follow-system 注册 `greet` 过滤器实现"跟随者到达不打招呼"；未来送别/移动口上场景建立后同样注册
 
 #### follow — 跟随/同行系统（2026-08-10）
@@ -244,13 +244,12 @@ ctx.api.call('follow', 'isControlled', charId)                // → boolean（�
 #### effect-system — 效果执行
 
 ```typescript
-ctx.api.call('effect-system', 'execute', effects, execCtx)    // → boolean[]
+ctx.api.call('effect-system', 'execute', effects, execCtx)    // → Promise<void>
 ctx.api.call('effect-system', 'registerType', type, handler)  // → void
 ctx.api.call('effect-system', 'hasType', type)                // → boolean
 ```
 
-- `execute` 返回每个 effect 的执行结果数组
-- effect handler 签名：`(params, execCtx) => boolean | Promise<boolean>`
+- effect handler 签名：`(params, execCtx) => boolean | Promise<boolean | void>`
 
 #### status — 状态效果
 
@@ -290,9 +289,21 @@ ctx.api.call('inventory', 'unequip', charId, slot)            // → void
 #### set — 套装检测
 
 ```typescript
-ctx.api.call('set', 'checkSets', charId)                      // → string[]（激活的套装 ID 列表）
-ctx.api.call('set', 'getActiveSets', charId)                  // → SetData[]
+ctx.api.call('set', 'checkSets', charId)                      // → Promise<void>（检查套装状态：凑齐给效果、失去件移除）
+ctx.api.call('set', 'getActiveSets', charId)                  // → string[]（激活的套装 ID 列表）
 ```
+
+#### hunger — 饥饿系统
+
+```typescript
+ctx.api.call('hunger-system', 'getHunger', charId)            // → number（当前饥饿值）
+ctx.api.call('hunger-system', 'getDigestion', charId)         // → number（当前消化剩余分钟）
+```
+
+- 饥饿值增长收敛于引擎行动级结算（erArk realtime_settle 语义）；本插件负责进食/消化/NPC 自动进食/每日口粮
+- 效果类型：`eat_food`（params: {itemId}；需背包有食物且消化剩余=0；扣食物→减饥饿值→设消化 CD→回体力/气力）
+- 数据配置：h-config.toml `[hunger]`（digestion_per_hour/npc_auto_eat_threshold/daily_ration_id/daily_ration_count），可 patch/override
+- 完整说明见 `docs/hunger-system.md`
 
 #### combat — 战斗骨架
 
@@ -314,10 +325,11 @@ ctx.api.call('combat-wuxia', 'getAbilitiesByTag', charId, tag)// → {id, level}
 #### quest — 任务
 
 ```typescript
-ctx.api.call('quest', 'start', questId)                       // → void
-ctx.api.call('quest', 'getActiveQuests')                      // → QuestState[]
-ctx.api.call('quest', 'getQuestStatus', questId)              // → 'not_started' | 'active' | 'completed'
-ctx.api.call('quest', 'advanceStep', questId, nextStepId)     // → void
+ctx.api.call('quest', 'start', sceneId)                       // → void（start_scene 别名，event/quest 通用）
+ctx.api.call('quest', 'getActiveScenes')                      // → string[]（活跃 scene ID 列表）
+ctx.api.call('quest', 'getSceneStatus', sceneId)              // → 'not_started' | 'active' | 'completed'
+ctx.api.call('quest', 'advanceStep', sceneId, nextStepId)     // → void
+ctx.api.call('quest', 'checkTriggerConditions')               // → string[]（未开始且带 condition 的 scene；由调用方求值）
 ```
 
 ### H 系统插件
@@ -351,7 +363,7 @@ ctx.api.call('h-ejaculation', 'getEja', charId)               // → number（�
 ctx.api.call('h-ejaculation', 'setEja', charId, val)          // → void（绝对值写入）
 ctx.api.call('h-ejaculation', 'addEja', charId, delta)        // → void（增量累加——射精欲字段唯一写入口；
                                                               //   h-core 结算经此写入，禁止其他插件直接改字段）
-ctx.api.call('h-ejaculation', 'getSemenOnBody', charId)       // → number
+ctx.api.call('h-ejaculation', 'getSemenOnBody', charId)       // → object（body_semen 分布：{partId: [ml, level]}）
 ctx.api.call('h-ejaculation', 'absorbSemen', charId)          // → void
 ```
 
@@ -383,8 +395,8 @@ ctx.api.call('h-exposure', 'getModeName', charId)             // → string
 
 ```typescript
 ctx.api.call('h-mark', 'getLevel', charId, markId)            // → number
-ctx.api.call('h-mark', 'checkOne', charId, markId)            // → boolean
-ctx.api.call('h-mark', 'checkAll', charId)                    // → {markId, level}[]
+ctx.api.call('h-mark', 'checkOne', charId, markId)            // → void（检查并尝试升级指定刻印）
+ctx.api.call('h-mark', 'checkAll', charId)                    // → void（遍历全部刻印执行 checkOne）
 ctx.api.call('h-mark', 'getMarkAdjust', charId, markId)       // → number（修正系数）
 ```
 
@@ -404,9 +416,9 @@ ctx.api.call('h-hidden', 'getMode', charId)                   // → number
 ctx.api.call('h-hidden', 'setMode', charId, mode)             // → void
 ctx.api.call('h-hidden', 'getDiscoveryDegree', charId)        // → number
 ctx.api.call('h-hidden', 'getModeName', charId)               // → string
-ctx.api.call('h-hidden', 'getHiddenLevel', charId)            // → number
+ctx.api.call('h-hidden', 'getHiddenLevel', charId)            // → {cid, name}（发现度档位）
 ctx.api.call('h-hidden', 'isHidden', charId)                  // → boolean
-ctx.api.call('h-hidden', 'checkAchievements', charId)         // → void
+ctx.api.call('h-hidden', 'checkAchievements', charId)         // → number[]（已达成成就 ID 列表）
 ```
 
 #### h-group-sex — 群交
@@ -460,9 +472,9 @@ T_NORMAL_1/2/6 / SCENE_ALL_UNCONSCIOUS_OR_SLEEP 等）与数据格式详见 `doc
 #### h-bondage — 紧缚
 
 ```typescript
-ctx.api.call('h-bondage', 'getBondage', charId)               // → string | null
+ctx.api.call('h-bondage', 'getBondage', charId)               // → number（捆绑类型 ID，0=未捆绑）
 ctx.api.call('h-bondage', 'getBondageName', charId)           // → string
-ctx.api.call('h-bondage', 'getBondageTypes')                  // → string[]
+ctx.api.call('h-bondage', 'getBondageTypes')                  // → BondageType[]（捆绑类型配置列表）
 ```
 
 #### h-time-stop — 时停

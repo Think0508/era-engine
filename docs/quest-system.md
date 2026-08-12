@@ -37,10 +37,11 @@ next = "find_clue"
 ## API（见 `docs/plugin-author-guide.md`）
 
 ```
-ctx.api.call('quest', 'start', questId)                → void
-ctx.api.call('quest', 'getActiveQuests')                → string[]（quest ID 列表）
-ctx.api.call('quest', 'getQuestStatus', questId)        → string
-ctx.api.call('quest', 'advanceStep', questId, stepId)   → void
+ctx.api.call('quest', 'start', sceneId)                 → void（event/quest 通用）
+ctx.api.call('quest', 'getActiveScenes')                → string[]（活跃 scene ID 列表）
+ctx.api.call('quest', 'getSceneStatus', sceneId)        → 'not_started' | 'active' | 'completed'
+ctx.api.call('quest', 'advanceStep', sceneId, stepId)   → void
+ctx.api.call('quest', 'checkTriggerConditions')         → string[]（未开始且带 condition 的 scene）
 ```
 
 ## Override 规则

@@ -26,8 +26,8 @@ effects = [{type = "modify_attribute", params = {attr = "攻击力", value = 20}
 ## API（见 `docs/plugin-author-guide.md`）
 
 ```
-ctx.api.call('set', 'checkSets', charId)      → string[]（激活的套装 ID 列表）
-ctx.api.call('set', 'getActiveSets', charId)  → SetData[]
+ctx.api.call('set', 'checkSets', charId)      → Promise<void>（检查套装状态：凑齐给效果、失去件移除）
+ctx.api.call('set', 'getActiveSets', charId)  → string[]（激活的套装 ID 列表）
 ```
 
 ## Override 规则

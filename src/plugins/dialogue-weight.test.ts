@@ -110,8 +110,8 @@ describe('T1 口上权重系统', () => {
 
     it('前提权重：high_1 vs high_5 → total=6，random<1/6 选 A', async () => {
       pushSceneLines('w_premise', [
-        { text: '前提A', condition: 'premises:high_1' },
-        { text: '前提B', condition: 'premises:high_5' },
+        { text: '前提A', condition: 'premise(high_1)' },
+        { text: '前提B', condition: 'premise(high_5)' },
       ])
       const spy = vi.spyOn(Math, 'random')
       spy.mockReturnValue(0.16)  // < 1/6
@@ -193,7 +193,7 @@ describe('T1 口上权重系统', () => {
       mod.sceneDialogue.push({ scene: 'u_test', text: '通用台词' })
       mod.characterSpecificDialogue.set('npc_1', [
         { scene: 'u_test', text: '普通台词' },
-        { scene: 'u_test', text: '无意识台词', condition: 'premises:t_unconscious_flag_3' },
+        { scene: 'u_test', text: '无意识台词', condition: 'premise(t_unconscious_flag_3)' },
       ])
       npc.sp_flag = { unconscious_h: 3 }
       await trigger('u_test')
@@ -221,8 +221,8 @@ describe('T1 口上权重系统', () => {
 
     it('浴室情境：h_in_bathroom 前提 ×5 → 浴室行权重 10/普通 1，total=11', async () => {
       const mod = modLoader.getMod()!
-      mod.sceneDialogue.push({ scene: 's_test', text: '普通台词', condition: 'premises:high_1' })
-      mod.sceneDialogue.push({ scene: 's_test', text: '浴室台词', condition: 'premises:high_1&h_in_bathroom' })
+      mod.sceneDialogue.push({ scene: 's_test', text: '普通台词', condition: 'premise(high_1)' })
+      mod.sceneDialogue.push({ scene: 's_test', text: '浴室台词', condition: 'premise(high_1) && premise(h_in_bathroom)' })
       // 前提注册（h-in-bathroom 情境前提）
       conditionEngine.registerPremise('h_in_bathroom', () => true)
       // 权重：普通 = max(1, high_1=1)×1 = 1；浴室 = max(1, high_1+h_in_bathroom=2)×1×5 = 10 → total 11

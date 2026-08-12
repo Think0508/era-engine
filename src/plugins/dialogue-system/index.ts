@@ -3,7 +3,7 @@
 // 三层口上：场景通用（scene-dialogue.toml）+ 角色通用（character-dialogue.toml，fallback）+ 角色专属（characters/dialogue/{charId}/dialogue.toml）
 // 优先级：角色专属 > 角色通用，场景通用独立输出
 
-import { conditionEngine, weightAllToOne } from '../../core/condition-engine'
+import { conditionEngine, weightAllToOne, extractPremiseRefs } from '../../core/condition-engine'
 import type { PluginContext } from '../../core/types'
 import type { ReactiveLine, Conversation, ConversationNode } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
@@ -323,32 +323,20 @@ function pickWeightedLine(pool: WeightedCandidate[], premiseTargetId?: string): 
   }
   for (const c of pool) {
     const line = c.line
-    // 筛选 condition（两种格式：纯表达式 / premises:XXX&YYY 前提集——旧格式，数据迁移后删除）
     if (line.condition) {
       const cond = substituteId(line.condition)
-      if (cond.startsWith('premises:')) {
-        const premiseList = cond.slice(9).split('&').map(s => s.trim()).filter(Boolean)
-        if (premiseList.length === 0) {
-          candidates.push({ line, weight: Math.max(1, line.weight ?? 1) * c.multiplier })
-          continue
-        }
-        // 注释：未知前提（校验层拦截漏网）→ 跳过该候选，不崩口上
-        try {
-          if (!conditionEngine.evaluatePremises(premiseList, premiseCtx)) continue
-        } catch {
-          continue
-        }
-        const w = weightAllToOne(premiseList, premiseCtx)
-        const base = Math.max(1, line.weight ?? w) * c.multiplier
-        candidates.push({ line, weight: applySituation(premiseList, base) })
-      } else {
-        try {
-          if (!conditionEngine.evaluate(cond, gc)) continue
-        } catch {
-          continue
-        }
-        candidates.push({ line, weight: Math.max(1, line.weight ?? 1) * c.multiplier })
+      // 注释：条件 = 完整表达式（premise(X) 命名引用内联）；未知前提（校验层拦截漏网）
+      // 或语法错误 → 跳过该候选，不崩口上；求值上下文 = premiseCtx（selected 指向口上目标）
+      try {
+        if (!conditionEngine.evaluate(cond, premiseCtx)) continue
+      } catch {
+        continue
       }
+      // 注释：前提权重（premise(X) 引用提取 → weightAllToOne；无条件/无前提引用 → 静态权重）
+      const premiseList = extractPremiseRefs(cond)
+      const w = premiseList.length > 0 ? weightAllToOne(premiseList, premiseCtx) : Math.max(1, line.weight ?? 1)
+      const base = Math.max(1, line.weight ?? w) * c.multiplier
+      candidates.push({ line, weight: applySituation(premiseList, base) })
     } else {
       candidates.push({ line, weight: Math.max(1, line.weight ?? 1) * c.multiplier })
     }

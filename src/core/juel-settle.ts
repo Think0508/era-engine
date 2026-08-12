@@ -32,7 +32,9 @@ export function settleJuelConversion(entity: any): string[] {
     const statusAttr = def.status_attr
     if (!statusAttr) continue
     const statusValue = getEntityAttr(entity, statusAttr)
-    if (typeof statusValue !== 'number' || statusValue <= 0) continue
+    // 注释：audit-i 修复——erArk sleep_settle.py 对 !=0 无条件转珠并清零；
+    // 原 `<= 0 continue` 使负值（如负好感）跳过且**不清零** → 永久残留
+    if (typeof statusValue !== 'number' || statusValue === 0) continue
 
     const attrDef = mod.attributes?.[statusAttr]
     const level = attrDef?.level_thresholds?.length

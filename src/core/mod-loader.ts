@@ -9,6 +9,7 @@ import { errorReporter } from './error-reporter'
 import { gameContext } from './game-context'
 import { getCharacterValidators, validateTopLevelLayers } from './character-contract'
 import { useRegistry } from './use-registry'
+import { resetPendingSpawns } from './spawn-system'
 
 export interface ModDependency {
   plugin: string
@@ -1995,6 +1996,10 @@ export class ModLoader {
     // 注释：关系数据注入条件注册器（聚合路径参数校验用）
     conditionRegistry.setRelationData(mod.relationTypes, mod.relationGroups)
     this.loadedMod = mod
+    // 注释：audit-i 修复——新模组加载 = 新世界边界：清空 spawn 激活记录
+    // （processedIds 跨 loadMod 残留 → 同 id pending 在新世界永不激活，静默）。
+    // 运行时调用无循环问题（spawn-system 顶层不访问 modLoader 实例）
+    resetPendingSpawns()
     return mod
   }
 

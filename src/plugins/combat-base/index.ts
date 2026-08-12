@@ -142,8 +142,12 @@ export function onEnable(ctx: PluginContext): void {
   })
 }
 
-// 注释：开始战斗
+// 注释：开始战斗（audit-i 修复，2026-08-12——加进行中守卫：重复 start 曾覆盖 runtime +
+// enterMode 双 push 模式栈残留 + 旧战斗不发 combat:end。进行中再次请求 → 先正常结束旧战斗）
 async function startCombat(enemies: string[], allies: string[], _sourceId: string): Promise<void> {
+  if (currentCombat) {
+    await endCombat('', 'interrupted')
+  }
   const participants = [...allies, ...enemies]
   // 注释：按 speed 排序
   const turnOrder = participants.slice().sort((a, b) => {

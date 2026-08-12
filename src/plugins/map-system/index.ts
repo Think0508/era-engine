@@ -172,11 +172,15 @@ export function onEnable(ctx: PluginContext): void {
       }
       return result
     },
-    // 注释：获取祖先链（parent 递归向上）
+    // 注释：获取祖先链（parent 递归向上）（audit-i 修复——原无 seen 集，
+    // parent 环（A↔B）死循环卡 UI；加 visited 防护）
     getAncestors: (locationId: string): LocationData[] => {
       const result: LocationData[] = []
+      const visited = new Set<string>()
       let current = entitySystem.get('location', locationId) as any as LocationData
       while (current?.parent) {
+        if (visited.has(current.id)) break // 环防护
+        visited.add(current.id)
         const parent = entitySystem.get('location', current.parent) as any as LocationData
         if (!parent) break
         result.push(parent)

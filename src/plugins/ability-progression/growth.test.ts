@@ -231,6 +231,15 @@ describe('settleJuelConversion 宝珠转换链', () => {
     expect(char.juel['10']).toBe(60)
     expect(char.juel['20']).toBe(0)
   })
+
+  it('负值状态也转珠并清零（audit-i：原 <=0 跳过不清零 → 负值永久残留）', async () => {
+    await loadTestMod()
+    const char = makeChar('npc_01', { params: { '皮肤': -50 } })
+    settleJuelConversion(char)
+    // 负值参与转换（珠为负——对齐 erArk !=0 无条件转珠）且必须清零
+    expect(char.juel['0']).toBe(-50)
+    expect(char.params['皮肤']).toBe(0)
+  })
 })
 
 describe('settleEndHHpmpGrowth（528 H 结束上限成长）', () => {

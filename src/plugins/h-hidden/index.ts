@@ -124,8 +124,10 @@ async function settleHiddenValue(
     delta = Math.floor(duration * adjust)
   } else {
     // 注释：减少暴露（等待/休息）— erArk hidden_sex_panel.py:196-199
+    // audit-i 修复：adjust 为负时 Math.floor(-x) = -x-1（每 tick 多减 1）——
+    // 对齐 Python int() 向零截断，用 Math.trunc
     const adjust = (-2 / modeAdjust) * abiAdjust
-    delta = Math.floor(duration * adjust)
+    delta = Math.trunc(duration * adjust)
   }
 
   // 注释：更新发现度，限制在 0-100

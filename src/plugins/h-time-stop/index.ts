@@ -298,8 +298,18 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   //   true_add_time = 本次行动的 timeCost（分钟）
   ctx.events.on('game:execution_end', () => {
     if (!timeStopActive) return
-    const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
-    if (!playerId) { timeStopActive = false; frozenTime = null; return }
+    // 注释：audit-i 修复——原硬编码 'player'/'0' 扫描（与 :272 的 gameContext 解析不一致，
+    // 玩家 id 非 'player' 时找不到并**静默关停时停**）。统一用 gameContext 解析。
+    const playerId = gameContext.getContext().player?.id ?? null
+    if (!playerId) {
+      timeStopActive = false; frozenTime = null
+      errorReporter.report({
+        source: 'h-time-stop',
+        severity: 'warning',
+        message: '时停中找不到玩家实体——时停已解除（正常流程不应发生）',
+      })
+      return
+    }
     const player = entitySystem.get('character', playerId) as any
     if (player?.base) {
       const cur = player.base['TSP'] ?? 0

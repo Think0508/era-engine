@@ -22,6 +22,8 @@ export class EngineUIBridge {
   private pinia: Pinia
   private handlers: { event: string; handler: BridgeHandler }[] = []
   private watchStops: (() => void)[] = []
+  // 注释：错误订阅退订函数（stop() 时清理，round 13）
+  private errorUnsub: (() => void) | null = null
 
   constructor(pinia: Pinia) {
     this.pinia = pinia
@@ -180,6 +182,23 @@ export class EngineUIBridge {
     }
     eventBus.on('random-event:select_character', selectCharacterHandler)
     this.handlers.push({ event: 'random-event:select_character', handler: selectCharacterHandler })
+
+    // 注释：round 13 接线修复——错误上报 → 游戏内红色警告（AGENTS §7"弹红色警告"此前断链：
+    // 错误只进 console，玩家无感知；@errors 调试命令默认隐藏）。经 errorReporter.onReport
+    // 订阅（非事件总线——避免 event-bus 自身报错 → report → 事件循环）。只显示 error 级
+    // （warning 仍进 console/@errors，避免刷屏）。订阅者只写日志，不再触发上报（无环）。
+    import('../core/error-reporter').then(({ errorReporter }) => {
+      this.errorUnsub = errorReporter.onReport((err) => {
+        if (err.severity !== 'error') return
+        const gameStore = useGameStore(this.pinia)
+        gameStore.addLogEntry({
+          id: `err-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+          text: `⚠️ [${err.source}] ${err.message}${err.suggestion ? `（${err.suggestion}）` : ''}`,
+          type: 'system',
+          source: 'error-reporter',
+        })
+      })
+    })
   }
 
   // 注释：刷新当前地点角色列表
@@ -214,6 +233,10 @@ export class EngineUIBridge {
     }
     this.handlers = []
     for (const stop of this.watchStops) stop()
+    if (this.errorUnsub) {
+      this.errorUnsub()
+      this.errorUnsub = null
+    }
     this.watchStops = []
   }
 

@@ -155,7 +155,7 @@ class PluginManager {
       try {
         allDefs.set(id, this.parsePluginToml(id, data.toml))
       } catch (e) {
-        console.warn(`Failed to parse plugin '${id}': ${(e as Error).message}`)
+        errorReporter.report({ source: 'plugin-manager', severity: 'warning', message: `插件 '${id}' 解析失败：${(e as Error).message}`, suggestion: '检查 plugin.toml 语法与 [meta] 必填字段' })
         this.disabledPlugins.add(id)
       }
     }
@@ -165,7 +165,7 @@ class PluginManager {
         def.source = 'mod'
         allDefs.set(id, def)
       } catch (e) {
-        console.warn(`Failed to parse mod plugin '${id}': ${(e as Error).message}`)
+        errorReporter.report({ source: 'plugin-manager', severity: 'warning', message: `模组插件 '${id}' 解析失败：${(e as Error).message}` })
         this.disabledPlugins.add(id)
       }
     }
@@ -174,7 +174,7 @@ class PluginManager {
     try {
       sorted = this.sortByExtends(allDefs)
     } catch (e) {
-      console.warn(`Plugin extends sorting failed: ${(e as Error).message}`)
+      errorReporter.report({ source: 'plugin-manager', severity: 'warning', message: `插件 extends 排序失败：${(e as Error).message}` })
       sorted = [...allDefs.values()]
     }
 
@@ -216,7 +216,7 @@ class PluginManager {
           await data.module.onLoad(ctx)
         }
       } catch (e) {
-        console.warn(`Plugin '${def.meta.id}' onLoad failed: ${(e as Error).message}`)
+        errorReporter.report({ source: 'plugin-manager', severity: 'warning', message: `插件 '${def.meta.id}' onLoad 失败：${(e as Error).message}`, suggestion: '插件已禁用（错误隔离），检查其 onLoad 实现' })
         this.disabledPlugins.add(def.meta.id)
       }
     }
@@ -243,7 +243,7 @@ class PluginManager {
         // handler 类指令（JS 脚本路径）Phase 6-7 跳过 + warning（需沙箱 Phase 11）
         this.registerPluginUICommands(def)
       } catch (e) {
-        console.warn(`Plugin '${def.meta.id}' onEnable failed: ${(e as Error).message}`)
+        errorReporter.report({ source: 'plugin-manager', severity: 'warning', message: `插件 '${def.meta.id}' onEnable 失败：${(e as Error).message}`, suggestion: '插件已禁用（错误隔离），检查其 onEnable 实现' })
         this.disabledPlugins.add(def.meta.id)
       }
     }
@@ -267,9 +267,11 @@ class PluginManager {
       for (const cmd of cmds) {
         // 注释：handler 类指令（JS 脚本路径）Phase 6-7 跳过
         if (cmd.handler && !cmd.effects) {
-          console.warn(
-            `Plugin '${def.meta.id}': 指令 '${cmd.id}' 是 handler 类（JS 脚本），Phase 6-7 暂不支持（需沙箱 Phase 11）`,
-          )
+          errorReporter.report({
+            source: 'plugin-manager',
+            severity: 'warning',
+            message: `插件 '${def.meta.id}': 指令 '${cmd.id}' 是 handler 类（JS 脚本），Phase 6-7 暂不支持（需沙箱 Phase 11）`,
+          })
           continue
         }
         try {
@@ -284,9 +286,11 @@ class PluginManager {
             source: `plugin:${def.meta.id}`,
           })
         } catch (e) {
-          console.warn(
-            `Plugin '${def.meta.id}': 注册指令 '${cmd.id}' 失败: ${(e as Error).message}`,
-          )
+          errorReporter.report({
+            source: 'plugin-manager',
+            severity: 'warning',
+            message: `插件 '${def.meta.id}': 注册指令 '${cmd.id}' 失败: ${(e as Error).message}`,
+          })
         }
       }
     }

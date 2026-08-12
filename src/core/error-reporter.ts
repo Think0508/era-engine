@@ -14,6 +14,9 @@ export interface ErrorReport {
 
 class ErrorReporter {
   private errors: ErrorReport[] = []
+  // 注释：订阅者（2026-08-12 round 13 接线修复）——UI 层经此显示游戏内警告
+  // （AGENTS §7"弹红色警告"此前断链：错误只进 console，玩家无感知）
+  private listeners: ((err: ErrorReport) => void)[] = []
 
   report(err: ErrorReport): void {
     this.errors.push(err)
@@ -23,6 +26,22 @@ class ErrorReporter {
     } else {
       console.warn(`[${err.source}] ${err.message}${err.suggestion ? `\n  建议：${err.suggestion}` : ''}`)
     }
+    // 注释：通知订阅者（隔离——订阅者抛错不得阻断上报）
+    for (const cb of [...this.listeners]) {
+      try {
+        cb(err)
+      } catch {
+        // 订阅者异常不影响错误上报本身
+      }
+    }
+  }
+
+  // 注释：订阅错误上报（返回退订函数）
+  onReport(cb: (err: ErrorReport) => void): () => void {
+    this.listeners.push(cb)
+    return () => {
+      this.listeners = this.listeners.filter(l => l !== cb)
+    }
   }
 
   getErrors(): ErrorReport[] {
@@ -30,7 +49,7 @@ class ErrorReporter {
   }
 
   getErrorsBySource(source: string): ErrorReport[] {
-    return this.errors.filter(e => e.source === source)
+    return this.errors.filter(e => e.source === source).map(e => ({ ...e }))
   }
 
   clear(): void {

@@ -2,7 +2,7 @@
 id = "h-mark"
 name = "刻印系统"
 version = "1.0.0"
-description = "7种刻印升级/降级/修正查询"
+description = "7种刻印：升级/修正查询（降级未实现——audit-k 标注 TODO）"
 
 [data_dependencies]
 provides = ["mark:ready"]

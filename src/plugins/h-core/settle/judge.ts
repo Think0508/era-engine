@@ -162,6 +162,20 @@ export function calcJudge(
         if (getTalent(char, '性好奇')) total += 30
         if (getTalent(char, '性冷漠')) total -= 30
         if (getTalent(char, '性无知')) total += 100
+        // 注释：audit-k 修复——催眠同意门绕过（erArk instuct_judege.py:318-356）：
+        // 目标被催眠（sp_flag.unconscious_h ∈ {4,5,6,7}）时按催眠深度直接加值：
+        // 完全催眠（已催眠·极）→ +9999 直接通过；深 1级=10；浅 1级=20（10-催眠系统.md §5.1）
+        const unconsciousH = char?.sp_flag?.unconscious_h ?? 0
+        if (unconsciousH >= 4 && unconsciousH <= 7) {
+          const deepLv = getTalent(char, '已催眠·深')
+          const lightLv = getTalent(char, '已催眠·浅')
+          const extremeLv = getTalent(char, '已催眠·极')
+          if (extremeLv > 0) total += 9999
+          else {
+            if (deepLv > 0) total += deepLv * 10
+            if (lightLv > 0) total += lightLv * 20
+          }
+        }
       }
       // 注释：心情/底线类天赋修正对所有判定生效（erArk 136-159 行，S 判断之外）
       if (getTalent(char, '讨厌男性')) total -= 30

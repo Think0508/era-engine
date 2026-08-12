@@ -1707,7 +1707,7 @@ context = "{character.name}引导{target.name}用手托起自己的{breast_s}，
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.talents.普乳 == 1"
-context = "{character.name}让{penis_s}在{TargetName的{breast_s}间来回滑动，龟头时而露出时而没入，在萝莉刚发育的胸脯间享受着紧致的摩擦。"
+context = "{character.name}让{penis_s}在{TargetName}的{breast_s}间来回滑动，龟头时而露出时而没入，在萝莉刚发育的胸脯间享受着紧致的摩擦。"
 
 [[entries]]
 conditions = "selected.talents.少女 == 1&selected.talents.普乳 == 1"

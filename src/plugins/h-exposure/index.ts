@@ -1,6 +1,9 @@
 // 注释：h-exposure 插件——露出系统，对齐 erArk
 // 5 级露出模式（0=无 1=室内 2=室外 3=人前 4=无意识人前）
 // 前提：EXPOSURE_SEX_MODE_0~4 / TARGET_* / SELF_*
+// ⚠️ TODO（audit-k 标注，2026-08-12）：露出模式**动态切换缺失**——erArk 有
+// update_exhibitionism_sex_mode 等价逻辑（行动后按露出度自动调整模式），引擎只有
+// exposure_set_level 手动设置；自动切换待行为结算链路补充
 
 import type { PluginContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'

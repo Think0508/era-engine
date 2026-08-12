@@ -267,7 +267,13 @@ function registerBoolEffect(type: string, field: string, value: boolean): void {
 }
 
 export function onLoad(_ctx: PluginContext): void {
-  void lastHypnosisType
+  // 注释：audit-k 修复（2026-08-12）——lastHypnosisType 此前恒 1（无任何赋值点），
+  // 空气/体控/心控催眠（类型 2/3/4）永远不可达。提供 effect 入口供指令/数据设置类型
+  effectTypeRegistry.register('hypnosis_set_type', (_p: any, _execCtx: any) => {
+    const t = Math.max(1, Math.min(4, (_p.type as number | undefined) ?? 1))
+    lastHypnosisType = t
+    return true
+  })
 
   // Core: hypnosis_one — erArk 1211, hypnosis_panel.py:42-158
   effectTypeRegistry.register('hypnosis_one', (_p: any, execCtx: any) => {
@@ -279,8 +285,10 @@ export function onLoad(_ctx: PluginContext): void {
     if (gain <= 0) return true  // 已达上限
     h.hypnosis_degree = Math.min(h.hypnosis_degree + gain, getHypnosisDegreeLimit())
     // 注释：erArk hypnosis_panel.py:144-147 — 设置 unconscious_h = type + 3
+    // audit-k：支持 params.type 指定（1 平然/2 空气/3 体控/4 心控），缺省用 lastHypnosisType
     if (h.hypnosis_degree > 0 && (getUnconsciousH(id) < 4 || getUnconsciousH(id) > 7)) {
-      const typeVal = lastHypnosisType + 3  // 1→4(平然), 2→5(空气), 3→6(体控), 4→7(心控)
+      const t = (_p.type as number | undefined) ?? lastHypnosisType
+      const typeVal = Math.max(1, Math.min(4, t)) + 3  // 1→4(平然), 2→5(空气), 3→6(体控), 4→7(心控)
       setUnconsciousH(id, Math.max(4, Math.min(7, typeVal)))
     }
     checkHypnosisCompletion(id)
@@ -298,7 +306,8 @@ export function onLoad(_ctx: PluginContext): void {
         if (gain <= 0) continue
         h.hypnosis_degree = Math.min(h.hypnosis_degree + gain, getHypnosisDegreeLimit())
         if (h.hypnosis_degree > 0 && (getUnconsciousH(id) < 4 || getUnconsciousH(id) > 7)) {
-          const typeVal = lastHypnosisType + 3
+          const t = (_p.type as number | undefined) ?? lastHypnosisType
+          const typeVal = Math.max(1, Math.min(4, t)) + 3
           setUnconsciousH(id, Math.max(4, Math.min(7, typeVal)))
         }
         checkHypnosisCompletion(id)

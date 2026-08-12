@@ -1343,7 +1343,7 @@ context = "{character.name}颤抖着用{penis_s}拍打{target.name}的头部和{
 
 [[entries]]
 conditions = "premises:jj_3&premises:pl_penis_not_semen_dirty&premises:pl_eja_point_high_or_extreme"
-context = "{character.name}双手用力按住{target.name}的头，让penis_s}在{hair_s}间疯狂摩擦，龟头已经胀大到极致，血管突突跳动，每一次接触都让{character.name}咬紧牙关克制即将喷发的冲动。"
+context = "{character.name}双手用力按住{target.name}的头，让{penis_s}在{hair_s}间疯狂摩擦，龟头已经胀大到极致，血管突突跳动，每一次接触都让{character.name}咬紧牙关克制即将喷发的冲动。"
 
 [[entries]]
 conditions = "premises:jj_3&premises:pl_penis_semen_dirty&premises:CVP_A2_Dirty|B0_G_1"

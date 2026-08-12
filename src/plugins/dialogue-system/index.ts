@@ -205,10 +205,13 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
   // 专属权重 ×draw_setting[14]（默认10）；pickWeightedLine 按权重区间随机选一）
   // T4 版本化：角色层口上按 character_text_version 过滤（erArk character_text_version，
   // 0=不启用角色口上；行 version 缺省=1）；场景通用恒参与
-  // T5 无意识屏蔽：目标无意识（时停）时，非 unconscious 前提的口上淘汰（erArk :224-237）
+  // T5 无意识屏蔽：目标无意识（时停/睡眠/催眠）时，非 unconscious 前提的口上淘汰（erArk :224-237）
+  // round 14 修复：原 `=== 3` 只匹配深度睡眠——sleep-system 无意识 H 用 1-2 级（浅睡/熟睡）
+  // 时角色仍会出无前提口上（口径与 talk-common `>= 1` 不一致）。unconscious_h 值域：
+  // 0=清醒，1-3=睡眠/无意识，4-7=催眠（时停）
   const char = charId ? entitySystem.get('character', charId) as any : null
   const charTextVersion = char?.character_text_version ?? 1
-  const isUnconscious = char?.sp_flag?.unconscious_h === 3
+  const isUnconscious = (char?.sp_flag?.unconscious_h ?? 0) >= 1
   // 注释：无意识时所有口上（含场景通用）若无 unconscious 前提都淘汰（erArk :224-237）
   const keepConscious = (line: ReactiveLine): boolean => !isUnconscious || /unconscious/i.test(line.condition ?? '')
   const pool: { line: ReactiveLine; source: 'scene' | 'character'; multiplier: number }[] = []

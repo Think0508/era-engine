@@ -291,13 +291,17 @@ function applyDamage(targetId: string, damage: number): void {
   eventBus.emit('character:changed', { id: targetId })
 }
 
-// 注释：检查战斗是否结束
+// 注释：检查战斗是否结束（round 14：双方全灭时判玩家方败——原敌人先查，全灭还判"胜"荒谬）
 async function checkCombatEnd(): Promise<boolean> {
   if (!currentCombat) return false
   // 注释：一方全倒
   const enemiesAlive = currentCombat.enemies.some(id => (bindingResolver.get(id, 'hp') ?? 0) > 0)
   const alliesAlive = currentCombat.allies.some(id => (bindingResolver.get(id, 'hp') ?? 0) > 0)
 
+  if (!alliesAlive && !enemiesAlive) {
+    await endCombat('enemies', 'lose') // 双方全灭 → 判败（同归于尽）
+    return true
+  }
   if (!enemiesAlive) {
     await endCombat('allies', 'win')
     return true

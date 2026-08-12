@@ -113,10 +113,19 @@ export class CommonTextsEngine {
           const parts = cond.slice(9).split('&').filter(Boolean)
           for (const part of parts) {
             if (part.includes('==') || part.includes('>=') || part.includes('<=') || part.includes('>') || part.includes('<')) {
-              try {
-                const gc = getContext()
-                if (!evaluateCondition(part, gc)) return false
-              } catch { return false }
+              // round 14 修复：`FOO==N` 是**前提权重值比较**（erArk get_weight_from_premise_dict
+              // :224-237 语义），不是条件路径——原走 evaluateCondition 把 FOO 解析为 0
+              // （N!=0 时恒 false 静默淘汰行；==0 恒 true 静默放行）。用前提权重值比较
+              const m = part.match(/^([A-Za-z_][\w]*)\s*(==|>=|<=|>|<)\s*(-?\d+)$/)
+              if (!m) return false // 无法解析的比较形式 → 淘汰（不静默错误结果）
+              const weight = premiseRegistry.getWeight([m[1]], premiseCtx)
+              const n = Number(m[3])
+              const ok = m[2] === '==' ? weight === n
+                : m[2] === '>=' ? weight >= n
+                  : m[2] === '<=' ? weight <= n
+                    : m[2] === '>' ? weight > n
+                      : weight < n
+              if (!ok) return false
             } else {
               if (!premiseRegistry.evaluate([part], premiseCtx)) return false
             }

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { conditionEngine } from './condition-engine'
 import type { GameContext } from './types'
 
@@ -278,5 +278,87 @@ describe('conditionEngine.evaluate', () => {
     expect(conditionEngine.evaluate('inventory.回气丹.count >= 2', invCtx)).toBe(true)
     expect(conditionEngine.evaluate('inventory.回气丹.count >= 5', invCtx)).toBe(false)
     expect(conditionEngine.evaluate('inventory.不存在.count == 0', invCtx)).toBe(true)
+  })
+})
+
+describe('conditionEngine 前提注册表', () => {
+  beforeEach(() => { conditionEngine.clear() })
+
+  it('premise(X) 命名引用——注册后求值、大小写不敏感、后注册覆盖', () => {
+    conditionEngine.registerPremise('NOT_H', () => true)
+    expect(conditionEngine.evaluate('premise(NOT_H) && player.hp < 100', ctx)).toBe(true)
+    conditionEngine.registerPremise('not_h', () => false)
+    expect(conditionEngine.evaluate('premise(NOT_H) == true', ctx)).toBe(false)
+  })
+
+  it('未知前提求值抛错（严格——校验层拦截漏网）', () => {
+    expect(() => conditionEngine.evaluate('premise(UNKNOWN) == true', ctx)).toThrow()
+    expect(() => conditionEngine.evaluate('premise(UNKNOWN)', ctx)).toThrow()
+  })
+
+  it('premise(X) 参与比较与逻辑组合', () => {
+    conditionEngine.registerPremise('HAVE_TARGET', () => true)
+    conditionEngine.registerPremise('IS_H', () => false)
+    expect(conditionEngine.evaluate('premise(HAVE_TARGET) && !premise(IS_H)', ctx)).toBe(true)
+    expect(conditionEngine.evaluate('premise(IS_H) == true', ctx)).toBe(false)
+  })
+
+  it('number 返回前提——truthy 判定（>0 通过）', () => {
+    conditionEngine.registerPremise('N', () => 2)
+    conditionEngine.registerPremise('ZERO', () => 0)
+    expect(conditionEngine.evaluate('premise(N) >= 1', ctx)).toBe(true)
+    expect(conditionEngine.evaluate('premise(N)', ctx)).toBe(true)
+    expect(conditionEngine.evaluate('premise(ZERO) == true', ctx)).toBe(false)
+    expect(conditionEngine.evaluate('premise(ZERO)', ctx)).toBe(false)
+  })
+
+  it('premise handler 收到完整 GameContext（含 sourceId）', () => {
+    let seen: any = null
+    conditionEngine.registerPremise('SELF', (c: GameContext) => { seen = c; return c.sourceId === 'npc1' })
+    const withSource = { ...ctx, sourceId: 'npc1' }
+    expect(conditionEngine.evaluate('premise(SELF)', withSource)).toBe(true)
+    expect(seen?.time?.hour).toBe(20)
+    expect(seen?.selectedCharacterId).toBe('npc1')
+  })
+
+  it('evaluatePremises——数组简写（全部 truthy；空数组 true）', () => {
+    conditionEngine.registerPremise('A', () => true)
+    conditionEngine.registerPremise('B', () => 1)
+    conditionEngine.registerPremise('C', () => 0)
+    expect(conditionEngine.evaluatePremises(['A', 'B'], ctx)).toBe(true)
+    expect(conditionEngine.evaluatePremises(['A', 'C'], ctx)).toBe(false)
+    expect(conditionEngine.evaluatePremises([], ctx)).toBe(true)
+    expect(() => conditionEngine.evaluatePremises(['UNKNOWN'], ctx)).toThrow()
+  })
+
+  it('getPremiseValue——原始返回值（权重场景）', () => {
+    conditionEngine.registerPremise('HIGH_5', () => 5)
+    conditionEngine.registerPremise('BOOL_P', () => true)
+    expect(conditionEngine.getPremiseValue('HIGH_5', ctx)).toBe(5)
+    expect(conditionEngine.getPremiseValue('BOOL_P', ctx)).toBe(true)
+    expect(() => conditionEngine.getPremiseValue('UNKNOWN', ctx)).toThrow()
+  })
+
+  it('registerPremiseFromExpression——TOML 前提（命名表达式）', () => {
+    conditionEngine.registerPremiseFromExpression('IN_TAVERN', 'location.id == "tavern"')
+    expect(conditionEngine.evaluate('premise(IN_TAVERN)', ctx)).toBe(true)
+    const otherLoc = { ...ctx, location: { id: 'town', name: '城', parent: null, type: 'city', tags: [] } }
+    expect(conditionEngine.evaluate('premise(IN_TAVERN)', otherLoc)).toBe(false)
+  })
+
+  it('getRegisteredPremiseIds——注册清单（lower 化）', () => {
+    conditionEngine.registerPremise('NOT_H', () => true)
+    conditionEngine.registerPremise('HAVE_TARGET', () => true)
+    const ids = conditionEngine.getRegisteredPremiseIds()
+    expect(ids).toContain('not_h')
+    expect(ids).toContain('have_target')
+  })
+
+  it('clear——清空前提与 AST 缓存', () => {
+    conditionEngine.registerPremise('TMP', () => true)
+    expect(conditionEngine.evaluate('premise(TMP)', ctx)).toBe(true)
+    conditionEngine.clear()
+    expect(() => conditionEngine.evaluate('premise(TMP)', ctx)).toThrow()
+    expect(conditionEngine.evaluate('player.hp < 100', ctx)).toBe(true)
   })
 })

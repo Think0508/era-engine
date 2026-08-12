@@ -5,6 +5,9 @@ import { useGameStore } from './stores/game-store'
 import { useUIStore } from './stores/ui-store'
 import { commandRegistry } from '../core/command-registry'
 import { commandExecutor } from '../core/command-executor'
+import { gameContext } from '../core/game-context'
+import { eventBus } from '../core/event-bus'
+import { apiSystem } from '../core/api'
 import { narrativeLog } from '../core/narrative-log'
 import { registerNativeCommands, unregisterNativeCommands } from './native-commands'
 import { mockPlayer, mockTownSquare, mockTime, mockCharactersAtTownSquare, mockCalendar, mockEquipmentSlots } from './stores/mock-data'
@@ -57,22 +60,35 @@ describe('UI 集成测试', () => {
     expect(uiStore.hasSelection).toBe(false)
   })
 
-  it('指令执行包裹 EXECUTING 状态', async () => {
+  it('指令执行包裹 EXECUTING 状态（audit-d I-4 修复：原假绿——ctx 无 engine 不查状态）', async () => {
     const gameStore = useGameStore()
     const uiStore = useUIStore()
     gameStore.setPlayer(mockPlayer)
+    gameContext.setExecutionState('IDLE')
 
-    // 注释：执行 cheat_skip_day 指令（handler 写日志）
+    // 注释：真实事件断言——execution_start/end 必须达事件总线（audit-d C-1：假桩会断链）
+    const events: string[] = []
+    const h1 = () => { events.push('start') }
+    const h2 = () => { events.push('end') }
+    eventBus.on('game:execution_start', h1)
+    eventBus.on('game:execution_end', h2)
+
     await commandExecutor.execute('cheat_skip_day', {
       uiStore,
       gameStore,
+      api: apiSystem,
+      engine: gameContext,
       evaluateCondition: () => true,
+      sourceId: mockPlayer.id,
     })
 
+    eventBus.off('game:execution_start', h1)
+    eventBus.off('game:execution_end', h2)
+
+    expect(events).toEqual(['start', 'end'])
+    expect(gameContext.getExecutionState()).toBe('IDLE')
     // 注释：执行后日志有条目
     expect(gameStore.narrativeLogEntries.length).toBeGreaterThan(0)
-    const lastEntry = gameStore.narrativeLogEntries[gameStore.narrativeLogEntries.length - 1]
-    expect(lastEntry.type).toBe('system')
   })
 
   it('模式栈切换——daily_menu 触发', () => {

@@ -148,10 +148,9 @@ async function main(): Promise<void> {
   gameStore.setEquipmentSlots(mod.equipmentSlots)
   bridge.refreshCharactersAtLocation(startLoc?.id ?? 'town_square')
 
-  // 注释：12. 注册非插件覆盖的原生指令 + 开启作弊模式（临时，方便测试）
+  // 注释：12. 注册非插件覆盖的原生指令（audit-d I-5 修复：原 cheatCommands=true/setTheme('modern')
+  // 调试默认值进生产——作弊指令现默认关闭（@ 前缀指令被 CommandBar 过滤），主题走 mod 主题+用户偏好）
   registerNativeCommands()
-  uiStore.cheatCommands = true
-  uiStore.setTheme('modern')
   uiStore.sidebarOpen = true
 
   // 注释：13. 进入游戏——push bridge 创建后自动同步

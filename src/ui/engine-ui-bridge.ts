@@ -129,8 +129,12 @@ export class EngineUIBridge {
     }
     eventBus.on('game:hour_changed', timeHandler)
     eventBus.on('game:new_day', timeHandler)
+    // 注释：audit-d I-1 修复——不跨整点的行动（8:00+10min=8:10）此前 UI 时间陈旧
+    // （只监 hour_changed/new_day）；补 game:time_advanced 全覆盖
+    eventBus.on('game:time_advanced', timeHandler)
     this.handlers.push({ event: 'game:hour_changed', handler: timeHandler })
     this.handlers.push({ event: 'game:new_day', handler: timeHandler })
+    this.handlers.push({ event: 'game:time_advanced', handler: timeHandler })
 
     // 注释：随机事件选项条——挂起/清除同步到 ui-store
     const eventOptionsHandler: BridgeHandler = (payload: any) => {

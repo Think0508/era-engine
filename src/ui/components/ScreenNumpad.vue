@@ -9,6 +9,7 @@
 import { useUIStore } from '../stores/ui-store'
 import { useGameStore } from '../stores/game-store'
 import { commandExecutor } from '../../core/command-executor'
+import { gameContext } from '../../core/game-context'
 import { apiSystem } from '../../core/api'
 import { createCommandEvaluators } from '../utils/command-eval'
 
@@ -48,7 +49,7 @@ function executeFavorite(commandId: string) {
     uiStore,
     gameStore,
     api: apiSystem,
-    engine: { setExecutionState: () => {}, emit: () => {} },
+    engine: gameContext, // audit-d C-1：原假桩切断 execution_start/end 事件链（sleep/random-event/talk_count 衰减失效）
     ...createCommandEvaluators({ uiStore, gameStore }),
     sourceId: player?.id ?? null,
   })

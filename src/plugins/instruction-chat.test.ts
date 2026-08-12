@@ -14,6 +14,8 @@ import { narrativeLog } from '../core/narrative-log'
 import { errorReporter } from '../core/error-reporter'
 import { onLoad as effectOnLoad, onEnable as effectOnEnable } from './effect-system/index'
 import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from './h-core/index'
+import { onLoad as sleepOnLoad } from './sleep-system/index'
+import { onLoad as timeStopOnLoad } from './h-time-stop/index'
 import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable } from './dialogue-system/index'
 import { onEnable as talkCommonOnEnable } from './talk-common-system/index'
 import { validateInstructionData } from './instruction-loader'
@@ -63,6 +65,8 @@ describe('chat（1004）复刻', () => {
     effectOnEnable(stubCtx)
     hCoreOnLoad(stubCtx)
     hCoreOnEnable(stubCtx)
+    sleepOnLoad(stubCtx)
+    timeStopOnLoad(stubCtx)
     dialogueOnLoad(stubCtx)
     dialogueOnEnable(stubCtx)
     await talkCommonOnEnable(stubCtx)
@@ -358,6 +362,7 @@ describe('chat（1004）复刻', () => {
 
   it('整批执行后无 error 级错误', () => {
     const errors = errorReporter.getErrors()
+    console.log('[dbg-prem]', conditionEngine.getRegisteredPremiseIds().filter((id: string) => id.includes('dorm') || id.includes('tired') || id.includes('sleep')))
     expect(errors.some(e => e.severity === 'error')).toBe(false)
   })
 })

@@ -1,8 +1,30 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { conditionRegistry } from './condition-registry'
+import { conditionEngine } from './condition-engine'
 
 describe('condition-registry', () => {
   beforeEach(() => { conditionRegistry.clear() })
+
+  it('validateExpression——premise(X) 命名引用参数校验（未注册 → unknown）', () => {
+    conditionEngine.clear()
+    conditionEngine.registerPremise('NOT_H', () => true)
+    expect(conditionRegistry.validateExpression('premise(NOT_H) && location.id == "tavern"').ok).toBe(true)
+    const r = conditionRegistry.validateExpression('premise(UNKNOWN_PREM) == true')
+    expect(r.ok).toBe(false)
+    expect(r.unknown).toContain('premise:UNKNOWN_PREM')
+    const r2 = conditionRegistry.validateExpression('premise(not_h) == true')
+    expect(r2.ok).toBe(true)
+    conditionEngine.clear()
+  })
+
+  it('validatePremise——单前提校验（大小写不敏感）', () => {
+    conditionEngine.clear()
+    conditionEngine.registerPremise('HAVE_TARGET', () => true)
+    expect(conditionRegistry.validatePremise('HAVE_TARGET')).toBe(true)
+    expect(conditionRegistry.validatePremise('have_target')).toBe(true)
+    expect(conditionRegistry.validatePremise('NOPE')).toBe(false)
+    conditionEngine.clear()
+  })
 
   it('should have builtin fields', () => {
     const fields = conditionRegistry.getAllFields()

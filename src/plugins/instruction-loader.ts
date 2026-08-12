@@ -90,7 +90,7 @@ export function validateInstructionData(): void {
   validateAdjustmentConditions(mod)
 
   const registeredPremises = new Set(conditionEngine.getRegisteredPremiseIds())
-  const warnedPremises = new Set<string>()
+  const reportedPremises = new Set<string>()
 
   for (const raw of mod.instructions ?? []) {
     if (raw.condition) {
@@ -99,8 +99,8 @@ export function validateInstructionData(): void {
         errorReporter.report({
           source: 'instruction-loader',
           severity: 'error',
-          message: `指令 '${raw.id}' 的 condition 引用了未注册字段：${unknown.join(', ')}（条件：${raw.condition}）`,
-          suggestion: '对照 可用条件属性手册 检查字段路径；location.tags.has_xxx 需要地点定义该 tag',
+          message: `指令 '${raw.id}' 的 condition 引用了未注册字段/前提：${unknown.join(', ')}（条件：${raw.condition}）`,
+          suggestion: '对照 可用条件属性手册 检查字段路径；premise:XXX 需在插件 onLoad 注册（engine API premises.register）',
         })
         // 注释：注册已完成，条件不可达的指令注销（防止点击后静默无反应）
         // 仅注销本 loader 注册的指令（source='instructions'），避免误删同名插件/原生指令
@@ -114,15 +114,23 @@ export function validateInstructionData(): void {
 
     if (raw.premises) {
       for (const p of raw.premises) {
-        // 注释：前提名大小写不敏感（premiseRegistry 注册时 lower 化）
-        if (!registeredPremises.has(p.toLowerCase()) && !warnedPremises.has(p.toLowerCase())) {
-          warnedPremises.add(p.toLowerCase())
-          errorReporter.report({
-            source: 'instruction-loader',
-            severity: 'warning',
-            message: `指令 '${raw.id}' 引用了未注册前提：${p}`,
-            suggestion: '在 h-core 前提文件注册 handler（语义查 erArk handle_premise_*.py），或移除该前提（SOP §4）',
-          })
+        // 注释：前提名大小写不敏感（conditionEngine 注册时 lower 化）；
+        // 未注册前提 = 数据错误（Q4 定案：与 condition 同强度）→ error + 注销该指令
+        if (!registeredPremises.has(p.toLowerCase())) {
+          if (!reportedPremises.has(p.toLowerCase())) {
+            reportedPremises.add(p.toLowerCase())
+            errorReporter.report({
+              source: 'instruction-loader',
+              severity: 'error',
+              message: `指令 '${raw.id}' 引用了未注册前提：${p}`,
+              suggestion: '在插件 onEnable 注册 handler（engine API premises.register，语义查 erArk handle_premise_*.py），或移除该前提（SOP §4）',
+            })
+          }
+          const existing = commandRegistry.getById(raw.id)
+          if (existing?.source === 'instructions') {
+            commandRegistry.unregister(raw.id)
+          }
+          break
         }
       }
     }

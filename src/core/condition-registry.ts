@@ -1,3 +1,5 @@
+import { conditionEngine } from './condition-engine'
+
 interface ConditionField {
   path: string
   type: string
@@ -133,13 +135,25 @@ class ConditionRegistry {
     return true
   }
 
-  // 注释：校验一个条件表达式——提取所有字段路径并逐个 validateField
+  // 注释：校验一个条件表达式——提取所有字段路径并逐个 validateField；
+  // premise(X) 命名引用逐参数校验（与 conditionEngine 注册表比对）
   // selected./target. 根先归一化为 character.{id}.（与实体解析语义一致）
-  // 未知路径返回 { ok: false, unknown: [...] }
+  // 未知路径/未注册前提 → unknown（error 级由调用方处理）
   validateExpression(expr: string): { ok: boolean; unknown: string[] } {
     const paths = extractFieldPaths(expr).map(normalizeRootPath)
     const unknown = paths.filter((p: string) => !this.validateField(p))
+    const registered = new Set(conditionEngine.getRegisteredPremiseIds())
+    for (const premiseId of extractPremiseRefs(expr)) {
+      if (!registered.has(premiseId.toLowerCase())) {
+        unknown.push(`premise:${premiseId}`)
+      }
+    }
     return { ok: unknown.length === 0, unknown }
+  }
+
+  // 注释：单前提校验（premises 数组项）——未注册 → false
+  validatePremise(id: string): boolean {
+    return conditionEngine.getRegisteredPremiseIds().includes(id.toLowerCase())
   }
 
   generateManual(): string {
@@ -172,6 +186,20 @@ function pathMatch(pattern: string, actual: string): boolean {
     if (patternParts[i] !== actualParts[i]) return false
   }
   return true
+}
+
+// 注释：提取条件表达式中的 premise(X) 命名引用（premise 参数不被当作字段路径提取）
+const PREMISE_RE = /premise\(([^)]*)\)/g
+function extractPremiseRefs(expr: string): string[] {
+  const out: string[] = []
+  const stripped = expr.replace(STRING_RE, '')
+  let m: RegExpExecArray | null
+  PREMISE_RE.lastIndex = 0
+  while ((m = PREMISE_RE.exec(stripped)) !== null) {
+    const id = m[1].trim()
+    if (id) out.push(id)
+  }
+  return out
 }
 
 // 注释：从条件表达式中提取字段路径（location.tags.has_x / player.气血 / selected.xxx / target.xxx /

@@ -5,7 +5,7 @@
 //   - premises 数组（新 schema）→ premiseRegistry 非严格求值
 //   - condition 为条件表达式 → evaluateCondition（失败返回 false，不抛）
 
-import { evaluateCondition } from '../../core/condition'
+import { conditionEngine } from '../../core/condition-engine'
 import { premiseRegistry } from '../../core/premise-registry'
 import { gameContext } from '../../core/game-context'
 
@@ -37,7 +37,7 @@ export function createCommandEvaluators(sources: CommandEvalSources): CommandEva
     }
     const gc = gameContext.getContext()
     try {
-      return evaluateCondition(expr, gc)
+      return conditionEngine.evaluate(expr, gc)
     } catch {
       return false
     }

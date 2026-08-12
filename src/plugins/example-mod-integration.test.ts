@@ -123,9 +123,9 @@ describe('example-mod 端到端（字段真实落位）', () => {
     expect(bloodGroup).toContain('父母子女（为大）')
     expect(bloodGroup).toContain('父母子女（为小）')
     // 聚合条件真实求值：any(group:血亲)
-    const { evaluateCondition } = await import('../core/condition')
-    expect(evaluateCondition('character.角色示例.relations.山贼_张三.any(group:血亲) == true', gameContext.getContext())).toBe(true)
-    expect(evaluateCondition('character.角色示例.relations.player.any(group:血亲) == true', gameContext.getContext())).toBe(false)
+    const { conditionEngine } = await import('../core/condition-engine')
+    expect(conditionEngine.evaluate('character.角色示例.relations.山贼_张三.any(group:血亲) == true', gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate('character.角色示例.relations.player.any(group:血亲) == true', gameContext.getContext())).toBe(false)
     // 称呼生成：角色示例 对 山贼_张三 = 父母子女（为小）→ 小端+性别男 → 儿子；panel 父子
     const panel = await apiSystem.call('character', 'getRelationPanel', '角色示例', '山贼_张三', '父母子女（为小）')
     const address = await apiSystem.call('character', 'getRelationAddress', '角色示例', '山贼_张三', '父母子女（为小）')
@@ -255,12 +255,12 @@ describe('example-mod 端到端（字段真实落位）', () => {
 
     it('打坐指令：condition 满足时执行 → 气血+10 + 振奋状态 + 时间+30', async () => {
       const { commandExecutor } = await import('../core/command-executor')
-      const { evaluateCondition } = await import('../core/condition')
+      const { conditionEngine } = await import('../core/condition-engine')
       const player = entitySystem.get('character', 'player') as any
       player.base['气血'] = 190 // 满足 condition "player.气血 < 200"
       const timeBefore = gameContext.getContext().time
       await commandExecutor.execute('meditate', makeTestExecCtx({
-        evaluateCondition: (c: string) => evaluateCondition(c, gameContext.getContext()),
+        evaluateCondition: (c: string) => conditionEngine.evaluate(c, gameContext.getContext()),
       }))
       expect(player.base['气血']).toBe(200)
       expect(player.status_effects.some((s: any) => s.id === '振奋')).toBe(true)
@@ -306,14 +306,14 @@ describe('example-mod 端到端（字段真实落位）', () => {
     })
 
     it('条件路径：inventory.回气丹.count 真实求值（inventory 根 = 玩家背包）', async () => {
-      const { evaluateCondition } = await import('../core/condition')
+      const { conditionEngine } = await import('../core/condition-engine')
       const player = entitySystem.get('character', 'player') as any
       if (!player.inventory) player.inventory = []
       if (!player.inventory.some((i: any) => i.itemId === '回气丹')) {
         player.inventory.push({ itemId: '回气丹', count: 2 })
       }
-      expect(evaluateCondition('inventory.回气丹.count >= 2', gameContext.getContext())).toBe(true)
-      expect(evaluateCondition('inventory.回气丹.count >= 5', gameContext.getContext())).toBe(false)
+      expect(conditionEngine.evaluate('inventory.回气丹.count >= 2', gameContext.getContext())).toBe(true)
+      expect(conditionEngine.evaluate('inventory.回气丹.count >= 5', gameContext.getContext())).toBe(false)
     })
 
     it('关系链路：effect 加/改/删关系 + 事件（存档保留见最后的存档闭环测试）', async () => {
@@ -347,12 +347,12 @@ describe('example-mod 端到端（字段真实落位）', () => {
 
     it('寻仇指令链路：聚合条件拦路 + 效果执行（选中角色体力 -10）', async () => {
       const { commandExecutor } = await import('../core/command-executor')
-      const { evaluateCondition } = await import('../core/condition')
+      const { conditionEngine } = await import('../core/condition-engine')
       const bandit = entitySystem.get('character', '山贼_张三') as any
       // 未结仇：condition 不满足 → 不执行
       const beforeNoGrudge = bandit.base['体力']
       await commandExecutor.execute('seek_revenge', makeTestExecCtx({
-        evaluateCondition: (c: string) => evaluateCondition(c, gameContext.getContext()),
+        evaluateCondition: (c: string) => conditionEngine.evaluate(c, gameContext.getContext()),
       }))
       expect(bandit.base['体力']).toBe(beforeNoGrudge)
       // 结仇：山贼_张三 对 player 有负面关系（死对头组）→ condition 满足 → 体力 -10
@@ -362,7 +362,7 @@ describe('example-mod 端到端（字段真实落位）', () => {
       gameContext.setSelectedCharacterId('山贼_张三')
       const before = bandit.base['体力']
       await commandExecutor.execute('seek_revenge', makeTestExecCtx({
-        evaluateCondition: (c: string) => evaluateCondition(c, gameContext.getContext()),
+        evaluateCondition: (c: string) => conditionEngine.evaluate(c, gameContext.getContext()),
         uiStore: { selectedCharacterId: '山贼_张三' },
       }))
       expect(bandit.base['体力']).toBe(before - 10)
@@ -439,7 +439,7 @@ describe('example-mod 端到端（字段真实落位）', () => {
     // 三档关系存档保留 + 聚合条件在 restore 后仍可用（relationGroups 恢复）
     const relRestored = entitySystem.get('character', '存档关系测试') as any
     expect(relRestored.relations['段延庆']['父母子女（为小）']).toBe(1)
-    const { evaluateCondition } = await import('../core/condition')
-    expect(evaluateCondition('character.存档关系测试.relations.段延庆.any(group:血亲) == true', gameContext.getContext())).toBe(true)
+    const { conditionEngine } = await import('../core/condition-engine')
+    expect(conditionEngine.evaluate('character.存档关系测试.relations.段延庆.any(group:血亲) == true', gameContext.getContext())).toBe(true)
   })
 })

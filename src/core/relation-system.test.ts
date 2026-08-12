@@ -11,7 +11,7 @@ import { errorReporter } from './error-reporter'
 import { gameContext } from './game-context'
 import { conditionRegistry } from './condition-registry'
 import { eventBus } from './event-bus'
-import { evaluateCondition } from './condition'
+import { conditionEngine } from './condition-engine'
 import { resolveRelationPanel, resolveRelationAddress } from './relation-display'
 import { onEnable as characterOnEnable } from '../plugins/character-system/index'
 
@@ -101,11 +101,11 @@ name = "乙"
     conditionRegistry.setRelationData(mod.relationTypes, mod.relationGroups)
     const ctx = gameContext.getContext()
     // 单类型查询（类型名优先，不被聚合吞掉）
-    expect(evaluateCondition('character.a.relations.b.any == 1', ctx)).toBe(true)
+    expect(conditionEngine.evaluate('character.a.relations.b.any == 1', ctx)).toBe(true)
     // 负面档位：条件引擎不支持负数字面量（== -1 触发算术检查）→ 用 < 0
-    expect(evaluateCondition('character.a.relations.b.any_positive < 0', ctx)).toBe(true)
+    expect(conditionEngine.evaluate('character.a.relations.b.any_positive < 0', ctx)).toBe(true)
     // 带括号聚合仍工作
-    expect(evaluateCondition('character.a.relations.b.any(group:g1) == true', ctx)).toBe(true)
+    expect(conditionEngine.evaluate('character.a.relations.b.any(group:g1) == true', ctx)).toBe(true)
   })
 
   it('非法档位值 → errorReporter error（不静默）', () => {
@@ -229,23 +229,23 @@ relations = { a = { "夫妻" = 1, "父母子女（为小）" = 1 } }
 
   it('any(group:血亲)：组展开后命中（父母子女（为大）在血亲组）', () => {
     setup()
-    expect(evaluateCondition('character.a.relations.b.any(group:血亲) == true', gameContext.getContext())).toBe(true)
-    expect(evaluateCondition('character.b.relations.a.any(group:血亲) == true', gameContext.getContext())).toBe(true) // b 对 a 有 父母子女（为小）
+    expect(conditionEngine.evaluate('character.a.relations.b.any(group:血亲) == true', gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate('character.b.relations.a.any(group:血亲) == true', gameContext.getContext())).toBe(true) // b 对 a 有 父母子女（为小）
   })
 
   it('any_negative(列表)：仇人在列表中且为负面 → true', () => {
     setup()
-    expect(evaluateCondition('character.a.relations.b.any_negative(仇人,被仇) == true', gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate('character.a.relations.b.any_negative(仇人,被仇) == true', gameContext.getContext())).toBe(true)
     // 夫妻是正面——any_negative 不命中
-    expect(evaluateCondition('character.b.relations.a.any_negative(夫妻) == true', gameContext.getContext())).toBe(false)
+    expect(conditionEngine.evaluate('character.b.relations.a.any_negative(夫妻) == true', gameContext.getContext())).toBe(false)
   })
 
   it('any_positive(列表) 与 无括号 any（全部类型）', () => {
     setup()
-    expect(evaluateCondition('character.a.relations.b.any_positive(父母子女（为大）) == true', gameContext.getContext())).toBe(true)
-    expect(evaluateCondition('character.a.relations.b.any == true', gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate('character.a.relations.b.any_positive(父母子女（为大）) == true', gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate('character.a.relations.b.any == true', gameContext.getContext())).toBe(true)
     // a 对 b 有正面+负面两种关系——any 存在即可
-    expect(evaluateCondition('character.a.relations.b.any == true', gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate('character.a.relations.b.any == true', gameContext.getContext())).toBe(true)
   })
 
   it('condition-registry 聚合参数校验：未定义类型/组 → 校验失败；合法 → 通过', () => {
@@ -259,7 +259,7 @@ relations = { a = { "夫妻" = 1, "父母子女（为小）" = 1 } }
   it('复杂组合：两侧 + 多组 + 与或非 + 括号嵌套聚合（2026-08-10 复检）', () => {
     setup()
     const ctx = gameContext.getContext()
-    const ev = (expr: string) => evaluateCondition(expr, ctx)
+    const ev = (expr: string) => conditionEngine.evaluate(expr, ctx)
     // ① 两侧组合（grill 场景）：A 对 B 有负面（死对头组）且 B 对 A 有亲属（血亲组）
     expect(ev('character.a.relations.b.any_negative(group:死对头) == true && character.b.relations.a.any(group:血亲) == true')).toBe(true)
     // ② 括号分组内嵌聚合（递归路径——历史 bug 点：占位符在递归中丢失）
@@ -277,7 +277,7 @@ relations = { a = { "夫妻" = 1, "父母子女（为小）" = 1 } }
   it('复杂组合边界（2026-08-10 二次复检）：三层嵌套 / !与聚合 / 字面量 / 优先级 / !=', () => {
     setup()
     const ctx = gameContext.getContext()
-    const ev = (expr: string) => evaluateCondition(expr, ctx)
+    const ev = (expr: string) => conditionEngine.evaluate(expr, ctx)
     // 三层括号嵌套
     expect(ev('(((character.a.relations.b.any_negative(group:死对头) == true)))')).toBe(true)
     // ! 作用于聚合（b 对 a 无负面 → 整体非为 true）

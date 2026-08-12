@@ -10,7 +10,7 @@
 //     抛错——原本会被 strict/默认值**静默淘汰**（目标永不触发且无痕迹），现去重上报一次
 
 import { premiseRegistry } from '../../core/premise-registry'
-import { evaluateCondition } from '../../core/condition'
+import { conditionEngine } from '../../core/condition-engine'
 import { conditionRegistry } from '../../core/condition-registry'
 import { gameContext } from '../../core/game-context'
 import { errorReporter } from '../../core/error-reporter'
@@ -112,7 +112,7 @@ function collectCandidates(
         }
       }
       try {
-        if (!evaluateCondition(target.condition, gc)) continue
+        if (!conditionEngine.evaluate(target.condition, gc)) continue
       } catch (e) {
         // 注释：表达式语法错误 → 去重上报（此前每次求值都报，500 NPC 刷屏）
         reportOnce(

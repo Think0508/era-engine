@@ -14,7 +14,7 @@ import { premiseRegistry } from '../core/premise-registry'
 import { errorReporter } from '../core/error-reporter'
 import { PluginManager, warnMissingPluginTomls } from '../core/plugin-manager'
 import { SlotRegistry } from '../ui/slots/slot-registry'
-import { evaluateCondition } from '../core/condition'
+import { conditionEngine } from '../core/condition-engine'
 
 describe('引擎 boot 冒烟测试（全插件加载）', () => {
   beforeAll(async () => {
@@ -120,22 +120,22 @@ describe('引擎 boot 冒烟测试（全插件加载）', () => {
 
   it('条件引擎在 boot 状态可求值（selected/别名/根路径）', () => {
     // 无选中 → selected != null 为 false
-    expect(evaluateCondition('selected != null', gameContext.getContext())).toBe(false)
+    expect(conditionEngine.evaluate('selected != null', gameContext.getContext())).toBe(false)
     // location 根路径
-    expect(evaluateCondition('location.id == "town_square"', gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate('location.id == "town_square"', gameContext.getContext())).toBe(true)
     // status 别名（fieldAliases 由 status-system 注册）——角色无状态 → false 不抛
-    expect(evaluateCondition('character.player.status.醉意 == true', gameContext.getContext())).toBe(false)
+    expect(conditionEngine.evaluate('character.player.status.醉意 == true', gameContext.getContext())).toBe(false)
     // target 根路径（judge adjustments）不抛
-    expect(evaluateCondition('target.first_times.virgin_V != true', gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate('target.first_times.virgin_V != true', gameContext.getContext())).toBe(true)
   })
 
   it('B1：战斗指令条件 game.mode == "combat" 在战斗模式下可满足（攻击/逃跑不锁死）', async () => {
     // 探索模式：条件不满足
-    expect(evaluateCondition("game.mode == 'combat'", gameContext.getContext())).toBe(false)
+    expect(conditionEngine.evaluate("game.mode == 'combat'", gameContext.getContext())).toBe(false)
     // 进入战斗模式 → 条件满足（combat-base 攻击/逃跑指令依赖此门控）
     await gameContext.enterMode('combat')
-    expect(evaluateCondition("game.mode == 'combat'", gameContext.getContext())).toBe(true)
-    expect(evaluateCondition("game.mode != 'combat'", gameContext.getContext())).toBe(false)
+    expect(conditionEngine.evaluate("game.mode == 'combat'", gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate("game.mode != 'combat'", gameContext.getContext())).toBe(false)
     // 攻击/逃跑指令注册且条件改为 game.mode（不再引用已删除的 combat.in_progress）
     const attack = commandRegistry.getById('combat_attack')
     expect(attack).toBeDefined()

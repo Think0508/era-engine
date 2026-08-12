@@ -15,7 +15,7 @@ import { getLevel, getEntityAttr } from '../../../core/entity-utils'
 import { entitySystem } from '../../../core/entity-system'
 import { modLoader } from '../../../core/mod-loader'
 import { gameContext } from '../../../core/game-context'
-import { evaluateCondition } from '../../../core/condition'
+import { conditionEngine } from '../../../core/condition-engine'
 import { errorReporter } from '../../../core/error-reporter'
 
 const FAV_THRESHOLDS = [0, 100, 500, 1000, 2500, 5000, 10000, 50000, 100000]
@@ -69,7 +69,7 @@ function calcAdjustments(judgeClass: string | undefined, charId: string): number
   let total = 0
   for (const entry of entries) {
     try {
-      if (evaluateCondition(entry.condition, judgeCtx)) total += entry.value
+      if (conditionEngine.evaluate(entry.condition, judgeCtx)) total += entry.value
     } catch (err) {
       // 注释：修正条件表达式解析失败 → 报告 + 跳过该条（不阻断判定）
       errorReporter.report({

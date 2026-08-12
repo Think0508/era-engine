@@ -4,7 +4,7 @@
 
 import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
-import { evaluateCondition } from './condition'
+import { conditionEngine } from './condition-engine'
 import { modLoader, finalizeCharacterData, type PendingSpawn } from './mod-loader'
 
 let processedIds = new Set<string>()
@@ -36,7 +36,7 @@ export function processPendingSpawns(): void {
     if (processedIds.has(spawn.id)) continue
 
     try {
-      const result = evaluateCondition(spawn.condition, ctx)
+      const result = conditionEngine.evaluate(spawn.condition, ctx)
       if (result) {
         // 注释：契约最终化兜底（标准角色契约）——pendingSpawns 在 parseModData 已 finalize，
         // 此处防其他来源/未来路径的 pending 数据漏初始化

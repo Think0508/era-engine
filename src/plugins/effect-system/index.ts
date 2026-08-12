@@ -11,7 +11,7 @@ import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
 import { apiSystem } from '../../core/api'
-import { evaluateCondition } from '../../core/condition'
+import { conditionEngine } from '../../core/condition-engine'
 import { modLoader } from '../../core/mod-loader'
 import { SettlementContext } from './settlement-context'
 
@@ -262,7 +262,7 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
     // 注释：condition 检查——不满足时跳过
     if (effect.condition) {
       const gc = gameContext.getContext()
-      if (!evaluateCondition(effect.condition, gc)) {
+      if (!conditionEngine.evaluate(effect.condition, gc)) {
         continue
       }
     }

@@ -16,7 +16,7 @@ import { narrativeLog } from '../core/narrative-log'
 import { PluginManager } from '../core/plugin-manager'
 import { SlotRegistry } from '../ui/slots/slot-registry'
 import { effectTypeRegistry } from '../core/effect-type-registry'
-import { evaluateCondition } from '../core/condition'
+import { conditionEngine } from '../core/condition-engine'
 import { commandExecutor } from '../core/command-executor'
 import { makeTestExecCtx } from '../utils/test-helpers'
 
@@ -376,8 +376,8 @@ describe('follow-system 跟随系统', () => {
   it('条件字段注册：character.{id}.following / follow_mode', () => {
     // 注释：跟随状态经条件引擎可求值（注册自 condition_fields）
     entitySystem.get('character', TEST_GIRL)!.sp_flag.is_follow = 1
-    expect(evaluateCondition(`character.${TEST_GIRL}.following == true`, gameContext.getContext())).toBe(true)
-    expect(evaluateCondition(`character.${TEST_GIRL}.follow_mode == 1`, gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate(`character.${TEST_GIRL}.following == true`, gameContext.getContext())).toBe(true)
+    expect(conditionEngine.evaluate(`character.${TEST_GIRL}.follow_mode == 1`, gameContext.getContext())).toBe(true)
     // 注释：指令/口上 condition 的字段校验通过（防复刻批次时误报未注册字段）
     expect(conditionRegistry.validateExpression(`character.${TEST_GIRL}.following == true`).ok).toBe(true)
     expect(conditionRegistry.validateExpression(`character.${TEST_GIRL}.follow_mode >= 1`).ok).toBe(true)

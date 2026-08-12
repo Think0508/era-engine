@@ -16,7 +16,7 @@ import { entitySystem } from '../../core/entity-system'
 import { modLoader } from '../../core/mod-loader'
 import { errorReporter } from '../../core/error-reporter'
 import { gameContext } from '../../core/game-context'
-import { evaluateCondition } from '../../core/condition'
+import { conditionEngine } from '../../core/condition-engine'
 
 // 注释：tag 词表（校验 + 过滤共用；未知 part:/flag: 值 → 校验器报错）
 export const PART_TAGS = ['breast', 'clit', 'mouth', 'vagina', 'anus', 'urethra', 'womb', 'hand', 'penis', 'worship'] as const
@@ -95,7 +95,7 @@ function passesPremises(cmd: CommandDef, targetCharId: string): boolean {
 function passesCondition(cmd: CommandDef): boolean {
   if (!cmd.condition) return true
   try {
-    return evaluateCondition(cmd.condition, gameContext.getContext())
+    return conditionEngine.evaluate(cmd.condition, gameContext.getContext())
   } catch {
     return false
   }

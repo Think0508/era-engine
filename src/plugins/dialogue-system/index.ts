@@ -12,7 +12,7 @@ import { narrativeLog } from '../../core/narrative-log'
 import { modLoader } from '../../core/mod-loader'
 import { commandRegistry } from '../../core/command-registry'
 import type { CommandDef } from '../../core/command-registry'
-import { evaluateCondition } from '../../core/condition'
+import { conditionEngine } from '../../core/condition-engine'
 import { premiseRegistry } from '../../core/premise-registry'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { weightedRandom } from '../../utils/weighted-random'
@@ -181,7 +181,7 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
   // condition 满足 → auto start scene（不打断当前口上）
   try {
     const gc = gameContext.getContext()
-    const { evaluateCondition } = await import('../../core/condition')
+    const { conditionEngine } = await import('../../core/condition-engine')
     const candidates = await apiSystem.call('quest', 'checkTriggerConditions')
     if (Array.isArray(candidates)) {
       for (const sid of candidates) {
@@ -189,7 +189,7 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
         const sceneDef = sMod?.quests?.get?.(sid)
         if (!sceneDef?.condition) continue
         try {
-          if (evaluateCondition(sceneDef.condition, gc)) {
+          if (conditionEngine.evaluate(sceneDef.condition, gc)) {
             await apiSystem.call('quest', 'start', sid)
           }
         } catch { /* condition 求值失败，跳过 */ }
@@ -340,7 +340,7 @@ function pickWeightedLine(pool: WeightedCandidate[], premiseTargetId?: string): 
         candidates.push({ line, weight: applySituation(premiseList, base) })
       } else {
         try {
-          if (!evaluateCondition(cond, gc)) continue
+          if (!conditionEngine.evaluate(cond, gc)) continue
         } catch {
           continue
         }

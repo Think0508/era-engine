@@ -16,7 +16,7 @@ import { apiSystem } from '../../core/api'
 import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
 import { premiseRegistry } from '../../core/premise-registry'
-import { evaluateCondition } from '../../core/condition'
+import { conditionEngine } from '../../core/condition-engine'
 import { getNpcActiveH, setNpcActiveH, getPlayerId } from './state'
 import { filterInstructions, partTagsOfPartId } from './filter'
 
@@ -91,7 +91,7 @@ export async function executeInstructionForNpc(cmdId: string, targetId: string):
       premiseRegistry.evaluate(premises, { selectedCharacterId: targetId }, false),
     evaluateCondition: (expr: string) => {
       try {
-        return evaluateCondition(expr, gameContext.getContext())
+        return conditionEngine.evaluate(expr, gameContext.getContext())
       } catch {
         return false
       }

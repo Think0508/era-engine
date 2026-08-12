@@ -1,5 +1,5 @@
 import { premiseRegistry } from '../../core/premise-registry'
-import { evaluateCondition } from '../../core/condition'
+import { conditionEngine } from '../../core/condition-engine'
 import { gameContext } from '../../core/game-context'
 import { entitySystem } from '../../core/entity-system'
 import { weightedRandom } from '../../utils/weighted-random'
@@ -133,7 +133,7 @@ export class CommonTextsEngine {
         } else {
           try {
             const gc = getContext()
-            if (!evaluateCondition(cond, gc)) return false
+            if (!conditionEngine.evaluate(cond, gc)) return false
           } catch { return false }
         }
       }

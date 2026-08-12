@@ -8,7 +8,7 @@
 import type { RandomEventDef } from './mod-loader'
 import type { GameContext } from './types'
 import { premiseRegistry } from './premise-registry'
-import { evaluateCondition } from './condition'
+import { conditionEngine } from './condition-engine'
 import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
 import { errorReporter } from './error-reporter'
@@ -111,7 +111,7 @@ export class RandomEventEngine {
         // 注释：运行时防御——condition 合法性已由插件层加载校验（validateEventData），
         // 此处防运行时不匹配的抛错中断整个事件系统：单事件条件异常 → 跳过该事件
         try {
-          if (!evaluateCondition(d.condition, this.condCtx(ctx))) continue
+          if (!conditionEngine.evaluate(d.condition, this.condCtx(ctx))) continue
         } catch {
           continue
         }

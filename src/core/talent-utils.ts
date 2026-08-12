@@ -1,7 +1,7 @@
 import { entitySystem } from './entity-system'
 import { modLoader } from './mod-loader'
 import type { TalentDef, TalentModifier } from './mod-loader'
-import { evaluateCondition } from './condition'
+import { conditionEngine } from './condition-engine'
 import { gameContext } from './game-context'
 import { narrativeLog } from './narrative-log'
 import { evaluateUpgradeNeeds } from './upgrade-needs'
@@ -60,7 +60,7 @@ export function checkTalentGain(charId: string, gainType = 0): void {
     try {
       let satisfied = false
       if (def.gain.condition) {
-        satisfied = evaluateCondition(def.gain.condition, gc)
+        satisfied = conditionEngine.evaluate(def.gain.condition, gc)
       }
       if (!satisfied && def.gain.needs) {
         satisfied = evaluateUpgradeNeeds(char, def.gain.needs).satisfied
@@ -112,7 +112,7 @@ function modifierMatches(ctx: TalentModifierContext, mod: TalentModifier): boole
   if (mod.when_ability && mod.when_ability !== ctx.ability) return false
   if (mod.condition) {
     const gc = gameContext.getContext()
-    if (!evaluateCondition(mod.condition, gc)) return false
+    if (!conditionEngine.evaluate(mod.condition, gc)) return false
   }
   return true
 }

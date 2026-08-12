@@ -12,7 +12,7 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { gameContext } from '../../core/game-context'
 import type { Quest, ConversationRef } from '../../core/mod-loader'
 import { parseConversationRef } from '../../core/mod-loader'
-import { evaluateCondition } from '../../core/condition'
+import { conditionEngine } from '../../core/condition-engine'
 
 // 注释：scene 运行时状态
 interface SceneRuntime {
@@ -326,7 +326,7 @@ function checkAutoStart(): void {
     // 2026-08-09 example-mod 验证修复：原为 TODO 死代码（auto_start_condition 从不求值，
     // 任务永不自动开始）→ 用条件引擎真实求值
     try {
-      if (evaluateCondition(cond, gameContext.getContext())) {
+      if (conditionEngine.evaluate(cond, gameContext.getContext())) {
         startScene(id)
       }
     } catch {

@@ -10,7 +10,7 @@ import { narrativeLog } from '../../core/narrative-log'
 import { commandRegistry } from '../../core/command-registry'
 import type { CommandDef } from '../../core/command-registry'
 import { modLoader } from '../../core/mod-loader'
-import { evaluateCondition } from '../../core/condition'
+import { conditionEngine } from '../../core/condition-engine'
 
 interface ReachableLocation {
   target: string
@@ -52,7 +52,7 @@ function getReachable(
   // 3. Graph edges
   for (const edge of graph) {
     if (edge.from === fromId && !seen.has(edge.to)) {
-      if (!edge.condition || evaluateCondition(edge.condition, gc)) {
+      if (!edge.condition || conditionEngine.evaluate(edge.condition, gc)) {
         const target = entitySystem.get('location', edge.to) as any as LocationData
         if (target) {
           seen.add(edge.to)
@@ -96,7 +96,7 @@ function findPath(
   }
   // graph 边（含条件——不满足的边不参与）
   for (const edge of graph) {
-    if (!edge.condition || evaluateCondition(edge.condition, gc)) {
+    if (!edge.condition || conditionEngine.evaluate(edge.condition, gc)) {
       addEdge(edge.from, edge.to, edge.time_cost ?? cfg.edge_default_time_cost)
     }
   }

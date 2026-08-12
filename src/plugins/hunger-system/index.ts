@@ -9,6 +9,7 @@ import { apiSystem } from '../../core/api'
 import { modLoader } from '../../core/mod-loader'
 import { narrativeLog } from '../../core/narrative-log'
 import { useRegistry } from '../../core/use-registry'
+import { gameContext } from '../../core/game-context'
 
 const HUNGER_ATTR = '饥饿值'
 const DIGESTION_ATTR = '消化剩余'
@@ -137,8 +138,9 @@ export function onEnable(ctx: PluginContext): void {
         c.base[DIGESTION_ATTR] = Math.max(0, (c.base[DIGESTION_ATTR] ?? 0) - digestRate)
       }
 
-      // 注释：NPC 自动进食
-      if (c.id !== 'player' && c.id !== '0') {
+      // 注释：NPC 自动进食（2026-08-12 全面审计 I10 修复：原硬编码 'player'，改按 gameContext 玩家 id）
+      const playerId = gameContext.getContext().player?.id ?? null
+      if (c.id !== playerId && c.id !== '0') {
         const threshold = cfg.npc_auto_eat_threshold ?? 190
         if ((c.base[HUNGER_ATTR] ?? 0) > threshold && (c.base[DIGESTION_ATTR] ?? 0) <= 0) {
           const foodId = findFirstFood(c.id)
@@ -158,9 +160,10 @@ export function onEnable(ctx: PluginContext): void {
     const rationId = cfg.daily_ration_id as string
     const rationCount = (cfg.daily_ration_count as number) ?? 1
     if (!rationId || rationCount <= 0) return
+    const playerId = gameContext.getContext().player?.id ?? null
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
-      if (c.id === 'player' || c.id === '0') continue
+      if (c.id === playerId || c.id === '0') continue
       if (!c.base) continue
       try {
         await apiSystem.call('inventory', 'addItem', c.id, rationId, rationCount)

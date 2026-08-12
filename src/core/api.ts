@@ -1,5 +1,6 @@
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
+import { saveGame as saveGameImpl, loadGame as loadGameImpl } from './save-system'
 
 type ApiMethod = (...args: any[]) => Promise<any>
 
@@ -53,8 +54,13 @@ class ApiSystem {
       'bindings.set': async (entityId: string, key: string, value: any) => {
         bindingResolver.set(entityId, key, value)
       },
-      saveGame: async (_slot: string) => {},
-      loadGame: async (_slot: string) => {},
+      saveGame: async (slot: string, label?: string) => {
+        // 注释：2026-08-12 全面审计：原为空实现 stub（静默成功、实际丢档）——转调 save-system
+        await saveGameImpl(slot, null, label)
+      },
+      loadGame: async (slot: string) => {
+        await loadGameImpl(slot)
+      },
     })
   }
 }

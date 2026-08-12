@@ -18,3 +18,5 @@
 hp = "hp"
 mp = "mp"
 attack = "attack"
+defense = "defense"
+speed = "speed"

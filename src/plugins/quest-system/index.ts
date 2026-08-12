@@ -283,15 +283,25 @@ async function checkObjectives(objectiveType: string, payload: any): Promise<voi
         matched = obj.target === payload.target
         break
       case 'kill_count':
-        // ⚠️ 标记（2026-08-09）：kill_count 未实现——combat:end payload {winner, outcome}
-        // 无敌人数量信息，且 objective 累计机制依赖 quest 系统整体设计。当前恒 true
-        // （事件到达即推进）= 已知半成品（勿局部修补，随 quest 系统补齐）。
-        matched = true
+        // 注释：2026-08-12 全面审计 I4 修复——原恒 true（任何战斗都推进，假绿）。
+        // 现按"玩家方胜利 + 目标敌人参战"累计（combat:end payload {winner:'allies'|'enemies',
+        // outcome, participants} 无击杀明细——按场次累计是近似，语义如实标注）。
+        // obj: { type="kill_count", target=敌人id, count=N }
+        if (payload.winner === 'allies' && payload.outcome === 'win'
+            && (payload.participants ?? []).includes(obj.target)) {
+          const cur = (runtime.objectiveProgress.get(step.id) ?? 0) + 1
+          runtime.objectiveProgress.set(step.id, cur)
+          matched = cur >= (obj.count ?? 1)
+        }
         break
       case 'collect_items':
-        // ⚠️ 标记（2026-08-09）：collect_items 未实现——真实匹配（itemId + count 累计）
-        // 依赖 quest objective 系统整体设计。当前恒 true = 已知半成品（勿局部修补）。
-        matched = true
+        // 注释：2026-08-12 全面审计 I4 修复——原恒 true。现按 itemId 匹配 + count 累计
+        // （item:added payload {character, itemId, count}）。
+        if (payload?.itemId === obj.item) {
+          const cur = (runtime.objectiveProgress.get(step.id) ?? 0) + (payload?.count ?? 1)
+          runtime.objectiveProgress.set(step.id, cur)
+          matched = cur >= (obj.count ?? 1)
+        }
         break
       case 'talk_to':
         matched = obj.character === payload.character

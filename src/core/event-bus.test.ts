@@ -35,6 +35,16 @@ describe('event-bus', () => {
     expect(good).toHaveBeenCalled()
   })
 
+  it('handler 抛错 → errorReporter 上报（2026-08-12 全面审计：原 catch{} 静默）', async () => {
+    const { errorReporter } = await import('./error-reporter')
+    errorReporter.clear()
+    eventBus.on('boom:event', () => { throw new Error('handler exploded') })
+    await eventBus.emit('boom:event', {})
+    const errs = errorReporter.getErrors().filter(e => e.severity === 'error' && e.message.includes('boom:event'))
+    expect(errs.length).toBeGreaterThan(0)
+    expect(errs[0].message).toContain('handler exploded')
+  })
+
   it('should await async handlers serially', async () => {
     const order: string[] = []
     eventBus.on('test', async () => {

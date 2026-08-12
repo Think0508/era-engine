@@ -8,6 +8,13 @@ description = "回合循环/HP扣减/状态结算/钩子系统"
 provides = ["combat:ready"]
 depends_on = ["status:ready", "abilities:ready", "effects:ready"]
 
+# 注释：战斗必需属性（2026-08-12 全面审计 I8 修复——此前无声明，未绑定则战斗静默退化）
+[required_attributes]
+hp = { type = "number", description = "生命值，扣减判定胜负" }
+attack = { type = "number", description = "攻击力，伤害计算" }
+defense = { type = "number", description = "防御力，伤害减免" }
+speed = { type = "number", description = "速度，决定行动顺序" }
+
 [condition_fields]
 # 注释：combat.in_progress 已删除（B1 修复——无取值源，战斗门控改用内置 game.mode）
 "combat.turn_count" = { type = "number", description = "当前战斗回合数" }

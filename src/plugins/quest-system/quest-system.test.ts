@@ -121,4 +121,49 @@ describe('quest-system combat 步骤推进（B3）', () => {
     expect(ref.name).toBe('daily_chat')
     expect(resolveConversation(mod.conversations, ref)).toBeDefined()
   })
+
+  // ═══════ 全面审计 I4 修复：objective 真实匹配（不再恒 true）═══════
+  describe('objective 真实匹配（I4）', () => {
+    function installObjectiveQuest(obj: any) {
+      const mod = modLoader.getMod()!
+      mod.quests.set('objective_test_quest', {
+        id: 'objective_test_quest',
+        title: '目标测试',
+        type: 'main',
+        display: 'hidden',
+        steps: [
+          { id: 'obj_step', type: 'objective', objective: obj, next: 'final' },
+          { id: 'final', type: 'reward', effects: [], next: 'not_exist' },
+        ],
+      })
+    }
+
+    it('collect_items：itemId 匹配 + count 累计达标才推进（错误物品不推进）', async () => {
+      installObjectiveQuest({ type: 'collect_items', item: '回血丹', count: 2 })
+      await apiSystem.call('quest', 'start', 'objective_test_quest')
+      // 错误物品 → 不推进
+      await eventBus.emit('item:added', { character: 'player', itemId: '媚药', count: 5 })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'objective_test_quest')).not.toBe('completed')
+      // 正确物品 1 个 → 仍不达标
+      await eventBus.emit('item:added', { character: 'player', itemId: '回血丹', count: 1 })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'objective_test_quest')).not.toBe('completed')
+      // 再 1 个 → 累计 2 达标推进
+      await eventBus.emit('item:added', { character: 'player', itemId: '回血丹', count: 1 })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'objective_test_quest')).toBe('completed')
+    })
+
+    it('kill_count：玩家方胜利 + 目标敌人参战才累计（其他战斗不推进）', async () => {
+      installObjectiveQuest({ type: 'kill_count', target: 'enemy_bandit', count: 1 })
+      await apiSystem.call('quest', 'start', 'objective_test_quest')
+      // 失败战斗 → 不推进
+      await eventBus.emit('combat:end', { winner: 'enemies', outcome: 'lose', participants: ['player', 'enemy_bandit'] })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'objective_test_quest')).not.toBe('completed')
+      // 胜利但目标未参战 → 不推进
+      await eventBus.emit('combat:end', { winner: 'allies', outcome: 'win', participants: ['player', 'other_enemy'] })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'objective_test_quest')).not.toBe('completed')
+      // 胜利 + 目标参战 → 推进
+      await eventBus.emit('combat:end', { winner: 'allies', outcome: 'win', participants: ['player', 'enemy_bandit'] })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'objective_test_quest')).toBe('completed')
+    })
+  })
 })

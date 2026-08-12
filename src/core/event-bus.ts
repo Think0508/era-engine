@@ -1,3 +1,5 @@
+import { errorReporter } from './error-reporter'
+
 type EventHandler = (payload: any) => void | Promise<void>
 
 interface ListenerEntry {
@@ -46,7 +48,15 @@ class EventBus {
       for (const entry of entries) {
         try {
           await entry.handler(payload)
-        } catch {
+        } catch (err) {
+          // 注释：错误隔离——handler 抛错不阻断后续 handler（AGENTS §7），但必须上报
+          // （2026-08-12 全面审计：原 catch{} 完全静默，插件运行时异常不可见）
+          errorReporter.report({
+            source: 'event-bus',
+            severity: 'error',
+            message: `事件 '${entry.matchedEvent}' 的 handler 抛错：${err instanceof Error ? err.message : String(err)}`,
+            suggestion: '检查该事件的监听器实现（错误已隔离，不影响其他监听器）',
+          })
         }
         if (entry.once) {
           toRemove.push({ event: entry.matchedEvent, handler: entry.handler })

@@ -2,7 +2,6 @@
 // 语义来源：erArk handle_premise_sp_flag.py + handle_premise/__init__.py
 // 维度核对：无 T_ 前缀查"自己"（发起者），T_ 前缀查目标
 
-import { gameContext } from '../../../core/game-context'
 import { entitySystem } from '../../../core/entity-system'
 import { getEntityAttr, ATTR } from '../../../core/entity-utils'
 import { bindingResolver } from '../../../core/binding-resolver'
@@ -17,7 +16,7 @@ function getTargetChar(ctx: any): any {
 // 注释：自己（发起者）——erArk 无 T_ 前缀查 character_data[character_id]；
 // 引擎当前指令只由玩家发起 → 自己 = sourceId ?? 玩家
 function getSelfChar(ctx: any): any {
-  const charId = ctx.sourceId ?? gameContext.getContext().player?.id
+  const charId = ctx.sourceId ?? ctx.player?.id ?? null
   if (!charId) return null
   return entitySystem.get('character', charId) as any
 }

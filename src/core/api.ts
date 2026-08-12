@@ -2,6 +2,7 @@ import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
 import { saveGame as saveGameImpl, loadGame as loadGameImpl, getSaveSlots as getSaveSlotsImpl, deleteSave as deleteSaveImpl } from './save-system'
 import { gameContext } from './game-context'
+import { conditionEngine } from './condition-engine'
 
 type ApiMethod = (...args: any[]) => Promise<any>
 
@@ -75,6 +76,17 @@ class ApiSystem {
       },
       deleteSave: async (slotId: string) => {
         await deleteSaveImpl(slotId)
+      },
+      // 注释：前提注册/求值（condition-engine 能力暴露——mod 插件注册自定义前提
+      // 不再依赖 h-core 插件；'premises.evaluate' 供动态求值场景）
+      'premises.register': async (id: string, handler: any) => {
+        conditionEngine.registerPremise(id, handler)
+      },
+      'premises.evaluate': async (premises: string[], ctx: any) => {
+        return conditionEngine.evaluatePremises(premises, ctx)
+      },
+      'premises.getRegisteredIds': async () => {
+        return conditionEngine.getRegisteredPremiseIds()
       },
     })
   }

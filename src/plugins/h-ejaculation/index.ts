@@ -9,7 +9,7 @@
 // - penis_dirty_dict: 玩家阴茎精液污浊追踪
 
 import { conditionEngine } from '../../core/condition-engine'
-import type { PluginContext } from '../../core/types'
+import type { PluginContext, GameContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
@@ -291,26 +291,25 @@ export function onLoad(_ctx: PluginContext): void {
 export function onEnable(ctx: PluginContext): void {
   // 注释：玩家阴茎精液污浊前提（2026-08-08 审查修复：原硬编码角色 '0'——
   // 引擎玩家 id 由 meta.toml player_character 决定（如 'player'），查 '0' 恒 undefined → 静默失效）
-  conditionEngine.registerPremise('pl_penis_semen_dirty', () => {
-    const player = entitySystem.get('character', gameContext.getContext().player?.id ?? '0') as any
-    return !!player?.dirty?.penis_dirty_dict?.semen
+  // handler 上下文 = 完整 GameContext（ctx.player 即玩家实体）
+  conditionEngine.registerPremise('pl_penis_semen_dirty', (pctx: GameContext) => {
+    return !!pctx.player?.dirty?.penis_dirty_dict?.semen
   })
-  conditionEngine.registerPremise('pl_penis_not_semen_dirty', () => {
-    const player = entitySystem.get('character', gameContext.getContext().player?.id ?? '0') as any
-    return !player?.dirty?.penis_dirty_dict?.semen
+  conditionEngine.registerPremise('pl_penis_not_semen_dirty', (pctx: GameContext) => {
+    return !pctx.player?.dirty?.penis_dirty_dict?.semen
   })
 
   // 注释：阴茎大小前提（jj_0~3）——查 actor（行为发起者）的阴茎大小
   // erArk handle_premise_other.py:1912-1966
-  // actorId 从 talk-common premiseCtx 传入，默认查玩家
+  // actor = 行为发起者：handler ctx 的 sourceId（talk-common 传 actorId 映射；默认玩家）
   // ⚠️ 半成品标记（2026-08-11 第八轮）：阴茎大小属性全库无写入方（attributes.toml default=1）
   // → 运行时恒为 1 → jj_1 恒 true、jj_0 恒 false（1418 条 jj_0 地文不可达 + 1418 条 jj_1
   // 错误常显——宝珠等级近似失真）。阴茎大小成长/写入系统落地后修正；宝珠系统已砍，勿此时改语义
   for (let size = 0; size <= 3; size++) {
     const targetSize = size
-    conditionEngine.registerPremise(`jj_${size}`, (ctx: any) => {
-      const actorId = ctx?.actorId ?? '0'
-      const actor = entitySystem.get('character', actorId) as any
+    conditionEngine.registerPremise(`jj_${size}`, (pctx: GameContext) => {
+      const actorId = pctx.sourceId ?? pctx.player?.id ?? null
+      const actor = actorId ? entitySystem.get('character', actorId) as any : null
       return (actor?.base?.['阴茎大小'] ?? 1) === targetSize
     })
   }

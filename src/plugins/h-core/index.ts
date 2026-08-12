@@ -1019,10 +1019,8 @@ export function onEnable(ctx: PluginContext): void {
   }
 
   ctx.api.register('h-core', {
-    evaluatePremises: (premises: string[], evalCtx: any) => conditionEngine.evaluatePremises(premises, evalCtx),
     startHScene, endHScene, getLevel, calcFavorability, calcTrust, calcJudge,
     getFavorabilityLevel, getTrustLevel,
-    registerPremise: (id: string, handler: any) => conditionEngine.registerPremise(id, handler),
     // 注释：通用状态结算（对外暴露——其他插件（如 h-hidden 隐奸/露出持续快感）经 API 调用，
     // 遵守"插件间禁止直接 import"铁律；参数同 settleOneState）
     // settleState(charId, state, baseValue, timeCost, opts?: {

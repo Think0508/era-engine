@@ -401,7 +401,7 @@ export function onLoad(_ctx: PluginContext): void {
 export async function onEnable(ctx: PluginContext): Promise<void> {
   let premiseRegWarned = false
   const reg = async (id: string, fn: (c: any) => boolean) => {
-    try { await ctx.api.call('h-core', 'registerPremise', id, fn) } catch (err) {
+    try { await ctx.api.call('engine', 'premises.register', id, fn) } catch (err) {
       if (!premiseRegWarned) {
         premiseRegWarned = true
         errorReporter.report({

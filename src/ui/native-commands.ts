@@ -96,15 +96,22 @@ export function registerNativeCommands(): void {
     source: 'native',
     handler: async () => {
       try {
-        const { getSaveSlots, loadGame, restoreFromSave } = await import('../core/save-system')
+        const { getSaveSlots, loadGame, migrateSaveData, restoreFromSave } = await import('../core/save-system')
         const slots = await getSaveSlots()
         if (slots.length === 0) {
           useGameStore().addLogEntry({ id: `load-${Date.now()}`, text: '无存档可读', type: 'system', source: 'native' })
           return
         }
         const slot = slots[slots.length - 1] // 注释：读最新存档
-        const data = await loadGame(slot.slotId)
+        let data = await loadGame(slot.slotId)
         if (data) {
+          // 注释：audit-f 修复——迁移接入读档链路（此前 migrateSaveData 零生产调用，
+          // 旧格式存档从不升级；迁移幂等，新存档无操作）
+          const { modLoader } = await import('../core/mod-loader')
+          const migrations = modLoader.getMod()?.migrations ?? []
+          if (migrations.length > 0) {
+            data = migrateSaveData(data, migrations)
+          }
           restoreFromSave(data)
           useGameStore().addLogEntry({ id: `load-${Date.now()}`, text: `读档成功：${slot.slotId}`, type: 'system', source: 'native' })
         }

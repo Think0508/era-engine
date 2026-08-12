@@ -69,22 +69,20 @@ export function evaluateBodyPartPrefs(charId: string): number {
 
 // 注释：把指令赋给玩家执行（grill Q7 执行入口——直接走 core commandExecutor）
 // 效果 target='selected' 解析到 NPC（resolveTarget 读 uiStore.selectedCharacterId）
-// 嵌套执行防护：逆推常发生在玩家执行 keep_enjoy 的 effects 链中（EXECUTING），
-// 内层 execute 的 finally 会把 executionState 重置为 IDLE——结束后恢复外层状态，
-// 防止 UI 指令栏在外层效果链完成前短暂闪现（erArk 逆推在同一执行上下文内）
+// 嵌套执行防护（audit-g 修复，2026-08-12）：不传 engine → command-executor 不动
+// executionState、不发 execution_start/end——AGENTS §29 EXECUTING 不嵌套，逆推执行属
+// 外层执行的一部分；二段结算（body_item_tick/时姦/发现度等）由外层 execution_end 统一触发。
+// 此前传真实 engine：C-1 修复后外层 UI 也真实发事件 → 每回合 execution_end 2 发 →
+// 无守卫的监听器双倍结算（h-time-stop TSP 双扣/h-hidden 发现度双 tick/h-ejaculation
+// 精液双倍/h-pregnancy 涨奶双倍/body_item_tick 双 tick）+ random-event 嵌套 start 误清选项
 export async function executeInstructionForNpc(cmdId: string, targetId: string): Promise<boolean> {
   const cmd = commandRegistry.getById(cmdId)
   if (!cmd) return false
   const playerId = getPlayerId()
   if (!playerId) return false
-  const prevExecState = gameContext.getExecutionState()
   const player = entitySystem.get('character', playerId) as any
   const ctx: any = {
     api: apiSystem,
-    engine: {
-      setExecutionState: (s: 'IDLE' | 'EXECUTING') => gameContext.setExecutionState(s),
-      emit: (e: string, p: any) => eventBus.emit(e, p),
-    },
     uiStore: { selectedCharacterId: targetId },
     gameStore: { player: player ?? { id: playerId } },
     sourceId: playerId,
@@ -100,8 +98,6 @@ export async function executeInstructionForNpc(cmdId: string, targetId: string):
     },
   }
   await commandExecutor.execute(cmdId, ctx)
-  // 注释：恢复外层执行状态（command-executor finally 恒置 IDLE）
-  gameContext.setExecutionState(prevExecState)
   return true
 }
 

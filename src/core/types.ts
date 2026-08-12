@@ -63,6 +63,14 @@ export interface LocationData {
   tags: string[]
 }
 
+// 注释：存档迁移 step（2026-08-12 audit-f）——与 mods/[mod]/migrations/*.toml 的
+// [[migrations]] 条目对应；放 types 避免 mod-loader ↔ save-system 循环依赖
+export interface MigrationStep {
+  rename?: { old: string; new: string }
+  default?: { field: string; value: any }
+  transform?: { field: string; script: string }
+}
+
 export type EntityData = Record<string, any>
 
 export interface GameContext {

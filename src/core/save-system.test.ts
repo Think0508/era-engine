@@ -114,7 +114,7 @@ describe('save-system', () => {
     expect(gameContext.getCurrentMode()).toBe('exploration')
   })
 
-  it('migrateSaveData renames field', () => {
+  it('migrateSaveData renames field（平铺 steps，audit-f 新格式）', () => {
     const data = {
       modId: 'test', modVersion: '1.0.0',
       gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
@@ -122,13 +122,15 @@ describe('save-system', () => {
       gameState: {}, uiState: { foldStates: {} },
     }
     const result = migrateSaveData(data, [
-      { from: '1.0.0', to: '2.0.0', steps: [{ rename: { old: 'hp', new: 'hit_point' } }] },
+      { rename: { old: 'hp', new: 'hit_point' } },
     ])
     expect(result.characters[0].base?.hp).toBeUndefined()
     expect(result.characters[0].base?.hit_point).toBe(100)
+    // 迁移后版本 = 当前 mod 版本（无 mod 时保持原版本）
+    expect(result.modVersion).toBe(modLoader.getMod()?.version ?? '1.0.0')
   })
 
-  it('migrateSaveData sets default', () => {
+  it('migrateSaveData sets default（幂等：已有字段跳过）', () => {
     const data = {
       modId: 'test', modVersion: '1.0.0',
       gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
@@ -136,23 +138,25 @@ describe('save-system', () => {
       gameState: {}, uiState: { foldStates: {} },
     }
     const result = migrateSaveData(data, [
-      { from: '1.0.0', to: '2.0.0', steps: [{ default: { field: 'base.new_attr', value: 50 } }] },
+      { default: { field: 'base.new_attr', value: 50 } },
+      { default: { field: 'base.new_attr', value: 99 } }, // 已存在 → 不覆盖
     ])
     expect(result.characters[0].base?.new_attr).toBe(50)
   })
 
-  it('migrateSaveData skips already migrated', () => {
+  it('migrateSaveData 链式迁移（多 step 顺序执行，无版本断链）', () => {
     const data = {
-      modId: 'test', modVersion: '2.0.0',
+      modId: 'test', modVersion: '1.0.0',
       gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
-      characters: [{ id: 'char', base: { hp: 100 } }],
+      characters: [{ id: 'char', base: { hp: 100, other: 1 } }],
       gameState: {}, uiState: { foldStates: {} },
     }
     const result = migrateSaveData(data, [
-      { from: '1.0.0', to: '2.0.0', steps: [{ rename: { old: 'hp', new: 'hit_point' } }] },
+      { rename: { old: 'hp', new: 'hit_point' } },
+      { rename: { old: 'hit_point', new: 'health' } },
     ])
-    // ע�ͣ��汾���� 2.0.0����ִ��Ǩ��
-    expect(result.characters[0].base?.hp).toBe(100)
+    expect(result.characters[0].base?.health).toBe(100)
+    expect(result.characters[0].base?.hit_point).toBeUndefined()
   })
 
   describe('gameState providers', () => {

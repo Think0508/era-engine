@@ -1,5 +1,5 @@
 import { parse as parseTOML } from '@iarna/toml'
-import type { Edge, EntityData, LocationData, MapLayout, MoveConfig } from './types'
+import type { Edge, EntityData, LocationData, MapLayout, MigrationStep, MoveConfig } from './types'
 import type { Effect } from './effect-type-registry'
 import { resolveTemplate, deepMerge } from './template'
 import { entitySystem } from './entity-system'
@@ -564,6 +564,10 @@ export interface LoadedMod {  id: string
   // 注释：mod 层文件定义的物品 id（revalidateItemUses 用）——use 未注册检查只在插件
   // 注册 use 后对 mod 层补跑（插件默认层物品的 use 由各自插件负责，不参与）
   modItemLayerIds?: Set<string>
+
+  // 注释：存档迁移 steps（audit-f 修复，2026-08-12）——mods/[mod]/migrations/*.toml 的
+  // [[migrations]] 条目平铺合并；读档时 migrateSaveData 执行（此前零生产调用=迁移从未生效）
+  migrations?: MigrationStep[]
 }
 
 export interface PendingSpawn {
@@ -1486,6 +1490,23 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   }
   mod.instructions = [...instructionsMap.values()]
   mod.effectBlocks = effectBlocks
+
+  // 注释：加载存档迁移 steps（audit-f 修复，2026-08-12）——mods/[mod]/migrations/*.toml
+  // 的 [[migrations]] 条目平铺合并（按文件遍历顺序）；读档时 migrateSaveData 执行
+  // （此前迁移零生产调用 = 静默从未生效）
+  const migrations: MigrationStep[] = []
+  for (const [path, raw] of Object.entries(rawTomlMap)) {
+    if (!path.startsWith(`/mods/${modName}/`)) continue
+    if (!path.includes('/migrations/') || !path.endsWith('.toml')) continue
+    const data = parseFile(path, raw)
+    const steps = (data.migrations as MigrationStep[] | undefined) ?? []
+    for (const step of steps) {
+      if (step && (step.rename || step.default || step.transform)) {
+        migrations.push(step)
+      }
+    }
+  }
+  mod.migrations = migrations
 
   // 注释：加载 NPC AI 数据（npc-ai-system 消费）——插件默认（Layer 1）+ mod 定义（Layer 3）
   // ai-targets：累积式追加（插件默认 + mod 定义全部并入——erArk config_target 单表语义；

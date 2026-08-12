@@ -10,7 +10,8 @@ import { narrativeLog } from './narrative-log'
 import { errorReporter } from './error-reporter'
 import { eventBus } from './event-bus'
 import { modLoader, fillMissingAttributes, normalizeMarksToAbilities } from './mod-loader'
-import type { EntityData } from './types'
+import type { EntityData, MigrationStep } from './types'
+export type { MigrationStep }
 
 export interface SaveSlot {
   id: string        // "modId_slotId"
@@ -183,13 +184,18 @@ export function restoreFromSave(data: SaveData): void {
     normalizeMarksToAbilities(char as any, mod ?? undefined)
     entitySystem.register('character', char.id, char)
   }
-  // 注释：恢复游戏时间
+  // 注释：恢复游戏时间（audit-f 修复，2026-08-12——原 Object.assign 改的是 getContext()
+  // 的 spread 副本，存档时间从未恢复：读档后恒回 8:00/day1。改用 setTime 写真实状态）
   gameContext.reset()
+  gameContext.setTime(data.gameTime)
   // 注释：关系组恢复（reset 清空了 relationGroups——聚合条件 any(group:xxx) 需要）
   gameContext.setRelationGroups(mod?.relationGroups ?? {})
-  const t = data.gameTime
-  gameContext.advanceTime(0)
-  Object.assign(gameContext.getContext().time, t)
+  // 注释：恢复玩家（audit-f 修复——原 restoreFromSave 不调 setPlayer → 读档后
+  // gameContext.player 恒 null：player.* 条件路径/玩家结算/UI 玩家数据全部失效）
+  const playerId = mod?.playerCharacter ?? 'player'
+  if (entitySystem.get('character', playerId)) {
+    gameContext.setPlayer(playerId)
+  }
   // 注释：恢复 location 实体池与当前地点（audit-a C2）——entitySystem.clear() 清掉了
   // character 和 location 两池，此前只重注册 character → 读档后移动静默无操作 /
   // moveTo 抛"当前地点未设置"。地点数据不随存档保存（从 TOML 重新加载，见文件头注释）
@@ -251,64 +257,39 @@ export async function importSave(json: string): Promise<void> {
   })
 }
 
-// 注释：解析版本号（"1.2.3" → [1,2,3]）
-function parseVersion(v: string): number[] {
-  return v.split('.').map(Number)
-}
+// 注释：迁移 step 接口见 core/types.ts（MigrationStep）——mods/[mod]/migrations/*.toml 条目对应
 
-// 注释：比较版本号，a > b 返回 >0
-function compareVersion(a: string, b: string): number {
-  const pa = parseVersion(a)
-  const pb = parseVersion(b)
-  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-    const va = pa[i] ?? 0
-    const vb = pb[i] ?? 0
-    if (va !== vb) return va - vb
-  }
-  return 0
-}
-
-// 注释：迁移 step 接口
-interface MigrationStep {
-  rename?: { old: string; new: string }
-  default?: { field: string; value: any }
-  transform?: { field: string; script: string }
-}
-
-// 注释：执行存档迁移——将存档数据从旧版本升级到当前版本
-// 迁移在内存中执行，不修改存档文件。玩家下次存盘时写入新格式
-// 迁移失败 → 中止读档 + 报错
+// 注释：执行存档迁移（audit-f 修复，2026-08-12）——平铺 steps 按序执行，幂等设计：
+// rename 对不存在字段无操作、default 对已有字段跳过、transform 待沙箱（warning）。
+// 不按版本号门控（原实现 compareVersion(saveVer,...) 用原始版本判断，链式迁移断链；
+// 且 migrations 文件无显式 from/to 字段，格式与旧签名不匹配——零生产调用 = 迁移从未生效）。
+// 迁移在内存中执行，玩家下次存盘写入新格式；失败 → 抛错中止读档
 export function migrateSaveData(
   data: SaveData,
-  migrations: { from: string; to: string; steps: MigrationStep[] }[],
+  migrations: MigrationStep[],
 ): SaveData {
-  const saveVer = data.modVersion
   const result = JSON.parse(JSON.stringify(data)) as SaveData // 深拷贝
-
-  // 注释：按 from → to 顺序执行所有需要的迁移
-  for (const mig of migrations) {
-    if (compareVersion(saveVer, mig.from) < 0) continue
-    if (compareVersion(result.modVersion, mig.to) >= 0) continue
-    for (const step of mig.steps) {
-      try {
-        if (step.rename) {
-          applyRename(result, step.rename.old, step.rename.new)
-        }
-        if (step.default) {
-          applyDefault(result, step.default.field, step.default.value)
-        }
-        if (step.transform) {
-          // TODO(phase-12.1): transform 脚本需沙箱执行
-          console.warn(`迁移 transform 跳过：${step.transform.script}，需沙箱`)
-        }
-      } catch (e) {
-        throw new Error(
-          `存档迁移失败（${mig.from}→${mig.to}，step ${step.rename ? step.rename.old : step.default?.field}）：${e instanceof Error ? e.message : String(e)}`,
-        )
+  for (const step of migrations) {
+    try {
+      if (step.rename) {
+        applyRename(result, step.rename.old, step.rename.new)
       }
+      if (step.default) {
+        applyDefault(result, step.default.field, step.default.value)
+      }
+      if (step.transform) {
+        // TODO(phase-12.1): transform 脚本需沙箱执行
+        console.warn(`迁移 transform 跳过：${step.transform.script}，需沙箱`)
+      }
+    } catch (e) {
+      throw new Error(
+        `存档迁移失败（step ${step.rename ? step.rename.old : step.default?.field}）：${e instanceof Error ? e.message : String(e)}`,
+      )
     }
-    result.modVersion = mig.to
   }
+  // 注释：迁移后版本 = 当前 mod 版本（迁移链全部执行）
+  const mod = modLoader.getMod()
+  if (mod) result.modVersion = mod.version
   return result
 }
 

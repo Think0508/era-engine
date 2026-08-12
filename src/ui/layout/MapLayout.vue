@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { gameContext } from '../../core/game-context'
+import { apiSystem } from '../../core/api'
 import MapView from '../components/MapView.vue'
 
 async function goBack() { await gameContext.exitMode() }
@@ -7,7 +8,14 @@ async function goBack() { await gameContext.exitMode() }
 async function goUp() {
   const loc = gameContext.getContext().location
   if (!loc?.parent) return
-  await gameContext.moveTo(loc.parent)
+  // 注释：audit-g 修复——原直连 gameContext.moveTo：① 不更新玩家 current_location
+  // （读档地点恢复/NPC 同地点判定/follow 数据源失真）② 跳过可达性检查。改走 map API
+  // （内部同步 current_location + getReachable 校验，与指令/地图点击同路径）
+  try {
+    await apiSystem.call('map', 'moveTo', loc.parent)
+  } catch {
+    // 注释：不可达/失败——保持原地（map API 已上报错误）
+  }
 }
 </script>
 

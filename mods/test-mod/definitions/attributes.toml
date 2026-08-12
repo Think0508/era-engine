@@ -125,3 +125,6 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 # ════════════════════════════════════════
 "气血" = { type = "number", default = 100, category = "base", display = true, display_group = "status", description = "武侠概念属性（test-mod 示范：mod 自定义属性）" }
 "内力" = { type = "number", default = 50, category = "base", display = true, display_group = "status", description = "武侠概念属性（test-mod 示范：mod 自定义属性）" }
+
+# 阴茎大小（jj_0~3 前提数据源——h-ejaculation 角色注册时按分布初始化，默认 1 档）
+"阴茎大小" = { type = "number", default = 1, category = "body", display = false, description = "阴茎大小档位（0-3），jj_0~3 前提判定" }

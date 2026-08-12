@@ -112,7 +112,7 @@ export function registerNativeCommands(): void {
           if (migrations.length > 0) {
             data = migrateSaveData(data, migrations)
           }
-          restoreFromSave(data)
+          await restoreFromSave(data)
           useGameStore().addLogEntry({ id: `load-${Date.now()}`, text: `读档成功：${slot.slotId}`, type: 'system', source: 'native' })
         }
       } catch (e: any) {

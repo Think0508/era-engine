@@ -338,14 +338,14 @@ describe('character-contract（存档补齐）', () => {
     expect(errorReporter.getErrors().filter(e => e.severity === 'warning')).toHaveLength(0)
   })
 
-  it('restoreFromSave 接线：无 mod 时不补齐也不报错（既有行为保持）', () => {
+  it('restoreFromSave 接线：无 mod 时不补齐也不报错（既有行为保持）', async () => {
     const data = {
       modId: 'test', modVersion: '1.0.0',
       gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
       characters: [{ id: 'player', name: '玩家', base: { hp: 100 } }],
       gameState: {}, uiState: { foldStates: {} },
     }
-    restoreFromSave(data as any)
+    await restoreFromSave(data as any)
     expect(entitySystem.get('character', 'player')?.name).toBe('玩家')
   })
 })
@@ -588,7 +588,7 @@ talents = { "剑骨" = 1 }
       characters: [{ id: 'old_npc', name: '旧角色', base: { hp: 80, '体力': 80 } }],
       gameState: {}, uiState: { foldStates: {} },
     }
-    restoreFromSave(data as any)
+    await restoreFromSave(data as any)
     const ch = entitySystem.get('character', 'old_npc') as any
     expect(ch.base['体力']).toBe(80) // 已有值不动
     expect(ch.social['好感度']).toBe(30) // 契约补齐（canonical 命名空间 = applyAttributeDefaults 语义）
@@ -623,7 +623,7 @@ talents = { "剑骨" = 1 }
       ],
       gameState: {}, uiState: { foldStates: {} },
     }
-    restoreFromSave(data as any)
+    await restoreFromSave(data as any)
     const plain = entitySystem.get('character', 'old_marks_plain') as any
     expect(plain.abilities['快乐刻印']).toEqual({ level: 2, xp: 0 })
     const real = entitySystem.get('character', 'old_marks_real') as any

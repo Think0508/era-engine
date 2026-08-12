@@ -17,7 +17,7 @@ describe('save-system', () => {
     localStorage.clear()
   })
 
-  it('restoreFromSave restores characters', () => {
+  it('restoreFromSave restores characters', async () => {
     const data = {
       modId: 'test', modVersion: '1.0.0',
       gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
@@ -25,7 +25,7 @@ describe('save-system', () => {
       gameState: {},
       uiState: { foldStates: { status: true } },
     }
-    restoreFromSave(data)
+    await restoreFromSave(data)
     const player = entitySystem.get('character', 'player')
     expect(player).not.toBeNull()
     expect(player?.name).toBe('玩家')
@@ -45,7 +45,7 @@ describe('save-system', () => {
       gameState: {},
       uiState: { foldStates: {} },
     }
-    restoreFromSave(data)
+    await restoreFromSave(data)
     // location 实体池恢复（entitySystem.clear() 清空了两池，此前只重注册 character）
     expect(entitySystem.get('location', 'tavern')).not.toBeNull()
     expect(entitySystem.get('location', 'town_square')).not.toBeNull()
@@ -65,11 +65,11 @@ describe('save-system', () => {
       gameState: {},
       uiState: { foldStates: {} },
     }
-    restoreFromSave(data)
+    await restoreFromSave(data)
     expect(gameContext.getContext().location?.id).toBe('town_square')
   })
 
-  it('restoreFromSave：无 mod 时 location 恢复静默跳过（既有行为保持）', () => {
+  it('restoreFromSave：无 mod 时 location 恢复静默跳过（既有行为保持）', async () => {
     ;(modLoader as any).loadedMod = null
     const data = {
       modId: 'nonexistent', modVersion: '1.0.0',
@@ -78,7 +78,7 @@ describe('save-system', () => {
       gameState: {},
       uiState: { foldStates: {} },
     }
-    expect(() => restoreFromSave(data)).not.toThrow()
+    await expect(restoreFromSave(data)).resolves.not.toThrow()
     expect(gameContext.getContext().location).toBeNull()
   })
 
@@ -166,7 +166,7 @@ describe('save-system', () => {
       expect(getGameStateProviders().some(x => x.id === 'p1')).toBe(true)
     })
 
-    it('restoreFromSave dispatches to providers by id', () => {
+    it('restoreFromSave dispatches to providers by id', async () => {
       const calls: string[] = []
       registerGameStateProvider({
         id: 'test-provider',
@@ -180,18 +180,18 @@ describe('save-system', () => {
         gameState: { 'test-provider': { value: 42 } },
         uiState: { foldStates: {} },
       }
-      restoreFromSave(data)
+      await restoreFromSave(data)
       expect(calls).toContain('restored:42')
     })
 
-    it('restoreFromSave tolerates missing provider data', () => {
+    it('restoreFromSave tolerates missing provider data', async () => {
       let called = false
       registerGameStateProvider({
         id: 'empty-provider',
         serialize: () => ({}),
         restore: () => { called = true },
       })
-      restoreFromSave({
+      await restoreFromSave({
         modId: 'test', modVersion: '1.0.0',
         gameTime: { minute: 0, hour: 8, day: 1, month: 1, year: 1 },
         characters: [], gameState: {}, uiState: { foldStates: {} },

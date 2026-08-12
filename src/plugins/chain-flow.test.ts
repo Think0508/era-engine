@@ -112,6 +112,27 @@ describe('指令执行链路冒烟', () => {
     expect(narrativeLog.getEntries().some((e: any) => String(e.text).includes('无话可说'))).toBe(true)
   })
 
+  it('逆推嵌套执行不发 execution 事件（audit-g 修复：嵌套=外层执行一部分，二段结算由外层统一触发）', async () => {
+    // 注释：模拟 h-npc-ai 逆推——嵌套 commandExecutor.execute 不传 engine 时
+    // 不得发出 execution_start/end（否则每回合双发 → 无守卫二段结算监听器双倍结算）
+    const { executeInstructionForNpc } = await import('./h-npc-ai/active-h')
+    const events: string[] = []
+    const h1 = () => { events.push('start') }
+    const h2 = () => { events.push('end') }
+    eventBus.on('game:execution_start', h1)
+    eventBus.on('game:execution_end', h2)
+
+    // 进入 H（嵌套执行需要 H 上下文——用 keep_enjoy 类指令；rest 在 H 外也可执行，
+    // 这里直接验证机制：嵌套执行任何指令都不发事件）
+    const ok = await executeInstructionForNpc('rest', 'npc_1')
+
+    eventBus.off('game:execution_start', h1)
+    eventBus.off('game:execution_end', h2)
+
+    expect(ok).toBe(true)
+    expect(events).toEqual([]) // 嵌套执行零事件
+  })
+
   it('角色口上分支：{id} 占位替换后条件生效（好感度 50 → 不走"你是何人"）', async () => {
     // 注释：character-dialogue.toml 的 greet 条件 character.{id}.好感度 < 30
     // 修复前 {id} 不替换 → 条件恒 true → 与无条件行随机竞争（静默失效）

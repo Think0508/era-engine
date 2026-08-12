@@ -86,7 +86,7 @@ describe('端到端链路终验（boot→移动→物品→战斗→存档→读
     const mod2 = modLoader.getMod()!
     bindingResolver.loadBindings(mod2.bindings)
     const { restoreFromSave } = await import('../core/save-system')
-    restoreFromSave(saveData as any)
+    await restoreFromSave(saveData as any)
 
     // 7. 读档后断言：玩家数据 + 地点池 + 当前地点恢复（audit-a C2 修复验证）
     const restoredPlayer = entitySystem.get('character', 'player') as any
@@ -97,6 +97,11 @@ describe('端到端链路终验（boot→移动→物品→战斗→存档→读
     expect(entitySystem.get('location', 'town_square')).not.toBeNull()
     expect(entitySystem.get('location', targetId)).not.toBeNull()
     expect(gameContext.getContext().location?.id).toBe(targetId)
+
+    // 7b. 读档后玩家与时间恢复（audit-f 修复验证——原 player null / 时间恒 8:00）
+    expect(gameContext.getContext().player?.id).toBe('player')
+    expect(gameContext.getContext().time.hour).toBe(saveData.gameTime.hour)
+    expect(gameContext.getContext().time.day).toBe(saveData.gameTime.day)
 
     // 8. 继续移动：读档后移动链路仍通（不再抛"当前地点未设置"——audit-a C2 修复验证）
     await gameContext.moveTo('town_square') // 回程（parent 关系）

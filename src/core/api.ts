@@ -1,6 +1,7 @@
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
-import { saveGame as saveGameImpl, loadGame as loadGameImpl } from './save-system'
+import { saveGame as saveGameImpl, loadGame as loadGameImpl, getSaveSlots as getSaveSlotsImpl, deleteSave as deleteSaveImpl } from './save-system'
+import { gameContext } from './game-context'
 
 type ApiMethod = (...args: any[]) => Promise<any>
 
@@ -60,6 +61,20 @@ class ApiSystem {
       },
       loadGame: async (slot: string) => {
         await loadGameImpl(slot)
+      },
+      // 注释：audit-h 修复（2026-08-12）——文档宣称的 engine API 补齐：
+      // enterMode/exitMode/getSaveSlots/deleteSave 此前从未注册，按文档调用即抛错
+      enterMode: async (mode: string) => {
+        await gameContext.enterMode(mode)
+      },
+      exitMode: async () => {
+        await gameContext.exitMode()
+      },
+      getSaveSlots: async (modId?: string) => {
+        return getSaveSlotsImpl(modId)
+      },
+      deleteSave: async (slotId: string) => {
+        await deleteSaveImpl(slotId)
       },
     })
   }

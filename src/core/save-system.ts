@@ -169,7 +169,7 @@ export async function autoSave(uiState: any, label?: string): Promise<void> {
 }
 
 // 注释：从 SaveData 恢复角色到 entity-system
-export function restoreFromSave(data: SaveData): void {
+export async function restoreFromSave(data: SaveData): Promise<void> {
   entitySystem.clear()
   // 注释：契约补齐（标准角色契约 spec §10.1 决策 11b）——旧存档缺字段按 attributes default
   // 补齐 + warning（不静默）。补齐在注册前执行，保证 entity-system 里的数据完整
@@ -234,7 +234,8 @@ export function restoreFromSave(data: SaveData): void {
     }
   }
   // 注释：读档完成广播（标准事件 game:load——插件清理运行时瞬态状态，如随机事件挂起选项）
-  eventBus.emit('game:load', {})
+  // 2026-08-12 第 9 轮：原同步函数内 emit 无 await——监听器错误/清理顺序悬空，改 async 并 await
+  await eventBus.emit('game:load', {})
 }
 
 // 注释：导出存档（JSON 字符串）

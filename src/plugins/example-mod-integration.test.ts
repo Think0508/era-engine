@@ -1,4 +1,4 @@
-﻿// 注释：example-mod 端到端集成测试——验证教学范例的每个字段「真的录进游戏」
+// 注释：example-mod 端到端集成测试——验证教学范例的每个字段「真的录进游戏」
 // 镜像 boot-smoke 启动链（loadMod → bindings → condition → 全插件加载），
 // 断言：字段落位（命名空间/值）、模板链、marks 归一化、条件字典、对话/任务注册、
 // 移动可达、路人生成、存档闭环、执行链路（指令/物品/状态tick/任务/套装/条件路径）。
@@ -426,7 +426,7 @@ describe('example-mod 端到端（字段真实落位）', () => {
       }],
       gameState: {}, uiState: { foldStates: {} },
     }
-    restoreFromSave(data as any)
+    await restoreFromSave(data as any)
     const restored = entitySystem.get('character', '小师妹') as any
     expect(restored.abilities['吐纳术']).toEqual({ level: 2, xp: 0 })
     expect(restored.abilities['快乐刻印'].level).toBe(1)

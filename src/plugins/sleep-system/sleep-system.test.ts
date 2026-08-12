@@ -4,6 +4,7 @@
 //   睡眠等级阈值、advanceToHour 跨天、updateSleepAll 对全员、睡觉指令全流程（跨天→结算→存档事件）、
 //   睡奸结算（settleSleepH：熟睡扣除/WAIT 规避/吵醒→装睡恢复）
 
+import { conditionEngine } from '../../core/condition-engine'
 import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
 import { modLoader } from '../../core/mod-loader'
 import { gameContext } from '../../core/game-context'
@@ -14,7 +15,6 @@ import { commandRegistry } from '../../core/command-registry'
 import { commandExecutor, recordBehaviorHistory, clearBehaviorHistory } from '../../core/command-executor'
 import { bindingResolver } from '../../core/binding-resolver'
 import { conditionRegistry } from '../../core/condition-registry'
-import { premiseRegistry } from '../../core/premise-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
@@ -52,7 +52,7 @@ describe('sleep-system 集成', () => {
     entitySystem.clear()
     commandRegistry.clear()
     errorReporter.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
 
     await modLoader.loadMod('test-mod')
     const mod = modLoader.getMod()
@@ -133,68 +133,68 @@ describe('sleep-system 集成', () => {
       setTime(10, 0)
       player.base['疲劳度'] = 120
       player.base['体力'] = 100
-      expect(premiseRegistry.evaluate(['TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1'], premiseCtx(null))).toBe(true)
       // ② 疲劳 <120 且非窗口 → false
       player.base['疲劳度'] = 50
-      expect(premiseRegistry.evaluate(['TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1'], premiseCtx(null))).toBe(false)
+      expect(conditionEngine.evaluatePremises(['TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1'], premiseCtx(null))).toBe(false)
       // ③ 睡眠窗口（19:00 ≥ plan_to_sleep_time 18:00）→ true
       setTime(19, 0)
-      expect(premiseRegistry.evaluate(['TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1'], premiseCtx(null))).toBe(true)
       // ④ 体力 ≤1 → true（白天、低疲劳）
       setTime(10, 0)
       player.base['体力'] = 1
-      expect(premiseRegistry.evaluate(['TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1'], premiseCtx(null))).toBe(true)
     })
 
     it('睡眠窗口边界（plan_to_sleep_time=18:00 / plan_to_wake_time=6:00）', () => {
-      expect(premiseRegistry.evaluate(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(false)
+      expect(conditionEngine.evaluatePremises(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(false)
       setTime(17, 59)
-      expect(premiseRegistry.evaluate(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(false)
+      expect(conditionEngine.evaluatePremises(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(false)
       setTime(18, 0)
-      expect(premiseRegistry.evaluate(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(true)
       setTime(23, 59)
-      expect(premiseRegistry.evaluate(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(true)
       setTime(0, 0)
-      expect(premiseRegistry.evaluate(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(true)
       setTime(5, 59)
-      expect(premiseRegistry.evaluate(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(true)
       setTime(6, 0)
-      expect(premiseRegistry.evaluate(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(false)
+      expect(conditionEngine.evaluatePremises(['GAME_TIME_IS_SLEEP_TIME'], premiseCtx(null))).toBe(false)
       // NOT_SLEEP_TIME 反义
       setTime(6, 0)
-      expect(premiseRegistry.evaluate(['NOT_SLEEP_TIME'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['NOT_SLEEP_TIME'], premiseCtx(null))).toBe(true)
     })
 
     it('T_ACTION_SLEEP 查目标睡眠状态', () => {
       const girl = getChar(GIRL)
       makeSleeping(girl, 50)
-      expect(premiseRegistry.evaluate(['T_ACTION_SLEEP'], premiseCtx(GIRL))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['T_ACTION_SLEEP'], premiseCtx(GIRL))).toBe(true)
       girl.sp_flag.sleeping = false
       girl.sleeping = false
-      expect(premiseRegistry.evaluate(['T_ACTION_SLEEP'], premiseCtx(GIRL))).toBe(false)
-      expect(premiseRegistry.evaluate(['T_ACTION_NOT_SLEEP'], premiseCtx(GIRL))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['T_ACTION_SLEEP'], premiseCtx(GIRL))).toBe(false)
+      expect(conditionEngine.evaluatePremises(['T_ACTION_NOT_SLEEP'], premiseCtx(GIRL))).toBe(true)
     })
 
     it('IN_DORMITORY_OR_HOTEL = 地点 has_bedroom tag', () => {
       // beforeAll 已把 location 设为 tavern（has_bedroom）
-      expect(premiseRegistry.evaluate(['IN_DORMITORY_OR_HOTEL'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['IN_DORMITORY_OR_HOTEL'], premiseCtx(null))).toBe(true)
       const square = entitySystem.get('location', 'town_square') as any
       gameContext.setLocation(square)
-      expect(premiseRegistry.evaluate(['IN_DORMITORY_OR_HOTEL'], premiseCtx(null))).toBe(false)
+      expect(conditionEngine.evaluatePremises(['IN_DORMITORY_OR_HOTEL'], premiseCtx(null))).toBe(false)
       gameContext.setLocation(entitySystem.get('location', 'tavern') as any)
     })
 
     it('TIME_STOP_OFF：时停中 false（h-time-stop 前提）', async () => {
-      expect(premiseRegistry.evaluate(['TIME_STOP_OFF'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['TIME_STOP_OFF'], premiseCtx(null))).toBe(true)
       // 通过效果链开启时停（全插件加载，效果已注册）
       await apiSystem.call('effect-system', 'execute', [{ type: 'time_stop_on', params: {} }], {
         sourceId: PLAYER, _targetIds: [PLAYER], _timeCost: 0,
       })
-      expect(premiseRegistry.evaluate(['TIME_STOP_OFF'], premiseCtx(null))).toBe(false)
+      expect(conditionEngine.evaluatePremises(['TIME_STOP_OFF'], premiseCtx(null))).toBe(false)
       await apiSystem.call('effect-system', 'execute', [{ type: 'time_stop_off', params: {} }], {
         sourceId: PLAYER, _targetIds: [PLAYER], _timeCost: 0,
       })
-      expect(premiseRegistry.evaluate(['TIME_STOP_OFF'], premiseCtx(null))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['TIME_STOP_OFF'], premiseCtx(null))).toBe(true)
     })
   })
 
@@ -313,7 +313,7 @@ describe('sleep-system 集成', () => {
             emit: async (event: string, payload: any) => { await eventBus.emit(event, payload) },
           },
           api: apiSystem,
-          evaluatePremises: (premises: string[]) => premiseRegistry.evaluate(premises, premiseCtx(null)),
+          evaluatePremises: (premises: string[]) => conditionEngine.evaluatePremises(premises, premiseCtx(null)),
           evaluateCondition: () => true,
         })
       } finally {
@@ -353,7 +353,7 @@ describe('sleep-system 集成', () => {
           emit: async (event: string, payload: any) => { await eventBus.emit(event, payload) },
         },
         api: apiSystem,
-        evaluatePremises: (premises: string[]) => premiseRegistry.evaluate(premises, premiseCtx(null)),
+        evaluatePremises: (premises: string[]) => conditionEngine.evaluatePremises(premises, premiseCtx(null)),
         evaluateCondition: () => true,
       })
       const t = gameContext.getContext().time
@@ -492,13 +492,13 @@ describe('sleep-system 集成', () => {
       // 未装睡：sleep_h_awake=true 但 pretend_sleep=false → TARGET_NOT_... 为真
       girl.sp_flag = { sleeping: false, sleep_h_awake: true }
       girl.h_state = { pretend_sleep: false }
-      expect(premiseRegistry.evaluate(['TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP'], premiseCtx(GIRL))).toBe(false)
-      expect(premiseRegistry.evaluate(['TARGET_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP'], premiseCtx(GIRL))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP'], premiseCtx(GIRL))).toBe(false)
+      expect(conditionEngine.evaluatePremises(['TARGET_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP'], premiseCtx(GIRL))).toBe(true)
       // 装睡：两个标记都 true → TARGET_... 为真（真语义覆盖 h-core placeholder 的验证——
       // 若注册顺序反了（h-core 后注册覆盖），此断言失败）
       girl.h_state.pretend_sleep = true
-      expect(premiseRegistry.evaluate(['TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP'], premiseCtx(GIRL))).toBe(true)
-      expect(premiseRegistry.evaluate(['TARGET_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP'], premiseCtx(GIRL))).toBe(false)
+      expect(conditionEngine.evaluatePremises(['TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP'], premiseCtx(GIRL))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['TARGET_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP'], premiseCtx(GIRL))).toBe(false)
     })
   })
 

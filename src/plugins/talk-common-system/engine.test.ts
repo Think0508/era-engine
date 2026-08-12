@@ -1,11 +1,11 @@
+import { conditionEngine } from '../../core/condition-engine'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { CommonTextsEngine, type VariableData } from './engine'
-import { premiseRegistry } from '../../core/premise-registry'
 
 // 注册测试用的前提 handler
 function registerTestPremises() {
-  premiseRegistry.register('high_1', () => true)
-  premiseRegistry.register('sys_0', () => true)
+  conditionEngine.registerPremise('high_1', () => true)
+  conditionEngine.registerPremise('sys_0', () => true)
 }
 
 describe('CommonTextsEngine', () => {
@@ -41,7 +41,7 @@ describe('CommonTextsEngine', () => {
   }
 
   beforeEach(() => {
-    premiseRegistry.clear()
+    conditionEngine.clear()
     registerTestPremises()
     engine = new CommonTextsEngine()
   })
@@ -108,7 +108,7 @@ describe('CommonTextsEngine', () => {
   })
 
   it('should return null when no conditions match', () => {
-    premiseRegistry.register('ALWAYS_FALSE', () => false)
+    conditionEngine.registerPremise('ALWAYS_FALSE', () => false)
     const data: VariableData = {
       test: {
         parts: [],

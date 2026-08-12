@@ -10,6 +10,7 @@
 //   - 离线归零：角色离线（character:offline）→ 解除（reason=offline）
 //   - 口上抑制：跟随者到达不打招呼（dialogue registerSceneCharFilter('greet')，talk.py:56）
 
+import { conditionEngine } from '../../core/condition-engine'
 import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
@@ -17,7 +18,6 @@ import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { bindingResolver } from '../../core/binding-resolver'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
-import { premiseRegistry } from '../../core/premise-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { apiSystem } from '../../core/api'
 import { registerFollowPremises } from './premise/follow'
@@ -200,7 +200,7 @@ export function onLoad(_ctx: PluginContext): void {
 
   // 注释：前提注册（TARGET_IS_FOLLOW / TARGET_NOT_FOLLOW / IS_FOLLOW / NOT_FOLLOW /
   // IS_FOLLOW_4 / NO_TARGET_OR_TARGET_CAN_COOPERATE）
-  registerFollowPremises(premiseRegistry)
+  registerFollowPremises(conditionEngine)
 }
 
 // 注释：onEnable——注册 follow API + 事件监听 + greet 过滤器

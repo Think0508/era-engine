@@ -24,37 +24,37 @@ export function registerBodyItemPremises(registry: any): void {
   }
 
   // 注释：目标版
-  registry.register('TARGET_HAS_BODY_ITEM', (ctx: any) => {
+  registry.registerPremise('TARGET_HAS_BODY_ITEM', (ctx: any) => {
     const slot = parseInt(ctx.premiseParam ?? '0', 10)
     return hasBodyItemSlot(slot, targetId)(ctx)
   })
 
-  registry.register('TARGET_NOT_BODY_ITEM', (ctx: any) => {
+  registry.registerPremise('TARGET_NOT_BODY_ITEM', (ctx: any) => {
     const slot = parseInt(ctx.premiseParam ?? '0', 10)
     return !hasBodyItemSlot(slot, targetId)(ctx)
   })
 
   // 注释：自己版
-  registry.register('HAS_BODY_ITEM', (ctx: any) => {
+  registry.registerPremise('HAS_BODY_ITEM', (ctx: any) => {
     const slot = parseInt(ctx.premiseParam ?? '0', 10)
     return hasBodyItemSlot(slot, selfId)(ctx)
   })
 
-  registry.register('NOT_BODY_ITEM', (ctx: any) => {
+  registry.registerPremise('NOT_BODY_ITEM', (ctx: any) => {
     const slot = parseInt(ctx.premiseParam ?? '0', 10)
     return !hasBodyItemSlot(slot, selfId)(ctx)
   })
 
   // 注释：快捷前提——特定槽位是否有物品
-  registry.register('TARGET_HAS_VIBRATOR', hasBodyItemSlot(2, targetId))
-  registry.register('TARGET_HAS_ANAL_BEADS', hasBodyItemSlot(7, targetId))
-  registry.register('TARGET_HAS_CONDOM', hasBodyItemSlot(13, targetId))
-  registry.register('TARGET_HAS_GAG', hasBodyItemSlot(14, targetId))
-  registry.register('TARGET_HAS_NIPPLE_CLAMP', hasBodyItemSlot(0, targetId))
-  registry.register('TARGET_HAS_MILKER', hasBodyItemSlot(4, targetId))
-  registry.register('TARGET_HAS_BLINDFOLD', hasBodyItemSlot(6, targetId))
-  registry.register('TARGET_HAS_SLEEPING_PILL', hasBodyItemSlot(9, targetId))
-  registry.register('TARGET_HAS_CONTRACEPTIVE', (ctx: any) => {
+  registry.registerPremise('TARGET_HAS_VIBRATOR', hasBodyItemSlot(2, targetId))
+  registry.registerPremise('TARGET_HAS_ANAL_BEADS', hasBodyItemSlot(7, targetId))
+  registry.registerPremise('TARGET_HAS_CONDOM', hasBodyItemSlot(13, targetId))
+  registry.registerPremise('TARGET_HAS_GAG', hasBodyItemSlot(14, targetId))
+  registry.registerPremise('TARGET_HAS_NIPPLE_CLAMP', hasBodyItemSlot(0, targetId))
+  registry.registerPremise('TARGET_HAS_MILKER', hasBodyItemSlot(4, targetId))
+  registry.registerPremise('TARGET_HAS_BLINDFOLD', hasBodyItemSlot(6, targetId))
+  registry.registerPremise('TARGET_HAS_SLEEPING_PILL', hasBodyItemSlot(9, targetId))
+  registry.registerPremise('TARGET_HAS_CONTRACEPTIVE', (ctx: any) => {
     const charId = targetId(ctx)
     if (!charId) return false
     const ch = entitySystem.get('character', charId) as any
@@ -72,9 +72,9 @@ export function registerBodyItemPremises(registry: any): void {
     }
   }
 
-  registry.register('VIBRATOR_LEVEL_GE_1', toyLevelGe(1, targetId))
-  registry.register('VIBRATOR_LEVEL_GE_2', toyLevelGe(2, targetId))
-  registry.register('VIBRATOR_LEVEL_GE_3', toyLevelGe(3, targetId))
-  registry.register('VIBRATOR_LEVEL_0', (ctx: any) => !toyLevelGe(1, targetId)(ctx))
-  registry.register('SELF_VIBRATOR_LEVEL_GE_1', toyLevelGe(1, selfId))
+  registry.registerPremise('VIBRATOR_LEVEL_GE_1', toyLevelGe(1, targetId))
+  registry.registerPremise('VIBRATOR_LEVEL_GE_2', toyLevelGe(2, targetId))
+  registry.registerPremise('VIBRATOR_LEVEL_GE_3', toyLevelGe(3, targetId))
+  registry.registerPremise('VIBRATOR_LEVEL_0', (ctx: any) => !toyLevelGe(1, targetId)(ctx))
+  registry.registerPremise('SELF_VIBRATOR_LEVEL_GE_1', toyLevelGe(1, selfId))
 }

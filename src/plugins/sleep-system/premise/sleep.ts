@@ -45,22 +45,22 @@ export function isSleepTimeWindow(): boolean {
 
 export function registerSleepPremises(registry: any): void {
   // ── 位置（erArk IN_DORMITORY_OR_HOTEL → location tag has_bedroom，location-tags.md:18/82）──
-  registry.register('IN_DORMITORY_OR_HOTEL', (_ctx: any) => {
+  registry.registerPremise('IN_DORMITORY_OR_HOTEL', (_ctx: any) => {
     const tags = gameContext.getContext().location?.tags ?? []
     return tags.includes('has_bedroom')
   })
 
   // ── 睡眠时间窗口（erArk GAME_TIME_IS_SLEEP_TIME / SLEEP_TIME / NOT_SLEEP_TIME）──
-  registry.register('GAME_TIME_IS_SLEEP_TIME', () => isSleepTimeWindow())
-  registry.register('SLEEP_TIME', () => isSleepTimeWindow())
-  registry.register('NOT_SLEEP_TIME', () => !isSleepTimeWindow())
+  registry.registerPremise('GAME_TIME_IS_SLEEP_TIME', () => isSleepTimeWindow())
+  registry.registerPremise('SLEEP_TIME', () => isSleepTimeWindow())
+  registry.registerPremise('NOT_SLEEP_TIME', () => !isSleepTimeWindow())
 
   // ── 困倦（自己）──
-  registry.register('TIRED_GE_75', (_ctx: any) => getFatigue(self(_ctx)) >= TIRED_GE_75_THRESHOLD)
-  registry.register('TARGET_TIRED_GE_75', (ctx: any) => getFatigue(target(ctx)) >= TIRED_GE_75_THRESHOLD)
+  registry.registerPremise('TIRED_GE_75', (_ctx: any) => getFatigue(self(_ctx)) >= TIRED_GE_75_THRESHOLD)
+  registry.registerPremise('TARGET_TIRED_GE_75', (ctx: any) => getFatigue(target(ctx)) >= TIRED_GE_75_THRESHOLD)
 
   // 睡觉指令主前提（erArk 1014）：疲劳 ≥75% 或 到睡眠时间 或 体力 ≤1
-  registry.register('TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1', (ctx: any) => {
+  registry.registerPremise('TIRED_GE_75_OR_SLEEP_TIME_OR_HP_1', (ctx: any) => {
     const ch = self(ctx)
     if (!ch) return false
     if (getFatigue(ch) >= TIRED_GE_75_THRESHOLD) return true
@@ -71,14 +71,14 @@ export function registerSleepPremises(registry: any): void {
 
   // ── 行为状态（查目标）──
   // T_ACTION_SLEEP——目标正在睡眠（erArk handle_action_sleep：行为是 SLEEP）
-  registry.register('T_ACTION_SLEEP', (ctx: any) => isSleeping(target(ctx)))
-  registry.register('T_ACTION_NOT_SLEEP', (ctx: any) => !isSleeping(target(ctx)))
+  registry.registerPremise('T_ACTION_SLEEP', (ctx: any) => isSleeping(target(ctx)))
+  registry.registerPremise('T_ACTION_NOT_SLEEP', (ctx: any) => !isSleeping(target(ctx)))
 
   // ── 意识状态 NORMAL 族（erArk handle_normal_N：异常位未设置 = 正常）──
   // T_NORMAL_1：目标非"基础生理需求"行为中（休息/睡觉/解手/吃饭/沐浴/挤奶/自慰——erArk :919-927）
   // 本引擎简化：非睡眠中 且 行为类型非 rest/sleep 且 非自慰中；
   // TODO(sleep-system)：解手/吃饭/沐浴/挤奶标记（sp_flag.peeing/clean 等）字段盘点后补
-  registry.register('T_NORMAL_1', (ctx: any) => {
+  registry.registerPremise('T_NORMAL_1', (ctx: any) => {
     const ch = target(ctx)
     if (!ch) return false
     if (isSleeping(ch)) return false
@@ -88,10 +88,10 @@ export function registerSleepPremises(registry: any): void {
     return true
   })
   // T_NORMAL_2：目标非临盆/产后/监禁（监禁系统未实装 → 恒正常，TODO(sleep-system)：监禁落地后补）
-  registry.register('T_NORMAL_2', () => true)
+  registry.registerPremise('T_NORMAL_2', () => true)
   // T_NORMAL_6：目标非深度无意识（睡眠浅睡+ / 时停 / 空气催眠——erArk :1047-1049）
   // M5 修复：补 unconscious_flag_1 分支（自然醒但 unconscious_h=1 残留 + 熟睡值≥31 → 深度无意识）
-  registry.register('T_NORMAL_6', (ctx: any) => {
+  registry.registerPremise('T_NORMAL_6', (ctx: any) => {
     const ch = target(ctx)
     if (!ch) return false
     if (getSleepLevel(ch) >= 1 && (isSleeping(ch) || (ch.sp_flag?.unconscious_h ?? 0) === 1)) return false
@@ -101,18 +101,18 @@ export function registerSleepPremises(registry: any): void {
   })
 
   // ── 无意识 flag 补全（h-core 已注册 T_UNCONSCIOUS_FLAG + _1.._6；此处补 _0 和 _7）──
-  registry.register('T_UNCONSCIOUS_FLAG_0', (ctx: any) => {
+  registry.registerPremise('T_UNCONSCIOUS_FLAG_0', (ctx: any) => {
     const ch = target(ctx)
     return (ch?.sp_flag?.unconscious_h ?? 0) === 0
   })
-  registry.register('T_UNCONSCIOUS_FLAG_7', (ctx: any) => {
+  registry.registerPremise('T_UNCONSCIOUS_FLAG_7', (ctx: any) => {
     const ch = target(ctx)
     return ch?.sp_flag?.unconscious_h === 7
   })
 
   // ── 场景全员无意识/睡眠（erArk handle_premise_place.py:502-557）──
   // 玩家所在地点：有玩家以外的角色，且所有角色都无意识或睡眠
-  registry.register('SCENE_ALL_UNCONSCIOUS_OR_SLEEP', (_ctx: any) => {
+  registry.registerPremise('SCENE_ALL_UNCONSCIOUS_OR_SLEEP', (_ctx: any) => {
     const loc = gameContext.getContext().location
     if (!loc) return false
     const playerId = gameContext.getContext().player?.id
@@ -129,7 +129,7 @@ export function registerSleepPremises(registry: any): void {
   })
   // 该地点除了自己和交互对象以外的角色都无意识/睡眠（M6 修复：空集为真——erArk 语义
   // "除自己/对象外全部"是真空真；与 SCENE_ALL_UNCONSCIOUS_OR_SLEEP 的 others>0 语义不同）
-  registry.register('SCENE_ALL_OTHERS_UNCONSCIOUS_OR_SLEEP', (ctx: any) => {
+  registry.registerPremise('SCENE_ALL_OTHERS_UNCONSCIOUS_OR_SLEEP', (ctx: any) => {
     const loc = gameContext.getContext().location
     if (!loc) return false
     const playerId = gameContext.getContext().player?.id
@@ -153,10 +153,10 @@ export function registerSleepPremises(registry: any): void {
   // orgasm 地文消费链，而 h-core 绝顶结算（orgasmJudge）只发 h:orgasm 事件、尚未调用
   // talk-common getBehaviorText 渲染地文（对话系统只接 trigger_dialogue 场景口上）。
   // 属 B3-B6 SEX 指令批次 + orgasm 地文渲染接线范畴，非本前提注册缺陷——届时无需改此处
-  registry.register('SLEEP_H_AWAKE', (ctx: any) => !!self(ctx)?.sp_flag?.sleep_h_awake)
-  registry.register('NOT_SLEEP_H_AWAKE', (ctx: any) => !self(ctx)?.sp_flag?.sleep_h_awake)
-  registry.register('T_SLEEP_H_AWAKE', (ctx: any) => !!target(ctx)?.sp_flag?.sleep_h_awake)
-  registry.register('T_NOT_SLEEP_H_AWAKE', (ctx: any) => !target(ctx)?.sp_flag?.sleep_h_awake)
+  registry.registerPremise('SLEEP_H_AWAKE', (ctx: any) => !!self(ctx)?.sp_flag?.sleep_h_awake)
+  registry.registerPremise('NOT_SLEEP_H_AWAKE', (ctx: any) => !self(ctx)?.sp_flag?.sleep_h_awake)
+  registry.registerPremise('T_SLEEP_H_AWAKE', (ctx: any) => !!target(ctx)?.sp_flag?.sleep_h_awake)
+  registry.registerPremise('T_NOT_SLEEP_H_AWAKE', (ctx: any) => !target(ctx)?.sp_flag?.sleep_h_awake)
   const tPretendSleep = (ctx: any) => {
     const ch = target(ctx)
     return !!ch?.sp_flag?.sleep_h_awake && !!ch?.h_state?.pretend_sleep
@@ -165,20 +165,20 @@ export function registerSleepPremises(registry: any): void {
     const ch = target(ctx)
     return !(ch?.sp_flag?.sleep_h_awake && ch?.h_state?.pretend_sleep)
   }
-  registry.register('T_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', tPretendSleep)
-  registry.register('T_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', tNotPretendSleep)
+  registry.registerPremise('T_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', tPretendSleep)
+  registry.registerPremise('T_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', tNotPretendSleep)
   // TARGET_ 前缀（地文数据实际引用——覆盖 h-core 的恒 false placeholder）
-  registry.register('TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', tPretendSleep)
-  registry.register('TARGET_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', tNotPretendSleep)
+  registry.registerPremise('TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', tPretendSleep)
+  registry.registerPremise('TARGET_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', tNotPretendSleep)
 
   // ── 安眠药（body_item[9] 未实装 → 恒 false + TODO；安眠药指令（6106）随道具系统落地）──
-  registry.register('SLEEP_PILLS', () => false) // TODO(sleep-system)：body_item 道具未实装
-  registry.register('NOT_SLEEP_PILLS', () => true)
-  registry.register('T_SLEEP_PILLS', () => false) // TODO(sleep-system)：同上
-  registry.register('T_NOT_SLEEP_PILLS', () => true)
-  registry.register('HAVE_SLEEPING_PILLS', () => false) // TODO(sleep-system)：身体管理道具[9] 未实装
-  registry.register('SELF_SLEEP_PILLS', () => false) // TODO(sleep-system)：同上
-  registry.register('T_SELF_SLEEP_PILLS', () => false) // TODO(sleep-system)：同上
+  registry.registerPremise('SLEEP_PILLS', () => false) // TODO(sleep-system)：body_item 道具未实装
+  registry.registerPremise('NOT_SLEEP_PILLS', () => true)
+  registry.registerPremise('T_SLEEP_PILLS', () => false) // TODO(sleep-system)：同上
+  registry.registerPremise('T_NOT_SLEEP_PILLS', () => true)
+  registry.registerPremise('HAVE_SLEEPING_PILLS', () => false) // TODO(sleep-system)：身体管理道具[9] 未实装
+  registry.registerPremise('SELF_SLEEP_PILLS', () => false) // TODO(sleep-system)：同上
+  registry.registerPremise('T_SELF_SLEEP_PILLS', () => false) // TODO(sleep-system)：同上
 }
 
 function isUnconsciousOrSleep(c: any): boolean {

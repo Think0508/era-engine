@@ -1,6 +1,6 @@
+import { conditionEngine } from '../core/condition-engine'
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { randomEventEngine, interpolateEventText, type EventTriggerContext } from './random-event'
-import { premiseRegistry } from './premise-registry'
 import { entitySystem } from './entity-system'
 import type { RandomEventDef } from './mod-loader'
 
@@ -20,10 +20,10 @@ beforeEach(() => {
   entitySystem.clear()
   entitySystem.register('character', 'player', { id: 'player', name: '玩家' } as any)
   entitySystem.register('character', 'linghu', { id: 'linghu', name: '令狐冲' } as any)
-  premiseRegistry.clear()
-  premiseRegistry.register('HIGH_1', () => 1)
-  premiseRegistry.register('P1', () => 1)
-  premiseRegistry.register('P2', () => 2)
+  conditionEngine.clear()
+  conditionEngine.registerPremise('HIGH_1', () => 1)
+  conditionEngine.registerPremise('P1', () => 1)
+  conditionEngine.registerPremise('P2', () => 2)
   randomEventEngine.clear()
   randomEventEngine.registerAll(defs)
 })
@@ -60,10 +60,10 @@ describe('randomEventEngine.pick', () => {
   })
 
   it('zero weight eliminates candidate', () => {
-    premiseRegistry.clear()
-    premiseRegistry.register('HIGH_1', () => 0)
-    premiseRegistry.register('P1', () => 1)
-    premiseRegistry.register('P2', () => 2)
+    conditionEngine.clear()
+    conditionEngine.registerPremise('HIGH_1', () => 0)
+    conditionEngine.registerPremise('P1', () => 1)
+    conditionEngine.registerPremise('P2', () => 2)
     vi.spyOn(Math, 'random').mockReturnValue(0)
     const e = randomEventEngine.pick('move', ctx())
     expect(e?.id).toBe('e1')
@@ -92,10 +92,10 @@ describe('randomEventEngine.pick', () => {
 
   it('condition throwing does not interrupt event system (跳过该事件)', () => {
     randomEventEngine.clear()
-    premiseRegistry.clear()
-    premiseRegistry.register('HIGH_1', () => 1)
-    premiseRegistry.register('P1', () => 1)
-    premiseRegistry.register('P2', () => 2)
+    conditionEngine.clear()
+    conditionEngine.registerPremise('HIGH_1', () => 1)
+    conditionEngine.registerPremise('P1', () => 1)
+    conditionEngine.registerPremise('P2', () => 2)
     randomEventEngine.registerAll([
       // 非法条件（字符串比较运算符）→ evaluateCondition 抛错 → 该事件跳过而非中断
       { id: 'bad1', behavior: 'move', type: 0, condition: "player.hp >= 'abc'", text: 'x', effects: [] },
@@ -107,11 +107,11 @@ describe('randomEventEngine.pick', () => {
 
   it('NaN weight from premise handler is filtered', () => {
     randomEventEngine.clear()
-    premiseRegistry.clear()
-    premiseRegistry.register('NAN_PREM', () => NaN)
-    premiseRegistry.register('HIGH_1', () => 1)
-    premiseRegistry.register('P1', () => 1)
-    premiseRegistry.register('P2', () => 2)
+    conditionEngine.clear()
+    conditionEngine.registerPremise('NAN_PREM', () => NaN)
+    conditionEngine.registerPremise('HIGH_1', () => 1)
+    conditionEngine.registerPremise('P1', () => 1)
+    conditionEngine.registerPremise('P2', () => 2)
     randomEventEngine.registerAll([
       { id: 'n1', behavior: 'move', type: 0, premises: ['NAN_PREM'], text: 'x', effects: [] },
       { id: 'n2', behavior: 'move', type: 0, text: 'y', effects: [] },

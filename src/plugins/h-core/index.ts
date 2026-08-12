@@ -1,5 +1,6 @@
-﻿// 注释：h-core 插件——核心入口
+// 注释：h-core 插件——核心入口
 
+import { conditionEngine } from '../../core/condition-engine'
 import type { PluginContext } from '../../core/types'
 import { createHState } from './types'
 import type { BodyItemSlot } from './types'
@@ -9,7 +10,6 @@ import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import type { CommandDef } from '../../core/command-registry'
-import { premiseRegistry } from '../../core/premise-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { registerHPremises } from './premise/premise-h'
 import { registerTargetPremises } from './premise/premise-target'
@@ -981,12 +981,12 @@ export function onEnable(ctx: PluginContext): void {
   registerNoSaveMode('h_scene')
   // 注释：天赋修正索引随插件启用重建（mod 切换/测试环境重载时避免脏缓存）
   clearTalentAdjustIndex()
-  registerHPremises(premiseRegistry)
-  registerTargetPremises(premiseRegistry)
-  registerFallPremises(premiseRegistry)
-  registerClothingPremises(premiseRegistry)
-  registerBodyItemPremises(premiseRegistry)
-  registerInstructPremises(premiseRegistry)
+  registerHPremises(conditionEngine)
+  registerTargetPremises(conditionEngine)
+  registerFallPremises(conditionEngine)
+  registerClothingPremises(conditionEngine)
+  registerBodyItemPremises(conditionEngine)
+  registerInstructPremises(conditionEngine)
 
   // 注释：每次 H 行动后自动二段结算（对齐 erArk check_second_effect）
   // 流程：body_item_tick（道具 tick）→ orgasmJudge（高潮判定 + 射精欲积累）→ 玩家射精时调 eja_climax
@@ -1019,10 +1019,10 @@ export function onEnable(ctx: PluginContext): void {
   }
 
   ctx.api.register('h-core', {
-    evaluatePremises: (premises: string[], evalCtx: any) => premiseRegistry.evaluate(premises, evalCtx),
+    evaluatePremises: (premises: string[], evalCtx: any) => conditionEngine.evaluatePremises(premises, evalCtx),
     startHScene, endHScene, getLevel, calcFavorability, calcTrust, calcJudge,
     getFavorabilityLevel, getTrustLevel,
-    registerPremise: (id: string, handler: any) => premiseRegistry.register(id, handler),
+    registerPremise: (id: string, handler: any) => conditionEngine.registerPremise(id, handler),
     // 注释：通用状态结算（对外暴露——其他插件（如 h-hidden 隐奸/露出持续快感）经 API 调用，
     // 遵守"插件间禁止直接 import"铁律；参数同 settleOneState）
     // settleState(charId, state, baseValue, timeCost, opts?: {

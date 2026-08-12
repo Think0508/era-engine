@@ -3,12 +3,12 @@
 // 背景：原实现 WEAK=1-3（假通过）、STRONG>=4（vibrator_set 上限 3 → 恒 false 死键）、MIDDLE 缺失——
 // 注册≠语义对（复刻 skill 常见静默错误），用行为矩阵锁定语义
 
+import { conditionEngine } from '../core/condition-engine'
 import { describe, it, expect, beforeAll } from 'vitest'
 import { modLoader } from '../core/mod-loader'
 import { gameContext } from '../core/game-context'
 import { entitySystem } from '../core/entity-system'
 import { apiSystem } from '../core/api'
-import { premiseRegistry } from '../core/premise-registry'
 import { errorReporter } from '../core/error-reporter'
 import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from './h-core/index'
 import { eventBus } from '../core/event-bus'
@@ -43,7 +43,7 @@ describe('premise-instruct 前提语义矩阵', () => {
       if (!n.h_state) n.h_state = {}
       n.h_state.sex_toy_level = level
     }
-    return premiseRegistry.evaluate([premise], { selectedCharacterId: 'npc_1' })
+    return conditionEngine.evaluatePremises([premise], { ...gameContext.getContext(), selectedCharacterId: 'npc_1' })
   }
 
   it('SEX_TOY 档位矩阵：OFF=0 / WEAK=1 / MIDDLE=2 / STRONG=3（erArk 精确语义）', () => {
@@ -72,7 +72,7 @@ describe('premise-instruct 前提语义矩阵', () => {
   it('无目标 → 全部 false（getTarget 语义）', () => {
     const n = entitySystem.get('character', 'npc_1') as any
     n.h_state = { sex_toy_level: 1 }
-    expect(premiseRegistry.evaluate(['TARGET_NOW_SEX_TOY_WEAK'], { selectedCharacterId: null })).toBe(false)
-    expect(premiseRegistry.evaluate(['TARGET_NOW_SEX_TOY_ON'], { selectedCharacterId: null })).toBe(false)
+    expect(conditionEngine.evaluatePremises(['TARGET_NOW_SEX_TOY_WEAK'], { ...gameContext.getContext(), selectedCharacterId: undefined })).toBe(false)
+    expect(conditionEngine.evaluatePremises(['TARGET_NOW_SEX_TOY_ON'], { ...gameContext.getContext(), selectedCharacterId: undefined })).toBe(false)
   })
 })

@@ -2,6 +2,7 @@
 // 与 boot-smoke 的区别：这里真正"点指令"，验证时间推进/效果/口上/H生命周期/对话
 // 注意：effectTypeRegistry 重复注册会抛错，onLoad 只能执行一次 → 全部放 beforeAll
 
+import { conditionEngine } from '../core/condition-engine'
 import { describe, it, expect, beforeAll } from 'vitest'
 import { modLoader } from '../core/mod-loader'
 import { gameContext } from '../core/game-context'
@@ -10,7 +11,6 @@ import { apiSystem } from '../core/api'
 import { commandRegistry } from '../core/command-registry'
 import { commandExecutor } from '../core/command-executor'
 import { narrativeLog } from '../core/narrative-log'
-import { premiseRegistry } from '../core/premise-registry'
 import { errorReporter } from '../core/error-reporter'
 import { onLoad as effectOnLoad, onEnable as effectOnEnable } from './effect-system/index'
 import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from './h-core/index'
@@ -34,7 +34,7 @@ describe('指令执行链路冒烟', () => {
     entitySystem.clear()
     commandRegistry.clear()
     errorReporter.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
     narrativeLog.clear()
     await modLoader.loadMod('test-mod')
     const mod = modLoader.getMod()!

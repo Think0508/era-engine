@@ -8,13 +8,13 @@
 //     recover_from_unconscious_h——按 erArk 文件映射：这些都在 handle_npc_ai_in_h.py/realtime_settle.py）
 // 本插件只做睡眠本体 + 全员结算 + 状态/前提；H 侧经事件/API 协作（不跨插件 import）
 
+import { conditionEngine } from '../../core/condition-engine'
 import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
 import { apiSystem } from '../../core/api'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
-import { premiseRegistry } from '../../core/premise-registry'
 import { bindingResolver } from '../../core/binding-resolver'
 import { errorReporter } from '../../core/error-reporter'
 import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
@@ -185,7 +185,7 @@ export function onLoad(_ctx: PluginContext): void {
     return ok
   })
 
-  registerSleepPremises(premiseRegistry)
+  registerSleepPremises(conditionEngine)
 }
 
 // 注释：onEnable——事件监听 + API

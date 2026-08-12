@@ -1,8 +1,8 @@
-import { premiseRegistry } from '../../core/premise-registry'
-import { conditionEngine } from '../../core/condition-engine'
+import { conditionEngine, weightAllToOne } from '../../core/condition-engine'
 import { gameContext } from '../../core/game-context'
 import { entitySystem } from '../../core/entity-system'
 import { weightedRandom } from '../../utils/weighted-random'
+import type { GameContext } from '../../core/types'
 import type { CommonTextIndex, CommonTextEntry } from './types'
 
 export type VariableData = Record<string, {
@@ -68,8 +68,17 @@ export class CommonTextsEngine {
 
   // 注释：候选加权（T7 审查修复——erArk get_weight_from_premise_dict 权重语义）
   // 地文条目的 high_N 前提贡献权重，其余满足前提 +1；原实现均匀随机（权重被忽略）
+  // premiseCtx：完整 GameContext + sourceId=行为发起者（jj_ 等查"自己"维度）
+  private buildPremiseCtx(targetId: string | null, actorId?: string): GameContext {
+    return {
+      ...gameContext.getContext(),
+      selectedCharacterId: targetId ?? undefined,
+      sourceId: actorId ?? null,
+    }
+  }
+
   private weightedCandidates(entries: CommonTextEntry[], targetId: string | null, actorId?: string, unconsciousPass = false): { text: string; weight: number }[] {
-    const premiseCtx: Record<string, any> = { selectedCharacterId: targetId, actorId: actorId ?? null }
+    const premiseCtx = this.buildPremiseCtx(targetId, actorId)
     const out: { text: string; weight: number }[] = []
     for (const e of this.filterEntries(entries, targetId, actorId, { unconsciousPass })) {
       let weight = 1
@@ -80,7 +89,7 @@ export class CommonTextsEngine {
         }
       }
       if (premiseList.length > 0) {
-        const w = premiseRegistry.getWeight(premiseList, premiseCtx)
+        const w = weightAllToOne(premiseList, premiseCtx)
         if (w <= 0) continue
         weight = w
       }
@@ -91,7 +100,7 @@ export class CommonTextsEngine {
 
   /** 列出通过条件筛选的全部候选（行为地文组合用——B/C 组合并池后统一随机） */
   private filterEntries(entries: CommonTextEntry[], targetId: string | null, actorId?: string, opts?: { unconsciousPass?: boolean }): CommonTextEntry[] {
-    const premiseCtx: Record<string, any> = { selectedCharacterId: targetId, actorId: actorId ?? null }
+    const premiseCtx = this.buildPremiseCtx(targetId, actorId)
     const getContext = () => {
       const gc = gameContext.getContext()
       if (targetId) (gc as any).selectedCharacterId = targetId
@@ -118,7 +127,7 @@ export class CommonTextsEngine {
               // （N!=0 时恒 false 静默淘汰行；==0 恒 true 静默放行）。用前提权重值比较
               const m = part.match(/^([A-Za-z_][\w]*)\s*(==|>=|<=|>|<)\s*(-?\d+)$/)
               if (!m) return false // 无法解析的比较形式 → 淘汰（不静默错误结果）
-              const weight = premiseRegistry.getWeight([m[1]], premiseCtx)
+              const weight = weightAllToOne([m[1]], premiseCtx)
               const n = Number(m[3])
               const ok = m[2] === '==' ? weight === n
                 : m[2] === '>=' ? weight >= n
@@ -127,7 +136,7 @@ export class CommonTextsEngine {
                       : weight < n
               if (!ok) return false
             } else {
-              if (!premiseRegistry.evaluate([part], premiseCtx)) return false
+              if (!conditionEngine.evaluatePremises([part], premiseCtx)) return false
             }
           }
         } else {

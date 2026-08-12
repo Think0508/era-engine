@@ -82,64 +82,64 @@ export function registerClothingPremises(registry: any): void {
   // ════════════════════════════════════════════════
   // 自己版（Self）——检查玩家自己的服装
   // ════════════════════════════════════════════════
-  registry.register('WEAR_HAT', slotPremise('head', selfId))
-  registry.register('WEAR_IN_EAR', slotPremise('accessory', selfId))
-  registry.register('WEAR_IN_NECK', slotPremise('accessory', selfId))
-  registry.register('WEAR_IN_UP', anySlotPremise(['upper', 'coat'], selfId))
-  registry.register('WEAR_BRA', slotPremise('bra', selfId))
-  registry.register('WEAR_GLOVES', slotPremise('hand', selfId))
-  registry.register('WEAR_IN_DOWN', slotPremise('lower', selfId))
-  registry.register('WEAR_TROUSERS', trouserPremise(selfId))
-  registry.register('WEAR_PAN', slotPremise('panties', selfId))
-  registry.register('WEAR_SOCKS', slotPremise('foot', selfId))
-  registry.register('WEAR_SHOES', slotPremise('foot', selfId))
-  registry.register('WEAR_SKIRT', tagPremise(5, selfId))
+  registry.registerPremise('WEAR_HAT', slotPremise('head', selfId))
+  registry.registerPremise('WEAR_IN_EAR', slotPremise('accessory', selfId))
+  registry.registerPremise('WEAR_IN_NECK', slotPremise('accessory', selfId))
+  registry.registerPremise('WEAR_IN_UP', anySlotPremise(['upper', 'coat'], selfId))
+  registry.registerPremise('WEAR_BRA', slotPremise('bra', selfId))
+  registry.registerPremise('WEAR_GLOVES', slotPremise('hand', selfId))
+  registry.registerPremise('WEAR_IN_DOWN', slotPremise('lower', selfId))
+  registry.registerPremise('WEAR_TROUSERS', trouserPremise(selfId))
+  registry.registerPremise('WEAR_PAN', slotPremise('panties', selfId))
+  registry.registerPremise('WEAR_SOCKS', slotPremise('foot', selfId))
+  registry.registerPremise('WEAR_SHOES', slotPremise('foot', selfId))
+  registry.registerPremise('WEAR_SKIRT', tagPremise(5, selfId))
 
   // 自己否定版
-  registry.register('NOT_WEAR_HAT', (ctx: any) => !slotPremise('head', selfId)(ctx))
-  registry.register('NOT_WEAR_IN_EAR', (ctx: any) => !slotPremise('accessory', selfId)(ctx))
-  registry.register('NOT_WEAR_IN_NECK', (ctx: any) => !slotPremise('accessory', selfId)(ctx))
-  registry.register('NOT_WEAR_IN_UP', (ctx: any) => !anySlotPremise(['upper', 'coat'], selfId)(ctx))
-  registry.register('NOT_WEAR_BRA', (ctx: any) => !slotPremise('bra', selfId)(ctx))
-  registry.register('NOT_WEAR_GLOVES', (ctx: any) => !slotPremise('hand', selfId)(ctx))
-  registry.register('NOT_WEAR_IN_DOWN', (ctx: any) => !slotPremise('lower', selfId)(ctx))
-  registry.register('NOT_WEAR_TROUSERS', (ctx: any) => !trouserPremise(selfId)(ctx))
-  registry.register('NOT_WEAR_PAN', (ctx: any) => !slotPremise('panties', selfId)(ctx))
-  registry.register('NOT_WEAR_SOCKS', (ctx: any) => !slotPremise('foot', selfId)(ctx))
-  registry.register('NOT_WEAR_SHOES', (ctx: any) => !slotPremise('foot', selfId)(ctx))
-  registry.register('NOT_WEAR_SKIRT', (ctx: any) => !tagPremise(5, selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_HAT', (ctx: any) => !slotPremise('head', selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_IN_EAR', (ctx: any) => !slotPremise('accessory', selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_IN_NECK', (ctx: any) => !slotPremise('accessory', selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_IN_UP', (ctx: any) => !anySlotPremise(['upper', 'coat'], selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_BRA', (ctx: any) => !slotPremise('bra', selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_GLOVES', (ctx: any) => !slotPremise('hand', selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_IN_DOWN', (ctx: any) => !slotPremise('lower', selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_TROUSERS', (ctx: any) => !trouserPremise(selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_PAN', (ctx: any) => !slotPremise('panties', selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_SOCKS', (ctx: any) => !slotPremise('foot', selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_SHOES', (ctx: any) => !slotPremise('foot', selfId)(ctx))
+  registry.registerPremise('NOT_WEAR_SKIRT', (ctx: any) => !tagPremise(5, selfId)(ctx))
 
   // ════════════════════════════════════════════════
   // 目标版（TARGET）——检查目标角色的服装
   // ════════════════════════════════════════════════
-  registry.register('TARGET_WEAR_HAT', slotPremise('head', targetId))
-  registry.register('TARGET_WEAR_IN_EAR', slotPremise('accessory', targetId))
-  registry.register('TARGET_WEAR_IN_NECK', slotPremise('accessory', targetId))
-  registry.register('TARGET_WEAR_IN_UP', anySlotPremise(['upper', 'coat'], targetId))
-  registry.register('TARGET_WEAR_BRA', slotPremise('bra', targetId))
-  registry.register('TARGET_WEAR_GLOVES', slotPremise('hand', targetId))
-  registry.register('TARGET_WEAR_IN_DOWN', slotPremise('lower', targetId))
-  registry.register('TARGET_WEAR_TROUSERS', trouserPremise(targetId))
-  registry.register('TARGET_WEAR_PAN', slotPremise('panties', targetId))
-  registry.register('TARGET_WEAR_SOCKS', slotPremise('foot', targetId))
-  registry.register('TARGET_WEAR_SHOES', slotPremise('foot', targetId))
-  registry.register('TARGET_WEAR_GLASS', (_ctx: any) => false)  // 无对应槽位
-  registry.register('TARGET_WEAR_IN_MOUSE', (_ctx: any) => false)  // 无对应槽位
+  registry.registerPremise('TARGET_WEAR_HAT', slotPremise('head', targetId))
+  registry.registerPremise('TARGET_WEAR_IN_EAR', slotPremise('accessory', targetId))
+  registry.registerPremise('TARGET_WEAR_IN_NECK', slotPremise('accessory', targetId))
+  registry.registerPremise('TARGET_WEAR_IN_UP', anySlotPremise(['upper', 'coat'], targetId))
+  registry.registerPremise('TARGET_WEAR_BRA', slotPremise('bra', targetId))
+  registry.registerPremise('TARGET_WEAR_GLOVES', slotPremise('hand', targetId))
+  registry.registerPremise('TARGET_WEAR_IN_DOWN', slotPremise('lower', targetId))
+  registry.registerPremise('TARGET_WEAR_TROUSERS', trouserPremise(targetId))
+  registry.registerPremise('TARGET_WEAR_PAN', slotPremise('panties', targetId))
+  registry.registerPremise('TARGET_WEAR_SOCKS', slotPremise('foot', targetId))
+  registry.registerPremise('TARGET_WEAR_SHOES', slotPremise('foot', targetId))
+  registry.registerPremise('TARGET_WEAR_GLASS', (_ctx: any) => false)  // 无对应槽位
+  registry.registerPremise('TARGET_WEAR_IN_MOUSE', (_ctx: any) => false)  // 无对应槽位
 
   // 目标否定版
-  registry.register('TARGET_NOT_WEAR_HAT', (ctx: any) => !slotPremise('head', targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_IN_EAR', (ctx: any) => !slotPremise('accessory', targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_IN_NECK', (ctx: any) => !slotPremise('accessory', targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_IN_UP', (ctx: any) => !anySlotPremise(['upper', 'coat'], targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_BRA', (ctx: any) => !slotPremise('bra', targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_GLOVES', (ctx: any) => !slotPremise('hand', targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_IN_DOWN', (ctx: any) => !slotPremise('lower', targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_TROUSERS', (ctx: any) => !trouserPremise(targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_PAN', (ctx: any) => !slotPremise('panties', targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_SOCKS', (ctx: any) => !slotPremise('foot', targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_SHOES', (ctx: any) => !slotPremise('foot', targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_GLASS', (_ctx: any) => true)  // 没玻璃槽位=没戴
-  registry.register('TARGET_NOT_WEAR_IN_MOUSE', (_ctx: any) => true)
+  registry.registerPremise('TARGET_NOT_WEAR_HAT', (ctx: any) => !slotPremise('head', targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_IN_EAR', (ctx: any) => !slotPremise('accessory', targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_IN_NECK', (ctx: any) => !slotPremise('accessory', targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_IN_UP', (ctx: any) => !anySlotPremise(['upper', 'coat'], targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_BRA', (ctx: any) => !slotPremise('bra', targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_GLOVES', (ctx: any) => !slotPremise('hand', targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_IN_DOWN', (ctx: any) => !slotPremise('lower', targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_TROUSERS', (ctx: any) => !trouserPremise(targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_PAN', (ctx: any) => !slotPremise('panties', targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_SOCKS', (ctx: any) => !slotPremise('foot', targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_SHOES', (ctx: any) => !slotPremise('foot', targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_GLASS', (_ctx: any) => true)  // 没玻璃槽位=没戴
+  registry.registerPremise('TARGET_NOT_WEAR_IN_MOUSE', (_ctx: any) => true)
 
   // ════════════════════════════════════════════════
   // 标签版（Tag）——按 cloth_tag 检查
@@ -147,18 +147,18 @@ export function registerClothingPremises(registry: any): void {
   // 注释：cloth_tag: 0普通 1童装 2情趣 3泳装 4和服 5裙子 6饰品
 
   // 目标版
-  registry.register('TARGET_WEAR_SWIM', tagPremise(3, targetId))
-  registry.register('TARGET_WEAR_SKIRT', tagPremise(5, targetId))
-  registry.register('TARGET_WEAR_SEXY', tagPremise(2, targetId))
-  registry.register('TARGET_WEAR_KIMONO', tagPremise(4, targetId))
-  registry.register('TARGET_WEAR_CHILDISH', tagPremise(1, targetId))
+  registry.registerPremise('TARGET_WEAR_SWIM', tagPremise(3, targetId))
+  registry.registerPremise('TARGET_WEAR_SKIRT', tagPremise(5, targetId))
+  registry.registerPremise('TARGET_WEAR_SEXY', tagPremise(2, targetId))
+  registry.registerPremise('TARGET_WEAR_KIMONO', tagPremise(4, targetId))
+  registry.registerPremise('TARGET_WEAR_CHILDISH', tagPremise(1, targetId))
 
   // 目标否定版
-  registry.register('TARGET_NOT_WEAR_SWIM', (ctx: any) => !tagPremise(3, targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_SKIRT', (ctx: any) => !tagPremise(5, targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_SEXY', (ctx: any) => !tagPremise(2, targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_KIMONO', (ctx: any) => !tagPremise(4, targetId)(ctx))
-  registry.register('TARGET_NOT_WEAR_CHILDISH', (ctx: any) => !tagPremise(1, targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_SWIM', (ctx: any) => !tagPremise(3, targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_SKIRT', (ctx: any) => !tagPremise(5, targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_SEXY', (ctx: any) => !tagPremise(2, targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_KIMONO', (ctx: any) => !tagPremise(4, targetId)(ctx))
+  registry.registerPremise('TARGET_NOT_WEAR_CHILDISH', (ctx: any) => !tagPremise(1, targetId)(ctx))
 
   // ════════════════════════════════════════════════
   // 复合状态
@@ -172,8 +172,8 @@ export function registerClothingPremises(registry: any): void {
     return removableSlots.every(s => !char.equipment[s])
   }
 
-  registry.register('CLOTH_OFF', clothOffHandler)
-  registry.register('NOT_CLOTH_OFF', (ctx: any) => !clothOffHandler(ctx))
+  registry.registerPremise('CLOTH_OFF', clothOffHandler)
+  registry.registerPremise('NOT_CLOTH_OFF', (ctx: any) => !clothOffHandler(ctx))
 
   // 注释：大部分裸——上身/胸罩/下身/内裤都空
   const clothMostOffHandler = (ctx: any) => {
@@ -182,11 +182,11 @@ export function registerClothingPremises(registry: any): void {
     return ['upper', 'bra', 'lower', 'panties'].every(s => isSlotEmpty(charId, s))
   }
 
-  registry.register('CLOTH_MOST_OFF', clothMostOffHandler)
-  registry.register('NOT_CLOTH_MOST_OFF', (ctx: any) => !clothMostOffHandler(ctx))
+  registry.registerPremise('CLOTH_MOST_OFF', clothMostOffHandler)
+  registry.registerPremise('NOT_CLOTH_MOST_OFF', (ctx: any) => !clothMostOffHandler(ctx))
 
   // 注释：缺少胸罩或内裤（自己）
-  registry.register('NOW_WEAR_BRA_OR_PAN', (ctx: any) => {
+  registry.registerPremise('NOW_WEAR_BRA_OR_PAN', (ctx: any) => {
     const charId = selfId(ctx)
     if (!charId) return false
     return isSlotEmpty(charId, 'bra') || isSlotEmpty(charId, 'panties')
@@ -195,19 +195,19 @@ export function registerClothingPremises(registry: any): void {
   // ════════════════════════════════════════════════
   // 旧版兼容（保持对外接口）
   // ════════════════════════════════════════════════
-  registry.register('CLOTH_WEAR', (ctx: any) => {
+  registry.registerPremise('CLOTH_WEAR', (ctx: any) => {
     const charId = targetId(ctx)
     if (!charId) return false
     return !isSlotEmpty(charId, ctx.premiseParam ?? 'upper')
   })
 
-  registry.register('BRA_VISIBLE', (ctx: any) => {
+  registry.registerPremise('BRA_VISIBLE', (ctx: any) => {
     const charId = targetId(ctx)
     if (!charId) return false
     return isSlotEmpty(charId, 'bra') || isSlotOff(charId, 'bra')
   })
 
-  registry.register('PANTIES_VISIBLE', (ctx: any) => {
+  registry.registerPremise('PANTIES_VISIBLE', (ctx: any) => {
     const charId = targetId(ctx)
     if (!charId) return false
     return isSlotEmpty(charId, 'panties') || isSlotOff(charId, 'panties')

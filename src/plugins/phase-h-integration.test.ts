@@ -1,4 +1,5 @@
-﻿import { describe, it, expect } from 'vitest'
+import { conditionEngine } from '../core/condition-engine'
+import { describe, it, expect } from 'vitest'
 import { getLevel } from '../core/entity-utils'
 import { entitySystem } from '../core/entity-system'
 
@@ -457,16 +458,15 @@ describe('Phase H 集成测试', () => {
     })
     // 注释：注册 h-core 前提（镜像 onEnable 行为，NOT_H/HAVE_TARGET/TIRED_LE_84；
     // 2026-08-11 补 registerInstructPremises——h-npc-ai 逆推指令的 T_NPC_ACTIVE_H 域）
-    const { premiseRegistry } = await import('../core/premise-registry')
-    const { registerHPremises } = await import('../plugins/h-core/premise/premise-h')
+        const { registerHPremises } = await import('../plugins/h-core/premise/premise-h')
     const { registerInstructPremises } = await import('../plugins/h-core/premise/premise-instruct')
     // 2026-08-11 补 sleep-system 前提 + 时停前提（sleep 指令跨天——plugin defaults 已并入 instructions）
     const { registerSleepPremises } = await import('../plugins/sleep-system/premise/sleep')
-    registerHPremises(premiseRegistry)
-    registerInstructPremises(premiseRegistry)
-    registerSleepPremises(premiseRegistry)
-    premiseRegistry.register('TIME_STOP_ON', () => false)
-    premiseRegistry.register('TIME_STOP_OFF', () => true)
+    registerHPremises(conditionEngine)
+    registerInstructPremises(conditionEngine)
+    registerSleepPremises(conditionEngine)
+    conditionEngine.registerPremise('TIME_STOP_ON', () => false)
+    conditionEngine.registerPremise('TIME_STOP_OFF', () => true)
     commandRegistry.clear()
     errorReporter.clear()
     loadInstructions()

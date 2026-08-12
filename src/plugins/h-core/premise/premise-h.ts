@@ -19,12 +19,12 @@ function getPlayerChar(): any {
 }
 
 export function registerHPremises(registry: any): void {
-  registry.register('HAVE_TARGET', (ctx: any) => {
+  registry.registerPremise('HAVE_TARGET', (ctx: any) => {
     return (ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId) != null
   })
 
   // 注释：NOT_H——玩家或目标均不在 H（erArk handle_premise_other.py:1392）
-  registry.register('NOT_H', (ctx: any) => {
+  registry.registerPremise('NOT_H', (ctx: any) => {
     const player = getPlayerChar()
     const target = getTargetChar(ctx)
     if (player?.h_state?.is_h) return false
@@ -32,12 +32,12 @@ export function registerHPremises(registry: any): void {
     return true
   })
 
-  registry.register('T_NORMAL', (_ctx: any) => {
+  registry.registerPremise('T_NORMAL', (_ctx: any) => {
     return true
   })
 
   // 注释：TIRED_LE_84——玩家疲劳≤84%（=≤134，erArk handle_premise_base_value.py:444 查自己）
-  registry.register('TIRED_LE_84', (_ctx: any) => {
+  registry.registerPremise('TIRED_LE_84', (_ctx: any) => {
     const player = getPlayerChar()
     if (!player) return false
     const tired = player?.base?.疲劳度 ?? 0
@@ -47,7 +47,7 @@ export function registerHPremises(registry: any): void {
   // 注释：TIRED_LE_74——玩家疲劳≤74%（=≤118，erArk handle_premise_base_value.py:405）
   // 2026-08-08 新增：erArk 指令疲劳类型 tired_type=2（特定疲劳）自动注入 TIRED_LE_74 + HP_G_1 +
   // DRUNK_LEVEL_NOT_3（handle_instruct.py:147-149）——stroke/make_food/kiss 等指令迁移时需要
-  registry.register('TIRED_LE_74', (_ctx: any) => {
+  registry.registerPremise('TIRED_LE_74', (_ctx: any) => {
     const player = getPlayerChar()
     if (!player) return false
     const tired = player?.base?.疲劳度 ?? 0
@@ -59,16 +59,16 @@ export function registerHPremises(registry: any): void {
   // 2026-08-08 新增（erArk 指令 h_mode_show_type=1 自动注入）：
   // 我们引擎无该全局开关（隐奸 UI 设置未实装）→ 恒 true = erArk 默认值（show=False → NOT_SHOW=True）
   // TODO 隐奸设置面板实装后接全局开关
-  registry.register('NOT_SHOW_NON_H_IN_HIDDEN_SEX', () => true)
+  registry.registerPremise('NOT_SHOW_NON_H_IN_HIDDEN_SEX', () => true)
 
   // 注释：DRUNK_LEVEL_NOT_3——醉酒等级≠3（erArk handle_premise_base_value.py:1197，
   // drunk_sex_common.get_drunk_level 判定）
   // 2026-08-08 新增（erArk 指令 tired_type 自动注入）：醉酒等级系统未实装 → 角色永不醉酒 3 级，
   // 恒 true 即语义正确的降级（TODO 醉酒系统实装后接酒气等级映射）
-  registry.register('DRUNK_LEVEL_NOT_3', () => true)
+  registry.registerPremise('DRUNK_LEVEL_NOT_3', () => true)
 
   // 注释：HP_G_1——玩家体力>1（erArk handle_self_not_tired，handle_premise_base_value.py:35）
-  registry.register('HP_G_1', (_ctx: any) => {
+  registry.registerPremise('HP_G_1', (_ctx: any) => {
     const player = getPlayerChar()
     if (!player) return false
     const 体力 = player?.base?.体力 ?? 0
@@ -82,7 +82,7 @@ export function registerHPremises(registry: any): void {
   // 状态6（睡眠/无意识/时停/空气）→ 睡眠/无意识未实装（L1.7）；时停用 sp_flag.unconscious_h===3 同步代理
   // 状态7（装袋/外勤/婴儿/外交/逃跑）→ 未实装，恒正常（TODO）
   // 被监禁 → 监狱系统未实装，恒 false（TODO）
-  registry.register('NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1', (ctx: any) => {
+  registry.registerPremise('NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1', (ctx: any) => {
     const target = getTargetChar(ctx)
     if (!target) return true
     if ((target?.base?.体力 ?? 0) <= 1) return false
@@ -92,7 +92,7 @@ export function registerHPremises(registry: any): void {
   })
 
   // 注释：IS_H——玩家或目标任一在 H（erArk handle_premise_other.py:1376）
-  registry.register('IS_H', (ctx: any) => {
+  registry.registerPremise('IS_H', (ctx: any) => {
     const player = getPlayerChar()
     const target = getTargetChar(ctx)
     return player?.h_state?.is_h === true || target?.h_state?.is_h === true
@@ -100,18 +100,18 @@ export function registerHPremises(registry: any): void {
 
   // 注释：TARGET_IS_H——目标（selected）在 H 中（erArk TARGET_IS_H；
   // H 指令基础前提——绝大多数 H 内指令前置，h-npc-ai 过滤链依赖）
-  registry.register('TARGET_IS_H', (ctx: any) => {
+  registry.registerPremise('TARGET_IS_H', (ctx: any) => {
     const target = getTargetChar(ctx)
     return target?.h_state?.is_h === true
   })
 
   // 注释：TARGET_NOT_IS_H——目标不在 H 中
-  registry.register('TARGET_NOT_IS_H', (ctx: any) => {
+  registry.registerPremise('TARGET_NOT_IS_H', (ctx: any) => {
     const target = getTargetChar(ctx)
     return target?.h_state?.is_h !== true
   })
 
-  registry.register('SCENE_ONLY_TWO', (_ctx: any) => {
+  registry.registerPremise('SCENE_ONLY_TWO', (_ctx: any) => {
     const loc = gameContext.getContext().location
     if (!loc) return false
     let count = 0
@@ -122,7 +122,7 @@ export function registerHPremises(registry: any): void {
   })
 
   // 注释：TECHNIQUE_GE_3——自己技巧≥3（erArk handle_premise_ability.py:1017 查自己）
-  registry.register('TECHNIQUE_GE_3', (_ctx: any) => {
+  registry.registerPremise('TECHNIQUE_GE_3', (_ctx: any) => {
     const player = getPlayerChar()
     if (!player) return false
     return (player?.abilities?.['技巧']?.level ?? 0) >= 3
@@ -133,16 +133,16 @@ export function registerHPremises(registry: any): void {
   // 权重值 = N（口上/地文权重区间随机用，getWeight 按 high_ 前缀取 N）。
   // 原实现误用为"参数等级≥N"（erArk high_* 无此语义），已修复。
   for (let i = 1; i <= 10; i++) {
-    registry.register(`high_${i}`, () => true)
+    registry.registerPremise(`high_${i}`, () => true)
   }
 
-  registry.register('high_999', () => true)
+  registry.registerPremise('high_999', () => true)
 
   // ═══ 系统状态前提 ═══
-  registry.register('sys_0', () => true)  // 普通状态
-  registry.register('sys_1', () => false) // 占位：待实现
-  registry.register('sys_2', () => false)
-  registry.register('sys_3', () => false)
-  registry.register('sys_4', () => false)
-  registry.register('sys_5', () => false)
+  registry.registerPremise('sys_0', () => true)  // 普通状态
+  registry.registerPremise('sys_1', () => false) // 占位：待实现
+  registry.registerPremise('sys_2', () => false)
+  registry.registerPremise('sys_3', () => false)
+  registry.registerPremise('sys_4', () => false)
+  registry.registerPremise('sys_5', () => false)
 }

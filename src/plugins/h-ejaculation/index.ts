@@ -8,12 +8,12 @@
 // - absorbSemen: 精液吸收（对齐 realtime_settle.py:231-260）
 // - penis_dirty_dict: 玩家阴茎精液污浊追踪
 
+import { conditionEngine } from '../../core/condition-engine'
 import type { PluginContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
 import { narrativeLog } from '../../core/narrative-log'
-import { premiseRegistry } from '../../core/premise-registry'
 import { gameContext, gameTimeToTotalMinutes } from '../../core/game-context'
 import { modLoader } from '../../core/mod-loader'
 import { BODY_PART_CID } from './body-parts'
@@ -291,11 +291,11 @@ export function onLoad(_ctx: PluginContext): void {
 export function onEnable(ctx: PluginContext): void {
   // 注释：玩家阴茎精液污浊前提（2026-08-08 审查修复：原硬编码角色 '0'——
   // 引擎玩家 id 由 meta.toml player_character 决定（如 'player'），查 '0' 恒 undefined → 静默失效）
-  premiseRegistry.register('pl_penis_semen_dirty', () => {
+  conditionEngine.registerPremise('pl_penis_semen_dirty', () => {
     const player = entitySystem.get('character', gameContext.getContext().player?.id ?? '0') as any
     return !!player?.dirty?.penis_dirty_dict?.semen
   })
-  premiseRegistry.register('pl_penis_not_semen_dirty', () => {
+  conditionEngine.registerPremise('pl_penis_not_semen_dirty', () => {
     const player = entitySystem.get('character', gameContext.getContext().player?.id ?? '0') as any
     return !player?.dirty?.penis_dirty_dict?.semen
   })
@@ -308,7 +308,7 @@ export function onEnable(ctx: PluginContext): void {
   // 错误常显——宝珠等级近似失真）。阴茎大小成长/写入系统落地后修正；宝珠系统已砍，勿此时改语义
   for (let size = 0; size <= 3; size++) {
     const targetSize = size
-    premiseRegistry.register(`jj_${size}`, (ctx: any) => {
+    conditionEngine.registerPremise(`jj_${size}`, (ctx: any) => {
       const actorId = ctx?.actorId ?? '0'
       const actor = entitySystem.get('character', actorId) as any
       return (actor?.base?.['阴茎大小'] ?? 1) === targetSize

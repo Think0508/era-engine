@@ -2,6 +2,7 @@
 // 原 SCENE_OVER_TWO/SCENE_ALL_NOT_H/SCENE_ALL_NOT_TIRED 全图扫描（entitySystem.getAll
 // 无地点过滤）——500 NPC mod 下 SCENE_ALL_NOT_TIRED 恒 false。修复：按当前地点过滤
 //（erArk scene_data.character_list = 同场景，h-hidden 同款修复模式）
+import { conditionEngine, premiseWeight } from '../../core/condition-engine'
 import { describe, it, expect, beforeAll } from 'vitest'
 import { modLoader } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
@@ -9,7 +10,6 @@ import { apiSystem } from '../../core/api'
 import { eventBus } from '../../core/event-bus'
 import { bindingResolver } from '../../core/binding-resolver'
 import { gameContext } from '../../core/game-context'
-import { premiseRegistry } from '../../core/premise-registry'
 import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
 import { commandRegistry } from '../../core/command-registry'
@@ -28,9 +28,13 @@ async function bootPlugins() {
   await pluginManager.loadPlugins(enginePlugins, new Map())
 }
 
-// 注释：前提通过 = getWeightSum > 0（boolean 前提通过计 1）
+// 注释：前提通过 = 求值权重 > 0（boolean 前提通过计 1）
 function premisePasses(id: string): boolean {
-  return premiseRegistry.getWeightSum([id], {}) > 0
+  try {
+    return premiseWeight(conditionEngine.getPremiseValue(id, { ...gameContext.getContext(), selectedCharacterId: 'player' })) > 0
+  } catch {
+    return false
+  }
 }
 
 describe('h-group-sex SCENE_* 前提（B7 同地点过滤）', () => {
@@ -77,9 +81,9 @@ describe('h-group-sex SCENE_* 前提（B7 同地点过滤）', () => {
   }
 
   it('前提已注册（h-group-sex onEnable 实际执行）', () => {
-    expect(premiseRegistry.getRegisteredIds().map(id => id.toUpperCase())).toContain('SCENE_OVER_TWO')
-    expect(premiseRegistry.getRegisteredIds().map(id => id.toUpperCase())).toContain('SCENE_ALL_NOT_H')
-    expect(premiseRegistry.getRegisteredIds().map(id => id.toUpperCase())).toContain('SCENE_ALL_NOT_TIRED')
+    expect(conditionEngine.getRegisteredPremiseIds().map(id => id.toUpperCase())).toContain('SCENE_OVER_TWO')
+    expect(conditionEngine.getRegisteredPremiseIds().map(id => id.toUpperCase())).toContain('SCENE_ALL_NOT_H')
+    expect(conditionEngine.getRegisteredPremiseIds().map(id => id.toUpperCase())).toContain('SCENE_ALL_NOT_TIRED')
   })
 
   it('SCENE_OVER_TWO：只按同地点角色计数（异地角色不计入）', () => {

@@ -2,6 +2,7 @@
 // 覆盖：① 裸字段 warning（mod-loader 通用校验）② 缺必需 warning（插件注册校验器）
 // ③ 存档补齐（fillMissingAttributes + restoreFromSave 接线）④ 测试基座一致性
 // ⑤ 扫描脚本自测（scan-attr-refs / scan-erark-defs 退出码 + 报告内容）
+import { conditionEngine } from '../core/condition-engine'
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { execFileSync } from 'node:child_process'
 import path from 'node:path'
@@ -460,8 +461,7 @@ talents = { "剑骨" = 1 }
     const { gameContext } = await import('./game-context')
     const { bindingResolver } = await import('./binding-resolver')
     const { conditionRegistry } = await import('./condition-registry')
-    const { premiseRegistry } = await import('./premise-registry')
-    const { commandRegistry } = await import('./command-registry')
+        const { commandRegistry } = await import('./command-registry')
     const { apiSystem } = await import('./api')
     const { eventBus } = await import('./event-bus')
     const { PluginManager } = await import('./plugin-manager')
@@ -469,7 +469,7 @@ talents = { "剑骨" = 1 }
 
     entitySystem.clear()
     commandRegistry.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
     await modLoader.loadMod('test-mod')
     const mod = modLoader.getMod()
     if (!mod) throw new Error('模组加载失败')

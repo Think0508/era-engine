@@ -2,14 +2,14 @@
 // erArk 依据：get_weight_from_premise_dict（handle_premise/__init__.py:246-300）+
 // choice_talk_from_talk_data（talk.py:225-260，权重区间随机 + 角色专属×draw_setting[14]）
 
+import { conditionEngine, weightAllToOne } from '../core/condition-engine'
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import { modLoader } from '../core/mod-loader'
 import { gameContext } from '../core/game-context'
 import { entitySystem } from '../core/entity-system'
 import { apiSystem } from '../core/api'
-import { conditionEngine } from '../core/condition-engine'
 import { narrativeLog } from '../core/narrative-log'
-import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable, weightAllToOne } from './dialogue-system/index'
+import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable } from './dialogue-system/index'
 import { onEnable as talkCommonOnEnable } from './talk-common-system/index'
 import { eventBus } from '../core/event-bus'
 import { commandRegistry } from '../core/command-registry'

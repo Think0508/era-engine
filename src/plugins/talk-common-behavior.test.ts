@@ -1,16 +1,23 @@
-﻿// 注释：T3 行为地文测试——getBehaviorText 多段组合 + triggerScene 混合率 + weight≥100 保护
+// 注释：T3 行为地文测试——getBehaviorText 多段组合 + triggerScene 混合率 + weight≥100 保护
 // erArk 依据：talk_common_judge（talk.py:658-733，A/B/C 组合并池 + 动作段换行）+
 // choice_talk_from_talk_data（talk.py:244-254，混合率 + 权重<100 才替换）
 
+import { conditionEngine } from '../core/condition-engine'
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import { modLoader } from '../core/mod-loader'
 import { gameContext } from '../core/game-context'
 import { entitySystem } from '../core/entity-system'
 import { apiSystem } from '../core/api'
-import { premiseRegistry } from '../core/premise-registry'
 import { narrativeLog } from '../core/narrative-log'
 import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable } from './dialogue-system/index'
 import { onEnable as talkCommonOnEnable } from './talk-common-system/index'
+import { registerFallPremises } from './h-core/premise/premise-fall'
+import { registerHPremises } from './h-core/premise/premise-h'
+import { registerTargetPremises } from './h-core/premise/premise-target'
+import { registerClothingPremises } from './h-core/premise/premise-clothing'
+import { registerBodyItemPremises } from './h-core/premise/premise-body-item'
+import { registerInstructPremises } from './h-core/premise/premise-instruct'
+import { registerSleepPremises } from './sleep-system/premise/sleep'
 import { eventBus } from '../core/event-bus'
 import { commandRegistry } from '../core/command-registry'
 import { errorReporter } from '../core/error-reporter'
@@ -34,25 +41,35 @@ describe('T3 行为地文（talk_common 组合 + 混合率）', () => {
     p.base = { 体力: 50, 体力上限: 100, 气力: 30, 气力上限: 100, 疲劳度: 0 }
     p.current_location = 'town_square'
     entitySystem.register('character', 'npc_1', { id: 'npc_1', name: '测试NPC', base: { 体力: 80, 疲劳度: 0 }, current_location: 'town_square' })
-    // 注释：penis_in_vagina 地文的前提（h-core 注册；本测试不加载 h-core，手动注册等价）
-    premiseRegistry.register('dr_position_normal', () => true)
-    premiseRegistry.register('high_1', () => true)
-    premiseRegistry.register('high_2', () => true)
-    premiseRegistry.register('high_5', () => true)
-    premiseRegistry.register('fall_level_e_-4', () => true)
-    // 注释：阴茎短词池（penis）前提（h-core premise-instruct 已注册真实语义；此处手动等价）
-    premiseRegistry.register('jj_0', () => true)
-    premiseRegistry.register('jj_1', () => true)
-    premiseRegistry.register('jj_2', () => false)
-    premiseRegistry.register('jj_3', () => false)
-    premiseRegistry.register('pl_eja_point_low_or_middle', () => true)
-    premiseRegistry.register('pl_eja_point_high_or_extreme', () => true)
-    premiseRegistry.register('pl_semen_le_2', () => true)
-    premiseRegistry.register('pl_semen_g_2', () => true)
-    premiseRegistry.register('pl_semen_l_100', () => true)
-    premiseRegistry.register('pl_semen_ge_100', () => true)
-    premiseRegistry.register('pl_penis_not_semen_dirty', () => true)
-    premiseRegistry.register('pl_penis_semen_dirty', () => false)
+    // 注释：h-core 真实前提注册（严格模式要求数据引用的前提全部注册——
+    // talk-common 数据引用了 T_UNCONSCIOUS_FLAG_N/TARGET_IS_PLAYER_DAUGHTER 等，
+    // 原非严格模式跳过未注册前提，现在必须加载真实语义）
+    registerHPremises(conditionEngine)
+    registerTargetPremises(conditionEngine)
+    registerFallPremises(conditionEngine)
+    registerClothingPremises(conditionEngine)
+    registerBodyItemPremises(conditionEngine)
+    registerInstructPremises(conditionEngine)
+    registerSleepPremises(conditionEngine)
+    // 注释：测试 stub（在真注册之后——后注册覆盖：位置/精液等前提在无 H 场景的
+    // 测试环境下恒 true/false，保持本测试聚焦"行为地文组合逻辑"）
+    conditionEngine.registerPremise('dr_position_normal', () => true)
+    conditionEngine.registerPremise('high_1', () => true)
+    conditionEngine.registerPremise('high_2', () => true)
+    conditionEngine.registerPremise('high_5', () => true)
+    conditionEngine.registerPremise('fall_level_e_-4', () => true)
+    conditionEngine.registerPremise('jj_0', () => true)
+    conditionEngine.registerPremise('jj_1', () => true)
+    conditionEngine.registerPremise('jj_2', () => false)
+    conditionEngine.registerPremise('jj_3', () => false)
+    conditionEngine.registerPremise('pl_eja_point_low_or_middle', () => true)
+    conditionEngine.registerPremise('pl_eja_point_high_or_extreme', () => true)
+    conditionEngine.registerPremise('pl_semen_le_2', () => true)
+    conditionEngine.registerPremise('pl_semen_g_2', () => true)
+    conditionEngine.registerPremise('pl_semen_l_100', () => true)
+    conditionEngine.registerPremise('pl_semen_ge_100', () => true)
+    conditionEngine.registerPremise('pl_penis_not_semen_dirty', () => true)
+    conditionEngine.registerPremise('pl_penis_semen_dirty', () => false)
     dialogueOnLoad(stubCtx)
     dialogueOnEnable(stubCtx)
     await talkCommonOnEnable(stubCtx)
@@ -134,9 +151,11 @@ describe('T3 行为地文（talk_common 组合 + 混合率）', () => {
   it('无意识过滤：动作类地文被过滤、部位类地文保留（erArk :683-687）', async () => {
     const npc = entitySystem.get('character', 'npc_1') as any
     npc.sp_flag = { unconscious_h: 1 } // 睡眠（非时停，仍触发 unconscious>=1 检查）
-    // 动作类（无 unconscious 前提条目）→ 全部过滤 → null
+    // 动作类：普通动作行（无 unconscious 前提）全淘汰；无意识专用行（t_unconscious_flag_1 前提）
+    // 在无意识时可达——返回专用行（旧行为 null 是专用地文不可达的数据缺陷，真语义注册后修复）
     const action = await apiSystem.call('talk-common', 'getBehaviorText', 'penis_in_vagina', 'npc_1', 'player')
-    expect(action).toBeNull()
+    expect(action).toBeTruthy()
+    expect(String(action)).toMatch(/熟睡|沉睡|毫无意识/)
     // 部位类（body 整条，条件 high_1）→ 跳过无意识检查 → 仍返回
     const body = await apiSystem.call('talk-common', 'getText', 'vagina', 'npc_1', 'player')
     expect(body).toBeTruthy()

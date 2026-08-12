@@ -2,6 +2,7 @@
 // 覆盖：成功链（21/12/CVE_A2/CVE_A1/53/55/501 全 ID 数值）/ 失败链（talk_count 超限）/ 时间衰减 / 话术等级门槛 / 口上触发
 // 数值依据：batch-01-daily.md §1（erArk Behavior_Effect.csv:14-15 + default.py 行号）
 
+import { conditionEngine } from '../core/condition-engine'
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest'
 import { modLoader } from '../core/mod-loader'
 import { gameContext } from '../core/game-context'
@@ -10,7 +11,6 @@ import { apiSystem } from '../core/api'
 import { commandRegistry } from '../core/command-registry'
 import { commandExecutor } from '../core/command-executor'
 import { narrativeLog } from '../core/narrative-log'
-import { premiseRegistry } from '../core/premise-registry'
 import { errorReporter } from '../core/error-reporter'
 import { onLoad as effectOnLoad, onEnable as effectOnEnable } from './effect-system/index'
 import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from './h-core/index'
@@ -52,7 +52,7 @@ describe('chat（1004）复刻', () => {
     entitySystem.clear()
     commandRegistry.clear()
     errorReporter.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
     narrativeLog.clear()
     await modLoader.loadMod('test-mod')
     const mod = modLoader.getMod()!
@@ -278,14 +278,14 @@ describe('chat（1004）复刻', () => {
     const evalPrem = (overrides: any): boolean => {
       const n = npc()
       Object.assign(n, overrides)
-      return premiseRegistry.evaluate(['NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1'], {
-        selectedCharacterId: 'npc_1',
+      return conditionEngine.evaluatePremises(['NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1'], { ...gameContext.getContext(),
+        selectedCharacterId: 'npc_1', // ctx
       })
     }
     // 正常目标 → 可协同
     expect(evalPrem({ base: { ...npc().base, 体力: 80, 疲劳度: 0 } })).toBe(true)
     // 无目标 → true（erArk 无交互对象分支）
-    expect(premiseRegistry.evaluate(['NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1'], { selectedCharacterId: null })).toBe(true)
+    expect(conditionEngine.evaluatePremises(['NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1'], { ...gameContext.getContext(), selectedCharacterId: undefined })).toBe(true)
     // 体力 1 → false
     expect(evalPrem({ base: { ...npc().base, 体力: 1 } })).toBe(false)
     // 疲劳 200（>134）→ false
@@ -294,9 +294,7 @@ describe('chat（1004）复刻', () => {
     expect(evalPrem({ sp_flag: { unconscious_h: 3 } })).toBe(false)
   })
 
-  it('前提查"自己"维度：NOT_H/TIRED_LE_84/HP_G_1 看玩家而非目标（erArk 无 T_ 前缀=自己）', async () => {    const evalPrem = (premises: string[]): boolean => premiseRegistry.evaluate(premises, {
-      selectedCharacterId: 'npc_1',
-    })
+  it('前提查"自己"维度：NOT_H/TIRED_LE_84/HP_G_1 看玩家而非目标（erArk 无 T_ 前缀=自己）', async () => {    const evalPrem = (premises: string[]): boolean => conditionEngine.evaluatePremises(premises, { ...gameContext.getContext(), selectedCharacterId: 'npc_1' })
     // NOT_H：玩家在 H → false（即使目标不在 H）
     const p = player()
     p.h_state = { is_h: true }
@@ -321,9 +319,7 @@ describe('chat（1004）复刻', () => {
   })
 
   it('自动注入前提（2026-08-08 erArk 更新）：TIRED_LE_74 边界 + NOT_SHOW/DRUNK 恒 true', () => {
-    const evalPrem = (premises: string[]): boolean => premiseRegistry.evaluate(premises, {
-      selectedCharacterId: 'npc_1',
-    })
+    const evalPrem = (premises: string[]): boolean => conditionEngine.evaluatePremises(premises, { ...gameContext.getContext(), selectedCharacterId: 'npc_1' })
     const p = player()
     // TIRED_LE_74：疲劳 ≤ 118（tired_type=2 注入，erArk handle_premise_base_value.py:405）
     p.base['疲劳度'] = 118

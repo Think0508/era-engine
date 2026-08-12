@@ -2,6 +2,7 @@
 // 遵循复刻验证铁律：事件走真实 eventBus；状态断言到具体值
 // 候选顺序 = 注册顺序（插件默认层 + mod 定义）；Math.random mock 固定选中目标事件
 
+import { conditionEngine } from '../../core/condition-engine'
 import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
 import { modLoader } from '../../core/mod-loader'
 import { gameContext } from '../../core/game-context'
@@ -11,7 +12,6 @@ import { apiSystem } from '../../core/api'
 import { commandRegistry } from '../../core/command-registry'
 import { bindingResolver } from '../../core/binding-resolver'
 import { conditionRegistry } from '../../core/condition-registry'
-import { premiseRegistry } from '../../core/premise-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { narrativeLog } from '../../core/narrative-log'
 import { randomEventEngine } from '../../core/random-event'
@@ -28,7 +28,7 @@ describe('random-event-system 集成', () => {
     entitySystem.clear()
     commandRegistry.clear()
     errorReporter.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
 
     await modLoader.loadMod('test-mod')
     const mod = modLoader.getMod()

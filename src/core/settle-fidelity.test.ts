@@ -2,6 +2,7 @@
 // erArk 来源：common_default.py:196-240（tenths_add + 门控）、:210-231/569-589（连续减值）
 // 纯函数（getContinuousAdjust）+ effect 集成（settle_state/settle_favorability/settle_hp_mp）
 
+import { conditionEngine } from '../core/condition-engine'
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest'
 import { modLoader } from '../core/mod-loader'
 import { gameContext } from '../core/game-context'
@@ -9,7 +10,6 @@ import { entitySystem } from '../core/entity-system'
 import { apiSystem } from '../core/api'
 import { commandRegistry } from '../core/command-registry'
 import { narrativeLog } from '../core/narrative-log'
-import { premiseRegistry } from '../core/premise-registry'
 import { errorReporter } from '../core/error-reporter'
 import { onLoad as effectOnLoad, onEnable as effectOnEnable } from '../plugins/effect-system/index'
 import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from '../plugins/h-core/index'
@@ -47,7 +47,7 @@ describe('结算保真补全（tenths_add / 连续减值 / 无意识门控）', 
     entitySystem.clear()
     commandRegistry.clear()
     errorReporter.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
     narrativeLog.clear()
     await modLoader.loadMod('test-mod')
     const mod = modLoader.getMod()!

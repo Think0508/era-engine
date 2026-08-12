@@ -1,6 +1,7 @@
 // 注释：npc-ai-system 集成测试——结算通道/排班/门控/事件/每日结算/性能（全插件加载）
 // 遵循复刻验证铁律：事件走真实 eventBus；状态断言到具体值
 
+import { conditionEngine } from '../../core/condition-engine'
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest'
 import { modLoader } from '../../core/mod-loader'
 import { gameContext } from '../../core/game-context'
@@ -10,7 +11,6 @@ import { apiSystem } from '../../core/api'
 import { commandRegistry } from '../../core/command-registry'
 import { bindingResolver } from '../../core/binding-resolver'
 import { conditionRegistry } from '../../core/condition-registry'
-import { premiseRegistry } from '../../core/premise-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
@@ -27,7 +27,7 @@ describe('npc-ai-system 集成', () => {
     entitySystem.clear()
     commandRegistry.clear()
     errorReporter.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
 
     await modLoader.loadMod('test-mod')
     const mod = modLoader.getMod()
@@ -85,7 +85,7 @@ describe('npc-ai-system 集成', () => {
   })
 
   it('AI 前提注册——onLoad 后存在；clear + 重载后恢复（2026-08-10 排查修复：顶层副作用注册被 clear 永久清空）', async () => {
-    const ids = premiseRegistry.getRegisteredIds()
+    const ids = conditionEngine.getRegisteredPremiseIds()
     for (const need of ['ai_night', 'ai_not_at_home', 'ai_tired_level_2', 'ai_work_time']) {
       expect(ids).toContain(need)
     }

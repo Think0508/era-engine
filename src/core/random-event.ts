@@ -2,13 +2,12 @@
 // 纯通用机制：不认识"行为/角色/世界观"——事件按任意字符串挂载键（behavior）分组，
 // 角色专属用 adv 字段（任意字符串 id），语义由插件层（random-event-system）赋予。
 // 候选筛选 = 挂载键桶 → adv 分桶（side）→ trigger_guard → 前提权重
-// （premiseRegistry.getWeightSum，0 淘汰，返回值即权重）→ condition 布尔门 → 加权随机
+// （前提返回值即权重求和，0 淘汰）→ condition 布尔门 → 加权随机
 // （erArk random.choices 等价）。触发记录：全时 + 今日两个集合（今日每日重置）。
 
+import { conditionEngine, premiseWeight } from './condition-engine'
 import type { RandomEventDef } from './mod-loader'
 import type { GameContext } from './types'
-import { premiseRegistry } from './premise-registry'
-import { conditionEngine } from './condition-engine'
 import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
 import { errorReporter } from './error-reporter'
@@ -102,7 +101,7 @@ export class RandomEventEngine {
     const list = this.byBehavior.get(behaviorId) ?? []
     const out: { event: RandomEventDef; weight: number }[] = []
     // 注释：未知前提检测用注册表快照（每 collect 一次，避免每个前提都拷贝列表）
-    const registered = new Set(premiseRegistry.getRegisteredIds())
+    const registered = new Set(conditionEngine.getRegisteredPremiseIds())
     for (const d of list) {
       if (!extraFilter(d)) continue
       if (!this.matchAdv(d, ctx)) continue
@@ -124,14 +123,15 @@ export class RandomEventEngine {
               source: 'random-event',
               severity: 'warning',
               message: `事件前提 '${p}' 未注册（前提拼写错误或未在任何插件 onLoad 注册）`,
-              suggestion: '检查事件 premises 拼写；已注册前提见插件文档（可用：' + premiseRegistry.getRegisteredIds().join(', ') + '）',
+              suggestion: '检查事件 premises 拼写；已注册前提见插件文档（可用：' + conditionEngine.getRegisteredPremiseIds().join(', ') + '）',
             })
           }
         }
       }
-      // 注释：strict=true——未知前提整事件淘汰（与 npc-ai target-search 一致：数据错误
-      // 显式暴露为"事件不触发"，不静默放行）；NaN 权重防御（handler 异常返回值）
-      const weight = premiseRegistry.getWeightSum(d.premises ?? [], this.premiseCtx(ctx), true)
+      // 注释：前提权重求和（erArk `now_weight += premise_judge`：返回值即权重，boolean 通过计 1；
+      // 未知前提由注册表快照检查淘汰——数据错误显式暴露为"事件不触发"，不静默放行）；
+      // NaN 权重防御（handler 异常返回值）
+      const weight = this.sumPremisesWeight(d.premises ?? [], this.premiseCtx(ctx))
       if (!Number.isFinite(weight) || weight <= 0) continue
       out.push({ event: d, weight })
     }
@@ -160,13 +160,30 @@ export class RandomEventEngine {
     }
   }
 
-  private premiseCtx(ctx: EventTriggerContext): Record<string, any> {
+  private premiseCtx(ctx: EventTriggerContext): GameContext {
     return {
-      ...ctx,
+      ...gameContext.getContext(),
       selectedCharacterId: ctx.subjectId,
       sourceId: ctx.subjectId,
       targetCharacterId: ctx.targetId,
+    } as GameContext
+  }
+
+  // 注释：前提权重求和（erArk search_target 语义：任一前提 <= 0 整事件淘汰，求和即权重）
+  private sumPremisesWeight(premises: string[], ctx: GameContext): number {
+    if (!premises || premises.length === 0) return 1
+    let sum = 0
+    for (const p of premises) {
+      let value: boolean | number
+      try {
+        value = conditionEngine.getPremiseValue(p, ctx)
+      } catch {
+        return 0
+      }
+      if (premiseWeight(value) <= 0) return 0
+      sum += premiseWeight(value)
     }
+    return sum
   }
 
   private condCtx(ctx: EventTriggerContext): GameContext {

@@ -3,8 +3,8 @@
 // 三层口上：场景通用（scene-dialogue.toml）+ 角色通用（character-dialogue.toml，fallback）+ 角色专属（characters/dialogue/{charId}/dialogue.toml）
 // 优先级：角色专属 > 角色通用，场景通用独立输出
 
+import { conditionEngine, weightAllToOne } from '../../core/condition-engine'
 import type { PluginContext } from '../../core/types'
-import type { GameContext } from '../../core/types'
 import type { ReactiveLine, Conversation, ConversationNode } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
@@ -13,7 +13,6 @@ import { narrativeLog } from '../../core/narrative-log'
 import { modLoader } from '../../core/mod-loader'
 import { commandRegistry } from '../../core/command-registry'
 import type { CommandDef } from '../../core/command-registry'
-import { conditionEngine } from '../../core/condition-engine'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { weightedRandom } from '../../utils/weighted-random'
 import { apiSystem } from '../../core/api'
@@ -296,27 +295,6 @@ interface WeightedCandidate {
   line: ReactiveLine
   source: 'scene' | 'character'
   multiplier: number
-}
-
-// 注释：前提权重（erArk weight_all_to_1 语义，handle_premise/__init__.py:246-300）——
-// 口上权重区间随机用：high_N → 权重 +N；其余前提满足 → +1；任一不满足 → 0（整句淘汰）；
-// 空前提集 → 1（无条件口上默认权重）。erArk 规则由消费方持有，core 不认知 high_ 前缀。
-export function weightAllToOne(premiseList: string[], ctx: GameContext): number {
-  if (!premiseList || premiseList.length === 0) return 1
-  let weight = 0
-  for (const id of premiseList) {
-    const key = id.toLowerCase()
-    const value = conditionEngine.getPremiseValue(id, ctx)
-    const ok = typeof value === 'boolean' ? value : value > 0
-    if (!ok) return 0
-    if (key.startsWith('high_')) {
-      const n = parseInt(key.slice(5), 10)
-      weight += Number.isFinite(n) ? n : 1
-    } else {
-      weight += 1
-    }
-  }
-  return weight
 }
 
 function pickWeightedLine(pool: WeightedCandidate[], premiseTargetId?: string): { line: ReactiveLine; weight: number } | null {

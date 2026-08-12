@@ -3,11 +3,11 @@
 import { entitySystem } from '../../../core/entity-system'
 
 export function registerTargetPremises(registry: any): void {
-  registry.register('SELECTED_EXISTS', (ctx: any) => {
+  registry.registerPremise('SELECTED_EXISTS', (ctx: any) => {
     return (ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId) != null
   })
 
-  registry.register('SELECTED_NORMAL', (ctx: any) => {
+  registry.registerPremise('SELECTED_NORMAL', (ctx: any) => {
     const charId = ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId
     if (!charId) return false
     const char = entitySystem.get('character', charId) as any

@@ -28,32 +28,32 @@ function getFollowMode(char: any): number {
 
 export function registerFollowPremises(registry: any): void {
   // 注释：TARGET_IS_FOLLOW——目标正跟随玩家（erArk handle_premise_sp_flag.py:697）
-  registry.register('TARGET_IS_FOLLOW', (ctx: any) => {
+  registry.registerPremise('TARGET_IS_FOLLOW', (ctx: any) => {
     const target = getTargetChar(ctx)
     return target ? getFollowMode(target) !== 0 : false
   })
 
   // 注释：TARGET_NOT_FOLLOW——目标没跟随玩家（erArk handle_premise_sp_flag.py:721）
-  registry.register('TARGET_NOT_FOLLOW', (ctx: any) => {
+  registry.registerPremise('TARGET_NOT_FOLLOW', (ctx: any) => {
     const target = getTargetChar(ctx)
     return target ? getFollowMode(target) === 0 : false
   })
 
   // 注释：IS_FOLLOW——自己正跟随（erArk handle_premise_sp_flag.py:612，非 0 即跟随）
-  registry.register('IS_FOLLOW', (ctx: any) => {
+  registry.registerPremise('IS_FOLLOW', (ctx: any) => {
     const char = getSelfChar(ctx)
     return char ? getFollowMode(char) !== 0 : false
   })
 
   // 注释：NOT_FOLLOW——自己没跟随（erArk handle_premise_sp_flag.py:635）
-  registry.register('NOT_FOLLOW', (ctx: any) => {
+  registry.registerPremise('NOT_FOLLOW', (ctx: any) => {
     const char = getSelfChar(ctx)
     return char ? getFollowMode(char) === 0 : false
   })
 
   // 注释：IS_FOLLOW_4——自己处"前往博士当前位置"态（erArk handle_premise_sp_flag.py:682）
   // 2026-08-10：模式4 = 召唤，AI 未实现（TODO）——前提先注册作提醒位
-  registry.register('IS_FOLLOW_4', (ctx: any) => {
+  registry.registerPremise('IS_FOLLOW_4', (ctx: any) => {
     const char = getSelfChar(ctx)
     return char ? getFollowMode(char) === 4 : false
   })
@@ -66,7 +66,7 @@ export function registerFollowPremises(registry: any): void {
   // 状态7（装袋/外勤/婴儿/外交/逃跑）→ 未实装；我们引擎的离线概念（sp_flag.offline）即状态7代理
   // hp 门：优先读 follow-system 自己的绑定（mod 把 hp 绑到气血等时用实际属性），
   // 未绑定回退 erArk 的 体力（h-core 默认层提供，default=100）
-  registry.register('NO_TARGET_OR_TARGET_CAN_COOPERATE', (ctx: any) => {
+  registry.registerPremise('NO_TARGET_OR_TARGET_CAN_COOPERATE', (ctx: any) => {
     const target = getTargetChar(ctx)
     if (!target) return true
     const hp = bindingResolver.getForPlugin('follow-system', target.id, 'hp') ?? getEntityAttr(target, ATTR.HP)

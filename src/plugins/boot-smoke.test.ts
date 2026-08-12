@@ -10,7 +10,6 @@ import { apiSystem } from '../core/api'
 import { commandRegistry } from '../core/command-registry'
 import { bindingResolver } from '../core/binding-resolver'
 import { conditionRegistry } from '../core/condition-registry'
-import { premiseRegistry } from '../core/premise-registry'
 import { errorReporter } from '../core/error-reporter'
 import { PluginManager, warnMissingPluginTomls } from '../core/plugin-manager'
 import { SlotRegistry } from '../ui/slots/slot-registry'
@@ -22,7 +21,7 @@ describe('引擎 boot 冒烟测试（全插件加载）', () => {
     entitySystem.clear()
     commandRegistry.clear()
     errorReporter.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
 
     // 注释：2. 加载 mod（与 main.ts 一致——loadMod 内部已注册 characters + locations）
     await modLoader.loadMod('test-mod')

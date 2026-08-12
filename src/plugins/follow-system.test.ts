@@ -10,7 +10,6 @@ import { apiSystem } from '../core/api'
 import { commandRegistry } from '../core/command-registry'
 import { bindingResolver } from '../core/binding-resolver'
 import { conditionRegistry } from '../core/condition-registry'
-import { premiseRegistry } from '../core/premise-registry'
 import { errorReporter } from '../core/error-reporter'
 import { narrativeLog } from '../core/narrative-log'
 import { PluginManager } from '../core/plugin-manager'
@@ -33,7 +32,7 @@ describe('follow-system 跟随系统', () => {
     entitySystem.clear()
     commandRegistry.clear()
     errorReporter.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
 
     // 注释：2. 加载 mod + bindings（默认无绑定 → 疲劳检查降级路径）
     await modLoader.loadMod('test-mod')
@@ -276,29 +275,30 @@ describe('follow-system 跟随系统', () => {
   })
 
   it('前提：TARGET_IS_FOLLOW / TARGET_NOT_FOLLOW / NO_TARGET_OR_TARGET_CAN_COOPERATE / IS_FOLLOW_4', () => {
-    const ctx = { selectedCharacterId: TEST_GIRL }
-    expect(premiseRegistry.evaluate(['TARGET_NOT_FOLLOW'], ctx)).toBe(true)
-    expect(premiseRegistry.evaluate(['TARGET_IS_FOLLOW'], ctx)).toBe(false)
-    expect(premiseRegistry.evaluate(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(true)
+    const gc = gameContext.getContext()
+    const ctx = { ...gc, selectedCharacterId: TEST_GIRL }
+    expect(conditionEngine.evaluatePremises(['TARGET_NOT_FOLLOW'], ctx)).toBe(true)
+    expect(conditionEngine.evaluatePremises(['TARGET_IS_FOLLOW'], ctx)).toBe(false)
+    expect(conditionEngine.evaluatePremises(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(true)
 
     entitySystem.get('character', TEST_GIRL)!.sp_flag.is_follow = 1
-    expect(premiseRegistry.evaluate(['TARGET_IS_FOLLOW'], ctx)).toBe(true)
-    expect(premiseRegistry.evaluate(['TARGET_NOT_FOLLOW'], ctx)).toBe(false)
+    expect(conditionEngine.evaluatePremises(['TARGET_IS_FOLLOW'], ctx)).toBe(true)
+    expect(conditionEngine.evaluatePremises(['TARGET_NOT_FOLLOW'], ctx)).toBe(false)
 
     // 注释：目标不可协同——体力 0 / 时停 / 离线
     const girl = entitySystem.get('character', TEST_GIRL) as any
     girl.base.体力 = 0
-    expect(premiseRegistry.evaluate(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(false)
+    expect(conditionEngine.evaluatePremises(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(false)
     girl.base.体力 = 80
     girl.sp_flag.unconscious_h = 3
-    expect(premiseRegistry.evaluate(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(false)
+    expect(conditionEngine.evaluatePremises(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(false)
     girl.sp_flag.unconscious_h = 0
     girl.sp_flag.offline = true
-    expect(premiseRegistry.evaluate(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(false)
+    expect(conditionEngine.evaluatePremises(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(false)
     girl.sp_flag.offline = false
 
     // 注释：无目标 → true（与 HAVE_TARGET AND 后无目标分支失效，erArk 语义）
-    expect(premiseRegistry.evaluate(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], {})).toBe(true)
+    expect(conditionEngine.evaluatePremises(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], gc)).toBe(true)
 
     // 注释：hp 门优先读 follow-system 绑定（跨插件同名键不读错）
     bindingResolver.loadBindings({
@@ -307,14 +307,14 @@ describe('follow-system 跟随系统', () => {
     })
     girl.base.体力 = 0
     girl.base.hp = 100
-    expect(premiseRegistry.evaluate(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(false)
+    expect(conditionEngine.evaluatePremises(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(false)
     girl.base.体力 = 80
-    expect(premiseRegistry.evaluate(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(true)
+    expect(conditionEngine.evaluatePremises(['NO_TARGET_OR_TARGET_CAN_COOPERATE'], ctx)).toBe(true)
     bindingResolver.loadBindings({})
 
     // 注释：IS_FOLLOW_4 前提（召唤提醒位）
     girl.sp_flag.is_follow = 4
-    expect(premiseRegistry.evaluate(['IS_FOLLOW_4'], { sourceId: TEST_GIRL })).toBe(true)
+    expect(conditionEngine.evaluatePremises(['IS_FOLLOW_4'], { ...gc, sourceId: TEST_GIRL })).toBe(true)
     girl.sp_flag.is_follow = 0
   })
 

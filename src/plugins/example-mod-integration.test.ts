@@ -4,6 +4,7 @@
 // 移动可达、路人生成、存档闭环、执行链路（指令/物品/状态tick/任务/套装/条件路径）。
 // 任何静默错误（写了没生效）在此暴露。
 
+import { conditionEngine } from '../core/condition-engine'
 import { describe, it, expect, beforeAll } from 'vitest'
 import { modLoader } from '../core/mod-loader'
 import { gameContext } from '../core/game-context'
@@ -13,7 +14,6 @@ import { apiSystem } from '../core/api'
 import { commandRegistry } from '../core/command-registry'
 import { bindingResolver } from '../core/binding-resolver'
 import { conditionRegistry } from '../core/condition-registry'
-import { premiseRegistry } from '../core/premise-registry'
 import { errorReporter } from '../core/error-reporter'
 import { PluginManager } from '../core/plugin-manager'
 import { SlotRegistry } from '../ui/slots/slot-registry'
@@ -28,7 +28,7 @@ describe('example-mod 端到端（字段真实落位）', () => {
     entitySystem.clear()
     commandRegistry.clear()
     errorReporter.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
 
     await modLoader.loadMod('example-mod')
     mod = modLoader.getMod()

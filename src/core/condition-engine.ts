@@ -410,46 +410,77 @@ function truthy(val: any): boolean { return !!val }
 
 type PremiseHandler = (ctx: GameContext) => boolean | number
 
+// 模块级注册表（weightAllToOne 等模块函数共享；ConditionEngine 提供 API 封装）
+const enginePremises = new Map<string, PremiseHandler>()
+
+// 前提返回值 → 权重数字（boolean → 1/0；number → 原值）——
+// 权重消费方（npc-ai target-search / random-event，erArk `now_weight += premise_judge`）通用规范化
+export function premiseWeight(v: boolean | number): number {
+  return typeof v === 'boolean' ? (v ? 1 : 0) : v
+}
+
+// 口上前提权重（erArk weight_all_to_1 语义，handle_premise/__init__.py:246-300）——
+// 数据格式约定（与 any() 聚合同性质，core 提供机制、不认知具体前提名）：
+//   high_N 前提 → 权重 +N；其余前提满足 → +1；任一不满足 → 0（整句淘汰）；空前提集 → 1
+export function weightAllToOne(premiseList: string[], ctx: GameContext): number {
+  if (!premiseList || premiseList.length === 0) return 1
+  let weight = 0
+  for (const id of premiseList) {
+    const key = id.toLowerCase()
+    const value = getPremiseValueInternal(id, ctx)
+    const ok = typeof value === 'boolean' ? value : value > 0
+    if (!ok) return 0
+    if (key.startsWith('high_')) {
+      const n = parseInt(key.slice(5), 10)
+      weight += Number.isFinite(n) ? n : 1
+    } else {
+      weight += 1
+    }
+  }
+  return weight
+}
+
+function getPremiseValueInternal(id: string, ctx: GameContext): boolean | number {
+  const handler = enginePremises.get(id.toLowerCase())
+  if (!handler) throw new Error(`Premise '${id}' is not registered`)
+  return handler(ctx)
+}
+
 class ConditionEngine {
-  private premises = new Map<string, PremiseHandler>()
   private astCache = new Map<string, ExprNode>()
 
   // 注册（大小写不敏感；后注册覆盖——mod override 设计特性）
   registerPremise(id: string, handler: PremiseHandler): void {
-    this.premises.set(id.toLowerCase(), handler)
+    enginePremises.set(id.toLowerCase(), handler)
   }
 
   // TOML 前提：命名表达式 → AST 闭包（循环引用由求时检测兜底：未知前提抛错）
   registerPremiseFromExpression(id: string, expr: string): void {
     const parsed = this.parse(expr)
-    this.premises.set(id.toLowerCase(), (ctx: GameContext) => this.evaluateNode(parsed, ctx))
+    enginePremises.set(id.toLowerCase(), (ctx: GameContext) => this.evaluateNode(parsed, ctx))
   }
 
   getRegisteredPremiseIds(): string[] {
-    return Array.from(this.premises.keys())
+    return Array.from(enginePremises.keys())
   }
 
   // 单个前提原始求值（权重场景取数值用）；未知 → 抛错（严格——校验层拦截漏网）
   getPremiseValue(id: string, ctx: GameContext): boolean | number {
-    const handler = this.premises.get(id.toLowerCase())
-    if (!handler) {
-      throw new Error(`Premise '${id}' is not registered`)
-    }
-    return handler(ctx)
+    return getPremiseValueInternal(id, ctx)
   }
 
   // premises 数组简写：全部 truthy（number > 0 即过）；空数组 → true
   evaluatePremises(ids: string[], ctx: GameContext): boolean {
     if (!ids || ids.length === 0) return true
     for (const id of ids) {
-      const value = this.getPremiseValue(id, ctx)
+      const value = getPremiseValueInternal(id, ctx)
       if (typeof value === 'boolean' ? !value : !(value > 0)) return false
     }
     return true
   }
 
   clear(): void {
-    this.premises.clear()
+    enginePremises.clear()
     this.astCache.clear()
   }
 

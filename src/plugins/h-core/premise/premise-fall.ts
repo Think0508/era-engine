@@ -42,7 +42,7 @@ export function registerFallLevelVariant(registry: any, id: string): void {
   if (!parsed) return
   const fn = CMP_FN[parsed.cmp]
   if (!fn) return
-  registry.register(id, (ctx: any) => {
+  registry.registerPremise(id, (ctx: any) => {
     const charId = ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId
     if (!charId) return false
     return fn(getFallLevel(charId), parsed.val)

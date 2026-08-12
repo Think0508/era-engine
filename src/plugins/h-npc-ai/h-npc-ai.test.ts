@@ -2,6 +2,7 @@
 // 遵循复刻验证铁律：事件走真实 eventBus；状态断言到具体值
 // 测试指令：h-npc-ai 插件默认层 data/default/instructions/h-npc-ai-test.toml（标注测试）
 
+import { conditionEngine } from '../../core/condition-engine'
 import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest'
 import { modLoader } from '../../core/mod-loader'
 import { gameContext } from '../../core/game-context'
@@ -12,7 +13,6 @@ import { commandRegistry } from '../../core/command-registry'
 import { commandExecutor } from '../../core/command-executor'
 import { bindingResolver } from '../../core/binding-resolver'
 import { conditionRegistry } from '../../core/condition-registry'
-import { premiseRegistry } from '../../core/premise-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
@@ -30,7 +30,7 @@ describe('h-npc-ai 集成', () => {
     entitySystem.clear()
     commandRegistry.clear()
     errorReporter.clear()
-    premiseRegistry.clear()
+    conditionEngine.clear()
 
     await modLoader.loadMod('test-mod')
     const mod = modLoader.getMod()
@@ -99,7 +99,7 @@ describe('h-npc-ai 集成', () => {
   // ═══════════════ 前提注册 ═══════════════
 
   it('逆推前提注册——T_NPC_ACTIVE_H / T_NPC_NOT_ACTIVE_H / NPC_ACTIVE_H', () => {
-    const ids = premiseRegistry.getRegisteredIds()
+    const ids = conditionEngine.getRegisteredPremiseIds()
     expect(ids).toContain('t_npc_active_h')
     expect(ids).toContain('t_npc_not_active_h')
     expect(ids).toContain('npc_active_h')
@@ -108,11 +108,11 @@ describe('h-npc-ai 集成', () => {
   it('T_NPC_ACTIVE_H 求值——逆推中 true / 平时 false', () => {
     const girl = entitySystem.get('character', GIRL) as any
     setNpcActiveH(girl, true)
-    expect(premiseRegistry.evaluate(['T_NPC_ACTIVE_H'], { selectedCharacterId: GIRL })).toBe(true)
-    expect(premiseRegistry.evaluate(['T_NPC_NOT_ACTIVE_H'], { selectedCharacterId: GIRL })).toBe(false)
+    expect(conditionEngine.evaluatePremises(['T_NPC_ACTIVE_H'], { ...gameContext.getContext(), selectedCharacterId: GIRL })).toBe(true)
+    expect(conditionEngine.evaluatePremises(['T_NPC_NOT_ACTIVE_H'], { ...gameContext.getContext(), selectedCharacterId: GIRL })).toBe(false)
     setNpcActiveH(girl, false)
-    expect(premiseRegistry.evaluate(['T_NPC_ACTIVE_H'], { selectedCharacterId: GIRL })).toBe(false)
-    expect(premiseRegistry.evaluate(['T_NPC_NOT_ACTIVE_H'], { selectedCharacterId: GIRL })).toBe(true)
+    expect(conditionEngine.evaluatePremises(['T_NPC_ACTIVE_H'], { ...gameContext.getContext(), selectedCharacterId: GIRL })).toBe(false)
+    expect(conditionEngine.evaluatePremises(['T_NPC_NOT_ACTIVE_H'], { ...gameContext.getContext(), selectedCharacterId: GIRL })).toBe(true)
   })
 
   // ═══════════════ 指令数据与过滤链 ═══════════════
@@ -233,7 +233,7 @@ describe('h-npc-ai 集成', () => {
       uiStore: { selectedCharacterId: GIRL },
       gameStore: { player },
       sourceId: PLAYER,
-      evaluatePremises: (ps: string[]) => premiseRegistry.evaluate(ps, { selectedCharacterId: GIRL }, false),
+      evaluatePremises: (ps: string[]) => { try { return conditionEngine.evaluatePremises(ps, { ...gameContext.getContext(), selectedCharacterId: GIRL }) } catch { return false } },
       evaluateCondition: () => true,
     })
     // 指令前提 T_NPC_ACTIVE_H 满足 → 执行 → NPC 体力 -5
@@ -245,9 +245,9 @@ describe('h-npc-ai 集成', () => {
     await startH(GIRL)
     setNpcActiveH(girl, true)
     // end_h 带 T_NPC_NOT_ACTIVE_H → 逆推中不满足（erArk：h_end 逆推中隐藏）
-    expect(premiseRegistry.evaluate(['T_NPC_NOT_ACTIVE_H'], { selectedCharacterId: GIRL })).toBe(false)
+    expect(conditionEngine.evaluatePremises(['T_NPC_NOT_ACTIVE_H'], { ...gameContext.getContext(), selectedCharacterId: GIRL })).toBe(false)
     // keep_enjoy 的 T_NPC_ACTIVE_H 满足
-    expect(premiseRegistry.evaluate(['T_NPC_ACTIVE_H'], { selectedCharacterId: GIRL })).toBe(true)
+    expect(conditionEngine.evaluatePremises(['T_NPC_ACTIVE_H'], { ...gameContext.getContext(), selectedCharacterId: GIRL })).toBe(true)
   })
 
   // ═══════════════ ① 每时间片判定 ═══════════════
@@ -424,7 +424,7 @@ describe('h-npc-ai 集成', () => {
       uiStore: { selectedCharacterId: targetId },
       gameStore: { player },
       sourceId: PLAYER,
-      evaluatePremises: (ps: string[]) => premiseRegistry.evaluate(ps, { selectedCharacterId: targetId }, false),
+      evaluatePremises: (ps: string[]) => { try { return conditionEngine.evaluatePremises(ps, { ...gameContext.getContext(), selectedCharacterId: targetId }) } catch { return false } },
       evaluateCondition: () => true,
     })
 
@@ -438,7 +438,7 @@ describe('h-npc-ai 集成', () => {
     await commandExecutor.execute('change_top_and_bottom', execCtx(GIRL))
     expect(girl.h_state?.npc_active_h).toBe(true)
     // 逆推中 end_h 前提失败（T_NPC_NOT_ACTIVE_H）——无法正常结束 H（erArk 同款）
-    expect(premiseRegistry.evaluate(['T_NPC_NOT_ACTIVE_H'], { selectedCharacterId: GIRL })).toBe(false)
+    expect(conditionEngine.evaluatePremises(['T_NPC_NOT_ACTIVE_H'], { ...gameContext.getContext(), selectedCharacterId: GIRL })).toBe(false)
 
     // 3. 继续享受 → NPC 按部位喜好选行为赋给玩家执行（体力 -5 + 时间推进 10 分钟）
     const before = girl.base?.['体力'] ?? 0
@@ -451,7 +451,7 @@ describe('h-npc-ai 集成', () => {
     //    150 + 心情+20 = 170 ≥ 150 → 成功夺回）
     await commandExecutor.execute('try_pl_active_h', execCtx(GIRL))
     expect(girl.h_state?.npc_active_h).toBe(false)
-    expect(premiseRegistry.evaluate(['T_NPC_NOT_ACTIVE_H'], { selectedCharacterId: GIRL })).toBe(true)
+    expect(conditionEngine.evaluatePremises(['T_NPC_NOT_ACTIVE_H'], { ...gameContext.getContext(), selectedCharacterId: GIRL })).toBe(true)
 
     // 5. 结束 H → h:end → 行为块 h_end（立即过期）
     await commandExecutor.execute('end_h', execCtx(GIRL))

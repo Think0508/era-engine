@@ -11,7 +11,6 @@
 //   破处检查（flag:first-time + 目标部位未破 → 跳过）→ 部位 tag 匹配 → 前提评估
 
 import { commandRegistry, type CommandDef } from '../../core/command-registry'
-import { premiseRegistry } from '../../core/premise-registry'
 import { entitySystem } from '../../core/entity-system'
 import { modLoader } from '../../core/mod-loader'
 import { errorReporter } from '../../core/error-reporter'
@@ -87,7 +86,7 @@ function matchesPart(cmd: CommandDef, partTags: string[]): boolean {
 // 注释：前提评估（非严格——未知 erark 前提跳过，与 UI evaluatePremises 一致）
 function passesPremises(cmd: CommandDef, targetCharId: string): boolean {
   if (!cmd.premises || cmd.premises.length === 0) return true
-  return premiseRegistry.evaluate(cmd.premises, { selectedCharacterId: targetCharId }, false)
+  return conditionEngine.evaluatePremises(cmd.premises, { ...gameContext.getContext(), selectedCharacterId: targetCharId })
 }
 
 // 注释：条件表达式评估（与 command-executor 运行时同上下文——condition 不满足的指令

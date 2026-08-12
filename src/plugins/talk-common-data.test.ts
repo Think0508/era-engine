@@ -1,11 +1,11 @@
 // 注释：T2 全量数据校验——talk-common 地文的每个条件都必须"可求值"
 // 目标：把"数据里的前提未注册/表达式字段不存在"的静默失效变成测试失败
-// （前提：premiseRegistry.getRegisteredIds 包含；表达式：conditionRegistry.validateExpression）
+// （前提：conditionEngine.getRegisteredPremiseIds 包含；表达式：conditionRegistry.validateExpression）
 
+import { conditionEngine } from '../core/condition-engine'
 import { describe, it, expect, beforeAll } from 'vitest'
 import { parse as parseTOML } from '@iarna/toml'
 import { modLoader } from '../core/mod-loader'
-import { premiseRegistry } from '../core/premise-registry'
 import { conditionRegistry } from '../core/condition-registry'
 import { registerFallPremises } from './h-core/premise/premise-fall'
 import { registerHPremises } from './h-core/premise/premise-h'
@@ -56,13 +56,13 @@ describe('T2 talk-common 全量数据校验', () => {
   beforeAll(async () => {
     await modLoader.loadMod('test-mod')
     // 注释：h-core 全部前提注册（镜像 h-core onEnable 顺序）
-    registerHPremises(premiseRegistry)
-    registerTargetPremises(premiseRegistry)
-    registerFallPremises(premiseRegistry)
-    registerClothingPremises(premiseRegistry)
-    registerBodyItemPremises(premiseRegistry)
-    registerInstructPremises(premiseRegistry)
-    registerSleepPremises(premiseRegistry)
+    registerHPremises(conditionEngine)
+    registerTargetPremises(conditionEngine)
+    registerFallPremises(conditionEngine)
+    registerClothingPremises(conditionEngine)
+    registerBodyItemPremises(conditionEngine)
+    registerInstructPremises(conditionEngine)
+    registerSleepPremises(conditionEngine)
   })
 
   it('数据文件可解析（完整 TOML 解析——description 损坏即失败）', () => {
@@ -90,7 +90,7 @@ describe('T2 talk-common 全量数据校验', () => {
   })
 
   it('全部 premises: 前提均已注册（静默失效检测）', () => {
-    const registered = new Set(premiseRegistry.getRegisteredIds())
+    const registered = new Set(conditionEngine.getRegisteredPremiseIds())
     const conditions = collectConditions()
     const unknown = new Set<string>()
     for (const cond of conditions) {

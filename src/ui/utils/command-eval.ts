@@ -6,7 +6,6 @@
 //   - condition 为条件表达式 → evaluateCondition（失败返回 false，不抛）
 
 import { conditionEngine } from '../../core/condition-engine'
-import { premiseRegistry } from '../../core/premise-registry'
 import { gameContext } from '../../core/game-context'
 
 export interface CommandEvalSources {
@@ -27,7 +26,7 @@ export function createCommandEvaluators(sources: CommandEvalSources): CommandEva
   const evalPremises = (premises: string[]) => {
     if (!premises || premises.length === 0) return true
     // 注释：非严格——未知 erark 前提跳过（未注册前提由 validateInstructionData 加载时警告）
-    return premiseRegistry.evaluate(premises, { selectedCharacterId: selectedId() }, false)
+    return conditionEngine.evaluatePremises(premises, { ...gameContext.getContext(), selectedCharacterId: selectedId() ?? undefined })
   }
 
   const evalCondition = (expr: string) => {

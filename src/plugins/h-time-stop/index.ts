@@ -2,6 +2,7 @@
 // 全局时停模式 + TSP 消耗（按行动时长）+ 隐藏经验线性增长 TSP 上限
 // 所有功能直接开放，无等级门槛
 
+import { conditionEngine } from '../../core/condition-engine'
 import type { PluginContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
@@ -10,7 +11,6 @@ import { narrativeLog } from '../../core/narrative-log'
 import { commandRegistry } from '../../core/command-registry'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
-import { premiseRegistry } from '../../core/premise-registry'
 
 let timeStopActive = false
 let lastActionTimeCost = 10  // 注释：缺省 10 分钟
@@ -32,8 +32,8 @@ function getUnconsciousH(charId: string): number {
 
 export function onLoad(_ctx: PluginContext): void {
   // 注释：时停前提（erArk TIME_STOP_ON/OFF——读模块级状态，睡眠等指令的 TIME_STOP_OFF 前提依赖）
-  premiseRegistry.register('TIME_STOP_ON', () => timeStopActive)
-  premiseRegistry.register('TIME_STOP_OFF', () => !timeStopActive)
+  conditionEngine.registerPremise('TIME_STOP_ON', () => timeStopActive)
+  conditionEngine.registerPremise('TIME_STOP_OFF', () => !timeStopActive)
 
   // 注释：时停前无意识快照（★3 修复（第六轮））——time_stop_on 全图覆写 unconscious_h=3，
   // 原 time_stop_off 全清 0 会把睡奸标记(1)/催眠(4-7)静默抹掉（催眠需重新催眠、睡奸标记丢失

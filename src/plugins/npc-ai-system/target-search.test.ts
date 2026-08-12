@@ -1,8 +1,8 @@
 // 注释：target-search 单元测试——前提权重 / 分层 / 缓存 / 延后语义（erArk search_target）
 // 纯函数级测试：直接注册前提 handler + 构造目标表，不加载插件
 
+import { conditionEngine } from '../../core/condition-engine'
 import { describe, it, expect, beforeEach } from 'vitest'
-import { premiseRegistry } from '../../core/premise-registry'
 import { gameContext } from '../../core/game-context'
 import { entitySystem } from '../../core/entity-system'
 import { errorReporter } from '../../core/error-reporter'
@@ -20,7 +20,7 @@ function makeTarget(partial: Partial<AITargetDef> & { id: string }): AITargetDef
 
 describe('npc-ai target-search（erArk search_target 语义）', () => {
   beforeEach(() => {
-    premiseRegistry.clear()
+    conditionEngine.clear()
     entitySystem.clear()
     gameContext.reset()
     resetSearchReports()
@@ -28,7 +28,7 @@ describe('npc-ai target-search（erArk search_target 语义）', () => {
   })
 
   it('前提权重求和——动态前提权重随状态变化（疲惫越重越想休息）', () => {
-    premiseRegistry.register('AI_TIRED_LEVEL_2', (ctx: any) => {
+    conditionEngine.registerPremise('AI_TIRED_LEVEL_2', (ctx: any) => {
       const tired = entitySystem.get('character', ctx.sourceId) as any
       const level = (tired?.base?.['疲劳度'] ?? 0) >= 136 ? 3 : (tired?.base?.['疲劳度'] ?? 0) >= 120 ? 2 : 0
       return level >= 2 ? level : 0
@@ -49,7 +49,7 @@ describe('npc-ai target-search（erArk search_target 语义）', () => {
   })
 
   it('层序——首个有候选的层胜出（高优先级层空 → 下一层）', () => {
-    premiseRegistry.register('ALWAYS_FALSE', () => 0)
+    conditionEngine.registerPremise('ALWAYS_FALSE', () => 0)
     const targets: AITargetDef[] = [
       makeTarget({ id: 'layer5_a', layer: 5, premises: ['ALWAYS_FALSE'], behavior: { type: 'wait' } }),
       makeTarget({ id: 'layer5_b', layer: 5, premises: ['ALWAYS_FALSE'], behavior: { type: 'wait' } }),
@@ -62,7 +62,7 @@ describe('npc-ai target-search（erArk search_target 语义）', () => {
   })
 
   it('get_first_only 层——取第一个通过（不加权随机）', () => {
-    premiseRegistry.register('AI_HALF', () => (Math.random() < 1 ? 1 : 0)) // 恒通过
+    conditionEngine.registerPremise('AI_HALF', () => (Math.random() < 1 ? 1 : 0)) // 恒通过
     const targets: AITargetDef[] = [
       makeTarget({ id: 'first', layer: 10, get_first_only: true, behavior: { type: 'wait' } }),
       makeTarget({ id: 'second', layer: 10, get_first_only: true, behavior: { type: 'wait' } }),
@@ -102,8 +102,8 @@ describe('npc-ai target-search（erArk search_target 语义）', () => {
   })
 
   it('加权随机——权重高的目标被选中的概率更高（统计验证）', () => {
-    premiseRegistry.register('AI_W1', () => 1)
-    premiseRegistry.register('AI_W9', () => 9)
+    conditionEngine.registerPremise('AI_W1', () => 1)
+    conditionEngine.registerPremise('AI_W9', () => 9)
     const targets: AITargetDef[] = [
       makeTarget({ id: 'light', layer: 40, premises: ['AI_W1'], behavior: { type: 'wait' } }),
       makeTarget({ id: 'heavy', layer: 40, premises: ['AI_W9'], behavior: { type: 'wait' } }),
@@ -120,7 +120,7 @@ describe('npc-ai target-search（erArk search_target 语义）', () => {
   })
 
   it('全层无候选 → null（调用方延后重试）', () => {
-    premiseRegistry.register('ALWAYS_FALSE', () => 0)
+    conditionEngine.registerPremise('ALWAYS_FALSE', () => 0)
     const targets: AITargetDef[] = [
       makeTarget({ id: 'a', layer: 5, premises: ['ALWAYS_FALSE'], behavior: { type: 'wait' } }),
       makeTarget({ id: 'b', layer: 40, premises: ['ALWAYS_FALSE'], behavior: { type: 'wait' } }),
@@ -131,7 +131,7 @@ describe('npc-ai target-search（erArk search_target 语义）', () => {
 
   it('前提结果轮内缓存——同一前提只求值一次（erArk premise_data 共享）', () => {
     let evalCount = 0
-    premiseRegistry.register('AI_COUNTED', () => {
+    conditionEngine.registerPremise('AI_COUNTED', () => {
       evalCount++
       return 1
     })

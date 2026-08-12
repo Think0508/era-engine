@@ -15,6 +15,7 @@ items = ["布衣", "长裤"]
 
 [[sets.bonuses]]
 required_count = 2
+# 目标由套装系统注入（穿戴者），勿写 params.target
 effects = [
-  { type = "modify_attribute", params = { attr = "气血", value = 20, target = "self" } }
+  { type = "modify_attribute", params = { attr = "气血", value = 20 } }
 ]

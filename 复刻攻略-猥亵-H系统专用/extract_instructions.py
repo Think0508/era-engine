@@ -8,11 +8,11 @@
     python extract_instructions.py
 
 输入:
-    data/csv/InstructConfig.csv      — 全部指令定义
-    data/csv/InstructJudge.csv       — 实行判定阈值
-    data/csv/Behavior_Effect.csv     — 行为→效果映射
-    data/csv/InstructType.csv        — 指令类型名
-    data/csv/Instruct_Sex_Type.csv   — H子类型名
+    ../用来复刻的蓝本游戏 erArk 不要commit/data/csv/InstructConfig.csv   — 全部指令定义
+    ../用来复刻的蓝本游戏 erArk 不要commit/data/csv/InstructJudge.csv    — 实行判定阈值
+    ../用来复刻的蓝本游戏 erArk 不要commit/data/csv/Behavior_Effect.csv  — 行为→效果映射
+    ../用来复刻的蓝本游戏 erArk 不要commit/data/csv/InstructType.csv     — 指令类型名
+    ../用来复刻的蓝本游戏 erArk 不要commit/data/csv/Instruct_Sex_Type.csv— H子类型名
 
 输出:
     docs/systems/06-指令集-攻略期.md
@@ -22,16 +22,24 @@
 
 import csv
 import os
+import sys
 from collections import defaultdict
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CSV_DIR = os.path.join(BASE_DIR, "data", "csv")
+# erArk 蓝本 CSV 在仓库根的「用来复刻的蓝本游戏 erArk 不要commit/data/csv」下（不随本项目提交）
+CSV_DIR = os.path.join(BASE_DIR, "..", "用来复刻的蓝本游戏 erArk 不要commit", "data", "csv")
 OUT_DIR = os.path.join(BASE_DIR, "docs", "systems")
 
 
 def read_csv(filename):
     """读取CSV, 跳过注释行(第2-4行), 返回list of dict."""
     path = os.path.join(CSV_DIR, filename)
+    if not os.path.isfile(path):
+        sys.exit(
+            f"[错误] 找不到 CSV: {path}\n"
+            f"erArk 蓝本数据目录不存在或路径已变。当前 CSV_DIR = {CSV_DIR}\n"
+            f"请确认「用来复刻的蓝本游戏 erArk 不要commit/data/csv/」存在（该目录不随本项目提交，需自行放置蓝本）。"
+        )
     rows = []
     with open(path, "r", encoding="utf-8-sig") as f:
         reader = csv.reader(f)

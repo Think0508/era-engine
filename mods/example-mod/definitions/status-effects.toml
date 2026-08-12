@@ -21,7 +21,8 @@ tick_interval = 60
 stackable = false
 max_stack = 1
 tick_effects = [
-  { type = "modify_attribute", params = { attr = "气血", value = 5, target = "self" } }
+  # 目标由 status-system 注入（状态持有者），勿写 params.target
+  { type = "modify_attribute", params = { attr = "气血", value = 5 } }
 ]
 
 # ── 写法变体：debuff + 无 tick + 到期移除效果 ──
@@ -36,7 +37,8 @@ tick_interval = 0
 stackable = false
 max_stack = 1
 on_apply_effects = [
-  { type = "modify_attribute", params = { attr = "体力", value = -10, target = "self" } }
+  # 目标由 status-system 注入（状态持有者），勿写 params.target
+  { type = "modify_attribute", params = { attr = "体力", value = -10 } }
 ]
 
 # 写法变体：stackable = true 的叠加型（醉意等）——重新施加刷新时长 + 层数递增；

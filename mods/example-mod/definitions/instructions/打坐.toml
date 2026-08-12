@@ -10,7 +10,7 @@
 #
 # 字段语义：
 #   id：指令 ID（全局唯一）；label：按钮显示名
-#   category：分组（新字段，如 "daily"日常/"obscenity"淫秽…）；旧字段 type 兼容
+#   category：分组（"daily"日常/"obscenity"淫秽…——新数据一律用 category，旧字段 type 已弃用勿再写）
 #   time_cost：耗时分钟（自动推进游戏时间）；priority：排序（越小越靠前）
 #   premises：前提 ID 数组——h-core 注册的判定（如 NOT_H=不在 H 中、HAVE_TARGET=有选中
 #     角色）；完整清单见 docs/premises.md；不写 = 无条件
@@ -23,7 +23,7 @@
 [[instructions]]
 id = "meditate"
 label = "打坐"
-type = "daily"
+category = "daily"
 time_cost = 30
 priority = 30
 # 条件示例：气血不足 200 时才能打坐（引用 example-mod 自定义属性）

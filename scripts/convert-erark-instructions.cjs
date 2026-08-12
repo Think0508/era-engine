@@ -27,11 +27,11 @@ const EFFECT_MAP = {
   21: { type: 'settle_favorability', params: {} },
   22: { type: 'settle_trust', params: {} },
   23: { type: 'settle_trust', params: { base: 2 } },
-  31: { type: 'modify_attribute', params: { attr: '体力', value: -50, target: 'self' } },
+  31: { type: 'modify_attribute', params: { attr: '体力', value: -50 }, target: 'self' },
   32: { type: 'set_field', params: { path: 'sp_flag.urinate', value: 0 } },
   33: { type: 'set_field', params: { path: 'target.sp_flag.urinate', value: 0 } },
   34: { type: 'set_field', params: { path: 'sp_flag.hunger', value: 0 } },
-  36: { type: 'modify_attribute', params: { attr: '气力', value: -50, target: 'self' } },
+  36: { type: 'modify_attribute', params: { attr: '气力', value: -50 }, target: 'self' },
   38: { type: 'modify_attribute', params: { attr: '尿意', value: 5 } },
   39: { type: 'modify_attribute', params: { attr: '尿意', value: 5 } },
 
@@ -70,8 +70,8 @@ const EFFECT_MAP = {
   // H 中消耗 (1515, 1516) — 大的体力/气力消耗
   1515: { type: 'modify_attribute', params: { attr: '体力', value: -30 } },
   1516: { type: 'modify_attribute', params: { attr: '气力', value: -30 } },
-  1511: { type: 'modify_attribute', params: { attr: '体力', value: -15, target: 'self' } },
-  1512: { type: 'modify_attribute', params: { attr: '气力', value: -15, target: 'self' } },
+  1511: { type: 'modify_attribute', params: { attr: '体力', value: -15 }, target: 'self' },
+  1512: { type: 'modify_attribute', params: { attr: '气力', value: -15 }, target: 'self' },
 
   // CVE 前缀 — 通过 condition 字段处理
   // 格式: CVE_A1_E|{id}_G_{threshold} → condition = "player.experience.{id} >= {threshold}"
@@ -252,7 +252,8 @@ function translateEffect(effId, prevEff) {
       632: { type: 'cloth_remove_all', params: {} },
       633: { type: 'cloth_set_visible', params: { part: '浴巾', visible: true } },
       634: { type: 'cloth_set_visible', params: { part: '睡衣', visible: true } },
-      635: { type: 'cloth_wear_all', params: { target: 'self' } },
+      635: { type: 'cloth_wear_all', params: {}, target: 'self' },
+      // 636：scene_all（全体）无顶层 target 映射（effect 顶层只认 self/selected/player/战斗目标），保持 params 记录意图
       636: { type: 'cloth_wear_all', params: { target: 'scene_all' } },
     }
     if (clothMap[numId]) return { ...clothMap[numId], params: { ...clothMap[numId].params } }
@@ -290,10 +291,10 @@ function translateEffect(effId, prevEff) {
   if (numId === 1409) return { type: 'set_field', params: { path: 'target.h_state.condom_info_show', value: true } }
   if (numId === 1410) return { type: 'set_field', params: { path: 'scene_all.h_state.condom_info_show', value: true } }
   if (numId === 1413) return { type: 'set_field', params: { path: 'h_state.orgasm_edge', value: 1 } }
-  if (numId === 1513) return { type: 'modify_attribute', params: { attr: '体力', value: -25, target: 'self' } }
-  if (numId === 1514) return { type: 'modify_attribute', params: { attr: '气力', value: -25, target: 'self' } }
-  if (numId === 1519) return { type: 'modify_attribute', params: { attr: '体力', value: -50, target: 'target' } }
-  if (numId === 1520) return { type: 'modify_attribute', params: { attr: '气力', value: -50, target: 'target' } }
+  if (numId === 1513) return { type: 'modify_attribute', params: { attr: '体力', value: -25 }, target: 'self' }
+  if (numId === 1514) return { type: 'modify_attribute', params: { attr: '气力', value: -25 }, target: 'self' }
+  if (numId === 1519) return { type: 'modify_attribute', params: { attr: '体力', value: -50 }, target: 'target' }
+  if (numId === 1520) return { type: 'modify_attribute', params: { attr: '气力', value: -50 }, target: 'target' }
 
   // 时停效果 (1241-1246)
   if (numId === 1241) return { type: 'time_stop_on', params: {} }
@@ -385,8 +386,8 @@ function translateEffect(effId, prevEff) {
   // Character.body_manage 有意删减），nop+TODO（2026-08-09 修正：原误映射 attr='欲望' 语义错误）
   if (numId === 931) return { type: 'nop', params: {}, _todo: '931 ADJUST_BODY_MANAGE_DAY_ITEM 身体管理道具穿戴（系统砍掉）' }
   if (numId === 932) return { type: 'nop', params: {}, _todo: '932 ADJUST_BODY_MANAGE_SLEEP_ITEM 身体管理道具穿戴（系统砍掉）' }
-  if (numId === 1504) return { type: 'modify_attribute', params: { attr: '体力', value: 50, target: 'self' } }
-  if (numId === 1505) return { type: 'modify_attribute', params: { attr: '气力', value: 50, target: 'self' } }
+  if (numId === 1504) return { type: 'modify_attribute', params: { attr: '体力', value: 50 }, target: 'self' }
+  if (numId === 1505) return { type: 'modify_attribute', params: { attr: '气力', value: 50 }, target: 'self' }
   if (numId === 1751) return { type: 'set_field', params: { path: 'sp_flag.urinated', value: true } }
 
   // 更多体位 (866-868)

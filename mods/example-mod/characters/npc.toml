@@ -10,7 +10,10 @@
 #   at_locations：生成地点【数组，地点 ID】
 #   count：{ min, max } 随机数量
 #   names：随机姓名池【数组，自由填】
-#   overrides：覆盖模板的具体字段（键 = 角色字段，如 base/好感度——见 roster 字段字典）
+#   overrides：覆盖模板的具体字段——⚠️ 键必须是角色顶层字段（base/abilities/talents…），
+#              value **整表替换**该字段（浅展开，不做深合并）：
+#              overrides = { base = { "好感度" = 5 } } → 模板 base 的其它键全部被替换掉
+#              （想保留模板 base 其他值就只写差分到角色的其他字段，或不要写 base）
 #   name_generator：JS 脚本（未支持，待实现）
 # ═══════════════════════════════════════════════════════════════════
 
@@ -19,11 +22,11 @@ template = "base-human"             # 用哪个模板（templates/character/ 下
 at_locations = ["山村"]            # 在哪些地点生成
 count = { min = 1, max = 3 }       # 随机数量
 names = ["路人甲", "路人乙", "路人丙"]   # 随机姓名池（不写 = 模板名）
-# overrides = { "好感度" = 20 }     # 可选：覆盖模板的具体值
 
 # ── 写法变体：overrides + 无 names（用模板名，固定覆盖某些字段）──
 [[spawns]]
 template = "山贼"                   # 用 山贼 模板（extends base-human）
 at_locations = ["集市"]
 count = { min = 1, max = 2 }
-overrides = { base = { "好感度" = 5 } }   # 覆盖模板的具体字段（键 = 角色字段）
+# 键 = 角色顶层字段，value 整表替换（示例：整个 base 表被替换为只含 好感度）
+overrides = { base = { "好感度" = 5 } }

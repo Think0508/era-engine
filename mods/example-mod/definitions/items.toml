@@ -5,15 +5,15 @@
 #
 # 字段字典（每个字段能填什么）：
 #   id / name / description：标识/显示名/说明（id 全局唯一，自由命名）
-#   type：物品大类（自由字符串，但建议用约定值）——
-#         "consumable"（消耗品，用后消失）/ "weapon"（武器）/ "armor"（护甲）/
-#         "clothing"（服装，可穿到装备槽）/ "material"（材料）
-#         （完整清单见 docs/item-system.md——还有 h_drug/玩具等 H 道具）
+#   type：物品大类（五枚举，见 docs/item-system.md）——
+#         "consumable"（消耗品，用后消失）/ "equipment"（可装备/占槽，服装武器玩具）/
+#         "tool"（工具，无标准使用流）/ "material"（材料）/ "key"（钥匙/任务物品）
+#   tags：自由字符串【数组】——分类标签（weapon/armor/clothing/toy…，插件可按 tags 查询）
 #   stackable：true/false——可堆叠
 #   use："self"（点使用直接生效）/ "equip"（装备到对应槽位）……
 #   effects：使用效果【数组，效果类型见 docs/effect-system.md】——
-#         例：modify_attribute 回气血
-#   attack_bonus / defense_bonus：装备时提供的攻防加成（weapon/armor 用）
+#         例：modify_attribute 回气血（目标由调用方决定，勿写 params.target）
+#   attack_bonus / defense_bonus：装备时提供的攻防加成（equipment 用）
 # ═══════════════════════════════════════════════════════════════════
 
 [items."回气丹"]
@@ -23,12 +23,14 @@ description = "恢复少量气血"
 type = "consumable"
 stackable = true
 use = "self"
-effects = [{ type = "modify_attribute", params = { attr = "气血", value = 30, target = "self" } }]
+# 目标不写在 params 里：useItem 使用者的目标由调用方注入（_targetIds）
+effects = [{ type = "modify_attribute", params = { attr = "气血", value = 30 } }]
 
 [items."布衣"]
 id = "布衣"
 name = "布衣"
-type = "clothing"
+type = "equipment"
+tags = ["clothing"]
 stackable = false
 use = "equip"
 defense_bonus = 2
@@ -36,16 +38,18 @@ defense_bonus = 2
 [items."长裤"]
 id = "长裤"
 name = "长裤"
-type = "clothing"
+type = "equipment"
+tags = ["clothing"]
 stackable = false
 use = "equip"
 
 # ── 写法变体：武器 / 材料（type 和加成字段不同）──
-# 写法 A：武器（type = "weapon" + attack_bonus 装备加成）
+# 写法 A：武器（type = "equipment" + tags 补 weapon + attack_bonus 装备加成）
 [items."铁剑"]
 id = "铁剑"
 name = "铁剑"
-type = "weapon"
+type = "equipment"
+tags = ["weapon"]
 stackable = false
 use = "equip"
 attack_bonus = 15
@@ -57,5 +61,5 @@ name = "草药"
 type = "material"
 stackable = true
 
-# 其他 type 取值见 docs/item-system.md（armor/h_drug/玩具等）；
+# type 五枚举见 docs/item-system.md（consumable/equipment/tool/material/key）；
 # 装备的 defense_bonus 同理（见 布衣）——加成字段按装备类型选择。

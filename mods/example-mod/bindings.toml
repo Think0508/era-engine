@@ -11,12 +11,11 @@
 # 对账表 + spec §11 归档流程。自由命名的只有你自己新增的自定义属性。
 # ═══════════════════════════════════════════════════════════════════
 
-# 示例：combat-base 插件要求 hp/mp/attack，本 mod 把它们映射到同名属性
-# （h-core 默认属性就有 hp/mp/attack；如果你自定义了「气血」，可以写
+# 示例：combat-base 插件要求 hp/attack/defense/speed，本 mod 把它们映射到同名属性
+# （h-core 默认属性就有这四个；如果你自定义了「气血」，可以写
 #  hp = "气血" 让插件把伤害扣到气血上）
 [bindings.combat-base]
 hp = "hp"
-mp = "mp"
 attack = "attack"
 defense = "defense"
 speed = "speed"

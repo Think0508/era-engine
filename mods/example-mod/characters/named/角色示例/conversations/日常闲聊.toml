@@ -32,7 +32,10 @@ next = "start"
 id = "ask_kungfu"
 lines = ["吐纳术讲究气息绵长，每日晨起打坐半个时辰，日积月累自有进益。"]
 # effects：到达节点时执行（比如传授能力）
-effects = [{ type = "set_field", params = { path = "abilities.吐纳术", value = 1 } }]
+# ⚠️ 能力契约：abilities 里存的是 { level, xp } 结构（简写写数字只在加载时展开）。
+#    set_field 直写数字会把 abilities.吐纳术 变成数字 → .level 恒 0 静默失效。
+#    正确写法 = 内联表（或走 gain_ability_xp 效果加经验）。
+effects = [{ type = "set_field", params = { path = "abilities.吐纳术", value = { level = 1, xp = 0 } } }]
 next = "start"
 
 [[nodes]]

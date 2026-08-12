@@ -206,43 +206,43 @@ conditions = "selected.talents.少女 == 1&selected.talents.尿道处女 == 1"
 context = "紧窄青涩未经任何触碰的纯净禁地，娇嫩内里敏感紧致的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.少女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天刚被开发过还泛着微红，内壁娇嫩紧窄带着些许肿胀的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.少女 == 1 && premise(t_first_u_sex_in_today)"
 context = "萝莉今日初尝禁果后仍残留敏感，紧致湿润包裹感极强的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.少女 == 1 && premise(t_first_u_sex_in_today)"
 context = "稚嫩青涩刚被扩张过的嫩肉微微颤抖，内壁柔软温热的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.少女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天才初次被侵犯过的小穴口周围泛红，内里紧窄敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.少女 == 1 && premise(t_first_u_sex_in_today)"
 context = "幼嫩的管道今日刚被开拓过略显柔软，但依旧紧致包覆的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.少女 == 1 && premise(t_first_u_sex_in_today)"
 context = "萝莉今天初体验后带着记忆的嫩肉，紧密吸附散发着体温的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.少女 == 1 && premise(t_first_u_sex_in_today)"
 context = "刚被扩张过的稚嫩内壁还在轻微痉挛，湿润紧窄极为敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.少女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今日初次被开发后微微红肿，青涩嫩肉紧紧缠绕充满弹性的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.少女 == 1 && premise(t_first_u_sex_in_today)"
 context = "萝莉今天刚失去纯洁后残留着酸胀感，内壁紧致柔嫩温热的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.少女 == 1 && premise(t_first_u_sex_in_today)"
 context = "稚嫩内管今日初尝开拓后变得略微柔顺，但仍紧窄敏感的{urethra_s}。"
 
 [[entries]]
@@ -446,43 +446,43 @@ conditions = "selected.talents.少女 == 1&selected.abilities.尿道感度.level
 context = "娇小未熟的孔道被刺激时微微痉挛，稚嫩内壁敏感地蠕动收紧的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.幼女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天刚被肉棒侵犯后仍旧泛红肿胀的稚嫩幼穴，紧窄娇嫩且火热敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.幼女 == 1 && premise(t_first_u_sex_in_today)"
 context = "刚被粗大肉棒开发不久还在隐隐发痛的幼童内壁，仍未完全恢复却更敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.幼女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天初次体验成人粗暴欲望的幼小甬道，微微红肿仍在颤抖分泌淫液的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.幼女 == 1 && premise(t_first_u_sex_in_today)"
 context = "稚嫩身躯上刚被成人玩弄过的窄小幼穴通道，娇软湿热紧紧包裹吸附的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.幼女 == 1 && premise(t_first_u_sex_in_today)"
 context = "幼女今日初次接纳过粗大肉棒的紧致肉壁，敏感颤抖红肿且更加渴望的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.幼女 == 1 && premise(t_first_u_sex_in_today)"
 context = "小小身体里刚被肉棒开拓的发育尚不完全的洞穴，淫靡温润紧绷敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.幼女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天才记住粗硬肉棒形状的幼童窄穴内壁，痛感未消却已学会欢愉的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.幼女 == 1 && premise(t_first_u_sex_in_today)"
 context = "初次承欢后依旧狭窄紧绷的稚嫩幼小通道，红肿敏感且仍发热发烫的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.幼女 == 1 && premise(t_first_u_sex_in_today)"
 context = "幼小躯体内今日刚学会快感享受的嫩肉，湿滑紧密包裹着肉棒形状的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.幼女 == 1 && premise(t_first_u_sex_in_today)"
 context = "才被成人肉棒粗暴造访过的幼女狭窄尿路，火热湿润紧紧吸附难以抽离的{urethra_s}。"
 
 [[entries]]
@@ -726,43 +726,43 @@ conditions = "selected.talents.処女 == 1&selected.talents.尿道处女 == 1"
 context = "尿道壁柔软细腻毫无扩张痕迹，少女纯洁身体娇嫩的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.処女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天刚被侵犯过仍带着红肿与刺痛，紧窄得让龟头寸步难行的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.処女 == 1 && premise(t_first_u_sex_in_today)"
 context = "方才被开拓过残留着微微肿胀，少女嫩肉颤抖着紧紧咬住的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.処女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今日首次被贯穿后犹带酸涩，内壁娇嫩敏感得不住痉挛的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.処女 == 1 && premise(t_first_u_sex_in_today)"
 context = "刚被破开不久仍残留着痛楚，青涩紧致的嫩穴不断收紧的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.処女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天初次被使用过后微微红肿，少女的小穴羞怯地抽搐着的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.処女 == 1 && premise(t_first_u_sex_in_today)"
 context = "方才被迫接纳过仍余韵未消，柔嫩滑腻的内壁紧紧吮吸着的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.処女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今日被开发后带着初尝禁果的红润，稚嫩管道不住蠕动颤抖的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.処女 == 1 && premise(t_first_u_sex_in_today)"
 context = "刚被扩张过仍留有酥麻感，少女紧窄的甬道敏感地缠绞着的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.処女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天首度被贯穿后泛着嫣红，青涩肉壁因记忆而不住紧缩的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.処女 == 1 && premise(t_first_u_sex_in_today)"
 context = "方才被侵入过尚且酸胀未退，娇小通道正羞涩地微微翕动的{urethra_s}。"
 
 [[entries]]
@@ -1246,43 +1246,43 @@ conditions = "selected.talents.成人 == 1&selected.talents.尿道处女 == 1"
 context = "窄小到几乎不可能被进入的处子孔道，大姐姐成熟外表下隐藏的稚嫩{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.成人 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天刚被开发过仍带着微微红肿与刺痛，却已开始渴望再次被侵入的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.成人 == 1 && premise(t_first_u_sex_in_today)"
 context = "刚刚经历过初次贯穿还残留着些许红肿，成熟内壁已逐渐适应异物侵入的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.成人 == 1 && premise(t_first_u_sex_in_today)"
 context = "成熟大姐姐今日被开拓后略微松软，却仍会紧紧吸附着再次进入的硬物的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.成人 == 1 && premise(t_first_u_sex_in_today)"
 context = "带着初次开发的稚嫩红肿与些许疼痛，却已开始学会迎合侵犯者动作的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.成人 == 1 && premise(t_first_u_sex_in_today)"
 context = "成熟身体中今天刚被开拓的敏感禁地，正逐渐适应被反复贯穿与扩张的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.成人 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天第一次被进入后仍有些敏感刺痛，却已不再像初时那般紧张抗拒的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.成人 == 1 && premise(t_first_u_sex_in_today)"
 context = "刚刚经历过破处后带着微微红肿刺痛，却已渐渐习惯被硬物反复撑开的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.成人 == 1 && premise(t_first_u_sex_in_today)"
 context = "今日被开发后还带着隐隐的痛感，成熟内壁却已开始分泌黏液迎接侵入的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.成人 == 1 && premise(t_first_u_sex_in_today)"
 context = "第一次被贯穿后仍有些紧绷敏感，却已逐渐学会放松接纳粗大异物的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.成人 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天刚失去处女的成熟柔嫩肉道，此刻正努力适应被再次侵犯与扩张的{urethra_s}。"
 
 [[entries]]
@@ -1806,43 +1806,43 @@ conditions = "selected.talents.幼女 == 1&selected.talents.尿道处女 == 0&se
 context = "稚嫩身躯上那早已被调教开发的小穴饥渴地蠕动着，骚穴烂熟的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.淑女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今天刚被开发的嫩穴口还泛着微红，成熟肉壁紧紧绞住侵入物的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.淑女 == 1 && premise(t_first_u_sex_in_today)"
 context = "丰腴熟女刚被撑开的穴道略带肿胀，湿润黏膜敏感颤抖着的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.淑女 == 1 && premise(t_first_u_sex_in_today)"
 context = "成熟躯体上初次被玷污的小口仍在微微痉挛，紧致温热的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.淑女 == 1 && premise(t_first_u_sex_in_today)"
 context = "熟透身子里刚被破开的嫩穴残存酸胀，内壁紧裹着肉棒的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.淑女 == 1 && premise(t_first_u_sex_in_today)"
 context = "今日才被侵犯过的成熟肉穴口边缘泛红，黏腻紧窄的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.淑女 == 1 && premise(t_first_u_sex_in_today)"
 context = "丰满熟女初次被使用的小穴口微微发肿，湿滑柔嫩贴紧肉棒的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.淑女 == 1 && premise(t_first_u_sex_in_today)"
 context = "成熟女体上刚被开拓的嫩口还留着痛感，内壁紧紧吮吸着的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.淑女 == 1 && premise(t_first_u_sex_in_today)"
 context = "熟女今日被首次贯穿的肉穴边沿泛着嫩红，温热紧窒的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.淑女 == 1 && premise(t_first_u_sex_in_today)"
 context = "丰腴身躯里刚刚破瓜的小口微肿敏感，湿热内壁不断蠕动的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.淑女 == 1 && premise(t_first_u_sex_in_today)"
 context = "成熟躯体上今天初开的嫩穴尚有余痛，紧致肉壁贪婪吞咬着的{urethra_s}。"
 
 [[entries]]
@@ -2326,43 +2326,43 @@ conditions = "selected.talents.人妻 == 1&selected.talents.尿道处女 == 1"
 context = "人妻深处从未被男人开拓的禁忌甬道，异常敏感紧窄的内壁处女般纯净的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.人妻 == 1 && premise(t_first_u_sex_in_today)"
 context = "结婚多年却今日才初次被开发的狭小管道，内壁因背德快感而阵阵颤栗的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.人妻 == 1 && premise(t_first_u_sex_in_today)"
 context = "有夫之妇今天刚被粗大肉棒插入开拓的窄小肉径，因禁忌刺激而敏感收缩的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.人妻 == 1 && premise(t_first_u_sex_in_today)"
 context = "人妻今日初次尝试被扩张的紧窄孔道，尚未习惯侵入物而不停痉挛抽搐的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.人妻 == 1 && premise(t_first_u_sex_in_today)"
 context = "已婚女子今天首次体验被肉棒贯穿的娇嫩管道，紧致湿润温热地紧紧包裹的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.人妻 == 1 && premise(t_first_u_sex_in_today)"
 context = "作为人妻今日刚被{player.name}开发的敏感肉壁，残留着初次体验余韵而微微颤动的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.人妻 == 1 && premise(t_first_u_sex_in_today)"
 context = "有丈夫却今天首次被{player.name}征服的柔嫩通道，因背德刺激而兴奋地不停收缩的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.人妻 == 1 && premise(t_first_u_sex_in_today)"
 context = "人妻今日第一次被肉棒开拓的细窄内壁，嫩肉因新鲜体验而不停痉挛颤动的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.人妻 == 1 && premise(t_first_u_sex_in_today)"
 context = "已婚妇人今天刚被扩张开拓的紧致管道，敏感到轻触便不自觉兴奋抖动的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.人妻 == 1 && premise(t_first_u_sex_in_today)"
 context = "有夫之妇今日初尝被贯穿的娇小孔径，因禁忌快感而变得格外湿润敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:t_first_u_sex_in_today"
+conditions = "selected.talents.人妻 == 1 && premise(t_first_u_sex_in_today)"
 context = "作为人妻今天才首次被{player.name}开发的窄小肉道，内壁余韵未消带着微微热意的{urethra_s}。"
 
 [[entries]]
@@ -2806,283 +2806,283 @@ conditions = "selected.talents.人妻 == 1&selected.尿道 >= 90000"
 context = "被禁忌高潮连续侵蚀到崩溃，只会痉挛喷水的已婚人妻那淫荡的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 1"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 1"
 context = "从未被触碰过的稚嫩小穴，比针眼还要紧窄的初次被父亲侵犯的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 1"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 1"
 context = "女儿纯洁未开发过的处子肉洞，紧致到几乎无法容纳任何东西的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 1"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 1"
 context = "少女完全没有被扩张过的羞耻小孔，被爸爸第一次触碰而颤抖紧缩的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 1"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 1"
 context = "父亲即将开苞的女儿稚嫩肉穴，从未被插入过而紧窄到极致的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 1"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 1"
 context = "亲生女儿尚未发育完全的处女小洞，内壁娇嫩敏感到轻触就颤栗的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 1"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 1"
 context = "少女从出生就未曾被侵犯的禁忌肉孔，如今被父亲开拓的紧窄羞耻的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 1"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 1"
 context = "女儿纯净未经人事的稚嫩小缝，被爸爸的手指触碰就不住收缩的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 1"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 1"
 context = "从未被任何东西进入过的少女嫩穴，紧绷到让父亲都难以插入的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 1"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 1"
 context = "乱伦中被父亲第一次侵犯的稚嫩肉洞，内壁因恐惧而紧缩痉挛的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 1"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 1"
 context = "女儿未曾被开发的处子羞耻小穴，稚嫩黏膜因初次刺激而敏感颤动的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_first_u_sex_in_today"
+conditions = "premise(target_is_player_daughter) && premise(t_first_u_sex_in_today)"
 context = "今天刚被父亲开拓过仍残留着扩张余韵，内壁敏感红肿的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_first_u_sex_in_today"
+conditions = "premise(target_is_player_daughter) && premise(t_first_u_sex_in_today)"
 context = "被亲生父亲破处后变得更加敏感，尿道口微微外翻泛红的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_first_u_sex_in_today"
+conditions = "premise(target_is_player_daughter) && premise(t_first_u_sex_in_today)"
 context = "刚在今天被父亲粗暴撑开过，黏膜仍带着初次扩张痛感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_first_u_sex_in_today"
+conditions = "premise(target_is_player_daughter) && premise(t_first_u_sex_in_today)"
 context = "今日首次被父亲侵犯后略微松弛，内壁湿润敏感异常的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_first_u_sex_in_today"
+conditions = "premise(target_is_player_daughter) && premise(t_first_u_sex_in_today)"
 context = "被父亲刚刚开发完带着父女乱伦余韵，触碰就颤抖的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_first_u_sex_in_today"
+conditions = "premise(target_is_player_daughter) && premise(t_first_u_sex_in_today)"
 context = "今天失去处女后仍紧致但已学会迎合，带着轻微红肿的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_first_u_sex_in_today"
+conditions = "premise(target_is_player_daughter) && premise(t_first_u_sex_in_today)"
 context = "被亲父今天首次贯穿后变得异常敏感，内壁温热紧缩的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_first_u_sex_in_today"
+conditions = "premise(target_is_player_daughter) && premise(t_first_u_sex_in_today)"
 context = "刚被父亲开苞不久仍在适应扩张感，娇嫩黏膜微肿的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_first_u_sex_in_today"
+conditions = "premise(target_is_player_daughter) && premise(t_first_u_sex_in_today)"
 context = "今日初尝父女禁忌之欢后仍在颤动，紧窄湿润敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&premises:t_first_u_sex_in_today"
+conditions = "premise(target_is_player_daughter) && premise(t_first_u_sex_in_today)"
 context = "被父亲今天首次侵入后留下开发痕迹，嫩肉微微外翻的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 3"
 context = "虽曾用手指稍加开拓但依然紧窄，女儿稚嫩柔软的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 3"
 context = "被父亲调教过却仍旧夹得很紧，闺女青涩敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 3"
 context = "初经开发便已渗出淫液，女儿内壁嫩滑紧致的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 3"
 context = "虽被父亲亲手扩张过但容量有限，闺女稚嫩狭窄的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 3"
 context = "轻触便紧紧收缩蠕动不止，女儿湿热柔嫩的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 3"
 context = "被开拓后依旧青涩紧窄，闺女黏膜娇嫩温热的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 3"
 context = "有过几次调教但还不太适应，女儿紧致敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 3"
 context = "被爸爸开发过却仍紧紧吸附不放松，闺女青涩滚烫的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 3"
 context = "初经父亲调教便学会收紧吮吸，女儿稚嫩湿润的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 3"
 context = "虽曾被扩张仍像处子般紧窒，闺女柔软粘腻的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 6 && selected.abilities.尿道扩张.level > 3"
 context = "被父亲反复调教后已能顺畅接纳侵入，内壁柔嫩紧致的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 6 && selected.abilities.尿道扩张.level > 3"
 context = "有着丰富被父亲开拓经验，稍经刺激便会主动收缩吮吸的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 6 && selected.abilities.尿道扩张.level > 3"
 context = "习惯了父亲的亵玩而变得敏感柔软，温热湿润微微张开的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 6 && selected.abilities.尿道扩张.level > 3"
 context = "在父亲的调教下开发完成，轻轻触碰便会流出淫液的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 6 && selected.abilities.尿道扩张.level > 3"
 context = "被父亲的肉棒彻底开发后，肉壁温热紧致有弹性的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 6 && selected.abilities.尿道扩张.level > 3"
 context = "完全适应了父亲的侵犯，小穴蠕动着渴求被填满的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 6 && selected.abilities.尿道扩张.level > 3"
 context = "父女间淫靡的调教成果，内壁敏感湿滑能吞吐自如的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 6 && selected.abilities.尿道扩张.level > 3"
 context = "记住了父亲形状的肉穴温柔蠕动着，渴求被爸爸疼爱的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 6 && selected.abilities.尿道扩张.level > 3"
 context = "被父亲开拓后变得柔顺敏感，稍加摩擦便开始颤抖的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level <= 6&selected.abilities.尿道扩张.level > 3"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level <= 6 && selected.abilities.尿道扩张.level > 3"
 context = "在乱伦调教中习得快感的娇嫩穴道，主动吮吸邀请的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level > 6"
 context = "被父亲多年深度开拓无数次后已彻底扩张，能够轻松容纳粗壮侵入的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level > 6"
 context = "在父亲日夜调教下变得饥渴敏感贪婪，会情不自禁主动蠕动吸附的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level > 6"
 context = "因长期承受父亲粗大肉棒而被充分扩张开发，时刻期待被填满的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level > 6"
 context = "被父亲亲手开发多年已能轻松吞纳阴茎，穴口微微外翻淫靡的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level > 6"
 context = "历经父亲无数次玩弄侵犯后变得松软湿润多汁，随时等待被使用的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level > 6"
 context = "被父亲用各种道具反复扩张后变得极度敏感，哪怕轻触也会痉挛的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level > 6"
 context = "因父女乱伦而被无数次开拓侵犯玩弄，变得松软淫荡饥渴难耐的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level > 6"
 context = "在父亲的宠爱调教下变得既柔软又敏感，能轻易吞入粗大肉棒的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level > 6"
 context = "被父亲亲手开拓的淫荡小穴，内壁紧密蠕动只为父亲而敞开的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.talents.尿道处女 == 0&selected.abilities.尿道扩张.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.talents.尿道处女 == 0 && selected.abilities.尿道扩张.level > 6"
 context = "在父女肉体交欢中被彻底开发调教，柔软湿润内壁不断收缩的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level <= 3"
 context = "女儿那紧窄却不太敏感的尿道管壁，内壁温热但反应迟钝的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level <= 3"
 context = "少女细嫩的尿道缓缓适应着侵入感，感度不高的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level <= 3"
 context = "亲生女儿窄小的尿道被撑开也无太大反应，迟钝麻木的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level <= 3"
 context = "女儿尿道内壁的皱褶湿润柔软，但快感积累缓慢的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level <= 3"
 context = "少女紧致的尿道口被缓缓扩张，需要更多刺激才能兴奋的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level <= 3"
 context = "女儿尿道的黏膜温润紧贴，但对摩擦刺激反应平淡的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level <= 3"
 context = "亲女儿那窄细的尿道管壁包裹着入侵物，渐进式快感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level <= 3"
 context = "少女尿道口微微张合着吞纳异物，低感度需要深入开发的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level <= 3"
 context = "女儿细嫩的尿道内壁被撑开蠕动，反应不敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level <= 3"
 context = "亲生女儿紧窄的尿道管腔被填充，快感迟钝需要长时间刺激的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 3 && selected.abilities.尿道感度.level <= 6"
 context = "青涩稚嫩却已能品尝快感，内壁敏感地紧紧吸附的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 3 && selected.abilities.尿道感度.level <= 6"
 context = "女儿娇嫩窄小的肉管，被刺激时会颤抖着收缩的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 3 && selected.abilities.尿道感度.level <= 6"
 context = "少女特有的紧致湿润，每次触碰都会敏感痉挛的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 3 && selected.abilities.尿道感度.level <= 6"
 context = "稚嫩粉红的肉壁温热紧窄，已经学会享受快感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 3 && selected.abilities.尿道感度.level <= 6"
 context = "女儿被调教得敏感的小穴，触碰就会湿润颤抖的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 3 && selected.abilities.尿道感度.level <= 6"
 context = "青涩肉管内壁细腻柔软，摩擦时会紧紧吸吮的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 3 && selected.abilities.尿道感度.level <= 6"
 context = "少女窄小的穴口湿润发红，内壁敏感地不断蠕动的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 3 && selected.abilities.尿道感度.level <= 6"
 context = "女儿娇嫩温热的肉壁紧紧包裹，每次抽送都会痉挛的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 3 && selected.abilities.尿道感度.level <= 6"
 context = "稚嫩粉红肉管被开发得敏感，摩擦时淫水涟涟的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 3&selected.abilities.尿道感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 3 && selected.abilities.尿道感度.level <= 6"
 context = "少女狭窄的小穴温暖湿润，被刺激时紧紧吸附的{urethra_s}。"
 
 [[entries]]
@@ -3126,203 +3126,203 @@ conditions = "selected.talents.幼女 == 1&selected.abilities.尿道感度.level
 context = "幼童体型特有的紧窄脆弱，高敏感到稍许刺激就瘫软无力的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 6"
 context = "年少的身体还未完全发育，尿道口粉嫩紧致异常敏感，稍有刺激内壁就忍不住收缩绞紧的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 6"
 context = "细嫩的尿道内部极度敏感，轻微触碰就能感觉到热度骤升，黏膜软嫩湿润紧紧吸附的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 6"
 context = "窄小的通道内壁薄嫩到近乎透明，敏感到碰触就剧烈抽搐，流出热液的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 6"
 context = "发育中的少女尿道口紧致小巧，内壁触感细滑软嫩，对刺激反应极为强烈的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 6"
 context = "稚嫩的尿道入口泛着淡粉，内部极度敏感，轻轻一碰就剧烈颤动痉挛的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 6"
 context = "纤细的内腔温暖紧窄感度惊人，微小刺激就能引发全身战栗，内壁不住绞缠的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 6"
 context = "还带着少女特有的青涩，尿道口小巧敏感度极高，内部又热又紧缩得厉害的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 6"
 context = "年轻的身体尿道格外敏感，内壁柔嫩到极点，稍有进入就激烈蠕动反应的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 6"
 context = "粉嫩窄小的尿道高敏体质，内壁黏膜薄透吸附力强，碰到就抖个不停的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.尿道感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.尿道感度.level > 6"
 context = "细小娇嫩的尿道入口被撑开就会颤抖，内壁敏感到分泌出黏腻液体包裹的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 < 1000"
 context = "紧窄稚嫩的内壁正因初尝的轻微快感而微微痉挛收缩，女儿青涩柔嫩极度敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 < 1000"
 context = "娇嫩湿润的黏膜正感受着微弱快意而泛起浅红轻颤，乖女儿幼小紧窄柔软的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 < 1000"
 context = "细窄柔嫩的小道被轻微快感刺激得微微颤抖痉挛，亲生女儿稚嫩敏感温热的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 < 1000"
 context = "狭小温热的内腔在初次快感下浅浅收缩紧裹着异物，女儿娇小细腻敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 < 1000"
 context = "极度紧窄娇嫩的穴道正被微弱快感引发阵阵酥麻战栗，乖女儿幼嫩湿润粉红的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 < 1000"
 context = "女儿细窄紧致的小穴在轻微快感中微微痉挛收缩，青涩稚嫩内壁柔软敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 < 1000"
 context = "乖女儿娇嫩粉红的黏膜初品快感而泌出些许蜜液，幼小紧窄温热湿润的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 < 1000"
 context = "亲生女儿极度紧窄的内壁被轻微快感刺激得阵阵收缩，青涩柔嫩敏感温热的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 < 1000"
 context = "女儿稚嫩湿润的小道在微弱快意中轻颤痉挛紧裹着，幼小敏感细窄柔软的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 < 1000"
 context = "乖女儿细腻紧窄的内壁正因初次快感而浅浅收缩痉挛，娇嫩粉红敏感温热的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 1000&selected.尿道 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 1000 && selected.尿道 < 12000"
 context = "女儿敏感紧窄的内壁被快感反复刺激得持续痉挛紧缩，已能享受淫乐的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 1000&selected.尿道 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 1000 && selected.尿道 < 12000"
 context = "乖女儿经历数次高潮后变得更敏感的肉壁紧紧缠裹着，湿热淫糜的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 1000&selected.尿道 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 1000 && selected.尿道 < 12000"
 context = "亲生女儿紧致湿润的小道在快感中阵阵收缩吸吮着，已开发出快感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 1000&selected.尿道 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 1000 && selected.尿道 < 12000"
 context = "女儿被调教得更加敏感的黏膜在每次摩擦中都颤抖着，渴求快感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 1000&selected.尿道 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 1000 && selected.尿道 < 12000"
 context = "乖女儿湿热紧窄的内腔因累积的快感而持续痉挛收缩着，已多次高潮的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 1000&selected.尿道 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 1000 && selected.尿道 < 12000"
 context = "亲生女儿细窄敏感的穴道被快感刺激得不断分泌蜜液，淫乱湿滑敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 1000&selected.尿道 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 1000 && selected.尿道 < 12000"
 context = "女儿紧致温热的内壁在反复高潮后变得更加贪婪收缩着，迷恋快感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 1000&selected.尿道 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 1000 && selected.尿道 < 12000"
 context = "乖女儿已经习惯快感的黏膜主动绞紧缠绕着入侵物，淫荡湿润紧窄的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 1000&selected.尿道 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 1000 && selected.尿道 < 12000"
 context = "亲生女儿敏感湿热的小道在持续快感中阵阵痉挛吸吮，已被开发熟透的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 1000&selected.尿道 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 1000 && selected.尿道 < 12000"
 context = "女儿经过数次高潮调教后紧窄敏感的穴壁贪婪收缩着，渴望被侵犯的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 12000&selected.尿道 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 12000 && selected.尿道 < 90000"
 context = "被快感彻底开发过的狭窄尿道口微微翕张，内壁紧紧吮吸着入侵物不愿放开的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 12000&selected.尿道 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 12000 && selected.尿道 < 90000"
 context = "父亲调教出的敏感小穴口泛着淫糜水光，最轻微触碰都足以让女儿痉挛的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 12000&selected.尿道 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 12000 && selected.尿道 < 90000"
 context = "被亲生父亲开拓到极度敏感的肉壁上布满褶皱，不断蠕动渴求刺激的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 12000&selected.尿道 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 12000 && selected.尿道 < 90000"
 context = "女儿稚嫩的小孔被反复使用后红肿充血，轻轻按压就会不住颤抖的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 12000&selected.尿道 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 12000 && selected.尿道 < 90000"
 context = "经历无数次高潮后敏感到近乎失控，内壁时刻痉挛收缩吞咽着异物的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 12000&selected.尿道 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 12000 && selected.尿道 < 90000"
 context = "被父亲精心调教出的禁忌肉穴分泌着湿滑体液，紧致的内壁不停抽搐的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 12000&selected.尿道 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 12000 && selected.尿道 < 90000"
 context = "快感累积到极致后变得无比柔软的穴口，每次触碰都会引发连锁高潮的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 12000&selected.尿道 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 12000 && selected.尿道 < 90000"
 context = "乱伦淫行中被开发至极限的娇嫩通道，只需稍加刺激就会剧烈收缩的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 12000&selected.尿道 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 12000 && selected.尿道 < 90000"
 context = "少女未经人事的小孔被父亲彻底玩坏，肉壁紧紧绞住任何进入之物的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 12000&selected.尿道 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 12000 && selected.尿道 < 90000"
 context = "被爸爸反复侵犯后变得极度饥渴的肉穴口，稍有动作就会淫荡收缩的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 90000"
 context = "敏感到极限稍微触碰就让女儿浑身痉挛，已被父亲玩弄到极致敏感的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 90000"
 context = "内壁紧绞不停收缩着渴求父亲的抚慰，快感已经突破临界的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 90000"
 context = "湿滑柔嫩被父亲的疼爱开发到了不可思议程度，持续高潮痉挛的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 90000"
 context = "娇嫩粉红的内壁在父亲的刺激下不断抽搐，敏感度已经超越极限的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 90000"
 context = "被父亲调教到轻微呼吸都能引发剧烈快感，紧窄湿热不停痉挛的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 90000"
 context = "承受过父亲无数次快感冲击已经极度敏感，连续高潮到快要坏掉的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 90000"
 context = "父亲的指尖刚靠近就忍不住颤抖绞紧，被玩弄到超负荷高潮的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 90000"
 context = "柔嫩内壁密密麻麻布满了快感神经，被父亲开发到失控痉挛的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 90000"
 context = "紧致湿滑的内腔在父女禁忌欢愉中达到了极致敏感，不断绞紧的{urethra_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.尿道 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.尿道 >= 90000"
 context = "父亲温柔的触碰就能让女儿意识涣散，已经陷入无尽快感地狱的{urethra_s}。"
 
 [[entries]]

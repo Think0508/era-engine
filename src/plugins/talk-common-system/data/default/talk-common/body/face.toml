@@ -6,83 +6,83 @@ variable = "face"
 description = "脸——完整的描述文本"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "白皙细腻可爱迷人，充满诱惑力的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "微微泛红带着淫欲色彩，让人忍不住想亲吻的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "皮肤光滑湿润，带着微弱汗味吸引人靠近的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "带着撩人表情，呼出的热气让人心神荡漾的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "轮廓柔美，时不时露出娇媚表情的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "五官精致，略带媚意散发魅力的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "皮肤白皙透亮，带着渴望表情的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "带着淡淡红晕，不时舔舐嘴唇的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "轮廓清晰，时刻透露着勾引意味的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "皮肤细腻光滑，汗液淌过格外诱人的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "五官妩媚，呼吸急促充满情欲的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "轮廓分明，轻咬嘴唇暗示渴求的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "皮肤光洁，微微喘息引人遐想的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "带着淡淡笑意，眼神却满是欲望的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "轮廓柔和，微张着嘴期待品尝的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "五官精致，眼神迷离透露渴望的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "皮肤细腻，不时发出轻喘声的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "带着自然红润，表情既羞涩又放荡的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "轮廓清秀，眼中闪烁着情欲光芒的{face_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "皮肤光滑，微微颤抖着期待爱抚的{face_s}"
 
 [[entries]]
@@ -566,161 +566,161 @@ conditions = "selected.talents.人妻 == 1"
 context = "带着贵妇气质，背叛丈夫与情人亲密时异常熟练的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "娇嫩可爱带着父亲的血缘，与父亲亲密接触时表情娇羞的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "皮肤细腻白皙，与父亲肢体接触时既紧张又期待的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "面容姣好，与父亲亲密时满脸痴迷的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "轮廓与父亲相似，与亲生父亲接触时表情迷乱的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "脸颊红润，被父亲温柔触碰时眼神迷离的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "五官精致，与父亲亲密时露出甜美笑容的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "带着青春活力，被父亲抚摸时兴奋不已的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "肌肤嫩滑，父亲轻触时发出甜腻呻吟的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "容颜俏丽，与父亲亲密互动时格外迷人的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "面部轮廓可爱，父亲抚摸时眼神充满爱意的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "脸颊带着父亲的影子，被亲生父亲触碰时享受不已的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "轮廓秀丽，父亲贴近时眼神充满羞涩的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "皮肤水嫩，被父亲轻抚时表情愉悦的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "充满青春气息，与父亲亲密时表情无比动人的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "表情生动，被父亲轻触时露出幸福微笑的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "面容娇俏，与父亲亲密时表情变化多端的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "脸部轮廓秀美，被父亲轻抚时格外专注的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "肌肤细腻，被父亲抚摸时表情既羞涩又愉悦的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "容貌清丽，与父亲亲密时表情陶醉的{face_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "带着几分父亲相貌，父亲轻触时展现甜美笑容的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "干练知性带着职场气息，被上司轻触时仍不失专业态度的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "皮肤白皙，工作时被上司触碰会格外迷人的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "面容端正，被上司轻抚时眼神专注的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "轮廓分明，工作之余被上司触碰时表情变化多端的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "脸颊红润，与上司亲密接触时眼神充满敬业的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "五官精致，被上司触碰时依然保持职业微笑的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "带着职业气质，为上司提供特殊服务时格外卖力的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "肌肤细腻，被上司轻抚时格外诱人的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "容颜姣好，执行上司私人指令时眼神充满服从的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "面部轮廊清晰，工作间隙与上司亲密时异常兴奋的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "脸颊饱满，上司触碰时仿佛在完成重要任务的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "轮廓精致，被上司调教后表情越发妩媚的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "皮肤光滑，为上司提供特殊服务时展现侍奉精神的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "充满知性美，在助理工作之余接受上司亲密接触的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "表情职业，被上司轻触时媚态尽显的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "面容清秀，为讨好上司而主动提供亲密服务的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "脸部轮廓和谐，在助理工作之余接受上司特殊要求的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "肌肤水润，被上司轻抚时露出诱人表情的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "容貌端庄，却在被上司触摸时展现放荡一面的{face_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "带着精英气质，满足上司私人需求时格外红润的{face_s}"

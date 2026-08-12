@@ -1,4 +1,4 @@
-import { conditionEngine, weightAllToOne } from '../../core/condition-engine'
+import { conditionEngine, weightAllToOne, extractPremiseRefs } from '../../core/condition-engine'
 import { gameContext } from '../../core/game-context'
 import { entitySystem } from '../../core/entity-system'
 import { weightedRandom } from '../../utils/weighted-random'
@@ -48,15 +48,7 @@ export class CommonTextsEngine {
   }
 
   private parseConditions(raw: string): string[] {
-    if (raw.startsWith('premises:')) {
-      return raw.slice(9).split('&').filter(Boolean).map(s => {
-        const clean = s.startsWith('premises:') ? s.slice(9) : s
-        if (clean.includes('==') || clean.includes('>=') || clean.includes('<=') || clean.includes('>') || clean.includes('<')) {
-          return clean
-        }
-        return `premises:${clean}`
-      })
-    }
+    // 注释：条件 = 完整表达式（premise(X) 命名引用内联，多个前提用 && 连接）
     return [raw]
   }
 
@@ -82,11 +74,10 @@ export class CommonTextsEngine {
     const out: { text: string; weight: number }[] = []
     for (const e of this.filterEntries(entries, targetId, actorId, { unconsciousPass })) {
       let weight = 1
+      // 注释：从条件表达式提取 premise(X) 命名引用（权重 = weightAllToOne 语义）
       const premiseList: string[] = []
       for (const cond of e.conditions) {
-        if (cond.startsWith('premises:')) {
-          premiseList.push(...cond.slice(9).split('&').filter(Boolean))
-        }
+        premiseList.push(...extractPremiseRefs(cond))
       }
       if (premiseList.length > 0) {
         const w = weightAllToOne(premiseList, premiseCtx)
@@ -99,8 +90,7 @@ export class CommonTextsEngine {
   }
 
   /** 列出通过条件筛选的全部候选（行为地文组合用——B/C 组合并池后统一随机） */
-  private filterEntries(entries: CommonTextEntry[], targetId: string | null, actorId?: string, opts?: { unconsciousPass?: boolean }): CommonTextEntry[] {
-    const premiseCtx = this.buildPremiseCtx(targetId, actorId)
+  private filterEntries(entries: CommonTextEntry[], targetId: string | null, _actorId?: string, opts?: { unconsciousPass?: boolean }): CommonTextEntry[] {
     const getContext = () => {
       const gc = gameContext.getContext()
       if (targetId) (gc as any).selectedCharacterId = targetId
@@ -118,33 +108,12 @@ export class CommonTextsEngine {
       }
       if (e.conditions.length === 0) return true
       for (const cond of e.conditions) {
-        if (cond.startsWith('premises:')) {
-          const parts = cond.slice(9).split('&').filter(Boolean)
-          for (const part of parts) {
-            if (part.includes('==') || part.includes('>=') || part.includes('<=') || part.includes('>') || part.includes('<')) {
-              // round 14 修复：`FOO==N` 是**前提权重值比较**（erArk get_weight_from_premise_dict
-              // :224-237 语义），不是条件路径——原走 evaluateCondition 把 FOO 解析为 0
-              // （N!=0 时恒 false 静默淘汰行；==0 恒 true 静默放行）。用前提权重值比较
-              const m = part.match(/^([A-Za-z_][\w]*)\s*(==|>=|<=|>|<)\s*(-?\d+)$/)
-              if (!m) return false // 无法解析的比较形式 → 淘汰（不静默错误结果）
-              const weight = weightAllToOne([m[1]], premiseCtx)
-              const n = Number(m[3])
-              const ok = m[2] === '==' ? weight === n
-                : m[2] === '>=' ? weight >= n
-                  : m[2] === '<=' ? weight <= n
-                    : m[2] === '>' ? weight > n
-                      : weight < n
-              if (!ok) return false
-            } else {
-              if (!conditionEngine.evaluatePremises([part], premiseCtx)) return false
-            }
-          }
-        } else {
-          try {
-            const gc = getContext()
-            if (!conditionEngine.evaluate(cond, gc)) return false
-          } catch { return false }
-        }
+        // 注释：条件 = 完整表达式（premise(X) 命名引用内联；`premise(FOO) == N` 是前提
+        // 权重值比较——erArk get_weight_from_premise_dict 语义，表达式引擎原生支持）
+        try {
+          const gc = getContext()
+          if (!conditionEngine.evaluate(cond, gc)) return false
+        } catch { return false }
       }
       return true
     })

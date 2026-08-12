@@ -6,83 +6,83 @@ variable = "mouth"
 description = "口——完整的描述文本"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "湿润温暖光滑细腻，散发着甜美气息的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔软湿润微微泛红，触感温热诱人的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "温度适宜内壁光滑，带着轻微甜味的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "黏膜细腻湿润透亮，触感温热舒适的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "舌尖灵活湿润粉嫩，散发诱人气息的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "内壁光滑湿润紧致，充满弹性触感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "唇瓣柔软内腔温热，散发淡淡甜香的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "咽喉湿润触感细腻，散发迷人气息的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "舌面光滑湿润灵活，带着微微体温的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "内腔温度宜人湿度适中，触感柔嫩的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "唇齿间湿润光滑，触碰时带来舒适感的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "粉嫩湿润内壁细腻，散发微甜气息的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "喉咙深处温暖湿润，触感柔软舒适的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "唾液适中内壁光滑，散发淡淡香气的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "口腔内壁细嫩湿润，温度恰到好处的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "舌尖柔软灵活敏感，带着微微湿润的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "内腔湿润富有弹性，散发迷人体香的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "唇舌间温热湿滑，触感细腻舒适的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "黏膜光滑有光泽，带着适宜温度的{mouth_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "唇齿湿润口腔温暖，散发诱人气息的{mouth_s}"
 
 [[entries]]
@@ -446,123 +446,123 @@ conditions = "selected.talents.処女 == 1&selected.abilities.口喉感度.level
 context = "舌尖的每一次吮吸都能带来灭顶快感的极品{mouth_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "唇瓣小巧紧闭，舔舐反应迟钝的女儿口腔"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "牙齿整齐干净，对摩擦感知迟缓的女儿小嘴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "唾液分泌不足，对侵入几无感觉的亲生女儿嘴巴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "咽喉湿润度不足，对深入刺激不敏感的女儿嘴穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "内壁光滑却感觉迟钝，对扩张无反应的女儿内腔"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "舌头柔软却不灵活，对触碰反应平淡的亲女儿肉洞"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "喉咙狭窄干燥，对深入缺乏快感的亲生女儿口穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "唇齿黏膜稚嫩，但对侵犯几无感觉的女儿樱唇"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "温暖却对摩擦没有快感反应的亲女儿嘴儿"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "内部柔软紧致，却对性刺激反应迟钝的女儿唇舌"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "唇舌湿润柔软，对轻舔就有反应的女儿敏感口腔"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "咽喉黏膜湿滑敏感，被侵入会颤抖的女儿小嘴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "内壁光滑湿润，舔舐会流出更多唾液的女儿嘴巴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "内腔内壁分布着明显的敏感带的亲女儿口穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "舌头柔软灵活，品尝时会有明显反应的女儿嘴穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "喉咙湿润有弹性，被深入能产生快感的女儿肉洞"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "唾液分泌丰富，被占满时会有愉悦感的亲生女儿樱唇"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "唇齿温度较高，舌头对刺激敏感的亲女儿肉洞"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "咽部内壁柔嫩敏感，被侵犯时会发出呻吟的女儿嘴儿"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "湿热紧致，唾液带着甜味的敏感女儿唇舌"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "极度敏感，轻触就会引起强烈颤抖的女儿淫嘴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "舌头布满密集神经，轻微刺激就会高潮的亲生女儿咽喉"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "内腔黏膜过度敏感，被侵入就会痉挛的女儿肉穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "喉咙深处异常敏感，高潮时会紧缩的女儿嘴巴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "唇齿每一处都布满敏感点的极品女儿嘴穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "舌头和内腔内壁异常灵敏，轻触就颤抖的亲女儿口穴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "唾液过度分泌，被舔舐就会达到高潮的女儿淫嘴"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "咽部神经过度发达，被侵犯就会流水的亲生女儿肉洞"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "喉咙极度敏感，深入时会引发全身痉挛的女儿樱唇"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "嘴儿湿热多汁，轻微刺激就会高潮连连的{mouth_s}"
 
 [[entries]]

@@ -6,43 +6,43 @@ variable = "clitoris"
 description = "clitoris——完整的描述文本"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "充血挺立的肉粒泛着水润光泽，随着揉弄不停颤动搏动着的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "敏感的花蕾从包皮下探出头来，被触碰便立刻涨大发烫起来的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "娇嫩的蜜豆渗着晶亮黏液，稍加拨弄就瑟瑟发抖挺翘起来的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "饱满的肉核滚烫又坚硬，每次摩擦都激起阵阵酥麻抽搐颤动的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "湿滑的花核微微肿胀发红，随指尖节奏跳动着渗出爱液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "敏感至极的小豆挺立颤抖，被吸吮时便剧烈搏动收缩起来的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "充血发亮的肉蕾表面湿润，轻轻一碰便痉挛着躲闪又凑近的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "肿胀的蜜核泛着艳红光泽，被揉搓时不停抽动分泌黏液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "娇小的花珠挺翘着渗出蜜汁，每次触弄都颤栗着涨得滚烫的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "敏感的肉粒褪去包皮探出，湿漉漉地跳动着贪求更多爱抚的{clitoris_s}。"
 
 [[entries]]
@@ -1726,281 +1726,281 @@ conditions = "selected.talents.人妻 == 1&selected.阴蒂 >= 90000"
 context = "超乎寻常敏感的成熟蒂核持续抽搐，哪怕气息拂过都能引发新一轮痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level <= 3"
 context = "初次承受亲生父亲指尖轻触的青涩豆蕊，还带着生涩不安微微躲进包皮深处的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level <= 3"
 context = "从未被人开发过的稚嫩肉核，在父亲舌尖挑逗下才羞怯地探出一点头颅的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level <= 3"
 context = "带着父女初次接触新奇感的娇小凸起，触碰之下浑身紧绷轻轻颤动不已的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level <= 3"
 context = "尚未熟悉快感滋味的敏感豆粒，被父亲指腹轻轻捏住便条件反射般收紧的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level <= 3"
 context = "刚开始被亲生父亲手指开发的青涩肉芽，包皮下藏着还未学会挺立起来的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level <= 3"
 context = "对刺激反应仍显迟钝的稚嫩花核，只有父亲反复舔弄才会略微充血肿胀的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level <= 3"
 context = "初尝父女禁忌情事滋味的娇嫩肉粒，被指腹摩擦时生涩地渗出些许透明体液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level <= 3"
 context = "还带着处子般生涩触感的敏感豆蕊，在父亲手指下小心翼翼探头轻轻颤抖的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level <= 3"
 context = "尚未习惯被亲生父亲揉捏把玩的青涩凸起，每次触碰都带着新奇战栗微微发麻的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level <= 3"
 context = "刚被父亲温热的呼吸拂过便瑟缩起来的娇小肉核，藏在包皮里生涩地轻轻跳动的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "已被父亲调教出几分敏感的肉核，稍加揉搓便迅速充血挺立探出包皮的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "逐渐熟悉父亲抚弄手法的娇嫩豆蕊，指尖轻轻一碰就微微渗出湿润汁液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "对父亲的触碰已有明显回应的敏感凸起，轻轻拨弄便颤巍巍地挺立发烫的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "被亲生父亲开发出些许快感的肉粒，包皮微微褪开露出充血泛红的顶端的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "习惯了父亲舌尖舔舐的敏感花核，每次刺激都会明显跳动着渗出体液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "逐渐苏醒变得敏感的娇小豆蕊，被父亲指腹碾磨时便微微颤抖着挺立起来的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "已能感受到明确快感的青涩肉核，在父亲反复揉捏下渐渐肿胀发烫湿润的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "对亲生父亲的抚摸变得敏感的凸起，轻轻一捻便颤抖着从包皮中探出头来的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "被父亲调教得逐渐懂得回应的肉芽，稍受刺激就充血挺立并微微渗液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "熟悉了父亲手法后变敏感的花蕊，每次触碰都带着酥麻战栗迅速肿胀的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 6"
 context = "被父亲彻底开发到极致敏感的肉核，仅仅轻触便瞬间充血挺立剧烈颤抖的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 6"
 context = "对亲生父亲的气息都会有反应的娇嫩豆蕊，稍稍靠近便自行探出包皮渗液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 6"
 context = "敏感到极点的肉粒早已褪尽包皮遮掩，只要父亲指尖轻扫便痉挛着挺立的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 6"
 context = "被父亲调教成随时待命状态的凸起，一丝气流拂过都能引发剧烈的颤抖的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 6"
 context = "极度敏感几近失控的娇嫩花核，父亲舌尖尚未触及便已经充血肿胀湿透的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 6"
 context = "只属于亲生父亲专享的超敏感肉芽，轻轻一碰便浑身痉挛淫水泛滥不止的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 6"
 context = "已被开发得异常敏感的娇小豆蕊，稍有摩擦便剧烈跳动着涌出大量透明汁液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 6"
 context = "对任何触碰都反应剧烈的敏感肉核，被父亲指腹一碰便痉挛着挺立发烫的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 6"
 context = "敏感度超乎寻常的父女专属花蕊，哪怕隔着薄布摩擦也能引发强烈颤动的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.阴蒂感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.阴蒂感度.level > 6"
 context = "完全暴露在外随时颤抖的敏感凸起，父亲的呼吸拂过都能令其剧烈痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 < 1000"
 context = "刚刚经历过一次轻微阴蒂小高潮的娇嫩豆蕊，此刻还带着余韵微微抽搐着的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 < 1000"
 context = "初次尝到快感滋味后微微肿胀的肉核，被父亲揉弄时仍残留着高潮痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 < 1000"
 context = "刚体验过淡淡快意的敏感凸起，因为方才的小高潮而变得格外湿润发烫的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 < 1000"
 context = "尝过一丝轻微快感后仍在颤动的肉粒，带着刚经历过父亲爱抚的余温的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 < 1000"
 context = "迎来一次轻度阴蒂高潮后微微泛红的花核，此刻还残留着阵阵酥麻痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 < 1000"
 context = "刚被父亲玩弄出些许快感的娇小豆蕊，经历过一次浅浅高潮后仍在微微跳动的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 < 1000"
 context = "初尝甜头后变得湿润的敏感肉核，方才那次轻微高潮让它还残留着颤抖余韵的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 < 1000"
 context = "体验过一次轻柔阴蒂高潮的凸起，此刻带着满足的余韵缓缓平复着痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 < 1000"
 context = "刚经历过父亲手指带来小高潮的肉芽，还残留着淡淡快感未能完全平息的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 < 1000"
 context = "尝到轻微快感余韵未消的娇嫩花蕊，方才的小高潮让它变得湿滑而敏感的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "已经反复经历过数次阴蒂高潮的娇嫩肉核，充血肿大后依旧渗着黏稠爱液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "被父亲玩弄到多次痉挛高潮的敏感豆蕊，此刻已经肿胀发红颤动不止的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "反复经历数次阴蒂高潮后变得敏感异常的凸起，稍加触碰便再度痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "在父亲手指下已经高潮好几次的肉粒，包皮完全褪去露出艳红肿胀顶端的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "数次快感积累后变得格外湿润的花核，每次抽动都带出更多黏腻爱液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "被亲生父亲玩到连续高潮几回的娇小豆蕊，此刻正微微抽搐着不停渗液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "经历过多次阴蒂高潮而肿胀发烫的肉核，敏感得只要轻碰便再次痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "已尝过数次高潮滋味变得贪婪的敏感凸起，充血挺立着渴求更多刺激的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "被父亲揉弄至反复高潮几次的花蕊，此刻已经又红又肿仍在微微颤动的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "数次痉挛高潮后愈发敏感的肉芽，包裹着一层薄薄爱液不停轻轻跳动的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "被父亲玩弄到强烈高潮许多次的敏感肉核，此刻已经肿得又红又大不断抽搐的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "经历过无数次剧烈阴蒂高潮的娇嫩豆蕊，早已敏感到连轻风都能引发痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "反复强烈高潮后彻底肿胀的凸起，充血程度惊人几乎无法再承受刺激的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "被亲生父亲玩到失控高潮许多次的肉粒，此刻正剧烈抽搐着涌出大量爱液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "高潮次数多到数不清的敏感花核，肿胀发烫得连指尖轻触都会引发痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "反复经历强烈快感冲击的娇小豆蕊，早已充血到极限依旧不停颤动渗液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "被父亲榨取出无数次高潮的肉核，此刻已经红肿发烫敏感得难以再触碰的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "强烈快感反复冲刷后几近麻木又敏感的凸起，稍触即痉挛喷出黏稠爱液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "经历过许多次剧烈高潮的父女专属花蕊，肿大挺立着仍在不受控制地抽搐的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "被玩弄到连续强烈高潮的敏感肉芽，此刻已经肿胀发紫仍旧颤抖不止的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 90000"
 context = "经历过超越极限次数高潮的敏感肉核，此刻已经肿胀到极致仍不停剧烈痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 90000"
 context = "被父亲榨取到数不清高潮次数的娇嫩豆蕊，早已失控般持续抽搐着涌出爱液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 90000"
 context = "高潮多到失去意识边缘的敏感凸起，肿大发紫却依旧无法停止颤抖痉挛的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 90000"
 context = "被亲生父亲玩弄至崩溃高潮无数次的肉粒，此刻已经完全麻痹却仍剧烈抽搐的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 90000"
 context = "承受着超乎常人极限快感冲击的花核，连续高潮到失禁般涌出大量爱液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 90000"
 context = "敏感度早已突破极限的娇小豆蕊，哪怕空气流动都能引发新一轮剧烈高潮的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 90000"
 context = "被父亲玩坏到持续痉挛不止的肉核，肿胀发紫已经彻底沦为高潮机器般的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 90000"
 context = "数不清高潮次数后彻底失控的敏感凸起，此刻仍在不受控制地喷涌爱液抽搐的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 90000"
 context = "被榨取到理智崩溃的父女专属花蕊，肿大到极致依旧持续痉挛渗出黏液的{clitoris_s}。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.阴蒂 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.阴蒂 >= 90000"
 context = "承受无止境高潮浪潮冲击的肉芽，早已敏感到失神仍不断颤抖抽搐渗液的{clitoris_s}。"

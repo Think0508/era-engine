@@ -1486,283 +1486,283 @@ conditions = "selected.talents.小足 == 1&selected.talents.人妻 == 1&selected
 context = "人妻柔嫩精致的娇小脚趾敏感程度超越极限，稍加触碰就不住颤动的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "娇小玲珑如瓷器般精致细腻，散发着女儿特有的稚嫩奶香的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "纤细白嫩的小巧脚掌带着淡淡体温，触感柔软得令父亲心痒难耐的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "玲珑可爱的足弓弧度完美，皮肤细腻得宛如刚出浴的少女的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "精巧的脚趾排列整齐粉嫩诱人，带着女儿身上独有的纯净气息的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "小巧脚背光滑如绸缎般细腻，虽然皮肤反应迟钝却依旧让人垂涎的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "娇嫩的足心柔软细滑带着微微体温，是父亲最想亵玩的禁忌部位的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "纤小的脚踝线条优美精致，皮肤白皙细腻得仿佛吹弹可破的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "粉嫩玲珑的足尖娇小可爱，虽感度不高却仍散发着少女诱惑的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "细嫩脚掌小得刚好盈握，带着女儿身体特有的清甜体香的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "白皙娇小的玉足精巧如艺术品，肌肤细腻触感温软让人爱不释手的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "精致娇小仿若掌心可爱玩物般粉嫩水润，触感柔滑细腻敏感度极高的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "玲珑小巧皮肤白皙中透着诱人的淡淡粉红，柔嫩温热带着少女体温的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "脚背纤薄足弓精致弧线柔美绸缎般嫩滑，散发着女儿身上特有甜香的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "脚趾小巧根根圆润粉嫩宛如豆蔻含苞初绽，柔软得可以包裹所有物体的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "足弓娇小曲线优美足心如凝冻般细滑白嫩，散发着清淡的少女体香的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "娇小玲珑精致得令人爱不释手的细嫩雪白，触感温热如棉花般柔软的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "纤小精致肌肤粉白宛如豆腐般细滑水嫩，轻轻触碰就会慢慢泛红的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "脚掌娇小柔软细腻带着少女特有芬芳体温，触感如同上好丝绸般顺滑的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "小巧肉嘟嘟粉扑扑仿若幼兽软垫般温润柔软，轻触便能感受敏感温热的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "精巧如羊脂美玉般雪白滑嫩诱人令人垂涎，敏感度适中会随触碰泛红的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "小巧精致纤细白嫩，仅仅轻触便敏感得微微颤抖，脚趾蜷缩抽搐的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "娇小玲珑细嫩粉红，皮肤敏感至极稍稍摩擦就止不住痉挛的亲生女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "精致柔滑触感绵密，被父亲抚摸就羞耻地蜷起脚趾不断发抖的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "纤小白皙敏感至极，只是轻轻舔弄脚心就让她淫叫不止的亲生女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "小巧敏感不住颤抖，爸爸舔舐脚趾就忍不住扭动呻吟的乱伦女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "精巧粉嫩柔软细滑，被父亲握住就全身泛红发颤难以自持的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "娇小白净触感细腻，稍稍揉捏脚掌心就令她淫水泛滥瘫软的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "纤细可爱敏感异常，父亲吮吸脚趾便让她浑身酥麻直流淫水的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "小巧玲珑滑嫩细腻，碰触皮肤便敏感得浑身战栗甜叫不断的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "精致细小粉白娇嫩，被父亲爱抚玩弄就发出淫荡呻吟的亲生女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "娇小玲珑如同珍宝般精致细腻，带着女儿特有的软嫩触感因快感而轻颤的{feet_s}"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "纤细白皙宛如瓷器般光滑剔透，因父亲的爱抚而微微泛红敏感颤动的{feet_s}"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "小巧稚嫩的足弓精致可爱，被亲生父亲抚摸时因酥麻感而脚趾蜷缩的{feet_s}"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "柔软细滑散发着少女特有的体香，因父亲的触碰而产生轻微快感的{feet_s}"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "粉嫩娇小仿佛能握在掌心，承受父亲抚摸时微微颤抖泛起红晕的{feet_s}"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "玲珑剔透的脚趾排列整齐，因父亲的爱抚而皮肤泛起淡淡酥麻感的{feet_s}"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "娇嫩敏感的足心光滑细腻，被父亲指尖划过时忍不住轻颤的{feet_s}"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "精巧可爱的小脚散发稚嫩气息，在父亲的掌心中因快感而微微抽搐的{feet_s}"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "纤小柔滑的脚背如丝绸般细腻，承受父亲爱抚时皮肤感到轻微酥痒的{feet_s}"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "稚嫩娇小的足踝线条优美，因父亲的触碰而产生微弱快感轻轻发颤的{feet_s}"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "娇小玲珑泛着敏感粉红，因快感而微微颤抖蜷缩的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "小巧细嫩被父亲玩弄得潮红湿润，脚趾敏感紧绷的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "精致粉嫩足弓微微颤动，因多次高潮变得格外敏感的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "纤细白皙泛着淫靡红晕，触碰便抖个不停的女儿的小巧{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "柔嫩光滑被爱抚至敏感潮湿，脚踝微微泛红的女儿娇小的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "玲珑剔透足心泛着情欲粉色，被父亲揉弄得酥麻难耐的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "小巧柔软的脚掌因快感而蜷缩，脚趾紧绷颤抖着的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "细腻紧致足弓高高拱起，因皮肤敏感而不断抽搐的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "粉嫩娇小的脚背泛着红潮，被摩擦得湿润发烫的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "精巧细嫩被揉捏至酥软无力，脚趾敏感地轻轻蜷起的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "娇小玲珑敏感到极点，稍触便剧烈颤抖痉挛的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "纤小细嫩如少女般精致，轻抚即高潮痉挛的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "粉嫩光滑小巧诱人，触碰便浑身酥麻颤栗的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "柔嫩精巧脚趾蜷缩，敏感到一摸就抽搐的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "细腻滑嫩足弓微颤，被亲近时不住痉挛的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "白皙娇嫩小巧玲珑，稍加抚弄便全身颤抖的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "精致秀美敏感异常，轻舔便脚趾蜷紧的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "娇小柔软触感细腻，被玩弄时止不住痉挛的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "纤细粉嫩脚背微红，敏感到脚心也在抽搐的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "玲珑剔透足弓高耸，稍一触碰便浑身酥软的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "娇小玲珑敏感到极点，稍稍触碰便剧烈颤抖抽搐的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "精致纤巧肉感十足，轻轻一摸就止不住痉挛喷水的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "白嫩细腻如同豆腐，触碰瞬间就高潮绝顶不断的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "小巧粉嫩脚趾蜷缩，被玩弄就浑身酥麻抽搐的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "柔软细嫩足弓优美，稍加抚摸便潮吹不止的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "娇嫩光滑肤若凝脂，被把玩就高潮痉挛失禁的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "玲珑秀气脚尖粉红，肌肤接触便止不住颤栗的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "纤小娇柔足心微红，轻揉按压就痉挛抽搐的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "稚嫩精巧脚掌绵软，被舔舐便浑身战栗喷淫的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.小足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.小足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "细腻滑嫩小巧可爱，抚弄即刻高潮到痉挛的{feet_s}。"
 
 [[entries]]
@@ -3646,281 +3646,281 @@ conditions = "selected.talents.长足 == 1&selected.talents.人妻 == 1&selected
 context = "流畅优美的长足因超敏感而不停颤栗，泛红发烫完全失控的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "修长白嫩足弓高挺的少女玉足，肌肤稚嫩触感微凉对刺激不敏感的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "女儿纤长秀气的美足在手中微微颤动，柔软绵滑却几乎感受不到快感的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "线条优美如同精雕细琢的修长脚掌，触感光滑但反应迟钝的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "少女修长匀称的玉趾在掌心乖巧舒展，粉嫩柔软却难以激起快感的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "亲生女儿纤长优雅的脚背在抚弄下泛起嫩红，稚嫩细腻感度却不高的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "比例完美的少女长足在指尖下轻轻扭动，肌肤嫩滑触感却略显麻木的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "女儿修长白皙的脚掌散发青涩体香，虽然敏感度低却让人欲罢不能的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "纤细优美的少女玉足在摩擦中微微发热，皮肤细腻却对触碰反应迟缓的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "女儿那双秀气修长的脚踝流露柔美曲线，肌肤滑嫩触感却淡薄的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "少女纤长洁白的足趾因被玩弄而缓缓舒张，稚嫩柔润却感度不佳的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "修长白皙触感敏锐，足弓线条优美令爸爸爱不释手的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "纤长粉嫩充满弹性，稍加触碰皮肤便泛起诱人红晕的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "比例匀称肌肤细腻，脚趾修长敏感轻抚便微微颤抖的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "线条流畅足背白净，每次摩擦都让女儿娇躯轻颤的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "优雅修长足弓高挺，肌肤敏感轻触便酥麻难耐的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "白嫩柔软带着少女体温，纤细脚趾受刺激蜷缩的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "修长柔滑肤质细腻，轻轻揉捏便让她娇喘连连的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "纤巧玲珑足型优美，敏感的肌肤在抚摸下微微泛红的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "脚踝纤细足背修长，每一次揉按都让皮肤酥痒难忍的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "柔嫩光滑线条流畅，足心被按压便忍不住轻声呻吟的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "修长优雅线条流畅足弓精致美丽，肌肤敏感稍触就如电流窜过般颤抖的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "纤长白皙比例匀称曲线完美动人，轻碰就忍不住敏感轻颤的细腻柔嫩的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "修长柔嫩高贵典雅脚趾纤长秀气，稍加刺激就敏感地微微抽搐颤动的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "线条流畅比例完美足弓挺秀高耸，触感细腻敏感到轻碰就阵阵酥麻的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "纤细修长如艺术品般优美迷人，皮肤薄嫩敏感揉按即引发强烈快感的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "修长优雅弧度完美趾头纤细精巧，敏感脆弱的肌肤一抚就微微抽搐的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "比例匀称线条优美足弓高挺流畅，肤质细腻敏感到爱抚时就止不住战栗的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "修长白嫩脚踝纤细足弓曲线优美，轻轻揉捏敏感肌肤就引发全身酥麻的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "纤长秀气高贵典雅趾甲粉嫩精致，碰触高敏感肌肤立刻引起阵阵颤抖的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "修长柔美比例完美脚背线条流畅，敏感柔嫩触碰即刻就难耐扭动的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿修长的玉足泛着淡淡红晕，脚趾因轻微快感而微微蜷缩的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "纤长白嫩的足弓优雅弯曲，在父亲的抚摸下微微颤抖的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿那双修长的脚背光滑细腻，皮肤泛起轻微酥麻感的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "柔嫩纤细的脚趾舒展绷直，肌肤因轻度刺激而微微发烫的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "线条流畅的长足散发着少女体香，在爱抚中轻轻颤栗的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿白皙修长的脚踝纤细诱人，足心泛着淡淡粉红的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "比例匀称的玉足柔软温热，脚趾在轻微快感中不自觉张开的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "纤长优雅的足弓弯成诱人弧度，敏感皮肤微微泛红的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿光滑细嫩的脚掌带着体温，在触碰下产生阵阵酥痒的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "修长秀气的脚趾粉嫩透亮，因轻度快感而微微蜷起的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "修长纤细因高潮而敏感难耐，肌肤泛着淫靡红晕的女儿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "优雅细长脚趾不住蜷缩，皮肤因快感变得格外敏感诱人的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "线条流畅足弓完美弯曲，触碰便引发少女娇喘的骚浪的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "白皙修长因多次高潮而潮红敏感，轻抚便颤抖不止的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "细嫩纤长足心敏感发烫，散发着女儿淫乱体香的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "比例匀称优美修长，因皮肤快感而微微痉挛颤动的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "纤细柔嫩脚背泛红发烫，高潮余韵中敏感到发麻的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "修长脚趾灵活敏感抽搐，少女肌肤因快感而滚烫潮湿的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "优雅细腻足弓绷紧颤抖，经历数次高潮后更加淫荡的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "柔嫩细长触感滑腻温热，被父亲玩弄到敏感失控的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "修长纤细皮肤极度敏感，被父亲的轻触就让女儿颤抖高潮不止的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "纤长优美足弓曲线完美，被父亲抚摸就忍不住痉挛抽搐的女儿娇嫩的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "线条流畅高挑修长皮肤紧绷泛红，父亲的触碰让她浑身酥软不断高潮的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "高挑优美脚趾纤细粉嫩，即使轻抚也能让敏感的女儿浑身酥麻颤栗的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "纤长白嫩带着诱人的少女体香，敏感到被爸爸触碰就颤抖高潮的修长的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "足弓优美秀丽修长皮肤泛着红晕，因极度敏感而在父亲手中不断抽搐的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "线条优雅皮肤细腻滑嫩，每次被父亲抚摸都会痉挛高潮的女儿纤长粉嫩的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "修长敏感皮肤泛红微微颤抖，父亲稍稍触碰就让女儿浑身酥软不已的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "高挑纤细脚趾泛着淫靡红润光泽，轻触就能引发敏感女儿连续高潮的修长的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "纤长白皙散发着少女诱人体香，因皮肤极度敏感而在父亲手中不断颤栗的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "修长纤细触感敏锐至极，最轻微的抚触就会浑身颤栗不止的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "线条优美比例匀称，敏感得连气流都能引发强烈快感潮的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "足弓弧度完美柔嫩白皙，哪怕被轻轻碰触也会痉挛高潮的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "纤长脚趾敏感到发颤，轻抚足心就让女儿失控尖叫的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "肌肤细腻柔嫩修长优雅，被触碰就浑身酥麻不断抽搐的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "脚背光滑足弓高挺，敏锐到轻触就会双腿发软颤抖的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "皮肤白嫩吹弹可破，稍微爱抚就让少女浑身痉挛的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "脚踝纤细线条流畅，敏感到触碰瞬间就沉沦于快感中的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "足尖修长肤如凝脂，任何刺激都会令女儿完全失去理智的{feet_s}。"
 
 [[entries]]
-conditions = "selected.talents.长足 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.长足 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "脚掌柔软足趾纤长，过度敏感到被抚摸就连续高潮的{feet_s}。"

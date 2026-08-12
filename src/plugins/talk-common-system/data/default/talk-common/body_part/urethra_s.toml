@@ -8,72 +8,72 @@ parts = ["A", "B"]
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "温热"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "湿润"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "温暖"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔软"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "湿热"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "光滑"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "湿滑"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "嫩滑"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "紧致"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "敏感"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "狭窄"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔嫩"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "细腻"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "紧窄"
 
 [[entries]]
@@ -213,7 +213,7 @@ context = "润泽"
 
 [[entries]]
 part = "A"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "禁忌"
 
 [[entries]]
@@ -273,132 +273,132 @@ context = "禁忌"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_not_sleep_h_awake_but_pretend_sleep)"
 context = "松弛"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_not_sleep_h_awake_but_pretend_sleep)"
 context = "半开"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_sleep_h_awake_but_pretend_sleep)"
 context = "伪装"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_sleep_h_awake_but_pretend_sleep)"
 context = "克制"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_sleep_h_awake_but_pretend_sleep)"
 context = "隐忍"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_2"
+conditions = "premise(t_unconscious_flag_2)"
 context = "酒气"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_2"
+conditions = "premise(t_unconscious_flag_2)"
 context = "半张"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_3"
+conditions = "premise(t_unconscious_flag_3)"
 context = "冻结"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_4"
+conditions = "premise(t_unconscious_flag_4)"
 context = "自然"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_5"
+conditions = "premise(t_unconscious_flag_5)"
 context = "透明"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_blockhead)"
 context = "被迫"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level <= 4"
 context = "尴尬"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level <= 4"
 context = "窘迫"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "炫耀"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "挑逗"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "大胆"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "表演般"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "自信"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "展示"
 
 [[entries]]
 part = "A"
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "露骨"
 
 [[entries]]
 part = "A"
-conditions = "premises:FALL_LEVEL_E_1"
+conditions = "premise(FALL_LEVEL_E_1)"
 context = "困惑"
 
 [[entries]]
 part = "A"
-conditions = "premises:FALL_LEVEL_E_2"
+conditions = "premise(FALL_LEVEL_E_2)"
 context = "爱慕"
 
 [[entries]]
 part = "A"
-conditions = "premises:FALL_LEVEL_E_-1"
+conditions = "premise(FALL_LEVEL_E_-1)"
 context = "紧绷"
 
 [[entries]]
 part = "A"
-conditions = "premises:FALL_LEVEL_E_-1"
+conditions = "premise(FALL_LEVEL_E_-1)"
 context = "抗拒"
 
 [[entries]]
 part = "A"
-conditions = "premises:FALL_LEVEL_E_-2"
+conditions = "premise(FALL_LEVEL_E_-2)"
 context = "顺服"
 
 [[entries]]
 part = "A"
-conditions = "premises:FALL_LEVEL_E_-2"
+conditions = "premise(FALL_LEVEL_E_-2)"
 context = "接受"
 
 [[entries]]
@@ -448,32 +448,32 @@ context = "陌生"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_first_u_sex_in_today"
+conditions = "premise(t_first_u_sex_in_today)"
 context = "初开"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_first_u_sex_in_today"
+conditions = "premise(t_first_u_sex_in_today)"
 context = "新鲜"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_first_u_sex_in_today"
+conditions = "premise(t_first_u_sex_in_today)"
 context = "肿胀"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_first_u_sex_in_today"
+conditions = "premise(t_first_u_sex_in_today)"
 context = "微红"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_first_u_sex_in_today"
+conditions = "premise(t_first_u_sex_in_today)"
 context = "敏感"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_first_u_sex_in_today"
+conditions = "premise(t_first_u_sex_in_today)"
 context = "疼痛"
 
 [[entries]]
@@ -583,52 +583,52 @@ context = "抽搐"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "尿道"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "尿道口"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "肉洞"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "小穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "花穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "尿穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "小孔"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "入口"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "通道"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "孔道"
 
 [[entries]]
@@ -723,17 +723,17 @@ context = "清穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "女儿穴"
 
 [[entries]]
 part = "B"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "亲女儿"
 
 [[entries]]
 part = "B"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "血脉"
 
 [[entries]]

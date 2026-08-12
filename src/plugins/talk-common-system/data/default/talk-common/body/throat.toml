@@ -2406,401 +2406,401 @@ conditions = "selected.talents.人妻 == 1&selected.abilities.舌技.level > 6"
 context = "丰润喉道宽阔湿热以娴熟技艺完美驾驭粗大肉棒，饱满肉壁灵活收缩刺激龟头敏感点的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "爱女稚嫩咽道湿润紧窄却对父亲肉棒反应迟钝，娇嫩肉壁缓缓蠕动毫无淫唾渗出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "亲女青涩喉腔狭小温热被填满却感觉麻木，幼嫩肉壁机械收缩缺乏主动吮吸的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "女儿娇嫩喉道湿暖松软对粗大抽插毫无反应，少女内壁松散乏力提供不了快感的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "爱女稚气食道狭长温润对父亲龟头知觉迟钝，柔软咽肉缓慢吞咽只是被动承受的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "亲女青嫩喉肉湿热柔软感度低下毫无淫荡反应，娇软肉腔机械含住缺乏主动收缩的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "女儿禁忌咽道紧窄温润对深插无动于衷，稚嫩喉壁少量分泌涎液勉强润滑龟头的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "爱女青涩喉腔窄小湿暖夹紧粗大却毫无快感，娇嫩肉道被动张合缺少淫水反应的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "亲女稚嫩咽肉柔软温润被父亲戳刺却麻木无感，幼软内腔湿润机械收紧无淫唾涌出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "女儿青春喉室狭窄湿热反应迟钝缺乏淫水分泌，娇软肉壁仅微微抽动被动包裹巨物的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level <= 3"
 context = "爱女稚气咽道紧窄湿润含住肉棒却感觉空洞，柔软肉壁缓慢吞咽乏力收缩的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "爱女娇嫩咽道湿暖紧窄开始享受父亲粗大抽插，稚嫩肉壁柔软收缩主动吮吸龟头的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "亲女青涩喉腔狭小温热涌出淫唾润滑硬挺肉棒，幼嫩肉壁规律收缩展现明显愉悦反应的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "女儿稚气喉道紧窄湿润被深戳引出阵阵酥麻，娇软内腔主动包裹吮吸粗壮龟头的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "爱女稚嫩食道狭长温热对抽插涌起明显快感，柔软咽肉规律收缩主动配合粗硬节奏的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "亲女青嫩喉肉湿暖温润每次戳刺都引发愉悦颤抖，娇软内壁配合吞咽淫唾横流的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "女儿禁忌咽腔窄小湿热享受被填满的胀痛快感，稚嫩肉壁主动吮吸涌出大量淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "爱女娇小喉道紧致湿润被插入引发明显愉悦，幼嫩肉壁规律蠕动主动取悦粗大龟头的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "亲女青涩喉腔湿暖窄小涌出阵阵快感波动，柔软肉壁配合抽插节奏主动收缩吮吸的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "女儿稚嫩食道狭长温润感受龟头戳刺带来愉悦，娇软咽肉规律吞咽分泌大量淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "爱女青春喉道紧窄湿热被填满涌起明显快感，柔嫩肉壁主动收缩淫水溢满整个咽喉的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "爱女稚嫩喉腔窄小湿热每次戳刺都引发剧烈颤抖，娇嫩肉壁失控收缩淫唾喷涌而出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "亲女青涩咽道狭窄温润仅被舌尖轻触就酥软痉挛，幼软肉壁疯狂吮吸涌出大量淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "女儿娇嫩喉肉湿滑紧致每次抽插都引爆全身电流，稚嫩内腔失控痉挛淫唾横流不止的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "爱女青嫩食道紧窄湿热龟头戳刺引发剧烈痉挛，柔软咽肉疯狂收缩配合喷涌的淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "亲女稚气喉腔窄小湿暖触感极度敏感不停抽搐，娇软肉壁剧烈痉挛大量淫唾横溢的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "女儿禁忌咽道狭窄温热稍受刺激便剧烈痉挛，柔嫩肉壁疯狂吮吸喷涌淫水沾湿龟头的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "爱女娇小喉道紧致湿滑每次戳刺都酥软到颤栗，稚嫩肉壁失控收缩淫唾瞬间满溢出来的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "亲女幼嫩喉腔湿暖窄小敏感至极颤抖不止，柔软肉壁稍受触碰便疯狂吮吸喷涌淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "女儿稚嫩食道狭长温润每次抽插都引爆剧烈反应，娇软咽肉痉挛不止淫唾溢满整个口腔的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.口喉感度.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.口喉感度.level > 6"
 context = "爱女青春喉道紧窄湿热触觉灵敏到难以承受，柔嫩肉壁剧烈抽搐喷涌大量黏稠淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "爱女稚嫩喉道紧窄湿暖体验初尝快感的微微酥麻，娇嫩肉壁轻微抽动渗出少量淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "亲女青涩咽腔狭窄温热刚刚领略浅淡快感，幼软肉壁柔和收缩涌出淡淡淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿娇嫩喉肉湿润紧致初次体验高潮的轻颤，稚嫩内腔细微抽搐少量淫唾润湿粗大龟头的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "爱女青嫩食道紧窄湿热刚体会到淡淡的酥麻快感，柔软咽肉轻微蠕动渗出晶亮淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "亲女稚气喉腔窄小温润浅尝快感的微弱悸动，娇软肉壁柔和收缩泌出少量淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿禁忌咽道狭窄湿热体验初次高潮的细微颤动，柔嫩肉壁轻轻抽动涌出淡淡的淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "爱女娇小喉道紧致湿润初尝快感的浅浅悸动，稚嫩肉壁微微收缩涌现少量晶莹淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "亲女幼嫩喉腔湿暖窄小才刚刚体会到浅淡愉悦，娇软肉壁柔和颤抖渗出微量淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿稚嫩食道狭长温润初次感受高潮的细微酥麻，娇软咽肉柔和蠕动泌出淡淡淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "爱女青春喉道紧窄湿热刚刚领略到淡淡的快感，柔嫩肉壁微微收缩渗出少许淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "爱女稚嫩喉道紧窄湿暖已熟悉快感节奏的明显震颤，娇嫩肉壁规律收缩淫唾大量分泌的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "亲女青涩咽腔狭窄温热多次高潮后明显敏感，幼软肉壁有力吮吸涌出大量浓稠淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "女儿娇嫩喉肉湿润紧致经历数次高潮愈发柔软，稚嫩内腔有节奏抽搐喷涌淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "爱女青嫩食道紧窄湿热在反复高潮中变得灵敏，柔软咽肉律动收缩淫唾源源不绝涌出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "亲女稚气喉腔窄小温润高潮多次后明显愉悦，娇软肉壁规律抽动喷涌大量黏稠淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "女儿禁忌咽道狭窄湿热经过几轮高潮后感度提升，柔嫩肉壁有节奏吮吸淫唾大量溢出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "爱女娇小喉道紧致湿润历经数次高潮变得格外敏感，稚嫩肉壁律动收缩涌出滚烫淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "亲女幼嫩喉腔湿暖窄小已熟悉高潮的酥软节拍，娇软肉壁规律抽搐喷出大量黏稠淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "女儿稚嫩食道狭长温润数次高潮后变得格外湿滑，娇软咽肉律动抽搐涌出浓厚淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "爱女青春喉道紧窄湿热多次高潮使触觉变得灵敏，柔嫩肉壁有节奏收缩喷涌大量淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "爱女稚嫩喉道紧窄湿热在持续高潮中疯狂痉挛，娇嫩肉壁失控抽搐淫唾如喷泉般涌出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "亲女青涩咽腔狭窄温暖被无数次高潮调教得极度敏感，幼软肉壁狂乱收缩喷涌淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "女儿娇嫩喉肉湿滑紧致经历狂潮后疯狂抽搐，稚嫩内腔失控吮吸淫唾大量喷溅而出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "爱女青嫩食道紧窄湿热在反复狂潮中失去控制，柔软咽肉疯狂痉挛喷涌大量黏稠淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "亲女稚气喉腔窄小温润历经强烈高潮已彻底失控，娇软肉壁狂乱抽搐淫唾横流喷溅的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "女儿禁忌咽道狭窄湿热被强烈快感连续蹂躏失控，柔嫩肉壁疯狂吮吸喷涌大量淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "爱女娇小喉道紧致湿润在狂潮中疯狂痉挛收缩，稚嫩肉壁失控抽搐淫唾如泉水般喷涌的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "亲女幼嫩喉腔湿暖窄小在反复强烈高潮中酥软至极，娇软肉壁疯狂痉挛喷出大量黏液的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "女儿稚嫩食道狭长温润经历无数次狂潮失去节制，娇软咽肉狂乱抽搐淫唾不断喷涌而出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "爱女青春喉道紧窄湿热在持续强烈快感中彻底沦陷，柔嫩肉壁狂乱痉挛喷涌大量淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "爱女稚嫩喉道紧窄湿热被超越极限的快感彻底击溃，娇嫩肉壁不停痉挛淫唾不可遏止涌出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "亲女青涩咽腔狭窄温暖陷入无止境高潮中疯狂抽搐，幼软肉壁失控痉挛喷射大量淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "女儿娇嫩喉肉湿滑紧致在极致快感中完全失控痉挛，稚嫩内腔疯狂抽搐淫唾不断飞溅而出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "爱女青嫩食道紧窄湿热在不可承受的强烈快感中崩溃，柔软咽肉狂烈痉挛喷涌浓稠淫唾的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "亲女稚气喉腔窄小温润已被超人类极限快感彻底支配，娇软肉壁狂乱抽搐淫唾瀑布般喷出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "女儿禁忌咽道狭窄湿热陷入无尽高潮中疯狂痉挛失控，柔嫩肉壁失控收缩喷涌大量黏稠淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "爱女娇小喉道紧致湿润在超越极限快感中失去意识痉挛，稚嫩肉壁狂乱抽搐淫唾如泉涌出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "亲女幼嫩喉腔湿暖窄小被极致狂潮彻底击溃失去自控，娇软肉壁疯狂痉挛喷涌大量黏液的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "女儿稚嫩食道狭长温润在无止境强烈高潮中彻底崩坏，娇软咽肉狂乱抽搐淫唾飞溅而出的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "爱女青春喉道紧窄湿热被超出承受范围的快感反复蹂躏，柔嫩肉壁失控痉挛喷涌大量淫水的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level <= 3"
 context = "爱女稚嫩喉道紧窄湿暖生涩承受父亲粗大入侵，娇嫩肉壁茫然收缩不知如何配合的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level <= 3"
 context = "亲女青涩咽腔狭窄温热青涩张合呈现笨拙的反应，幼软肉壁慌乱蠕动充满新手的迷茫的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level <= 3"
 context = "女儿娇嫩喉肉湿润紧致呈现初学者的青涩反应，稚嫩内腔生硬收缩动作笨拙却纯真可爱的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level <= 3"
 context = "爱女青嫩食道紧窄湿热第一次被填满显得迷茫无措，柔软咽肉慌乱收缩反应青涩生硬的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level <= 3"
 context = "亲女稚气喉腔窄小温润懵懂地承受龟头的戳刺，娇软肉壁笨拙吞咽展现新手的青涩反应的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level <= 3"
 context = "女儿禁忌咽道狭窄湿热生硬地配合粗大抽插动作，柔嫩肉壁慌乱蠕动充满第一次的迷茫的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level <= 3"
 context = "爱女娇小喉道紧致湿润青涩张合呈现稚嫩反应，稚嫩肉壁笨拙收缩流露新手的纯真无措的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level <= 3"
 context = "亲女幼嫩喉腔湿暖窄小生硬地适应着不熟悉的入侵，娇软肉壁慌乱抽动展现生涩反应的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level <= 3"
 context = "女儿稚嫩食道狭长温润青涩地承受着粗硬戳刺，娇软咽肉笨拙吞咽呈现初学者的迷茫的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level <= 3"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level <= 3"
 context = "爱女青春喉道紧窄湿热生涩地接纳粗大入侵者，柔嫩肉壁慌乱蠕动反应笨拙却惹人怜爱的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "爱女稚嫩喉道紧窄湿暖以稳定节奏配合粗大抽插，娇嫩肉壁有规律收缩展现熟练吮吸技巧的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "亲女青涩咽腔狭窄温热已掌握基本吞吐节奏，幼软肉壁规律收缩主动迎合粗硬戳刺的节拍的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "女儿娇嫩喉肉湿润紧致熟练地配合抽插的节奏，稚嫩内腔灵活收缩展现初步掌握的技巧的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "爱女青嫩食道紧窄湿热已能稳定承受深插的节奏，柔软咽肉规律抽动配合龟头戳刺的频率的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "亲女稚气喉腔窄小温润熟悉了吞吐的节奏配合，娇软肉壁规律收缩展现初步掌握的吮吸技法的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "女儿禁忌咽道狭窄湿热以平稳节奏配合粗大抽插，柔嫩肉壁规律收缩展现练习后的口交技巧的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "爱女娇小喉道紧致湿润已能熟练掌握吞吐节拍，稚嫩肉壁规律抽动配合粗硬戳刺的频率的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "亲女幼嫩喉腔湿暖窄小熟悉了配合的基本要领，娇软肉壁规律收缩展现初步成熟的吮吸技巧的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "女儿稚嫩食道狭长温润已能稳定承受深插的力道，娇软咽肉规律抽动配合龟头戳刺的节奏的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "爱女青春喉道紧窄湿热以平稳节奏迎合抽插力度，柔嫩肉壁规律收缩展现初成的口交技巧的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 6"
 context = "爱女稚嫩喉道紧窄湿暖以惊人技巧精准刺激敏感点，娇嫩肉壁灵活收缩榨取龟头每分快感的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 6"
 context = "亲女青涩咽腔狭窄温热以娴熟手法精准包裹龟头，幼软肉壁有节奏收缩展现完美的吮吸技艺的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 6"
 context = "女儿娇嫩喉肉湿滑紧致以炉火纯青的技巧吞吐，稚嫩内腔精准收缩榨干龟头每分敏感快感的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 6"
 context = "爱女青嫩食道紧窄湿热以高超技艺承受最深的戳刺，柔软咽肉精准蠕动榨取龟头极致快感的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 6"
 context = "亲女稚气喉腔窄小温润以精湛技巧驾驭粗大入侵，娇软肉壁灵活收缩刺激龟头每处敏感带的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 6"
 context = "女儿禁忌咽道狭窄湿热以惊人技艺完美包覆肉棒，柔嫩肉壁有节奏抽动榨取每滴黏稠精液的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 6"
 context = "爱女娇小喉道紧致湿润以极致技巧紧紧吮吸龟头，稚嫩肉壁精准收缩诱发难以抗拒的快感的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 6"
 context = "亲女幼嫩喉腔湿暖窄小以炉火纯青技艺操控吞吐，娇软肉壁灵活蠕动榨取龟头每分敏感的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 6"
 context = "女儿稚嫩食道狭长温润以高超技巧承受最深的猛戳，娇软咽肉精准抽动榨取龟头极致快感的{throat_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter&selected.abilities.舌技.level > 6"
+conditions = "premise(target_is_player_daughter) && selected.abilities.舌技.level > 6"
 context = "爱女青春喉道紧窄湿热以娴熟技艺完美驾驭粗大肉棒，柔嫩肉壁灵活收缩刺激龟头敏感点的{throat_s}"

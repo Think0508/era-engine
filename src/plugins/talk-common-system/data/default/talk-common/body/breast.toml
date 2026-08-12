@@ -6,83 +6,83 @@ variable = "breast"
 description = "乳房——完整的描述文本"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔软弹性触感细腻，随呼吸微微起伏的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "圆润饱满形状优美，皮肤光滑细腻的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "白皙柔嫩触感温热，散发迷人体香的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "形状优美富有弹性，轻触即有柔软回应的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "肌肤光滑手感细腻，轮廓分明诱人的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "温暖柔软充满弹性，触碰引起轻微颤抖的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "轮廓分明肌肤细腻，乳尖挺立敏感的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "丰满圆润手感极佳，轻触即能感受温热的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "皮肤光滑散发香气，形状完美的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "弹性十足轮廓优美，触感让人沉迷的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "肌肤细腻触感柔嫩，随动作轻微摇晃的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "形状姣好皮肤滑腻，乳晕粉嫩诱人的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔软温热触感舒适，轻抚即能引起战栗的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "圆润饱满充满弹性，轻轻接触便有回应的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "细腻光滑手感极佳，挺立时更显诱人的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "弹性惊人形状完美，随呼吸起伏的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "肌肤娇嫩触感柔滑，散发诱人体香的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "丰满圆润触感绝佳，富有弹性的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "皮肤光洁轮廓优美，轻触便有回应的{breast_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔软温热富有弹性，形状姣好完美的{breast_s}"
 
 [[entries]]

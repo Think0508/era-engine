@@ -16,26 +16,26 @@ describe('CommonTextsEngine', () => {
       parts: [],
       description: '阴道描述',
       entries: [
-        { context: '湿滑的{vagina_s}', conditions: 'premises:high_1' },
-        { context: '粉嫩的{vagina_s}', conditions: 'premises:high_1' },
+        { context: '湿滑的{vagina_s}', conditions: 'premise(high_1)' },
+        { context: '粉嫩的{vagina_s}', conditions: 'premise(high_1)' },
       ],
     },
     penis: {
       parts: [],
       description: '阴茎描述',
       entries: [
-        { context: '粗大的肉棒', conditions: 'premises:high_1' },
-        { context: '坚挺的性器', conditions: 'premises:high_1' },
+        { context: '粗大的肉棒', conditions: 'premise(high_1)' },
+        { context: '坚挺的性器', conditions: 'premise(high_1)' },
       ],
     },
     vagina_s: {
       parts: ['A', 'B'],
       description: '阴道短词',
       entries: [
-        { part: 'A', context: '温热的', conditions: 'premises:high_1' },
-        { part: 'A', context: '湿润的', conditions: 'premises:high_1' },
-        { part: 'B', context: '小穴', conditions: 'premises:high_1' },
-        { part: 'B', context: '阴道', conditions: 'premises:high_1' },
+        { part: 'A', context: '温热的', conditions: 'premise(high_1)' },
+        { part: 'A', context: '湿润的', conditions: 'premise(high_1)' },
+        { part: 'B', context: '小穴', conditions: 'premise(high_1)' },
+        { part: 'B', context: '阴道', conditions: 'premise(high_1)' },
       ],
     },
   }
@@ -114,7 +114,7 @@ describe('CommonTextsEngine', () => {
         parts: [],
         description: '',
         entries: [
-          { context: '看不到我', conditions: 'premises:ALWAYS_FALSE' },
+          { context: '看不到我', conditions: 'premise(ALWAYS_FALSE)' },
         ],
       },
     }

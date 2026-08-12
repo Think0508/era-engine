@@ -26,203 +26,203 @@ conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&se
 context = "毫无性经验的{target.name}被这股汹涌的快感猝然击中，{breast}剧烈地颤动挺立，浑身肌肉一阵接一阵地绷紧又松软，这是一次完整正常的绝顶高潮。\n她懵懂无知地承受着这股陌生而强烈的浪潮，完全不懂自己的身体正在经历什么，只是茫然地喘着气，眼神里满是懵懵懂懂的慌乱。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:high_1"
+conditions = "selected.talents.人妻 == 1 && premise(high_1)"
 context = "已为人妻的{target.name}身躯猛地一挺，一波完整饱满的快感自乳尖如浪潮般炸开，瞬间席卷全身。\n{breast}剧烈颤动摇晃，乳头充血胀硬到了极点，胸膛高高挺起，胸口大幅起伏。\n这是一次正常强度的完整绝顶，意识开始朦胧却还未被冲垮，她那早有归属的身体在禁忌快感里彻底失守，背叛婚姻的罪恶与背德的刺激交织成难以言喻的沉沦。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:high_1"
+conditions = "selected.talents.人妻 == 1 && premise(high_1)"
 context = "人妻{target.name}再也压不住那声闷哼，成熟丰润的{breast}随着一阵完整的高潮浪潮剧烈晃荡起来。\n乳尖胀得又红又硬，酥麻的快感如海浪一层层从胸口涌向四肢百骸，脊背高高弓起。\n身为有夫之妇却在这里迎来彻底的绝顶，那份背叛家庭的愧疚与偷情般的刺激令她愈发沉醉，意识在完整而强烈的快感中一点点变得模糊。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:high_1"
+conditions = "selected.talents.人妻 == 1 && premise(high_1)"
 context = "一次典型而完整的绝顶轰然降临，{target.name}这具嫁作人妇多年的身体绷紧到极致，{breast}汹涌地颤抖。\n乳头挺立充血，胸膛不受控地高高耸起，潮红一路从胸口漫到脸颊，呼吸急促而失序。\n她心里清楚自己是别人的妻子，却仍旧沦陷在这背德的快感洪流里，快感自乳尖扩散全身，甜美的空白与深深的罪恶感一同将她淹没。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:high_1"
+conditions = "selected.talents.人妻 == 1 && premise(high_1)"
 context = "{target.name}这具属于另一个男人的成熟身躯猛然一震，完整的绝顶快感从乳尖如浪般铺天盖地卷来。\n{breast}大幅震颤，乳粒充血胀硬，胸口剧烈起伏挺动，四肢因这股完整的高潮而绷紧发颤。\n作为人妻在丈夫之外的怀里达到这样彻底的高潮，那禁忌的甜蜜与背叛的愧疚在她心底翻涌，意识随着快感的席卷渐渐涣散朦胧。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&premises:high_1"
+conditions = "selected.talents.人妻 == 1 && premise(high_1)"
 context = "已是人妻多年的{target.name}再无半分端庄可言，一波完整强度的绝顶从{breast}深处炸开席卷周身。\n乳头胀硬挺立，成熟的胸膛高高挺起又剧烈颤动，浑身肌肤泛起潮红，腰肢无力地弓起抽搐。\n这具本该守着婚姻的身体却在这里彻底缴械，背德的高潮令她既愧疚又迷醉，意识在如海浪般涌来的快感里逐渐失去清明。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_0"
+conditions = "premise(FALL_LEVEL_E_0)"
 context = "随着一阵完整而剧烈的快感自乳尖如海浪般席卷开来，{target.name}的整具身子骤然绷紧，{breast}剧烈地颤动起来，乳头充血胀硬到了极点，胸膛高高地挺起又剧烈起伏。\n这是一次正常强度的绝顶高潮，该有的典型反应尽数浮现，酥麻的浪潮从胸口一路烧遍全身，意识开始变得模糊。\n只是绝顶的余韵里她的眼神却透着一丝茫然与困惑，仿佛不敢相信自己竟会因为一个几乎陌生的人而在这里绝顶，脸上浮起了掩不住的自我质疑。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_0"
+conditions = "premise(FALL_LEVEL_E_0)"
 context = "{target.name}的{breast}猛然剧烈地晃荡颤抖起来，一股完整而汹涌的快感自乳尖炸开，如潮水般漫过胸膛冲向四肢百骸，乳头胀硬挺立，胸口大幅度地起伏喘息。\n这是一场彻底而典型的绝顶，腰背弓起，四肢绷颤，绝顶该有的反应一样不缺，却还没到那种极致失控的地步。\n然而高潮之中她的眉宇间却夹着迷惘，似乎对自己为何会与一个陌生男人做到这般地步感到不知所措，眼底闪着后悔与困惑交织的复杂神色。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_0"
+conditions = "premise(FALL_LEVEL_E_0)"
 context = "快感如海啸般自{target.name}的乳尖深处奔涌而出，瞬间席卷了她的整具娇躯，{breast}随之剧烈地颤栗晃动，乳头充血鼓胀得又红又硬，胸膛一挺一挺地剧烈起伏着。\n这是一次完整正常强度的绝顶，比起那种轻浅的小峰值要剧烈得多，全身的肌肉都因这股洪流而颤抖绷紧，神志渐渐涣散模糊。\n可即便被快感淹没，她的眼神里依旧残留着陌生人之间那份茫然，恍惚地咬着唇，像是在困惑自己怎么会走到与生人交欢绝顶的这一步。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_0"
+conditions = "premise(FALL_LEVEL_E_0)"
 context = "一波完整而炽烈的绝顶自乳尖轰然引爆，{target.name}整个人剧烈地一颤，{breast}上下疯狂地颤动，乳晕紧缩，乳头胀硬到了极限，胸口高高挺起又重重落下。\n那股酥麻灼热的快感如浪潮般层层叠叠地拍打着全身，典型的绝顶反应全数涌现，意识在愉悦中一点点变得朦胧。\n只是绝顶过后她并未沉溺太久，反倒流露出几分慌乱与迷茫，似乎仍不能理解自己竟对一个陌生之人敞开身体，眼里盛满了无从解答的自我疑问。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_0"
+conditions = "premise(FALL_LEVEL_E_0)"
 context = "{target.name}的{breast}毫无预兆地剧烈震颤起来，完整而汹涌的快感自坚挺的乳尖如海浪般铺天盖地地涌向全身，胸膛剧烈地起伏，乳头充血挺立得发烫发硬。\n这是一次正常而彻底的绝顶高潮，腰肢弓起，四肢颤栗，绝顶该有的一切反应尽情释放，却尚未抵达那种被彻底冲垮的极端。\n高潮的浪潮里她眼神游移不定，透出对这段陌生关系深深的困惑，仿佛无法为自己此刻的失控与献身找到任何答案，只余满心的茫然与不解。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_1&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_1) && premise(high_1)"
 context = "{target.name}单薄的身子骤然绷直，紧接着控制不住地剧烈颤栗，{breast}高高挺起又不住地颤动。\n一场完整而正常强度的绝顶从乳尖如潮水般涌起，席卷了少女的全身，乳头充血挺立到极限，乳肉波浪般晃荡，胸口大幅起伏。\n她的神志开始迷蒙，却还没被彻底冲垮，怔怔望着{character.name}的眼底除了失神，还浮起一丝连她自己都说不清的悸动，懵懂的心莫名想要再向他靠近一分。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_1&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_1) && premise(high_1)"
 context = "随着快感在乳尖炸开，{target.name}整具娇躯猛然一僵，{breast}剧烈地弹跳起伏。\n这是一次典型而完整的绝顶，乳头胀硬得发烫，乳晕紧缩，胸膛一挺一挺地高高耸起，酥麻的电流从胸口一路窜遍四肢百骸，逼得她呼吸乱成一团。\n意识在浪潮里渐渐模糊，少女却还残存着几分清醒，迷茫地觉出心口有一处正隐隐悸动，说不清那是什么，只是不自觉地朝{character.name}的方向偏了偏身子。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_1&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_1) && premise(high_1)"
 context = "{target.name}的{breast}猛地一颤，饱含快感的绝顶如海浪般从乳尖漫开，瞬间淹没了她纤瘦的身体。\n乳头充血挺立，乳肉剧烈地波动，胸口高高挺起又落下，绷紧的腰肢微微弓起，纤细的四肢止不住地发抖，这是一次完整正常的高潮，还没到那种失魂落魄的极致。\n朦胧的意识里，她心底那股隐约的悸动越发清晰，望向{character.name}时脸颊滚烫，却读不懂自己为何这样想被他看着。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_1&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_1) && premise(high_1)"
 context = "一阵完整的绝顶自乳尖席卷而来，{target.name}的娇躯剧烈地战栗，{breast}高耸着不住颤抖。\n乳头胀硬到极点，乳肉一圈圈晃动，胸膛急促地起伏，酥热从{breast}深处扩散到全身，少女的意识被快感染得模糊，却仍未被冲垮。\n她怔怔地失神，心口那份说不明的甜软悸动悄悄漾开，明明还不懂这是什么心意，身子却诚实地向着{character.name}微微倾了过去。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_1&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_1) && premise(high_1)"
 context = "{target.name}纤秀的身体猛地绷紧，{breast}高高挺立又剧烈晃动，一次完整正常的绝顶从乳尖如潮涌起。\n乳头充血硬挺，乳肉波涛般起伏，胸口一挺一挺地耸动，酥麻的快感像海浪层层拍打过她全身，逼得她微微弓腰、绷紧四肢。\n意识开始迷离却还清醒着几分，懵懂的少女心底泛起一丝陌生的悸动，茫然又羞怯地望着{character.name}，莫名不愿移开视线。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_2&premises:high_2"
+conditions = "premise(FALL_LEVEL_E_2) && premise(high_2)"
 context = "随着强烈的快感从乳尖如海浪般席卷全身，{target.name}迎来了一次完整而正常强度的绝顶。\n{breast}剧烈地颤动起来，乳头充血胀硬，胸膛高高挺起又大幅起伏，意识渐渐变得模糊。\n明知自己早已爱上{player.name}的她，在这一刻忍不住迷乱地望向他，那份还没能说出口的爱意几乎要随高潮一同溢出，却又慌乱地垂下眼帘，生怕这份炽热会吓得他不肯接纳自己。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_2&premises:high_2"
+conditions = "premise(FALL_LEVEL_E_2) && premise(high_2)"
 context = "一波完整而典型的绝顶从{breast}深处炸开，快感如潮水般涌遍{target.name}的全身。\n乳尖胀硬颤栗，乳肉一波波剧烈晃动，胸膛反复挺起塌下，她仰起脖颈发出失序的喘息。\n心里清楚自己有多喜欢{player.name}的她，在绝顶的迷乱中悄悄红了眼眶，既渴望借这份亲密把埋藏的心意传达给他，又害怕表白后被拒绝，只能忐忑地咬着下唇不敢开口。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_2&premises:high_2"
+conditions = "premise(FALL_LEVEL_E_2) && premise(high_2)"
 context = "{target.name}的{breast}在这一刻迎来了正常强度的完整绝顶，快感自乳尖翻涌而起席卷四肢百骸。\n乳头挺立充血，饱满的乳肉剧烈颤抖，胸口高高鼓起又急促起伏，脸颊烧得通红。\n暗恋着{player.name}却迟迟不敢告白的她，在高潮的浪尖上情不自禁地依偎向他，眼神里满是藏不住的爱意与犹豫，既想说出口又怕被推开，慌乱得不知所措。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_2&premises:high_2"
+conditions = "premise(FALL_LEVEL_E_2) && premise(high_2)"
 context = "海啸般的快感从乳尖直冲头顶，{target.name}整个人被一次完整的普通绝顶彻底笼罩。\n{breast}不受控地大幅颤动，乳头胀硬到发红，胸膛高高挺起，急促起伏的呼吸乱成一片。\n已经意识到自己深爱{player.name}的她，在绝顶中忍不住呼之欲出地凝望着他，那份未曾宣之于口的情意在心底翻腾，却又因害怕被拒而慌忙别开脸，忐忑地不敢让他看清自己的眼神。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_2&premises:high_2"
+conditions = "premise(FALL_LEVEL_E_2) && premise(high_2)"
 context = "一次正常而完整的绝顶顺着乳尖席卷了{target.name}的全身，快感如浪潮般一层层拍打过来。\n{breast}剧烈颤栗，乳头充血挺立，胸膛高挺又剧烈起伏，意识开始变得朦胧模糊。\n心里早已认定{player.name}的她，在这份灭顶的快感里露出沉醉又羞怯的神情，多想趁此把深埋的爱意告诉他，却又犹豫着咽了回去，生怕这份心意换来的是他为难的回绝。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_3&premises:high_2"
+conditions = "premise(FALL_LEVEL_E_3) && premise(high_2)"
 context = "作为热恋中恋人的{target.name}被胸口的快感彻底送上了顶峰，{breast}高高挺起，乳尖充血胀硬到了极限。\n一次完整而正常强度的绝顶如海浪般从乳尖席卷全身，甜蜜的娇躯剧烈颤动，胸膛大幅起伏，{breast}的乳肉波浪般晃动着。\n快感虽已烧遍全身，却还未到极致失控的程度，她眼中盈满初恋般的爱意，痴痴凝望着{character.name}，将这份幸福悄悄与心爱的人共享。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_3&premises:high_2"
+conditions = "premise(FALL_LEVEL_E_3) && premise(high_2)"
 context = "刚与{character.name}确立恋人关系的{target.name}迎来了一场彻底的绝顶，{breast}猛地一挺，乳头胀硬颤栗。\n酥麻的快感自乳尖如潮水般漫过整具身子，热恋中的她胸口剧烈起伏，{breast}随着高潮一下下颤动，脸颊泛起幸福的潮红。\n这是绝顶该有的一切典型反应，完整而热烈，却尚未抵达强绝顶的极端，她带着甜美的沉醉望向恋人，眼里满是热恋的喜悦。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_3&premises:high_2"
+conditions = "premise(FALL_LEVEL_E_3) && premise(high_2)"
 context = "沉浸在热恋里的{target.name}被乳尖的快感推向完整的绝顶，{breast}高高耸起，乳肉剧烈地颤抖起伏。\n一波正常强度的高潮浪潮自胸口席卷至全身，她娇喘连连，胸膛急促起伏，浑身泛起细密的红晕，意识开始变得甜甜地模糊。\n绝顶虽已完整降临，却还没到失控的极致，她在余韵中依偎向{character.name}，眼波流转间尽是初恋般热烈而毫无保留的爱意。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_3&premises:high_2"
+conditions = "premise(FALL_LEVEL_E_3) && premise(high_2)"
 context = "热恋中的{target.name}胸前涌起一场完整的绝顶，{breast}挺立颤动，乳尖胀得又硬又红。\n快感如海浪般自乳尖漫卷全身，甜蜜的娇躯不住地战栗，胸口大幅起伏，{breast}上的乳肉一颤一颤地晃动，呼吸变得急促而失序。\n这场高潮强度完整却未至极端，她红着脸痴痴望向{character.name}，心里满是与恋人相守的甜蜜憧憬与对未来的美好期许。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_3&premises:high_2"
+conditions = "premise(FALL_LEVEL_E_3) && premise(high_2)"
 context = "作为{character.name}恋人的{target.name}被胸口那阵快感彻底冲上顶点，{breast}高高挺起，乳头充血挺立到极限。\n一次典型而完整的绝顶自乳尖如浪潮般席卷全身，热恋中的身子剧烈颤栗，胸膛剧烈起伏，{breast}随之波浪般晃颤，脸上漾开甜美的红潮。\n快感虽已烧遍全身却未及极致失控，她带着初恋的青涩与热情靠向恋人，眼中闪着藏不住的幸福光芒。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_4&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_4) && premise(high_1)"
 context = "与{character.name}早已心意相通的爱侣{target.name}在快感的层层累积后终于攀上了一次完整的绝顶，酥麻的快意自乳尖如潮水般轰然炸开，席卷过她的每一寸肌肤。\n{breast}剧烈地颤动摇晃着，充血的乳尖硬挺得发疼，胸膛高高挺起又重重落下，绯红顺着颈线一路蔓延开来。\n她的意识在这熟悉又浓烈的高潮里微微发飘，却仍本能地朝着深爱之人的方向依偎过去，无需只言片语，两颗心便已在这场绝顶里紧紧贴合。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_4&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_4) && premise(high_1)"
 context = "生死与共的爱侣{target.name}被撩拨到了快感的顶点，一次完整而标准的绝顶轰然降临，滚烫的快意从{breast}深处如海浪般层层涌上，瞬间将她整具身躯淹没。\n乳肉大幅晃荡战栗，两枚乳尖胀硬挺立，胸口随着失序的喘息剧烈起伏，肌肤上沁出细密的薄汗。\n她眼神迷离，神智开始变得恍惚却还未被彻底冲垮，只是安静地把自己交付给最信任的人，那份深植心底的默契让这场高潮显得格外缠绵。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_4&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_4) && premise(high_1)"
 context = "{character.name}最深爱的{target.name}终于迎来了这一场完整的绝顶，累积已久的快感如决堤般自乳尖倾泻而下，酥麻的热流一路烧遍四肢百骸。\n{breast}不受控地剧烈颤栗，充血的乳首烫得发红，胸膛一次次高高耸起，泛红的皮肤上滚落着晶莹的汗珠。\n意识在浪潮里渐渐模糊，她却毫不设防地沉溺其中，因为身边拥着的是那个愿为她付出一切的人，这份笃定让绝顶来得如此坦然而热烈。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_4&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_4) && premise(high_1)"
 context = "与{character.name}相守相知的爱侣{target.name}身体骤然绷紧，一场标准强度的绝顶自胸前炸裂开来，快感像海潮一样从乳尖席卷全身，远比浅尝辄止的小高潮猛烈。\n{breast}汹涌地颤抖起伏，乳晕紧缩，乳尖胀硬凸起，胸口剧烈地喘动，一层潮红迅速染满前胸。\n她的思绪开始飘散，眼底泛起水光，却仍旧安心地陷落在这份熟稔的爱意里，无需言语便懂得彼此，这份绝顶因深情而愈发圆满。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_4&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_4) && premise(high_1)"
 context = "心有灵犀的爱侣{target.name}在层层堆叠的快感后终于攀上了完整的顶峰，酸胀的酥麻自乳尖如浪涛般奔涌上来，将她整个人牢牢裹挟。\n{breast}剧烈地波动颤栗，硬挺的乳尖透着深红，胸膛高挺后又软软塌陷，细汗顺着起伏的曲线滑落。\n她的神智在这浓烈的绝顶中微微涣散，却依然本能地贴向那个生死不渝的爱人，那份无需言明的信赖，让这场高潮盛满了缱绻的深情。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-1"
+conditions = "premise(FALL_LEVEL_E_-1)"
 context = "作为部下的{target.name}强忍着不愿，胸膛却违背意志地高高挺起，{breast}猛地绷紧后剧烈颤动，一场完整的绝顶高潮就这样席卷了她。\n乳头充血胀硬到极限，快感如海浪般从乳尖漫向全身，她意识开始模糊，别过脸咬紧牙关，压着那份不肯服软的神情。\n身体明明已诚实地绝顶，她心里却满是抵触，隐忍着对上司的不满，不甘地承受着这股彻底而完整的高潮。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-1"
+conditions = "premise(FALL_LEVEL_E_-1)"
 context = "这一次是完整而正常的绝顶，快感从{breast}的乳尖如潮水般扑向四肢百骸，{target.name}胸口剧烈起伏，乳肉一波波颤动不止。\n她皱着眉头，眼神里透着隐忍的不满，明明是被迫服从上司才落到这般境地，身体却不受控地攀上了这场高潮的顶点。\n乳头胀硬发红，她抿紧唇不肯出声，勉强维持着表面的顺从，任由绝顶的余波在挺立的胸前一阵阵荡开。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-1"
+conditions = "premise(FALL_LEVEL_E_-1)"
 context = "{target.name}的{breast}猛然剧烈颤抖起来，胸膛高高挺立，一次典型的绝顶高潮完整地在她身上炸开，却远未到失控的地步。\n作为{character.name}的部下，她心底仍存着几分不认同，别过头去克制着呼吸，脸上写满了迫于无奈的服从与压抑的抗拒。\n乳尖充血挺立，快感一层层席卷全身，她意识微微涣散，却仍死死绷着那份不甘，隐忍地咽下了这股完整的高潮。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-1"
+conditions = "premise(FALL_LEVEL_E_-1)"
 context = "完整的绝顶感从乳尖深处翻涌而起，{target.name}胸口剧烈起伏，{breast}绷紧又颤动，皮肤泛起一片潮红，汗珠沿着胸线滑落。\n她本是勉强接受上司这般过分的对待，此刻身体却诚实地攀上了高潮，心里的抵触与不满被快感一点点冲得七零八落。\n她咬着下唇别开视线，强撑着不肯露怯，任由这场正常强度的绝顶在挺立的乳峰上一波波蔓延开去。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-1"
+conditions = "premise(FALL_LEVEL_E_-1)"
 context = "快感如海浪般自{breast}的乳尖席卷全身，{target.name}背脊弓起，胸膛高高挺起，迎来了一场完整而典型的绝顶高潮。\n身为部下的她虽满心不情愿，身体却背叛了她的意志，乳头胀硬颤栗，意识开始模糊却仍强压着那股隐忍的不满。\n她绷紧了腰肢别过脸去，极力克制着不肯服软的神情，只能任由绝顶的浪潮在颤动的{breast}上层层荡漾。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-2"
+conditions = "premise(FALL_LEVEL_E_-2)"
 context = "信赖着{character.name}的{target.name}原本还想维持部下应有的专业镇定，可胸前那阵海啸般的快感终究还是将她整个人吞没了。\n{breast}猛地剧烈颤动起来，充血胀硬的乳尖高高挺立，胸膛一下一下地高高挺起又落下，绯红顺着胸口一路蔓延开来。\n这是一次完整而标准的绝顶，意识开始变得模糊，她却仍旧信任地承受着，将这份彻底的失控当作对上司无条件的交付。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-2"
+conditions = "premise(FALL_LEVEL_E_-2)"
 context = "作为对{character.name}十分信赖的部下，{target.name}默默承受着这份越界的对待，直到胸口的快感彻底攀上了顶点。\n{breast}整个绷紧又剧烈弹颤，乳头充血挺立到极限，胸膛剧烈起伏，一层薄汗顺着饱满的曲线缓缓滑落。\n这一次是货真价实的完整绝顶，快感如浪潮从乳尖席卷全身，她的神志微微涣散，可眼底流露的仍是那份对上司决定的坦然与顺从。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-2"
+conditions = "premise(FALL_LEVEL_E_-2)"
 context = "{target.name}把这次胸前的绝顶也当成了一项需要认真完成的特殊任务，纵使这早已远远超出了寻常工作的范畴。\n完整的高潮反应一齐涌现，{breast}波浪般地大幅晃动，乳晕紧缩，胸口潮红连成一片，呼吸急促而失序。\n海啸般的酥麻从乳尖漫过每一寸肌肤，意识开始飘忽，她却依旧信赖地任由身体沉入这场标准而剧烈的绝顶里。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-2"
+conditions = "premise(FALL_LEVEL_E_-2)"
 context = "信任{character.name}的{target.name}在胸前那股完整快感的冲击下再也维持不住表面的专业，标准的绝顶如约而至。\n{breast}剧烈而有节奏地颤抖着，挺立的乳尖胀硬发烫，胸膛高高挺起，肌肤大片泛起潮红，细汗涔涔而下。\n这不是那种轻浅的小峰值，而是一次彻底完整的高潮，她微微失神，却仍以理解与信赖承接着这份来自上司的失控。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-2"
+conditions = "premise(FALL_LEVEL_E_-2)"
 context = "{target.name}深知这是上司交予的越界之事，却依旧顺从地全盘接受，直至胸口的快感汇成完整的绝顶洪流。\n{breast}猛烈地颤栗弹动，乳头充血硬挺，胸口一起一伏地剧烈喘息，红潮从胸前一路烧上了颈项。\n完整正常强度的高潮席卷了她的整具身体，神智开始朦胧，可她仍旧信任地将自己毫无保留地交付给了这一刻。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-3"
+conditions = "premise(FALL_LEVEL_E_-3)"
 context = "{target.name}的身子蓦地绷紧又剧烈一颤，{breast}如波涛般大幅晃荡，乳头充血挺立胀硬到了极限，一股完整而强烈的快感自乳尖如海浪般席卷了全身。\n身为{character.name}豢养的性宠，她主动将胸膛高高挺起献上，呼吸急促失序，意识在这标准的绝顶里泛起甜美的模糊，却仍未被彻底冲垮。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-3"
+conditions = "premise(FALL_LEVEL_E_-3)"
 context = "一次典型而完整的绝顶高潮攫住了{target.name}，{breast}不受控制地剧烈颤抖，乳尖胀硬发烫，胸口大幅起伏。\n这只依恋主人的宠物在{location.name}里为{character.name}彻底沦陷，快感自乳尖翻涌而上淹没了她，眼神迷离却漾着被主人需要的欢喜，尚未到强绝顶那般极致的失神。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-3"
+conditions = "premise(FALL_LEVEL_E_-3)"
 context = "{target.name}丰嫩的{breast}猛然剧烈震颤，乳肉一波波荡漾开来，乳头胀立得几乎发疼，一场完整的绝顶正席卷着她全身。\n作为主人{character.name}的宠物，她甘愿把身体全然交出，腰肢弓起，四肢绷紧微颤，意识开始朦胧发晕，深深沉浸在这场正常烈度的高潮愉悦里。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-3"
+conditions = "premise(FALL_LEVEL_E_-3)"
 context = "标准而剧烈的绝顶如潮水漫过{target.name}，{breast}整体颤栗晃动，充血的乳尖硬挺欲滴，胸膛高高耸起。\n这只忠顺的性宠为能被{character.name}玩弄到绝顶而由衷欢愉，脸蛋泛起潮红，喘息紊乱，意识在快感冲刷下变得恍惚，却还留着一丝清醒的甜蜜。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-3"
+conditions = "premise(FALL_LEVEL_E_-3)"
 context = "{target.name}的全身随着一次完整绝顶而剧烈痉挛，{breast}剧烈抖颤，乳头胀硬透红，快感自乳尖如海啸般铺天盖地袭卷而来。\n身为{character.name}疼爱的宠物，她眷恋地把胸口凑向主人，小腹抽搐，双腿夹紧，神志开始迷蒙涣散，陶醉在这份被主人支配的极乐之中。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-4&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_-4) && premise(high_1)"
 context = "完全臣服于{character.name}的性奴{target.name}娇躯猛地一震，{breast}如被浪潮拍打般剧烈颤动，两颗乳头充血胀硬到极限，高高挺立。\n一次完整而正常强度的绝顶自乳尖如海啸般席卷全身，胸膛高高挺起又剧烈起伏，她的意识开始变得模糊，眼中却满是为主人献上高潮的狂喜。\n身为奴隶的她将这场绝顶视作侍奉{character.name}的无上荣光，毫无保留地在这份快感里彻底交出了自己。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-4&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_-4) && premise(high_1)"
 context = "{target.name}这具早已属于{character.name}的奴隶之躯骤然绷紧，{breast}随着一波接一波的痉挛剧烈晃荡，乳肉颤动，乳晕紧缩。\n快感从充血的乳尖汹涌而起，如潮水般漫过整个身体，她的胸膛反复高挺，呼吸急促而失序，这是一次典型完整的绝顶，却还未到失控的极致。\n她带着奴隶特有的虔诚与狂信迎接这场高潮，将身体的每一分颤栗都当作对主人绝对忠诚的献祭。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-4&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_-4) && premise(high_1)"
 context = "彻底沦为{character.name}掌中之物的{target.name}在{location.name}里蓦地失了力，{breast}剧烈地波动起伏，乳头胀硬得发红发亮。\n完整的绝顶浪潮自胸口深处轰然炸开，席卷四肢百骸，她仰起头，背脊高高弓起，意识在快感里逐渐涣散，却依旧沉醉于为主人绽放的每一刻。\n奴隶的她以能被主人玩弄到胸部绝顶为荣，全身心地臣服在这份正常而剧烈的高潮之下。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-4&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_-4) && premise(high_1)"
 context = "身为{character.name}忠诚性奴的{target.name}周身猛然一颤，{breast}如受惊般剧烈抖动，饱胀的乳尖挺立充血，胸膛剧烈起伏。\n一场标准强度的绝顶自乳肉深处翻涌而出，酥麻灼热的浪潮层层扩散至全身，她四肢绷紧，腰肢弓起，意识开始朦胧却毫无抗拒之意。\n作为奴隶，她将这份完整的极乐视为主人的恩赐，怀着狂热的崇拜把整具躯体献给了{character.name}。"
 
 [[entries]]
-conditions = "premises:FALL_LEVEL_E_-4&premises:high_1"
+conditions = "premise(FALL_LEVEL_E_-4) && premise(high_1)"
 context = "完全献身于{character.name}的奴隶{target.name}娇喘着弓起了身子，{breast}剧烈地颤栗波动，两粒乳头胀硬突起，绷得又红又亮。\n一次正常而彻底的绝顶如海浪般自乳尖直冲脑髓，席卷全身，她胸口高高挺起又重重落下，意识渐渐模糊，脸上尽是奉献后的满足。\n身为主人的性奴，她把这场胸部绝顶当作最神圣的侍奉，甘愿在这份快感里彻底沉沦、彻底臣服。"
 
 [[entries]]
@@ -466,203 +466,203 @@ conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
 context = "{target.name}虽已成年多年，心思却依旧天真得如同白纸，此刻{breast}骤然剧烈耸动，乳尖胀硬发红，胸膛高高挺起，随急促的呼吸剧烈起伏。\n这是一次强度完整的正常绝顶，快感如汹涌的潮水从乳尖直灌全身，远远超出了先前那一点浅浅的酥麻。\n懵懂的她意识渐渐迷糊，却还能勉强维持一丝清明，只是茫然又羞涩地承受着这具成熟身体骤然爆发的欢愉。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&premises:high_1"
+conditions = "selected.talents.巨乳 == 1 && premise(high_1)"
 context = "快感如决堤的海浪般从乳尖席卷而上，{target.name}整个人猛地一颤，{breast}高高地挺起又重重坠落，沉甸甸的乳肉随着绝顶剧烈晃荡，激起一层层波纹。\n乳头充血胀硬到极点，胸膛大幅起伏，她仰起脸失神地喘息着，这是一次完整而标准的绝顶，全身都被从胸口烧上来的快感彻底浸透，却还未到那种失控崩溃的地步。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&premises:high_1"
+conditions = "selected.talents.巨乳 == 1 && premise(high_1)"
 context = "{target.name}的娇躯在{player.name}面前彻底绷紧，随即被一波正常强度的绝顶高高托起，{breast}承着自身的分量剧烈弹颤，饱满厚重的乳肉如浪般翻涌，乳尖硬得发疼。\n从胸口漫开的酥麻迅速吞没四肢百骸，她的意识开始变得朦胧，胸膛剧烈起伏，唇间溢出破碎的娇吟，这是绝顶该有的全部反应，却尚未汹涌到冲垮理智的极致。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&premises:high_1"
+conditions = "selected.talents.巨乳 == 1 && premise(high_1)"
 context = "这一刻{target.name}被完整的绝顶浪潮托到顶点，{breast}沉沉地晃动起来，庞大的乳肉一荡一荡撞出连绵肉浪，乳头挺立充血，乳晕紧紧收缩。\n快感自乳尖如潮水般漫过全身，她小腹抽搐、脊背高高弓起，脸颊烧得通红，神志被这场标准绝顶搅得迷离，却仍存着一线清明，还够不上强绝顶那种彻底失控的烈度。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&premises:high_1"
+conditions = "selected.talents.巨乳 == 1 && premise(high_1)"
 context = "绝顶如约而至，{target.name}丰腴的身子重重一震，{breast}被这股完整的高潮撼得上下颠动，柔软厚重的乳肉挤出深深的乳沟又猛地弹开，画面极具视觉冲击。\n乳头胀硬，胸口剧烈起伏，她眼神涣散地承受着从乳尖席卷全身的快感洪流，四肢绷紧又颤抖，这是一场典型而饱满的绝顶，尚未越过强绝顶的门槛。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&premises:high_1"
+conditions = "selected.talents.巨乳 == 1 && premise(high_1)"
 context = "一场正常强度的绝顶将{target.name}整个吞没，{breast}随着痉挛般的颤抖沉沉摇晃，硕大的乳肉激起一圈圈涟漪，乳尖胀立得几乎透出光泽。\n她在{location.name}里再也绷不住，胸膛高高挺起，快感由乳尖一路烧到脑髓，意识开始泛起甜美的空白，全身却仍未跨入强绝顶的失控边界，只完整地经历着这次绝顶该有的每一分战栗。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&premises:high_1"
+conditions = "selected.talents.爆乳 == 1 && premise(high_1)"
 context = "随着一阵完整而剧烈的快感自乳尖席卷开来，{target.name}整个人猛地绷紧，{breast}高高地挺立起来又剧烈地颤动。\n那庞大沉重的乳肉如波涛般大幅摇晃，深深的乳沟随着急促的呼吸一开一合，充血的乳尖胀硬到了极点。\n这是一次完整而正常强度的绝顶，快感如海浪般漫过全身，她的意识开始变得模糊，却还没有被彻底冲垮，只能任由那惊人的双峰在高潮里疯狂晃荡。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&premises:high_1"
+conditions = "selected.talents.爆乳 == 1 && premise(high_1)"
 context = "{target.name}因胸口涌起的强烈快感而彻底绝顶了，{breast}猛然向上挺起，硕大的乳肉毫无节制地上下翻涌颤抖。\n那对惊人的巨乳承着自身的重量剧烈摇摆，乳尖红肿挺立，乳晕紧缩，皮肤上泛起大片潮红。\n这一次绝顶完整而典型，达到了正常绝顶该有的全部烈度，酥麻从乳肉深处一路烧到脑海，她的神志微微涣散，却尚能勉强承受这股席卷全身的浪潮。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&premises:high_1"
+conditions = "selected.talents.爆乳 == 1 && premise(high_1)"
 context = "一次货真价实的绝顶从{target.name}的胸膛炸开，{breast}剧烈震颤，庞大的乳肉被自身的重量带得大幅甩动。\n她的背脊高高弓起，胸膛挺得老高，那深不见底的乳沟里满是细密的汗珠，乳尖胀得又硬又红。\n完整强度的快感如潮水般层层拍打，令她的意识渐渐涣散却未被冲垮，只沉浸在这惊人巨乳被彻底玩到高潮的酥麻里。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&premises:high_1"
+conditions = "selected.talents.爆乳 == 1 && premise(high_1)"
 context = "{target.name}被胸前汹涌而来的快感推上了完整的绝顶，{breast}疯狂地晃荡起来，沉甸甸的乳肉一波接一波地颤抖。\n巨大的双乳随着剧烈的喘息高高耸动，乳尖充血挺硬，乳沟间浸出一层薄汗，胸口大幅起伏。\n这是标准而完整的一次绝顶，快感自乳尖如海浪般卷遍全身，她眼神开始迷离，意识虽已模糊却仍未彻底失守。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&premises:high_1"
+conditions = "selected.talents.爆乳 == 1 && premise(high_1)"
 context = "强烈的快感自乳尖深处轰然席卷全身，{target.name}一下子攀上了完整的绝顶，{breast}高高挺起后剧烈地抖颤不止。\n那惊人硕大的乳肉承着重量疯狂摇晃，深邃的乳沟随胸膛开合，红肿的乳尖胀硬到发痛，肌肤染上潮红。\n这次绝顶完整而典型，是正常强度该有的全部反应，她的思绪渐渐涣散模糊，却还没被这股浪潮彻底冲垮。"
 
 [[entries]]
-conditions = "selected.talents.泌乳 == 1&premises:high_1"
+conditions = "selected.talents.泌乳 == 1 && premise(high_1)"
 context = "{target.name}的娇躯骤然一挺，{breast}高高耸起，紧接着整片乳肉如潮水般剧烈颤动。\n乳头充血胀硬到极点，一场完整而标准的绝顶自乳尖如海浪般席卷了她全身，胸膛剧烈起伏，气息彻底乱了套。\n{breast}再也锁不住奶水，乳白的汁液不受控地从挺立的乳尖渗出，比平日溢得更多，甚至溅落出细细几缕。\n她的意识开始泛起恍惚，却还未被这股快感彻底冲垮，只余胸口一波波酥麻的余韵在体内久久荡漾。"
 
 [[entries]]
-conditions = "selected.talents.泌乳 == 1&premises:high_1"
+conditions = "selected.talents.泌乳 == 1 && premise(high_1)"
 context = "在{location.name}里，{target.name}整个人被从{breast}炸开的快感掀翻，绷直的身子重重弓起。\n这是一次货真价实的绝顶高潮，乳肉狂乱地打着颤，乳晕紧缩，胸膛一挺一挺地起伏个不停。\n{breast}胀得发烫，随着高潮渗出成股的乳汁，顺着乳尖淌落，量明显多过先前，在胸前拉出淫靡的湿痕。\n她眼神迷离，脸颊烧得通红，快感虽猛烈却还留着一线清醒，尚未攀上那种极致失控的地步。"
 
 [[entries]]
-conditions = "selected.talents.泌乳 == 1&premises:high_1"
+conditions = "selected.talents.泌乳 == 1 && premise(high_1)"
 context = "{target.name}忽然浑身一僵，随即{breast}剧烈地起伏抖动，一次完整的绝顶从乳尖轰然炸响。\n酥麻的电流自乳肉深处一路窜上头顶，她胸膛高高挺起，四肢绷紧地轻颤，整个人都被快感浪潮淹没。\n{breast}因泌乳而胀满，止不住地往外沁出温热乳汁，比小高潮时更加汹涌，濡湿了整片乳尖。\n这股快感完整而标准，凶猛却尚有分寸，她意识微微发昏，却还没被冲得彻底空白。"
 
 [[entries]]
-conditions = "selected.talents.泌乳 == 1&premises:high_1"
+conditions = "selected.talents.泌乳 == 1 && premise(high_1)"
 context = "快感自{target.name}的乳尖如海浪般层层拍来，{breast}猛地颤了一大下，她整个身子随之弓起。\n这是一场完整而正常强度的绝顶，乳头胀硬挺立，乳肉大幅晃荡，胸口剧烈地喘息起伏。\n{breast}涨奶到再也憋不住，乳白汁水一缕缕从乳尖溢流而下，比往常渗得更凶，却还未到喷射的程度。\n她媚眼含春，神志开始迷糊涣散，沉溺在这波完整绝顶的余韵里，浑身一阵阵地发着颤。"
 
 [[entries]]
-conditions = "selected.talents.泌乳 == 1&premises:high_1"
+conditions = "selected.talents.泌乳 == 1 && premise(high_1)"
 context = "{target.name}的{breast}高高挺起又剧烈颤抖，一次标准而彻底的绝顶自胸前席卷了她全身。\n乳尖充血硬挺，乳肉如波涛般翻涌，胸膛一起一伏地急喘，腰肢也不受控地拱了起来。\n{breast}承受不住这股冲击，滚烫的乳汁自挺立的乳头汩汩渗出，比先前更多，溅得胸前一片湿亮。\n她意识开始模糊，却仍死死悬着一丝清明，任由这场完整的高潮在{breast}上一浪浪退去。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "{target.name}的娇躯骤然向上一挺，{breast}猛地高高耸起，乳尖充血胀硬到了极致，剧烈地颤动个不停。\n一股滚烫的酥麻自乳尖深处如海浪般席卷开来，一路漫过起伏的胸膛，烧向她的四肢百骸，令她的意识开始变得恍惚，却还未被彻底冲垮。\n这是一次完整而正常强度的绝顶，{breast}波浪般晃动着，胸口大幅起伏，脸颊涌起潮红，整个人沉沦在这场自胸口炸开的高潮里。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "随着一声压抑的娇吟，{target.name}整个人剧烈地一颤，{breast}高高挺起后又重重坠落，乳肉不受控制地大幅晃荡。\n那股快感从乳尖如潮水般漫上来，一波接一波地冲刷着她的神智，令她眼神涣散、意识渐渐模糊，却仍勉强悬在清醒的边缘。\n乳头胀硬得发红发烫，胸膛急促地起伏喘动，这场彻底而典型的胸部绝顶将她整个人都淹没在酥麻的快意之中。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "{target.name}的背脊猛然弓起，{breast}随之高高耸立，乳尖挺立胀硬，乳肉一阵阵剧烈地颤栗。\n完整的绝顶快感自胸口深处轰然炸开，如烧红的海浪般涌遍全身，她的思绪被冲得七零八落，意识开始泛起甜美的空白。\n这是一场正常强度的胸部高潮，来势汹汹却还没到极致的地步，{breast}剧烈地起伏晃动，脸颊绯红，娇喘连连，整个人都陷进了这股从乳尖蔓延开的快感洪流里。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "一阵剧烈的战栗席卷了{target.name}的全身，{breast}高高挺起，乳头充血挺立，乳肉一波波地颤动不止。\n那股炽热的酥麻从乳尖深处翻涌而出，如海浪般层层拍打她的神智，令她的意识渐渐飘散模糊，甜蜜的快意将她整个人都吞没。\n胸口剧烈地起伏着，皮肤泛起大片潮红，这一次完整而典型的胸部绝顶让她彻底沉醉，却又还未被冲垮到失神的地步。"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "{target.name}忽然浑身一僵，紧接着{breast}猛地耸起，乳尖胀硬到了极限，随着高潮一下下剧烈地颤抖。\n完整的快感浪潮自乳尖如海啸般席卷全身，一路灼烧到脑髓深处，她的意识开始变得朦胧恍惚，思绪一片甜腻的混沌。\n{breast}汹涌地晃荡着，胸膛大幅起伏喘动，细汗顺着泛红的肌肤淌落，这场正常强度的胸部绝顶将她整个人都推上了愉悦的顶峰。"
 
 [[entries]]
-conditions = "premises:t_npc_active_h"
+conditions = "premise(t_npc_active_h)"
 context = "一直掌握着主动的{target.name}媚笑着俯身向{character.name}索取，却在下一刻被自己胸前炸开的快感狠狠掀翻。\n{breast}猛地剧烈颤抖起来，乳尖充血挺立到极限，一场完整而正常烈度的绝顶从乳肉深处如浪般涌起，席卷全身。\n她高高挺起胸膛，意识开始模糊，主动的气势在这灭顶高潮里彻底散去，只余胸口剧烈起伏，尚未被冲垮。"
 
 [[entries]]
-conditions = "premises:t_npc_active_h"
+conditions = "premise(t_npc_active_h)"
 context = "跨坐在{character.name}身上自控着节奏的{target.name}忽然浑身一僵，主导的快感反倒先一步将她自己吞没。\n{breast}随着一阵完整烈度的绝顶剧烈晃荡，乳肉波浪般翻涌，乳头胀硬泛红，酥麻的快感从乳尖直冲头顶。\n她挺胸弓背急促地喘息着，那副掌控一切的模样在正常绝顶的洪流里化作了失神的沉醉，却还未到失控的地步。"
 
 [[entries]]
-conditions = "premises:t_npc_active_h"
+conditions = "premise(t_npc_active_h)"
 context = "主动欺身而上想尽情服侍{character.name}的{target.name}，却被胸前翻涌的绝顶抢先击溃。\n{breast}整体剧烈颤动，乳晕紧缩，乳尖挺硬，一波正常强度的高潮如海啸般从乳肉深处漫开，皮肤泛起大片潮红。\n她胸膛高挺，腰肢绷紧，主动的姿态被这完整的绝顶冲得七零八落，神志微微涣散，却尚未被彻底冲垮。"
 
 [[entries]]
-conditions = "premises:t_npc_active_h"
+conditions = "premise(t_npc_active_h)"
 context = "仍想牢牢握住主动权的{target.name}忽然娇躯剧震，胸口那股蓄积已久的快感终于完整地爆发开来。\n{breast}剧烈而有节奏地颤抖，乳肉不住晃荡，乳头充血到极致，一场标准烈度的绝顶从乳尖席卷至四肢百骸。\n汗珠顺着挺起的胸膛滑落，她急喘着挺胸弓腰，主动服务{character.name}的从容被这正常绝顶彻底瓦解，意识渐渐发蒙。"
 
 [[entries]]
-conditions = "premises:t_npc_active_h"
+conditions = "premise(t_npc_active_h)"
 context = "骑在{character.name}身上主导一切的{target.name}媚态尽显，下一瞬却被自己胸前完整的绝顶浪潮拍得晕头转向。\n{breast}剧烈震颤，乳尖胀立泛红，快感如潮水般自乳肉深处一波接一波涌起，冲得她意识渐渐发蒙。\n她高高挺起胸口剧烈起伏着喘息，掌控的锋芒在这正常烈度的高潮里彻底柔软下来，沉入酥爽的沉醉却未崩溃。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level <= 4"
 context = "在其他女性的注视下，{target.name}的{breast}猛地绷紧颤起，一次完整而正常强度的绝顶高潮如海浪般从乳尖席卷全身。\n乳头充血胀硬到极限，乳肉剧烈地颤动，胸膛高高挺起，她却慌忙用手臂遮住胸前，把脸埋低，拼命压抑着，不愿被周围的目光看见自己失控的模样，羞耻与快感交织得让她瑟瑟发抖。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level <= 4"
 context = "{target.name}迎来了胸部彻底的普通绝顶，{breast}高高耸起又剧烈震颤，胸口大幅起伏喘息失序。\n绝顶该有的典型反应一样不落地涌现，可她死死咬住嘴唇不肯出声，蜷起身子想把颤抖的{breast}藏进臂弯，每当察觉到别的女性瞥来的视线，就羞得浑身一哆嗦。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level <= 4"
 context = "一次完整强度的绝顶从乳尖炸开，{target.name}的{breast}波浪般疯狂晃动，乳晕紧缩乳头挺立，皮肤泛起大片潮红。\n她本能地弓着背又赶忙缩起肩膀，用双手环抱住{breast}遮挡，压低了鼻息，满脸通红地避开众人的注视，既沉醉又羞窘。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level <= 4"
 context = "快感从{breast}如潮涌来，{target.name}整个人绷紧战栗，迎来一场货真价实的普通绝顶，乳肉不受控地大幅颤动，胸膛挺得老高。\n意识开始模糊，她却仍死死记着周围还有别的女人在看，慌忙侧过身用手肘挡住胸前，抿唇忍着不敢发出太大的声响。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level <= 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level <= 4"
 context = "{target.name}的{breast}猛烈痉挛着颤抖，一次典型完整的绝顶高潮席卷了她的身体，乳头胀硬得发疼，胸口剧烈起伏。\n她羞得把头深深低下，拿手臂横过去遮住颤栗的{breast}，尽量把动作压到最小，生怕在这众目睽睽之下被其他女性看清自己高潮的丑态。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "当着周围女人的面，{target.name}挺起胸膛毫不掩饰地攀上了完整的绝顶。\n{breast}剧烈颤动，乳尖充血胀硬，快感如海浪从乳头席卷全身。\n她非但不遮掩，反而故意把高潮的样子展露给其他女性观赏，享受着那一道道艳羡的目光，意识开始模糊，却仍陶醉在被围观的兴奋之中。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "{target.name}索性将胸口朝向那几位注视着的女性，任由{breast}在众目睽睽下大幅晃动，乳头挺立胀硬，胸膛一挺一挺地起伏。\n绝顶的浪潮从乳尖漫向全身，她主动挺胸炫耀这份快感，脸上是被看着才有的得意与沉醉。\n这是一次典型而完整的高潮，尚未到极致，却已让她羞耻又亢奋地颤栗。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "被一圈女人的视线包围着，{target.name}反而更加兴奋，{breast}随着高潮一波波颤抖，乳晕紧缩，乳头硬得发胀。\n她故意挺高胸脯，把绝顶时颤动的乳肉展示给所有人看，快感从乳尖直冲头顶。\n呼吸急促而失序，这场正常强度的绝顶让她意识微微涣散，却仍不忘向旁人炫耀自己被玩到高潮的模样。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "{target.name}毫不害臊地在众女面前迎来绝顶，{breast}整个剧烈起伏，乳头充血挺立，胸口潮红一片。\n汹涌的快感自乳尖扩散至四肢，她刻意扭动上身让胸脯正对着旁观者，享受被注视时的酥麻与得意。\n这是完整而典型的高潮反应，还未到灵魂震颤的地步，却已让她在暴露与炫耀中沉沦。"
 
 [[entries]]
-conditions = "premises:group_sex_mode_on&selected.abilities.露出.level > 4"
+conditions = "premise(group_sex_mode_on) && selected.abilities.露出.level > 4"
 context = "在其他女性艳羡的目光里，{target.name}挺胸绽放出这场完整的绝顶，{breast}颤动不止，乳尖胀硬泛红，胸膛高高耸起。\n快感如潮水从乳头淹没全身，她故意将高潮的每一分颤栗都摊在众人眼前，唯恐别人看不清。\n急促的喘息中意识开始迷离，被围观的羞耻反而化作更浓的亢奋，让她越发享受这份展示。"
 
 [[entries]]
-conditions = "premises:h_in_love_hotel"
+conditions = "premise(h_in_love_hotel)"
 context = "爱情旅馆隔音良好的房间里，暧昧的红色灯光笼罩着{target.name}微微颤栗的身子，{breast}忽然剧烈地颤动起来，一场完整而正常的绝顶从乳尖如海浪般席卷了她的全身。\n乳头充血胀硬到极致，胸膛高高地向上挺起，酥麻的快感一波波从乳肉深处直冲脑髓，她的呼吸急促而紊乱，意识开始变得模糊，却还未被这股高潮彻底冲垮，只沉醉在满室旖旎的气氛与胸口翻涌的愉悦里。"
 
 [[entries]]
-conditions = "premises:h_in_love_hotel"
+conditions = "premise(h_in_love_hotel)"
 context = "镜面天花板映照出{target.name}绷紧的娇躯，在爱情旅馆柔和的灯光里，{breast}随着一阵完整的绝顶高潮而剧烈地波动着。\n乳尖胀得又红又硬，胸膛剧烈起伏，那股正常强度的快感从{breast}深处如潮水般漫向四肢百骸，她仰起脖颈，眉眼失神，潮红爬满了脸颊与胸口，意识在这场胸部绝顶中一点点变得恍惚，却仍未失控，唯有满腔的餍足在私密的房间里静静蔓延。"
 
 [[entries]]
-conditions = "premises:h_in_love_hotel"
+conditions = "premise(h_in_love_hotel)"
 context = "暧昧的音乐在爱情旅馆的房间内低回，{target.name}忽然抵达了一场完整的胸部绝顶，{breast}毫无预兆地剧烈震颤起来。\n充血的乳头挺立胀硬，饱满的乳肉如波浪般晃动不停，快感从乳尖一路烧到全身，她的腰肢弓起，胸膛高高耸立，急促失序的喘息被隔音的墙壁牢牢锁在这方私密的天地里，意识渐渐模糊却还清醒着，将这场正常强度的高潮完整地承受了下来。"
 
 [[entries]]
-conditions = "premises:h_in_love_hotel"
+conditions = "premise(h_in_love_hotel)"
 context = "在爱情旅馆那张柔软大床的暧昧氛围中，{target.name}被一场标准的绝顶彻底攫住，{breast}剧烈而有节奏地颤动个不停。\n乳晕紧缩，乳头胀硬如石，一浪高过一浪的酥麻从{breast}深处席卷而来，冲得她胸膛剧烈起伏，四肢微微发颤。\n这是一次完整而正常的胸部高潮，快感汹涌却尚未到极致，她红着脸沉溺其中，任由旖旎的气氛与澎湃的愉悦将自己层层包裹。"
 
 [[entries]]
-conditions = "premises:h_in_love_hotel"
+conditions = "premise(h_in_love_hotel)"
 context = "借着爱情旅馆房间里暧昧的光晕，{target.name}整个人猛然绷直，{breast}掀起了一场完整而剧烈的绝顶浪潮。\n乳头充血挺立，乳肉大幅震颤，滚烫的快感自乳尖如海啸般漫过全身，她胸口高高挺起又剧烈落下，潮红一路蔓延至颈侧。\n这场正常强度的胸部绝顶让她的意识渐渐涣散却未被冲垮，只余下满室私密而暧昧的空气里，那具沉醉战栗的娇躯。"
 
 [[entries]]
-conditions = "premises:h_in_bathroom"
+conditions = "premise(h_in_bathroom)"
 context = "氤氲蒸腾的水汽里，{target.name}的身子蓦地一僵，一阵快感如海浪般自乳尖席卷而来。\n{breast}剧烈地颤动着，乳头充血胀硬到极限，胸膛高高地向上挺起，湿漉漉的肌肤上，滚落的水珠混着细密的汗珠一同淌下。\n这是一次完整而正常强度的绝顶，她的神志开始变得模糊，却还没被彻底冲垮，湿热的浴室里回荡着她急促失序的娇喘与滴滴答答的水声。"
 
 [[entries]]
-conditions = "premises:h_in_bathroom"
+conditions = "premise(h_in_bathroom)"
 context = "温热的水流哗哗淌过{target.name}泛红的身体，她忽然仰起脖颈，胸前那股酥麻的快感一浪高过一浪地涌上巅峰。\n{breast}随着绝顶的节奏波浪般晃荡颤抖，挺立的乳尖胀得发疼，胸膛剧烈起伏，蒸腾的水汽模糊了她失神的眉眼。\n这不是浅尝辄止的小峰值，而是货真价实的完整高潮，她意识微微涣散，却仍未被冲垮，只余湿滑肢体交叠间此起彼伏的喘息在水雾里荡漾。"
 
 [[entries]]
-conditions = "premises:h_in_bathroom"
+conditions = "premise(h_in_bathroom)"
 context = "腾腾热气中，{target.name}的娇躯猛然一颤，快感自胸口深处如潮水般漫过全身，直冲头顶。\n她的{breast}高高耸起又剧烈抖动，充血的乳头硬挺得几乎透明，湿润的胸口大片泛起潮红，汗水与水珠顺着饱满的弧线蜿蜒滑落。\n这是绝顶该有的一切典型反应尽数迸发的一刻，尚未到那种极致失控的地步，她眼神迷离，急促的呻吟混着水滴声在氤氲的浴室里回响不绝。"
 
 [[entries]]
-conditions = "premises:h_in_bathroom"
+conditions = "premise(h_in_bathroom)"
 context = "花洒喷洒的水雾笼罩下，{target.name}整个人猛地绷直，一股灼热的快感由乳尖炸开，瞬间席卷四肢百骸。\n{breast}不受控制地上下颠动，乳晕紧缩，乳头胀硬如珠，湿漉漉的胸膛随着深重的呼吸剧烈起伏，蒸腾的热气模糊了她潮红的脸。\n这一次是完整而正常烈度的绝顶，快感浪潮虽未达到强绝顶的极致，却已让她的意识微微发白，唯有水声与娇吟在湿热的空间里交织回荡。"
 
 [[entries]]
-conditions = "premises:h_in_bathroom"
+conditions = "premise(h_in_bathroom)"
 context = "水汽氤氲间，{target.name}的身体骤然弓成一道弧线，胸前的快感如海啸般层层拍打上来。\n她挺立的{breast}剧烈颤栗，乳尖充血涨大到极限，胸口高高鼓起又深深塌陷，湿滑的肌肤上滚动的水珠被震得四下飞溅。\n这是一次彻头彻尾的完整绝顶，所有典型的高潮反应一齐涌现，她神思开始涣散却还撑着一丝清醒，湿热的浴室里满是她失序的喘息与叮咚的水响。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_1) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "在{location.name}里，{target.name}正当着周围人的面强忍着，胸尖突如其来的快感却如海浪般席卷全身，一场完整的普通绝顶再也压不住。\n{breast}猛地剧烈颤动，乳头充血挺立胀硬，胸膛高高挺起又剧烈起伏，她死死绷着表情装作什么都没发生。\n可那藏不住的潮红与失序的喘息还是引来了旁人怀疑的目光，只是谁也抓不到确切的证据。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_1) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "{target.name}在众目睽睽之下悄悄迎来了胸部的普通绝顶，酥麻的快感从乳肉深处一路烧上头顶，逼得她几乎站不稳。\n{breast}一波波剧烈晃动，乳尖胀硬得发疼，她拼命咬紧牙关不让呻吟溜出唇缝，只靠视线的遮挡勉强掩饰。\n周围的人时不时投来探究的一瞥，空气里弥漫着说不清的暧昧，却始终没人点破这偷偷进行的淫靡。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_1) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "就在旁人近在咫尺之处，{target.name}的身体被一场标准的绝顶彻底攫住，快感从{breast}的顶端如浪潮般漫开，冲垮了她勉强维持的镇定。\n乳头充血胀硬，饱满的胸肉剧烈颤栗，她强压着不让胸膛的剧烈起伏太过显眼。\n意识开始变得模糊，她只能低下头掩饰泛红的脸，唯恐被周围投来的怀疑视线看穿这场隐秘的高潮。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_1) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "{target.name}明明身处人前，却在遮挡的缝隙里偷偷承受着胸部的完整绝顶，一波典型而剧烈的快感自乳尖席卷而下。\n{breast}不受控地大幅颤动，乳晕紧缩乳头挺硬，她屏住呼吸把即将溢出的娇喘死死压回喉咙。\n周遭的人隐约嗅到了不对劲，纷纷投来狐疑的眼神，可这偷情般的绝顶依旧被她惊险地藏了下来。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_1&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_1) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "在{location.name}这样有旁人在场的地方，{target.name}被一阵完整强度的绝顶浪潮卷走，胸口的快感如潮水般漫过全身每一寸。\n{breast}剧烈起伏颤动，乳头胀硬泛红，她强撑着端正的姿态，只为不让近旁的人看出破绽。\n然而急促失序的呼吸与止不住的战栗仍惹来几道怀疑的注视，那份被人半察觉的紧张更添了几分刺激。"
 
 [[entries]]
@@ -686,505 +686,505 @@ conditions = "selected.talents.幼女 == 1"
 context = "快感如决堤般骤然涌上{target.name}稚嫩的躯体，{breast}剧烈地上下颤动，乳肉随着起伏一圈圈地荡漾晃动。\n幼小的胸膛高高挺起，稚嫩的腰背深深弓成一道弧线，四肢绷得紧紧的又忍不住细细痉挛，圆润的小脸蛋涨得通红发烫，呼吸急促零乱得像是要喘不过气。\n这是一场完完整整、正常强度的绝顶高潮，比之前那浅浅的小峰值猛烈太多太多，幼小的意识开始模糊，仿佛整个身体都被这股汹涌的快感彻底吞没淹没。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_2) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "藏身于旁人瞧不见的暗处，{target.name}的娇躯毫无预兆地猛然绷紧，一场完整而标准的绝顶正汹涌袭来。\n快感自乳尖如潮水般层层漫卷全身，{breast}剧烈颤动，乳头充血胀硬到极点，胸膛高高挺起又剧烈起伏。\n她死死咬住下唇，拼命将几乎要夺喉而出的浪吟尽数咽回，纤肩不住地打颤，竭力不让自己被人瞧出半分破绽。\n不远处的{character.name}却神色自若，纵使周遭的人只隐约觉出一丝异样，也无从窥破这暗地里正翻涌着的绝顶。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_2) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "在不被人察觉的隐蔽处，{target.name}整个人骤然一僵，随即被一波完整正常强度的高潮彻底裹住。\n那股酥麻从{breast}深处炸开，乳肉波浪般晃动，乳晕紧缩，胸口潮红大片蔓延，意识开始变得恍惚却仍强撑着。\n她拼命屏住呼吸，把呻吟压成细弱的鼻息，双手死死掩住胸前不敢有半点声张，只求不惊动近旁的人。\n而暴露在众人视线里的{character.name}仍旧从容如常，任旁人心生疑窦，也看不穿这份藏匿着的癫狂。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_2) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "{target.name}缩在无人留意的一隅，身子被一阵完整的绝顶浪潮猛地掀翻，快感如决堤般从乳尖倾泻而下。\n{breast}疯狂抖颤，乳头肿胀挺立，胸膛一挺一挺地剧烈起伏，她却只能把满腔的喘息死死锁在唇齿之间。\n为了不被人发觉，她整张脸涨得通红，浑身绷得笔直，连一声都不敢泄露，努力将失控的躯体强压下去。\n对面的{character.name}神情平静得像什么都没发生，四下里的人纵有几分狐疑，终究没能识破这暗处正上演的高潮。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_2) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "躲在他人目光触及不到的地方，{target.name}猛地一颤，一次典型而完整的绝顶将她整个吞没。\n炽热的快感由{breast}一路烧遍全身，乳尖胀硬颤栗，乳肉剧烈晃荡，脊背弓起，胸口红潮翻涌，神志渐渐模糊。\n她把嘴唇咬出了浅浅的印子，硬生生把要溢出的娇吟咽了回去，肩头与双腿都在无声地抖，拼死掩饰这份失态。\n站在明处的{character.name}依旧云淡风轻地应付着周遭，令旁人只觉气氛微妙，却谁也参不透这隐秘的绝顶。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_2&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_2) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "在众人看不见的角落，{target.name}的身体不受控地绷成一张弓，完整的高潮正一波接一波地冲刷着她。\n{breast}随着绝顶的节奏疯狂颤动，乳头充血挺立，汗水顺着泛红的胸口滑落，呼吸急促而紊乱，意识开始飘忽。\n她死死抿着唇，用尽全力将喉间的呜咽摁回去，浑身僵直地强忍着，只为不让这场绝顶惊动身边任何一人。\n显露在人前的{character.name}却始终泰然自若，哪怕近旁的人隐约嗅到一丝异样，也终究无从揭穿这暗涌的癫狂。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_3) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "{target.name}的身躯骤然一紧，一场完整而标准的绝顶自乳尖如浪潮般席卷全身，{breast}高高挺起、剧烈颤动，乳头充血胀硬到极点。\n她死死绷着神经，在旁人面前强撑出若无其事的神色，可脸颊仍不受控地烧红一片。\n胸膛大幅起伏，唯有那藏不住的颤栗和涣散的眼神，悄悄泄露出一丝难以察觉的异样。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_3) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "一波完整的高潮顺着{breast}深处炸开，{target.name}整个人绷成弓形，乳肉波浪般晃动，胸口一颤一颤地起伏不止。\n她努力压住喉间的气音，装作与身边人毫无异常地相处着，眉眼间却抑制不住地染上迷离的春色。\n这是一次正常强度的绝顶，快感虽未到极致，却已足以让她端着的镇定隐隐出现裂痕。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_3) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "{target.name}猛地一僵，标准而剧烈的绝顶从乳尖漫过全身，{breast}充血挺立、乳晕紧缩，胸膛控制不住地高高耸起。\n那藏在旁人视线之外的动静让她几乎绷不住，她却仍咬牙维持着表面的从容，只把那阵战栗死死压进身体里。\n绯红爬上脖颈，急促的呼吸和微微失神的眼神，是她全力掩饰下唯一漏出的破绽。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_3) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "完整的绝顶如海浪般拍来，{target.name}的{breast}剧烈颤抖，乳头胀硬到极限，胸口一起一伏地喘动着。\n她拼了命地在众目之下装作若无其事，指尖却悄悄掐紧，连唇边溢出的气息都被她硬生生咽了回去。\n意识开始泛起模糊的甜白，可她仍强撑着不让任何一丝异样彻底暴露在旁人眼前。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_3&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_3) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "一次正常烈度的绝顶自乳尖轰然席卷，{target.name}背脊弓起，{breast}高耸挺立、剧烈晃动，胸膛剧烈起伏个不停。\n她努力把自己藏进平静的表象里，佯装照常应对着近旁的一切，脸上的潮红却怎么也压不下去。\n那份从胸口烧到脑海的快感让她眼神涣散，只余下强忍着的颤栗透出隐约的失常。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_4) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "近在咫尺处还有旁人走动，{target.name}却在这一刻胸口高高挺起，{breast}如浪般剧烈颤动，一场完整而正常的绝顶自乳尖轰然炸开，席卷了她整具身子。\n她拼命咬紧牙关，把即将冲出喉咙的呻吟死死咽了回去，乳头充血胀硬，胸膛剧烈起伏，浑身绷得发颤，却硬是不敢发出半点声音。\n周遭的空气仿佛掠过一丝难以名状的异样，而她只能死死绷住身体，把绝顶的失态藏进无人瞧见的阴影里。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_4) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "就在别人几步之外的地方，{target.name}藏起身形，{breast}猛地一阵剧烈震颤，充血的乳尖硬挺到极致，一波完整的高潮如潮水般漫过她的全身。\n她屏住呼吸，脸颊憋得通红，胸膛一挺一挺地大幅起伏，双腿夹紧发抖，却连一丝喘息都不敢泄露出去。\n附近似有人隐隐察觉到什么细微的动静，可她只能咬紧下唇，将这场淋漓尽致的绝顶悄悄压进不被发觉的沉默中。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_4) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "旁人的脚步声就在不远处响着，{target.name}的{breast}却不受控制地大幅颤抖起来，乳肉波浪般晃动，一场标准强度的绝顶正从胸尖轰然席卷而上。\n她死死抿住嘴唇，把满腔要迸出的娇吟硬生生憋回，胸口高高耸起又剧烈落下，全身肌肉紧绷颤栗，只为不让丝毫声响外泄。\n空气里似乎浮起一层若有若无的异样气息，而她只能拼命绷直脊背，将高潮的战栗悄悄封锁在无人看见的角落。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_4) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "明明有人就在附近，{target.name}却把身子缩在人看不到的地方，{breast}剧烈地一阵阵抽颤，充血的乳头挺立胀硬，一场完整的绝顶如海啸般从乳尖冲遍全身。\n她攥紧拳头强忍着，喉咙里滚动着被死死压住的呜咽，胸膛急促起伏，腰肢绷紧微颤，连呼吸都刻意放得又轻又慢。\n近旁似乎有人对周围的动静起了一丝反应，可她只能咬牙把这淫靡的绝顶彻底藏在寂静之下。"
 
 [[entries]]
-conditions = "premises:hidden_sex_mode_4&premises:place_someone_not_in_hidden_and_conscious"
+conditions = "premise(hidden_sex_mode_4) && premise(place_someone_not_in_hidden_and_conscious)"
 context = "就在几步开外还有别人的时候，{target.name}悄悄躲藏着，{breast}忽然剧烈震颤，乳尖充血胀硬到极点，一波正常而完整的高潮如浪潮般席卷了她的胸口与全身。\n她拼命把即将出口的娇喘咽回喉底，胸膛高挺又剧烈起伏，双腿收紧发抖，浑身绷成一条颤动的弦，却不敢发出半分声息。\n周围的空气里像是掠过一缕说不清的异动，而她唯有绷紧全身，将这场绝顶死死掩藏在不被察觉的沉默里。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_1"
+conditions = "premise(exhibitionism_sex_mode_1)"
 context = "{target.name}的身子猛然绷紧，{breast}随一波席卷全身的快感剧烈颤动，乳头充血胀硬到极限。\n分明是空无一人的室内，那扇虚掩未上锁的门却随时可能被推开，这份提心吊胆的紧张让羞耻心疯狂攀升。\n胸膛高高挺起，这是一次完整正常的绝顶，酥麻从乳尖一路烧遍全身，她咬住唇拼命压着声，生怕惊动门外经过的人。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_1"
+conditions = "premise(exhibitionism_sex_mode_1)"
 context = "一阵完整而剧烈的绝顶从乳尖炸开，{target.name}的{breast}疯狂震颤，胸口大幅起伏着。\n窗外随时可能有人影经过，而她就在这毫无遮挡的室内彻底高潮，随时被撞见的危机感让每一分快感都变得格外滚烫。\n乳肉如波浪般晃动，乳头肿胀挺立，她仰起脸无声地承受着这场淹没理智的快感洪流，双腿难耐地绞紧。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_1"
+conditions = "premise(exhibitionism_sex_mode_1)"
 context = "{target.name}整个人被快感掀翻，{breast}剧烈颤抖，乳头胀硬得几乎发疼。\n室内虽无一人，可那透光的窗与未锁的门时刻提醒着随时会被人看见，越是害怕暴露，绝顶来得越是凶猛。\n这是标准强度的完整高潮，胸膛一挺再挺，酥麻的浪头一层层拍打着她的神志，她死命抿唇压抑，生怕泄出半点声响。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_1"
+conditions = "premise(exhibitionism_sex_mode_1)"
 context = "快感如海浪般从{target.name}的乳尖席卷至四肢，{breast}不受控地剧烈晃动，乳头充血挺立。\n她清楚这室内此刻无人，却也清楚门随时可能被推开，这份露出的刺激让她在恐惧与羞耻中反而攀上了绝顶。\n胸口剧烈起伏，一次完整而典型的高潮将她整个吞没，她绷紧全身，努力不让自己发出会引来旁人的声音。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_1"
+conditions = "premise(exhibitionism_sex_mode_1)"
 context = "{target.name}娇躯一颤，{breast}随着完整的绝顶高潮大幅颤动，乳晕紧缩乳头胀硬。\n无人的室内并不安全，虚掩的门缝与明亮的窗都让她暴露在随时被撞破的危险里，这份紧张把快感烧得更旺。\n酥麻从胸口炸开涌向全身，她仰头承受这场正常强度的绝顶洪流，却始终咬牙压着喉间的呻吟不敢外泄。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_2"
+conditions = "premise(exhibitionism_sex_mode_2)"
 context = "开阔的室外空地上，微风拂过{target.name}裸露的肌肤，一阵完整而强烈的绝顶毫无预兆地从乳尖席卷而来。\n{breast}猛地剧烈颤动起来，乳头充血胀硬到了极限，胸膛高高地向上挺起，胸口剧烈起伏着。\n这是一次正常强度的绝顶，快感如海浪般从胸前一路漫遍全身，意识开始变得模糊，却还没被彻底冲垮。\n置身于随时可能有人路过的空旷天地间，那份暴露的羞耻与背德的兴奋交织在一起，令她的绝顶愈发浓烈。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_2"
+conditions = "premise(exhibitionism_sex_mode_2)"
 context = "在这片无人的户外，天光洒在{target.name}裸露的身子上，一次完整的胸部绝顶轰然降临。\n{breast}如波涛般大幅晃动，乳肉剧烈颤抖，乳晕紧缩，胸膛一挺一挺地高高耸起。\n这是绝顶该有的一切典型反应，快感自乳尖如潮水层层扩散，将她整个人都淹没，神智微微涣散。\n远处隐约传来的脚步声让她既惊慌又亢奋，在开放的空间里赤裸地绝顶，这份羞耻反而将快感烧得更旺。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_2"
+conditions = "premise(exhibitionism_sex_mode_2)"
 context = "空旷的原野上清风阵阵，{target.name}在这毫无遮蔽的天地间迎来了一场彻底的胸部绝顶。\n{breast}整体剧烈地颤栗着，乳头胀硬挺立，胸口大幅度地上下起伏，皮肤泛起大片潮红。\n完整而正常的绝顶烈度从胸前汹涌爆发，酥麻灼热顺着乳尖蔓延至四肢百骸，意识开始朦胧起来。\n生怕突然有人闯入视野的紧张，与在露天下高潮的刺激感彼此叠加，令这份绝顶显得格外淫靡。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_2"
+conditions = "premise(exhibitionism_sex_mode_2)"
 context = "户外开阔的视野下，微风裹着{target.name}赤裸的躯体，一股正常强度的绝顶自乳间猛然炸开。\n{breast}不受控制地大幅颤动，乳尖充血挺立，胸腔高高鼓起，急促的呼吸让胸膛剧烈翻涌。\n快感像海浪一波接一波从乳尖席卷周身，还未到极致的地步，却已让她神思恍惚、几近失神。\n身处随时会被人撞见的开放天地，这份暴露带来的羞耻与兴奋，将胸口的绝顶推向更浓的高峰。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_2"
+conditions = "premise(exhibitionism_sex_mode_2)"
 context = "无人的室外空地被风声笼罩，{target.name}在这开阔的天穹之下彻底攀上了胸部的绝顶。\n{breast}一阵阵猛烈晃荡，乳头胀硬到发痛，胸膛高高挺立，胸口随着紊乱的喘息大幅起落。\n这是一次饱满完整的绝顶，如浪潮般的快感从乳尖倾泻而下淹没全身，理智一点点被冲散。\n露天之下毫无遮掩地绝顶，唯恐脚步声由远及近的战栗，让她整个人都沉溺进背德的快感里。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_3"
+conditions = "premise(exhibitionism_sex_mode_3)"
 context = "众目睽睽之下，{target.name}的娇躯被快感狠狠推上了完整的绝顶，{breast}剧烈颤动着高高挺起，乳尖充血胀硬到极限。\n四面八方投来的视线像针一样扎在她赤裸的身体上，被人看着攀上顶点的羞耻让绯红一路烧到耳根，那股从乳尖席卷全身的快感却因这份背德而愈发汹涌，她的意识在众目注视下渐渐模糊，却怎么也压不住这场淋漓尽致的绝顶。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_3"
+conditions = "premise(exhibitionism_sex_mode_3)"
 context = "在旁人毫不避讳的注视里，{target.name}被这股完整的快感冲上了绝顶，{breast}大幅晃动着，胸膛高高挺起又剧烈起伏。\n她清楚地知道自己正被众人看着高潮，那种无处遁形的羞耻感烧得脸颊滚烫，偏偏公开暴露的背德刺激又将快感放大了数倍，让她在众人面前彻底缴械，急促失序的喘息怎么也收不住。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_3"
+conditions = "premise(exhibitionism_sex_mode_3)"
 context = "{target.name}当着众人的面被推上了一次完整而标准的绝顶，{breast}颤栗着挺起，乳肉如波浪般晃荡，皮肤泛起大片潮红。\n被围观着达到高潮的羞耻几乎将她淹没，可越是暴露在众人视线下，那股从胸口炸开的快感就越发不受控制，她只能羞得闭紧双眼，在众目睽睽里承受这场无从掩饰的绝顶。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_3"
+conditions = "premise(exhibitionism_sex_mode_3)"
 context = "毫无遮掩地暴露在众人眼前，{target.name}被快感送上了完整的顶点，{breast}剧烈震颤，乳尖胀硬挺立，胸口起伏得又急又乱。\n那些落在裸露肌肤上的目光让她羞耻得浑身发烫，背德的兴奋却顺着这份羞耻一路攀升，把快感推向新的高度，她在旁人注视下意识开始发飘，身体却诚实地展露着高潮的每一处痉挛。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_3"
+conditions = "premise(exhibitionism_sex_mode_3)"
 context = "{target.name}在公开的注视下迎来了一场典型的完整绝顶，{breast}大幅颤动着高高耸起，乳晕紧缩，乳尖硬挺得发疼。\n被众人围观着失控的羞耻让她恨不得找地方藏起来，可这份无所遁形的暴露感反倒令快感如海浪般层层叠涌，她在众目之下彻底沉沦，急喘连连，意识在羞耻与快感中变得朦胧。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_4"
+conditions = "premise(exhibitionism_sex_mode_4)"
 context = "周围横七竖八地躺着一群陷入无意识的人，{target.name}却在这样的处境里被胸前的快感推上了完整的绝顶，{breast}剧烈颤动着高高挺起。\n她死死咬住下唇拼命压抑着几乎要冲出喉咙的浪叫，生怕惊醒近在咫尺的众人，可那份随时可能败露的紧张反倒让这股背德的快感翻涌得愈发凶猛，意识都被冲得开始发白。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_4"
+conditions = "premise(exhibitionism_sex_mode_4)"
 context = "明明四下都是失去意识的旁人，{target.name}偏偏在这时迎来了一次正常而完整的绝顶，{breast}胀硬的乳尖随着剧烈起伏的胸膛不住颤晃。\n她强忍着不让自己发出半点声响，一想到身边这些人随时可能睁眼撞见这副淫态，那股羞耻与刺激便顺着乳尖一路窜进脑海，令她甜美的意识渐渐变得模糊。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_4"
+conditions = "premise(exhibitionism_sex_mode_4)"
 context = "在这满是无意识者的场合，{target.name}的身体却诚实地攀上了完整绝顶的顶点，{breast}高高挺起又剧烈震颤，胸口大幅地起伏喘动。\n她拼命屏住呼吸压下呻吟，唯恐一丝声息就会惊醒周遭沉睡的人们，这种当着众人的面偷偷绝顶的背德感，让快感如潮水般一浪高过一浪地席卷全身。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_4"
+conditions = "premise(exhibitionism_sex_mode_4)"
 context = "周身尽是毫无反应的旁人，{target.name}却被乳尖传来的酥麻推入了一场完整的绝顶，{breast}绷得发胀，乳肉一波波剧烈地荡漾颤抖。\n她将脸埋得低低的死命压着喉咙里的娇吟，那些近在身边随时会醒来的人化作最危险的观众，令这股正常强度的高潮夹着背德的战栗愈演愈烈，神志也随之朦胧起来。"
 
 [[entries]]
-conditions = "premises:exhibitionism_sex_mode_4"
+conditions = "premise(exhibitionism_sex_mode_4)"
 context = "就在一群陷入无意识的人环伺之间，{target.name}毫无预兆地被胸前的快感送上了完整绝顶，{breast}剧烈颤动，胸膛高高挺起后又重重塌落。\n她死死抿着唇不敢泄出半点声响，心里既怕被沉睡的众人撞破又忍不住为这份隐秘的暴露而沉醉，那股翻涌的背德快感将她的意识冲刷得开始迷糊涣散。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_E_0"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_E_0)"
 context = "被束缚得动弹不得的{target.name}胸膛猛然高高挺起，{breast}剧烈地颤动着，一场完整而正常强度的绝顶毫无预兆地贯穿了她陌生抗拒的身体。\n乳尖充血胀硬到极限，快感如海浪般自胸口席卷向四肢，她惊恐地瞪大双眼，泪水夺眶而落，怎么也想不通自己的身体为何会对这般对待泛起如此淫荡的反应，屈辱与恐惧几乎将她淹没，意识在这阵高潮里渐渐变得模糊。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_E_0"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_E_0)"
 context = "拼命想要挣脱却被牢牢束缚的{target.name}腰背骤然弓起，{breast}整个剧烈晃动起来，胸口如遭浪潮拍击般涌起一波完整的绝顶。\n乳头肿胀挺立，酥麻的快感一路烧灼到脑髓，她愤怒地扭动着无法动弹的身躯，脸颊上却不受控地泛起深深潮红，明明满心抗拒，身体却诚实地在这场胸部高潮中彻底沦陷，神志开始一片恍惚。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_E_0"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_E_0)"
 context = "被囚困着无从逃脱的{target.name}胸膛剧烈起伏，{breast}一波波颤栗，一次典型而彻底的绝顶席卷了她满是屈辱的身体。\n乳肉大幅晃荡，肌肤泛起大片红晕，细密的汗珠沿着颤动的{breast}滑落，她又惊又惧地大口喘息，无法理解自己竟会因胸口被玩弄而抵达如此完整的高潮，羞耻令她泪眼婆娑，思绪开始变得涣散。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_E_0"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_E_0)"
 context = "四肢被缚而无力反抗的{target.name}猛地挺起胸口，{breast}剧烈震颤，快感如潮涌般自乳尖漫向全身，一场正常强度的绝顶将她彻底攫住。\n乳头充血胀硬，胸膛高高耸起又急促起伏，她茫然地睁着泛红的眼，泪水混着冷汗滑下，完全搞不懂为何陌生人的触碰能逼出她这样淫乱的高潮，恐惧与迷惑交织，意识一点点开始模糊。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_E_0"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_E_0)"
 context = "被死死束缚住的{target.name}身体剧烈痉挛，{breast}疯狂颤动，一波完整的绝顶自胸口炸开般席卷了她抗拒的每一寸肌肤。\n乳尖胀硬发红，快感如海啸般漫过全身，她崩溃地哭喊着扭动，却怎么也挣不脱，泪水与汗水糊满了脸，无法接受自己的身体竟对陌生人产生这般背叛般的淫荡回应，神智在高潮中几近涣散。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_1&premises:FALL_LEVEL_LE_2"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_1) && premise(FALL_LEVEL_LE_2)"
 context = "被监禁的{target.name}小小的身子猛地绷紧，{breast}高高耸起又剧烈地颤动，一场完整而正常的绝顶如海浪般自乳尖席卷了全身。\n乳头充血胀硬到了极限，胸膛一起一伏地剧烈喘息，稚气的脸上却挂着不解的泪珠，明明是喜欢的{character.name}，却要在这囚笼般的{location.name}里被逼着迎来高潮。\n她的意识开始变得模糊，却仍分不清该恨还是该沉沦，只能任由那股快感将自己一点点淹没。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_1&premises:FALL_LEVEL_LE_2"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_1) && premise(FALL_LEVEL_LE_2)"
 context = "一波完整的绝顶从乳尖轰然炸开，被囚的{target.name}整个胸膛高高挺起，{breast}毫无节制地上下晃荡颤抖，充血的乳头硬得发疼。\n她泪眼婆娑地偷偷望向{character.name}，眼里满是被喜欢之人囚禁的委屈与困惑，身体却诚实地在这场标准强度的高潮里失了序。\n这不是小绝顶那点克制的酥麻，而是彻彻底底的一次完整绝顶，快感席卷四肢，令她既痛苦又羞耻地沉溺其中。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_1&premises:FALL_LEVEL_LE_2"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_1) && premise(FALL_LEVEL_LE_2)"
 context = "{target.name}的娇躯在{location.name}中骤然弓成一道弧，{breast}随着绝顶的到来剧烈地波动，乳肉一圈圈地颤抖不止。\n这是一场正常强度的完整高潮，胸口剧烈起伏，呼吸急促而凌乱，稚嫩的面庞上泪痕未干，眼神里满是对被监禁这件事的不解。\n她明明思慕着{character.name}，此刻却在被迫的快感中迎来绝顶，心与身体一同在挣扎与顺从之间被冲刷得七零八落。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_1&premises:FALL_LEVEL_LE_2"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_1) && premise(FALL_LEVEL_LE_2)"
 context = "被关押的{target.name}忽然一阵战栗，快感如潮水般从{breast}的乳尖漫向全身，一次典型而完整的绝顶将她整个人吞没。\n乳头胀硬挺立，乳肉剧烈地抖动着，胸膛高高地耸起又落下，她含泪的眼睛怔怔地看着{character.name}，仿佛在无声追问为何要这样对待自己。\n意识虽开始朦胧，却还未被彻底冲垮，只留她在这囚牢中独自承受着这份既屈辱又甜腻的完整高潮。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_1&premises:FALL_LEVEL_LE_2"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_1) && premise(FALL_LEVEL_LE_2)"
 context = "绝顶毫无预兆地完整降临，{target.name}小小的身体在{location.name}里剧烈一颤，{breast}高耸挺起，乳肉如浪般层层荡漾。\n这是一场正常强度的绝顶，充血的乳尖硬立着微微发抖，胸口起伏不定，泪水顺着稚气的脸颊滑落，满是被喜欢的人囚禁的伤心与迷惘。\n她的思绪在快感中开始变得模糊，既想挣脱又忍不住沉陷，只能任凭这完整的高潮将自己彻底淹没。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_3&premises:FALL_LEVEL_LE_4"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_3) && premise(FALL_LEVEL_LE_4)"
 context = "被监禁的{target.name}整个身子猛地绷紧，{breast}如遭浪潮拍打般剧烈颤动，快感从乳尖一路席卷至全身。\n乳头充血胀硬到了极点，胸膛高高挺起又重重落下，这是一次完整而正常的绝顶，虽未至极致却已叫她彻底失守。\n即便手腕仍被锁链束缚，她也心甘情愿地把身体交给恋人，被囚于此却因能与爱人相拥而满心欢喜。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_3&premises:FALL_LEVEL_LE_4"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_3) && premise(FALL_LEVEL_LE_4)"
 context = "一波完整的绝顶浪潮从乳尖轰然炸开，{target.name}的{breast}疯狂颤栗，胸口剧烈起伏，脸颊烧红一片。\n这是标准强度的高潮，比浅尝辄止的小峰值猛烈太多，意识开始泛起朦胧的雾。\n身陷囹圄的她非但没有半分怨怼，反把这份被恋人囚禁又玩弄至绝顶的处境当成两人独有的情趣，甘愿为爱人彻底奉献。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_3&premises:FALL_LEVEL_LE_4"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_3) && premise(FALL_LEVEL_LE_4)"
 context = "{target.name}娇躯陡然弓成一道满弓，{breast}上下狂颤，乳肉像波浪一样翻涌，乳晕紧缩成一团。\n完整的绝顶感自乳尖如海潮般漫过四肢百骸，是一次典型而剧烈的高潮，却仍留着一线未至巅峰的余地。\n她信任地把囚禁中的身子全然托付给{player.name}，觉得只要能被深爱的人这般占据，纵是牢笼也甜如蜜。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_3&premises:FALL_LEVEL_LE_4"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_3) && premise(FALL_LEVEL_LE_4)"
 context = "剧烈的高潮自胸口猛然席卷全身，{target.name}的{breast}颤动得几乎失了章法，胸膛一挺一落起伏不停。\n乳头胀硬到发烫，这份完整而饱满的绝顶远胜先前的轻微峰值，令她的神智一点点漫上迷蒙。\n被锁在单人监牢里的她甘之如饴，将这场囚禁视作恋人间深情的考验，满心欢喜地把整个身体献给心爱的人。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_3&premises:FALL_LEVEL_LE_4"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_3) && premise(FALL_LEVEL_LE_4)"
 context = "一场完整的绝顶轰然降临，{target.name}的{breast}随着快感的洪流疯狂震颤，乳尖挺立充血，胸口大幅耸动。\n那快感从乳峰一路烧遍全身，是绝顶该有的一切典型反应尽数涌现，却尚未逼近极致的边缘。\n囚居牢中的她眼波里满是柔情，认定爱侣如此待她自有深意，愿在这方寸监牢中无条件配合，为爱奉献肉体。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:high_1"
+conditions = "selected.talents.少女 == 1 && premise(high_1)"
 context = "娇小稚嫩的{target.name}猛地浑身一颤，{breast}剧烈地上下颤动起来，两颗乳尖胀得又红又硬，仿佛要炸开一般。\n稚嫩的胸膛随着绝顶的浪潮一次次高高挺起又缓缓落下，纤细的腰肢不受控制地向上弓起，随即又瘫软下去。\n她的小脸涨得通红，眼神里满是又惊又羞的迷茫，这是一次完整而正常的绝顶，快感如潮水般从乳尖直冲向全身，让她稚嫩单薄的身体止不住地战栗痉挛。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:high_1"
+conditions = "selected.talents.少女 == 1 && premise(high_1)"
 context = "{target.name}发育未全的身子猝然绷紧，{breast}如波浪般一阵阵剧烈颤抖，乳晕紧紧皱缩，乳尖挺立到近乎刺痛的程度。\n单薄的胸口大幅度起伏喘息，稚嫩的肩头微微耸动，腰肢一下下弓起又软塌，双腿不自觉地夹紧又松开。\n她涨红的脸上写满了又羞又乱的表情，这份快感完整而强烈，正是一次典型的绝顶，从乳尖席卷全身，令她还带着孩子气的身躯剧烈颤抖起来。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:high_1"
+conditions = "selected.talents.少女 == 1 && premise(high_1)"
 context = "娇小的{target.name}倏地弓起了后背，{breast}随之剧烈晃动，两点乳尖硬得发烫，胀痛感直冲心口。\n她稚气未脱的胸膛急促起伏，肩膀轻轻抽搐，纤细的手指下意识地蜷紧，腰身一次次痉挛般地弓起又落下。\n满脸绯红的她眼神涣散，嘴唇微微开合，这是一场完整正常的绝顶高潮，快感自乳尖如潮水般涌遍全身，让她刚刚发育的身体控制不住地剧烈颤栗。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:high_1"
+conditions = "selected.talents.少女 == 1 && premise(high_1)"
 context = "{target.name}稚嫩的身躯忽然剧烈一抖，{breast}接连不断地颤动起来，乳尖胀硬得几乎要发麻，皮肤泛起大片潮红。\n单薄的胸口随着急促的喘息猛烈起伏，纤瘦的腰肢弓成一道弧线又颓然塌落，双腿绷紧又无力地打颤。\n她懵懂而慌乱的眼神里盛满了羞耻与快感交织的迷离，这是一次完完整整的绝顶，从乳尖直烧到四肢百骸，令她初发育的身体彻底沦陷在颤抖之中。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&premises:high_1"
+conditions = "selected.talents.少女 == 1 && premise(high_1)"
 context = "娇小玲珑的{target.name}猛然绷紧了全身，{breast}随着绝顶的浪潮剧烈起伏颤动，两粒乳尖挺立胀硬到极致，几乎要刺破空气。\n稚嫩的胸脯大幅度地一起一伏，纤细的腰肢反复弓起又瘫软，脚趾也跟着痉挛似地蜷紧。\n她涨红的小脸上满是又惊又喜的迷茫，这正是一次典型而完整的绝顶高潮，快感从乳尖如潮涌般漫遍全身，让这具还带着青涩气息的娇躯抖个不停。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_-2) && premise(FALL_LEVEL_LE_-1)"
 context = "被囚禁的{target.name}整个人猛地绷紧，一阵完整而剧烈的绝顶自乳尖如海浪般席卷全身，{breast}高高挺起又剧烈颤动，乳头充血胀硬到极限。\n她本想咬牙忍住不发声，身体却诚实地失序起伏，麻木的眼神里意识开始模糊，认命般承受着这场被玩弄到顶点的胸部高潮。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_-2) && premise(FALL_LEVEL_LE_-1)"
 context = "快感从乳尖炸开，一路烧过{target.name}早已认命的身躯，{breast}随着标准而彻底的绝顶剧烈晃动，胸膛剧烈起伏，肌肤泛起大片潮红。\n沦为上司所有物的她默默承受着这次完整的高潮，腰肢弓起四肢绷紧，残存的自尊让她压着呻吟，意识却已随着顶点开始涣散。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_-2) && premise(FALL_LEVEL_LE_-1)"
 context = "被监禁已久的{target.name}再次被逼上绝顶，{breast}汹涌地颤抖着，乳头胀硬凸起，胸口一波波剧烈起伏，这是一次完整正常烈度的胸部高潮。\n她不再挣扎地任由快感席卷，服从地承受着，麻木潮红的脸上却掩不住失控的失神，身体在顶峰上诚实地痉挛颤栗。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_-2) && premise(FALL_LEVEL_LE_-1)"
 context = "整场典型的绝顶如潮水漫过被囚的{target.name}，{breast}剧烈震颤，乳尖充血挺立，胸膛高高耸起后又重重塌落。\n她像认命的所有物般消极承受，紧绷的身体却背叛了她的麻木，腰背弓起大腿夹紧，意识在这完整的高潮里一点点模糊涣散。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-2&premises:FALL_LEVEL_LE_-1"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_-2) && premise(FALL_LEVEL_LE_-1)"
 context = "一阵完整而强烈的胸部绝顶贯穿{target.name}被驯服的身体，{breast}如浪般翻涌颤动，乳头胀到极致，汗水顺着泛红的胸口滑落。\n她垂着空洞的眼神服从地迎接顶点，喉间溢出几声压抑的低吟，四肢绷紧抽搐，在这次标准的高潮中彻底失了神。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_-4) && premise(FALL_LEVEL_LE_-3)"
 context = "被囚禁已久的{target.name}浑身猛地绷紧，{breast}高高挺起又剧烈颤动，乳尖充血胀硬到极限，一阵完整而汹涌的绝顶快感如海浪般自乳尖席卷全身。\n身为主人专属宠物的她毫无保留地将身体献出，胸膛剧烈起伏，脸上满是对主人的崇拜与感激，甘愿在这份被玩弄至绝顶的恩赐里彻底沉沦。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_-4) && premise(FALL_LEVEL_LE_-3)"
 context = "沦为肉便器的{target.name}发出满足的呜咽，{breast}随着一阵剧烈的痉挛整体波浪般晃动，乳肉颤抖不止，胸口一波接一波地高高起伏。\n这是一次完整而标准的绝顶，酥麻的热浪从挺立的乳头一路烧遍全身，却还未凶猛到失控的地步，被主人囚养的她只觉得能这样高潮便是天大的宠幸，浑身战栗着流露出感激涕零的媚态。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_-4) && premise(FALL_LEVEL_LE_-3)"
 context = "甘作奴隶的{target.name}身体骤然弓成一道弧线，{breast}胀得发烫，乳晕紧缩，两粒乳尖硬挺挺地翘起，一场正常烈度的绝顶让胸膜剧烈震颤。\n意识开始变得恍惚却还没被冲垮，被主人监禁的她将这份高潮视作至高的赏赐，眼神迷离而痴醉，无声地宣告着自己永远属于主人。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_-4) && premise(FALL_LEVEL_LE_-3)"
 context = "被主人当作宠物豢养的{target.name}猛然仰起脖颈，{breast}剧烈颤动着高高耸起，乳头充血挺立，皮肤大片泛起潮红，一阵完整的绝顶浪潮席卷了全身。\n她像得到奖赏的小兽般浑身颤栗，胸膛急促起伏，满脸都是被主人玩弄到高潮的餍足与依恋，甘心情愿地把这具被囚养的身体彻底献给主人。"
 
 [[entries]]
-conditions = "premises:t_imprisonment_1&premises:FALL_LEVEL_GE_-4&premises:FALL_LEVEL_LE_-3"
+conditions = "premise(t_imprisonment_1) && premise(FALL_LEVEL_GE_-4) && premise(FALL_LEVEL_LE_-3)"
 context = "身为主人专属性奴的{target.name}整个人剧烈一颤，{breast}挺起后不住地大幅颤晃，乳尖胀硬酸麻，胸口剧烈起伏着，一次饱满而典型的绝顶如潮水漫过全身。\n快感虽汹涌却仍在正常的烈度内，尚未抵达那种极致的失控，被主人囚禁调教的她眼中盈满崇拜的泪光，浑身痉挛着表达对这份宠幸的无尽感激。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_not_sleep_h_awake_but_pretend_sleep)"
 context = "沉沉睡着的{target.name}对席卷而来的绝顶毫无察觉，身体却诚实地攀上了一次完整的高潮顶点。\n{breast}忽然剧烈地颤动起来，乳头充血胀硬到极限，胸膛不受控制地高高挺起，快感如潮水般自乳尖漫过全身。\n她始终未曾醒转，只在睡梦里蹙紧了眉心，唇缝间溢出断续的甜腻鼻息，整具躯体被这股快感彻底裹住。\n这是一次正常强度的完整绝顶，却尚未抵达最极致的地步，只在她酣睡的身躯里掀起一场无声而剧烈的震颤。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_not_sleep_h_awake_but_pretend_sleep)"
 context = "{target.name}在熟睡中迎来了这次胸口的普通绝顶，浑然不知自己的身体正被快感操控着。\n{breast}整片汹涌地晃荡起伏，两粒乳尖胀得又红又硬，胸腔随着高潮的到来一下下猛烈起伏，肌肤上泛起大片潮红。\n她睡得沉沉的，睫毛却在快感的冲刷下微微轻颤，喉咙深处漏出一声黏腻的呓语，身体本能地弓成一道弧线。\n这股由乳肉深处炸开的快感烧遍了她全身，是一场完整而典型的绝顶，却又克制在尚未失控的边缘。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_not_sleep_h_awake_but_pretend_sleep)"
 context = "睡梦中的{target.name}丝毫没有醒来的迹象，绝顶却已如约爬上了她毫无防备的胸膛。\n{breast}剧烈地起伏颤抖，乳头挺立胀硬，胸口高高耸起又重重落下，一股酥麻的快感自乳尖如海浪般铺天盖地地涌向四肢百骸。\n她无意识地偏了偏头，紧闭的双唇间溢出一缕甜软的呻吟，睡着的脸颊染上情动的红晕，身子微微战栗。\n这是一次货真价实的完整高潮，反应齐全而鲜明，只是还未到那种令人失神的极致烈度。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_not_sleep_h_awake_but_pretend_sleep)"
 context = "{target.name}被快感推上了普通绝顶的顶峰，而她仍旧陷在深深的睡眠里一无所知。\n{breast}波浪般剧烈地颤晃着，胀硬的乳尖高高挺立，胸膛随着一波波高潮反复挺起塌陷，汗珠沿着起伏的乳沟缓缓滑落。\n她始终没有睁眼，只是眉头轻蹙，鼻息变得急促而黏腻，睡梦里的躯体无声地绷紧又松软。\n这场绝顶来得完整而典型，是正常强度该有的全部模样，却仍收束在尚未彻底失控的界线之内。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&premises:target_not_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_not_sleep_h_awake_but_pretend_sleep)"
 context = "酣睡不醒的{target.name}对这一切毫无知觉，身体却径自迎来了一场完整而剧烈的胸口高潮。\n{breast}猛烈地抖动颤栗，乳头充血挺硬，胸腔一次次高高鼓起，滚烫的快感从乳尖深处如浪潮般漫卷至全身每一处。\n她没有醒来，紧闭的眼睑下眼球微微转动，唇边溢出断断续续的甜腻鼻音，睡着的身躯轻轻痉挛着。\n这是一次典型完整的普通绝顶，所有该有的反应一应俱全，却又不及强绝顶那般极致猛烈。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_sleep_h_awake_but_pretend_sleep)"
 context = "装睡的{target.name}再也压不住这股从乳尖席卷而来的完整绝顶，{breast}剧烈颤动，乳头充血胀硬到极限，胸膛高高挺起。\n她死死咬紧牙关不让呻吟泄出，拼命维持着熟睡的假象，可意识早已被这标准强度的高潮冲得开始模糊，只能任凭那阵典型的绝顶反应席卷全身。\n这是一次完整而正常的胸部绝顶，尚未到极致，却已让佯装沉睡的她浑身战栗，泄露出难以遮掩的破绽。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_sleep_h_awake_but_pretend_sleep)"
 context = "一阵完整的绝顶快感从{breast}深处如海浪般漫开，{target.name}紧闭着眼假装毫无知觉，实则清醒地承受着这场标准的胸部高潮。\n{breast}不受控地颤抖起伏，乳肉一波波晃动，她强忍着不让胸膛的剧烈起伏破坏平稳的呼吸，却终究压不住那阵席卷全身的酥麻。\n典型的绝顶反应在她佯睡的躯体上尽数浮现，虽还未升到极致，却已将她假寐的伪装冲得摇摇欲坠。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_sleep_h_awake_but_pretend_sleep)"
 context = "{target.name}佯装酣睡，可这场完整强度的胸部绝顶还是猝然袭来，{breast}猛地绷紧又剧烈颤动，乳头胀硬挺立。\n她拼命绷住身子想维持睡着的模样，喉咙里堵着几乎要冲出的呻吟，意识在这标准绝顶下一点点变得恍惚。\n从乳尖烧到全身的快感洪流让她的胸膛不受控地高高挺起，这次典型而完整的高潮虽未到强绝顶的地步，却已叫装睡的她彻底暴露了清醒的事实。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_sleep_h_awake_but_pretend_sleep)"
 context = "这股正常强度的绝顶从{breast}深处轰然炸开，装睡的{target.name}身子骤然一僵，{breast}剧烈颤动，乳肉翻涌般晃荡。\n她死撑着不睁眼，用尽力气压着几乎要破口而出的娇吟，努力让自己看起来仍在沉睡，可这场完整的胸部高潮该有的反应一样不落地爆发出来。\n胸膛剧烈起伏，皮肤泛起潮红，意识开始朦胧，佯睡的她再难掩住这次典型绝顶带来的浑身颤栗。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_1&premises:target_sleep_h_awake_but_pretend_sleep"
+conditions = "premise(t_unconscious_flag_1) && premise(target_sleep_h_awake_but_pretend_sleep)"
 context = "完整而典型的胸部绝顶如潮水般淹没了假寐的{target.name}，{breast}强烈颤动，乳头充血挺立到极致，胸口剧烈起伏。\n她紧咬下唇强忍反应，竭力维持着均匀的呼吸不让{character.name}看穿自己早已清醒，然而这标准强度的高潮席卷而来，意识渐渐模糊。\n那阵从乳尖漫向四肢的酥麻让她的身子止不住地战栗，这次正常绝顶虽还够不上极致，却已将她装睡的假象撕开了一道破绽。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_2"
+conditions = "premise(t_unconscious_flag_2)"
 context = "醉意朦胧的{target.name}整个人忽然剧烈地颤抖起来，一次完整而正常的绝顶高潮猛地席卷了她被酒精浸软的身子。\n那股从乳尖迸发的快感如海浪般汹涌地漫过全身，{breast}剧烈地颤动着，两颗乳头充血胀硬到了极限，胸膛高高地挺起又剧烈起伏。\n她醉红的脸蛋失神地仰着，迷离恍惚的眼神彻底涣散，浑浊的意识在这股完整的高潮里开始模糊，却还未被彻底冲垮，只能任凭酒醉的身体本能地在绝顶中痉挛沉沦。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_2"
+conditions = "premise(t_unconscious_flag_2)"
 context = "一阵完整而剧烈的绝顶攫住了酒醉的{target.name}，快感从乳尖如决堤般涌开，将她迷醉的身躯彻底淹没。\n{breast}大幅度地波浪般晃荡起来，挺立的乳头涨得又红又硬，胸口一下下急促地起伏，醉热的皮肤上泛起大片潮红。\n她带着浓浓酒气的呼吸紊乱急促，恍惚的意识随着这标准强度的高潮渐渐涣散模糊，酒精麻痹了她的判断，却麻痹不了身体诚实的高潮反应，只能软绵绵地在绝顶余韵里瘫软战栗。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_2"
+conditions = "premise(t_unconscious_flag_2)"
 context = "{target.name}醉醺醺的身体毫无预兆地绷紧痉挛，这是一次完整正常的绝顶，胸部的快感终于如海啸般席卷了她朦胧的神志。\n{breast}剧烈而有节奏地颤抖，乳尖硬挺得发胀，饱满的乳肉随着高潮的节拍不住抖动，胸膛高高耸起。\n醉红的面颊上写满了失神的迷乱，她恍惚地哼哼着，酒意与快感交织在一起，令她那点残存的清醒彻底溃散，整个人瘫软在绝顶的浪潮里无力挣扎。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_2"
+conditions = "premise(t_unconscious_flag_2)"
 context = "完整而正常强度的高潮猛地贯穿了醉酒的{target.name}，那股快感自乳头深处炸开，如潮水般漫过她被酒精泡软的四肢百骸。\n{breast}颤栗着高高挺起，充血的乳头胀硬挺立，胸口剧烈地一起一伏，醉意熏染的肌肤泛出诱人的绯红。\n她迷迷糊糊地扬起脖颈，涣散的眸子失去了焦距，浑浊的意识在这波海浪般的快感里开始模糊却尚未崩溃，只余酒醉的娇躯在本能的驱使下不住颤抖沉醉。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_2"
+conditions = "premise(t_unconscious_flag_2)"
 context = "酒醉的{target.name}忽然发出一声迷醉的颤吟，一次典型而完整的绝顶如约而至，将她泡在醉意里的身子彻底点燃。\n从乳尖翻涌而起的快感如浪潮层层拍打全身，{breast}大幅颤动，两点乳尖胀立得又红又挺，胸膛高高鼓起又急剧起伏。\n她酡红的脸上一片恍惚失神，醉眼迷蒙地半睁着，思绪在这正常烈度的高潮中变得越来越模糊，酒精令她全无抵抗，只能诚实地任由身体在绝顶里痉挛战栗。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_3"
+conditions = "premise(t_unconscious_flag_3)"
 context = "时间彻底凝固的这一刻，{target.name}保持着原本的姿势僵在原地，{breast}却毫无预兆地掀起了一场完整而剧烈的绝顶。\n乳尖如遭电流般充血胀硬到极限，成片的乳肉如海浪般层层颤动，胸膛高高向上挺起后又僵住，然而她的意识早已随时间一同停滞，对这场席卷全身的高潮浑然不觉。\n这是一次货真价实的普通绝顶，典型的反应一样不少，只是全都被封印在了静止的时间里，无声地在这具无法感知的躯体上悄然绽放。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_3"
+conditions = "premise(t_unconscious_flag_3)"
 context = "静止的时间将{target.name}锁在原地，她的身体连同表情都定格成一尊无法动弹的雕像，唯有{breast}深处骤然炸开的普通绝顶不受时停的束缚。\n乳头瞬间挺立充血，饱胀的乳肉一波接一波地剧烈晃荡，胸口本该剧烈起伏却被凝固在半空，这场完整强度的高潮从乳尖如潮水般漫向四肢百骸。\n她却对此一无所知，感官随时间一同沉睡，只留一具诚实的躯体在停滞的世界里独自经历这场无人知晓的绝顶。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_3"
+conditions = "premise(t_unconscious_flag_3)"
 context = "在{location.name}里，时间早已被按下暂停键，{target.name}维持着先前的姿态纹丝不动，可{breast}却像不受任何法则约束一般迎来了一次标准的绝顶高潮。\n充血的乳尖硬得发亮，成团的乳肉剧烈颤栗，皮肤大片泛起潮红，然而这一切汹涌的反应都被封锁在她毫无知觉的身躯之内。\n这是完整而典型的普通绝顶，比小绝顶剧烈得多却又未及极致，无声无息地在被时间遗忘的角落里悄然席卷了她整个人。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_3"
+conditions = "premise(t_unconscious_flag_3)"
 context = "时间的停滞让整个世界连同{target.name}一起陷入死寂，她一动不动，仿佛被抽走了灵魂，唯有那对{breast}兀自掀起了一场完整的绝顶。\n乳头充血胀硬到极点，丰盈的乳肉如波涛般层层荡漾，胸膛无声地向上绷起，这股从乳尖席卷至全身的快感浪潮本该令她失声，此刻却只能在寂静里独自翻涌。\n她的意识被冻结在时间之外，对身体正经历的这场淋漓绝顶毫无察觉，只余{breast}兀自颤动着诉说这份无人知晓的高潮。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_3"
+conditions = "premise(t_unconscious_flag_3)"
 context = "{character.name}在凝固的时间中冷眼看着，{target.name}静止如同一幅被定格的画，{breast}却在这死寂里迎来了不受时停束缚的普通绝顶。\n乳尖骤然充血挺立，柔嫩的乳肉剧烈而有节奏地颤抖起伏，胸口高高挺起后僵在原处，这场典型强度的高潮反应一样不缺。\n可她的知觉早已随时间一并停摆，任凭这场完整的绝顶在自己身上汹涌绽放也无从感知分毫，只将这份诡异的淫靡定格在了静止的一瞬。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_3"
+conditions = "premise(t_unconscious_flag_3)"
 context = "静止的时间里万物无声，{target.name}保持着原样定在那里，连一根手指都无法弯动，然而她的{breast}却不合时宜地攀上了一场货真价实的绝顶巅峰。\n乳头胀硬如珠，成片乳肉波浪般晃动不止，肌肤浮起潮红，本应急促起伏的胸膛被凝固在挺起的姿态。\n这是完整而正常强度的普通绝顶，快感从乳尖如海啸般漫卷全身，只是这一切都被囚禁在她无法感知的静止躯壳之中，悄然而诡秘地铺展开来。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_4"
+conditions = "premise(t_unconscious_flag_4)"
 context = "{target.name}的{breast}毫无预兆地剧烈颤动起来，乳头充血挺立胀硬，胸膛高高向上挺起，一次完整而正常强度的绝顶自乳尖如潮水般漫卷全身。\n她的胸口剧烈起伏，四肢微微绷紧，可那张脸却始终维持着被催眠后的平静，仿佛这场席卷全身的高潮不过是稀松平常的小事。\n她平和地接受着这股快感的冲刷，理所当然地任由{breast}颤抖泛红，眼底没有一丝羞耻或慌乱，只当这是合乎常理的寻常反应。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_4"
+conditions = "premise(t_unconscious_flag_4)"
 context = "一阵完整的绝顶自{target.name}的乳尖轰然炸开，{breast}大幅度地波浪般晃动，乳头胀硬到极限，胸膛剧烈挺动，快感如海浪般席卷了她的全身。\n她面无表情地承受着这次标准强度的高潮，胸口急促起伏，肌肤大片泛红，神情却平静得像什么都没发生过一样。\n对她而言这不过是一件再自然不过的事，她理所应当地任由身体颤栗，波澜不惊地迎接着{breast}带来的这场彻底绝顶。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_4"
+conditions = "premise(t_unconscious_flag_4)"
 context = "{target.name}的{breast}猛然剧烈颤抖，乳尖充血挺立，胸口高高耸起又重重落下，一波完整正常的绝顶快感从胸前深处汹涌漫向四肢百骸。\n她的呼吸变得急促而失序，身体不受控地轻颤，可脸上依旧挂着那份淡然的平静，眼神安宁地平视前方。\n她把这场从{breast}扩散开的高潮当作理所当然的生理现象，毫不动摇地平静接纳，没有半点情绪的起伏。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_4"
+conditions = "premise(t_unconscious_flag_4)"
 context = "标准而完整的绝顶如浪潮般拍打着{target.name}的全身，{breast}整体强烈颤动，乳头胀得又硬又挺，胸膛剧烈起伏挺送。\n她的四肢微微绷直颤抖，小腹反复轻轻抽搐，面容却平和淡漠，仿佛这次彻底的高潮只是日常里毫不起眼的一环。\n她理所当然地顺从着身体的反应，平静地承受{breast}传来的整片快感，眼神清澈却毫无波澜，如常般接纳着这一切。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_4"
+conditions = "premise(t_unconscious_flag_4)"
 context = "快感自乳尖如决堤般涌起，{target.name}的{breast}剧烈而有节奏地颤动，乳头充血挺立，胸口高高挺起，一次完整正常强度的绝顶将她整个人淹没。\n她的身体明显战栗，肌肤泛起潮红，胸膛急促起伏，可神色始终保持着被催眠后的那份平静，宛如置身事外。\n她平静地把这场绝顶视作合乎常理的自然之事，理所应当地任由{breast}颤栗泛红，眼中没有羞怯，只有一片安然的淡然。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_5"
+conditions = "premise(t_unconscious_flag_5)"
 context = "{target.name}手上的动作没有停，{breast}却毫无预兆地剧烈颤动起来，乳头充血胀硬到极点，胸膛高高挺起。\n一波完整的绝顶快感自乳尖如潮水般漫过全身，她的意识微微一恍，却依旧把{character.name}视作空气般无视，只茫然地眨了眨眼便重新盯住手头的事务。\n潮红爬满脸颊，薄汗渗出肌肤，她任由这场标准而彻底的高潮在体内走完，浑然不觉身旁发生的一切。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_5"
+conditions = "premise(t_unconscious_flag_5)"
 context = "{target.name}正专注地处理着手头的工作，{breast}忽然大幅晃动起来，乳肉一波波颤栗，乳头挺立充血。\n绝顶的快感完整而强烈地从胸口炸开，席卷四肢百骸，她的呼吸微微急促，眼神却始终越过{character.name}的身体落在别处，仿佛他根本不存在。\n她只是短暂地停顿了一瞬，胸膛剧烈起伏，随后便若无其事地继续，脸上那层红晕是她唯一泄露的破绽。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_5"
+conditions = "premise(t_unconscious_flag_5)"
 context = "一阵典型而剧烈的绝顶反应攫住了{target.name}，{breast}高高耸起又剧烈抖动，乳尖胀硬到发疼。\n快感如浪潮般层层拍打上来，她的思绪有一瞬间发白，可她依旧当身边空无一人，兀自沉浸在自己的天地里继续着手边的事。\n胸口一起一伏地喘着，细密的汗珠顺着颤动的乳肉滑落，她却对这场彻底的高潮毫无察觉，仿佛那只是别人的身体。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_5"
+conditions = "premise(t_unconscious_flag_5)"
 context = "{target.name}的肩膀几不可察地一僵，{breast}随即被一阵完整的绝顶浪潮撼动，乳肉汹涌颤动，乳头充血挺立。\n那股从乳尖烧到全身的快感令她意识微微模糊，她却始终把{character.name}当作透明的空气，眼睛试图穿过他望向自己关注的东西。\n潮红漫上颈项，胸膛起伏不定，她只是恍神般顿了顿，便又回到自己的节奏里，对刚刚席卷全身的高潮浑然无觉。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_5"
+conditions = "premise(t_unconscious_flag_5)"
 context = "突如其来的绝顶让{target.name}的{breast}剧烈震颤，乳肉如波涛翻涌，乳头胀得又红又硬。\n完整而正常强度的快感海啸般漫过她的全身，冲得她思绪有些恍惚，可她仍旧无视着近在咫尺的{character.name}，专注地继续着自己手头的活动。\n她的脸涨得通红，胸口大幅起伏，薄汗浸湿了肌肤，却始终不曾分给这场高潮一丝一毫的注意，仿佛周遭一切都不存在。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_blockhead)"
 context = "被精神控制的{target.name}僵直地维持着原本的姿势，身体一分一毫都动弹不得，可{breast}却不受她意志地剧烈颤动起来，乳头充血胀硬到了极限。\n一场完整而标准的胸部绝顶如海浪般自乳尖席卷全身，胸膛高高挺起又剧烈起伏，快感一波波冲刷着她开始模糊的意识。\n她清醒地感受着自己被强行推上绝顶的全过程，眼中满是无法反抗的羞耻，僵硬的躯体在这场被迫的高潮里无声地承受着一切。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_blockhead)"
 context = "{target.name}的身体被牢牢锁在无法自主的僵直中，四肢像被冻住般纹丝不动，唯有{breast}违背她的意愿一阵阵痉挛颤抖，乳肉剧烈地晃动着。\n这是一次货真价实的普通绝顶，快感从两颗硬挺的乳尖迸发，如潮水漫过胸口漫向四肢百骸，令她的神志渐渐涣散却未被彻底冲垮。\n无法动弹的她只能睁着清醒的双眼，任由这场强加的高潮在自己僵住的身体里彻底炸开，脸上写满了被迫达到顶点的屈辱。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_blockhead)"
 context = "被摆布成固定姿态的{target.name}如一具木偶般动不了分毫，可她的{breast}却诚实地叛变了，乳晕紧缩，饱胀的乳肉波浪般疯狂颤动。\n完整强度的绝顶顺着乳尖的酥麻一路烧遍全身，胸口剧烈地起伏喘动，浪潮般的快感让她的意识开始一片片模糊。\n明明心里清清楚楚地抗拒着，可僵硬的躯壳里那股被强行催发的高潮却谁也拦不住，只留她在无法动弹中默默吞下这份羞耻。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_blockhead)"
 context = "意识仍然清醒的{target.name}被控制得连指尖都无法弯曲，整个人僵在原地任人处置，但{breast}早已不听使唤地剧烈震颤，乳头挺立得发痛。\n这场不折不扣的普通绝顶如决堤的海浪从乳尖奔涌而出，席卷过她挺起的胸膛与僵直的全身，将她的思绪冲刷得越来越涣散。\n她无力地承受着这一切，被迫在动弹不得中攀上完整的顶峰，清醒的羞耻与身体的背叛交织，令她的表情既茫然又难堪。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_blockhead"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_blockhead)"
 context = "{target.name}被精神力死死钉在僵硬的姿势里，身体彻底失去了自主，唯有{breast}违逆着她的心意疯狂颤动，乳肉一下下抖出淫靡的弧度。\n一次标准而完整的胸部绝顶如浪潮般自乳尖轰然炸开，胸腔剧烈地一起一伏，铺天盖地的快感让她清醒的意识渐渐变得恍惚。\n动不了的她只能被这场强加的高潮牢牢摁住，眼神里满是被强行玩弄到绝顶的清醒羞耻，无声地在僵直中颤栗着达到了顶点。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_active_h)"
 context = "被无形之力操控着，{target.name}的身体不受心意驱使地主动挺胸耸动，将{breast}热切地往{character.name}怀里送去。\n刹那间一场完整而标准的绝顶从乳尖如海浪般席卷全身，{breast}剧烈颤动，乳头充血胀硬，胸膛高高挺起又剧烈起伏，意识开始模糊却尚未被彻底冲垮，身体自顾自地淫荡骑弄，她心里却满是抗拒与羞耻。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_active_h)"
 context = "{target.name}明明在心底大喊着不要，身体却违逆意志地俯身摆腰，主动把{breast}挤压蹭弄着送上前去。\n紧接着标准强度的胸部绝顶轰然降临，快感自乳尖翻涌而上淹没四肢百骸，{breast}成波浪般疯狂晃动，乳尖硬挺，胸口大幅起伏喘息失序，一次完整典型的高潮令她神智开始涣散，羞耻的沉醉却在心底悄悄蔓延。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_active_h)"
 context = "操控的力量令{target.name}的娇躯背离本心地主动骑坐扭动，胸膛前挺，将{breast}一下下热情地贴撞过来。\n随后一阵正常而完整的绝顶自乳峰炸开，{breast}胀硬颤栗，乳头挺立充血，后背弓起小腹抽搐，四肢绷紧颤抖，快感如潮席卷令她意识渐渐飘忽，心中却盛满对身体擅自淫动的惊惶与难堪。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_active_h)"
 context = "违背她自己的意愿，{target.name}的身体主动前倾耸动，把{breast}热切地往{character.name}身上厮磨。\n下一秒一场标准强度的胸部高潮完整降临，快感由乳尖如浪潮般漫卷全身，{breast}剧烈抖颤，乳粒充血挺硬，胸膛高挺起伏，呼吸急促紊乱，绝顶该有的典型反应尽数涌现，意识开始模糊，她却仍清醒地为身体的淫荡主动而羞愤沉沦。"
 
 [[entries]]
-conditions = "premises:t_unconscious_flag_6&premises:t_hypnosis_active_h"
+conditions = "premise(t_unconscious_flag_6) && premise(t_hypnosis_active_h)"
 context = "在那股操控之力的驱使下，{target.name}身不由己地主动摆腰挺胸，将{breast}一次次送到{character.name}面前磨蹭。\n转瞬间一记完整而正常的绝顶自乳心翻腾而起席卷四肢，{breast}疯狂颤荡，乳头胀硬泛红，胸口高高耸起又剧烈伏落，快感堆到顶峰令神智渐次模糊，唯有心底那份对失控主动的抗拒与沉沦格外清晰。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "作为{character.name}亲生女儿的{target.name}，娇躯猛然绷紧，{breast}剧烈而有节奏地颤动，乳尖胀硬到了极限，胸膛高高挺起又缓缓落下，胸口随着急促的喘息剧烈起伏。\n这是一次完完整整的绝顶高潮，明知对方是自己的父亲，那份禁忌的战栗却让她无法抗拒，脸颊涨红，腰肢不由自主地弓起，浑身泛起细密的颤栗，将满心的沉沦尽数展露出来。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "{target.name}作为女儿的身体在父亲{character.name}面前彻底绷紧，{breast}猛烈地上下颤动，乳晕紧紧收缩，胸口剧烈起伏，呼吸变得又急又乱。\n一波正常强度的绝顶浪潮席卷全身，明明是至亲之间不该有的快感，却叫她的意识开始朦胧模糊，双唇微张，腰肢忍不住地扭动弓起，将那份又羞又爱的复杂情绪彻底暴露出来。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "面对着自己的父亲{character.name}，{target.name}的{breast}骤然剧烈颤抖起来，乳头充血挺立到极致，胸膛一下下高高耸起，肩背随之绷紧又松弛。\n这份完整而典型的绝顶高潮毫无保留地降临，血脉相连的禁忌感与滚烫的爱意交织在一起，令她面颊绯红，双眼迷离，腰肢情不自禁地轻轻弓起，浑身都在细密地战栗着。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "{target.name}是{character.name}的亲生女儿，此刻她的{breast}猛地痉挛般颤动起来，乳尖胀得又红又硬，胸口大幅度起伏，肩头也跟着一颤一颤地耸动。\n正常强度的绝顶高潮完整地降临在她身上，明知不该沉溺于父亲带来的快感，却还是忍不住彻底沦陷，腰肢弓起，喘息急促凌乱，将依恋与羞耻一并交织着释放出来。"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "身为女儿的{target.name}在父亲{character.name}身边彻底失控，{breast}剧烈地一颤一颤，乳肉波浪般晃动不止，胸膛高高挺起，胸口随呼吸急剧起伏着。\n典型完整的绝顶高潮毫无保留地涌来，那份不该有的血亲禁忌与浓浓的依恋纠缠在一起，令她面颊滚烫，眼神涣散，腰肢忍不住向上弓起，将满身的战栗尽情释放。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:high_1"
+conditions = "selected.talents.処女 == 1 && premise(high_1)"
 context = "青春靓丽的{target.name}忽然浑身一僵，胸前那对{breast}猛地剧烈颤动起来，乳尖充血胀硬到了极限。\n一次完整而标准的绝顶高潮席卷了这具刚刚成年的少女身躯，快感如海浪般从乳尖一路漫卷全身，胸膛高高挺起又剧烈起伏，稚气未脱的脸上写满了迷乱与羞涩。\n她的意识开始变得模糊，却还没有被彻底冲垮，青春的活力与矜持的娇羞在这一刻交织，年轻的身体诚实地为这场胸部绝顶而战栗着。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:high_1"
+conditions = "selected.talents.処女 == 1 && premise(high_1)"
 context = "一波完整的绝顶洪流从{target.name}的乳尖轰然炸开，{breast}毫无保留地大幅晃荡颤抖，充血的乳头挺立得又红又硬。\n这是一次正常强度的胸部绝顶，比起小绝顶那点克制的酥麻要剧烈得多，年轻的胸膛剧烈起伏着，青春的腰肢不受控制地弓起。\n少女红着脸迷失在这股快感里，眼神开始涣散却还残留一丝清明，朝气蓬勃的身体因这场完整的高潮而彻底沦陷。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:high_1"
+conditions = "selected.talents.処女 == 1 && premise(high_1)"
 context = "{target.name}青春的身体骤然绷紧，{breast}如波涛般剧烈颤动，乳肉一下一下地大幅晃动，胀硬的乳尖高高翘起。\n快感从乳尖深处如决堤般涌向四肢百骸，这具刚成年的少女身躯迎来了一次典型而完整的胸部绝顶，胸口起伏得又急又乱。\n她的神智在浪潮里开始模糊，青涩的脸颊烧得通红，既向往又紧张的少女在这场标准强度的绝顶中娇喘连连，浑身战栗。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:high_1"
+conditions = "selected.talents.処女 == 1 && premise(high_1)"
 context = "随着一阵剧烈的颤栗，{target.name}那对{breast}猛烈地颤抖弹动起来，乳晕紧缩，乳头充血鼓胀到发亮。\n完整的绝顶感如潮水般从胸尖席卷而下，淹没了这具青春靓丽的少女身躯，胸膛高高挺起，纤细的腰肢反复弓折。\n这次高潮来得完整而剧烈，却还未到那种极致失控的地步，少女迷乱地喘息着，年轻的身体在羞涩与沉醉里不住颤动。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&premises:high_1"
+conditions = "selected.talents.処女 == 1 && premise(high_1)"
 context = "一场标准而完整的胸部绝顶将{target.name}整个吞没，{breast}剧烈地波动颤抖，挺立的乳尖硬得发疼般凸起。\n快感如海浪层层拍打，从充血的乳尖一路烧遍全身，青春的胸膛剧烈起伏，稚嫩的四肢绷得紧紧的又微微发颤。\n少女的意识在这股完整的绝顶浪潮里渐渐飘远，红扑扑的脸上满是娇羞与迷醉，鲜活的身子诚实地交代着这次胸部高潮。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:high_1"
+conditions = "selected.talents.成人 == 1 && premise(high_1)"
 context = "{target.name}成熟却仍带青涩的娇躯骤然绷紧，一场完整而炽烈的绝顶自乳尖如海浪般席卷全身。\n{breast}毫无保留地剧烈颤动，充血的乳头胀硬挺立，胸膛高高挺起，胸口随急促呼吸大幅起伏，成熟的脸庞泛起深重红潮，眉眼间却掩不住一丝青涩的慌乱。\n快感彻底冲垮了她故作老练的从容，却还未到极致失控的地步，只令这丰盈的身子诚实地战栗。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:high_1"
+conditions = "selected.talents.成人 == 1 && premise(high_1)"
 context = "如海啸般的快感自{target.name}的乳尖轰然炸开，这位成熟的大姐姐再也维持不住平日的优雅从容。\n{breast}一波波剧烈晃荡，两颗乳头充血胀大挺硬，饱满的胸膛高高向上顶起，随后又随喘息重重跌落，脖颈与胸口连成一片艳红。\n她本想摆出游刃有余的姿态，可这场完整绝顶来得太真太猛，青涩的本相在颤抖里彻底暴露，只是那股冲击尚不及强绝顶那般要人失魂。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:high_1"
+conditions = "selected.talents.成人 == 1 && premise(high_1)"
 context = "完整而标准的绝顶自胸口深处轰然引爆，{target.name}成熟的身体骤然弓成一道紧绷的弧。\n{breast}剧烈而有节奏地震颤，胀硬的乳尖挺立如珠，乳肉波浪般起伏晃动，丰腴的胸膛一挺一落，成熟秀致的面容染上潮红，却透出几分未经世事的迷乱。\n快感如浪潮层层拍上她的意识，令这位大姐姐半是陶醉半是羞窘，沉没在这场货真价实的高潮里。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:high_1"
+conditions = "selected.talents.成人 == 1 && premise(high_1)"
 context = "{target.name}那具成熟饱满的娇躯陡然一僵，随即被一场完整的绝顶自乳尖席卷至四肢百骸。\n{breast}整体剧烈颤抖，乳头充血挺硬到极点，胸膛高高耸起又剧烈起伏，她成熟的眉眼间浮起深深的红晕与一抹遮掩不住的青涩羞怯。\n这快感比小峰值猛烈太多，却尚未凶猛到冲垮她全部理智，只叫她丰盈的身子止不住地战栗颤抖。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&premises:high_1"
+conditions = "selected.talents.成人 == 1 && premise(high_1)"
 context = "炽烈的绝顶浪潮自乳尖奔涌而起，{target.name}成熟的身躯在这一瞬彻底沦陷。\n{breast}大幅度地颤荡摇晃，两粒乳头胀得又硬又挺，饱满的胸膛向上高高挺凸，胸口随凌乱的呼吸剧烈翻涌，成熟的脸颊烧得通红，却仍残存着大姐姐特有的青涩神韵。\n这是一场典型而完整的高潮，快感如潮席卷全身，令她故作成熟的从容碎裂，露出半熟的娇媚本色。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:high_1"
+conditions = "selected.talents.淑女 == 1 && premise(high_1)"
 context = "成熟丰腴的{target.name}整个身子骤然绷紧，{breast}随着一次完整而标准的绝顶剧烈颤抖，充血的乳尖胀硬挺立，丰满的乳肉大幅晃荡。\n快感自乳尖如海浪般席卷全身，漫过成熟的胸膛，她的意识开始泛起朦胧，多年历练出的从容在这一刻彻底松动，胸膛高高挺起又剧烈起伏，成熟的面庞满是失守的潮红。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:high_1"
+conditions = "selected.talents.淑女 == 1 && premise(high_1)"
 context = "一次货真价实的绝顶轰然贯穿了{target.name}成熟的身体，{breast}毫无保留地剧烈震颤，乳晕紧缩，挺硬的乳头透出充血的嫣红。\n这是一次完整正常强度的高潮，还没到那种极致失控的地步，可饶是见识丰富的熟女也压不住，丰腴的腰肢高高弓起，胸口一波接一波地起伏，红晕从胸膛一路烧上她的脸颊。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:high_1"
+conditions = "selected.talents.淑女 == 1 && premise(high_1)"
 context = "{target.name}那具风韵成熟的胴体重重一颤，{breast}如浪般翻涌颤动，充血肿胀的乳尖硬挺欲滴，饱满的胸膛剧烈起伏喘动。\n完整的绝顶快感从乳肉深处炸开，席卷过她成熟的全身，意识开始变得模糊却仍未垮塌，丰润的双唇溢出难以自抑的颤息，成熟从容的神态被这场标准高潮冲得七零八落。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:high_1"
+conditions = "selected.talents.淑女 == 1 && premise(high_1)"
 context = "快感如决堤般席卷而来，{target.name}成熟饱满的身躯猛然弓起，{breast}剧烈地上下颤晃，乳尖充血挺立到极致，大片肌肤泛起潮红并沁出细汗。\n这是一次彻底而正常的绝顶，反应完整剧烈却尚未到极端失控的程度，阅历深厚的她意识渐渐朦胧，丰腴的身体在这场高潮里毫无招架之力地颤栗。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&premises:high_1"
+conditions = "selected.talents.淑女 == 1 && premise(high_1)"
 context = "成熟的{target.name}再也绷不住，一次完整的绝顶让她整个人剧烈战栗，{breast}汹涌地颤动摇晃，乳头胀硬发红，胸口高高挺起。\n那股酥麻灼热的快感从乳尖如潮水般漫遍全身，她的意识开始泛白，却还残留几分清醒，成熟丰腴的胴体在这标准强度的高潮下彻底沉沦，脸上写满了放荡的满足。"

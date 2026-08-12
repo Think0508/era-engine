@@ -2,7 +2,7 @@
 // 目标：把"数据里的前提未注册/表达式字段不存在"的静默失效变成测试失败
 // （前提：conditionEngine.getRegisteredPremiseIds 包含；表达式：conditionRegistry.validateExpression）
 
-import { conditionEngine } from '../core/condition-engine'
+import { conditionEngine, extractPremiseRefs } from '../core/condition-engine'
 import { describe, it, expect, beforeAll } from 'vitest'
 import { parse as parseTOML } from '@iarna/toml'
 import { modLoader } from '../core/mod-loader'
@@ -89,15 +89,13 @@ describe('T2 talk-common 全量数据校验', () => {
     expect(vars['vagina_s']?.entries?.length).toBeGreaterThan(10)
   })
 
-  it('全部 premises: 前提均已注册（静默失效检测）', () => {
+  it('全部 premise(X) 引用均已注册（静默失效检测）', () => {
     const registered = new Set(conditionEngine.getRegisteredPremiseIds())
     const conditions = collectConditions()
     const unknown = new Set<string>()
     for (const cond of conditions) {
-      // 提取 premises:XXX&YYY 段（混合格式也支持）
-      for (const m of cond.matchAll(/premises:([^&"]+)/g)) {
-        const id = m[1].trim()
-        // 注释：前提名大小写不敏感（premiseRegistry 注册时 lower 化）
+      for (const id of extractPremiseRefs(cond)) {
+        // 注释：前提名大小写不敏感（conditionEngine 注册时 lower 化）
         if (id && !registered.has(id.toLowerCase())) unknown.add(id)
       }
     }
@@ -108,13 +106,9 @@ describe('T2 talk-common 全量数据校验', () => {
     const conditions = collectConditions()
     const bad: string[] = []
     for (const cond of conditions) {
-      // 表达式段 = 非 premises: 前缀的 & 分段（且非空）
-      for (const part of cond.split('&')) {
-        const p = part.trim()
-        if (!p || p.startsWith('premises:')) continue
-        const { ok, unknown } = conditionRegistry.validateExpression(p)
-        if (!ok) bad.push(`${p} -> ${unknown.join(',')}`)
-      }
+      // 注释：完整表达式校验（premise(X) 命名引用与字段路径一并校验）
+      const { ok, unknown } = conditionRegistry.validateExpression(cond)
+      if (!ok) bad.push(`${cond} -> ${unknown.join(',')}`)
     }
     expect(bad.slice(0, 20)).toEqual([])
   })

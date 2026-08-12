@@ -440,6 +440,19 @@ export function weightAllToOne(premiseList: string[], ctx: GameContext): number 
   return weight
 }
 
+// 注释：从条件表达式中提取 premise(X) 命名引用（消费方做前提权重/校验用）
+export function extractPremiseRefs(expr: string): string[] {
+  const out: string[] = []
+  const stripped = expr.replace(/"[^"]*"|'[^']*'/g, '')
+  const re = /premise\(([^)]*)\)/g
+  let m: RegExpExecArray | null
+  while ((m = re.exec(stripped)) !== null) {
+    const id = m[1].trim()
+    if (id) out.push(id)
+  }
+  return out
+}
+
 function getPremiseValueInternal(id: string, ctx: GameContext): boolean | number {
   const handler = enginePremises.get(id.toLowerCase())
   if (!handler) throw new Error(`Premise '${id}' is not registered`)

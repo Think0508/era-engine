@@ -6,83 +6,83 @@ variable = "armpit"
 description = "腋下——完整的描述文本"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "光滑细腻无毛，散发淡淡体香的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "凹陷适中皮肤粉嫩，触感滑腻温热的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "微微湿润白皙细嫩，散发诱人气息的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔软光滑无一丝毛发，触感极其细腻的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "透着粉红色泽微微发热，十分诱人的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "汗水微润光泽剔透，散发迷人香气的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "细腻如丝绸般光滑，触碰即令人颤抖的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "白皙无毛凹陷诱人，散发香甜气息的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "触感柔嫩温度适宜，光滑无比的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "微微渗出汗珠晶莹，散发淫靡气味的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "细腻敏感微微颤抖，无毛光滑的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "肌肤细嫩凹陷优美，散发体香的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "汗湿微热触感滑腻，引诱触碰的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "粉嫩细腻毫无瑕疵，令人心痒的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔软湿润光滑无毛，散发甜腻气息的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "白嫩敏感一碰即颤，散发淡香的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "微微湿润温度宜人，触感光滑的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "汗珠点缀细腻如绸，散发诱人香气的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "光洁无毛敏感异常，微微凹陷的{armpit_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "细嫩粉红湿润光滑，诱人抚弄的{armpit_s}"
 
 [[entries]]
@@ -566,163 +566,163 @@ conditions = "selected.talents.人妻 == 1"
 context = "湿滑黏腻散发骚香，背德诱人的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "湿润光滑散发诱人体香，专属助理的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "凹陷柔嫩微微泛红，等待玩弄的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "细腻敏感因情欲泛汗，服务{player.name}的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "光洁诱人温热湿润，等待享用的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "粉嫩敏感因摩擦微红，听话助理的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "温暖湿润充满体香，专为{player.name}准备的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "细滑高热随主人玩弄，尽职助理的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "香汗淋漓微微颤抖，等待蹂躏的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "柔软顺滑散发体香，为{player.name}敞开的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "汗湿诱人温度宜人，任意使用的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "凹凸有致细腻光滑，等待服侍的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "滑腻温热微微颤动，尽责助理的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "香气浓郁光洁细腻，供{player.name}享乐的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "淫靡微汗弹性十足，等待蹂躏的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "微湿嫩滑充满欲望，职责所在的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "湿滑敏感因情欲潮红，{player.name}专属的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "香滑诱人散发体香，尽职助理的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "腻滑微凹因摩擦升温，专为侍奉的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "细嫩发烫微微抽搐，进行侍奉工作的{armpit_s}"
 
 [[entries]]
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "光滑敏感因羞耻泛红，等待使用的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "娇嫩光滑微微颤抖，稚嫩可爱的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "细腻粉嫩散发体香，亲生骨肉的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "禁忌诱人微微发抖，羞涩泛红的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "白嫩光滑散发体香，乖巧可爱的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "娇羞微汗泛着粉红，禁忌乱伦的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "嫩滑温热因羞涩泛红，血亲专属的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "湿润稚嫩散发甜香，父女情事的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "柔嫩敏感微微颤栗，纯洁而禁忌的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "羞红光滑微微湿润，献给父亲的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "纯净细腻散发香甜，父亲专用的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "颤抖敏感带着甜味，血脉相连的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "稚嫩光洁微微渗汗，孝顺侍奉的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "柔润粉嫩带着体香，父亲专属的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "娇嫩微湿随意玩弄，乱伦情事的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "白皙光滑因羞涩微颤，献身父亲的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "幼嫩敏感微微泛香，禁断快乐的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "细腻羞红忍不住颤抖，献给父亲的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "湿润温热散发甜味，为父亲专用的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "稚嫩滑腻因情欲发烫，亲生骨肉的{armpit_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "粉嫩光滑带着少女香，乱伦专用的{armpit_s}"
 
 [[entries]]

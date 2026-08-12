@@ -6,123 +6,123 @@ variable = "hands"
 description = "手——完整的描述文本"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔软温暖指尖灵活，触感细腻诱人的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "纤细修长滑腻白皙，掌心微微发烫的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "指尖微凉掌心火热，带着轻微湿润的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "白嫩细腻肌肤光滑，微微发热诱人的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "指节灵活掌心柔软，触感令人沉醉的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "掌心湿润温度适宜，触碰引起颤抖的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "指尖敏感掌心温热，肌肤细腻白皙的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "娇小灵活指尖温热，触感细腻撩人的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "掌心微汗肌肤光滑，触感柔软火热的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "细嫩光滑皮肤白皙，掌心热度诱人的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "指节分明触感光滑，微微带着体温的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "掌心潮湿温暖紧致，指尖灵活柔软的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "细腻光滑触感诱人，掌心湿润火热的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "手指纤长掌心柔软，抚触极具魅惑的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "湿润温热皮肤光滑，触碰带来酥麻的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "指尖灵巧掌心细腻，触感湿滑撩人的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "温热柔滑指尖微凉，抚摸极具技巧的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "掌心火热指节分明，抚触带来快意的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "白皙娇嫩微微颤抖，触感柔软湿润的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "指尖柔软掌心湿滑，触感令人沉迷的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "细腻灵活带着体温，触感极致撩人的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "光滑柔软略带湿气，触碰引发颤栗的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "温暖细嫩指尖敏感，掌心微微出汗的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "纤细灵巧掌心温热，触感细腻诱人的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "湿润柔软肌肤白嫩，抚触极具挑逗的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "指尖火热掌心柔软，触感湿滑粘腻的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "掌心湿热指尖灵活，触感柔嫩诱人的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔软温暖略带湿气，抚触极致销魂的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "白皙细腻掌心温热，指尖灵巧敏感的{hands_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "指节灵活肌肤光滑，掌心微微湿润的{hands_s}"
 
 [[entries]]
@@ -610,81 +610,81 @@ conditions = "selected.talents.人妻 == 1"
 context = "富有经验充满欲望，掌心湿热柔软的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "羞涩青涩掌心湿润，微微颤抖温热的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "指尖粉嫩纤细灵巧，触感细腻柔软的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "柔若无骨带点湿意，白皙修长稚嫩的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "白嫩细腻带着体温，指尖粉红微颤的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "掌心微热皮肤娇嫩，微微出汗细滑的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "指缝湿润触感柔软，温热白皙纤细的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "青涩温热略带汗意，修长白皙柔软的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "轻柔细腻指尖敏感，掌心微湿温热的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "皮肤光滑微微颤抖，触感温润细腻的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "指尖灵巧白皙纤细，掌心湿热柔软的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "青春活力掌心温热，微微汗湿细腻的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "白皙柔软指间湿润，温热触感舒适的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "指腹细腻温暖柔软，轻微颤抖敏感的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "柔软温热微微出汗，抚触感极佳的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "纤细灵巧掌心湿润，触感柔嫩温热的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "白嫩修长略带湿气，指尖粉红敏感的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "羞涩温热指尖柔软，掌心湿润细腻的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "青春灵动肌肤细腻，轻微颤抖柔软的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "柔若无骨掌心汗湿，触感温暖舒适的{hands_s}"
 
 [[entries]]
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "白皙纤细微微出汗，指尖灵巧温热的{hands_s}"

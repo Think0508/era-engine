@@ -8,47 +8,47 @@ parts = ["A", "B"]
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔顺"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "顺滑"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "自然"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "光泽"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "柔亮"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "垂顺"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "亮泽"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "清香"
 
 [[entries]]
 part = "A"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "浓密"
 
 [[entries]]
@@ -173,117 +173,117 @@ context = "细腻"
 
 [[entries]]
 part = "A"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "可爱"
 
 [[entries]]
 part = "A"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "蓬松"
 
 [[entries]]
 part = "A"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "俏皮"
 
 [[entries]]
 part = "A"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "细腻"
 
 [[entries]]
 part = "A"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "光滑"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "干练"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "整齐"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "利落"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "整洁"
 
 [[entries]]
 part = "A"
-conditions = "premises:target_visitor_flag_1"
+conditions = "premise(target_visitor_flag_1)"
 context = "清爽"
 
 [[entries]]
 part = "A"
-conditions = "premises:target_visitor_flag_1"
+conditions = "premise(target_visitor_flag_1)"
 context = "整洁"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_2"
+conditions = "premise(t_unconscious_flag_2)"
 context = "凌乱"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_2"
+conditions = "premise(t_unconscious_flag_2)"
 context = "酒气"
 
 [[entries]]
 part = "A"
-conditions = "premises:t_unconscious_flag_2"
+conditions = "premise(t_unconscious_flag_2)"
 context = "散乱"
 
 [[entries]]
 part = "A"
-conditions = "premises:h_in_bathroom"
+conditions = "premise(h_in_bathroom)"
 context = "湿漉漉"
 
 [[entries]]
 part = "A"
-conditions = "premises:h_in_bathroom"
+conditions = "premise(h_in_bathroom)"
 context = "湿透"
 
 [[entries]]
 part = "A"
-conditions = "premises:h_in_bathroom"
+conditions = "premise(h_in_bathroom)"
 context = "滴水的"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "发丝"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "秀发"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "发梢"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "发尾"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "发束"
 
 [[entries]]
 part = "B"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "头发"
 
 [[entries]]
@@ -343,20 +343,20 @@ context = "秀发"
 
 [[entries]]
 part = "B"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "童发"
 
 [[entries]]
 part = "B"
-conditions = "premises:target_is_player_daughter"
+conditions = "premise(target_is_player_daughter)"
 context = "碎发"
 
 [[entries]]
 part = "B"
-conditions = "premises:t_is_assistant"
+conditions = "premise(t_is_assistant)"
 context = "碎发"
 
 [[entries]]
 part = "B"
-conditions = "premises:target_visitor_flag_1"
+conditions = "premise(target_visitor_flag_1)"
 context = "碎发"

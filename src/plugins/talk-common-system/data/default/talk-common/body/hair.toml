@@ -6,83 +6,83 @@ variable = "hair"
 description = "头发——完整的描述文本"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "垂落腰间柔顺光亮，散发诱人体香的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "乌黑发亮如瀑布般垂落，触感丝滑的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "丝丝缠绕指间，透着青涩甜美气息的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "散发着洗发水香气，触感湿润微卷的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "如丝绒般柔滑，轻抚即能引起战栗的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "纤细柔韧随风摇摆，散发好闻芬芳的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "微微湿润紧贴肌肤，泛着迷人光泽的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "细腻蓬松带着体温，散发甜美气息的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "轻轻扫过皮肤引起酥麻，丝丝缕缕的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "散发着好闻体香，触感柔顺光滑的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "如瀑布般倾泻而下，触感光滑细腻的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "略带汗湿贴在颈间，散发诱人气味的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "发丝间隐约带着体香，在手上顺滑散落的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "发根微微湿润，摩擦时引发轻颤的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "细滑柔顺缠绕指间，带着温热体温的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "贴着光滑肌肤微微晃动，散发甜香的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "丝丝缕缕间充满活力，光泽诱人的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "发丝细腻顺滑，触碰时带来阵阵快感的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "微卷蓬松带着好闻香气，摸上去极其舒适的{hair_s}"
 
 [[entries]]
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 context = "如丝绸般滑过肌肤，引起阵阵战栗的{hair_s}"
 
 [[entries]]

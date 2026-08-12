@@ -1486,283 +1486,283 @@ conditions = "selected.talents.细腿 == 1&selected.talents.人妻 == 1&selected
 context = "细腻柔滑敏感到无法承受，人妻纤长大腿触碰便痉挛高潮的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "亲生女儿纤细修长的双腿，肌肤如丝绸般光滑细腻，感度虽低却散发少女特有青涩体香的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "纤长柔嫩线条优美流畅，少女白皙娇嫩的肌肤虽对触碰反应平淡却泛着诱人淫靡光泽的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "女儿年轻稚嫩的纤细腿部，白皙肌肤细滑如绸缎对触碰感度较低却令人垂涎欲滴的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "青涩稚嫩的纤长美腿带着少女清香，皮肤感度低但那细腻滑嫩的触感仍让人欲罢不能的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "女儿苗条纤细的双腿线条流畅，年轻肌肤虽对触碰不敏感但那白皙娇嫩触感依然诱惑的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "纤细修长如小鹿般柔美的少女双腿，肌肤感度虽低却白嫩细腻散发魅惑青春气息的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "亲生女儿年轻柔嫩的纤长小腿，皮肤光滑细腻虽感度不高却温暖柔软勾人无限遐想的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "少女纤瘦的双腿修长笔直，白皙皮肤感度偏低却泛着青春光泽令人忍不住想去抚摸的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "女儿稚气未脱的纤细美腿，年轻肌肤如牛奶般白皙滑嫩感度虽低却极具少女诱惑魅力的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "青涩娇嫩的纤长双腿带着女儿特有的稚气，皮肤感度低却光滑细腻让人想要亵玩犯罪的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "纤细修长宛如白玉般光滑细腻，抚摸时少女肌肤微微泛红敏感颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "女儿娇嫩纤细的腿部线条优美流畅，触碰时肌肤细腻柔滑泛起阵阵酥麻的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "修长细腿白皙紧致如丝绸般滑腻，轻抚时少女肌肤敏感地微微颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "纤瘦细腻的大腿线条柔美动人，被抚摸时肌肤敏感泛红微微发热的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "少女纤细修长的腿部肌肤白皙细嫩，触摸时敏感颤抖带有丝滑触感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "女儿娇小纤长的美腿肌肤细腻光滑，爱抚时少女肌肤泛起粉红敏感反应的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "细长柔嫩的腿部曲线优美诱人，被揉捏时肌肤微微发颤带着热度的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "白嫩纤细的少女腿部肌肤紧致细滑，抚弄时敏感地泛红微微战栗的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "女儿修长纤瘦的细腿线条流畅柔韧，触碰时细嫩肌肤敏感地回应的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "娇嫩纤细的美腿白皙如玉般光滑细腻，摩擦时少女肌肤敏感颤动的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "纤细修长触感柔滑的少女美腿，皮肤敏感一触即颤，带着女儿淫靡体温的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "白皙嫩滑细如竹竿的娇弱细腿，肌肤高敏轻抚就湿润颤抖的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "大腿内侧粉嫩细腻肤若凝脂，轻轻触碰就让女儿浑身战栗的高敏的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "又细又软柔嫩无比的少女双腿，被父亲爱抚就酥麻发软浑身泛红的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "线条纤细柔滑如绸缎般细腻，一碰就浑身发烫战栗不已的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "娇嫩修长的大腿根部嫩肉，皮肤敏感得触碰就淫叫不止的乱伦少女的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "纤瘦柔弱的嫩白少女美腿，皮肤敏感到轻触就热得发烫的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "修长笔直又白又嫩的细腻美腿，被父亲抚摸的地方都酥麻发软的敏感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "细腻滑嫩的女儿大腿肌肤，稍微揉捏就像触电般全身酥麻颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "柔嫩纤细的少女细长美腿，皮肤敏感到只要轻轻抚摸就双腿发软的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "因快感微微泛红颤抖着，纤细修长如初绽少女般细嫩敏感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "肌肤泛起淡淡粉晕，触碰便轻颤不止的女儿那双纤瘦白皙的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "因爱抚而微微痉挛，大腿内侧细腻光滑透着少女青涩气息的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "轻触便敏感收紧，肌理细嫩线条优美如玉雕般纤细修长的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "泛着浅淡红晕微微战栗，肤质细腻嫩滑散发体温的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "因轻微快感而绷紧，纤瘦笔直大腿根部尤为敏感细嫩的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "肌肤微微发烫泛红，触感滑腻紧致带着少女体香的纤细{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "因父亲抚摸而轻颤，内侧嫩肉白皙细腻敏感度极高的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "微微颤动着泛起薄汗，纤长柔韧肤若凝脂令人爱不释手的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "轻度酥麻让肌肉轻抽，腿根细嫩白皙触感滑腻的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "纤细修长肌肤敏感到轻轻触碰便会颤抖，带着亲生女儿特有的青涩肉欲诱惑气息的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "细嫩光滑因多次高潮刺激而敏感泛红发热，让人沉醉的亲生女儿白皙诱人的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "修长白皙每次爱抚都会引发强烈战栗，属于年轻女儿纤细柔嫩敏感滚烫的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "苗条纤细皮肤被不断抚摸变得极度敏感，在父亲手下颤抖不止的女儿细长的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "光滑细腻因反复高潮而变得敏感滚烫，这是父亲独享的自家女儿青涩纤细的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "细长敏感的肌肤在持续爱抚下滚烫发红，充满年轻女儿青春肉欲味道的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "纤瘦修长每一寸皮肤都敏感滚烫，散发着禁忌父女乱伦气息让人兴奋不已的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "白皙细嫩因持续刺激而敏感发烫颤抖，带着亲生女儿独特体香的细长柔嫩的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "笔直修长的肌肤细腻敏感，触碰时便禁不住颤抖流露出女儿诱人青涩魅力的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "细长柔嫩被父亲反复爱抚到敏感高潮，带着浓烈乱伦禁忌色情气息的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "女儿纤细修长白皙的双腿敏感到极致，被父亲轻轻触碰便忍不住战栗的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "少女纤瘦柔嫩的大腿内侧皮肤敏感度极高，稍加抚摸便剧烈颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "女儿细长滑腻的美腿泛着淫靡红晕，敏感到每次触碰都引发痉挛的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "稚嫩纤细经历无数高潮后变得极度敏感，父亲轻抚便不住战栗的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "女儿修长纤瘦的双腿已被快感支配，皮肤敏感到触碰即高潮的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "细嫩白皙的少女美腿敏感度高到极点，轻轻爱抚便抽搐颤动的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "父亲的女儿纤细柔嫩的大腿肌肤极度敏感，碰一下就酥麻战栗的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "少女纤长白皙沾满爱液的双腿，敏感到被抚摸便不断痉挛颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "女儿细瘦修长的美腿经历多次高潮后敏感异常，稍加触碰便剧烈抖动的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "纤细柔滑散发少女体香的双腿皮肤敏感度极高，轻抚便战栗不止的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "纤细修长且敏感到连气流触碰都会剧烈痉挛，在快感漩涡中不断抽搐颤抖哭泣的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "白皙滑嫩的大腿内侧敏感到了极致，只是轻抚女儿就浑身过电般剧烈痉挛高潮的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "娇嫩纤细敏感度已超出人类极限，父亲手指才刚靠近就开始不受控制地颤抖抽搐的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "线条优美肌肤敏感到病态，轻轻触碰女儿细腿就能让她整个人陷入极度高潮的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "修长笔直敏感到仅是呼吸扫过都会浑身战栗，强烈快感早已将女儿意识彻底淹没的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "纤瘦细嫩大腿间的敏感带被开发到极致，每一次触碰都让女儿痉挛着迎来高潮的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "白嫩纤细的大腿敏感得宛如通了电流，父亲稍微一碰女儿就尖叫着剧烈颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "细长柔嫩的腿肉敏感到完全无法承受，快感淹没中女儿意识崩溃只剩下持续痉挛的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "娇小纤细敏感到指尖刚碰就会不停抽搐，在无尽快感中迎来一波又一波高潮的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.细腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.细腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "修长玉腿敏感到哪怕是最轻的碰触都会让她崩溃，被极限快感彻底支配住的{legs_s}。"
 
 [[entries]]
@@ -3646,281 +3646,281 @@ conditions = "selected.talents.肉腿 == 1&selected.talents.人妻 == 1&selected
 context = "肉感丰盈的腿肉柔软有弹性，背德婚外情让敏感度飙升到不堪触碰的人妻的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "肉感十足的丰满肥腿散发着女儿淫靡的体香，皮肤敏感度虽低但触感极其软嫩的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "丰腴柔软大腿内侧肉多得溢出，皮肤感度低反应迟钝却肉感满满的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "女儿的大腿内侧肉感饱满滑腻诱人，虽皮肤感度低却散发着勾人淫香的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "小腿肚丰润肥美大腿肉嘟嘟充满肉欲感，女儿皮肤感度低却柔嫩至极的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "女儿特有的丰满肉腿肉感饱满，虽皮肤敏感度低却充满淫靡诱惑的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "丰腴肥嫩的肉腿散发着少女甜香，皮肤感度虽低但每一寸都柔软诱人的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "肉感饱满得仿佛要溢出来，皮肤感度低反应迟钝但柔嫩触感极佳的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "丰满肥厚的美腿充满肉欲诱惑，虽皮肤反应迟钝但肉感充沛柔软的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "充满肉感的丰润腿肉散发女儿独有的甜腻体香，皮肤感度不高但弹性柔软的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level <= 3"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level <= 3"
 context = "大腿柔嫩丰满肉感十足弹性极佳，皮肤感度虽低却充满淫靡诱惑的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "丰润多肉触感柔软Q弹十足，敏感皮肤被抚摸时传来阵阵快感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "女儿那白皙丰满的大腿肉感满溢，皮肤受刺激时能感受到明显愉悦的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "肉嘟嘟的大腿被揉捏时柔软变形，敏感的肌肤传递着舒适触感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "丰腴多汁的腿肉紧实又富有弹性，触碰时皮肤敏感地微微颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "女儿丰满圆润的小腿肚软嫩可口，皮肤在摩擦中传来愉快感觉的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "肉感十足的丰腴美腿柔嫩白皙，碰触时敏感肌肤泛起阵阵酥麻的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "丰满多肉的大腿内侧嫩滑诱人，敏感皮肤被抚弄时微微战栗的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "女儿那圆润丰满的大腿肉感喜人，皮肤敏感触碰时能感受快意的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "肉嫩丰腴的大腿被揉弄时下陷变形，敏感的肌肤上浮现着淡淡红晕的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "丰润饱满的腿肉柔软如棉花糖，抚摸时皮肤敏感传来甜美触感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "丰满柔软肉感十足弹性极佳，稍一触碰那敏感皮肤就止不住颤抖的亲生女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "丰润有弹性的少女腿肉被轻轻摩擦，敏感的皮肤立刻泛起酥麻快感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "肉感饱满柔嫩细腻，皮肤敏感到轻抚就会打颤的乖女儿的丰润{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "少女丰满的大腿肉感十足，敏感至极的皮肤一碰就酥麻发软的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "柔软丰润充满弹性，稍微抚摸那敏感肌肤就能引发颤栗的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "肉嘟嘟的丰满腿肉弹性十足，皮肤敏感得稍一触碰便微微发抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "丰腴饱满触感柔嫩，敏感皮肤被轻轻摩挲就忍不住战栗的少女的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "肉感十足富有弹性的腿部，皮肤极度敏感一碰就浑身酥软的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "丰润柔软的少女腿肉，敏感到仅是轻触就能让她身体颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.abilities.皮肤感度.level > 6"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.abilities.皮肤感度.level > 6"
 context = "柔嫩饱满肉感诱人，敏感肌肤稍受刺激便止不住战栗酥麻的女儿的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿那丰满柔软的大腿肉感十足弹性好，每次触碰都让柔嫩肌肤微微泛红轻颤的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "少女肉嘟嘟的腿肉柔软又极富弹性，稍加爱抚便让那丰润肌肤泛起轻微酥麻感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿丰润饱满的大腿内侧柔嫩细腻且触感温热，被抚摸时那肉感肌肤泛起微红的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "少女那肉感丰盈的双腿弹性十足肉肉的，轻轻揉捏就能让她白皙肌肤浑身轻颤的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿软嫩丰满的大腿肉紧致又有弹性，被触碰时肉感肌肤泛起淡淡红晕微微发热的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "少女那丰腴饱满的双腿触感温热肉感十足，每次轻柔摩擦都能引发肌肤轻微快感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿肉嘟嘟的小腿肚柔软诱人肉感丰盈，稍作揉捏便让那细腻皮肤微微发热的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "少女那丰润有肉感的双腿曲线诱人弹性十足，轻触便能感受到柔嫩肌肤微弱颤动的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "女儿那柔软富有弹性的大腿肉丰满饱满肉嘟嘟，被爱抚时嫩滑肌肤泛起浅浅红润的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 < 1000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 < 1000"
 context = "少女肉感十足的大腿温热滑腻柔软且弹性好，轻轻触碰时她丰润肌肤微微泛红发颤的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "丰满有弹性肉感满溢，因多次高潮而敏感泛红的女儿那柔软的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "少女丰润的腿肉柔软弹性，敏感细腻的肌肤因快感而泛着淫靡粉红的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "肉感十足触感丰腴，因已高潮数次而变得格外敏感的女儿那圆润的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "柔软丰润弹性十足，少女敏感肌肤每次触碰都微微颤抖的肉嘟嘟的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "女儿丰满的大腿内侧软绵绵的，敏感肌肤泛着粉红被触碰便轻颤的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "充满弹性柔嫩丰满，少女经历数次高潮后极度敏感的肉感满满的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "丰腴多肉手感绝佳，因快感而微微颤抖泛红的亲生女儿那丰润的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "丰润饱满弹性十足，少女敏感的肌肤因快感泛起诱人粉红色的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "肉感满溢触感细腻，因多次皮肤高潮而敏感度大增的女儿那白嫩的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "柔软丰腴弹性满满，少女稚嫩敏感的腿肉在每次触碰时轻颤的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "丰满肉感的女儿大腿柔软有弹性，皮肤敏感到稍一触碰就引发皮肤高潮的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "女儿肉感十足的丰腴腿肉柔嫩至极，轻轻抚摸就会让她敏感得全身颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "亲生女儿丰满的大腿肉弹可口，肌肤极度敏感几乎无法承受任何轻微触碰的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "父亲稍加触碰就让她颤抖高潮的丰满肉腿，带着女儿特有柔嫩肉感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "女儿丰腴柔软的肉感大腿，稍加触碰肌肤就会连续高潮的极致敏感的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "散发着少女体香的丰满肉腿，敏感到任何细微抚摸都让她颤抖不止的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "亲生女儿柔嫩丰满的腿肉弹性十足，皮肤敏感到父亲随意触碰即能高潮的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "肉感丰腴的女儿腿肉软嫩可口，肌肤敏感度高到几乎承受不住任何触碰的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "女儿丰满柔软的大腿肉质诱人弹性可口，皮肤极度敏感让她难以控制颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "丰腴有弹性的女儿肉腿柔嫩可人，肌肤过度敏感稍有触碰就会浑身高潮的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "丰满的肉腿在最轻微触碰下就剧烈颤抖着直接高潮，女儿柔软的腿肉不受控制地抽搐痉挛的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "敏感至极的丰润大腿肉被轻抚就浑身发颤潮吹，女儿的嫩腿泛红发烫如同发情一般的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "因极度敏感而轻碰就高潮的丰满玉腿，女儿柔嫩的腿肉在痉挛中泛红发烫的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "丰腴的大腿内侧仅仅轻触就颤抖着达到绝顶，女儿敏感到完全无法控制的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "肉感十足稍微摩擦就会潮吹的嫩腿，女儿丰满的腿肉因持续高潮而剧烈抽搐的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "极度亢奋敏感得无法自控的丰润肉腿，女儿富有弹性的腿肉在痉挛中不停颤抖的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "丰润柔软连气流都能让其高潮痉挛的美腿，女儿敏感到极限的白嫩丰满腿肉的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "极度敏感稍有接触就喷水抽搐的丰腴肉腿，女儿的腿肉在高潮中剧烈颤动的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "触碰就爆发强烈快感的丰满大腿，女儿敏感过度的腿肉持续痉挛着淫水直流的{legs_s}。"
 
 [[entries]]
-conditions = "selected.talents.肉腿 == 1&premises:target_is_player_daughter&selected.皮肤 >= 90000"
+conditions = "selected.talents.肉腿 == 1 && premise(target_is_player_daughter) && selected.皮肤 >= 90000"
 context = "肉感丰盈的大腿被轻触就不停颤栗达到绝顶，女儿因极度敏感而无法停止高潮的{legs_s}。"

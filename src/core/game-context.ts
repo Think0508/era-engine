@@ -1,6 +1,7 @@
 import type { GameContext, LocationData, EntityData, GameTimeData } from './types'
 import { entitySystem } from './entity-system'
 import { eventBus } from './event-bus'
+import { errorReporter } from './error-reporter'
 
 const NIGHT_START_HOUR = 22
 const DAYS_PER_MONTH = 30
@@ -89,7 +90,8 @@ class GameContextManager {
         this.time.minute = 0
         this.time.hour++
         remaining -= minutesToNextHour
-        await eventBus.emit('game:hour_changed', { hour: this.time.hour })
+        // 注释：payload 含 minute（2026-08-13 审计——文档声称 {hour, minute}，原缺 minute）
+        await eventBus.emit('game:hour_changed', { hour: this.time.hour, minute: this.time.minute })
 
         if (this.time.hour === NIGHT_START_HOUR) {
           await eventBus.emit('game:night_start', { hour: this.time.hour })
@@ -146,6 +148,18 @@ class GameContextManager {
     if (!this.location) {
       throw new Error('moveTo 失败：当前地点未设置')
     }
+    // 注释：目标存在性防护（2026-08-13 审计）——原实现目标不存在时仍 emit location:enter，
+    // 消费方按目标 id 处理而实际位置未变（静默不一致）；时间也白推进
+    const targetEntity = entitySystem.get('location', targetLocationId)
+    if (!targetEntity) {
+      errorReporter.report({
+        source: 'game-context',
+        severity: 'error',
+        message: `moveTo 目标地点 '${targetLocationId}' 不存在，移动被拒绝`,
+        suggestion: '检查地图数据（maps/locations/）与 exit.target 引用；可先调 map-system getReachable 校验',
+      })
+      return
+    }
     // 注释：timeCost 默认 5 分钟
     const cost = timeCost ?? 5
     // 注释：记录出发地——enter payload 带 from（跟随系统等按"同位置"判定的消费方用）
@@ -153,11 +167,7 @@ class GameContextManager {
     // 注释：先 leave 后 enter，符合"离开→到达"直觉
     await eventBus.emit('location:leave', { from })
     await this.advanceTime(cost)
-    // 注释：从 entity-system 获取目标地点数据
-    const targetEntity = entitySystem.get('location', targetLocationId)
-    if (targetEntity) {
-      this.location = targetEntity as unknown as LocationData
-    }
+    this.location = targetEntity as unknown as LocationData
     await eventBus.emit('location:enter', { to: targetLocationId, from })
   }
 
@@ -182,6 +192,16 @@ class GameContextManager {
     const popped = this.modeStack.pop()
     if (popped) {
       await eventBus.emit('game:mode_changed', { mode: popped, action: 'exit' })
+    } else {
+      // 注释：空栈防护（2026-08-13 审计）——栈底 exploration 被 pop 是框架状态破坏信号，
+      // 原静默（getCurrentMode 的 ?? 'exploration' 兜底掩盖）；恢复栈底 + 上报
+      errorReporter.report({
+        source: 'game-context',
+        severity: 'error',
+        message: 'exitMode 在模式栈为空时被调用（栈底 exploration 已丢失），已恢复栈底',
+        suggestion: '检查是否有 exit_mode effect 与 enter_mode 不配对（AGENTS §29：进入模式的系统负责退出）',
+      })
+      this.modeStack.push('exploration')
     }
     return popped
   }

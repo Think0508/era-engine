@@ -8,6 +8,7 @@ import type { PluginContext } from '../../core/types'
 import type { ReactiveLine, Conversation, ConversationNode } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
+import { errorReporter } from '../../core/error-reporter'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { modLoader } from '../../core/mod-loader'
@@ -32,6 +33,9 @@ interface ConversationRuntime {
 // follow-system 用它实现"跟随者到达不打招呼"（erArk talk.py:56 NOT_FOLLOW 过滤）。
 // 通用机制：未来送别/移动场景、其他插件（隐奸隐藏等）均可注册。
 const sceneCharFilters = new Map<string, Array<(charId: string) => boolean>>()
+
+// 注释：口上条件求值失败去重上报（2026-08-13 审计——原 catch 静默淘汰口上行）
+const reportedLineConditionErrors = new Set<string>()
 
 let currentConversation: ConversationRuntime | null = null
 
@@ -342,10 +346,20 @@ function pickWeightedLine(pool: WeightedCandidate[], premiseTargetId?: string): 
     if (line.condition) {
       const cond = substituteId(line.condition)
       // 注释：条件 = 完整表达式（premise(X) 命名引用内联）；未知前提（校验层拦截漏网）
-      // 或语法错误 → 跳过该候选，不崩口上；求值上下文 = premiseCtx（selected 指向口上目标）
+      // 或语法错误 → 跳过该候选，不崩口上（去重上报——2026-08-13 审计：原静默淘汰口上行，
+      // 表达式错误时行永远不出且无痕迹）；求值上下文 = premiseCtx（selected 指向口上目标）
       try {
         if (!conditionEngine.evaluate(cond, premiseCtx)) continue
-      } catch {
+      } catch (err) {
+        if (!reportedLineConditionErrors.has(cond)) {
+          reportedLineConditionErrors.add(cond)
+          errorReporter.report({
+            source: 'dialogue-system',
+            severity: 'warning',
+            message: `口上条件求值失败（该行被跳过）：${err instanceof Error ? err.message : String(err)}`,
+            suggestion: '检查口上 condition 表达式（字段路径/前提拼写）',
+          })
+        }
         continue
       }
       // 注释：前提权重（premise(X) 引用提取 → weightAllToOne；无条件/无前提引用 → 静态权重）

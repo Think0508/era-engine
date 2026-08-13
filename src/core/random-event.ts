@@ -16,6 +16,8 @@ import { weightedRandom } from '../utils/weighted-random'
 // 注释：未知前提去重上报（npc-ai target-search reportOnce 同款）——strict 淘汰是
 // "事件不触发"的显式暴露，但拼错前提 id 的 mod 作者需要知道为什么——全局去重报一次
 const reportedUnknownPremises = new Set<string>()
+// 注释：condition 求值失败去重上报（2026-08-13 审计——原 catch 静默）
+const reportedConditionErrors = new Set<string>()
 
 export interface EventTriggerContext {
   /** 触发者 id（玩家或 NPC） */
@@ -109,9 +111,19 @@ export class RandomEventEngine {
       if (d.condition) {
         // 注释：运行时防御——condition 合法性已由插件层加载校验（validateEventData），
         // 此处防运行时不匹配的抛错中断整个事件系统：单事件条件异常 → 跳过该事件
+        // （2026-08-13 审计：原 catch 静默——表达式错误/前提缺失时事件永不触发且无痕迹，补去重上报）
         try {
           if (!conditionEngine.evaluate(d.condition, this.condCtx(ctx))) continue
-        } catch {
+        } catch (err) {
+          if (!reportedConditionErrors.has(d.id)) {
+            reportedConditionErrors.add(d.id)
+            errorReporter.report({
+              source: 'random-event',
+              severity: 'warning',
+              message: `事件 '${d.id}' 的 condition 求值失败：${err instanceof Error ? err.message : String(err)}`,
+              suggestion: '检查事件 condition 表达式（字段路径/前提拼写）',
+            })
+          }
           continue
         }
       }

@@ -36,7 +36,16 @@ class EventBus {
   }
 
   async emit(event: string, payload: any): Promise<void> {
+    // 注释：same-tick 再入保护（防死循环，AGENTS §7）——丢弃并上报一次
+    // （2026-08-13 审计：原静默 return，文档声称"断链报错"但实现无提示——
+    // 再入通常是 handler 内 emit 同事件的代码缺陷信号，静默吞掉会掩盖问题）
     if (this.emitting.has(event)) {
+      errorReporter.report({
+        source: 'event-bus',
+        severity: 'warning',
+        message: `事件 '${event}' 在分发中再次触发（same-tick 再入），本次触发被丢弃`,
+        suggestion: '检查是否有 handler 在监听同一事件时又 emit 该事件（死循环防护；若是有意的级联触发，改用不同事件名或 nextTick 延迟）',
+      })
       return
     }
 

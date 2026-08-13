@@ -1,6 +1,7 @@
 import { conditionEngine, weightAllToOne, extractPremiseRefs } from '../../core/condition-engine'
 import { gameContext } from '../../core/game-context'
 import { entitySystem } from '../../core/entity-system'
+import { errorReporter } from '../../core/error-reporter'
 import { weightedRandom } from '../../utils/weighted-random'
 import type { GameContext } from '../../core/types'
 import type { CommonTextIndex, CommonTextEntry } from './types'
@@ -10,6 +11,9 @@ export type VariableData = Record<string, {
   description: string
   entries: Array<{ context: string; conditions?: string; part?: string }>
 }>
+
+// 注释：地文条件求值失败去重上报（2026-08-13 审计——原 catch 静默淘汰条目）
+const reportedCondErrors = new Set<string>()
 
 export class CommonTextsEngine {
   private index: CommonTextIndex = {}
@@ -110,10 +114,22 @@ export class CommonTextsEngine {
       for (const cond of e.conditions) {
         // 注释：条件 = 完整表达式（premise(X) 命名引用内联；`premise(FOO) == N` 是前提
         // 权重值比较——erArk get_weight_from_premise_dict 语义，表达式引擎原生支持）
+        // 求值失败 → 淘汰该行 + 去重上报（2026-08-13 审计——原 catch 静默，行永不出现且无痕迹）
         try {
           const gc = getContext()
           if (!conditionEngine.evaluate(cond, gc)) return false
-        } catch { return false }
+        } catch (err) {
+          if (!reportedCondErrors.has(cond)) {
+            reportedCondErrors.add(cond)
+            errorReporter.report({
+              source: 'talk-common-system',
+              severity: 'warning',
+              message: `地文条件求值失败（该条目被淘汰）：${err instanceof Error ? err.message : String(err)}`,
+              suggestion: '检查地文 conditions 表达式（字段路径/前提拼写）',
+            })
+          }
+          return false
+        }
       }
       return true
     })

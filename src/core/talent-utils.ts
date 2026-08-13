@@ -4,6 +4,7 @@ import type { TalentDef, TalentModifier } from './mod-loader'
 import { conditionEngine } from './condition-engine'
 import { gameContext } from './game-context'
 import { narrativeLog } from './narrative-log'
+import { errorReporter } from './error-reporter'
 import { evaluateUpgradeNeeds } from './upgrade-needs'
 
 export interface TalentModifierContext {
@@ -11,6 +12,9 @@ export interface TalentModifierContext {
   type?: string
   ability?: string
 }
+
+// 注释：gain.condition 求值失败去重上报（2026-08-13 审计——原 catch 静默）
+const reportedGainConditionErrors = new Set<string>()
 
 /** 角色某天赋的等级（0=无） */
 export function getTalentLevel(charId: string, talentId: string): number {
@@ -68,8 +72,17 @@ export function checkTalentGain(charId: string, gainType = 0): void {
       if (satisfied) {
         grantTalent(char, charId, talentId, def)
       }
-    } catch {
-      // 条件求值错误不阻断
+    } catch (err) {
+      // 注释：条件求值错误去重上报（2026-08-13 审计——原静默：天赋永不获得且无痕迹）
+      if (!reportedGainConditionErrors.has(talentId)) {
+        reportedGainConditionErrors.add(talentId)
+        errorReporter.report({
+          source: 'talent-utils',
+          severity: 'warning',
+          message: `天赋 '${talentId}' 的 gain.condition 求值失败：${err instanceof Error ? err.message : String(err)}`,
+          suggestion: '检查天赋 gain.condition 表达式（字段路径/前提拼写）',
+        })
+      }
     }
   }
 }

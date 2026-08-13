@@ -384,7 +384,15 @@ async function startConversationInternal(ref: ConversationRef, speaker?: string)
 
   const selected = resolveConversation(mod.conversations, ref)
   if (!selected) {
-    narrativeLog.write('（对话不存在）', 'system', 'dialogue-system')
+    // 注释：对话引用不存在 = 数据错误（2026-08-13 审计补上报——原仅用户提示，
+    // mod 引用了未定义的对话时静默无痕迹）
+    errorReporter.report({
+      source: 'dialogue-system',
+      severity: 'warning',
+      message: `对话不存在：${JSON.stringify(ref)}`,
+      suggestion: '检查对话引用（conversations/ 目录是否定义了该对话，或 quest/conversation 引用的 id 是否拼写正确）',
+    })
+    narrativeLog.write('对话不存在', 'system', 'dialogue-system')
     return
   }
 

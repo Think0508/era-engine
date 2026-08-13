@@ -3,6 +3,7 @@ import type { Edge, EntityData, LocationData, MapLayout, MigrationStep, MoveConf
 import type { Effect } from './effect-type-registry'
 import { resolveTemplate, deepMerge } from './template'
 import { entitySystem } from './entity-system'
+import { ATTR } from './entity-utils'
 import { bindingResolver } from './binding-resolver'
 import { conditionRegistry } from './condition-registry'
 import { errorReporter } from './error-reporter'
@@ -1629,7 +1630,7 @@ function expandCharacterAbilities(mod: LoadedMod): void {
  */
 export function finalizeCharacterData(char: EntityData, mod: LoadedMod): void {
   if (!char) return
-  const hasAngry = (char as any).base?.['愤怒'] !== undefined
+  const hasAngry = (char as any).base?.[ATTR.ANGER] !== undefined
   applyAttributeDefaults(char, mod.attributes)
   expandCharacterAbilitiesForChar(char as any, mod.abilities)
   normalizeMarksToAbilities(char as any, mod)
@@ -1638,7 +1639,7 @@ export function finalizeCharacterData(char: EntityData, mod: LoadedMod): void {
   initializeTalentsForChar(char as any, mod.talentDefs)
   if (!hasAngry) {
     if (!(char as any).base) (char as any).base = {}
-    ;(char as any).base['愤怒'] = 1 + Math.floor(Math.random() * 35)
+    ;(char as any).base[ATTR.ANGER] = 1 + Math.floor(Math.random() * 35)
   }
 }
 

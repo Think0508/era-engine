@@ -87,6 +87,13 @@ async function executeGroupSexTemplate(charId: string, useTemplateB: boolean): P
     if (!slot.targetId || !slot.behaviorId) continue
     const cmd = commandRegistry.getById(slot.behaviorId)
     if (!cmd) {
+      // 注释：槽位指令不存在 = 数据错误（2026-08-13 审计补上报——原仅用户提示）
+      errorReporter.report({
+        source: 'h-group-sex',
+        severity: 'warning',
+        message: `群交槽位引用了不存在的指令 '${slot.behaviorId}'（槽位结算跳过）`,
+        suggestion: '检查群交模板的 behaviorId 引用（指令 id 拼写或该指令是否已注册）',
+      })
       narrativeLog.write(`群交槽位引用了不存在的指令 '${slot.behaviorId}'`, 'system', 'h-group-sex')
       continue
     }

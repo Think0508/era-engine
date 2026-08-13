@@ -10,6 +10,7 @@ import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { gameContext } from '../../core/game-context'
+import { errorReporter } from '../../core/error-reporter'
 import type { Quest, ConversationRef } from '../../core/mod-loader'
 import { parseConversationRef } from '../../core/mod-loader'
 import { conditionEngine } from '../../core/condition-engine'
@@ -116,6 +117,13 @@ async function startScene(sceneId: string): Promise<void> {
   if (!mod) return
   const scene = getScene(sceneId)
   if (!scene) {
+    // 注释：Scene 引用不存在 = 数据错误（2026-08-13 审计补上报——原仅用户提示）
+    errorReporter.report({
+      source: 'quest-system',
+      severity: 'warning',
+      message: `Scene '${sceneId}' 不存在（任务无法启动）`,
+      suggestion: '检查 quests/ 目录是否定义了该任务，或 start_quest/start 引用的 id 是否拼写正确',
+    })
     narrativeLog.write(`Scene '${sceneId}' 不存在`, 'system', 'quest-system')
     return
   }
@@ -339,15 +347,27 @@ function checkAutoStart(): void {
     if (!cond) continue
     // 2026-08-09 example-mod 验证修复：原为 TODO 死代码（auto_start_condition 从不求值，
     // 任务永不自动开始）→ 用条件引擎真实求值
+    // 2026-08-13 审计：原 catch 写 narrativeLog（违规 + 无去重刷屏）→ errorReporter 去重上报
     try {
       if (conditionEngine.evaluate(cond, gameContext.getContext())) {
         startScene(id)
       }
-    } catch {
-      narrativeLog.write(`Scene '${id}' auto_start 条件求值失败：${cond}`, 'system', 'quest-system')
+    } catch (err) {
+      if (!reportedAutoStartErrors.has(id)) {
+        reportedAutoStartErrors.add(id)
+        errorReporter.report({
+          source: 'quest-system',
+          severity: 'warning',
+          message: `任务 '${id}' 的 auto_start 条件求值失败（任务不会自动开始）：${err instanceof Error ? err.message : String(err)}`,
+          suggestion: '检查 auto_start_condition 表达式（字段路径/前提拼写）',
+        })
+      }
     }
   }
 }
+
+// 注释：auto_start 条件求值失败去重上报（2026-08-13 审计）
+const reportedAutoStartErrors = new Set<string>()
 
 function getScene(sceneId: string): Quest | undefined {
   const mod = modLoader.getMod() as any

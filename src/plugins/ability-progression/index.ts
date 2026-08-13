@@ -7,9 +7,11 @@ import type { PluginContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
+import { ATTR } from '../../core/entity-utils'
 import { modLoader } from '../../core/mod-loader'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
+import { errorReporter } from '../../core/error-reporter'
 import { evaluateUpgradeNeeds } from '../../core/upgrade-needs'
 import type { AbilityDef } from '../../core/mod-loader'
 
@@ -70,7 +72,7 @@ export function onEnable(ctx: PluginContext): void {
 // 注释：角色性别归一（本引擎 1=男 2=女；erArk sex 0=男 1=女）——sex_need 匹配用
 function sexMatches(char: any, sexNeed: number | undefined): boolean {
   if (sexNeed === undefined || sexNeed === -1) return true
-  const sex = char?.base?.['性别'] ?? 0
+  const sex = char?.base?.[ATTR.SEX] ?? 0
   const isFemale = sex >= 2
   // erArk sex_need：0=男限定 1=女限定
   return sexNeed === 0 ? !isFemale : isFemale
@@ -93,11 +95,26 @@ function evaluateExtraNeeds(char: any, charId: string, def: AbilityDef, currentL
         : (need.per_level_npc ?? need.per_level ?? 1)
       if (sum < currentLevel * perLevel) return false
     } else {
-      return false // 未知附加需求类型 → 视为不满足（不阻塞升级，保守跳过）
+      // 注释：未知附加需求类型（2026-08-13 审计：原静默 return false——该能力升级被
+      // 永久阻塞且无痕迹；补去重上报。语义：数据错误 → 不满足（保守，不误放行））
+      const key = `${def.id}:${need.type}`
+      if (!reportedExtraNeedErrors.has(key)) {
+        reportedExtraNeedErrors.add(key)
+        errorReporter.report({
+          source: 'ability-progression',
+          severity: 'warning',
+          message: `能力 '${def.id}' 的 extra_needs 含未知类型 '${need.type}'（该能力无法升级）`,
+          suggestion: '检查 extra_needs 的类型（目前支持 ability_sum）',
+        })
+      }
+      return false
     }
   }
   return true
 }
+
+// 注释：extra_needs 未知类型去重上报（2026-08-13 审计）
+const reportedExtraNeedErrors = new Set<string>()
 
 // 注释：条件驱动升级结算（erArk handle_ability.gain_ability：遍历全能力 → 每能力 while 连升）
 // 主需求不满足时尝试备选需求（up_need2）；升级扣宝珠；触发 character:ability_up + 叙事日志

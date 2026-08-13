@@ -242,6 +242,8 @@ export function onEnable(ctx: PluginContext): void {
 
 // 注释：depends_on 引用不存在去重上报（2026-08-13 审计——原静默跳过）
 const reportedMissingDepIds = new Set<string>()
+// 注释：effect condition 求值失败去重上报（2026-08-13 审计——原无 catch 中断整批）
+const reportedEffectCondErrors = new Set<string>()
 // 注释：战斗 target 不可用去重上报（2026-08-13 审计——原静默空目标，效果不执行无痕迹）
 const reportedCombatTargetUnavailable = new Set<string>()
 function reportCombatTargetUnavailable(target: string): void {
@@ -290,8 +292,23 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
 
     // 注释：condition 检查——不满足时跳过
     if (effect.condition) {
-      const gc = gameContext.getContext()
-      if (!conditionEngine.evaluate(effect.condition, gc)) {
+      // 注释：求值失败 → 跳过该效果 + 去重上报（2026-08-13 审计：原无 catch——
+      // condition 表达式错误会抛出让整批效果中断（后续效果静默不执行））
+      try {
+        const gc = gameContext.getContext()
+        if (!conditionEngine.evaluate(effect.condition, gc)) {
+          continue
+        }
+      } catch (err) {
+        if (!reportedEffectCondErrors.has(effect.condition)) {
+          reportedEffectCondErrors.add(effect.condition)
+          errorReporter.report({
+            source: 'effect-system',
+            severity: 'warning',
+            message: `effect condition 求值失败（该效果跳过）：${err instanceof Error ? err.message : String(err)}`,
+            suggestion: '检查效果 condition 表达式（字段路径/前提拼写）',
+          })
+        }
         continue
       }
     }

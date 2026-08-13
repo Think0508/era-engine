@@ -53,12 +53,14 @@ common_mix_rate = 30
 # 特殊情境加权（T6，erArk handle_special_talk_weight，talk.py:168-223）
 # 候选口上的前提集与某情境的 premises 有交集 → 权重 ×multiplier（每类最多一次，多类累计；
 # erArk 默认 9 类 ×5）。mod 可覆盖/扩展
+# ⚠️ 前提名必须与口上数据实际引用的名字一致（2026-08-13 审计修复：原引用 self_*/exhibitionism_*
+# 未注册名 → 情境加权全部静默失效——交集永远为空）
 [[talk.situations]]
 premises = ["self_time_stop_orgasm_relase", "target_time_stop_orgasm_relase"]
 multiplier = 5
 
 [[talk.situations]]
-premises = ["self_is_player_daughter", "self_not_player_daughter"]
+premises = ["target_is_player_daughter"]
 multiplier = 5
 
 [[talk.situations]]
@@ -78,7 +80,7 @@ premises = ["hidden_sex_mode_1", "hidden_sex_mode_2", "hidden_sex_mode_3", "hidd
 multiplier = 5
 
 [[talk.situations]]
-premises = ["exhibitionism_sex_mode_1", "exhibitionism_sex_mode_2", "exhibitionism_sex_mode_3", "exhibitionism_sex_mode_4", "exhibitionism_sex_mode_ge_1", "target_exhibitionism_sex_mode_1", "target_exhibitionism_sex_mode_2", "target_exhibitionism_sex_mode_3", "target_exhibitionism_sex_mode_4"]
+premises = ["exposure_sex_mode_1", "exposure_sex_mode_2", "exposure_sex_mode_3", "exposure_sex_mode_4", "self_exposure_mode_ge_1", "target_exposure_mode_ge_1"]
 multiplier = 5
 
 [[talk.situations]]
@@ -86,7 +88,7 @@ premises = ["group_sex_mode_on"]
 multiplier = 5
 
 [[talk.situations]]
-premises = ["imprisonment_1", "t_imprisonment_1"]
+premises = ["t_imprisonment_1"]
 multiplier = 5
 
 # 实行判定特殊修正表（judge_class → 修正条目列表）

@@ -3,7 +3,7 @@
 // 所有功能直接开放，无等级门槛
 
 import { conditionEngine } from '../../core/condition-engine'
-import type { PluginContext } from '../../core/types'
+import type { PluginContext, GameContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
@@ -34,6 +34,20 @@ export function onLoad(_ctx: PluginContext): void {
   // 注释：时停前提（erArk TIME_STOP_ON/OFF——读模块级状态，睡眠等指令的 TIME_STOP_OFF 前提依赖）
   conditionEngine.registerPremise('TIME_STOP_ON', () => timeStopActive)
   conditionEngine.registerPremise('TIME_STOP_OFF', () => !timeStopActive)
+
+  // 注释：时停解放前提（2026-08-13 审计补真语义——h-config talk.situations 情境加权引用；
+  // h-core pendingFalse 的 TARGET_TIME_STOP_ORGASM_RELASE 恒 false 占位被本注册覆盖（后注册覆盖））
+  // self_ = 行为发起者（sourceId）；target_ = 选中/被判定者
+  const releaseOf = (charId: string | null | undefined): boolean => {
+    const ch = charId ? entitySystem.get('character', charId) as any : null
+    return !!ch?.h_state?.time_stop_release
+  }
+  conditionEngine.registerPremise('self_time_stop_orgasm_relase', (ctx: GameContext) => {
+    return releaseOf(ctx.sourceId ?? ctx.player?.id)
+  })
+  conditionEngine.registerPremise('target_time_stop_orgasm_relase', (ctx: GameContext) => {
+    return releaseOf(ctx.selectedCharacterId)
+  })
 
   // 注释：时停前无意识快照（★3 修复（第六轮））——time_stop_on 全图覆写 unconscious_h=3，
   // 原 time_stop_off 全清 0 会把睡奸标记(1)/催眠(4-7)静默抹掉（催眠需重新催眠、睡奸标记丢失

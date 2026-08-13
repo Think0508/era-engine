@@ -60,7 +60,16 @@ function loadBondageTypes(): void {
         if (current?.id != null) result.push(current as BondageType)
         bondageTypes = result
         return
-      } catch { }
+      } catch (err) {
+        // 注释：解析失败上报（2026-08-13 审计——原空 catch 静默：bondage 类型数据全丢，
+        // 位置前提（TARGET_NOT_BONDAGE 等）全部失效且无痕迹）
+        errorReporter.report({
+          source: 'h-bondage',
+          severity: 'warning',
+          message: `bondage types.toml 解析失败：${err instanceof Error ? err.message : String(err)}（bondage 类型数据未加载，相关前提失效）`,
+          suggestion: '检查 bondage/types.toml 的格式；正常情况下 globalThis.TOML.parse 会成功，此路径为兜底解析',
+        })
+      }
     }
   }
 }

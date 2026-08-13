@@ -49,7 +49,7 @@ function growStaminaMax(char: any): void {
 // realtimeSettle 之后执行（基数含睡眠中的精液恢复 +1/20min），偏差量级为小时级恢复量
 function refreshTempSemenMax(char: any, minutes: number): void {
   if (minutes < 360) return
-  const semen = getEntityAttr(char, '精液量')
+  const semen = getEntityAttr(char, ATTR.SEMEN)
   const semenMax = getEntityAttr(char, '精液量上限')
   if (typeof semen !== 'number' || semen <= 0) return
   if (typeof semenMax !== 'number' || semenMax <= 0) return
@@ -101,7 +101,7 @@ export async function updateSleepAll(minutes: number): Promise<void> {
       // 玩家分支
       if (!c.action_info) c.action_info = {}
       // eja_point = 0（erArk sleep_settle.py:56，无条件——射精欲不清则睡醒仍满）
-      setEntityAttr(c, '射精欲', 0)
+      setEntityAttr(c, ATTR.EJA_GAUGE, 0)
       // day_first_shoot_semen = True（:57，无条件——睡醒第一发翻倍）
       c.action_info.day_first_shoot_semen = true
       // 醒来时间记录（erArk RECORD_WAKE_TIME 语义 + game_type.py:600 wake_time）

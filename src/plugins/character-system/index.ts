@@ -8,6 +8,7 @@
 import type { PluginContext, EntityData } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { bindingResolver } from '../../core/binding-resolver'
+import { setEntityPath, ATTR } from '../../core/entity-utils'
 import { eventBus } from '../../core/event-bus'
 import { modLoader } from '../../core/mod-loader'
 import { errorReporter } from '../../core/error-reporter'
@@ -54,14 +55,10 @@ export function onEnable(ctx: PluginContext): void {
     setField: (charId: string, path: string, value: any): void => {
       const char = entitySystem.get('character', charId) as any
       if (!char) return
-      // 注释：按点路径设置字段（如 "abilities.华山剑法"）
-      const parts = path.split('.')
-      let obj = char
-      for (let i = 0; i < parts.length - 1; i++) {
-        if (!obj[parts[i]]) obj[parts[i]] = {}
-        obj = obj[parts[i]]
-      }
-      obj[parts[parts.length - 1]] = value
+      // 注释：按点路径设置字段（如 "abilities.华山剑法"）——
+      // 2026-08-13 审计：原重复实现（`if (!obj[parts[i]]) obj[parts[i]] = {}`）会把
+      // 中间路径的 0/空串覆盖成 {}（静默破坏数据）——统一走 entity-utils setEntityPath
+      setEntityPath(char, path, value)
       eventBus.emit('character:changed', { id: charId })
     },
     // 注释：角色关系（关系系统 v2）——有向、多关系；kind=relation 三档（-1/0/1 或 字符串）
@@ -216,7 +213,7 @@ function relationDisplayOf(charId: string, targetId: string, relationType: strin
   const pair = def?.pair ? mod?.relationPairs?.[def.pair] : undefined
   const genderOf = (id: string): number => {
     const c = entitySystem.get('character', id) as any
-    return c?.base?.['性别'] ?? 0
+    return c?.base?.[ATTR.SEX] ?? 0
   }
   if (!pair) {
     // 纯类型（无端对词表）：panel/address 都用类型显示名

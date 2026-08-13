@@ -240,6 +240,21 @@ export function onEnable(ctx: PluginContext): void {
   })
 }
 
+// 注释：depends_on 引用不存在去重上报（2026-08-13 审计——原静默跳过）
+const reportedMissingDepIds = new Set<string>()
+// 注释：战斗 target 不可用去重上报（2026-08-13 审计——原静默空目标，效果不执行无痕迹）
+const reportedCombatTargetUnavailable = new Set<string>()
+function reportCombatTargetUnavailable(target: string): void {
+  if (reportedCombatTargetUnavailable.has(target)) return
+  reportedCombatTargetUnavailable.add(target)
+  errorReporter.report({
+    source: 'effect-system',
+    severity: 'warning',
+    message: `target='${target}' 但当前不在战斗（或 combat 插件未加载），效果跳过`,
+    suggestion: '战斗场景外请使用 self/selected/player 或角色 id 作为 target',
+  })
+}
+
 // 注释：执行 effects 数组——遍历→查 registry→调 handler→depends_on→错误隔离→输出结算
 async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
   const results = new Map<string, boolean>()
@@ -254,7 +269,21 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
     if (effect.depends_on) {
       const depResult = results.get(effect.depends_on)
       if (depResult !== true) {
-        // 注释：前置失败 → 跳过（不报错，这是分支逻辑）
+        // 注释：前置失败 → 跳过（不报错，这是分支逻辑）；
+        // 引用的 id 不存在（undefined）→ 数据错误（2026-08-13 审计：原静默——
+        // 效果链中 depends_on 指向不存在的 id 时该效果永不执行且无痕迹；去重上报）
+        if (depResult === undefined) {
+          const key = effect.depends_on
+          if (!reportedMissingDepIds.has(key)) {
+            reportedMissingDepIds.add(key)
+            errorReporter.report({
+              source: 'effect-system',
+              severity: 'warning',
+              message: `effect 的 depends_on 引用了不存在的 effect id：'${key}'（该效果永不执行）`,
+              suggestion: '检查效果链中 depends_on 引用的 id 是否存在（AGENTS §34：引用不存在的 id 应在加载时报错）',
+            })
+          }
+        }
         continue
       }
     }
@@ -321,7 +350,17 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
 async function resolveTarget(target: string, ctx: any): Promise<string[]> {
   switch (target) {
     case 'self':
-      return ctx.sourceId ? [ctx.sourceId] : []
+      if (!ctx.sourceId) {
+        // 注释：self 无 sourceId（2026-08-13 审计补上报——原静默空目标，效果不执行无痕迹）
+        errorReporter.report({
+          source: 'effect-system',
+          severity: 'warning',
+          message: `target='self' 但执行上下文无 sourceId，跳过`,
+          suggestion: '调用方需传入 sourceId（执行源角色），或改用其他 target',
+        })
+        return []
+      }
+      return [ctx.sourceId]
     case 'selected':
       const selected = ctx.uiStore?.selectedCharacterId
       if (!selected) {
@@ -342,12 +381,17 @@ async function resolveTarget(target: string, ctx: any): Promise<string[]> {
       // 注释：战斗上下文——调 combat API
       try {
         const combatCtx = await apiSystem.call('combat', 'getCombatContext')
-        if (!combatCtx) return []
+        if (!combatCtx) {
+          // 注释：非战斗场景（2026-08-13 审计补上报——AGENTS §32：不可用 → 静默跳过 + warning）
+          reportCombatTargetUnavailable(target)
+          return []
+        }
         if (target === 'all_enemies') return combatCtx.enemies ?? []
         if (target === 'all_allies') return combatCtx.allies ?? []
         if (target === 'target') return combatCtx.target ? [combatCtx.target] : []
       } catch {
-        // 注释：combat 未注册 → 静默跳过
+        // 注释：combat 未注册 → 静默跳过（2026-08-13 审计补上报——原静默空目标无痕迹）
+        reportCombatTargetUnavailable(target)
       }
       return []
     default:

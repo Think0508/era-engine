@@ -322,7 +322,11 @@ function applyDefault(data: SaveData, field: string, value: any): void {
     const parts = field.split('.')
     let obj: any = char
     for (let i = 0; i < parts.length - 1; i++) {
-      if (!obj[parts[i]]) obj[parts[i]] = {}
+      // 注释：仅非对象时重建容器（2026-08-13 审计——原 `!obj[parts[i]]` 会把
+      // 中间存在的 0/空串等 falsy 值覆盖成 {}，静默破坏存档数据）
+      if (typeof obj[parts[i]] !== 'object' || obj[parts[i]] === null) {
+        obj[parts[i]] = {}
+      }
       obj = obj[parts[i]]
     }
     if (!(parts[parts.length - 1] in obj)) {

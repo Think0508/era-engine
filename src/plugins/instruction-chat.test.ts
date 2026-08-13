@@ -197,22 +197,21 @@ describe('chat（1004）复刻', () => {
     expect(n.action_info.talk_time.hour).toBe(now.hour) // talk_time 同步
   })
 
-  it('时停中 chat：好感/好意/快乐整体冻结，仅对话经验与 talk_count 生效', async () => {
+  it('时停中 chat：目标不可协同（前提不满足）→ 指令不可执行（2026-08-13 审计——真实求值器暴露，原恒 true 桩下误执行）', async () => {
     resetChars(0)
     const n = npc()
     n.sp_flag = { unconscious_h: 3 }
 
     await commandExecutor.execute('chat', execCtx())
 
-    // 21 与 501（talk_add_adjust 门控）都不结算
+    // 前提 NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1：时停目标不可协同 → 不执行
     expect(n.base['好感度'] ?? 0).toBe(0)
     expect(n.base['好意'] ?? 0).toBe(0)
     expect(n.base['快乐'] ?? 0).toBe(0)
-    // 12 气力也被时停门控（settle_hp_mp）
     expect(n.base['气力']).toBe(50)
-    // CVE 经验照常（erArk 时停不拦经验）
-    expect(n.experience['80']).toBe(1)
-    expect(n.action_info.talk_count).toBe(1)
+    // 未执行 → 无经验/无 talk_count
+    expect(n.experience?.['80']).toBeUndefined()
+    expect(n.action_info.talk_count ?? 0).toBe(0)
   })
 
   it('失败链后 talk_time 不更新（501 只在成功链，erArk 同）', async () => {

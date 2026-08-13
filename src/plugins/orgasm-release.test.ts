@@ -1,4 +1,4 @@
-﻿// 注释：orgasm 释放与 roll_count 压缩测试（2026-08-08 对齐 erArk orgasm_settle.py 更新）
+// 注释：orgasm 释放与 roll_count 压缩测试（2026-08-08 对齐 erArk orgasm_settle.py 更新）
 // 覆盖：
 //   1. 解放状态 roll_count 压缩（climax>=3 → 0 次普通 roll + 1 次超强；1-2 → 1 次；非解放 → 全部）
 //   2. releaseOrgasmEdge（退出 H 释放寸止累计——原静默丢弃）+ 集成 end_h 路径
@@ -297,8 +297,9 @@ describe('orgasm 释放与 roll_count 压缩（erArk orgasm_settle.py 对齐）'
     it('时停释放标志：下一次行动开始重置（对齐 erArk handle_npc_ai_in_h.py:99）', async () => {
       const n = npc()
       n.h_state = { is_h: true, time_stop_release: true }
-      const { commandExecutor } = await import('../core/command-executor')
-      await commandExecutor.execute('rest', makeTestExecCtx())
+      // 注释：重置由 h-core execution_start 监听器执行（对 H 中带标志角色循环重置）；
+      // 直接 emit 事件（指令路径的前提互斥——目标在 H 时玩家指令不可用，2026-08-13 审计）
+      await eventBus.emit('game:execution_start', { commandId: 'test' })
       expect(n.h_state.time_stop_release).toBe(false)
     })
   })

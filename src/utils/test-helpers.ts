@@ -4,14 +4,18 @@
 
 import { apiSystem } from '../core/api'
 import { eventBus } from '../core/event-bus'
+import { conditionEngine } from '../core/condition-engine'
+import { gameContext } from '../core/game-context'
 
 /**
  * 创建标准执行上下文。
  * engine.emit 转发真实 eventBus（产品路径：bridge 注入 gameContext.emit → eventBus）——
  * 否则 execution_start/end 被吞，衰减监听器/二段结算测不到（测试盲区）。
+ * evaluateCondition/evaluatePremises 注入真实求值器（2026-08-13 审计修复——
+ * 原恒 true 桩静默绕过条件门控，指令测试验证不了 condition/premises；失败返回 false 不抛）。
  */
 export function makeTestExecCtx(overrides: any = {}): any {
-  return {
+  const execCtx: any = {
     uiStore: {
       selectedCharacterId: 'npc_1',
       selectCharacter: () => {},
@@ -24,11 +28,22 @@ export function makeTestExecCtx(overrides: any = {}): any {
       setExecutionState: () => {},
       emit: async (event: string, payload?: any) => { await eventBus.emit(event, payload) },
     },
-    evaluateCondition: () => true,
-    evaluatePremises: () => true,
+    // 注释：模拟 engine-ui-bridge 的选中同步（生产路径 uiStore 选中 → gameContext.selectedCharacterId）
+    evalCtx: (): any => ({
+      ...gameContext.getContext(),
+      selectedCharacterId: execCtx.uiStore?.selectedCharacterId ?? undefined,
+      sourceId: execCtx.sourceId ?? 'player',
+    }),
+    evaluateCondition: (expr: string): boolean => {
+      try { return conditionEngine.evaluate(expr, execCtx.evalCtx()) } catch { return false }
+    },
+    evaluatePremises: (premises: string[]): boolean => {
+      try { return conditionEngine.evaluatePremises(premises, execCtx.evalCtx()) } catch { return false }
+    },
     sourceId: 'player',
     ...overrides,
   }
+  return execCtx
 }
 
 /**

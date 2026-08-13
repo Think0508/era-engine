@@ -3,6 +3,8 @@
 // resolveDataDependencies 返回 onEnable 顺序（被依赖的在前）
 // 无 data_dependencies 的插件按原顺序排在前（不阻塞有依赖的）
 
+import { errorReporter } from './error-reporter'
+
 export interface DataDependencyInfo {
   pluginId: string
   provides: string[]
@@ -32,6 +34,19 @@ export function resolveDataDependencies(
       const depPluginId = providesMap.get(dep)
       if (depPluginId && depPluginId !== p.pluginId) {
         deps.push(depPluginId)
+      } else if (!depPluginId) {
+        // 注释：依赖能力无人提供——顺序无约束（2026-08-13 审计：原静默，
+        // 依赖方 onEnable 时可能早于预期执行；去重上报）
+        const key = `${p.pluginId}:${dep}`
+        if (!reportedMissingDeps.has(key)) {
+          reportedMissingDeps.add(key)
+          errorReporter.report({
+            source: 'data-dependencies',
+            severity: 'warning',
+            message: `插件 '${p.pluginId}' 声明依赖能力 '${dep}'，但没有任何插件 provides 它`,
+            suggestion: '检查 data_dependencies 拼写（provides/depends_on 需精确匹配）；若为可选依赖，请移除该声明',
+          })
+        }
       }
     }
     depGraph.set(p.pluginId, deps)
@@ -45,7 +60,17 @@ export function resolveDataDependencies(
   function visit(id: string): void {
     if (visited.has(id)) return
     if (visiting.has(id)) {
-      // 注释：循环依赖——跳过断链，不崩
+      // 注释：循环依赖——跳过断链，不崩（2026-08-13 审计：原静默，去重上报——
+      // 循环依赖的插件顺序未定义，onEnable 时序可能错乱）
+      if (!reportedCycles.has(id)) {
+        reportedCycles.add(id)
+        errorReporter.report({
+          source: 'data-dependencies',
+          severity: 'warning',
+          message: `插件 data_dependencies 循环依赖（断链处：'${id}'），相关插件 onEnable 顺序未定义`,
+          suggestion: '检查 data_dependencies 的 provides/depends_on 是否存在环',
+        })
+      }
       return
     }
     visiting.add(id)
@@ -64,3 +89,7 @@ export function resolveDataDependencies(
 
   return sorted
 }
+
+// 注释：去重上报集合（每次 resolveDataDependencies 调用重置——插件集可能变化）
+let reportedMissingDeps = new Set<string>()
+let reportedCycles = new Set<string>()

@@ -26,6 +26,9 @@ interface ConversationRuntime {
   convId: string
   nodeId: string
   nodes: Map<string, ConversationNode>
+  // 注释：当前可选项（2026-08-13 审计——原选择依赖 narrativeLog 按 entryId 查找，
+  // core 日志淘汰（1000 条）后选择静默失效；运行时持有，选择直接按索引取）
+  pendingChoices?: { text: string; next?: string }[]
 }
 
 // 注释：场景角色过滤器（2026-08-10）——按 scene 分组注册，触发某场景的某角色时
@@ -56,16 +59,13 @@ export function onLoad(_ctx: PluginContext): void {
 export function onEnable(ctx: PluginContext): void {
   // 注释：对话选项选择推进（2026-08-13 审计修复——原 UI selectChoice 只有 TODO，
   // 玩家选择后对话树卡死；UI 发 dialogue:select，这里渲染下一节点。
+  // 选择取运行时 pendingChoices（不依赖 narrativeLog 查找——日志淘汰后选择仍可用）；
   // handler 必须 await renderNode（事件总线串行 await）——UI 侧等待 emit 完成后再推进
   // 显示，否则新行未写入时 UI 已推进 → 对话行不可见）
   ctx.events.on('dialogue:select', async (payload: any) => {
-    const entryId = payload?.entryId as string | undefined
     const index = Number(payload?.index ?? 0)
-    if (!entryId) return
     if (!currentConversation) return
-    const entry = narrativeLog.getEntries().find((e: any) => e.id === entryId)
-    const choices = entry?.payload?.choices as { text: string; next?: string }[] | undefined
-    const choice = choices?.[index]
+    const choice = currentConversation.pendingChoices?.[index]
     if (!choice?.next) return
     await renderNode(choice.next)
   })
@@ -464,7 +464,8 @@ async function renderNode(nodeId: string, speakerOverride?: string): Promise<voi
       }
       return
     }
-    // 注释：写入 interactive entry 供玩家选择
+    // 注释：写入 interactive entry 供玩家选择（运行时同时持有——选择推进不依赖日志条目）
+    currentConversation.pendingChoices = visible
     narrativeLog.write('选择', 'dialogue_choice', 'dialogue-system', true, {
       choices: visible,
       conversationRuntime: currentConversation,
@@ -478,9 +479,8 @@ async function renderNode(nodeId: string, speakerOverride?: string): Promise<voi
   }
 }
 
-// 注释：玩家选择 choice——由 UI 调用
-// ⚠️ 标记（2026-08-09）：selectChoice 已导出但未注册到 API/事件通道——插件间禁止直接
-// import，UI 实际无法调用 → 对话分支推进（choices.next / 分支节点 effects）当前不可达。
+// 注释：玩家选择 choice——由 UI（FullscreenOutput）经 dialogue:select 事件驱动推进
+// （2026-08-13 实现——本标记为历史遗留，对话分支推进已可达）
 // 依赖 dialogue UI 交互通道设计（随 dialogue-system 补齐，勿局部修补）。
 export async function selectChoice(entryId: string, choiceIndex: number): Promise<void> {
   if (!currentConversation) return

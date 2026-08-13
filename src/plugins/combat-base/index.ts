@@ -9,6 +9,7 @@ import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { bindingResolver } from '../../core/binding-resolver'
+import { errorReporter } from '../../core/error-reporter'
 import { registerSkipRule } from '../../core/skip-registry'
 import type { CommandDef } from '../../core/command-registry'
 
@@ -331,8 +332,13 @@ async function runChainHooks(hookName: string, ctx: any): Promise<void> {
     try {
       await handler(ctx)
     } catch (err) {
-      // 注释：钩子错误隔离
-      console.warn(`combat hook '${hookName}' error:`, err)
+      // 注释：钩子错误隔离（2026-08-13 审计——原 console.warn 违反铁律，改 errorReporter）
+      errorReporter.report({
+        source: 'combat-base',
+        severity: 'warning',
+        message: `combat hook '${hookName}' 抛错：${err instanceof Error ? err.message : String(err)}`,
+        suggestion: '检查钩子注册方的实现（异常已隔离，不影响其他钩子）',
+      })
     }
   }
 }

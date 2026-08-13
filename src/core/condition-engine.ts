@@ -304,9 +304,7 @@ function resolvePath(node: PathNode, ctx: GameContext): any {
       } else {
         const agg = extractAggregatePart(part)
         if (agg) {
-          const result = evaluateRelationAggregate(agg.kind, current, agg.args, ctx)
-          console.log('[dbg] agg', part, agg, '→', result, 'on', JSON.stringify(current), 'groups', ctx.relationGroups)
-          return result
+          return evaluateRelationAggregate(agg.kind, current, agg.args, ctx)
         }
         if (ctx.fieldAliases?.[part]) {
           if (ctx.fieldAliases[part] in current) {

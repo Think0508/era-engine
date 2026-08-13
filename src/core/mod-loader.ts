@@ -1829,9 +1829,12 @@ function validateLocations(mod: LoadedMod, modName: string): void {
   }
   for (const [id, loc] of mod.locations) {
     if (!referencedByOthers.has(id) && loc.parent === null) {
-      console.warn(
-        `mods/${modName}/maps/locations/: 地点 '${id}' 不可达（无 graph 边指向它，也无 parent）——可能是设计遗漏`,
-      )
+      errorReporter.report({
+        source: 'mod-loader',
+        severity: 'warning',
+        message: `mods/${modName}/maps/locations/: 地点 '${id}' 不可达（无 graph 边指向它，也无 parent）——可能是设计遗漏`,
+        suggestion: '检查地图数据：其他地点的 exit 或 parent 应指向它；若为顶级孤立区域，考虑加 parent 或连线',
+      })
     }
   }
 }

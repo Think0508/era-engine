@@ -279,8 +279,16 @@ export function migrateSaveData(
         applyDefault(result, step.default.field, step.default.value)
       }
       if (step.transform) {
-        // TODO(phase-12.1): transform 脚本需沙箱执行
-        console.warn(`迁移 transform 跳过：${step.transform.script}，需沙箱`)
+        // ⚠️ 半成品（2026-08-13 审计标注）：transform 脚本沙箱执行未实现（phase-12.1）——
+        // 迁移步骤中的 transform 不执行，旧存档字段不转换（数据保持原状，不伪造转换结果）。
+        // 读档后旧字段缺失由 fillMissingAttributes 兜底默认值；transform 依赖的字段需
+        // 作者用 rename/default 表达，或等待沙箱落地后补迁移
+        errorReporter.report({
+          source: 'save-system',
+          severity: 'warning',
+          message: `存档迁移 transform 步骤未执行（沙箱未实现）：${step.transform.script}`,
+          suggestion: 'transform 依赖沙箱脚本执行（phase-12.1）；当前可用 rename/default 表达迁移，或保持旧字段',
+        })
       }
     } catch (e) {
       throw new Error(

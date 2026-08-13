@@ -92,10 +92,6 @@ export const useGameStore = defineStore('game', () => {
   function setCharactersAtLocation(chars: EntityData[]) {
     charactersAtLocation.value = chars
   }
-  function refreshCharactersAtLocation() {
-    // 注释：bridge 在 Task 5.15 实现真实查询，组件开发期间由 mock 数据设置
-    // TODO(phase-6): 用 entity-system.getByType('character') 遍历过滤 current_location
-  }
   function addLogEntry(entry: LogEntry) {
     narrativeLogEntries.value.push(entry)
     historyLog.value.push(entry)
@@ -162,7 +158,6 @@ export const useGameStore = defineStore('game', () => {
     popMode,
     setExecutionState,
     setCharactersAtLocation,
-    refreshCharactersAtLocation,
     addLogEntry,
     clearLogEntries,
     markLogConsumed,

@@ -105,7 +105,12 @@ export function setEntityAttr(entity: any, name: string, value: any): boolean {
     }
   }
 
-  return false
+  // 注释：未找到键 → 落 base（2026-08-13 审计——原返回 false 且多数调用方不检查，
+  // 属性键缺失（如未跑 applyAttributeDefaults 的角色）时写入静默丢失；
+  // 统一落 base（与 binding-resolver 语义一致），保证数据不丢、落位一致）
+  if (!entity.base || typeof entity.base !== 'object') entity.base = {}
+  entity.base[name] = value
+  return true
 }
 
 /** 解析嵌套路径（如 "params.恭顺" → entity.params.恭顺） */
@@ -125,7 +130,11 @@ export function setEntityPath(entity: any, path: string, value: any): boolean {
   const parts = path.split('.')
   let current = entity
   for (let i = 0; i < parts.length - 1; i++) {
-    if (!current[parts[i]]) current[parts[i]] = {}
+    // 注释：中间路径非对象时建容器（2026-08-13 审计——原 `!current[parts[i]]` 会把
+    // 中间存在的 0/空串等 falsy 值覆盖成 {}，静默破坏数据；仅非对象/null 时重建）
+    if (typeof current[parts[i]] !== 'object' || current[parts[i]] === null) {
+      current[parts[i]] = {}
+    }
     current = current[parts[i]]
   }
   const last = parts[parts.length - 1]

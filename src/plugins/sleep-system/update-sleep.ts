@@ -119,7 +119,7 @@ export async function updateSleepAll(minutes: number): Promise<void> {
       // NPC 分支
       if (!c.base) c.base = {}
       // 愤怒重置（erArk sleep_settle.py:80 random.randrange(1,35) = 1..34——M1 修复 off-by-one）
-      c.base['愤怒'] = 1 + Math.floor(Math.random() * 34)
+      c.base[ATTR.ANGER] = 1 + Math.floor(Math.random() * 34)
       if (!c.action_info) c.action_info = {}
       // h_interrupt = 0（:82——H 被撞破标记清零）
       c.action_info.h_interrupt = 0

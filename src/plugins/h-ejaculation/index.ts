@@ -12,6 +12,7 @@ import { conditionEngine } from '../../core/condition-engine'
 import type { PluginContext, GameContext, EntityData } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
+import { ATTR } from '../../core/entity-utils'
 import { eventBus } from '../../core/event-bus'
 import { narrativeLog } from '../../core/narrative-log'
 import { gameContext, gameTimeToTotalMinutes, isPlayerChar } from '../../core/game-context'
@@ -97,10 +98,10 @@ export function onLoad(_ctx: PluginContext): void {
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any
       if (!char?.base) continue
-      const eja = char.base['射精欲'] ?? 0
-      const ejaMax = char.base['射精欲上限'] ?? 1000
+      const eja = char.base[ATTR.EJA_GAUGE] ?? 0
+      const ejaMax = char.base[ATTR.EJA_GAUGE_MAX] ?? 1000
       if (eja < ejaMax) continue
-      char.base['射精欲'] = 0
+      char.base[ATTR.EJA_GAUGE] = 0
       // 注释：忍耐射精判定（erArk show_endure_ejaculation_panel）
       // 概率: now_count <= 技巧 → 100%；超出后 rate = 100 - over×(50 - 技巧×5)，下限 0
       // 手动弹窗模式（系统设置11==2）未实现（依赖 UI 弹窗），默认自动概率判定
@@ -234,7 +235,7 @@ export function onLoad(_ctx: PluginContext): void {
     const ownerId = ctx.sourceId ?? (ctx._targetIds as string[])[0]
     const char = entitySystem.get('character', ownerId) as any
     if (!char?.base) return true
-    const cur = char.base['射精欲'] ?? 0
+    const cur = char.base[ATTR.EJA_GAUGE] ?? 0
     char.base['射精欲'] = Math.max(0, cur + Math.floor(tc + 10 + cur * 0.4))
     touchLastEajAddTime(char)
     return true
@@ -253,7 +254,7 @@ export function onLoad(_ctx: PluginContext): void {
       if (!char?.base) continue
       const sensLv = char?.abilities?.['阴茎感度']?.level ?? 0
       const adjust = tbl[Math.min(Math.max(0, sensLv), 10)] ?? 4.0
-      char.base['射精欲'] = Math.max(0, (char.base['射精欲'] ?? 0) + Math.floor((tc + bv) * adjust))
+      char.base['射精欲'] = Math.max(0, (char.base[ATTR.EJA_GAUGE] ?? 0) + Math.floor((tc + bv) * adjust))
       touchLastEajAddTime(char)
     }
     return true
@@ -387,7 +388,7 @@ export function onEnable(ctx: PluginContext): void {
     addEja: (charId: string, delta: number) => {
       const char = entitySystem.get('character', charId) as any
       if (char?.base) {
-        char.base['射精欲'] = Math.max(0, (char.base['射精欲'] ?? 0) + (delta ?? 0))
+        char.base['射精欲'] = Math.max(0, (char.base[ATTR.EJA_GAUGE] ?? 0) + (delta ?? 0))
         if ((delta ?? 0) > 0) touchLastEajAddTime(char)
       }
     },

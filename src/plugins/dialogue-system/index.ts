@@ -50,6 +50,20 @@ export function onLoad(_ctx: PluginContext): void {
 
 // 注释：onEnable——注册 dialogue API + talk 指令 + 监听 location:enter
 export function onEnable(ctx: PluginContext): void {
+  // 注释：对话选项选择推进（2026-08-13 审计修复——原 UI selectChoice 只有 TODO，
+  // 玩家选择后对话树卡死；UI 发 dialogue:select，这里渲染下一节点）
+  ctx.events.on('dialogue:select', (payload: any) => {
+    const entryId = payload?.entryId as string | undefined
+    const index = Number(payload?.index ?? 0)
+    if (!entryId) return
+    if (!currentConversation) return
+    const entry = narrativeLog.getEntries().find((e: any) => e.id === entryId)
+    const choices = entry?.payload?.choices as { text: string; next?: string }[] | undefined
+    const choice = choices?.[index]
+    if (!choice?.next) return
+    void renderNode(choice.next)
+  })
+
   // 注释：注册 dialogue API
   ctx.api.register('dialogue', {
     // 注释：触发反应式口上（演出管线）——其他系统调此方法

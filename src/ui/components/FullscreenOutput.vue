@@ -8,6 +8,7 @@ import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { useGameStore, type LogEntry } from '../stores/game-store'
 import FormattedText from './FormattedText.vue'
 import TypewriterText from './TypewriterText.vue'
+import { eventBus } from '../../core/event-bus'
 
 const gameStore = useGameStore()
 const emit = defineEmits<{ (e: 'done'): void }>()
@@ -93,10 +94,12 @@ function handleClick() {
   }
 }
 
-// 选择选项
+// 选择选项（2026-08-13 审计修复——原实现 TODO 未通知对话系统，对话树卡死无法推进）
 function selectChoice(entry: LogEntry) {
+  const index = focusMap.value[entry.id] ?? 0
   gameStore.markLogConsumed(entry.id)
-  // TODO: 通知对话系统继续——emit 事件或调 API
+  // 注释：通知对话系统推进（UI → 事件总线 → dialogue-system 渲染下一节点）
+  void eventBus.emit('dialogue:select', { entryId: entry.id, index })
   advance()
 }
 

@@ -220,35 +220,6 @@ describe('example-mod 端到端（字段真实落位）', () => {
     // 注：选择推进（selectChoice）未注册 API——依赖 dialogue UI 交互通道（标记，勿修）
     await gameContext.exitMode()
   })
-
-  it('对话树 choices condition 过滤（2026-08-13 审计修复——原条件从未求值可被绕过）', async () => {    const { narrativeLog } = await import('../core/narrative-log')
-    const map = mod.conversations.character.get('角色示例')!
-    map.set('测试条件过滤', {
-      id: '测试条件过滤',
-      nodes: [
-        {
-          id: 'start', lines: ['条件测试'],
-          choices: [
-            { text: '可见选项A', next: 'farewell' },
-            { text: '隐藏选项', next: 'farewell', condition: 'player.不存在的属性 >= 999' },
-            { text: '可见选项B', next: 'farewell', condition: 'selected != null' },
-          ],
-        },
-        { id: 'farewell', lines: ['再见'] },
-      ],
-    })
-    await apiSystem.call('dialogue', 'startConversation', {
-      type: 'character', character: '角色示例', name: '测试条件过滤',
-    })
-    const entries = narrativeLog.getEntries()
-    const choiceEntry = [...entries].reverse().find((e: any) => e.type === 'dialogue_choice')
-    expect(choiceEntry).toBeDefined()
-    expect(choiceEntry!.payload?.choices ?? []).toHaveLength(2)
-    expect(choiceEntry!.payload.choices.map((c: any) => c.text)).toEqual(['可见选项A', '可见选项B'])
-    map.delete('测试条件过滤')
-    await gameContext.exitMode()
-  })
-
   it('移动链路：山村 ↔ 集市 可达（graph 边生效）', async () => {
     expect(mod.locations.has('集市')).toBe(true)
     await gameContext.moveTo('集市', 30)
@@ -488,4 +459,65 @@ describe('example-mod 端到端（字段真实落位）', () => {
     expect(texts.some((t: string) => t.includes('条件满足分支'))).toBe(false)
     mod.quests.delete('测试条件分支')
   })
+  it('对话树 choices condition 过滤（2026-08-13 审计修复——原条件从未求值可被绕过）', async () => {
+    const { narrativeLog } = await import('../core/narrative-log')
+    const map = mod.conversations.character.get('角色示例')!
+    map.set('测试条件过滤', {
+      id: '测试条件过滤',
+      nodes: [
+        {
+          id: 'start', lines: ['条件测试'],
+          choices: [
+            { text: '可见选项A', next: 'farewell' },
+            { text: '隐藏选项', next: 'farewell', condition: 'player.不存在的属性 >= 999' },
+            { text: '可见选项B', next: 'farewell', condition: 'premise(sys_0)' },
+          ],
+        },
+        { id: 'farewell', lines: ['再见'] },
+      ],
+    })
+    await apiSystem.call('dialogue', 'startConversation', {
+      type: 'character', character: '角色示例', name: '测试条件过滤',
+    })
+    const entries = narrativeLog.getEntries()
+    const choiceEntry = [...entries].reverse().find((e: any) => e.type === 'dialogue_choice')
+    expect(choiceEntry).toBeDefined()
+    expect(choiceEntry!.payload?.choices ?? []).toHaveLength(2)
+    expect(choiceEntry!.payload.choices.map((c: any) => c.text)).toEqual(['可见选项A', '可见选项B'])
+    map.delete('测试条件过滤')
+    await gameContext.exitMode()
+  })
+
+  it('对话树选择推进：dialogue:select 渲染下一节点（2026-08-13 审计修复——原选择无消费端卡死）', async () => {
+    const { narrativeLog } = await import('../core/narrative-log')
+    const map = mod.conversations.character.get('角色示例')!
+    map.set('测试选择推进', {
+      id: '测试选择推进',
+      nodes: [
+        {
+          id: 'start', lines: ['请选择'],
+          choices: [
+            { text: '去甲线', next: 'branch_a' },
+            { text: '去乙线', next: 'branch_b' },
+          ],
+        },
+        { id: 'branch_a', lines: ['甲线台词'] },
+        { id: 'branch_b', lines: ['乙线台词'] },
+      ],
+    })
+    await apiSystem.call('dialogue', 'startConversation', {
+      type: 'character', character: '角色示例', name: '测试选择推进',
+    })
+    const before = narrativeLog.getEntries().length
+    const choiceEntry = [...narrativeLog.getEntries()].reverse().find((e: any) => e.type === 'dialogue_choice')
+    expect(choiceEntry).toBeDefined()
+    // 选择第 1 项（乙线）
+    await eventBus.emit('dialogue:select', { entryId: choiceEntry!.id, index: 1 })
+    const after = narrativeLog.getEntries().slice(before)
+    expect(after.some((e: any) => e.text.includes('乙线台词'))).toBe(true)
+    expect(after.some((e: any) => e.text.includes('甲线台词'))).toBe(false)
+    map.delete('测试选择推进')
+    await gameContext.exitMode()
+  })
+
 })

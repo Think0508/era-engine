@@ -204,7 +204,7 @@ id = "sword_practice"
 premises = ["NOT_H", "IN_SWORD_VALLEY", "HAVE_SWORD_ABILITY"]
 
 # 口上中使用
-condition = "premises:IN_SWORD_VALLEY"
+condition = "premise(IN_SWORD_VALLEY"
 ```
 
 **机制**：

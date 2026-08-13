@@ -29,8 +29,9 @@ talk-common-system 是从 erark `talk_common` 系统精确复刻的条件文本�
 │  └──────────┘   └──────┬───────┘                 │
 │                        │ import                  │
 │                 ┌──────▼───────┐                 │
-│                 │ h-core       │                 │
-│                 │ premiseRegistry.evaluate()     │
+│                 │ condition-   │                 │
+│                 │ engine       │                 │
+│                 │ evaluate()   │                 │
 │                 └──────────────┘                 │
 └─────────────────────────────────────────────────┘
 ```
@@ -71,11 +72,11 @@ description = "阴道——一段完整的描述文本"
 
 [[entries]]
 context = "粉嫩紧致湿润温暖，触感细腻敏感的{vagina_s}"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 
 [[entries]]
 context = "湿滑温热内壁有褶皱，吸附力极强的{vagina_s}"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 ```
 
 字段说明：
@@ -86,31 +87,36 @@ conditions = "premises:high_1"
 | `description` | string | 否 | 变量说明，用于自动生成条件手册 |
 | `[[entries]]` | array | 是 | 所有可选的文本条目 |
 | `[[entries]].context` | string | 是 | 输出的文本片断。可嵌套其他 talk_common 变量（如 `{vagina_s}`） |
-| `[[entries]].conditions` | string | 否 | 条件表达式。支持 `premises:` 前缀和原生条件语法（见下文） |
+| `[[entries]].conditions` | string | 否 | 条件表达式。前提用 `premise(X)` 内联引用（见下文） |
 
 运行时从所有 `conditions` 满足的 entries 中随机选一条。
 
 #### conditions 格式
 
-支持两种写法：
+条件 = **完整表达式**（2026-08-13 起前提与表达式引擎合并为单一语法）：
 
-**1. premise 格式**（传统，用于 h-core 注册的前提）：
+**1. 前提引用**（`premise(X)` 内联——X 为插件注册的前提 ID）：
 ```toml
-conditions = "premises:high_1&sys_0"
+conditions = "premise(high_1) && premise(sys_0)"
 ```
-以 `premises:` 开头，多条件用 `&` 连接。每个条件要么是已注册的 premise ID（通过 `registry.register`），要么是条件表达式。
+多个前提用 `&&` 连接。前提 ID 大小写不敏感（如 `premise(HIGH_1)` 等价）。
 
-**2. 原生条件表达式**（推荐，无需前提注册）：
+**2. 数据条件表达式**（无需前提注册）：
 ```toml
 conditions = "selected.talents.幼女 == 1"
 ```
 直接使用 `player.*`、`location.*`、`game.time.*`、`selected.*`、`character.{ID}.*` 等路径和标准运算符。
 
-**混合使用**（`premises:` 和表达式混写）：
+**混合使用**（前提 + 表达式混写）：
 ```toml
-conditions = "premises:high_1&selected.body_semen.阴道.1 > 0"
+conditions = "premise(high_1) && selected.body_semen.阴道.1 > 0"
 ```
-第一个用 premise 系统，第二个用条件表达式引擎，`&` 连接表示"且"。
+
+**前提权重值比较**（erArk get_weight_from_premise_dict 语义）：
+```toml
+conditions = "premise(FOO) == 2"
+```
+前提返回值与数值比较（`== >= <= > <` 均可，表达式引擎原生支持）。
 
 **可用路径**：
 
@@ -125,12 +131,12 @@ conditions = "premises:high_1&selected.body_semen.阴道.1 > 0"
 
 **前提 ID 引用**：
 
-以 `premises:` 前缀引用已注册的前提：
+用 `premise(X)` 内联引用已注册的前提：
 ```toml
-conditions = "premises:HAVE_TARGET&premises:NOT_H"
+conditions = "premise(HAVE_TARGET) && premise(NOT_H)"
 ```
 
-前提 ID 由 h-core 和各插件在 `onEnable` 时注册。可用前提列表可通过 `@premises` 调试命令查看。
+前提 ID 由各插件在 `onEnable` 时注册（engine API `premises.register`）。可用前提列表可通过 `@premises` 调试命令查看。旧 `premises:` 前缀语法已移除（2026-08-13 数据全量迁移），禁止使用。
 
 ### 多段变量（body_part/ 类型）
 
@@ -145,22 +151,22 @@ parts = ["A", "B"]
 [[entries]]
 part = "A"
 context = "温热"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 
 [[entries]]
 part = "B"
 context = "阴道"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 
 [[entries]]
 part = "A"
 context = "幼小"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "premise(CVP_A2_T|102_E_1)"
 
 [[entries]]
 part = "B"
 context = "小穴"
-conditions = "premises:CVP_A2_T|102_E_1"
+conditions = "premise(CVP_A2_T|102_E_1)"
 ```
 
 | 字段 | 类型 | 必填 | 说明 |
@@ -190,11 +196,11 @@ description = "正常位·阴茎插入阴道——A段动作描述"
 
 [[entries]]
 context = "{Name}俯身压在{TargetName}身上，{penis}在{vagina}内快速抽插"
-conditions = "premises:dr_position_normal"
+conditions = "premise(dr_position_normal)"
 
 [[entries]]
 context = "{Name}双手紧握{TargetName}的腰肢，{penis}从后方深深地插入{vagina}"
-conditions = "premises:dr_position_back"
+conditions = "premise(dr_position_back)"
 ```
 
 ## 变量映射表（erark → 本系统）
@@ -329,7 +335,7 @@ parts = ["A", "B"]
 [[entries]]
 part = "A"
 context = "紧致"
-conditions = "premises:high_1"
+conditions = "premise(high_1)"
 
 # 只写要改的 entries，其余继承默认
 # 但注意：整个文件覆盖同 variable 的全部 entries，不是增量
@@ -379,7 +385,7 @@ context = "粉嫩紧致湿润温暖，触感细腻敏感的{vagina_s}"
 3. **验证（自动安全网）**：`npm run test` 的 `talk-common-data.test.ts` 全量校验
    - 新增地文引用的前提若未注册 → 测试失败 → 按 T2 模式补齐（可判的注册语义、
      依赖未实装系统的恒 false + TODO）
-   - 新 CVP 的 T/S/A ID 若不在映射表 → 保留 premises:CVP_... → 校验报出 → **补脚本映射表**
+   - 新 CVP 的 T/S/A ID 若不在映射表 → 保留 premise(CVP_...) → 校验报出 → **补脚本映射表**
      （TALENT_MAP/STATUS_MAP/ABILITY_MAP，查 Talent.csv/CharacterState.csv 确认名字）→ 删新文件重转
    - 新增表达式的字段路径未注册 → 测试失败 → condition-registry 补结构路径
 4. **重启 dev server**：新 TOML 加入 glob 后需重启 vite 才被收录

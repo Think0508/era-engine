@@ -103,7 +103,7 @@ follow-system 注册 `greet` 过滤器：**跟随者到达不打招呼**（erArk
 - `character.{id}.following` → boolean
 - `character.{id}.follow_mode` → number 0-4
 
-**前提**（供指令 premises / 口上 condition `premises:` 用）：
+**前提**（供指令 premises / 口上 condition `premise(` 用）：
 - `TARGET_IS_FOLLOW` / `TARGET_NOT_FOLLOW`（查 selected 目标）
 - `IS_FOLLOW` / `NOT_FOLLOW`（查自己=发起者）
 - `IS_FOLLOW_4`（召唤判定，模式 4 专用——TODO 提醒位）

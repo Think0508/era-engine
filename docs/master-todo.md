@@ -445,8 +445,8 @@
       行为完成结算（on_complete_effects 数据驱动 + move 到达 npc:arrived）/ 窗口自动结算
       （erArk get_true_add_time：行为窗口∩玩家窗口；疲劳/饥饿/尿意/休息恢复/睡眠积累）/
       wait_flag pin（交互中不结算）/ 同地叙事 / 每日欲望结算（core newday-settle 归位）
-    - 【core 前置】game:time_advanced 事件（advanceTime 窗口末尾发）/ premiseRegistry.getWeightSum
-      （erArk search_target 求和语义，与口上 getWeight 区分）/ skip-registry（通用跳过谓词注册表：
+    - 【core 前置】game:time_advanced 事件（advanceTime 窗口末尾发）/ conditionEngine（getPremiseValue
+      + premiseWeight 求和语义，与口上 weightAllToOne 区分）/ skip-registry（通用跳过谓词注册表：
       npc-ai 注册 dead/offline/unconscious，combat-base 注册 in_combat）/ realtime-settle 导出
       settleTired/settleUrine/settleHunger + sleepPassSettle（睡眠逐段结算）/ sleepSettle 提取共享
     - 【重构归位】character-system 瘦身（AI 移动 + NPC spawns 移出，保留 API/生命周期/关系）；
@@ -555,7 +555,7 @@
     排查修复验收: typecheck ✅ / test 602 通过 ✅（51 文件）/ validate 4/4
     第二轮排查（2026-08-10，用户「再检查：bug/静默错误/链路错误/不合理」）✅：
     - 【修复·静默·重要】AI 前提注册在模块顶层副作用 + registerAiPremises 空壳——测试隔离/
-      模组重载的 premiseRegistry.clear() 之后前提永久丢失，前提目标（go_home_night 等）
+      模组重载的 conditionEngine.clear() 之后前提永久丢失，前提目标（go_home_night 等）
       静默失效（链路测试当场暴露：searchTarget 结果 wander 而非 go_home）→ 全部注册
       移入 registerAiPromises()（onLoad 调用）+ 回归测试（clear 后重载前提存在）
     - 【修复·链路】玩家不在场时 NPC 行为完成效果里的 narrative_output 泄漏到叙事日志
@@ -802,7 +802,7 @@ Code review 修复（2026-08-08 子代理 review）✅
 七次深度审查修复（2026-08-08，round-7：静默错误排查）✅
   - 【静默 bug】dialogue pickMatchingLine 不求值替换 {id} 占位符 → character.{id}.好感度
     解析为查找角色 '{id}'（恒不存在 → 条件恒 true）：好感度条件失效 + 无条件台词被随机遮蔽
-    → substituteId() 替换后求值（premises: 分支同样处理）
+    → substituteId() 替换后求值（premise( 分支同样处理）
   - executor finally 的 checkTalentGain 无防护 → 异常会逃逸 execute()（UI 点击崩）
     → try/catch + errorReporter
   - settle_hp_mp 的 .catch(()=>false) 吞真实错误 → 只忽略"插件未注册"（与 judge_check 一致）
@@ -989,10 +989,10 @@ chat 边界审查（2026-08-08，第 6 轮：边界/盲区/测试隔离）✅
   - GREEN 验证：下一指令 stroke 按此 skill 试运行（验证是否避免同类错误）
 
 口上系统完整复刻（2026-08-08，spec: docs/superpowers/specs/2026-08-08-talk-system-replication-design.md）✅
-  - T1 权重系统：premiseRegistry.getWeight（high_N→N + 满足前提数 + 淘汰 + 空集1）；口上 weight 字段
+  - T1 权重系统：conditionEngine.getWeight（high_N→N + 满足前提数 + 淘汰 + 空集1）；口上 weight 字段
     （固定权重优先）；triggerScene 同池竞争（scene+character 合并，专属×10，权重区间随机）；high_N 前提
     修复（原误用"参数等级≥N"）
-  - T2 CVP 静态转换补全：premiseRegistry **大小写不敏感**（重大修复——迁移数据小写前提 vs 注册大写
+  - T2 CVP 静态转换补全：conditionEngine **大小写不敏感**（重大修复——迁移数据小写前提 vs 注册大写
     导致 talk-common 条件静默失效）；getFallLevel 死键修复（数字键→按名查思慕→奴隶）；FALL_LEVEL
     全组合注册（cmp×-4..4）；NE 运算符补丁；47 个未注册前提补齐（12 可判 + 35 恒 false + TODO）；
     condition-registry 补 player.abilities.level/player.talents/body_semen 路径；尿道属性补定义；
@@ -1697,7 +1697,7 @@ L2.9 已统一 scene 管理、事件拦截、嵌套、持久化、ConversationRe
 
 **实现**：
 1. 将体质类（体型/胸围/腿型）定义为 `talents.toml` 插件默认，有 `modifier` 影响公式
-2. 状态标记类（处女/妊娠/育儿）不作为天赋，而是注册条件捷径到 `premiseRegistry`
+2. 状态标记类（处女/妊娠/育儿）不作为天赋，而是注册条件捷径到 `conditionEngine`
 3. 两者都注册一个"条件捷径"（shorthand），让 `CVP_A2_T|102_E_1` 等价于对应条件表达式
 4. 全部注册完毕后，talk-common 的 `pickEntry` 才能在非 strict 模式下正确匹配
 

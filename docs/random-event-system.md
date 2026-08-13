@@ -74,7 +74,7 @@ effects = [{ type = "modify_attribute", params = { attr = "hp", value = -5 } }]
 | `adv` | | 空=通用；非空=角色专属（角色 id） |
 | `side` | | `self`（匹配触发者）/ `target`（匹配交互对象）/ `any` / `both`（erArk sys_1/sys_0 分桶） |
 | `text` | | `"选项文本\|正文"`：子事件/父事件用 `\|` 分隔，触发时只显示正文；普通事件全文 |
-| `premises` | | 前提 ID 列表（premiseRegistry 权重通道：0 淘汰，返回值即权重） |
+| `premises` | | 前提 ID 列表（conditionEngine 权重通道：0 淘汰，返回值即权重） |
 | `condition` | | 现有条件表达式（布尔门） |
 | `trigger_guard` | | `seen_once`/`unseen_once`/`seen_today`/`unseen_today`（配合记录效果） |
 | `option_son` | | `true` = 子事件（父子匹配：子前提 ⊇ 父前提） |
@@ -93,7 +93,7 @@ effects = [{ type = "modify_attribute", params = { attr = "hp", value = -5 } }]
 
 ## 5. 前提与条件
 
-- **premises**：权重通道——复用 `premiseRegistry`（与口上/目标搜索同一体系），前提 handler 返回值即权重，任一返回 ≤0 整事件淘汰；无 premises 时权重 1
+- **premises**：权重通道——复用 `conditionEngine`（与口上/目标搜索同一体系），前提 handler 返回值即权重，任一返回 ≤0 整事件淘汰；无 premises 时权重 1
 - **condition**：布尔门——现有条件引擎（`player.X`/`character.{id}.X`/`selected.X` 等），`selected` = 触发者
 - 事件触发时 premise ctx 注入：`selectedCharacterId = sourceId = 触发者`，`targetCharacterId = interactant`
 

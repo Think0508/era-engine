@@ -64,7 +64,7 @@ description: Use when replicating an erArk instruction (TOML data + effects + pr
 实体重置用共享基座 `src/utils/test-helpers.ts` 的 `resetCharacterEntity`（**全字段**：base/abilities/talents/hypnosis/sp_flag/dead/body_items/h_state/experience/action_info）——漏 sp_flag 会让时停测试污染后续全部（chat 血泪）。
 
 ### 5.5 前提真实求值
-UI 求值路径 = `createCommandEvaluators`（command-eval.ts）→ premiseRegistry 真实 handler。测试直接调 premiseRegistry.evaluate 断言前提行为矩阵（含玩家/目标同字段对比）。
+UI 求值路径 = `createCommandEvaluators`（command-eval.ts）→ conditionEngine 真实 handler。测试直接调 conditionEngine.evaluate 断言前提行为矩阵（含玩家/目标同字段对比）。
 
 ### 5.6 时间语义
 advanceTime 先于 effects 执行；行动开始时刻 = execution_start 时的 gameContext.time（未推进）；衰减/计数读开始时刻。

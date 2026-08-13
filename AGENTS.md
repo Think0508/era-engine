@@ -417,6 +417,16 @@ condition = "(player.气血 < 30 || player.内力 < 20) && game.time.hour >= 18"
 condition = "location.tags.has_gather == true && character.令狐冲.status.醉意 == true"
 ```
 
+**命名前提（premise）**——命名条件单元，2026-08-13 起与表达式引擎合并为单一语法（`src/core/condition-engine.ts`）：
+- 表达式内联引用：`condition = "premise(NOT_H) && player.气血 < 30"`（前提名大小写不敏感）
+- `premises` 数组简写（指令/目标字段）：`premises = ["NOT_H", "HAVE_TARGET"]` = 多个 `premise(X)` 的 && 连接
+- 前提 handler 返回 `boolean | number`（number > 0 即通过；权重场景用返回值）
+- handler 上下文 = 完整 GameContext（`sourceId` = 触发者/被判定者，`selectedCharacterId` = 选中）
+- **注册**：插件代码 `conditionEngine.registerPremise(id, handler)`（或引擎 API `ctx.api.call('engine', 'premises.register', id, handler)`——mod 插件不依赖任何具体插件）；TOML 定义 `definitions/premises.toml` 的 `condition` 表达式编译为命名前提（同表注册，后注册覆盖 = mod override）
+- **校验（严格）**：`premise(X)` 引用未注册前提 → 加载期 error + 注销该指令（与未注册字段同强度）；运行时未知前提抛错（调用方容错）
+- **权重**：口上权重规则（`high_N` 前缀 → +N，其余满足 +1）由消费方调用 `weightAllToOne` 实现（core 提供机制函数，不认知具体前提名）；NPC AI/随机事件求和用 `premiseWeight` 规范化
+- 旧 `premises:` 字符串前缀语法已移除（2026-08-13 数据全量迁移），禁止使用
+
 **复杂判断 → JS 钩子**（禁止在 TOML 里写算术/函数/正则）：
 ```toml
 condition_script = "check_training_ready.js"

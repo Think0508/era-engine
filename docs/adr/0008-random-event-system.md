@@ -22,7 +22,7 @@ erArk 的随机事件 = 行为期事件：事件挂在行为 id 上，行为结�
 玩家：每次指令结算后（`game:execution_end`）。NPC：新行为开始时（`npc:behavior_started` 同点）——与 erArk 的 NPC 判定频率等价（blankly/move 决策周期）。
 
 ### D5 前提双通道
-`premises`（premiseRegistry 权重通道，0 淘汰，返回值即权重）+ `condition`（布尔门）——与 ai-targets.toml 一致。特殊守卫（`trigger_guard` 四种）内置系统处理，不走前提注册表。
+`premises`（conditionEngine 权重通道，0 淘汰，返回值即权重）+ `condition`（布尔门）——与 ai-targets.toml 一致。特殊守卫（`trigger_guard` 四种）内置系统处理，不走前提注册表。
 
 ### D6 玩家接入插件自治
 事件插件自己监听 `game:execution_end` 写玩家 `current_behavior` 并触发，core 零改动。

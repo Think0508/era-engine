@@ -116,7 +116,7 @@ gain = { condition = "player.talents.剑术精通 >= 5", replace = "剑术精通
 condition = "player.talents.剑骨 >= 3"
 
 # 口上 condition
-condition = "premises:HAVE_TALENT_剑骨"
+condition = "premise(HAVE_TALENT_剑骨)"
 
 # 口上 condition 直接引用（如果注册了路径）
 condition = "player.talents.剑骨 >= 1"

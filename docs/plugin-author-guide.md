@@ -337,7 +337,6 @@ ctx.api.call('quest', 'checkTriggerConditions')               // → string[]（
 #### h-core — H 核心
 
 ```typescript
-ctx.api.call('h-core', 'evaluatePremises', premises, evalCtx) // → boolean
 ctx.api.call('h-core', 'startHScene', ...)                     // → void
 ctx.api.call('h-core', 'endHScene', ...)                       // → void
 ctx.api.call('h-core', 'getLevel', charId, levelType)          // → number
@@ -346,7 +345,6 @@ ctx.api.call('h-core', 'calcTrust', charId)                    // → number
 ctx.api.call('h-core', 'calcJudge', judgeBase, favorability, trust, charId?, judgeClass?) // → JudgeResult
 ctx.api.call('h-core', 'getFavorabilityLevel', charId)         // → number
 ctx.api.call('h-core', 'getTrustLevel', charId)                // → number
-ctx.api.call('h-core', 'registerPremise', id, handler)         // → void
 // 通用状态结算（统一管线：能力系数/素质/fall/连续减值/tenths/max(0) 钳制等）
 ctx.api.call('h-core', 'settleState', charId, state, baseValue, timeCost, opts?)
 //   opts?: { abilityLevel?, abilityKeyOverride?, isGroupSex?, continuous?, negate?, tenthsAdd?, extraAdjust?,
@@ -355,6 +353,8 @@ ctx.api.call('h-core', 'settleState', charId, state, baseValue, timeCost, opts?)
 //   （erArk chara_feel_state_adjust:296-299，如 pain_to_h 心理快感 = sqrt(心理感度 × 发起者.技巧)）
 //   例：隐奸持续快感 —— settleState(npcId, '羞耻', 0, timeCost*5, { abilityLevel: 露出等级, extraAdjust: 3.1, tenthsAdd: false })
 ```
+
+前提注册/求值统一走 engine 命名空间（不依赖 h-core，见下文「条件与前提」）。
 
 #### h-ejaculation — 射精
 
@@ -499,20 +499,27 @@ ctx.api.call('talk-common', 'getVariables')                   // → string[]
 
 详见 `docs/talk-common-system.md`。
 
-## 前提注册 API
+## 条件与前提 API
 
-前提（Premise）是指令可见性的条件判定单元，由 `src/core/premise-registry.ts` 统一管理。
+条件表达式与前提由 `src/core/condition-engine.ts` 统一管理（2026-08-13 合并——前提 = 表达式的命名别名，`premise(X)` 内联语法）。注册与求值走 **engine 命名空间**（不依赖任何具体插件）：
 
 ```typescript
 // 在自己的 onEnable 中注册新前提
-ctx.api.call('h-core', 'registerPremise', 'MY_PREMISE_ID', (evalCtx) => {
-  return evalCtx.selectedCharacterId !== null
+ctx.api.call('engine', 'premises.register', 'MY_PREMISE_ID', (ctx) => {
+  return ctx.selectedCharacterId !== null
 })
+
+// 动态求值（一般不需要——TOML 条件/指令系统已内置）
+ctx.api.call('engine', 'premises.evaluate', premises, ctx)     // → boolean
+ctx.api.call('engine', 'premises.getRegisteredIds')            // → string[]
 ```
 
-前提 handler 签名：`(evalCtx: { selectedCharacterId, sourceId, ... }) => boolean | number`
-- 返回 `false` 或 `<= 0` 时前提不满足
+前提 handler 签名：`(ctx: GameContext) => boolean | number`
+- ctx = 完整 GameContext（`selectedCharacterId` = 选中/目标，`sourceId` = 触发者/被判定者，可读 `player`/`location`/`time`/`mode`）
+- 返回 `false` 或 `<= 0` 时前提不满足；返回数值在权重场景（NPC AI/随机事件）按值求和
 - 重复注册允许（后注册覆盖前注册，用于子系统覆盖基础前提）
+- 条件表达式内联引用：`condition = "premise(NOT_H) && player.气血 < 30"`；`premises` 数组 = 简写
+- 校验严格：未注册前提 → 加载期 error + 注销（详见 `docs/premises.md`）
 
 **Mod 自定义前提**：见 `docs/mod-author-guide.md`。
 

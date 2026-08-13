@@ -10,7 +10,7 @@
 
 ```
 候选池合并（场景通用 + 角色专属×10 + 角色通用）
-  → 条件筛选（condition / premises: 前提集）
+  → 条件筛选（condition / premise( 前提集）
   → 权重计算（前提权重 high_N 累加 + 满足前提数；静态 weight 字段优先；情境加权×5）
   → 权重区间随机选一
   → 混合率（weight<100 时按概率替换为行为地文）
@@ -20,7 +20,7 @@
 | 机制 | 字段/配置 | 说明 |
 |------|----------|------|
 | 权重 | `weight = N` | 静态权重（等价 erArk CVP_Weight 固定）；缺省 = 前提权重（无条件=1） |
-| 前提权重 | `condition = "premises:high_5"` | high_N 前提贡献权重 N；其余满足前提各 +1 |
+| 前提权重 | `condition = "premise(high_5"` | high_N 前提贡献权重 N；其余满足前提各 +1 |
 | 专属加权 | — | 角色专属口上（characters/dialogue/）权重 ×10 |
 | 情境加权 | hConfig `[[talk.situations]]` | 前提集命中 → ×multiplier（默认 9 类 ×5） |
 | 版本化 | `version = N` | 行版本；角色实体 `character_text_version` 选版（0=不启用） |

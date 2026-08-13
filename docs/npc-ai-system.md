@@ -38,7 +38,7 @@ src/plugins/npc-ai-system/
 
 **core 的配合**（通用机制，无玩法语义）：
 - `game:time_advanced {minutes}` 事件（`advanceTime` 窗口结束发出）——结算通道的驱动
-- `premiseRegistry.getWeightSum(premises, ctx, strict)` —— 前提权重求和（erArk search_target 语义，与口上用的 `getWeight` 不同）
+- `conditionEngine.getPremiseValue(id, ctx)` + `premiseWeight(v)` —— 前提权重取值（handler 返回值即权重，boolean 计 1；消费方求和——erArk search_target 语义，与口上用的 `weightAllToOne` 不同）
 - `skip-registry.ts` —— 通用跳过谓词注册表（npc-ai 注册 dead/offline/unconscious；combat-base 注册 in_combat）
 - `realtime-settle.ts` 导出 `settleTired/settleUrine/settleHunger/sleepPassSettle`（窗口结算原语）
 

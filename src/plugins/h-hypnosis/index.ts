@@ -1,5 +1,6 @@
 import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
+import { gameContext } from '../../core/game-context'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
@@ -38,7 +39,7 @@ function addHypnosisXp(charId: string, amount: number): void {
 const HYPNOSIS_TALENT_XP = [1, 10, 50, 200]  // 331, 332, 333, 334
 const HYPNOSIS_TALENT_IDS = [331, 332, 333, 334]
 function hasHypnosisTalent(talentId: number): boolean {
-  const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
+  const playerId = gameContext.getContext().player?.id ?? entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id ?? null
   if (!playerId) return false
   const xp = getHypnosisXp(playerId)
   const idx = HYPNOSIS_TALENT_IDS.indexOf(talentId)
@@ -247,7 +248,7 @@ function applyHypnosisSexExp(charId: string): void {
       // （erark-attr-ledger，11-睡眠与无意识H.md §5.2）
       if (!target.experience) target.experience = {}
       target.experience['127'] = (target.experience['127'] ?? 0) + 1
-      const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
+      const playerId = gameContext.getContext().player?.id ?? entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id ?? null
       if (playerId && playerId !== charId) {
         const player = entitySystem.get('character', playerId) as any
         if (player) {

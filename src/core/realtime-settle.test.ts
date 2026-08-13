@@ -7,6 +7,10 @@ import { entitySystem } from './entity-system'
 
 function registerChar(id: string, base: Record<string, number>, extra: any = {}): any {
   entitySystem.register('character', id, { id, base, action_info: {}, ...extra })
+  // 注释：玩家上下文（settleEjaDecay 按 gameContext 玩家 id 判定——2026-08-13 审计对齐）
+  if (id === 'player') {
+    gameContext.setPlayer('player')
+  }
   return entitySystem.get('character', id) as any
 }
 

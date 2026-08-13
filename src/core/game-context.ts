@@ -16,6 +16,16 @@ export function gameTimeToTotalMinutes(time: GameTimeData): number {
   return ((((time.year * MONTHS_PER_YEAR + (time.month - 1)) * DAYS_PER_MONTH + (time.day - 1)) * 24 + time.hour) * 60 + time.minute)
 }
 
+// 注释：玩家角色判定（2026-08-13 审计——玩家 id 由 meta.toml player_character 决定，
+// 原玩法代码大量硬编码 'player'/'0'，自定义玩家 id 的 mod 下玩家判定静默全错）。
+// 优先 gameContext 玩家 id；未设置时兼容兜底 'player'/'0'（erArk 默认 id）。
+export function isPlayerChar(charId: string | null | undefined): boolean {
+  if (!charId) return false
+  const pid = gameContext.getContext().player?.id
+  if (pid && charId === pid) return true
+  return charId === 'player' || charId === '0'
+}
+
 class GameContextManager {
   private player: EntityData | null = null
   private location: LocationData | null = null

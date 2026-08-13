@@ -7,7 +7,7 @@ import type { BodyItemSlot } from './types'
 import { effectTypeRegistry, type Effect } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
-import { gameContext } from '../../core/game-context'
+import { gameContext, isPlayerChar } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import type { CommandDef } from '../../core/command-registry'
 import { errorReporter } from '../../core/error-reporter'
@@ -244,7 +244,7 @@ export function onLoad(_ctx: PluginContext): void {
         mpMax: ch.base['气力上限'] ?? 99999,
         currentHp: ch.base['体力'] ?? 0,
         currentMp: ch.base['气力'] ?? 0,
-        isGroupSex, isPlayer: id === 'player' || id === '0',
+        isGroupSex, isPlayer: isPlayerChar(id),
         isDead: ch.dead ?? false, isTimeStop,
       }
       const result = calcHpMpChange(input)

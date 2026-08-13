@@ -9,7 +9,7 @@ import { narrativeLog } from '../../core/narrative-log'
 import { apiSystem } from '../../core/api'
 import { commandRegistry, type CommandDef } from '../../core/command-registry'
 import { eventBus } from '../../core/event-bus'
-import { gameContext } from '../../core/game-context'
+import { gameContext, isPlayerChar } from '../../core/game-context'
 import { errorReporter } from '../../core/error-reporter'
 
 // 注释：群交模板——5 个单目标槽位 + 1 个多目标侍奉槽
@@ -126,7 +126,7 @@ async function executeGroupSexTemplate(charId: string, useTemplateB: boolean): P
 function applyGroupSexCostReduction(charId: string, hpCost: number, mpCost: number): { hp: number; mp: number } {
   const ch = entitySystem.get('character', charId) as any
   if (!groupSexMode || !ch?.h_state?.is_h) return { hp: hpCost, mp: mpCost }
-  if (charId === 'player' || charId === '0') {
+  if (isPlayerChar(charId)) {
     return { hp: Math.ceil(hpCost / 3), mp: Math.ceil(mpCost / 3) }
   }
   return { hp: Math.ceil(hpCost / 2), mp: Math.ceil(mpCost / 2) }
@@ -189,7 +189,7 @@ export function onLoad(_ctx: PluginContext): void {
       c.base['体力上限'] = Math.min(99999, (c.base['体力上限'] ?? 0) + orgasmCount * 2)
       c.base['气力上限'] = Math.min(99999, (c.base['气力上限'] ?? 0) + orgasmCount * 3)
       c.base['欲望值'] = Math.max(0, (c.base['欲望值'] ?? 0) - orgasmCount * 20)
-      if (c.id === 'player' || c.id === '0') {
+      if (isPlayerChar(c.id)) {
         c.base['精液量上限'] = Math.min(999, (c.base['精液量上限'] ?? 0) + orgasmCount)
       }
     }

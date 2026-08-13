@@ -155,7 +155,10 @@ export function clampHpMp(entity: any): void {
 // 仅玩家、非 H、距上次射精 >30 分钟 → 射精欲 -10/分钟（下限 0）。
 // 30 分钟门控依赖 action_info.last_eaj_add_time（h-ejaculation 射精时写入）
 function settleEjaDecay(entity: any, minutes: number): void {
-  if (entity.id !== 'player' && entity.id !== '0') return
+  // 注释：仅玩家（2026-08-13 审计——原硬编码 'player'/'0'，meta.toml player_character
+  // 自定义 id 时射精欲永不衰减；改用 gameContext 玩家 id 判定）
+  const playerId = gameContext.getContext().player?.id
+  if (!playerId || entity.id !== playerId) return
   if (entity.h_state?.is_h) return
   const last = entity.action_info?.last_eaj_add_time
   if (typeof last !== 'number') return

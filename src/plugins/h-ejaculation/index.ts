@@ -14,7 +14,7 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
 import { narrativeLog } from '../../core/narrative-log'
-import { gameContext, gameTimeToTotalMinutes } from '../../core/game-context'
+import { gameContext, gameTimeToTotalMinutes, isPlayerChar } from '../../core/game-context'
 import { modLoader } from '../../core/mod-loader'
 import { BODY_PART_CID } from './body-parts'
 
@@ -150,7 +150,7 @@ export function onLoad(_ctx: PluginContext): void {
           targetChar.h_state.shoot_position_body = params.positionId ?? 6
         }
         // 注释：玩家射精 → 设置阴茎精液污浊（erArk ejaculation_panel.py:193）
-        if (id === 'player' || id === '0') setPenisSemenDirty(char, true)
+        if (isPlayerChar(id)) setPenisSemenDirty(char, true)
         narrativeLog.write(`${char.name} 射精了！(${semenResult.amount}ml)`, 'system', 'h-ejaculation')
         eventBus.emit('h:shoot', { character: id, target: targetId, amount: semenResult.amount, position: params.positionId, condom: false })
       }
@@ -199,7 +199,7 @@ export function onLoad(_ctx: PluginContext): void {
       const targetChar = entitySystem.get('character', targetId) as any
       trackSemen(targetChar ?? char, params.positionId ?? 6, result.amount)
       if (targetChar?.h_state) targetChar.h_state.shoot_position_body = params.positionId ?? 6
-      if (id === 'player' || id === '0') setPenisSemenDirty(char, true)
+      if (isPlayerChar(id)) setPenisSemenDirty(char, true)
       narrativeLog.write(`射精 ${result.amount}ml`, 'system', 'h-ejaculation')
       // 射精后状态更新（2026-08-09 审查修复：与 eja_climax 对齐——原缺精液扣减/
       // just_shoot/day_first_shoot_semen/last_eaj_add_time，未来 B3 指令用上时

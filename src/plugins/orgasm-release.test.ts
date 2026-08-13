@@ -236,14 +236,18 @@ describe('orgasm 释放与 roll_count 压缩（erArk orgasm_settle.py 对齐）'
     }
 
     it('寸止成功：判定一次（快照语义）→ 计数累计到被结算角色自己', () => {
-      // 玩家技巧 5（×3=15）远大于计数 → 必成功；被结算角色自己计数为空
+      // 玩家技巧 5（5×3=15 远超阈值）→ 寸止成功，计数累计到被结算角色自己而非清零
+      // 玩家 id='0'（erArk 默认）——gameContext 玩家需指向它（2026-08-13 审计：
+      // 玩家判定统一走 gameContext，测试环境双玩家（beforeAll 'player' + 用例 '0'）需显式对齐）
       entitySystem.register('character', '0', {
         id: '0', name: '玩家', base: {}, abilities: { 技巧: { level: 5 } },
       })
+      gameContext.setPlayer('0')
       const ch = registerOrgasmChar('es_1', edgeHState(), {})
       const spy = vi.spyOn(Math, 'random')
       spy.mockReturnValue(0.5)
       const result = settleOrgasm('es_1', { 4: 2, 5: 1 }, {}, {})
+      console.log('[dbg-orgasm]', JSON.stringify({ edge: ch.h_state.orgasm_edge, count: ch.h_state.orgasm_edge_count, result: result?.orgasms }))
       // 寸止成功 → 无高潮事件（continue），计数累计
       expect(result.orgasms).toHaveLength(0)
       expect(ch.h_state.orgasm_edge_count[4]).toBe(2)

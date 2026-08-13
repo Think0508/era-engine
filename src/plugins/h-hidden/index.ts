@@ -21,7 +21,7 @@ import type { PluginContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
-import { gameContext } from '../../core/game-context'
+import { gameContext, isPlayerChar } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
 import { commandRegistry } from '../../core/command-registry'
@@ -248,8 +248,8 @@ export function isCharacterHiddenFromNPC(charId: string): boolean {
   const mode = getMode(charId)
   if (mode === 0) return false
   if (mode === 4) return true
-  if ((charId === 'player' || charId === '0') && mode === 3) return true
-  if (charId !== 'player' && charId !== '0' && mode === 2) return true
+  if ((isPlayerChar(charId)) && mode === 3) return true
+  if (!isPlayerChar(charId) && mode === 2) return true
   return false
 }
 
@@ -297,7 +297,7 @@ export function onLoad(_ctx: PluginContext): void {
         ? entitySystem.getAll('character').filter((c: any) => c.current_location === locId)
         : []
       const consciousCount = allChars.filter((c: any) => !c?.sp_flag?.unconscious_h && !c?.sp_flag?.sleeping).length
-      if (consciousCount > 2 && !allChars.every((c: any) => c?.sp_flag?.unconscious_h || c?.sp_flag?.sleeping || c.id === 'player' || c.id === '0')) {
+      if (consciousCount > 2 && !allChars.every((c: any) => c?.sp_flag?.unconscious_h || c?.sp_flag?.sleeping || isPlayerChar(c.id))) {
         narrativeLog.write('场景条件不满足隐奸模式 ' + mode + '（需仅 2 人或所有人无意识）', 'system', 'h-hidden')
         return false
       }
@@ -336,7 +336,7 @@ export function onLoad(_ctx: PluginContext): void {
     if (mode === 1 || mode === 2) {
       for (const ch of entitySystem.getAll('character')) {
         const c = ch as any
-        if (c.id === 'player' || c.id === '0') {
+        if (isPlayerChar(c.id)) {
           if (c.h_state) c.h_state.is_h = false
         }
       }
@@ -455,7 +455,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     return getMode(id) === 0
   })
   reg('PL_NOT_HIDDEN_SEX_MODE_3_OR_4', (_ctx2: any) => {
-    const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
+    const playerId = entitySystem.getAll('character').find((c: any) => isPlayerChar(c.id))?.id
     if (!playerId) return true
     const m = getMode(playerId); return !(m === 3 || m === 4)
   })
@@ -477,7 +477,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   })
 
   reg('PLAYER_NOT_H_OR_HIDDEN_SEX_MODE', (_ctx2: any) => {
-    const playerId = entitySystem.getAll('character').find((c: any) => c.id === 'player' || c.id === '0')?.id
+    const playerId = entitySystem.getAll('character').find((c: any) => isPlayerChar(c.id))?.id
     if (!playerId) return true
     const ch = entitySystem.get('character', playerId) as any
     // 注释：不在 H 中 或者在隐奸中
@@ -514,7 +514,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
       if (c.current_location !== locId) continue
-      if (c.id === 'player' || c.id === '0') continue
+      if (isPlayerChar(c.id)) continue
       if (getMode(c.id) === 0 && !c?.sp_flag?.unconscious_h && !c?.sp_flag?.sleeping) return true
     }
     return false
@@ -581,7 +581,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
 
       // 注释：隐奸经验（B9 修复，audit-b I8——原字符串键 hidden_sex 无消费方；
       // erArk 数字 ID 35，settle_behavior.py:683-699 双方各 +1，能力升级表 experience 35 直读）
-      if ((c.id === 'player' || c.id === '0') && isSexTag && !isWait) {
+      if ((isPlayerChar(c.id)) && isSexTag && !isWait) {
         if (!c.experience) c.experience = {}
         c.experience['35'] = (c.experience['35'] ?? 0) + 1
         const targetId = c?.sp_flag?.target_character_id

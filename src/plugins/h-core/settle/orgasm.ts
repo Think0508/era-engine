@@ -1,4 +1,4 @@
-﻿// 注释：绝顶结算（二段结算核心）——对齐 erArk Script/Settle/orgasm_settle.py（2026-08-08 更新版）
+// 注释：绝顶结算（二段结算核心）——对齐 erArk Script/Settle/orgasm_settle.py（2026-08-08 更新版）
 // orgasm_judge + orgasm_settle_in_second_behavior + judge_orgasm_degree + judge_orgasm_edge_success
 // + release_orgasm_edge_now（退出 H / 寸止解放时把累计寸止转成真实高潮——原 erArk 在
 // second_behavior.py 内嵌，新版独立文件；行为差异见下）
@@ -26,7 +26,7 @@
 
 import { getEntityAttr, ATTR } from '../../../core/entity-utils'
 import { entitySystem } from '../../../core/entity-system'
-import { gameContext } from '../../../core/game-context'
+import { gameContext, isPlayerChar } from '../../../core/game-context'
 import { getContinuousAdjust } from '../../../core/command-executor'
 import { settleOneState, ORGASM_PART_ATTR, applyStateChange } from './state-settle'
 import { calcHpMpChange, type HpMpInput } from './hp-mp'
@@ -258,7 +258,7 @@ function settleOrgasmSideEffects(ch: any, charId: string, degree: number, opts: 
       currentHp: ch.base['体力'] ?? 0,
       currentMp: ch.base['气力'] ?? 0,
       isGroupSex,
-      isPlayer: charId === 'player' || charId === '0',
+      isPlayer: isPlayerChar(charId),
       isDead: ch.dead ?? false,
       isTimeStop: false,
     }
@@ -277,7 +277,7 @@ function settleOrgasmSideEffects(ch: any, charId: string, degree: number, opts: 
       currentHp: ch.base['体力'] ?? 0,
       currentMp: ch.base['气力'] ?? 0,
       isGroupSex,
-      isPlayer: charId === 'player' || charId === '0',
+      isPlayer: isPlayerChar(charId),
       isDead: ch.dead ?? false,
       isTimeStop: false,
     }
@@ -350,7 +350,7 @@ export function settleOrgasm(
   const inTimeStop = char.sp_flag?.unconscious_h === 3
   let edgeSuccessFlag = true
   if (hs.orgasm_edge === 1 && crossedPartCount > 0 && !inTimeStop) {
-    const player = entitySystem.get('character', '0') as any ?? entitySystem.get('character', 'player') as any
+    const player = entitySystem.get('character', gameContext.getContext().player?.id ?? (entitySystem.get('character', '0') ? '0' : 'player')) as any
     // 注释：技巧等级按名读 abilities（存 {level, xp} 对象）——2026-08-08 审查修复：
     // 原 getEntityAttr 返回对象（typeof !== number → 0），寸止判定技巧恒 0（静默偏差）
     const skillAb = player?.abilities?.['技巧']

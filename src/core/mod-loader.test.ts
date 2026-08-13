@@ -7,7 +7,6 @@ import { errorReporter } from './error-reporter'
 import { checkUpgrade } from '../plugins/ability-progression/index'
 
 const rawTomlMap = import.meta.glob('/mods/test-mod/**/*.toml', {
-  query: '?raw',
   import: 'default',
   eager: true,
 }) as Record<string, string>

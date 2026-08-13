@@ -9,19 +9,16 @@ import { errorReporter } from './error-reporter'
 
 // 注释：eager 同步 glob（与 loadMod 组装逻辑一致）
 const modMetaModules = import.meta.glob('/mods/*/meta.toml', {
-  query: '?raw',
   import: 'default',
   eager: true,
 }) as Record<string, string>
 
 const modTomlModules = import.meta.glob('/mods/**/*.toml', {
-  query: '?raw',
   import: 'default',
   eager: true,
 }) as Record<string, string>
 
 const pluginDefaultModules = import.meta.glob('/src/plugins/*/data/default/**/*.toml', {
-  query: '?raw',
   import: 'default',
   eager: true,
 }) as Record<string, string>

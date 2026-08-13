@@ -17,7 +17,7 @@ import { parseConversationRef, resolveConversation } from '../../core/mod-loader
 async function bootPlugins() {
   const pluginManager = new PluginManager(apiSystem, eventBus, new SlotRegistry(), commandRegistry)
   const pluginModules = import.meta.glob('/src/plugins/*/index.ts', { eager: true }) as Record<string, any>
-  const pluginTomls = import.meta.glob('/src/plugins/*/plugin.toml', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
+  const pluginTomls = import.meta.glob('/src/plugins/*/plugin.toml', {  import: 'default', eager: true }) as Record<string, string>
   const enginePlugins = new Map<string, { toml: string; module?: any }>()
   for (const [path, toml] of Object.entries(pluginTomls)) {
     const dirName = path.match(/\/src\/plugins\/([^/]+)\//)?.[1]

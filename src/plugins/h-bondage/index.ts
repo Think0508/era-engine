@@ -29,8 +29,8 @@ let bondageTypes: BondageType[] = []
 // 注释：加载 bondage types（插件默认 + mod 覆盖）
 // 2026-08-10：as:'raw' 已废弃（rolldown 把 TOML 当 JS 解析导致 build 失败）→ query '?raw' + import 'default'
 function loadBondageTypes(): void {
-  const pluginFiles = import.meta.glob('/src/plugins/*/data/default/bondage/types.toml', { query: '?raw', import: 'default', eager: true })
-  const modFiles = import.meta.glob('/mods/**/bondage/types.toml', { query: '?raw', import: 'default', eager: true })
+  const pluginFiles = import.meta.glob('/src/plugins/*/data/default/bondage/types.toml', {  import: 'default', eager: true })
+  const modFiles = import.meta.glob('/mods/**/bondage/types.toml', {  import: 'default', eager: true })
   // 注释：先加载插件默认（Layer 1），再加载 mod 数据（Layer 3，覆盖）
   const allFiles = { ...pluginFiles, ...modFiles }
   for (const content of Object.values(allFiles)) {

@@ -110,7 +110,7 @@ async function main(): Promise<void> {
 
   // 注释：动态扫描 src/plugins/ 下所有插件的 plugin.toml + index.ts
   const pluginModules = import.meta.glob('/src/plugins/*/index.ts', { eager: true }) as Record<string, any>
-  const pluginTomls = import.meta.glob('/src/plugins/*/plugin.toml', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
+  const pluginTomls = import.meta.glob('/src/plugins/*/plugin.toml', {  import: 'default', eager: true }) as Record<string, string>
 
   const enginePlugins = new Map<string, { toml: string; module?: any }>()
   for (const [path, toml] of Object.entries(pluginTomls)) {

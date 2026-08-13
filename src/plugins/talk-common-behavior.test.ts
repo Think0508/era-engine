@@ -180,5 +180,5 @@ describe('T3 行为地文（talk_common 组合 + 混合率）', () => {
 // 注释：common_s 数据（测试用——验证合并来源）
 const commonSRaw = import.meta.glob<string>(
   '/src/plugins/talk-common-system/data/default/talk-common/body_part/common_s.toml',
-  { query: '?raw', import: 'default', eager: true }
+  { import: 'default', eager: true }
 )

@@ -23,12 +23,12 @@ interface TomlVariable {
 // 改 eager:false 懒加载（mod-loader 的 pluginDefaultCache 已缓存 raw 字符串，此处不再重复驻留）
 const defaultModules = import.meta.glob<string>(
   '/src/plugins/talk-common-system/data/default/talk-common/**/*.toml',
-  { query: '?raw', import: 'default', eager: false }
+  { import: 'default', eager: false }
 )
 
 const modModules = import.meta.glob<string>(
   '/mods/*/definitions/talk-common/**/*.toml',
-  { query: '?raw', import: 'default', eager: false }
+  { import: 'default', eager: false }
 )
 
 export function onLoad(_ctx: PluginContext): void {

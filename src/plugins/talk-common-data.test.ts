@@ -22,7 +22,7 @@ import { registerSleepPremises } from './sleep-system/premise/sleep'
 // 注释：与 talk-common index.ts loadTomlDir 相同的数据收集逻辑（避免跨插件耦合）
 const defaultModules = import.meta.glob<string>(
   '/src/plugins/talk-common-system/data/default/talk-common/**/*.toml',
-  { query: '?raw', import: 'default', eager: true }
+  { import: 'default', eager: true }
 )
 
 interface TomlEntry { context?: string; conditions?: string; part?: string }

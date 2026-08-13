@@ -1934,19 +1934,16 @@ function validateAbilityUpgrades(mod: LoadedMod, _modName: string): void {
 }
 
 const tomlModules = import.meta.glob('/mods/**/*.toml', {
-  query: '?raw',
   import: 'default',
   eager: false,
 })
 
 const pluginDefaultModules = import.meta.glob('/src/plugins/*/data/default/**/*.toml', {
-  query: '?raw',
   import: 'default',
   eager: false,
 })
 
 const layoutModules = import.meta.glob('/mods/**/maps/layout/*.json', {
-  query: '?raw',
   import: 'default',
   eager: false,
 })
@@ -1967,7 +1964,7 @@ export class ModLoader {
     for (const [path, loader] of Object.entries(pluginDefaultModules)) {
       let raw = this.pluginDefaultCache.get(path)
       if (raw === undefined) {
-        raw = await loader()
+        raw = await loader() as string
         this.pluginDefaultCache.set(path, raw)
       }
       rawTomlMap[path] = raw
@@ -1976,13 +1973,13 @@ export class ModLoader {
     const prefix = `/mods/${modName}/`
     for (const [path, loader] of Object.entries(tomlModules)) {
       if (path.startsWith(prefix)) {
-        rawTomlMap[path] = await loader()
+        rawTomlMap[path] = await loader() as string
       }
     }
     // 注释：加载 layout JSON 文件
     for (const [path, loader] of Object.entries(layoutModules)) {
       if (path.startsWith(prefix)) {
-        rawTomlMap[path] = await loader()
+        rawTomlMap[path] = await loader() as string
       }
     }
     const mod = parseModData(modName, rawTomlMap)

@@ -91,10 +91,12 @@ function passesPremises(cmd: CommandDef, targetCharId: string): boolean {
 
 // 注释：条件表达式评估（与 command-executor 运行时同上下文——condition 不满足的指令
 // 选中后也不会执行，过滤链提前排除保证"选中必执行"一致性，防逆推经验空加）
-function passesCondition(cmd: CommandDef): boolean {
+// selected 注入被判定 NPC（2026-08-13 审计修复——原用全局上下文，selected.xxx 解析到
+// UI 选中而非 NPC，条件静默误判；target-search 同款修复对齐）
+function passesCondition(cmd: CommandDef, targetCharId: string): boolean {
   if (!cmd.condition) return true
   try {
-    return conditionEngine.evaluate(cmd.condition, gameContext.getContext())
+    return conditionEngine.evaluate(cmd.condition, { ...gameContext.getContext(), selectedCharacterId: targetCharId })
   } catch {
     return false
   }
@@ -117,7 +119,7 @@ export function filterInstructions(partTags: string[], targetCharId: string): Co
     if (targetChar && isVirginBlocked(cmd, targetChar)) continue
     if (!matchesPart(cmd, partTags)) continue
     if (!passesPremises(cmd, targetCharId)) continue
-    if (!passesCondition(cmd)) continue
+    if (!passesCondition(cmd, targetCharId)) continue
     result.push(cmd)
   }
   return result

@@ -95,11 +95,12 @@ function handleClick() {
 }
 
 // 选择选项（2026-08-13 审计修复——原实现 TODO 未通知对话系统，对话树卡死无法推进）
-function selectChoice(entry: LogEntry) {
+async function selectChoice(entry: LogEntry) {
   const index = focusMap.value[entry.id] ?? 0
   gameStore.markLogConsumed(entry.id)
-  // 注释：通知对话系统推进（UI → 事件总线 → dialogue-system 渲染下一节点）
-  void eventBus.emit('dialogue:select', { entryId: entry.id, index })
+  // 注释：通知对话系统推进并等待渲染完成（handler await renderNode）——
+  // 之后 advance() 才能看到新写入的对话行（否则新行在 cursor 之后不可见）
+  await eventBus.emit('dialogue:select', { entryId: entry.id, index })
   advance()
 }
 

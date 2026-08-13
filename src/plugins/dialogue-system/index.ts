@@ -51,8 +51,10 @@ export function onLoad(_ctx: PluginContext): void {
 // 注释：onEnable——注册 dialogue API + talk 指令 + 监听 location:enter
 export function onEnable(ctx: PluginContext): void {
   // 注释：对话选项选择推进（2026-08-13 审计修复——原 UI selectChoice 只有 TODO，
-  // 玩家选择后对话树卡死；UI 发 dialogue:select，这里渲染下一节点）
-  ctx.events.on('dialogue:select', (payload: any) => {
+  // 玩家选择后对话树卡死；UI 发 dialogue:select，这里渲染下一节点。
+  // handler 必须 await renderNode（事件总线串行 await）——UI 侧等待 emit 完成后再推进
+  // 显示，否则新行未写入时 UI 已推进 → 对话行不可见）
+  ctx.events.on('dialogue:select', async (payload: any) => {
     const entryId = payload?.entryId as string | undefined
     const index = Number(payload?.index ?? 0)
     if (!entryId) return
@@ -61,7 +63,7 @@ export function onEnable(ctx: PluginContext): void {
     const choices = entry?.payload?.choices as { text: string; next?: string }[] | undefined
     const choice = choices?.[index]
     if (!choice?.next) return
-    void renderNode(choice.next)
+    await renderNode(choice.next)
   })
 
   // 注释：注册 dialogue API
@@ -454,8 +456,8 @@ async function renderNode(nodeId: string, speakerOverride?: string): Promise<voi
       conversationRuntime: currentConversation,
     })
   } else if (node.next) {
-    // 注释：单选项自动跳转
-    renderNode(node.next)
+    // 注释：单选项自动跳转（await——链式渲染完成后再返回，保证行写入时序）
+    await renderNode(node.next)
   } else {
     // 注释：终端节点——对话结束
     endConversation()

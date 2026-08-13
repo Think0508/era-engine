@@ -90,7 +90,9 @@ export async function executeInstructionForNpc(cmdId: string, targetId: string):
       { try { return conditionEngine.evaluatePremises(premises, { ...gameContext.getContext(), selectedCharacterId: targetId }) } catch { return false } },
     evaluateCondition: (expr: string) => {
       try {
-        return conditionEngine.evaluate(expr, gameContext.getContext())
+        // 注释：selected 注入目标 NPC（2026-08-13 审计修复——原全局上下文，
+        // selected.xxx 解析到 UI 选中而非行为对象，条件静默误判）
+        return conditionEngine.evaluate(expr, { ...gameContext.getContext(), selectedCharacterId: targetId })
       } catch {
         return false
       }

@@ -21,7 +21,8 @@ function convertCondition(cond) {
     strPlaceholders.push(m)
     return `\u0002S${idx}\u0002`
   })
-  if (!noStrings.includes('&')) return cond
+  // 单段前提（无 &）也要转换：premises:X → premise(X)
+  if (!noStrings.includes('&') && !noStrings.includes('premises:')) return cond
   // 1. 保护 &&（占位符避免被单 & 切分误切）
   const andPlaceholders = []
   const protectedStr = noStrings.replace(/&&/g, () => {

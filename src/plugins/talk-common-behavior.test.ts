@@ -169,6 +169,11 @@ describe('T3 行为地文（talk_common 组合 + 混合率）', () => {
     const w = await apiSystem.call('talk-common', 'getBehaviorText', 'w_orgasm_normal', 'npc_1', 'player')
     expect(w).toBeTruthy()
     expect(String(w).split(String.fromCharCode(10)).length).toBeGreaterThanOrEqual(3)
+    // 2026-08-14 增量导入：子宫超强高潮（v0.66）三段组合——条件集与既有档位一致
+    const wSuper = await apiSystem.call('talk-common', 'getBehaviorText', 'w_orgasm_super', 'npc_1', 'player')
+    expect(wSuper).toBeTruthy()
+    expect(String(wSuper).split(String.fromCharCode(10)).length).toBeGreaterThanOrEqual(3)
+    expect(String(wSuper)).toMatch(/\{womb\}/)
     // 阴蒂部位整条 + 短词（body/body_part 新增）
     const clit = await apiSystem.call('talk-common', 'getText', 'clitoris', 'npc_1', 'player')
     expect(clit).toBeTruthy()

@@ -1034,9 +1034,19 @@ chat 边界审查（2026-08-08，第 6 轮：边界/盲区/测试隔离）✅
   - 【TODO·B3】口球屏蔽：triggerScene 目标口球时屏蔽口上（除口球相关行为）——
     erArk get_weight_from_premise_dict:239-244（self_now_gag/target_now_gag 且行为不在 GAG 集）
     → 依赖 B3 口球系统（body_item slot 14 = gag 已有）落地时补
-  - 【TODO·提醒导入】erArk 新增地文模块（子宫高潮等）：用户从 erArk 更新 talk_common 后，
-    按 docs/talk-common-system.md「导入 erArk 新增地文模块」流程导入（重跑转换脚本 →
-    校验测试全量验证 → 未注册前提按 T2 模式补齐 → 重启 dev）。新模块不涉及去重（纯新增）
+  - 【已办·2026-08-14】erArk 新增地文模块（子宫高潮）：w_orgasm_super×A/B2/C2 已按流程导入
+    （见下方 2026-08-14 增量导入记录）；eat 模块用户已砍不导入
+
+erArk 新地文增量导入（2026-08-14，v0.66 子宫超强高潮）✅
+  - 新增：w_orgasm_super（子宫超强高潮）×A/B2/C2（各 300 条，纯新增模块）
+  - 流程：convert-erark-talk-common.cjs --incremental（仅生成 3 个新文件）→
+    migrate-premises-prefix.cjs --write（130+120 行/文件：premises: → premise() 新语法）
+  - 【脚本修复】migrate-premises-prefix.cjs 早退条件补单段前提分支（原 `无 &` 即 return，
+    单段 `premises:X` 不转换——本次 120 行/文件因此漏转，已修：含 premises: 也进入转换）
+  - 前提集与现有 orgasm 模块一致（73 个唯一前提，无新增未注册）→ 未改任何前提注册
+  - 校验：talk-common-data.test.ts 4 项 + talk-common-behavior.test.ts 全绿（11 通过）
+  - 现有文件零改动（git status 仅 3 个新增 TOML）
+  验收: npm run typecheck ✅ / talk-common 校验测试 11 通过 ✅
 
 erArk 新地文增量导入（2026-08-08，62 个新模块文件）✅
   - 新增：a/b/c/m_orgasm（肛/胸/阴蒂/口绝顶 4 档）×A/B2/C2 + w_orgasm（子宫 3 档）+

@@ -271,6 +271,8 @@ export function registerInstructPremises(registry: any): void {
     if (!ch) return false
     return (ch?.h_state?.enema_capacity ?? 0) < 5
   })
+  // ⚠️ 半成品（2026-08-13 审计标注）：DEBUG_MODE_ON/OFF——调试模式开关
+  // （erArk handle_premise_sp_flag.py debug_mode 相关）——调试模式未实装，恒 false/true 占位
   registry.registerPremise('DEBUG_MODE_ON', () => false)
   registry.registerPremise('DEBUG_MODE_OFF', () => true)
 

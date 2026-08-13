@@ -32,6 +32,9 @@ export function registerHPremises(registry: any): void {
     return true
   })
 
+  // ⚠️ 半成品（2026-08-13 审计）：T_NORMAL——目标正常状态（erArk handle_premise/__init__.py:439-455）
+  // 目标状态检查未实现（睡眠/无意识/时停/监禁等由各系统前提分别处理），恒 true 占位；
+  // 各状态系统实装后按 erArk 语义补全（目标非睡眠/无意识/时停/监禁 且 状态正常）
   registry.registerPremise('T_NORMAL', (_ctx: any) => {
     return true
   })

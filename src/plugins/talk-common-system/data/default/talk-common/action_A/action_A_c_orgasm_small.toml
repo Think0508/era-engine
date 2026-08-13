@@ -6,23 +6,23 @@ variable = "action_A_c_orgasm_small"
 description = "动作·action A c orgasm small——体位条件描述文本"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "懵懂无知的{target.name}小小的身子蓦地一颤，{clitoris}猛地充血挺立，从稚嫩的包皮下微微探出，根部一下一下地轻轻抽动。\n一股尖锐如细小电流的酥麻从那一点炸开，直窜进幼嫩的小腹，逼得她整个人无法抑制地轻颤起来。\n这不过是快感的小峰值，远够不上真正的绝顶，意识仍清醒，她却完全不懂自己的身体为何会这样。\n幼嫩的大腿反射性地夹紧，娇嫩的缝隙里悄悄沁出少量爱液，红扑扑的小脸满是茫然与慌乱。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "对性事一无所知的{target.name}稚嫩的身躯忽然轻轻绷紧，那一小粒{clitoris}胀大挺起，从包皮里探出头颤颤地跳动。\n如同微弱电流般的尖锐快感集中在那一点，猛地向幼小的下腹放射开来，酥麻得她细细发抖。\n这只是浅浅的小高潮，还没到真正绝顶的地步，她的神志依旧清明，却对这突如其来的反应满心困惑。\n细嫩的腰肢不自觉地轻扭，稚气未脱的脸上泛起潮红，腿间只悄悄渗出一点点爱液。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "年幼无知的{target.name}整个人猝然一僵，{clitoris}充血鼓胀，那一点尖锐的酥麻像细针般骤然炸开。\n锐利而集中的快感如电流般直直窜上幼嫩的小腹，令她稚嫩的身体控制不住地微微战栗。\n这轻浅的峰值远算不上真正的绝顶，她意识清醒，却根本不明白那么小的一点为何能叫全身发麻。\n下腹紧缩着，稚嫩的大腿夹得死紧，圆溜溜的眼睛里满是懵懂的惊慌，缝隙里少量爱液悄然渗出。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "什么都不懂的{target.name}娇小的身体骤然一颤，{clitoris}从包皮下挺出，根部无法自控地一抽一抽。\n那股集中于一点的尖锐酥痒如同细小电流窜过，直往幼嫩的腰腹里钻，逼得她轻轻颤栗不止。\n这只是快感的小小峰值，尚不及真正的绝顶，她神志尚清，却被这陌生的酥麻弄得手足无措。\n幼嫩的脚趾蜷起，大腿反射性地并拢，稚嫩的脸颊染上红晕，只有一缕爱液悄悄滑落。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "未谙性事的{target.name}小小的躯体倏地绷紧，{clitoris}胀红挺立，那一点尖锐的快感骤然迸开。\n如电流般锐利的酥麻从{clitoris}向幼嫩的下腹放射，令她整个人不由自主地细细发颤。\n这不过是轻度的高潮小峰值，远未到真正绝顶，意识依旧清醒，她却完全弄不懂身体的反应。\n稚嫩的腰肢微微弓起，娇嫩的大腿夹紧颤抖，红扑扑的小脸上写满茫然，缝隙渗出少许爱液。"
 
 [[entries]]
@@ -406,23 +406,23 @@ conditions = "selected.abilities.阴蒂感度.level <= 3"
 context = "{clitoris}猛然绷紧挺立，{target.name}的身子随之细细一颤，那股尖锐的酥麻如针尖般集中在一点上迸开。\n刚被开发不久的她对这种锐利刺激还相当陌生，忍不住轻轻咬唇，双腿夹拢，脚尖微微绷起。\n这仅仅是轻浅的快感峰值，离真正的绝顶尚远，她神志清醒，却拦不住身体的反应，{clitoris}的根部轻轻抽跳，阴部悄然渗出少量爱液。"
 
 [[entries]]
-conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "一阵尖锐的酥麻自{target.name}那一小点上骤然迸开，早被开发得颇为敏感的{clitoris}飞快充血挺立，从包皮下探出头来，根部一下一下地轻轻抽动。\n这如细弱电流般的快感只是小小的峰值，还远够不上真正的绝顶，却已让熟悉这种触碰的她无法抑制地轻颤。\n下腹微微收紧，纤细的大腿反射性地夹拢，少量爱液悄悄渗出，脸上浮起沉醉的神情。"
 
 [[entries]]
-conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "{target.name}的身子猛地一激灵，集中在一点的锐利刺激顺着{clitoris}窜上腰际，敏感的那一小粒早已挺立胀硬，微微探出。\n她显然熟稔这种被玩弄的滋味，主动地扭着腰去迎，那点电流似的酥麻虽轻，却让她整个人都止不住地颤栗。\n意识仍旧清醒，可下腹的紧缩与大腿的夹紧却全然不受她控制，几滴爱液顺着缝隙悄然溢落。"
 
 [[entries]]
-conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "快感在{target.name}的{clitoris}上尖锐地炸开，那一小点充血肿胀，敏感得几乎一碰就颤，根部轻轻地抽搐着。\n这种集中于一处、如电流般锐利的酥麻不同于阴道深处的钝重，来得又快又急，只是浅浅的小峰值，却已叫开发有素的她无法压抑地轻轻痉挛。\n腰肢微弓，脚趾蜷起，少量爱液自私处缓缓渗出，神情迷乱又甜腻。"
 
 [[entries]]
-conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "那一小粒{clitoris}被撩拨得迅速挺翘充血，敏感的它一阵阵地传来尖细的酥麻，令{target.name}的娇躯轻轻一颤。\n她早已习惯并期待这种集中在一点上的刺激，甚至主动地送上腰去承接，虽只是够不上真正绝顶的轻度高潮，身体却已诚实地做出反应。\n小腹一缩一缩，大腿夹得死紧，脸颊泛红，眼神里尽是沉溺快感的迷醉。"
 
 [[entries]]
-conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "电流似的锐利快感自{clitoris}这一小点直窜而上，早被开发得相当敏感的它充血挺立、微微探出包皮，根部不住地轻颤抽动。\n{target.name}显然享受这份熟悉的酥麻，腰肢主动地扭动迎合，那小小的峰值虽轻却让她无从抑制。\n下腹紧缩，双腿并拢夹紧，少量爱液悄悄溢出，微张的唇间溢出细碎的颤息，尽显沉醉。"
 
 [[entries]]
@@ -466,43 +466,43 @@ conditions = "selected.阴蒂 < 1000"
 context = "一点尖锐集中的快感在{clitoris}上蓦地爆开，{target.name}那具青涩的身子霎时轻轻战栗，酥麻如细流般顺着下腹一路窜开。\n{clitoris}充血着从包皮下微微露出，根部轻轻搏动抽缩，少女的小腹一阵紧缩，脚趾蜷起，大腿根部无意识地夹紧。\n这轻浅的绝顶只是快感的一个小小峰值，还远不到真正高潮的地步，她意识清醒却压不住身体的颤抖，少量爱液悄然渗出。"
 
 [[entries]]
-conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "一股尖锐的酥麻从{clitoris}那一小点猛地炸开，{target.name}的身子随之轻轻一颤，如同细弱电流般的快感直窜下腹。\n{clitoris}充血挺立，从包皮下微微探出，根部一下一下地轻轻抽动着。\n这只是快感的小峰值，还够不上真正的绝顶，她意识依旧清醒，下腹却紧缩起来，大腿反射性地夹紧，少量爱液悄悄从阴部渗出。"
 
 [[entries]]
-conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "{clitoris}忽然传来一阵集中于一点的锐利刺激，{target.name}娇躯猛地绷紧，那点酥麻像微弱的电流般顺着腰际放射开来。\n{clitoris}胀大挺立，根部轻轻抽搐，下腹不由自主地紧缩了几下。\n这不过是轻度的绝顶，强度有限却让她无法抑制地颤栗，腰肢微弓，脚趾蜷起，一丝爱液从阴部缓缓沁出。"
 
 [[entries]]
-conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "细密的快感自{clitoris}尖端一点点绽放，如针尖般集中的酥爽让{target.name}整个人轻轻一激灵。\n{clitoris}挺翘充血，从包皮下探出头来，随着这轻浅的高潮微微跳动。\n她神志尚且清明，可身体却诚实得很，下腹一阵阵收紧，大腿根不自觉地并拢，少量爱液悄然渗出，将这次尖锐而短促的小绝顶无声道出。"
 
 [[entries]]
-conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "那一小点{clitoris}上骤然炸开尖锐的电流感，{target.name}的腰肢猛地一软，酥麻如细流般直往下腹里钻。\n{clitoris}充血勃起，根部轻轻颤抖着抽动，下腹随之一缩一缩。\n这轻浅的快感峰值远不及真正的绝顶那般剧烈，她意识还清醒，却止不住地夹紧双腿，微微弓起腰身，阴部沁出的少量爱液带着湿润的痕迹。"
 
 [[entries]]
-conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "快感如微弱电流般从{clitoris}那一点尖锐地迸发，{target.name}的身子情不自禁地轻颤起来，那股锐利的酥爽集中而鲜明。\n{clitoris}挺立充血，从包皮下微微露出，根部一颤一颤地轻抽。\n这只是快感的小峰值，尚未抵达真正绝顶，她的神志依旧清晰，下腹却不受控地紧缩，大腿夹拢，脚尖绷起，少量爱液自阴部缓缓溢出。"
 
 [[entries]]
-conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "一阵尖锐而集中的快感忽地攀上小小的顶点，{target.name}的身子轻轻一颤。\n{clitoris}充血挺立，从包皮下微微探了出来，根部一下一下地轻轻抽动着，仿佛有细弱的电流从那一点炸开，直窜下腹。\n这不过是快感的小峰值，还远没到真正绝顶的地步，她的意识依旧清醒，身体却已无法抑制地做出反应，下腹紧紧一缩，大腿反射性地夹拢，脸颊漾起薄红，少量爱液悄悄从缝隙里渗出。"
 
 [[entries]]
-conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "尖利的酥麻在那一点骤然聚拢到极致，{target.name}忍不住轻轻仰了仰头。\n{clitoris}胀得发硬，微微从包皮里挺出，根部随着那阵细密的电流感一颤一颤地跳着，与阴道那种深沉钝重的快感截然不同，锐利得叫她整个下腹都酸软起来。\n这只是轻度的小高潮，强度有限，她还能勉强撑住神志，只是腰肢不受控地一扭，脚趾微微蜷起，一丝爱液顺着腿根悄悄滑落。"
 
 [[entries]]
-conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "快感在{clitoris}那一小点上尖锐地攀升，随即轻轻越过了一个峰值。\n{target.name}整个人绷了一下，那如微弱电流般的刺激从充血挺立的{clitoris}放射开来，麻酥酥地窜过小腹和腰际。\n这远算不上真正的绝顶，只是一次浅浅的甜美峰值，她意识依旧清明，却怎么也压不住身体的反应，下腹一阵阵收紧，双腿悄悄并拢，微微渗出的爱液润湿了缝隙。"
 
 [[entries]]
-conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "集中在一点的锐利刺激蓦地攀上小小的高点，{target.name}轻轻一哆嗦。\n{clitoris}从包皮下探出，充血得亮红挺立，根部细细地抽搐着，那股尖利的酥麻像细弱电流一样直直窜向腰腹，逼得她下腹紧缩。\n这只是快感的小峰值，还够不上真正绝顶的烈度，神志尚且清醒，身体却诚实地颤动起来，大腿反射性夹紧，唇边溢出一声细弱的鼻音，少量爱液悄然渗出。"
 
 [[entries]]
-conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "那一点尖锐的快感终于攀到了小小的顶端，{target.name}的身子轻轻一僵。\n{clitoris}挺立充血，从包皮里微微顶出，根部一颤一颤地轻轻抽动，如同细小的电流不断从那点向四周扩散，酸麻直透下腹。\n这不过是浅浅的绝顶小峰值，远没有真正高潮那般剧烈，她的意识还算清醒，只是腰肢微微弓起，脚趾蜷缩，脸颊烧得通红，缝隙间悄悄沁出一缕爱液。"
 
 [[entries]]

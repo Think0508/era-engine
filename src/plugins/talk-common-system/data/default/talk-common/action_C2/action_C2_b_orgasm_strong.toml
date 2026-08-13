@@ -6,23 +6,23 @@ variable = "action_C2_b_orgasm_strong"
 description = "动作·action C2 b orgasm strong——体位条件描述文本"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "一股远超以往的酥麻电流骤然从{breast}深处直贯脑髓，懵懂无知的{target.name}被这突如其来的猛烈快感冲得意识几乎溃散，完全不明白自己的身体为何会颤抖得如此剧烈。\n那股灼热酸胀从乳尖席卷至四肢百骸，令她眼前阵阵发白，心跳狂乱地砸着，脑海里一片空白，只剩下懵懂的惊惶与说不清的迷乱。\n她根本弄不懂这种快感究竟是什么，只觉得自己竟被{breast}的敏感折磨得几乎崩溃，羞耻与茫然交织在一起，令她久久无法回神。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "猛烈得近乎陌生的酥麻感骤然从{breast}尖端炸开，一路窜上脑髓，什么都不懂的{target.name}被这股远超以往的快感冲得意识几乎冲垮，完全搞不明白自己怎么会失控成这样。\n滚烫酸胀的感觉从胸口深处涌向全身，令她脑子里嗡嗡作响，心跳乱撞，思绪一片混沌，只剩下懵懂的慌张与羞涩。\n她隐隐察觉{breast}似乎变得比从前敏感了许多，却完全想不通这是为什么，只能在这股陌生而汹涌的震颤里茫然失神。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "一波比以往任何一次都更猛烈的酥麻从{breast}深处骤然涌起直冲头顶，涉世未深的{target.name}被这股突如其来的强烈快感冲得几乎失神，根本不明白身体究竟发生了什么。\n那股灼烫的酸胀感从乳肉深处席卷全身，令她脑海一片空白，呼吸都跟着乱了节奏，心里满是懵懂的惶恐与说不清的迷茫。\n她只觉得{breast}此刻敏感得可怕，却完全弄不懂这是为什么，只能在羞耻与茫然交织的震颤里久久回不过神。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "远比先前剧烈的酥麻猛地从{breast}尖端窜起直抵脑髓，懵懂青涩的{target.name}被这股陌生而猛烈的快感冲得意识几乎散乱，完全想不明白自己的身体为何抖得停不下来。\n灼热酸胀的感觉一波接一波地从胸口深处涌向四肢，令她脑袋里乱糟糟一片，心跳狂乱地跳着，只剩下不知所措的慌乱与羞涩萦绕心头。\n她隐约觉得{breast}好像变得格外敏感，却完全不懂缘由，只能在这陌生又猛烈的震颤里茫然失措地喘息着。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "一股前所未有的强烈酥麻骤然自{breast}深处直冲脑门，什么都不懂的{target.name}被这猛烈的快感冲得几乎失神，完全不明白自己的身体究竟怎么了。\n滚烫酸胀的浪潮从胸口深处席卷全身，令她思绪彻底乱成一团，心跳狂跳不止，脑海里只剩懵懂的惊慌与说不出口的羞涩。\n她隐隐感觉到{breast}似乎比从前敏感了许多，却怎么也想不通原因，只能在这份陌生而炽烈的震颤中久久无法平静。"
 
 [[entries]]
@@ -226,23 +226,23 @@ conditions = "premise(FALL_LEVEL_E_-4)"
 context = "酥麻的电流从{breast}乳尖一路窜进脑髓，{target.name}被这敏感度跃升后迎来的强绝顶冲得神魂俱颤，快感之烈远非过往任何一次可比，几乎将她的意识冲成空白。\n乳肉深处灼热酸胀，以{breast}为源的快意洪流席卷周身令她近乎窒息。\n她羞赧于自己胸部竟能敏感到这个地步，可身为主人的奴隶，那份羞赧顷刻化作沉醉的欢愉，只觉能把如此癫狂的绝顶献给主人、彻底臣服于主人脚下，便是她此生无上的幸福。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "一股远比以往任何一次都更加猛烈的电流骤然从{breast}深处炸开，未成年却对情事满怀好奇的{target.name}整个人几乎被这股快感冲得失神。\n那种酥麻自乳尖直贯脑髓，令她的意识几乎被彻底冲垮，脑海里只剩下一片白茫茫的空白与灵魂震颤般的战栗。\n她隐约明白自己的身体正被开发得越来越敏感，这份认知混杂着羞耻与难以言喻的迷醉，令她既想抗拒又忍不住沉溺其中，整颗心都被这股汹涌的快意搅得七零八落，颤抖着承受这份前所未有的强烈绝顶。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}虽未成年，却因骨子里那份对情事的好奇而对这具身体的反应格外敏感，此刻{breast}深处涌起的快感洪流远超以往任何一次绝顶，几乎将她的思绪撕成碎片。\n酥麻从乳尖一路窜向头顶，令她眼前阵阵发白，意识摇摇欲坠，几乎抓不住任何清晰的念头。\n她又惊又乱地感受着自己竟能被开发到如此敏感的地步，那份羞耻与快意交织在一起，化作灵魂深处止不住的震颤，令她沉浸在这股前所未有的强烈绝顶里无法自拔。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "那股远胜以往的酥麻猛地从{breast}深处席卷而来，令早早懂得性知识却依旧未成年的{target.name}猝不及防地被吞没。\n快感如潮水般直冲脑髓，她的意识在那一瞬几乎被冲得七零八落，只剩下断续的战栗与说不清的迷乱。\n对自己这具身体能被撩拨到如此敏感的地步，她又惊又羞，心底却又悄悄涌起难以言喻的沉沦快意，这股灵魂震颤般的强烈绝顶让她浑身颤抖不止，久久回不过神来。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{breast}深处骤然迸发出一股远比以往猛烈得多的酥麻电流，好奇心旺盛却仍未成年的{target.name}被这股突如其来的强绝顶冲得几乎失神。\n那份快感自乳尖直窜脑海，将她原本还算清醒的意识搅得支离破碎，脑子里只剩下一片眩晕与说不清的战栗。\n她又羞又乱地意识到自己的身体正一点点被开发得愈发敏感，这份认知混杂着好奇与难以掩饰的迷醉，令她的心神彻底沦陷在这股前所未有的强烈快感之中，久久无法平复。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "未成年却对性事怀着旺盛好奇心的{target.name}，忽然被一股远超以往强度的酥麻狠狠击中，那股快感自{breast}深处直冲而上，几乎将她的意识彻底冲垮。\n电流般的酥麻自乳尖蔓延至四肢百骸，令她眼前一阵阵发晕，脑海里只剩下断断续续的战栗与茫然。\n她隐隐察觉自己的身体正被撩拨得越来越敏感，那份羞耻与沉溺交织成灵魂深处难以言喻的震颤，令她在这股空前强烈的绝顶中忍不住颤抖着沉沦下去。"
 
 [[entries]]
@@ -266,23 +266,23 @@ conditions = "selected.abilities.胸部感度.level <= 3"
 context = "一股空前猛烈的绝顶感由{breast}深处倏地炸裂，{target.name}的意识被这陌生的快感浪头冲击得摇摇欲坠。\n乳首上那道酥麻的电流狠狠贯入脑中，乳肉深处的灼热酸胀层层叠叠地涌来，快感强得几乎令她失去呼吸。\n她惊愕又羞赧地察觉，自己这处才刚被开发的胸脯竟已如此敏感，能被逼出这般强横的高潮，心底翻涌起迷乱的沉醉。\n这道以{breast}为源头的快意洪流令她近乎崩溃，她颤栗着失神，整个灵魂都在这前所未有的绝顶里剧烈震荡。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "一股从乳尖直贯脑髓的酥麻电流猛地炸开，{target.name}的意识几乎在刹那间被这股快感彻底冲垮，整个人失神地颤栗着。\n这一次的绝顶远比以往的任何一次都要强烈，仿佛{breast}深处涌出的灼热酸胀化作一道洪流席卷全身，令她几乎窒息。\n她迷乱地承受着这份前所未有的极致快意，心底翻涌起难以言喻的震颤，既羞耻于自己的{breast}竟被开发到如此敏感的地步，又无可救药地沉溺在这股猛烈的快感里，近乎崩溃地失了神。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "快感如决堤般自{breast}深处奔涌而出，{target.name}只觉一阵滚烫的酸胀自乳心炸开，酥麻的电流瞬间窜遍全身，脑海霎时一片空白。\n这远远盖过寻常绝顶的强烈快意几乎将她的神智整个卷走，她在这从未体会过的极致中失神颤栗，意识摇摇欲坠。\n她又羞又乱地意识到，自己的{breast}早已敏感到这般不堪的地步，光是这里的快感就足以将她推上如此高的巅峰，那份迷醉与近乎溃散的快感令她的心颤抖不已。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "乳尖那一点酥麻骤然放大成铺天盖地的快感洪流，{target.name}的意识几乎被这股猛烈的绝顶冲得七零八落，只剩失神的战栗。\n{breast}深处翻腾着灼热的酸胀，一波强过一波地拍打着她本就脆弱的神经，那份强烈远非从前的绝顶所能相比，令她几近窒息。\n她迷乱而羞耻地感受着这具身体的诚实，惊觉自己的{breast}竟被撩拨得如此敏感，那种灵魂被震得发颤的极致快意让她沉沦得无法自拔，脑中一片混沌。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "一道灼热的快感自{breast}深处轰然升腾，酥麻直冲头顶，{target.name}只觉眼前一阵发白，意识被这猛烈的绝顶冲刷得摇摇晃晃。\n这份快感的强度远超她记忆中的任何一次绝顶，仿佛整片胸口都在燃烧，酸胀与酥麻交织成洪流将她整个人淹没，几乎喘不上气。\n她又羞又醉地承认，自己的{breast}早已敏感成了这副模样，仅是这里迸发的快感便足以令她失神崩溃，那股难以言喻的震颤在心底一遍遍回荡，令她彻底沉醉其中。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "快感如烈焰般自乳心席卷而上，{target.name}的脑海在这一刻近乎空白，那股从{breast}奔涌而出的酥麻酸胀几乎将她的理智焚烧殆尽。\n这场绝顶强烈得令她招架不住，意识在快感的洪流中失神漂荡，全身战栗着沉入一种迷醉到极点的境地，几乎要被这份快意撕碎。\n她羞耻又沉沦地感受着自己的{breast}被开发到何等敏感的境界，这份远胜以往的猛烈快感令她心神俱颤，在近乎崩溃的极乐里迷失了自己，久久无法回神。"
 
 [[entries]]
@@ -326,43 +326,43 @@ conditions = "selected.胸部 < 1000"
 context = "一股难以言喻的灼热酸胀自{breast}深处轰然升腾，酥麻的电流顺着乳尖直贯脑髓，{target.name}的意识几乎被这股快感彻底淹没。\n这份强烈远胜以往的每一次普通绝顶，她隐隐意识到自己胸前的敏感已被拔高到一个崭新的台阶。\n灭顶的快意里她失神颤栗，脑海空白得只剩下那股席卷全身的电流，心底满是迷乱与羞耻，既为自己的{breast}竟被开发得如此淫荡而羞惭，又沉沦在这近乎崩溃的极致快感中难以抽身，灵魂都在剧烈震颤。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "一股远比以往任何一次都要凶猛的快感从{target.name}的乳尖直贯脑髓，酥麻的电流以{breast}为源头席卷全身，几乎令她窒息。\n连续多次的胸部高潮把她的敏感度推上了一个全新的台阶，此刻涌来的绝顶强得让她意识几乎被彻底冲垮，脑海一片雪白，只剩失神的颤栗。\n乳肉深处翻涌着灼热的酸胀，她既迷醉又羞耻，难以相信自己的胸部竟被开发得如此敏感，一点刺激就能让她坠入这样几近崩溃的快意里。\n那是一种难以言喻的灵魂震撼，前所未有的极致快感将她整个人淹没，却还未到那种反复煎熬后才有的究极冲击。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "快感如决堤的洪流从{breast}深处轰然炸开，一路烧灼着直冲{target.name}的天灵盖，令她眼前发黑，几乎喘不上气。\n经历了一次又一次的胸部绝顶后，她的乳房敏感得可怕，这次涌来的快意强烈到把她的神智搅得支离破碎，脑子里嗡嗡作响什么都想不了。\n乳尖传来的酥麻酸胀几乎要将她的灵魂抽离，她又羞又乱地意识到自己竟沉溺得这样深，胸口那点敏感被彻底点燃成了失控的快感源泉。\n她在这远超普通绝顶的强烈冲击中失神颤抖，迷乱的心底涌起近乎崩溃的快意，却隐约还有一层更深的极致尚未触及。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "一阵灼热的快感洪流自{breast}猛地喷薄而出，顺着乳尖直贯全身每一寸肌理，{target.name}只觉得脑中一片空茫，被彻底冲垮了理智。\n这已是敏感升级一档之后才能承受的强烈绝顶，快感的浓度远远盖过了往常，她失神地颤栗着，连自己是谁都快要记不清了。\n乳肉深处那股酸胀的灼热一波波往上窜，她心底既迷醉又羞耻，明明只是胸口，却被撩拨得整个人都要融化，羞得几乎无地自容。\n这场强绝顶带来的灵魂震撼令她战栗不已，是敏感被拔高后迎来的非常强的快意，还差最后一层被反复吊弄后才有的极致释放。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "从乳尖直窜脑髓的酥麻电流以{breast}为中心炸裂开来，铺天盖地地淹没了{target.name}，那快感强得让她几乎失去了呼吸的能力。\n反复的胸部高潮早把她的敏感磨到了一个新台阶，这一次的绝顶来得又猛又急，她的意识被冲刷得七零八落，只能任凭快意将自己彻底吞没。\n乳肉里翻腾的灼热酸胀一路烧上头顶，她迷乱又羞窘，羞耻于自己的胸部竟能敏感到这般不堪，却又贪恋着这灭顶而来的极致快感。\n她在前所未有的强烈绝顶中失神颤栗，心底迸发出近乎崩溃的迷醉，那份灵魂深处的震颤远胜以往，却仍未抵达究极的巅峰。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "滔天的快感从{breast}深处骤然席卷而来，酥麻与灼热顺着乳尖一路灌进脑海，{target.name}的神智被这股洪流冲得摇摇欲坠。\n经过接连数次的胸部绝顶，她的乳房敏感得叫她自己都害怕，此刻这场强绝顶的威力大得惊人，几乎把她仅存的一点清明也彻底冲垮。\n乳肉深处酸胀发烫的快意一浪高过一浪，她又迷又臊地承认，自己的胸口早已被开发成了敏感到极点的快感开关，稍一撩拨便全线溃败。\n她在这远超寻常的强烈高潮里失神战栗，心底翻涌着难以名状的沉醉与震撼，那是敏感升级后的非常强绝顶，却还未到究极的那一步。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "一股远比以往任何一次都要凶猛的快感从{breast}的乳尖直贯脑髓，{target.name}只觉得整个人都被这道酥麻的电流劈得失了神。\n连续绝顶后攀上新台阶的敏感度让这次高潮的强度几乎将她的意识彻底冲垮，她在灭顶的快意里颤栗失神，脑中一片雪白。\n从{breast}深处涌起的灼热酸胀席卷了她的四肢百骸，快感浓烈得几乎令她窒息，她迷乱地沉溺其中无力自拔。\n对自己的胸部竟被开发得如此敏感这一事实，她既羞耻又迷醉，只能任由这近乎崩溃的极乐将自己整个吞没。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "{target.name}被这股从{breast}炸开的强烈快感冲得神志几乎溃散，那是一种远超寻常绝顶的、连灵魂都为之震颤的极致快意。\n乳尖上传来的酥麻如潮水般一浪高过一浪地漫过全身，她能清晰地感到自己的胸口早已敏感到不可思议的地步，轻微的触动都化作灭顶的快感。\n浓烈的酸胀从{breast}深处灼烧着蔓延开来，快感强烈得让她眼前阵阵发白，意识在其中飘忽沉浮。\n她又羞又乱地沉沦在这前所未有的强绝顶里，心底涌起近乎崩溃的迷醉，几乎要在这灭顶的酥麻中失去自己。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "从{breast}乳尖直窜进大脑的酥麻电流猛地将{target.name}的意识击得七零八落，这次的绝顶强烈到远非从前的高潮所能比拟。\n她清楚地感觉到自己的胸部在接连不断的绝顶之后变得敏感得可怕，此刻涌来的快感浓烈灼热，几乎要将她整个人烧化。\n乳肉深处的酸胀与乳尖的酥麻交织成一股汹涌的洪流席卷全身，她被冲刷得神魂颤栗，脑中一片空茫。\n这灵魂震撼般的极致快意让她既沉醉又惶恐，羞耻于自己竟被玩弄到这般地步，却又无可救药地深深迷失其中。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "{target.name}只觉得一道灼热的快感从{breast}深处轰然炸开，强烈得让她几乎连呼吸都忘记，整个人在这灭顶的酥麻里剧烈战栗。\n多次绝顶后敏感度节节攀升，这一次的高潮凶猛得远超以往，快感如汹涌的浪潮般将她的神志一次次冲垮淹没。\n从乳尖蔓延至全身的酥麻电流令她头皮发炸，{breast}深处的酸胀灼烫得让她迷乱失神，意识几近涣散。\n她羞耻又痴迷地感受着自己胸部那不可思议的敏感，沉溺在这近乎崩溃的极乐深渊里，久久无法回过神来。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "这股从{breast}席卷而来的强烈快感几乎要将{target.name}的意识连根拔起，那是一种远胜普通绝顶、令她灵魂都为之战栗的极致冲击。\n她清晰地感到自己的胸部早已被开发得敏感到了极点，乳尖上每一丝颤动都化作贯穿脊髓的酥麻，浓烈得令她窒息。\n{breast}深处翻涌的灼热酸胀裹挟着排山倒海的快意冲垮了她所有的理智，她在其中失神颤栗，脑海一片混沌。\n又羞又醉的情绪在心底疯狂翻腾，她惊骇于自己竟能被逼出如此强烈的高潮，却只能彻底沉沦在这灭顶的极乐之中。"
 
 [[entries]]
@@ -446,23 +446,23 @@ conditions = "selected.talents.普乳 == 1"
 context = "一阵灭顶的快感自{breast}最深处猛然爆发，{target.name}只觉整个人都在这远超普通绝顶的强烈高潮里失了神，连续多番攀顶让此处的敏感登上了从未有过的高度。\n从乳尖直灌脑海的酥麻电流一波接一波，{breast}深处灼热酸胀得几乎令她喘不过气，她在极致的快意中颤栗迷离，思绪支离破碎。\n少女又羞又乱地沉溺其中，为自己胸部被开发得这般敏感而心乱如麻，这份近乎崩溃的强烈快意在她的灵魂深处掀起阵阵震撼。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "从{breast}深处炸开的酥麻感一波接一波地直冲脑髓，早已成年却对情事浑然无知的{target.name}被这股陌生的强烈快感彻底震住，脑海里瞬间一片空白，完全想不明白自己的身体为何会变得如此敏感。\n连续绝顶累积出的敏感度，让这一次的快感比以往任何一次都汹涌猛烈得多，几乎要将她的意识彻底冲垮。\n她茫然又羞涩地承受着这股几乎令人窒息的快感洪流，心里满是搞不懂的困惑与说不出口的慌乱，只能任由自己在这陌生的绝顶中失神颤栗，久久回不过神来。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{breast}深处涌起的灼热酸胀感猝不及防地席卷全身，明明身体早已成熟，{target.name}的心智却依旧懵懂如初，被这股远超以往的强烈快感冲击得完全失了方寸，脑子里乱成一团，什么都想不清楚。\n敏感度在连续多次绝顶之后陡然攀升，这一波绝顶比先前任何一次都要猛烈炽烈得多，几乎要将她的神志彻底冲散。\n她懵懵懂懂地沉浸在这股陌生的浪潮里，心里既慌乱又茫然，完全不明白自己怎么会变得如此失控，只能任凭那股灵魂般的震颤久久回荡。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "一股酥麻的电流猛地从{breast}直贯脑髓，令对男女之事一无所知的{target.name}瞬间僵住，心里翻涌起从未体验过的强烈震颤，完全搞不明白自己的身体究竟发生了什么。\n连续绝顶带来的敏感攀升，让这一次的快感比过去任何一次都要凶猛炽热得多，几乎要将她仅存的一点思绪彻底冲垮。\n她茫然失措地任由这股灵魂般的震撼将自己席卷，心底交织着说不清的迷乱、羞涩与畏怯，只能懵懂地承受着这场远超预料的强烈绝顶，久久无法回神。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "以{breast}为源头炸开的酥麻快感如潮水般席卷全身，几乎令{target.name}窒息，纵然身体早已成熟，对情事却仍懵懂无知的她被这股陌生的强烈冲击震得脑海一片空白，完全不明白自己为何会如此敏感。\n敏感度随着连续多次绝顶不断攀升，这一次的高潮比以往猛烈太多，意识几乎被彻底冲垮，只剩下细碎的战栗与茫然。\n她懵懂又羞怯地沉溺在这股难以言喻的震撼里，心底满是弄不明白的困惑与说不出口的迷乱，久久沉浸在这场超乎想象的强烈绝顶之中，无法自拔。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "从{breast}深处扩散开来的酸胀酥麻感几乎将{target.name}的呼吸夺走，尽管身量早已发育成熟，她对情事却依旧一无所知，被这股远超以往的猛烈快感冲击得心神俱碎，完全想不明白自己怎会变得如此不堪一击。\n连续绝顶累积出的敏感让这一次的绝顶比过去任何一次都更加凶猛炽烈，几乎将她残存的理智彻底冲散。\n她茫然又羞涩地任由这股灵魂震颤般的快感将自己吞没，心底涌动着难以言说的慌乱与迷醉，久久沉浸在这场陌生而强烈的绝顶余韵之中，无法回神。"
 
 [[entries]]

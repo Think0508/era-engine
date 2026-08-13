@@ -962,123 +962,123 @@ conditions = "premise(hidden_sex_mode_4) && premise(place_someone_not_in_hidden_
 context = "藏在隐蔽处的{character.name}体验着{penis_s}被{target.name}的{breast_s}包裹的温暖，两人共同承担的秘密和风险让这场隐秘的性事更加刺激，快感因此变得异常强烈。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}感受着{penis_s}在未成年{target.name}的{breast_s}间摩擦，她对性事一无所知，单纯地按照指示动作，这种纯真的反差让{character.name}的快感更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}享受着{penis_s}被未成年且性无知的{target.name}的{breast_s}夹住的触感，她困惑的表情和青涩的动作反而让{character.name}的欲望更加高涨。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}体验着{penis_s}在未成年{target.name}的{breast_s}间的滑动，她对这行为的意义一无所知，这种诱导纯真少女的感觉让{character.name}的快感倍增。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}感受着未成年且无知的{target.name}用{breast_s}挤压{penis_s}的青涩快感，她困惑的眼神和单纯的动作让{character.name}感到一种特殊的征服快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}享受着{penis_s}在未成年{target.name}的{breast_s}间的摩擦，她对性事的无知让这种行为更显禁忌，这种道德边缘的刺激让{character.name}的快感更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}的{penis_s}被未成年{target.name}的{breast_s}包裹，她天真地按照指示移动，不明白这行为的含义，这种纯真与色情的对比让{character.name}的快感成倍增长。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}感受着{penis_s}在性无知未成年{target.name}的{breast_s}间的滑动，她疑惑的表情和生涩的动作反而让这种禁忌的快感更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}体验着未成年{target.name}用{breast_s}夹住{penis_s}的触感，她对此行为意义的无知让{character.name}感到一种特殊的控制和引导快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}享受着{penis_s}被未成年且无性知识的{target.name}的{breast_s}挤压的快感，她天真的配合让这种背德的行为更加刺激，快感因此变得异常强烈。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}感受着性无知的未成年{target.name}用{breast_s}摩擦{penis_s}的触感，她单纯的眼神和动作让这种引导纯真少女的行为带来更加强烈的征服快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}感受着{penis_s}在未成年但懂性知识的{target.name}的{breast_s}间滑动，她好奇而又期待的眼神让{character.name}的快感成倍增长。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}享受着未成年但对性充满好奇的{target.name}用{breast_s}挤压{penis_s}的感觉，她探索性的动作虽然生涩但充满热情，这种反差让{character.name}更加兴奋。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}体验着{penis_s}被未成年但懂性的{target.name}的{breast_s}夹住的触感，她学习性技巧的热切让这种禁忌的快感更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}感受着未成年但性知识丰富的{target.name}用{breast_s}服务{penis_s}的技巧，她生涩却热情的动作让{character.name}的快感一波波袭来。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}享受着{penis_s}在未成年却对性充满好奇的{target.name}的{breast_s}间的摩擦，她学习的热情让每次动作都带来更强烈的快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}的{penis_s}被未成年但懂性知识的{target.name}的{breast_s}包裹，她尝试运用所学的技巧，这种青涩与大胆的结合让{character.name}的快感不断攀升。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}感受着{penis_s}在未成年但懂性的{target.name}的{breast_s}间滑动，她好奇而又期待的表情让这种禁忌的快感更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}体验着未成年但性知识丰富的{target.name}用{breast_s}夹住{penis_s}的触感，她学习和探索的欲望让这种教导的快感更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}享受着{penis_s}被未成年但对性好奇的{target.name}的{breast_s}挤压的感觉，她渴望学习的眼神和热情的动作让{character.name}的快感成倍增长。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}感受着未成年但懂性知识的{target.name}用{breast_s}摩擦{penis_s}的触感，她对快感的好奇和追求让这种引导式的性爱更加刺激。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}感受着{penis_s}在成年但性无知的{target.name}的{breast_s}间滑动，她困惑又顺从的表情让这种引导纯真女性的快感更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}享受着成年但对性一无所知的{target.name}用{breast_s}挤压{penis_s}的感觉，她成熟的身体与纯真的心智形成的反差让{character.name}的欲望更加高涨。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}体验着{penis_s}被成年但性无知{target.name}的{breast_s}夹住的触感，她丰满成熟的胸部与懵懂的表情形成强烈对比，这种矛盾让快感倍增。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}感受着成年但无性知识的{target.name}用{breast_s}服务{penis_s}的青涩，她按照指示笨拙移动的样子反而让{character.name}感到一种特殊的征服快感。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}享受着{penis_s}在成年但性无知{target.name}的{breast_s}间的摩擦，她成熟的肉体与无知的心智形成的反差让这种教导式的快感更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}的{penis_s}被成年但对性一无所知的{target.name}的{breast_s}包裹，她丰满的胸部与懵懂的动作让{character.name}体验到一种特殊的引导快感。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}感受着{penis_s}在成年但性无知{target.name}的{breast_s}间滑动，她完全不理解这行为含义的纯真表情让{character.name}的快感一波波袭来。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}体验着成年但无性经验的{target.name}用{breast_s}夹住{penis_s}的触感，她成熟身体与纯真心智的强烈对比让这种引导的快感更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}享受着{penis_s}被成年但性无知的{target.name}的{breast_s}挤压的感觉，她丰满的胸部与懵懂的表情形成的反差让{character.name}的欲望更加高涨。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}感受着成年但对性一无所知的{target.name}用{breast_s}摩擦{penis_s}的触感，她成熟的肉体与纯真的反应让这种教导式的性爱更加刺激。"
 
 [[entries]]
@@ -1562,601 +1562,601 @@ conditions = "premise(jj_3) && premise(pl_penis_semen_dirty)"
 context = "刚射精的{penis_s}被{target.name}的{breast_s}夹住，巨大的龟头完全露出乳沟，精液润滑下的乳肉挤压着高度敏感的柱身，让{character.name}在余韵中感受着一波波新的快感浪潮。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.绝壁 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.绝壁 == 1"
 context = "{character.name}感受着{target.name}的{breast_s}勉强夹住{penis_s}，她生涩的动作和两侧的压力带来另类的快感，柔嫩的皮肤摩擦着敏感的龟头，让欲望逐渐攀升。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.绝壁 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.绝壁 == 1"
 context = "{target.name}尽力用几乎平坦的{breast_s}服务着{character.name}，虽然夹不住却带来了强烈的视觉刺激，{penis_s}在她胸前摩擦时偶尔触碰到的乳头让{character.name}兴奋不已。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.绝壁 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.绝壁 == 1"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}上滑动，看着她努力挤压几乎不存在的乳沟的样子，这种反差和笨拙感反而激发了{character.name}强烈的征服欲和保护欲。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.绝壁 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.绝壁 == 1"
 context = "{target.name}的{breast_s}虽然无法包裹{penis_s}，但她生涩地用双手挤压胸部的模样和不时滑过乳头的刺激，让{character.name}感受到独特的官能乐趣。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.绝壁 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.绝壁 == 1"
 context = "{character.name}享受着{target.name}用{breast_s}笨拙服务的快感，龟头偶尔摩擦到她敏感挺立的乳头时，她微微颤抖的反应让{penis_s}更加坚硬，欲望持续上升。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.绝壁 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.绝壁 == 1"
 context = "{target.name}的{breast_s}无法形成乳沟，却用双手努力挤压着胸部夹住{penis_s}，这种笨拙的尝试和纯真的表情让{character.name}性欲高涨，龟头每次蹭过她乳头都极度兴奋。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.绝壁 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.绝壁 == 1"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间来回摩擦，虽然缺乏包裹感，但她细嫩的皮肤和不时触碰到的乳头带来的尖锐快感，让{character.name}呼吸急促，欲望不断积累。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.绝壁 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.绝壁 == 1"
 context = "{target.name}的{breast_s}带给{character.name}视觉上的强烈刺激，看着{penis_s}在她平坦胸部上粗暴摩擦，蹭过她敏感乳头时的反应，这种征服感让{character.name}快感倍增。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.绝壁 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.绝壁 == 1"
 context = "{character.name}感受着{penis_s}在{target.name}的{breast_s}上滑动的快感，虽然缺乏包裹感，但她皮肤的细腻和生涩的服务态度，以及她努力的样子，反而让{character.name}更加兴奋。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.绝壁 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.绝壁 == 1"
 context = "{target.name}用双手挤压着自己的{breast_s}为{character.name}服务，龟头每次滑过她敏感的乳头，她那生涩的表情和微微颤抖的身体都让{penis_s}变得更加坚硬，快感逐渐累积。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.贫乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.贫乳 == 1"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间摩擦，她虽然技巧生涩，但贫乳带来的紧致感和她努力挤压的模样，让{character.name}感受到别样的快感，欲望不断攀升。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.贫乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.贫乳 == 1"
 context = "{target.name}的{breast_s}勉强夹住{character.name}的{penis_s}，她生涩的动作和羞涩的表情，加上时不时滑过龟头的嫩滑乳肉，给{character.name}带来强烈的视觉和触觉双重刺激。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.贫乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.贫乳 == 1"
 context = "{character.name}感受着{penis_s}被{target.name}的{breast_s}包裹的快感，虽然她的胸部小巧，但那份紧致和生涩的服务姿态反而成了强烈的催情剂，让{character.name}欲火中烧。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.贫乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.贫乳 == 1"
 context = "{target.name}的{breast_s}虽然无法完全包裹{character.name}的{penis_s}，但她努力挤压的样子和那份纯真，以及偶尔龟头触碰到乳头的刺激，让{character.name}异常兴奋。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.贫乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.贫乳 == 1"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间抽动，虽然乳沟浅，但她紧张挤压的动作和柔嫩肌肤的触感，让{character.name}感受到独特的刺激，快感不断累积。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.贫乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.贫乳 == 1"
 context = "{target.name}的{breast_s}带来的是更为紧致的包裹感，虽然她的技巧生疏，但那份纯真和努力的表情，让{character.name}的{penis_s}被刺激得更加坚硬，快感一波波袭来。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.贫乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.贫乳 == 1"
 context = "{character.name}享受着{penis_s}在{target.name}的{breast_s}间摩擦的感觉，那种轻微的包裹和她生涩的表情，加上龟头偶尔擦过乳头的刺激，让快感逐渐堆积。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.贫乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.贫乳 == 1"
 context = "{target.name}的{breast_s}虽然乳沟不深，但她羞涩地挤压着胸部服务{character.name}的样子，以及肌肤的嫩滑触感，让{penis_s}在摩擦中感受到极大的快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.贫乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.贫乳 == 1"
 context = "{character.name}的{penis_s}被{target.name}的{breast_s}夹住，虽然包裹不完全，但她细嫩的肌肤和生涩却认真的服务态度，让{character.name}感到一种特别的征服快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.贫乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.贫乳 == 1"
 context = "{target.name}努力用{breast_s}夹住{character.name}的{penis_s}，那种勉强的紧致感和她不时因龟头擦过乳头而颤抖的反应，给{character.name}带来了强烈的官能刺激。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.普乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.普乳 == 1"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间抽动，她虽然技巧生涩，但适中的胸部提供了恰到好处的包裹感，柔软的乳肉挤压着敏感的肉棒，带来持续的快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.普乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.普乳 == 1"
 context = "{target.name}的{breast_s}夹住{character.name}的{penis_s}，虽然她动作笨拙，但那份认真和生涩的表情，加上柔软乳肉的包裹，让{character.name}感受到强烈的性冲动。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.普乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.普乳 == 1"
 context = "{character.name}感受着{penis_s}被{target.name}的{breast_s}包裹的舒适感，她匀称的胸部虽然技巧不足，但恰到好处的弹性和温暖的触感，让{character.name}享受着缓慢累积的快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.普乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.普乳 == 1"
 context = "{target.name}普通大小的{breast_s}形成的乳沟紧紧夹住{character.name}的{penis_s}，她生涩的动作反而带来一种纯真的刺激，每次龟头从乳沟顶端露出都让{character.name}兴奋不已。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.普乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.普乳 == 1"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间来回摩擦，她虽然技巧不熟练，但那份柔软和温暖的包裹感，加上她专注的表情，让{character.name}的快感不断攀升。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.普乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.普乳 == 1"
 context = "{target.name}用她的{breast_s}服务着{character.name}，虽然动作生疏但胸部的柔软和弹性恰到好处，每次{penis_s}被挤压在乳沟中时，都让{character.name}感受到一波波快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.普乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.普乳 == 1"
 context = "{character.name}享受着{penis_s}在{target.name}的{breast_s}间抽动的感觉，她生涩的动作和认真的表情，加上乳肉适度的包裹，让快感逐渐在下腹积累。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.普乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.普乳 == 1"
 context = "{target.name}的{breast_s}夹着{character.name}的{penis_s}上下移动，虽然节奏不稳，但那种生涩的服务态度和偶尔因摩擦而发出的羞涩呻吟，让{character.name}性欲大增。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.普乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.普乳 == 1"
 context = "{character.name}的{penis_s}被{target.name}形状匀称的{breast_s}夹住，她虽然经验不足，但天然的柔软和温暖触感，加上乳沟的紧致包裹，让{character.name}感受到持续的快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.普乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.普乳 == 1"
 context = "{target.name}努力用她的{breast_s}服务{character.name}，虽然动作不熟练，但适中胸部的弹性和她认真的表情，每次{penis_s}在乳沟中滑动都带来一阵强烈的刺激感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.巨乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.巨乳 == 1"
 context = "{character.name}的{penis_s}几乎完全陷入{target.name}的{breast_s}中，虽然她技巧生涩，但那份充满肉感的包裹和挤压，让{character.name}感受到强烈的快感，欲望不断攀升。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.巨乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.巨乳 == 1"
 context = "{target.name}的{breast_s}包裹着{character.name}的{penis_s}，虽然她的动作不熟练，但丰满乳肉的温暖和全方位挤压，让{character.name}感受到如同被紧致阴道包裹的快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.巨乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.巨乳 == 1"
 context = "{character.name}感受着{penis_s}被{target.name}的{breast_s}紧紧包裹的舒适感，她虽然技巧生涩，但丰满的乳肉自然形成的紧致乳沟和柔软触感，给{character.name}带来强烈的刺激。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.巨乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.巨乳 == 1"
 context = "{target.name}的{breast_s}将{character.name}的{penis_s}完全吞没，只有龟头偶尔从乳沟中探出，虽然她动作生疏，但那种视觉冲击和全面包裹感让{character.name}欲火焚身。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.巨乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.巨乳 == 1"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间抽动，她虽然经验不足，但乳肉的丰满和乳沟的深度提供了极佳的包裹感，让{character.name}每次抽动都感受到强烈快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.巨乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.巨乳 == 1"
 context = "{target.name}用她的{breast_s}服务着{character.name}，虽然动作笨拙，但那种被大量柔软乳肉完全包围的感觉，让{penis_s}每次进出都感受到极致的摩擦和挤压。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.巨乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.巨乳 == 1"
 context = "{character.name}享受着{penis_s}在{target.name}的{breast_s}间的快感，她虽然技巧不足，但巨大乳房的柔软和温暖，加上视觉的强烈刺激，让{character.name}的欲望迅速攀升。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.巨乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.巨乳 == 1"
 context = "{target.name}的{breast_s}紧紧夹住{character.name}的{penis_s}，虽然她节奏不稳，但那种几乎将整根肉棒吞没的视觉冲击和全方位的柔软包裹，让{character.name}快感连连。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.巨乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.巨乳 == 1"
 context = "{character.name}的{penis_s}被{target.name}的{breast_s}完全包围，她虽然生涩，但那种被大量乳肉挤压的感觉和深邃乳沟的包裹，让{character.name}感受到极致的快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.巨乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.巨乳 == 1"
 context = "{target.name}用她的{breast_s}包裹着{character.name}的{penis_s}，虽然动作不熟练，但巨大胸部提供的丰满肉感和紧致乳沟，让每次抽动都如同在阴道中抽插般舒爽。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.爆乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.爆乳 == 1"
 context = "{character.name}的{penis_s}完全消失在{target.name}的{breast_s}中，她虽然技巧生涩，但那种被过量乳肉完全吞没的感觉，让{character.name}感受到前所未有的紧致和包裹，快感如潮水般涌来。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.爆乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.爆乳 == 1"
 context = "{target.name}的{breast_s}将{character.name}的{penis_s}连同囊袋一起包裹，虽然她动作笨拙，但那种被温暖肉山彻底淹没的感觉，让{character.name}体验到如同被整个阴道吞噬的极致快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.爆乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.爆乳 == 1"
 context = "{character.name}感受着{penis_s}在{target.name}的{breast_s}中几乎迷失的快感，她虽然技巧不足，但那种被大量柔软乳肉从四面八方挤压的感觉，让{character.name}欲火焚身，快感连连。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.爆乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.爆乳 == 1"
 context = "{target.name}的{breast_s}完全包裹着{character.name}的{penis_s}，龟头甚至无法从乳沟中露出，虽然她生涩，但这种完全包围的极致压迫感让{character.name}快感加倍。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.爆乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.爆乳 == 1"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间抽动，即使她技巧不佳，但那种肉棒完全消失在乳沟中的视觉冲击和全方位的柔软挤压，让快感迅速攀升。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.爆乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.爆乳 == 1"
 context = "{target.name}用她的{breast_s}服务着{character.name}，虽然动作不协调，但那种被大量乳肉完全淹没且无法逃脱的感觉，让{penis_s}在紧致的乳沟中享受极致快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.爆乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.爆乳 == 1"
 context = "{character.name}享受着{penis_s}被{target.name}的{breast_s}完全吞没的快感，虽然她经验不足，但那种被过量乳肉挤压到几乎窒息的感觉，让{character.name}的欲望疯狂膨胀。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.爆乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.爆乳 == 1"
 context = "{target.name}惊人尺寸的{breast_s}让{character.name}的{penis_s}完全埋没，虽然她节奏不稳，但那种被柔软乳肉彻底淹没且四面挤压的感觉，让{character.name}感受到前所未有的刺激。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.爆乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.爆乳 == 1"
 context = "{character.name}的{penis_s}被{target.name}的{breast_s}牢牢锁住，她虽然技巧生涩，但那种被过量乳肉从各个角度挤压的感觉，让{character.name}体验到比阴道更紧致的包裹快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸技.level <= 3&selected.talents.爆乳 == 1"
+conditions = "selected.abilities.胸技.level <= 3 && selected.talents.爆乳 == 1"
 context = "{target.name}用她的{breast_s}将{character.name}的{penis_s}完全吞没，虽然她动作生疏，但爆乳的尺寸和重量提供的压迫感，让每次微小的动作都能带来强烈的刺激和快感。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}感受着{target.name}的{breast_s}挤压着{penis_s}，虽然缺乏丰满感，但她用手辅助创造的紧致感让{character.name}享受着别样的快感。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}被{target.name}的{breast_s}夹住，她熟练地调整着角度，用胸前敏感的皮肤摩擦着柱身，这种视觉冲击远超物理刺激。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}让{character.name}的{penis_s}暴露在空气中，但她灵巧地用乳头不断刺激龟头边缘，这种精准的刺激让{character.name}颤抖不已。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间摩擦，她的锁骨和胸骨的轮廓带来的硬度与柔软皮肤的对比，创造出奇妙的快感。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}用{breast_s}摩擦着{character.name}的{penis_s}，虽然无法完全包裹，她却能让乳头精确地刮过冠状沟，激起一阵阵电流般的快感。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}享受着{target.name}用{breast_s}夹住{penis_s}根部的感觉，她平坦胸部的另一个好处是能让{character.name}清晰看到自己龟头被爱抚的每一个细节。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}滑过{character.name}的{penis_s}，她用肌肤的细腻和温暖弥补了丰满度的不足，这种若即若离的刺激反而更加挑逗。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}感受着{target.name}胸前那片紧致肌肤的摩擦，她熟练地控制着力道和节奏，证明乳交不全靠{breast_s}的尺寸。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}虽然平坦，但她灵活的技巧让{character.name}的{penis_s}被温暖肌肤包围，加上她时不时的吐息，快感持续累积。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}闭眼感受着{target.name}用{breast_s}服务{penis_s}的感觉，她胸部的紧致与细腻摩擦着敏感的柱身，这种独特的体验让{character.name}很快就要缴械投降。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}被{target.name}的{breast_s}包裹，虽然不能完全覆盖，但她那柔软的触感和灵巧的动作弥补了尺寸的不足，快感不断累积。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}夹着{character.name}的{penis_s}，她熟练地挤压着胸部，创造出一条紧致的通道，每次滑动都带来一阵酥麻。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}感受着{target.name}的{breast_s}摩擦着{penis_s}，她贫乳的好处是皮肤更为敏感紧致，这种特殊的刺激让{character.name}呼吸急促。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}用{breast_s}上下摩擦着{character.name}的{penis_s}，小巧的尺寸让她能更加灵活地变换角度，时而用乳头刺激龟头，时而侧压柱身。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}享受着{target.name}的{breast_s}服务{penis_s}的感觉，她虽然贫乳但柔软度十足，加上适度的技巧，让{character.name}的快感一波波袭来。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}裹着{character.name}的{penis_s}，她懂得用身体的重量和角度创造压力，这种若即若离的刺激比完全包裹更令人疯狂。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间摩擦，她灵活地用双手辅助挤压，弥补了胸部尺寸的不足，每一次动作都让{character.name}更加兴奋。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}虽小却富有弹性，夹着{character.name}的{penis_s}来回摩擦，她的乳头时不时刮过龟头，激起一阵阵强烈的快感。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}感受着{target.name}用{breast_s}挤压{penis_s}的感觉，她娇小的胸部虽然露出大半龟头，却让{character.name}能欣赏到她努力服务的表情，视觉刺激加倍。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}在{character.name}的{penis_s}上滑动，她用胸部的柔软和灵活的技巧创造出独特的快感，比起尺寸，她的热情和技巧更让{character.name}陶醉。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}被{target.name}丰满适中的{breast_s}完美包裹，柔软的触感和适度的挤压让每一次摩擦都带来强烈的快感，令{character.name}不住喘息。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}夹着{character.name}的{penis_s}上下滑动，她恰到好处的尺寸和熟练的技巧创造出一种温暖紧致的感觉，快感不断堆积。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}感受着{target.name}的{breast_s}裹着{penis_s}摩擦，她掌握了适当的节奏和力度，让{character.name}的每一寸神经都被唤醒，快感如电流般扩散。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}富有弹性地包围着{character.name}的{penis_s}，她时而加快时而放慢节奏，这种变化的刺激让{character.name}的快感不断攀升。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}享受着{target.name}用{breast_s}服务{penis_s}的感觉，她完美的尺寸刚好能创造出一条紧致温暖的通道，每次滑动都让{character.name}更接近极限。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}挤压着{character.name}的{penis_s}，乳沟的温暖和湿润感增强了摩擦的快感，让{character.name}的小腹开始紧绷，预示着即将到来的高潮。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间进出，她适中的尺寸和熟练的技巧相得益彰，每一次摩擦都带来一波强过一波的快感。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}用{breast_s}有节奏地挤压着{character.name}的{penis_s}，她时不时还用舌尖轻舔露出的龟头，这种双重刺激让{character.name}的快感迅速累积。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}感受着{target.name}的{breast_s}夹着{penis_s}滑动，她不仅掌握了基本的上下动作，还懂得如何扭动胸部增加摩擦，让{character.name}欲罢不能。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}紧紧包裹着{character.name}的{penis_s}，她调整着力道和角度，让每一次动作都刺激到不同的敏感点，{character.name}感觉自己快要失控了。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}完全埋入{target.name}丰满的{breast_s}中，软肉的完全包裹和挤压带来无与伦比的快感，让{character.name}头皮发麻，呼吸急促。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}将{character.name}的{penis_s}牢牢包裹，丰满的乳肉从指缝间溢出，每次移动都带来一种被吞噬般的极致快感，让{character.name}忍不住呻吟。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}感受着{target.name}的{breast_s}挤压着{penis_s}，巨大的乳肉创造出一种窒息般的快感，龟头在乳沟深处被完全包围，刺激得{character.name}双腿发软。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}上下摩擦着{character.name}的{penis_s}，每一寸肌肤都被柔软的乳肉爱抚，这种全方位的包裹感让{character.name}的快感如浪潮般涌来。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}享受着{target.name}用{breast_s}服务{penis_s}的感觉，她的巨乳不仅完全包裹了阴茎，还能挤压到囊袋，这种双重刺激让{character.name}快感倍增。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}紧紧夹住{character.name}的{penis_s}，她熟练地掌握着力道，丰满的乳肉随着动作波动，视觉和触觉的双重刺激让{character.name}忍不住挺腰。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}在{target.name}的{breast_s}间抽送，丰满的乳肉随着动作不断变形，创造出变化多端的挤压感，让{character.name}的快感持续堆积。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}用{breast_s}裹住{character.name}的{penis_s}，她懂得如何利用自己的丰满优势，时而完全包裹，时而松开一点，这种变化的刺激让{character.name}欲火难耐。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}感受着{target.name}的{breast_s}包裹着{penis_s}的感觉，她的巨乳不仅柔软，还富有弹性，每次挤压都带来一种温暖紧致的包裹感，让{character.name}快要失控。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}完美地容纳着{character.name}的{penis_s}，她熟练地调整胸部的位置，让每一次摩擦都能照顾到整个柱身，这种全面的刺激让{character.name}快感连连。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}完全消失在{target.name}的{breast_s}之间，这种被软肉完全吞没的感觉让{character.name}几乎窒息，快感如电流般从下体蔓延至全身。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}将{character.name}的{penis_s}彻底埋没，庞大的乳肉创造出一种与任何体位都不同的极致压迫感，让{character.name}的快感瞬间飙升到顶点。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}感受着{target.name}的{breast_s}包裹着{penis_s}，爆乳的重量带来巨大的压迫感，加上柔软的质地，创造出一种近乎真实内壁的快感。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}上下摩擦着{character.name}的{penis_s}，连囊袋都被乳肉完全覆盖，这种全方位的刺激让{character.name}的呼吸变得粗重，快感不断攀升。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}享受着{target.name}用{breast_s}服务{penis_s}的感觉，她的爆乳重量惊人，每一次移动都带来强烈的挤压感，让{character.name}的快感如潮水般一波接一波。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}牢牢锁住{character.name}的{penis_s}，她熟练地控制着自己的巨乳，创造出一种窒息般的包裹感，让{character.name}的快感直冲脑门。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}的{penis_s}在{target.name}惊人的{breast_s}中进出，巨大的乳肉随着动作不断变形，产生的摩擦和挤压让{character.name}的快感迅速积累，小腹已经开始紧绷。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}用{breast_s}完全吞没{character.name}的{penis_s}，她掌握着如何利用自己惊人的尺寸创造最大的快感，每一次挤压都让{character.name}忍不住呻吟出声。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{character.name}感受着{target.name}的{breast_s}包裹着{penis_s}的感觉，她的爆乳不仅柔软还有弹性，每次动作都带来一种无法形容的极致快感，让{character.name}几乎瞬间就想射精。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 3&selected.abilities.胸技.level <= 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 3 && selected.abilities.胸技.level <= 6"
 context = "{target.name}的{breast_s}完全淹没了{character.name}的{penis_s}，她熟练地扭动着上身，让乳肉以不同角度摩擦着阴茎的每一寸，这种全方位的刺激让{character.name}快要发狂。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}感受着{target.name}的精湛技巧，虽然{breast_s}几乎没有沟壑，但她用手挤压出的缝隙和灵巧的移动方式让{penis_s}感受到意外的快感。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}用{breast_s}紧贴着{penis_s}，她娴熟地控制节奏和力度，让{character.name}体验到超出预期的刺激，快感从下体直冲脑门。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 6"
 context = "尽管缺乏丰满，{target.name}却凭借高超技巧让{breast_s}完美服务着{penis_s}，每一次滑动都恰到好处地刺激着敏感点，令{character.name}呼吸急促。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}惊讶于{target.name}的{breast_s}带来的快感，她精准地掌握着力道和角度，让{penis_s}在细嫩肌肤间获得极致体验。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}用{breast_s}创造出令人惊叹的快感，她技巧性地摩擦着{penis_s}的每一寸，让{character.name}不禁发出满足的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}在{target.name}几乎没有隆起的{breast_s}间滑动，她却用精湛的手法和身体控制弥补了丰满度的不足，让{character.name}体验到非同一般的快感。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}感叹于{target.name}的技巧，即使是{breast_s}也能给{penis_s}带来如此强烈的刺激，每一次移动都像是对敏感带的精准按摩。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}的{breast_s}虽然平坦，却以惊人的技巧挤压着{penis_s}，她恰到好处的动作让{character.name}感到一波波快感涌向全身。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}被{target.name}的技巧所征服，她用{breast_s}以独特的方式刺激着{penis_s}，每一次接触都让人颤抖不已。"
 
 [[entries]]
-conditions = "selected.talents.绝壁 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.绝壁 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}在{target.name}平坦{breast_s}的挤压下得到意外的享受，她高超的技巧让每一寸肌肤都能成为快感的来源，让{character.name}头皮发麻。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}的{breast_s}虽然难以完全包裹{penis_s}，却凭借精湛技巧创造出令人窒息的快感，每次滑动都精确刺激着敏感带。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}沉浸在{target.name}的技巧中，她的{breast_s}以绝妙的节奏和力度挤压着{penis_s}，带来细腻而强烈的刺激。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}在{target.name}的{breast_s}间抽动，她技巧性地控制着每一次摩擦的力度和角度，让{character.name}感受到超乎想象的快感。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}用{breast_s}完美服务着{penis_s}，她的高超技巧弥补了丰满度的不足，每一次动作都让{character.name}全身颤抖。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}感叹于{target.name}的乳技，{breast_s}却能给{penis_s}带来如此丰富的刺激，快感如电流般贯穿全身。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}的{breast_s}以精准的动作挤压着{penis_s}，她高超的技巧让{character.name}体验到与丰满胸部截然不同的紧致快感。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}被{target.name}的{breast_s}紧密包裹，虽然体积不大，她却能通过控制肌肉和角度创造出令人疯狂的快感波浪。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}为{target.name}的技巧所倾倒，她将{breast_s}化为极致快感的工具，让{penis_s}在嫩滑的肌肤间体验天堂般的感受。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}用技巧弥补了{breast_s}的娇小，她精湛的控制力让{penis_s}每一次抽动都能获得最强烈的刺激，令{character.name}欲罢不能。"
 
 [[entries]]
-conditions = "selected.talents.贫乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.贫乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}沉醉于{target.name}创造的快感，她的{breast_s}以令人惊叹的方式挤压摩擦着{penis_s}，每一下都让人头皮发麻。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}感受着{target.name}的{breast_s}的完美服务，她精湛的技巧让{penis_s}被恰到好处地包裹和摩擦，快感层层叠加。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}在{target.name}的{breast_s}间滑动，她娴熟地控制着力道和节奏，让每一次摩擦都精准刺激敏感点，令{character.name}欲罢不能。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}以惊人的技巧控制着{breast_s}，创造出一种吸吮般的感觉包裹着{penis_s}，让{character.name}感受到前所未有的快感浪潮。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}沉浸在{target.name}创造的极乐中，她的{breast_s}仿佛有了生命，以完美的节奏和力度侍奉着{penis_s}的每一寸。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}的{breast_s}随着她精湛的控制力挤压着{penis_s}，每一次动作都如行云流水，让{character.name}体验到极致的舒爽。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}被{target.name}的{breast_s}紧密包裹，她技巧性地变换着角度和力度，让{character.name}感到快感如电流般窜遍全身。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}为{target.name}的乳技所倾倒，她能让普通大小的{breast_s}创造出不可思议的快感，让{penis_s}仿佛置身天堂。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}用{breast_s}创造出令人窒息的快感，她精准地掌握着每一次摩擦的力道，让{penis_s}在柔软中体验极致刺激。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}感叹于{target.name}的技巧，她的{breast_s}不仅完美包裹着{penis_s}，还能以绝妙的节奏带来一波又一波的快感。"
 
 [[entries]]
-conditions = "selected.talents.普乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.普乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}在{target.name}{breast_s}的夹击下体验着无与伦比的享受，她高超的控制力让每一次抽动都成为极乐的体验。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}沉醉于{target.name}的{breast_s}的包裹，她以精湛技巧控制着肌肉，让{penis_s}在柔软中体验极致的挤压和摩擦。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}被{target.name}的{breast_s}完全吞没，她娴熟地掌握着节奏和力度，每一次挤压都带来令人窒息的快感浪潮。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}用{breast_s}创造出令人疯狂的刺激，她技巧性地挤压和摩擦着{penis_s}，让{character.name}全身颤抖不已。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}感受着{target.name}的高超技巧，她让{breast_s}如同活物般包裹和服务着{penis_s}，快感如潮水般涌来。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}的{breast_s}不仅丰满柔软，更因她精湛的控制力成为极致快感的来源，让{penis_s}每一次抽动都获得最强烈的刺激。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}在{target.name}的{breast_s}间的每一次滑动都是一种享受，她以惊人的技巧让柔软的乳肉以最完美的方式挤压和摩擦。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}为{target.name}的乳技所征服，她能让{breast_s}创造出无与伦比的快感，让{penis_s}仿佛置身天堂。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}的{breast_s}如同天鹅绒般包裹着{penis_s}，她精准地控制着每一次挤压和滑动，让{character.name}体验到灭顶的快感。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}沉浸在{target.name}创造的极乐中，她的{breast_s}以完美的节奏和力度服务着{penis_s}，快感一波强过一波。"
 
 [[entries]]
-conditions = "selected.talents.巨乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.巨乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}被{target.name}的{breast_s}紧密包围，她高超的技巧让每一次抽动都变成令人头皮发麻的体验，让{character.name}欲罢不能。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}的{penis_s}完全消失在{target.name}的{breast_s}中，她以精湛技巧控制着巨量的乳肉，创造出令人窒息的极致快感。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}让{breast_s}如同有生命般服务着{penis_s}，她娴熟地控制着每一块肌肉，让{character.name}体验到前所未有的快感浪潮。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}在{target.name}的{breast_s}间几乎迷失，她却能以惊人的技巧让每一寸乳肉都成为快感的来源，令{character.name}全身战栗。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}沉醉于{target.name}创造的极乐世界，她让{breast_s}以最完美的方式包裹和摩擦着{penis_s}，快感如电流般窜遍全身。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}的{breast_s}不仅体积惊人，更因她精湛的控制力成为无上的享受，让{penis_s}在柔软的海洋中体验极致刺激。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}被{target.name}的{breast_s}完全吞没，她高超的技巧让这片柔软成为极乐的源泉，让{character.name}不禁发出满足的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}为{target.name}的乳技所倾倒，她能让{breast_s}创造出不可思议的挤压感和摩擦力，让{penis_s}仿佛置身天堂。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{target.name}的{breast_s}如同一个柔软的牢笼紧紧包裹着{penis_s}，她精准地控制着每一次挤压和滑动，让{character.name}感到快感如潮水般涌来。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{character.name}沉浸在{target.name}创造的极致体验中，她的{breast_s}以惊人的技巧服务着{penis_s}的每一寸，让快感层层叠加。"
 
 [[entries]]
-conditions = "selected.talents.爆乳 == 1&selected.abilities.胸技.level > 6"
+conditions = "selected.talents.爆乳 == 1 && selected.abilities.胸技.level > 6"
 context = "{penis_s}在{target.name}的{breast_s}组成的柔软通道中抽动，她高超的控制力让每一次摩擦都变成令人头皮发麻的体验，让{character.name}欲罢不能。"

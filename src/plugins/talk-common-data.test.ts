@@ -6,6 +6,7 @@ import { conditionEngine, extractPremiseRefs } from '../core/condition-engine'
 import { describe, it, expect, beforeAll } from 'vitest'
 import { parse as parseTOML } from '@iarna/toml'
 import { modLoader } from '../core/mod-loader'
+import { gameContext } from '../core/game-context'
 import { conditionRegistry } from '../core/condition-registry'
 import { registerFallPremises } from './h-core/premise/premise-fall'
 import { registerHPremises } from './h-core/premise/premise-h'
@@ -100,6 +101,21 @@ describe('T2 talk-common 全量数据校验', () => {
       }
     }
     expect([...unknown].sort()).toEqual([])
+  })
+
+  it('全部条件表达式运行时求值不抛（新引擎语法冒烟——解析失败=静默淘汰行）', () => {
+    const conditions = collectConditions()
+    const throwing: string[] = []
+    const gc = gameContext.getContext()
+    for (const cond of conditions) {
+      try {
+        const r = conditionEngine.evaluate(cond, gc)
+        if (typeof r !== 'boolean') throwing.push(`${cond} -> 非布尔结果 ${typeof r}`)
+      } catch (err) {
+        throwing.push(`${cond} -> ${err instanceof Error ? err.message : String(err)}`)
+      }
+    }
+    expect(throwing.slice(0, 20)).toEqual([])
   })
 
   it('全部条件表达式的字段路径可校验（conditionRegistry.validateExpression）', () => {

@@ -49,6 +49,9 @@ class EntitySystem {
 
   clear(): void {
     this.entities.clear()
+    // 注释：重置注册通知缓冲（防 clear 后残留批次引用已销毁实体）
+    this.pendingCharacterRegs = []
+    this.flushScheduled = false
   }
 }
 

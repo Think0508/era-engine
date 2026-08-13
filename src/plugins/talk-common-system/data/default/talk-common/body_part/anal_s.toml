@@ -388,57 +388,57 @@ context = "适应中"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level <= 3"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level <= 3"
 context = "稚嫩"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level <= 3"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level <= 3"
 context = "紧致"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level <= 3"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level <= 3"
 context = "已开发"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level <= 3"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level <= 3"
 context = "初步适应"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 3&selected.abilities.后穴扩张.level <= 6"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level > 3 && selected.abilities.后穴扩张.level <= 6"
 context = "有经验"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 3&selected.abilities.后穴扩张.level <= 6"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level > 3 && selected.abilities.后穴扩张.level <= 6"
 context = "适应"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 3&selected.abilities.后穴扩张.level <= 6"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level > 3 && selected.abilities.后穴扩张.level <= 6"
 context = "熟练"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level > 6"
 context = "丰富经验"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level > 6"
 context = "熟练"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level > 6"
 context = "充分开发"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.肛门处女 == 0&selected.abilities.后穴扩张.level > 6"
+conditions = "selected.talents.肛门处女 == 0 && selected.abilities.后穴扩张.level > 6"
 context = "轻松适应"
 
 [[entries]]
@@ -458,17 +458,17 @@ context = "反应微弱"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.后穴感度.level > 3&selected.abilities.后穴感度.level <= 6"
+conditions = "selected.abilities.后穴感度.level > 3 && selected.abilities.后穴感度.level <= 6"
 context = "适度感度"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.后穴感度.level > 3&selected.abilities.后穴感度.level <= 6"
+conditions = "selected.abilities.后穴感度.level > 3 && selected.abilities.后穴感度.level <= 6"
 context = "明显快感"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.后穴感度.level > 3&selected.abilities.后穴感度.level <= 6"
+conditions = "selected.abilities.后穴感度.level > 3 && selected.abilities.后穴感度.level <= 6"
 context = "愉悦"
 
 [[entries]]

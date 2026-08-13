@@ -966,83 +966,83 @@ conditions = "premise(hidden_sex_mode_4) && premise(place_someone_not_in_hidden_
 context = "隐秘空间里，{character.name}感受着{target.name}的{armpit_s}摩擦{penis_s}的滑腻，两人的隐藏状态让性欲更加高涨，每次抽动都带来极致快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}的{penis_s}在未成年且性无知的{target.name}的{armpit_s}中摩擦，她青涩的身体和懵懂的表情让{character.name}更加兴奋，这种引导纯真少女的感觉让快感翻倍。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}享受着未成年无知{target.name}的{armpit_s}夹紧{penis_s}的触感，她的青涩和不解让这种行为更加刺激，每次摩擦都让{character.name}感到无比的快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}感受着{penis_s}在性无知未成年{target.name}的{armpit_s}中抽动，她对性事一无所知的样子让{character.name}获得双重刺激，每次摩擦都让欲望更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}的{penis_s}被未成年且纯洁的{target.name}的{armpit_s}紧紧夹住，她懵懂的表情和青涩的肌肤让每次摩擦都带来无与伦比的快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}享受着纯真{target.name}的{armpit_s}包裹{penis_s}的温暖，她对性一无所知的单纯让这种行为更加刺激，每次动作都让{character.name}接近高潮。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}感受着{penis_s}在未成年{target.name}的{armpit_s}中摩擦的快感，她懵懂的眼神和青涩的身体让{character.name}的欲望高涨，每次抽动都让快感积累。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}的{penis_s}被性无知的{target.name}的{armpit_s}挤压着，她对这种行为的不解和纯真让{character.name}更加兴奋，腋下的柔软让每次摩擦都无比舒爽。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}享受着引导未成年{target.name}用{armpit_s}夹紧{penis_s}的过程，她的纯真无知让这种教导更加刺激，每次摩擦都让{character.name}濒临爆发。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}感受着{penis_s}在纯洁{target.name}的{armpit_s}中快速抽动，她对性事一无所知的表情让{character.name}获得双重快感，每次摩擦都让欲望高涨。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}的{penis_s}被未成年{target.name}的{armpit_s}夹住，她青涩的肌肤和对性事的不解让这种行为格外刺激，每次摩擦都带来无比的快感。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}的{penis_s}在成年但性无知的{target.name}的{armpit_s}中摩擦，她成熟的身体与纯真的认知形成强烈对比，这种矛盾让{character.name}的快感倍增。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}享受着性无知成年{target.name}的{armpit_s}夹紧{penis_s}的触感，她成熟的身体与懵懂的表情形成刺激对比，每次摩擦都让{character.name}兴奋不已。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}感受着{penis_s}在性无知{target.name}的{armpit_s}中抽动，她对性事一无所知却有成熟身体的矛盾让{character.name}获得更强烈快感，每次摩擦都让欲望高涨。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}的{penis_s}被性无知的{target.name}的{armpit_s}紧紧夹住，她成熟的曲线与纯真的眼神形成鲜明对比，让每次摩擦都带来加倍的快感。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}享受着引导无知{target.name}用{armpit_s}夹紧{penis_s}的过程，她成熟却无知的状态让这种教导更加刺激，每次摩擦都让{character.name}接近高潮。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}感受着{penis_s}在成年但纯真的{target.name}的{armpit_s}中快速抽动，她对这种行为的困惑与不解让{character.name}的欲望更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}的{penis_s}被性无知{target.name}的{armpit_s}挤压着，她成熟的肉体与单纯的认知让这种行为格外刺激，腋下的柔软让每次摩擦都无比舒爽。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}享受着成年却无知的{target.name}用{armpit_s}摩擦{penis_s}的感觉，她成熟身体与懵懂神情的反差让{character.name}更加兴奋，每次动作都让快感积累。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}感受着{penis_s}在性无知{target.name}的{armpit_s}中摩擦的快感，她虽然身体成熟却对性一无所知的状态让{character.name}获得双重刺激。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}的{penis_s}被成年却纯真的{target.name}的{armpit_s}夹住，她丰满的身体与单纯的表情形成强烈对比，让每次摩擦都带来无比的快感。"
 
 [[entries]]

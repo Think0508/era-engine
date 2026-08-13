@@ -1,5 +1,6 @@
-// 一次性迁移：conditions = "premises:A&B&expr..." → "premise(A) && premise(B) && (expr...)"
-// 权重值比较段（premises:FOO==N，erArk 前提权重值比较）→ "premise(FOO) == N"（表达式引擎原生支持）
+// 一次性迁移：conditions 字符串中的单 & 分隔 → ' && ' 连接；premises:X 段 → premise(X)
+// 覆盖两类：① 含 premises: 前缀的段；② 纯表达式段之间的单 & 分隔（旧引擎恒 true 的静默错误源）
+// 幂等：已转换的行（&& 连接）再跑不变
 // 用法：node scripts/migrate-premises-prefix.cjs [--write]
 const fs = require('fs')
 const path = require('path')
@@ -13,10 +14,17 @@ const TARGET_DIRS = [
 const WEIGHT_CMP_RE = /^([A-Za-z_][\w]*)\s*(==|>=|<=|>|<)\s*(-?\d+)$/
 
 function convertCondition(cond) {
-  if (!cond.includes('premises:')) return cond
+  // 0. 保护字符串字面量（引号内的 & 不是分隔符）
+  const strPlaceholders = []
+  const noStrings = cond.replace(/"[^"]*"|'[^']*'/g, (m) => {
+    const idx = strPlaceholders.length
+    strPlaceholders.push(m)
+    return `\u0002S${idx}\u0002`
+  })
+  if (!noStrings.includes('&')) return cond
   // 1. 保护 &&（占位符避免被单 & 切分误切）
   const andPlaceholders = []
-  const protectedStr = cond.replace(/&&/g, () => {
+  const protectedStr = noStrings.replace(/&&/g, () => {
     const idx = andPlaceholders.length
     andPlaceholders.push('&&')
     return `\u0001A${idx}\u0001`
@@ -32,9 +40,11 @@ function convertCondition(cond) {
     }
     return part
   })
-  // 3. 还原 && 并重组
-  const joined = converted.join(' && ')
-  return joined.replace(/\u0001A(\d+)\u0001/g, (_m, i) => andPlaceholders[Number(i)])
+  // 3. 还原 && 与字符串字面量并重组
+  let joined = converted.join(' && ')
+  joined = joined.replace(/\u0001A(\d+)\u0001/g, (_m, i) => andPlaceholders[Number(i)])
+  joined = joined.replace(/\u0002S(\d+)\u0002/g, (_m, i) => strPlaceholders[Number(i)])
+  return joined
 }
 
 function processFile(file) {
@@ -72,7 +82,13 @@ for (const dir of TARGET_DIRS) {
   for (const file of scan(dir, [])) {
     if (!write) {
       const raw = fs.readFileSync(file, 'utf8')
-      const hits = (raw.match(/premises:/g) || []).length
+      const lines = raw.split('\n')
+      let hits = 0
+      for (const line of lines) {
+        const m = line.match(/^(\s*conditions\s*=\s*")(.*)("\s*)$/)
+        if (!m) continue
+        if (convertCondition(m[2]) !== m[2]) hits++
+      }
       if (hits > 0) { total += hits; console.log(`${hits}\t${file}`) }
     } else {
       total += processFile(file)

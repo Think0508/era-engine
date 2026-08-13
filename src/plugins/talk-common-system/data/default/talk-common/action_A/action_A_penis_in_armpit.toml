@@ -966,123 +966,123 @@ conditions = "premise(hidden_sex_mode_4) && premise(place_someone_not_in_hidden_
 context = "在隐蔽的角落里，{target.name}用香汗淋漓的{armpit}紧紧夹住{character.name}的{penis}来回磨蹭，两人享受着偷欢的刺激。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "年幼无知的{target.name}听话地夹紧手臂，让{character.name}的{penis}在她的{armpit}间抽动，她困惑地感受着奇怪的摩擦。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}引导懵懂的{target.name}用{armpit}夹住他的{penis}，她不解这行为的含义，只是乖巧地配合着。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "未经人事的{target.name}茫然地看着{character.name}的{penis}在自己的{armpit}间摩擦，不知道这意味着什么。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}让无知的{target.name}抬起手臂，将{penis}挤入她的{armpit}缝隙中抽动，她只是困惑地遵从指令。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "年幼的{target.name}不解地看着{character.name}用{penis}摩擦她的{armpit}，听话地配合着却不明白这种行为的含义。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}握住懵懂{target.name}的双臂，让{penis}在她的{armpit}间快速抽插，她只是茫然地接受着。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "未成年的{target.name}好奇地看着{character.name}的{penis}在自己的{armpit}处摩擦，完全不懂这是在做什么。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}诱导天真的{target.name}用{armpit}夹紧他的{penis}，她虽不明白但仍乖巧地照做了。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "年幼无知的{target.name}迷茫地看着{character.name}将{penis}塞入自己的{armpit}中抽动，不解这行为的意义。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}控制着懵懂的{target.name}，让她夹紧手臂使{armpit}包裹住他的{penis}，她则天真地配合着这奇怪的行为。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "年幼但懂事的{target.name}好奇地夹紧手臂，让{character.name}的{penis}在她的{armpit}间抽动，脸上露出既紧张又期待的表情。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}虽未成年却熟练地用{armpit}夹住{character.name}的{penis}，主动配合着他的抽插节奏。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "未成年的{target.name}对腋交也有所耳闻，努力用自己的{armpit}接纳{character.name}的{penis}，好奇地感受着这种新奇快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}将{penis}挤入年幼{target.name}的{armpit}中抽动，她虽了解这行为却仍为这新奇的体验而兴奋不已。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "年轻的{target.name}好奇地让{character.name}用{penis}摩擦自己的{armpit}，眼中闪烁着探索性事的渴望。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}尽管年龄尚小却饶有兴趣地用自己的{armpit}夹紧{character.name}的{penis}，主动学习着这种取悦男性的方式。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "未成年的{target.name}不仅懂事而且对性充满好奇，尝试用{armpit}夹住{character.name}的{penis}，努力配合着他的动作。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}教导年幼的{target.name}如何用自己的{armpit}更好地包裹他的{penis}，她则认真学习着这禁忌的技巧。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "年少的{target.name}好奇又大胆地用{armpit}夹紧{character.name}粗壮的{penis}，期待地体验着成人世界的快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}虽然年幼却了解性事，主动用{armpit}摩擦着{character.name}的{penis}，脸上露出好奇与期待的表情。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "性无知的成熟{target.name}困惑地看着{character.name}将{penis}塞入她的{armpit}中，不明白这种行为的目的却顺从地配合着。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}引导着发育完全却无性知识的{target.name}夹紧手臂，让她的{armpit}包裹住他的{penis}，她则茫然地服从。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "成熟却天真的{target.name}听从{character.name}的指示，用{armpit}夹住他的{penis}，不解这行为却认真配合。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}告诉无知的{target.name}这是一种“特殊按摩”，她便乖乖用她的{armpit}夹住他的{penis}任由摩擦。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "身体成熟但毫无经验的{target.name}疑惑地看着{character.name}用{penis}在她的{armpit}间抽插，不明白为何却听话地配合。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}诱导着无性知识的{target.name}，让她用{armpit}夹紧他的{penis}，她则带着疑惑执行着指令。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "成熟女性{target.name}尽管身体发育完全，却对{character.name}将{penis}塞入她的{armpit}的行为感到不解，但仍顺从地配合着。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}指导着性无知的{target.name}如何用{armpit}夹住他的{penis}，她则一脸茫然地跟随指示。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "身材成熟却天真无知的{target.name}按照{character.name}的要求，用{armpit}紧紧包裹他的{penis}，不解其意却认真执行。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}欺骗无知的{target.name}这是健康运动，便将{penis}插入她的{armpit}间抽动，她则懵懂地照做了。"
 
 [[entries]]

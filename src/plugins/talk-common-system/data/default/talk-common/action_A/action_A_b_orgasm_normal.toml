@@ -6,23 +6,23 @@ variable = "action_A_b_orgasm_normal"
 description = "动作·action A b orgasm normal——体位条件描述文本"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "未脱稚气的{target.name}被这股突如其来的快感猛地推上了完整的绝顶，{breast}剧烈颤动着高高挺起，浑身的肌肉骤然绷紧又瞬间瘫软下去。\n她完全弄不明白这具身体究竟发生了什么，只是茫然地大口喘着气，稚嫩的脸颊涨得通红，眼底满是懵懂无知的慌乱与困惑。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{target.name}稚嫩的身躯毫无征兆地一阵剧烈痉挛，{breast}随着起伏的呼吸剧烈晃动着，乳尖胀得又硬又痛，这是她从未经历过的完整绝顶。\n她根本不懂自己为何会这样，只能懵懵懂懂地承受着那股席卷全身的酥麻，眼神空茫，嘴唇轻颤，什么都想不明白。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "一波强烈的快感猝然击穿了{target.name}青涩懵懂的身体，{breast}剧烈颤抖着高高挺起，四肢瞬间绷紧又不受控制地瘫软下来，这是一次完整而正常的绝顶。\n未经人事的她完全不明白发生了什么，只能任由那股陌生的浪潮反复冲刷，懵懂的眼中盈满茫然与羞怯的泪光。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{target.name}尚未脱去稚气的身体猛地一阵痉挛绷紧，{breast}剧烈地颤动摇晃，乳尖胀硬得发疼，这股完整的快感浪潮将她彻底淹没。\n对性事一无所知的她根本不懂身体为何会有这种反应，只能茫然失措地喘息着，稚嫩的脸上写满了懵懂无措的困惑与羞红。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "毫无性经验的{target.name}被这股汹涌的快感猝然击中，{breast}剧烈地颤动挺立，浑身肌肉一阵接一阵地绷紧又松软，这是一次完整正常的绝顶高潮。\n她懵懂无知地承受着这股陌生而强烈的浪潮，完全不懂自己的身体正在经历什么，只是茫然地喘着气，眼神里满是懵懵懂懂的慌乱。"
 
 [[entries]]
@@ -226,23 +226,23 @@ conditions = "premise(FALL_LEVEL_E_-4) && premise(high_1)"
 context = "完全献身于{character.name}的奴隶{target.name}娇喘着弓起了身子，{breast}剧烈地颤栗波动，两粒乳头胀硬突起，绷得又红又亮。\n一次正常而彻底的绝顶如海浪般自乳尖直冲脑髓，席卷全身，她胸口高高挺起又重重落下，意识渐渐模糊，脸上尽是奉献后的满足。\n身为主人的性奴，她把这场胸部绝顶当作最神圣的侍奉，甘愿在这份快感里彻底沉沦、彻底臣服。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "未成年却早已对情事满怀好奇的{target.name}，稚嫩的身子猛地一僵，{breast}剧烈而有节奏地颤动起来，乳尖处的酥胀感如汹涌浪潮席卷全身。\n她涣散的眸子里满是探索欲望燃尽后的茫然，稚气未脱的脸蛋染上浓重潮红，胸膛剧烈起伏，一次完整而正常强度的绝顶毫无保留地降临在她青涩的躯体上。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "早已懂得情事却仍带着几分稚气的{target.name}猝然绷紧了纤细的腰肢，{breast}随之剧烈颤抖，乳晕处涨得又红又硬。\n那双总是充满探索欲的眼睛此刻涣散失焦，未脱稚气的脸颊烧得滚烫，呼吸急促紊乱，属于完整绝顶的每一分反应都毫无保留地在她青涩的身体上炸开。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}虽还未成年，却早已对情事充满好奇与探索欲望，此刻{breast}忽然剧烈颤动，乳尖胀硬得发疼，一波接一波的酥麻从胸口直冲天灵盖。\n稚嫩的腰肢猛地弓起，青涩的双腿绷得笔直，脸颊涨红发烫，一次完整而典型的绝顶高潮毫无保留地席卷了她尚显单薄的身躯。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "好奇心旺盛的{target.name}明明未成年，却早懂情事的滋味，此刻{breast}猛烈地上下颤动，乳肉如波浪般起伏晃荡，胸口高高挺起又剧烈起伏。\n稚气的脸庞霎时涨得通红，涣散的眼神里满是被快感彻底淹没的茫然，一次完整而正常强度的绝顶高潮就这样毫无保留地降临在她尚且青涩的身躯上。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}虽年纪尚幼，性知识却懂得不少，此刻探索欲望终于换来了回报，{breast}猛地一阵剧烈痉挛，乳头胀硬到了极限。\n稚嫩的脊背猛然弓起，四肢绷得笔直又忍不住微微颤抖，呼吸紊乱急促，一次完整典型的绝顶高潮毫无保留地在她青涩的身体上尽情绽放。"
 
 [[entries]]
@@ -266,23 +266,23 @@ conditions = "selected.abilities.胸部感度.level <= 3"
 context = "快感如海啸般自{breast}席卷全身，{target.name}猝不及防地攀上了完整的绝顶，{breast}胀满而颤抖，乳头充血挺立，胸口剧烈翻涌。\n第一次被玩弄到这般绝顶的她又羞又惊，纤腰轻弓，四肢微颤，绯红爬满了脸颊与颈项，意识在这股陌生而炽烈的快意里渐渐涣散朦胧，却还留着最后一丝清醒。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "早已熟悉胸前快感的{target.name}娇躯猛地一挺，酥麻的绝顶感自乳尖如海浪般席卷全身，{breast}剧烈地颤动起来，乳头充血胀硬到了极点。\n她的胸膛高高挺起，胸口大幅起伏，一场完整而标准的绝顶将她彻底淹没，四肢绷紧轻颤，脸上尽是沉醉满足的神色。\n这远比小绝顶来得强烈，却还未失控，她的意识微微发昏，却仍清晰地承受着{breast}被反复冲刷的爽快。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "{target.name}那对已被开发得颇为敏感的{breast}猛然剧烈晃动，一波标准强度的绝顶自乳肉深处轰然炸开，乳尖胀得又红又硬。\n她的背脊弓起，胸膛高高耸立，急促的喘息一声接一声，全身典型的高潮反应尽数浮现，腰肢与大腿都不受控地绷紧颤抖。\n这次绝顶完整而炽烈，快感如浪涌上头顶，却尚未冲垮她的神志，只令她沉沉陷进胸口翻涌的酥爽里。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "熟悉这种胸前愉悦的{target.name}忽然浑身一僵，随即{breast}如波涛般大幅起伏颤抖，一次货真价实的绝顶从乳尖直烧到脑髓。\n乳头挺立充血，胸口剧烈起伏，她仰起脖颈发出细碎的娇吟，四肢绷得笔直又微微战栗，是绝顶该有的一切典型模样。\n比起小绝顶的浅尝辄止，这一次完整而饱满，快感彻底将她包裹，意识开始迷蒙，却还稳稳停在被冲垮的边缘之前。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "{target.name}早已习惯并期待这般抚弄，此刻{breast}猛地一阵剧颤，标准的绝顶浪潮自乳尖汹涌漫开，席卷了她的四肢百骸。\n她挺胸弓腰，胸膛高高鼓起又急促塌陷，乳肉一波波地晃动，充血的乳头硬挺发烫，浑身肌肉都因高潮而绷紧发抖。\n这是一场完整正常强度的绝顶，远比小峰值来得酣畅，却仍留有一线清明，让她沉醉地承受着胸口翻涌不息的快感。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "被玩弄得愈发敏感的{breast}骤然剧烈震颤，{target.name}整个人被一波完整的绝顶掀翻，酥麻酸胀自乳尖直冲颅顶。\n她胸口高高挺起，脊背弓成弧线，急促的呼吸乱成一片，四肢绷紧又颤栗，绝顶的每一种典型反应都在她身上鲜明上演。\n这次高潮饱满而炽热，比小绝顶强烈太多，却还未到极致失控的境地，只让她意识朦胧地栽进胸前那片翻涌的爽意中。"
 
 [[entries]]
@@ -326,43 +326,43 @@ conditions = "selected.胸部 < 1000"
 context = "{target.name}猛地绷紧了全身，{breast}剧烈地震颤起来，一波完整而汹涌的高潮自乳尖翻卷而上，将她整个人卷入其中。\n她的胸脯高高挺起，乳头胀硬如豆，随着一次次痉挛微微弹跳，胸口起伏得又快又深。\n潮红从乳晕一直蔓延到脖颈，细汗涔涔而下，她失神地仰着头，任由这场货真价实的绝顶从胸前席卷全身，浓烈却尚未失控，把她死死钉在这份灭顶的快意里。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "早已被撩拨得数度攀顶的{target.name}娇躯猛地一僵，一场完整而正常强度的绝顶在{location.name}里彻底炸开。\n酥麻的快感自挺硬充血的乳尖如海浪般层层席卷全身，{breast}剧烈地颤动着，乳肉一波接一波地晃荡不止。\n她胸膛高高挺起，胸口剧烈起伏，脸涨得通红，意识开始变得模糊却还未被这股快感洪流冲垮，绝顶该有的反应一应俱全，却尚未到极致失控的地步。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "胸口早已敏感到极点的{target.name}再一次被送上顶峰，这回是一场彻底而典型的绝顶。\n{breast}整个胀鼓起来剧烈震颤，乳尖充血挺立到极限，一股灼热的快感从乳肉深处轰然扩散，漫过她的全身。\n她的腰背高高弓起，四肢微微绷紧发颤，娇喘失序，眼神开始涣散迷离，却还残存着一丝清明，快感的浪潮比先前的小高潮凶猛太多。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "被反复挑逗到几度泄顶的{target.name}终于迎来一场完整的正常绝顶，娇躯在{location.name}中剧烈痉挛。\n那股酥麻酸胀自乳尖一路烧向脑髓，{breast}大幅度地颤抖晃动，胸膛一挺一挺地高高耸起，胸口起伏得像风箱一般。\n潮红从脸颊蔓延到脖颈，她意识开始模糊，却还没被彻底淹没，这次绝顶远比之前的小峰值来得猛烈饱满，却仍未触及极致。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "{target.name}的胸部早已被玩弄得数次登顶，此刻又一次完整地攀上正常绝顶的高峰。\n剧烈的快感如决堤的海浪从充血的乳尖倾泻而下，{breast}颤动不休，乳肉波浪般起伏，整具身子被这股洪流卷得战栗不已。\n她高高挺胸弓腰，小腹反复抽搐，呼吸急促而凌乱，神志开始涣散，绝顶典型的反应尽数浮现，却还留着一线未被冲垮的清醒。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "敏感的胸口早已高潮过好几回的{target.name}再次被推上顶点，一场彻头彻尾的绝顶在{location.name}中爆发开来。\n{breast}猛烈震颤，乳尖胀硬如石，快感自乳肉深处如潮水般层层涌起，席卷全身每一寸肌肤。\n她胸膛耸动起伏，脸红得几乎滴血，眼波迷蒙失焦，意识渐渐模糊却仍勉力维持，反应完整而剧烈，可尚未狂乱到不能自已的极端程度。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "仅仅是又一波酥麻掠过乳尖，{target.name}的身体便骤然绷紧，一次完整而标准的绝顶如约而至。\n快感从高度敏感的{breast}深处如海浪般层层涌起，席卷四肢百骸，{breast}剧烈地颤动着，乳头充血胀硬到了极点。\n她的胸膛高高挺起，胸口剧烈起伏，意识开始变得模糊，却还没有被彻底冲垮，脸上写满了沉醉与餍足。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "{target.name}敏感至极的{breast}又一次攀上顶点，这一回来得完整而汹涌，是一次货真价实的绝顶高潮。\n乳尖处炸开的快感沿着{breast}一路烧灼开来，蔓延至全身，{breast}上的乳肉大幅颤抖，乳头挺立得又硬又红。\n她弓起脊背，急促地喘息着，眼神迷离涣散，整个人深深陷进了这场标准而剧烈的胸部高潮里。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "只是轻轻一碰，高度敏感的{target.name}便再度被推上绝顶，这次的快感圆满而强烈，是完整正常强度的一次高潮。\n酥麻的浪潮自{breast}的顶端奔涌而下，淹没了她的理智，{breast}随之剧烈起伏颤栗，充血的乳头颤巍巍地挺立着。\n她的胸口一起一伏，呼吸乱作一团，神智渐渐涣散却尚存一丝清明，沉浸在这份甜美的高潮余韵中。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "{target.name}那对被玩弄到极致敏感的{breast}猛地一阵痉挛，一场完整的绝顶就此彻底爆发开来。\n从乳尖翻涌而出的快感如决堤般席卷全身，{breast}颤动得几乎失控，乳头胀硬敏感，胸膛不受控地高高耸起。\n她仰起头，四肢微微绷紧颤抖，意识在这波海浪般的快感中开始朦胧，脸颊潮红，尽是标准绝顶时的迷醉神态。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "又一波灼热的快感自敏感的乳尖席卷而来，{target.name}整个人剧烈一颤，迎来了一次完整而典型的胸部绝顶。\n{breast}随着高潮剧烈地波动起伏，乳肉大幅晃荡，乳头挺硬发红，胸口大起大落，喘息声急促而失序。\n她的腰肢弓起，指尖微微蜷缩，意识在这场标准强度的绝顶中渐渐模糊，却仍未被完全冲垮，满面尽是沉沦的红晕。"
 
 [[entries]]
@@ -446,23 +446,23 @@ conditions = "selected.talents.普乳 == 1"
 context = "完整的绝顶如约而至，{target.name}那对大小恰到好处、柔嫩又有弹性的{breast}在快感中剧烈地震颤起来，乳肉如波涛般翻涌。\n胀硬的乳头传来的电流般的快感席卷了她的整具身子，令她胸膛剧烈起伏，四肢绷紧，脸上写满了沉醉。\n这是一次正常强度的标准绝顶，{breast}颤动得越发厉害，潮红顺着颈项一路蔓延，她的意识渐渐模糊，却仍未跌入失神的深处。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "已经成年却依旧不通情事的{target.name}，成熟饱满的{breast}猛然剧烈颤动起来，乳尖涨得又红又硬，胸膛不由自主地高高挺起。\n这是一次完整而典型的绝顶高潮，快感如潮水般从乳尖直冲全身，远比先前那点浅浅的酥麻猛烈得多。\n她懵懂的意识渐渐模糊，却还未被彻底冲垮，只是茫然地喘息着，任由这具早已成熟的身躯在陌生的欢愉里剧烈战栗。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "拥有成熟胴体却仍似孩童般懵懂的{target.name}，在{character.name}的引导下毫无预兆地攀上了绝顶，{breast}剧烈耸动，乳晕紧缩，乳头胀硬得发疼。\n完整的高潮反应一齐涌来，腰肢不由自主地弓起，四肢绷紧颤抖，呼吸乱成一片急促的喘息。\n她根本不明白自己身体里翻涌的究竟是什么，只知道这股快感比之前任何一次都更加汹涌，冲得她意识都开始发飘。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}的身体早已完全成熟，脑子里却对男女之事一片空白，此刻{breast}猝然剧烈颤动，乳尖高高挺立，胸口大幅起伏个不停。\n这是一次正正经经的绝顶高潮，浪潮般的快感从胸前直冲头顶，强度远超先前那点轻浅的颤抖。\n她被这陌生又汹涌的感觉冲得意识微微发晕，懵懂地任凭成熟的躯体在她全然不解的欢愉里剧烈痉挛。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "明明早已是成年人，{target.name}却对床笫之事一无所知，被{character.name}三两下逗弄，{breast}便毫无征兆地剧烈颤动起来，乳肉如波浪般起伏。\n这是完完整整的一次绝顶高潮，酥麻的浪潮自乳尖席卷四肢百骸，比之前那点小小的颤栗强烈得多。\n她茫然地睁大双眼，意识开始模糊却还未彻底崩溃，只能懵懂地承受着这具成熟身体给她的陌生冲击。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}虽已成年多年，心思却依旧天真得如同白纸，此刻{breast}骤然剧烈耸动，乳尖胀硬发红，胸膛高高挺起，随急促的呼吸剧烈起伏。\n这是一次强度完整的正常绝顶，快感如汹涌的潮水从乳尖直灌全身，远远超出了先前那一点浅浅的酥麻。\n懵懂的她意识渐渐迷糊，却还能勉强维持一丝清明，只是茫然又羞涩地承受着这具成熟身体骤然爆发的欢愉。"
 
 [[entries]]

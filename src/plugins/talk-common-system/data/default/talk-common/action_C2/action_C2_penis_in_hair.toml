@@ -926,43 +926,43 @@ conditions = "selected.abilities.皮肤感度.level <= 3"
 context = "{penis_s}穿过{hair_s}的触感对{target.name}来说并不强烈，但这种把头发当作性工具的行为让她感到既淫荡又刺激，心理上的满足远胜于肉体的快感。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{target.name}的{hair_s}被{penis_s}摩擦时，她能清晰感受到头皮传来的阵阵快感，这种不常有的刺激让她忍不住发出轻微的呻吟，身体随着对方的动作轻轻颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{penis_s}在{hair_s}间滑动时，{target.name}感受到了明显的愉悦，头皮的敏感带被不断刺激，这种特殊的快感让她双眼微闭，享受着发丝传来的每一分触感。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{target.name}的{hair_s}缠绕着{penis_s}，适中的皮肤感度让她能够充分体会这种特别的性爱方式，每一次摩擦都传递着令人愉悦的刺激，让她忍不住舔舐嘴唇。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "随着{penis_s}在{hair_s}间抽送，{target.name}感受到头皮传来一波波快感，这种与众不同的刺激方式让她兴奋不已，脸上浮现出明显的情欲表情。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{target.name}的{hair_s}被{penis_s}摩擦时，她能感受到相当的快感，头皮的神经末梢被不断刺激，这种奇特的感觉让她的身体变得敏感，下体开始湿润。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{penis_s}在{target.name}的{hair_s}间进出，她享受着这种独特的体验，头皮传来的刺激虽不如敏感带强烈，但足以让她感到一阵阵舒适的颤栗。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{target.name}感受着{penis_s}在她{hair_s}间滑动，每一次摩擦都带来明显的愉悦感，这种特殊的性爱方式既满足了她的好奇心，也带来了与众不同的快感。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "当{penis_s}拉扯着{hair_s}时，{target.name}能清晰感受到头皮传来的刺激，这种介于疼痛与快感之间的感觉让她既紧张又兴奋，呼吸变得急促起来。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{target.name}的{hair_s}被{penis_s}不断摩擦，适中的皮肤感度让她能够体会到这种特殊的性爱乐趣，头皮传来的快感让她忍不住轻声呻吟。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "随着{penis_s}在{hair_s}间的律动，{target.name}感受到一种新奇的快感，这种平时不会被关注的部位被当作性器官使用的感觉，让她心理和生理都得到了满足。"
 
 [[entries]]

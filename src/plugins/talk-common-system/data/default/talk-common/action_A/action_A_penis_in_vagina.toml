@@ -12918,43 +12918,43 @@ conditions = "premise(dr_position_back_lie) && premise(hidden_sex_mode_4) && pre
 context = "藏在角落处，{character.name}和{target.name}侧卧着激烈交合，{penis}在{vagina}里快速抽动，外面的声音让两人既紧张又更加兴奋，快感加倍袭来。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在幼小的{target.name}初经人事的{vagina}中轻轻抽动，她稚嫩的身体因疼痛和未知的感觉而颤抖，泪水从大眼睛中滚落。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}小心控制着力度，让{penis}在{target.name}紧致娇小的{vagina}内缓慢移动，她紧闭双眼，小手紧抓着身下的布料，呼吸急促。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}幼小的身躯随着{character.name}的{penis}在她初次打开的{vagina}中的抽送而摇晃，她发出既痛苦又困惑的细小呻吟。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}幼嫩的{vagina}艰难地容纳着{character.name}的{penis}，她的小脸因初次性爱的刺激而涨得通红，眼中满是迷茫和泪水。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}感受着{target.name}极度紧窄的{vagina}包裹着自己的{penis}，她稚嫩的四肢无力地抖动，嘴里发出不知所措的呜咽声。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}处子之身的{vagina}被{character.name}的{penis}撑开，她幼小的身体承受着超出年龄的刺激，小手无助地推拒着却毫无力量。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}每一次轻柔的抽送都让{penis}在{target.name}幼嫩的{vagina}中感受到强烈的挤压，她年幼的身体不自觉地绷紧，对这陌生感觉充满恐惧。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}初经人事的{vagina}被{character.name}的{penis}小心翼翼地开拓着，她纯真的脸上混合着疼痛和好奇的表情，小嘴微张发出细碎的喘息。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}用{penis}轻轻摩擦着{target.name}破处后流血的{vagina}内壁，幼小的她因初体验而浑身发抖，眼中充满了迷惑与不安。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}稚嫩的{vagina}紧紧包裹着{character.name}的{penis}，她年幼的身体还不理解这种感觉，只能本能地微微扭动，发出混合着痛苦与新奇的轻声呻吟。"
 
 [[entries]]
@@ -12998,283 +12998,283 @@ conditions = "selected.talents.幼女 == 1 && premise(t_first_sex_in_today)"
 context = "{target.name}稚嫩的身体随着{character.name}的{penis}在她初尝性事的{vagina}中的轻柔抽送而微微颤抖，她的小手紧抓着{character.name}，眼中满是复杂的情绪。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在{target.name}稚嫩紧致的{vagina}中缓慢进出，她幼小的身体虽有些经验但仍显得娇弱，随着抽送发出轻微的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}虽已不是处女但经验尚浅的{vagina}紧紧包裹着{character.name}的{penis}，她娇小的身躯随着律动微微晃动，稚嫩的表情逐渐染上情欲。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}感受着{penis}被{target.name}稚嫩但略有经验的{vagina}包裹的快感，她幼小的身体对这刺激仍有些不适应，却也开始展现出本能的反应。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}尚未完全成熟的{vagina}紧紧吸附着{character.name}的{penis}，她稚嫩的身体虽有过几次经验但仍显得脆弱，随着抽送发出混合着快感与不适的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在{target.name}紧致的{vagina}中抽送，虽非初次但她幼小的身体仍不甚适应，小手紧抓着{character.name}，眼中满是复杂神情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}幼小的身躯随着{character.name}的{penis}在她稚嫩却有些经验的{vagina}中的抽动而摇晃，她的表情逐渐从不适转为若隐若现的快感。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}能感受到{target.name}尚缺乏丰富经验的{vagina}对{penis}的紧密包裹，她娇小的身体随着每次插入而微微颤抖，发出稚嫩的轻吟。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}虽已有过几次性经验但仍显稚嫩的{vagina}被{character.name}的{penis}撑开，她幼小的身体随着抽插节奏摇晃，表情介于不适与快感之间。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}被{target.name}稚嫩而紧致的{vagina}紧紧吸附，她幼小的身躯随着抽送而轻微抖动，脸上的表情显示她仍在适应这种刺激。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}稚嫩的身体对{character.name}的{penis}在她略有经验的{vagina}中的抽动有了一些适应，她的小手不再紧绷，开始流露出些许享受的神情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在{target.name}幼小却有经验的{vagina}中抽送，她稚嫩的身体已能较好地适应这种刺激，脸上逐渐浮现出熟悉的快感表情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}娇小的身躯随着{character.name}的{penis}在她经验丰富的{vagina}中的律动而摇晃，她稚嫩的脸上已能自然流露出享受的表情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}感受着{target.name}幼小但经验老道的{vagina}熟练地吮吸着自己的{penis}，她稚嫩的身体随着抽送微微颤抖，发出熟悉的甜腻呻吟。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}虽外表稚嫩但已有经验的{vagina}紧紧包裹着{character.name}的{penis}，她娇小的身体随着抽送而扭动，表情自然地流露出愉悦。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在{target.name}娇小但经验丰富的{vagina}中进出，她幼小的身体已熟知如何配合这种节奏，稚嫩的脸上浮现出享受的红晕。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}娇小的身体主动迎合着{character.name}的{penis}在她经验老道的{vagina}中的抽送，她稚嫩的脸上带着与年龄不符的熟练享受表情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}能感受到{target.name}幼小但性经验丰富的身体对{penis}在她{vagina}中的抽动作出熟练反应，她的呻吟甜腻而自然，充满享受。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}虽外表娇嫩但已有丰富经验的{vagina}熟练地挤压着{character.name}的{penis}，她稚嫩的身体随着每次插入而自然扭动，表情沉浸在快感中。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}被{target.name}幼小却熟练的{vagina}紧紧包裹，她娇小的身体已能自如地配合抽送节奏，发出与年龄不符的娴熟呻吟。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}稚嫩外表下经验丰富的{vagina}熟练地吞吐着{character.name}的{penis}，她娇小的身体随着抽送而有节奏地扭动，表情享受而陶醉。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在{target.name}外表幼小但异常熟练的{vagina}中自如抽送，她稚嫩的身体以惊人的适应性配合着猛烈的节奏，发出娴熟的浪叫。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}娇小的身躯容纳着{character.name}的{penis}在她经验极其丰富的{vagina}中激烈抽送，她稚嫩的脸上是与年龄极不相符的纯熟淫荡表情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}感受着{target.name}幼小但极具经验的{vagina}对{penis}的熟练吮吸，她稚嫩的身体以惊人的技巧主动迎合，发出放荡的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}看似娇嫩但经验极其丰富的{vagina}轻松容纳了{character.name}的{penis}，她幼小的身体熟练地扭动着，脸上是沉醉在性爱中的享受表情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在{target.name}外表稚嫩内里却极其老道的{vagina}中畅通无阻地抽送，她幼小的身体以惊人的节奏和技巧迎合着，呻吟熟练而淫荡。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}娇小的身体容纳着{character.name}的{penis}在她极具弹性的{vagina}中自如进出，她稚嫩的脸上是与外表极不相符的性爱老手表情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}能感受到{target.name}幼小身躯中的{vagina}以惊人的技巧挤压着自己的{penis}，她稚嫩的外表下是令人难以置信的性爱熟练度。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}虽身形娇小但经验极其丰富的{vagina}轻松适应了{character.name}的{penis}，她幼小的身体熟练地摆动着腰肢，发出毫不掩饰的淫荡呻吟。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在{target.name}经验丰富到不可思议的{vagina}中抽送，她稚嫩的外表与熟练的性技巧形成强烈对比，脸上是纯熟的享受表情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.幼女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}娇小的身体随着{character.name}的{penis}在她异常老道的{vagina}中的抽送而娴熟地摆动，她稚嫩的脸上是与年龄完全不符的淫荡表情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在刚受孕的{target.name}娇小的{vagina}中轻柔抽送，她稚嫩的身体因初期妊娠变得更加敏感，小手不自觉抚摸着平坦的小腹。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}刚刚受孕的幼小身体对{character.name}的{penis}在她敏感的{vagina}中的抽动反应更加强烈，她稚嫩的脸上混合着快感和对新生命的迷茫。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}感受着{target.name}娇小但已怀孕的{vagina}包裹着自己的{penis}，她幼小的身体因初期妊娠而散发出特殊的气息，表情既兴奋又迷惑。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}刚受精的{vagina}对{character.name}的{penis}变得更加敏感，她娇小的身体随着抽送而轻颤，稚嫩的脸上是对初期妊娠变化的困惑与快感。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在{target.name}刚刚怀孕的{vagina}中缓慢进出，她幼小的身体因这一新状况而更加敏感，稚嫩的脸上是复杂的表情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}娇小的身体因初期受孕而使{vagina}对{character.name}的{penis}反应更加强烈，她稚嫩的手时不时触碰自己的小腹，表情既兴奋又不安。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}能感受到刚受孕的{target.name}的{vagina}对{penis}的挤压变得更加敏感，她幼小的身体散发出特殊的气息，稚嫩的表情充满复杂情绪。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}娇小的身体因初期怀孕而使{vagina}对{character.name}的{penis}的感受更加强烈，她稚嫩的脸上浮现出对这种变化的迷茫与快感。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在{target.name}刚受精的{vagina}中缓慢抽送，她娇小的身体因初期妊娠而变得格外敏感，每次抽动都引起强烈的反应。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}幼小却已怀孕的身体让{vagina}包裹着{character.name}的{penis}的感觉变得更加强烈，她稚嫩的表情既享受又带着对未知的恐惧。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}小心地在怀孕中期的{target.name}的{vagina}中轻柔抽送，她娇小的身体上隆起的孕肚显得格外突出，稚嫩的脸上满是复杂情绪。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}虽身形娇小但已怀孕中期的身体让{character.name}的{penis}在她的{vagina}中格外小心，她稚嫩的手轻抚着明显隆起的小腹，表情既紧张又享受。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}感受着{target.name}怀孕中的{vagina}包裹着自己的{penis}，特别注意避免压到她隆起的孕肚，她稚嫩的表情混合着情欲和母性光辉。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}怀孕中期的{vagina}敏感地包裹着{character.name}的{penis}，她幼小的身体上隆起的孕肚随着轻柔的抽送微微晃动，脸上是成熟与稚嫩的矛盾融合。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}在{target.name}怀孕中的{vagina}中极其轻柔地进出，她娇小的身躯与隆起的孕肚形成强烈对比，稚嫩的脸上是对性与母性的复杂感受。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}孕肚隆起的娇小身体让{character.name}的{penis}在她的{vagina}中更加谨慎，她稚嫩的手保护性地放在小腹上，表情既享受又警惕。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}能感受到怀孕中期的{target.name}的{vagina}对{penis}的特殊挤压，她幼小身体上明显的孕肚使性爱节奏变得极其轻柔，脸上既紧张又愉悦。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}娇小的身体上明显隆起的孕肚让{character.name}的{penis}在她敏感的{vagina}中的动作格外小心，她稚嫩的表情透露着母性与情欲的复杂混合。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}在{target.name}怀孕中期的{vagina}中缓慢而小心地抽送，她幼小的身体与隆起的孕肚形成强烈对比，稚嫩的脸上是复杂的满足感。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}怀有身孕的娇小身体让{character.name}的{penis}在她的{vagina}中的动作格外温柔，她稚嫩的手时不时抚摸隆起的小腹，表情既天真又成熟。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在刚生产完的{target.name}敏感的{vagina}中轻柔抽送，她娇小的身体刚经历生产却又迎来性爱，稚嫩的脸上满是复杂情绪。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}虽身体娇小却已是母亲的身份，{character.name}的{penis}在她产后敏感的{vagina}中格外小心地进出，她的表情既天真又带着母性的成熟。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}感受着{target.name}产后的{vagina}包裹着自己的{penis}，她幼小的身体刚完成生产使得内里格外敏感，表情既痛苦又渴望。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}产后的{vagina}对{character.name}的{penis}格外敏感，她稚嫩的身体刚经历生产的变化，对性爱的感受比以前更加强烈而复杂。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在{target.name}产后恢复中的{vagina}中轻柔进出，她娇小的身体在生产后显得更加脆弱，表情既疲惫又渴求安慰。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}刚成为母亲的娇小身体使{vagina}对{character.name}的{penis}更加敏感，她稚嫩的脸上混合着性爱的愉悦和对宝宝的思念。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}能感受到产后的{target.name}的{vagina}对{penis}的特殊包裹感，她幼小的身体刚经历生产的创伤，表情既痛苦又渴望被填满。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}娇小的身体刚完成生产使{vagina}对{character.name}的{penis}特别敏感，她稚嫩的表情中透露着新手母亲的复杂情绪与性欲的交织。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在{target.name}产后的{vagina}中小心进出，她娇小的身体刚经历分娩使得内里格外松软敏感，脸上是矛盾的表情。"
 
 [[entries]]
-conditions = "selected.talents.幼女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.幼女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}产后的娇小身体让{character.name}的{penis}在她的{vagina}中感受到特殊的包裹感，她稚嫩的脸上混合着成为母亲的骄傲和对性爱的渴望。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在{target.name}稚嫩的{vagina}里小幅度抽动，她初次承受这般刺激，小脸痛苦地皱在一起，身体不停颤抖。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}轻柔地律动腰肢，{penis}被{target.name}初经人事的{vagina}紧紧包裹，稚嫩的身躯因疼痛与快感而不住颤抖。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}娇小的身体随着{character.name}的{penis}在{vagina}内的每一次搅动而轻微抽搐，泪水从她紧闭的双眼中挤出。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}缓慢地抽动着，{penis}在{target.name}紧致的{vagina}内小心进出，她幼小的四肢绷紧，发出微弱的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}瘦小的手指紧紧抓住床单，{character.name}的{penis}在她初次被开拓的{vagina}里缓慢搅动，带出丝丝血迹。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}每次微微抽动都让{target.name}发出细弱的呜咽，她稚嫩的{vagina}被撑到极限，娇小的身躯无助地扭动。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}幼小的双腿不自主地颤抖，{character.name}的{penis}在她第一次被触碰的{vagina}里慢慢律动，带出混杂着血丝的爱液。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}小心翼翼地抽送着{penis}，{target.name}稚嫩的{vagina}紧紧吸附着，她娇小的身体每次被顶入都不住颤栗。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}幼小的身体被{character.name}压在身下，{penis}在她尚未发育完全的{vagina}里轻轻搅动，带出断断续续的哭泣声。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在{target.name}青涩的{vagina}中缓缓磨蹭，她稚嫩的身体因初次体验而紧绷，小手无力地推拒着。"
 
 [[entries]]
@@ -13318,283 +13318,283 @@ conditions = "selected.talents.少女 == 1 && premise(t_first_sex_in_today)"
 context = "{target.name}娇小的身体随着{character.name}的{penis}在她初尝人事的{vagina}内的每次律动而微微颤抖，眼神迷离带着恍惚。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在{target.name}稚嫩但已有些经验的{vagina}里抽动，她娇小的身体随着每次插入而轻轻战栗。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}紧致的{vagina}紧紧吸附着{character.name}的{penis}，她娇小的身躯微微发抖，青涩地配合着抽送的节奏。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}温柔地抽送着{penis}，{target.name}的{vagina}虽已有些经验却仍然紧致，她纤细的手臂抱紧了{character.name}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}稚嫩的身体随着{character.name}的{penis}在她尚未完全习惯的{vagina}里进出而轻轻摆动，发出细碎的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在{target.name}略显青涩的{vagina}内缓慢抽动，她幼小的身体还在适应这样的刺激，轻微颤栗。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}娇小的身躯扭动着，{character.name}的{penis}在她虽有经验但仍旧紧致的{vagina}里进出，带出细微的水声。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}轻柔地将{penis}埋入{target.name}有些许经验的{vagina}深处，她娇小的身体颤抖着，发出细小的喘息声。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}纤细的腿微微抬起，迎合着{character.name}的{penis}在她尚显青涩的{vagina}内的每一次抽送，呻吟声越来越大。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在{target.name}幼小身体的{vagina}里进出，她虽有些经验却仍不习惯这样的节奏，小手紧抓着{character.name}。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}娇小的身体随着{character.name}的{penis}在她紧致{vagina}内的律动而微微摇晃，表情逐渐从不适转为享受。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在{target.name}娇小却经验丰富的{vagina}里抽送，她熟练地扭动腰肢迎合着每一次插入，发出娇媚的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}虽身形娇小却娴熟地摆动腰肢，让{character.name}的{penis}在她经验丰富的{vagina}内进出得更加顺畅，满脸淫荡的表情。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}大力抽送着{penis}，{target.name}娇小的身体已经适应了这样的刺激，她的{vagina}熟练地收缩着，榨取着快感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}纤细的腿熟练地缠上{character.name}的腰，{penis}在她虽小却经验丰富的{vagina}里快速抽动，带出阵阵淫靡水声。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在{target.name}熟练的{vagina}内进出，她娇小的身体虽然稚嫩却已经学会了享受性爱，发出淫荡的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}幼小的身躯随着{character.name}的{penis}在她已有丰富经验的{vagina}内的抽送而娴熟地扭动，主动索取更多快感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}加快了{penis}的抽送速度，{target.name}娇小却经验丰富的身体完全承受住了这样的冲击，{vagina}熟练地吞吐着。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}虽然外表娇小却淫荡地扭动着腰肢，让{character.name}的{penis}在她经验丰富的{vagina}里进出得更加畅快。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}快速抽动着，{target.name}娇小的身体因快感而颤抖，她的{vagina}已经非常熟悉这样的刺激，热情地吮吸着。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}稚嫩的外表下隐藏着丰富的性经验，她熟练地扭动着腰部，让{character.name}的{penis}在{vagina}内获得最大的快感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在{target.name}看似稚嫩实则极其放荡的{vagina}里大力抽送，她娇小的身体已完全适应了这种激烈的性爱。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}淫荡地扭动着娇小的身躯，{character.name}的{penis}在她极度松弛的{vagina}里进出自如，她脸上露出痴迷的表情。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}毫不留情地抽送着{penis}，{target.name}纤细的身体承受着这猛烈的冲击，她那被过度使用的{vagina}已经非常松弛。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}娇小的四肢熟练地缠绕在{character.name}身上，{penis}在她那被过度扩张的{vagina}里肆意进出，带出大量淫液。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在{target.name}极度松弛的{vagina}内快速抽送，她看似稚嫩的身体因长期淫乱而变得非常耐操。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}幼小的身体随着{character.name}的{penis}在她松弛不堪的{vagina}内的粗暴抽送而颤抖，发出放荡的呻吟声。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}加大了{penis}的抽送力度，{target.name}娇小的身躯却能轻松承受，她的{vagina}已经被开发到能容纳各种尺寸。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}虽然看起来稚嫩但却极其放荡地扭动着腰肢，让{character.name}的{penis}在她松垮的{vagina}里进出得更加顺畅。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}毫不留情地猛烈抽送，{target.name}娇小的身体虽然看似脆弱，却因经验丰富而能轻松容纳在{vagina}内的巨物。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.少女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}纤细的四肢淫荡地扭动着，{character.name}的{penis}在她那被过度使用的{vagina}内肆意妄为，她发出愉悦的浪叫。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在刚受精的{target.name}娇小身体里温柔抽动，她的{vagina}因怀孕初期而变得更加敏感，微微发抖。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}稚嫩的身体刚刚受孕，她的{vagina}紧紧包裹着{character.name}的{penis}，一边享受一边轻抚自己的小腹。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}小心地抽送着{penis}，{target.name}娇小的身体里已经孕育着新生命，她的{vagina}变得比以往更加敏感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}纤细的手不自觉地抚上小腹，{character.name}的{penis}在她刚受精的{vagina}里轻柔抽动，每次都带来异样的快感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}轻轻抽送，{target.name}稚嫩的身体刚刚怀上孩子，她的{vagina}因激素变化而更加敏感湿润。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}娇小的身体因刚受精而散发着微妙的气息，{character.name}的{penis}在她敏感的{vagina}内轻柔进出，引发阵阵颤栗。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}温柔地抽动着{penis}，{target.name}刚怀孕的身体变得更加敏感，她的{vagina}紧紧吸附着，表情既紧张又享受。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}娇小的身躯因刚受孕而微微颤抖，{character.name}的{penis}在她变得异常敏感的{vagina}内缓慢研磨，带出细碎呻吟。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}小心翼翼地在{target.name}刚怀孕的{vagina}内轻柔进出，她稚嫩的身体因荷尔蒙变化而更加敏感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}幼小的身体里已孕育新生命，{character.name}的{penis}在她因怀孕而变得敏感的{vagina}内温柔抽动，带出甜腻呻吟。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}从后方缓慢进出{target.name}的{vagina}，小心避开她已经隆起的腹部，纤细的身躯因孕期敏感而微微颤抖。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}娇小的身躯上孕育着新生命，{character.name}的{penis}在她因怀孕而变得敏感的{vagina}里轻柔抽动，带出细微呻吟。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}小心翼翼地抽送着{penis}，避免碰触{target.name}隆起的小腹，她的{vagina}因孕期变得异常敏感，娇喘连连。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}纤细的身体上托着隆起的孕肚，{character.name}的{penis}在她湿润敏感的{vagina}内温柔进出，每次都带来强烈快感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}轻柔地在{target.name}怀孕的身体里抽动，她稚嫩的{vagina}因孕期荷尔蒙而变得湿滑紧致，敏感异常。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}娇小的身躯因怀孕而变得格外脆弱，{character.name}的{penis}在她敏感的{vagina}内缓慢研磨，引发阵阵颤栗。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}以侧卧姿势轻轻抽送{penis}，{target.name}一手护着隆起的孕肚，另一手紧抓床单，{vagina}因孕期敏感而痉挛。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}怀孕的娇小身躯被{character.name}小心翼翼地爱抚，{penis}在她因荷尔蒙变化而变得格外湿润的{vagina}内轻柔抽动。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}温柔地在{target.name}孕期敏感的{vagina}里进出，她稚嫩的身体承载着新生命，随每次抽动轻轻颤抖。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}虽身形娇小却怀有身孕，{character.name}的{penis}在她湿滑的{vagina}里小心进出，她一边呻吟一边轻抚隆起的小腹。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在{target.name}产后恢复中的{vagina}里轻柔抽动，她娇小的身体因生产后的敏感而微微颤抖，发出细微呻吟。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}稚嫩的身体刚经历生产，{character.name}的{penis}在她恢复中的{vagina}内轻柔进出，带出不同于往日的敏感反应。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}小心翼翼地抽送着{penis}，{target.name}产后的身体比以往更加敏感，她的{vagina}因生产而变得不同，紧紧吸附着。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}纤细的手抚过尚未完全恢复平坦的小腹，{character.name}的{penis}在她产后敏感的{vagina}里温柔抽动，引发阵阵快感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}缓慢地在{target.name}产后的{vagina}内进出，她娇小的身体因刚经历生产而变得更加敏感，轻声呻吟。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}娇小的身躯因产后荷尔蒙变化而敏感异常，{character.name}的{penis}在她恢复中的{vagina}内轻柔抽动，带出湿润声响。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}温柔地抽送着{penis}，{target.name}产后的身体变得更加丰满敏感，她的{vagina}因生产而变得更加柔软。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}稚嫩的身体承受着{character.name}的{penis}轻柔抽动，她的{vagina}因刚经历生产而更加湿润松软，却也更加敏感。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在{target.name}刚完成哺乳回来的身体里缓慢抽送，她的{vagina}因产后变化而比以往更加湿润紧致。"
 
 [[entries]]
-conditions = "selected.talents.少女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.少女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}娇小的身体因产后荷尔蒙而散发着独特气息，{character.name}的{penis}在她柔软的{vagina}内温柔进出，带出甜腻呻吟。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在{target.name}的{vagina}内缓慢抽动，青涩的身体不断颤抖，初经人事的她咬着嘴唇，眼角泛着泪光，身体却不自觉地迎合着。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 1"
 context = "初尝情欲的{target.name}紧紧抓住床单，{character.name}的{penis}每一次深入都让她的{vagina}传来阵阵酸麻，疼痛与快感交织的表情清晰可见。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 1"
 context = "青春的肉体正经历第一次交合，{target.name}的{vagina}紧紧包裹着{character.name}的{penis}，她的表情混合着痛苦与新奇，呻吟声断断续续。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}温柔地抽动着，{target.name}的{vagina}因初次承欢而不时痉挛，她青春的脸庞上泛着红晕，眼神中既有惊恐又有渴望。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 1"
 context = "刚成年的{target.name}纤细的双腿不自觉地夹紧{character.name}的腰，{penis}在她初经人事的{vagina}中搅动，带出丝丝血迹与爱液。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 1"
 context = "初尝情欲的{target.name}闭着眼睛承受着{character.name}的{penis}在{vagina}内的律动，她紧绷的身体随着每一次冲击而轻颤，嘴里发出嘶哑的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}青涩的身体随着{character.name}的抽送而颤抖，她的{vagina}紧紧吸附着{penis}，处子之身被占有的痛楚与快感让她双眼迷离。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在{target.name}稚嫩的{vagina}中不断搅动，她初经人事的身体敏感异常，每一次抽插都引发她全身战栗。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 1"
 context = "年轻的{target.name}双手紧抓着{character.name}的肩膀，{penis}在她第一次被开拓的{vagina}中缓慢研磨，痛苦与甜蜜在她脸上交织。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}稚嫩的身体被{character.name}压在身下，{penis}在她初次承欢的{vagina}内反复进出，她咬着下唇承受着痛楚与欢愉的双重冲击。"
 
 [[entries]]
@@ -13638,283 +13638,283 @@ conditions = "selected.talents.処女 == 1 && premise(t_first_sex_in_today)"
 context = "{character.name}的{penis}在{target.name}今天才失贞的{vagina}内轻轻研磨，初尝情欲滋味的她脸色潮红，呼吸急促，下体流出更多爱液。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在{target.name}稚嫩的{vagina}中缓慢抽动，尽管已有些经验，她青春的身体依然敏感，每次撞击都引发她一阵战栗。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "年轻的{target.name}躺在{character.name}身下，紧致的{vagina}紧紧包裹着{penis}，虽非初次承欢却依然显得羞涩而生涩。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}的{vagina}虽已不是处子之身，却依然紧致敏感，每当{character.name}的{penis}深入，她都会发出甜美的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "刚成年的{target.name}骑在{character.name}身上，稚嫩的{vagina}吞吐着{penis}，生涩的动作透露出她经验尚浅，却充满热情。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}抓住{target.name}纤细的腰肢，{penis}在她紧致的{vagina}内快速抽动，尽管有过经验，青春的她仍然敏感异常。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}趴在床上，{character.name}的{penis}从后方深入她稚嫩的{vagina}，她的身体因快感而微微颤抖，却仍不太会配合节奏。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "年轻的{target.name}双腿缠绕在{character.name}腰间，{vagina}紧紧吸附着{penis}，尽管经验不多，却已懂得如何增加快感。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在{target.name}的{vagina}内进出，她青春的脸庞上满是情欲，虽然技巧生涩却很享受这种被填满的感觉。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "刚成年的{target.name}跪趴着承受{character.name}的冲击，{penis}每次深入她紧致的{vagina}，都带出她羞涩而甜美的呻吟声。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}青春的身体随着{character.name}的抽送而起伏，{vagina}因经验尚少而紧紧夹住{penis}，引得两人都发出满足的喘息。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在{target.name}经验丰富的{vagina}中抽送，年轻的她虽然面容青涩，身体却已熟悉情事，主动迎合着每一次冲击。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "刚成年的{target.name}轻车熟路地骑在{character.name}身上，{vagina}熟练地吞吐着{penis}，腰肢摆动的节奏显示出她丰富的经验。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}的{vagina}娴熟地吸附着{character.name}的{penis}，尽管年纪不大，她却已熟知如何取悦自己和伴侣的技巧。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "年轻的{target.name}双腿大开，{character.name}的{penis}在她熟练的{vagina}中快速抽动，她的呻吟声既放浪又充满技巧。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}抱起{target.name}青春的身体，{penis}深深埋入她湿润的{vagina}，她熟练地收缩着内壁，挤压着侵入的硬物。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "刚成年的{target.name}背对{character.name}摆动腰肢，{vagina}熟练地吞吐着{penis}，她脸上的表情既天真又放荡，矛盾而诱人。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}的{vagina}有节奏地夹紧{character.name}的{penis}，尽管年轻，她娴熟的技巧却让{character.name}差点控制不住。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}将{target.name}按在墙上，{penis}从后方插入她湿润的{vagina}，年轻的她熟练地扭动腰肢迎合着每一次冲击。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "年轻的{target.name}双手撑在床上，{character.name}的{penis}在她经验丰富的{vagina}中大力抽送，她发出熟练而妩媚的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}跨坐在{character.name}身上，青春的脸蛋因情欲而潮红，{vagina}熟练地吞吐着{penis}，腰肢扭动的姿态显示出她的经验。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在{target.name}极为松弛的{vagina}内抽送，年轻的外表下隐藏着令人惊讶的丰富经验，她熟练地收缩着内壁增加刺激。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "看似青涩的{target.name}跨坐在{character.name}身上，{vagina}毫不费力地吞下整根{penis}，她的骑乘技巧令人叹为观止。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}年轻的脸庞上布满情欲，{character.name}的{penis}在她经验极其丰富的{vagina}中抽插，她的呻吟声既放荡又充满引导性。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "刚成年的{target.name}双腿高高抬起，{vagina}轻松容纳{character.name}的{penis}快速抽送，她的表情显示出这对她来说已是家常便饭。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}用力抽送着{penis}，{target.name}青春的身体承受着猛烈的冲击，她的{vagina}松弛却技巧娴熟，不断变换着收缩方式。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}被抱起双腿大开，{character.name}的{penis}在她经验丰富的{vagina}中肆意驰骋，她的呻吟声既高亢又充满技巧。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "年轻的{target.name}自信地在{character.name}身上摆动着腰肢，{vagina}虽然扩张明显却极具技巧性地吸吮着{penis}。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在{target.name}极为放松的{vagina}中进出，她年轻的脸上带着老练的表情，身体的每一个动作都显示出丰富经验。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "刚成年的{target.name}跪趴在床上，{character.name}的{penis}从后方猛插入她松弛但技巧娴熟的{vagina}，她的呻吟声如同表演般刻意。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.処女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}年轻的身体与老练的性经验形成鲜明对比，她的{vagina}轻松容纳着{character.name}的{penis}并有节奏地收缩，带来极致快感。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}小心翼翼地在刚受精的{target.name}的{vagina}中抽送，她青春的身体因怀孕初期而更加敏感，每次触碰都引发她一阵颤抖。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.受精 == 1"
 context = "年轻的{target.name}刚刚怀上{character.name}的骨肉，她的{vagina}比往常更加湿润，紧紧包裹着{penis}，性爱的快感似乎因此更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}的{vagina}因刚刚受精而变得更加敏感，{character.name}的{penis}每次抽插都让她发出比平时更加甜腻的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.受精 == 1"
 context = "刚受精的{target.name}侧躺着接纳{character.name}的{penis}，年轻的她不时抚摸着自己的小腹，{vagina}因情动而不断收缩。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}轻柔地抽送着{penis}，刚怀孕的{target.name}比平时更加敏感，她的{vagina}随着每次进入而痉挛，青春的脸庞上满是陶醉。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.受精 == 1"
 context = "年轻的{target.name}跨坐在{character.name}身上，刚受孕的她小心控制着节奏，{vagina}温柔地吞吐着{penis}，眼神中充满了爱恋。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}的{vagina}因刚刚怀孕而变得格外敏感，{character.name}的{penis}轻轻抽送就能让她全身颤抖，青春的脸蛋上满是情欲。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}小心地将{penis}插入刚怀孕的{target.name}的{vagina}，年轻的准妈妈似乎因荷尔蒙变化而更加渴望性爱，主动扭动着腰肢。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.受精 == 1"
 context = "刚受精的{target.name}趴在床上，{character.name}从后方温柔地将{penis}送入她敏感的{vagina}，她一边呻吟一边抚摸着自己的小腹。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}青春的身体因刚怀孕而充满变化，{character.name}的{penis}在她湿润的{vagina}中缓慢抽送，每一次触碰都带来加倍的快感。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}从后方轻轻进入孕中期的{target.name}的{vagina}，年轻准妈妈的肚子已经明显隆起，她却因荷尔蒙变化而愈发敏感。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.妊娠 == 1"
 context = "怀有身孕的{target.name}侧躺着接纳{character.name}的{penis}，她年轻的脸庞因情欲而潮红，隆起的腹部不时被轻柔抚摸，{vagina}因刺激而收缩。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}的{vagina}因怀孕而变得更加敏感多汁，{character.name}的{penis}每次抽送都引发她一阵战栗，年轻的准妈妈呻吟声比平时更加甜腻。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.妊娠 == 1"
 context = "孕中期的{target.name}跨坐在{character.name}身上，隆起的肚子下方，{vagina}缓慢而有力地吞吐着{penis}，她青春的脸蛋上满是陶醉。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}小心翼翼地将{penis}送入怀孕的{target.name}的{vagina}，年轻的准妈妈抚摸着隆起的腹部，脸上既是羞涩又是满足。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.妊娠 == 1"
 context = "年轻的孕妇{target.name}双腿大开，{character.name}的{penis}轻柔地在她湿润的{vagina}中抽送，避开隆起的腹部，带给她阵阵快感。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}的{vagina}因怀孕荷尔蒙影响而变得异常敏感，{character.name}的{penis}每次轻轻抽送都能让她青春的身体因快感而颤抖。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.妊娠 == 1"
 context = "孕中期的{target.name}背对着{character.name}，{penis}从后方进入她的{vagina}，这个姿势既能避开隆起的腹部，又能让她获得极致快感。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}抱着年轻的准妈妈{target.name}，{penis}在她湿润的{vagina}中小心抽送，她的肚子已经隆起，却丝毫不影响她对性爱的渴望。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.妊娠 == 1"
 context = "怀孕中期的{target.name}趴在床边，{character.name}站在身后将{penis}送入她敏感的{vagina}，年轻的准妈妈因荷尔蒙变化而比平时更加敏感多汁。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}温柔地在产后不久的{target.name}的{vagina}中抽送，年轻的新手妈妈身体比孕前更加丰满，每次触碰都让她轻声呻吟。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.育儿 == 1"
 context = "产后的{target.name}侧躺着接纳{character.name}的{penis}，她青春的身体因生产而变得更加成熟，{vagina}的敏感度似乎比以前更高。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}的{vagina}因生产而变得更加宽松，却有着独特的魅力，{character.name}的{penis}在其中抽送，引发年轻妈妈一阵阵颤抖。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.育儿 == 1"
 context = "刚生产完不久的{target.name}趴在床上，{character.name}的{penis}轻柔地在她产后恢复中的{vagina}内抽送，动作轻柔却充满快感。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}温柔地抽送着{penis}，产后的{target.name}虽然{vagina}变得松弛，却因荷尔蒙变化而更加敏感多汁，青春的脸上满是陶醉。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.育儿 == 1"
 context = "年轻的新手妈妈{target.name}小心翼翼地跨坐在{character.name}身上，{vagina}缓慢地吞吐着{penis}，产后的身体变得更加丰满动人。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}的{vagina}因生育而变得不同，{character.name}的{penis}在其中感受着独特的触感，产后的她呻吟声比往常更加克制却也更加深沉。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}小心地将{penis}送入产后的{target.name}的{vagina}，年轻的妈妈因荷尔蒙作用而情欲高涨，主动迎合着每一次抽送。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.育儿 == 1"
 context = "产后的{target.name}双腿缠绕在{character.name}腰间，{penis}在她恢复中的{vagina}内轻柔抽送，年轻的新妈妈脸上既有满足又有对女儿的牵挂。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.処女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}年轻的身体因生产而变得更加成熟丰满，{character.name}的{penis}在她产后略显松弛的{vagina}中抽送，带给两人截然不同的新体验。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在大姐姐{target.name}第一次经历的{vagina}内轻柔抽动，她咬紧嘴唇忍耐着疼痛，却难掩好奇与期待的复杂表情。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}的{vagina}初次被侵入，紧紧吸附着{character.name}的{penis}，她微蹙眉头，成熟脸庞上流露出初尝禁果的羞涩与痛楚。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 1"
 context = "年轻成熟的{target.name}紧咬下唇，第一次体验{character.name}的{penis}在自己{vagina}里缓慢摩擦的感觉，眼中闪烁着痛苦与欢愉交织的泪光。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}轻抚{target.name}汗湿的额头，{penis}在她初经人事的{vagina}内小心抽送，享受着大姐姐初次被贯穿的紧致与颤抖。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}紧绷着身体，成熟丰满的躯体因初次容纳{character.name}的{penis}而微微发抖，她的{vagina}痉挛着，既想逃离又渴望更多。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}被{target.name}未经人事的{vagina}紧紧包裹，她优雅的外表下此刻隐藏着对初次体验的惊讶与不适。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 1"
 context = "大姐姐{target.name}的{vagina}因初次承欢而不住痉挛，她颤抖着接纳{character.name}的{penis}，青涩与成熟在她脸上交织。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}温柔地挺动腰部，让{penis}在{target.name}初次绽放的{vagina}内慢慢研磨，她的眼角微微泛红，成熟面容上满是初体验的茫然。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}的{vagina}为首次容纳{character.name}的{penis}而紧张地收缩着，她虽已年长却在这方面毫无经验，既害怕又期待地感受着体内的冲击。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}缓慢地让{penis}在{target.name}第一次被开发的{vagina}中进出，她成熟的身体与初尝情欲的反应形成鲜明对比，诱人至极。"
 
 [[entries]]
@@ -13958,283 +13958,283 @@ conditions = "selected.talents.成人 == 1 && premise(t_first_sex_in_today)"
 context = "大姐姐{target.name}尽管成熟，却才刚失去贞操，{character.name}的{penis}每次抽送都让她的{vagina}传来陌生的快感，让她忍不住呻吟出声。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在{target.name}稚嫩的{vagina}内缓慢抽送，她经验不多的甬道紧紧吸附，大姐姐面容上既有成熟魅力又有青涩反应。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "大姐姐{target.name}的{vagina}虽有过几次经验却依然紧致敏感，含住{character.name}的{penis}时她微微蹙眉，感受着强烈的充实感。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}的{vagina}因经验不多而保持着紧致，每次{character.name}的{penis}抽送都让她忍不住发出诱人的喘息，显示出她的敏感。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}享受着{target.name}紧窄{vagina}对{penis}的吸吮，这位大姐姐虽然外表成熟，内里却因经验有限而保持着令人疯狂的紧致。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}半熟练地扭动腰肢，让{vagina}更好地服侍{character.name}的{penis}，她的生涩动作与成熟身体形成诱人对比。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}被{target.name}缺乏经验却热情的{vagina}紧紧包裹，她的表情显示出对这强烈快感的不适应。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "大姐姐{target.name}的{vagina}因经验不多而格外敏感，{character.name}的{penis}每次抽送都让她全身颤抖，甜腻呻吟不断。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}努力配合着{character.name}的节奏，让自己的{vagina}适应{penis}的侵入，她的青涩动作与成熟外表形成鲜明对比。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}放慢节奏，让{penis}在{target.name}敏感的{vagina}内慢慢研磨，她虽为大姐姐却因经验有限而表现得像个初学者。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}的{vagina}因为不多的性经验而保持着让人疯狂的紧致，{character.name}的{penis}每次抽送都让她呻吟连连，完全控制不住自己。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在大姐姐{target.name}有经验的{vagina}内抽送，她熟练地配合着节奏，扭动腰肢增加两人的快感。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}的{vagina}恰到好处地包裹着{character.name}的{penis}，她知道如何收缩肌肉来增加摩擦，脸上是自信的微笑。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "熟练的大姐姐{target.name}控制着{vagina}的节奏，让{character.name}的{penis}获得最大的刺激，她轻咬下唇，享受着主导的快感。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}享受着{target.name}经验丰富的{vagina}带来的快感，她懂得何时收紧何时放松，让{penis}得到最佳的服务。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}自信地摆动腰肢，用{vagina}的内壁摩擦{character.name}的{penis}，她的动作显示出对性事的熟悉与热情。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}被{target.name}温暖湿润的{vagina}完美包裹，她娴熟地掌控着节奏，成熟女性的魅力淋漓尽显。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "大姐姐{target.name}用经验丰富的{vagina}吞吐着{character.name}的{penis}，她主动加快节奏，脸上浮现出期待高潮的表情。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}熟练地扭动腰肢，让{character.name}的{penis}在自己的{vagina}内触碰最敏感的位置，她知道如何让自己获得最大快感。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}感受着{target.name}的{vagina}熟练地吮吸着自己的{penis}，她有意识地收缩阴道肌肉，增加两人的刺激。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "成熟的{target.name}用{vagina}的技巧取悦着{character.name}的{penis}，她轻摆腰肢，节奏变化自如，显示出丰富的性经验。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在大姐姐{target.name}极度放松的{vagina}内自由抽送，她眼神迷离，熟练地收缩阴道肌肉增加刺激。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}的{vagina}因丰富经验而变得异常灵活，能完美适应{character.name}的{penis}，她主动扭动腰肢，追求更强烈的快感。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "经验丰富的大姐姐{target.name}轻松容纳{character.name}的{penis}，她的{vagina}有节律地收缩着，每一下都精准刺激最敏感的部位。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}享受着{target.name}极度放松却富有技巧的{vagina}，她的{penis}在里面畅通无阻，每次抽送都带来强烈快感。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}淫荡地扭动腰肢，让{vagina}以各种角度摩擦{character.name}的{penis}，她脸上是对性事驾轻就熟的自信表情。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在{target.name}湿润宽松的{vagina}里随意抽送，她富有技巧地收缩内壁，用丰富经验取悦着对方。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "大姐姐{target.name}的{vagina}因丰富经验而极具弹性，完美包裹着{character.name}的{penis}，她熟练地变换角度，寻找最佳刺激点。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}像个性爱大师般控制着{vagina}的每一块肌肉，让{character.name}的{penis}体验到极致的快感，她的表情既淫荡又自信。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}在{target.name}宽松却技巧十足的{vagina}内自由抽送{penis}，她熟练地配合节奏，显示出丰富的床第经验。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.成人 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "成熟的{target.name}用经验丰富的{vagina}包裹着{character.name}的{penis}，她的身体早已习惯性爱，能自如地控制每一处肌肉增加快感。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}轻柔地在刚受精的大姐姐{target.name}的{vagina}内抽送，她一只手无意识地抚摸着小腹，眼神中充满爱意。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.受精 == 1"
 context = "{target.name}的{vagina}因刚怀孕而变得异常敏感，每次{character.name}的{penis}抽送都让她颤抖不已，脸上是幸福与情欲交织的表情。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.受精 == 1"
 context = "初为人母的大姐姐{target.name}小心翼翼地接纳{character.name}的{penis}，她的{vagina}因怀孕初期而变得更加湿润柔软。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.受精 == 1"
 context = "{character.name}温柔地让{penis}在{target.name}刚受孕的{vagina}内缓慢研磨，她的身体因荷尔蒙变化而更加敏感，微微颤抖着。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.受精 == 1"
 context = "{target.name}虽已受孕却仍热情地用{vagina}包裹着{character.name}的{penis}，她时不时轻抚小腹，目光中充满了温柔。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在{target.name}怀孕初期敏感的{vagina}内轻柔抽送，她的脸上是初为人母的柔和与被爱抚的欢愉。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.受精 == 1"
 context = "大姐姐{target.name}引导{character.name}的{penis}在自己刚受精的{vagina}内缓慢移动，眼神中是对新生命的期待与对性爱的渴望。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.受精 == 1"
 context = "{target.name}的{vagina}因怀孕初期荷尔蒙变化而格外敏感，{character.name}的{penis}每次轻柔抽送都让她全身战栗不已。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.受精 == 1"
 context = "{character.name}体贴地将{penis}缓缓抽送，{target.name}刚刚受孕的{vagina}分泌着更多爱液，她的表情既满足又渴求。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.受精 == 1"
 context = "怀着{character.name}孩子的大姐姐{target.name}温柔地包裹着对方的{penis}，她的{vagina}因初期妊娠而变得更加湿润火热。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}从后方轻柔地进出大姐姐{target.name}的{vagina}，小心避开她隆起的孕肚，眼神中充满怜爱。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.妊娠 == 1"
 context = "怀有身孕的{target.name}侧卧着，让{character.name}的{penis}在敏感的{vagina}内轻柔抽送，孕期的荷尔蒙让她比平时更快湿润。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.妊娠 == 1"
 context = "大姐姐{target.name}因怀孕而丰满的胸部随着{character.name}的{penis}在{vagina}内的抽送而摇晃，她的表情因孕期敏感而格外妩媚。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}极其温柔地让{penis}在孕期{target.name}的{vagina}内缓慢移动，她因荷尔蒙变化而更加敏感，轻轻的触碰都能让她颤抖。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}隆起的孕肚随着{character.name}的{penis}在{vagina}内的律动而微微晃动，她的脸上是孕期特有的红晕与情欲。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}在{target.name}孕期敏感的{vagina}内轻柔抽送，她一手抚摸着隆起的肚子，眼中是母性与情欲的交织。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.妊娠 == 1"
 context = "怀孕的大姐姐{target.name}小心翼翼地配合{character.name}的节奏，让{penis}在湿润的{vagina}内缓慢移动，保护着体内的小生命。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}的{vagina}因孕期激素变化而异常敏感多汁，{character.name}的{penis}每次轻柔抽送都让她颤抖不已。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}从侧面轻轻抽送{penis}，照顾着孕期{target.name}的感受，她的{vagina}因怀孕而变得更加湿润敏感。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.妊娠 == 1"
 context = "怀孕的大姐姐{target.name}温柔地用{vagina}包裹着{character.name}的{penis}，她隆起的腹部和丰满的乳房让整个画面更加情色。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在产后的大姐姐{target.name}恢复中的{vagina}内轻柔抽送，她的身体因为哺乳期而散发着成熟的魅力。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.育儿 == 1"
 context = "刚生育完的{target.name}小心地承受着{character.name}的{penis}，她的{vagina}既敏感又略显宽松，乳房因哺乳而更加丰满。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}的{vagina}因产后恢复而略显松弛，却热情地包裹着{character.name}的{penis}，她全身散发着新妈妈特有的成熟气息。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}温柔地让{penis}在产后{target.name}的{vagina}内轻轻移动，避免刺激她因哺乳而肿胀的乳房。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.育儿 == 1"
 context = "新手妈妈{target.name}闭着眼睛感受{character.name}的{penis}在自己产后恢复中的{vagina}内缓慢抽送，身体因哺乳期荷尔蒙而格外敏感。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在{target.name}略显松弛的{vagina}内轻柔抽动，她因为思念襁褓中的宝宝而眼神恍惚，却也沉浸在性爱中。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.育儿 == 1"
 context = "大姐姐{target.name}的{vagina}因产后而变得不同，当{character.name}的{penis}进出时，她的身体因哺乳期而更加敏感，微微颤抖着。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}产后的{vagina}湿润地包裹着{character.name}的{penis}，她丰满的乳房因哺乳期而时不时渗出乳汁，画面格外情色。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}小心地让{penis}在{target.name}产后的{vagina}内缓慢抽送，回忆着那个让她受孕、生育的夜晚，眼神中满是怜爱。"
 
 [[entries]]
-conditions = "selected.talents.成人 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.成人 == 1 && selected.talents.育儿 == 1"
 context = "刚成为母亲的{target.name}轻轻摆动腰肢，让{character.name}的{penis}在自己产后恢复的{vagina}内温柔抽送，脸上是母性与情欲交织的复杂表情。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在成熟却紧致的{vagina}内缓慢抽送，{target.name}因初经人事而疼痛紧绷，却又因多年渴望而湿润不已。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 1"
 context = "成熟的{target.name}咬紧下唇忍受着被撑开的疼痛，她丰腴的大腿紧紧缠绕着{character.name}，{penis}在她从未被开拓的{vagina}中缓慢律动。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}温柔地摩擦着{target.name}紧绷的{vagina}内壁，成熟女性的初夜让她带着痛楚与不可思议的喘息声中迎合着{penis}的节奏。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 1"
 context = "丰腴身材的{target.name}紧紧抓着{character.name}的肩膀，她那饱含着岁月痕迹的眼角因{penis}在{vagina}内的摩擦而噙满泪水与欲望。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在{target.name}处子之身的{vagina}内小心抽动，她成熟却青涩的反应让人疯狂，丰满的臀部紧张地随着抽插微微颤抖。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 1"
 context = "尽管成熟，{target.name}仍因初次体验而生涩，她丰满的乳房随着{character.name}的{penis}在{vagina}内的进出而晃动，痛楚中透露着期待。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}感受着{target.name}的{vagina}随着{penis}的推进而痉挛收缩，成熟女性眼角的皱纹因疼痛与快感交织而更加明显。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 1"
 context = "经年未被开发的{vagina}紧紧包裹着{character.name}的{penis}，{target.name}丰腴的身躯因疼痛而轻颤，却又因期待已久的充实感而颤抖。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 1"
 context = "{target.name}成熟的肉体因{character.name}的{penis}在未经人事的{vagina}内的摩擦而变得通红，从她紧闭的唇间泄漏出混合痛苦与舒爽的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 1"
 context = "饱经风霜的{target.name}在{character.name}的{penis}抽送中体验着从未有过的感受，她紧致未开发的{vagina}流出了期待已久的爱液。"
 
 [[entries]]
@@ -14278,283 +14278,283 @@ conditions = "selected.talents.淑女 == 1 && premise(t_first_sex_in_today)"
 context = "刚经历破处的{target.name}很快适应了{character.name}的{penis}，她那丰腴成熟的身体随着{vagina}内的抽送而妖娆摆动。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在{target.name}紧致的{vagina}内缓慢抽送，成熟熟女的身体虽有经验，却仍因紧窄而带来极致的摩擦快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "丰腴的{target.name}随着{character.name}的抽插节奏轻摆腰肢，她那经验不多的{vagina}紧紧吸附着{penis}，带着成熟女性的技巧。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}熟练地摆动着臀部，尽管她的{vagina}仍然紧致，但她用成熟的技巧让{character.name}的{penis}在体内进出更加顺畅。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "成熟的{target.name}以丰腴的大腿紧紧夹住{character.name}的腰，她经验不多的{vagina}紧密包裹着{penis}，带来极致的快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}被{target.name}那紧致却懂得技巧的{vagina}包裹着，成熟女性的肉体随着抽插的节奏颤抖着，发出满足的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "紧致但略有经验的{vagina}包裹着{character.name}的{penis}，{target.name}丰满成熟的身体随着抽插的节奏摇晃，眼角的细纹因快感而愈发明显。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "成熟女性{target.name}半闭着眼，享受着{character.name}的{penis}在她紧致的{vagina}中抽插的感觉，她丰腴的身体因快感而轻微颤抖。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{target.name}的{vagina}虽经验不多但已能熟练地收缩，成熟的她用丰满的臀部配合着{character.name}的{penis}抽送，寻求更强的刺激。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在{target.name}紧致的{vagina}里每一次抽动都带来强烈快感，她成熟的身体因经验不足而对快感反应激烈。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "成熟的{target.name}轻声呻吟着，她那经验不多但学习迅速的{vagina}紧紧包裹着{character.name}的{penis}，贪婪地索取着快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在{target.name}成熟的{vagina}内进出自如，她丰腴的身体随着抽插频率摇晃，熟练地迎合着每一次深入。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "成熟的{target.name}闭眼享受着{character.name}的{penis}在她湿润的{vagina}里抽送，她用积累的技巧收缩着内壁，带来更强烈的摩擦快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}熟练地摆动着丰满的臀部，让{character.name}的{penis}在她经验丰富的{vagina}中进出，饱满的乳房随着节奏晃动。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "有着丰富经验的{target.name}主动抬高臀部，让{character.name}的{penis}进入她更深处的{vagina}，成熟的身体散发着浓郁的情欲气息。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}被{target.name}那松紧适中的{vagina}完美包裹，成熟的她精确掌握着收缩的节奏，带来销魂的快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "熟练的{target.name}用{vagina}内壁有节律地挤压着{character.name}的{penis}，她丰腴的身体在情欲驱使下展现出惊人的柔韧性。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}成熟的躯体在{character.name}的抽送下扭动着，她经验丰富的{vagina}紧紧吸附着{penis}，带来极致的享受。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在{target.name}湿润的{vagina}中抽插，她成熟的身体因性爱的经验而掌握着取悦自己与对方的完美节奏。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "成熟的{target.name}用她经验丰富的{vagina}吞吐着{character.name}的{penis}，熟练地收缩着内壁，用成熟的技巧索取着快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{target.name}熟练地扭动腰肢，让{character.name}的{penis}在她湿润的{vagina}中达到最舒适的角度，展现着成熟女性的床第技巧。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在{target.name}经验丰富的{vagina}中自如进出，成熟女性用床上技巧主动收缩着内壁，带来极致享受。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "饱经风霜的{target.name}熟练地扭动着丰腴的腰肢，她那经验丰富的{vagina}完美地适应着{character.name}的{penis}，带来销魂的快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}用她那饱经性事的{vagina}有节奏地吞吐着{character.name}的{penis}，成熟的身体展现出令人惊叹的床上技巧与控制力。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在{target.name}扩张充分的{vagina}中大开大合地抽送，她成熟丰腴的身体在激烈的冲撞下依然保持着完美的节奏。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "熟女{target.name}在{character.name}的抽送下仰头呻吟，她那经验丰富的{vagina}熟练地收缩着，紧紧包裹住{penis}的每一寸。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{target.name}扭动着丰腴的臀部，她那湿润松弛的{vagina}完美适应着{character.name}的{penis}，用积累的技巧榨取着快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "经验丰富的{target.name}主动摆动腰肢，让{character.name}的{penis}在她饱经情事的{vagina}中进出，熟练地掌控着性爱的节奏。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}被{target.name}那经验丰富的{vagina}包裹着，成熟的她能精确控制内壁的收缩，带来销魂蚀骨的快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "饱经情事的{target.name}闭眼享受着{character.name}的{penis}在她湿润的{vagina}内抽送，丰腴成熟的身体熟练地配合着每一次律动。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.淑女 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "成熟的{target.name}用她那娴熟的{vagina}技巧挤压着{character.name}的{penis}，成熟丰满的身体在情欲中展现出惊人的活力。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在刚受精的{target.name}体内温柔抽送，成熟女性的{vagina}因怀孕初期而变得异常敏感，带来更强烈的快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.受精 == 1"
 context = "刚怀上孩子的熟女{target.name}轻轻摆动丰腴的腰肢，让{character.name}的{penis}在她敏感的{vagina}中缓慢摩擦，享受着不同以往的快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}成熟的身体因刚受精而格外敏感，她的{vagina}紧紧吸附着{character.name}的{penis}，双手不自觉地抚摸着自己的小腹。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}温柔地抽送着{penis}，{target.name}的{vagina}因初期怀孕而变得更加湿润敏感，成熟的她情不自禁地呻吟出声。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.受精 == 1"
 context = "刚受精的{target.name}在{character.name}的{penis}进出中颤抖不已，她丰腴成熟的身体因怀孕而散发出更加浓郁的女性魅力，{vagina}分泌着大量爱液。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}敏感的{vagina}因怀孕初期荷尔蒙变化而紧紧包裹着{character.name}的{penis}，成熟的她眼角含情，享受着这特殊时期的性爱。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在刚怀孕的{target.name}体内小心抽送，她成熟丰满的身体因荷尔蒙变化而比平时更加敏感，{vagina}湿润不已。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.受精 == 1"
 context = "成熟的{target.name}因初期怀孕而格外敏感，她丰腴的身体轻轻颤抖，{vagina}紧紧包裹着{character.name}的{penis}，带来双倍快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.受精 == 1"
 context = "刚受精的{target.name}在{character.name}的抽送中双手按住他的肩膀，{penis}在她敏感的{vagina}内的每一次摩擦都带来强烈的快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.受精 == 1"
 context = "{target.name}成熟的身体因初期怀孕而变得格外敏感，{character.name}的{penis}在她湿润的{vagina}中每一次轻微的摩擦都能引起她强烈的反应。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}从后方缓慢进出怀孕中期的{target.name}的{vagina}，避开她隆起的孕肚，成熟女性敏感的身体因快感而轻轻颤抖。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.妊娠 == 1"
 context = "怀孕的熟女{target.name}侧卧着，让{character.name}的{penis}温柔地进出她湿润的{vagina}，隆起的孕肚和丰腴的身材让她散发着成熟的母性魅力。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}跪趴着承受{character.name}的抽送，她那怀有身孕的丰腴身体异常敏感，{vagina}紧紧吸附着{penis}，带来极致快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}小心地抽送着{penis}，避免压迫到{target.name}隆起的孕肚，成熟女性的{vagina}因怀孕而变得更加敏感多汁。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.妊娠 == 1"
 context = "孕期的熟女{target.name}坐在{character.name}身上，控制着{penis}在{vagina}里的深度和节奏，丰腴的身体和隆起的腹部随动作轻轻摇晃。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.妊娠 == 1"
 context = "{target.name}侧身接受着{character.name}温柔的抽送，她隆起的孕肚和丰满的乳房让{penis}在{vagina}内的每次摩擦都带来不同以往的快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.妊娠 == 1"
 context = "怀孕中期的{target.name}在{character.name}温柔的抽送中轻声呻吟，{penis}在她敏感的{vagina}内小心进出，避免惊扰腹中的生命。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}在孕期{target.name}的{vagina}内缓慢摩擦，成熟女性丰腴的身体因荷尔蒙变化而更加敏感，每次触碰都带来强烈快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.妊娠 == 1"
 context = "成熟的{target.name}轻轻抚摸着隆起的孕肚，{character.name}的{penis}在她湿润的{vagina}里小心进出，孕期的性爱让她格外敏感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.妊娠 == 1"
 context = "怀孕的{target.name}俯身承受着{character.name}的抽送，她丰腴的臀部高高抬起，让{penis}在湿透的{vagina}中缓慢进出，避免压迫隆起的腹部。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在产后的{target.name}体内温柔抽送，成熟女性的{vagina}因生产而变得不同以往，她的眼神时而飘向育婴室的方向。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.育儿 == 1"
 context = "刚生产完的{target.name}小心迎合着{character.name}的抽送，她丰腴的身体仍留有孕期的痕迹，{vagina}湿润地包裹着{penis}，带着母性的温柔。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}侧卧着接受{character.name}的{penis}，她那产后恢复中的{vagina}已经可以接受温柔的性爱，成熟的脸上带着新母亲的光彩。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}缓慢地将{penis}推入产后的{target.name}体内，她的{vagina}因生产而略显松弛，但成熟的技巧弥补了这一点，带来独特的快感。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.育儿 == 1"
 context = "刚成为母亲的{target.name}在性爱中表现得比以往更加成熟，她的{vagina}温柔地包裹着{character.name}的{penis}，带着一种母性的包容。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}的{vagina}因生产而变得更加敏感，{character.name}的{penis}每次轻微的抽动都能引起她强烈的反应，丰腴的身体因快感而轻颤。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}温柔地抽送着{penis}，顾及到{target.name}产后恢复中的身体，她的{vagina}虽略显松弛但仍保持着成熟女性的技巧与热情。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.育儿 == 1"
 context = "产后的{target.name}显得比以往更加成熟迷人，她用{vagina}熟练地吞吐着{character.name}的{penis}，身体的变化带来了新的性爱体验。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.育儿 == 1"
 context = "成熟的{target.name}在{character.name}温柔的抽送中轻声呻吟，产后的{vagina}接纳着{penis}，她的成熟身体散发着母性与女性魅力的独特结合。"
 
 [[entries]]
-conditions = "selected.talents.淑女 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.淑女 == 1 && selected.talents.育儿 == 1"
 context = "{target.name}扭动着产后略显丰腴的身体，让{character.name}的{penis}在她恢复中的{vagina}内缓慢抽送，这让她想起了当初受精的那一刻。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在人妻{target.name}从未被开发过的{vagina}中缓慢抽送，她咬着嘴唇，眼中满是矛盾的背德快感和初次交合的疼痛。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 1"
 context = "人妻{target.name}紧致的{vagina}包裹着{character.name}的{penis}，她既紧张又兴奋，背叛婚姻的刺激让她不由自主地收缩着下体。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}在人妻{target.name}初尝禁果的{vagina}中轻轻抽动，她的身体因背德的刺激和初次体验而颤抖，{penis}被紧紧吸附。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 1"
 context = "人妻{target.name}因初次承受{character.name}的{penis}而呻吟，她的{vagina}紧得几乎让人窒息，同时却又流出因背德而产生的大量淫液。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在人妻{target.name}的{vagina}里抽送，这处女般的紧致和已婚女性的背德感让她的身体不断痉挛，眼神迷离。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 1"
 context = "人妻{target.name}的{vagina}紧紧吮吸着{character.name}的{penis}，她因破身的疼痛和背叛的快感而流泪，身体却违背意志地迎合着每一次抽插。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}开发着人妻{target.name}从未被碰触的{vagina}，她一边想着丈夫一边沉沦于新奇的快感，羞愧和欲望交织。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 1"
 context = "人妻{target.name}的{vagina}被{character.name}的{penis}撑满，她初尝情欲滋味，既觉得对不起丈夫，又被未曾体验过的快感冲击得全身发抖。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 1"
 context = "{character.name}的{penis}在人妻{target.name}的{vagina}深处挑逗，她处子般青涩的反应和背德的心理挣扎让这场性事变得更加刺激。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 1"
 context = "人妻{target.name}的{vagina}在{character.name}的{penis}抽插下逐渐适应，她的初次体验混合着不该有的背德快感，让她忍不住发出甜腻的呻吟。"
 
 [[entries]]
@@ -14598,243 +14598,243 @@ conditions = "selected.talents.人妻 == 1 && premise(t_first_sex_in_today)"
 context = "{character.name}的{penis}在人妻{target.name}今日刚被打开的{vagina}中缓慢研磨，她的眼中闪烁着初次性经验的震撼和背叛的罪恶感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "人妻{target.name}的{vagina}虽有些经验但仍然紧致，{character.name}的{penis}每次抽插都让她在背叛丈夫的罪恶感中获得更强烈的快感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在人妻{target.name}稚嫩的{vagina}中抽送，她那缺乏经验的反应混合着出轨的刺激，让这场性事格外香艳。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "人妻{target.name}的{vagina}虽不是第一次但仍然青涩，紧紧包裹着{character.name}的{penis}，她在偷情的禁忌中体验着比婚内更强的快感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在人妻{target.name}缺乏经验的{vagina}中进出，她那紧致的反应和背叛丈夫的刺激让每一次抽插都满是禁忌的快感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "人妻{target.name}的{vagina}因经验不多而显得紧致，{character.name}的{penis}每次深入都让她背着丈夫体验着从未有过的强烈快感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在人妻{target.name}紧窄的{vagina}中抽送，她那缺乏调教的身体和偷情的羞耻感让她既紧张又兴奋。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "人妻{target.name}的{vagina}包裹着{character.name}的{penis}，她虽有些许经验但仍然青涩，偷情的背德感让她的肉壁不断收缩。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在人妻{target.name}缺乏开发的{vagina}里反复研磨，她在背叛婚姻的罪恶感和强烈快感中不断颤抖。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "人妻{target.name}的{vagina}虽不是处女但仍然敏感紧致，{character.name}的{penis}每次抽插都引发她既羞耻又渴望的复杂情绪。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "{character.name}的{penis}在人妻{target.name}经验尚浅的{vagina}中缓慢抽送，她的表情因出轨的刺激和强烈的快感而变得扭曲而淫荡。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "人妻{target.name}的{vagina}含着{character.name}的{penis}熟练地收缩着，她熟知如何取悦男人，却因背叛丈夫而更加兴奋。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在人妻{target.name}经验丰富的{vagina}中抽送，她那熟练的迎合和偷情的快感让整个过程格外销魂。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "人妻{target.name}有经验的{vagina}紧密包裹着{character.name}的{penis}，她熟练地扭动腰肢，在背叛丈夫的羞耻中获得更强烈的高潮。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在人妻{target.name}湿润的{vagina}中进出，她因多次出轨而娴熟的技巧让每一次抽插都充满了不伦的快感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "人妻{target.name}的{vagina}有节奏地吮吸着{character.name}的{penis}，她丰富的经验让她知道如何在背叛婚姻的刺激中提高快感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在人妻{target.name}经验丰富的{vagina}中律动，她熟练的反应和偷情的禁忌感让这场性事异常激烈。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "人妻{target.name}的{vagina}熟练地夹紧{character.name}的{penis}，她那娴熟的技巧和出轨的背德感让她的呻吟更加放荡。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在人妻{target.name}湿漉漉的{vagina}中抽送，她那丰富经验的反应和背叛婚姻的快感让每一次插入都更深更猛。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "人妻{target.name}的{vagina}有节奏地吞吐着{character.name}的{penis}，她在偷情的刺激下展示着比婚内性事更加熟练的技巧。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "{character.name}的{penis}在人妻{target.name}的{vagina}里快速抽动，她那娴熟的身体反应和不伦的背德感让这场性事格外激烈。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "人妻{target.name}的{vagina}因丰富的经验而能完美适应{character.name}的{penis}，她熟练地收缩着肉壁，在背叛丈夫的禁忌中达到更强烈的高潮。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在人妻{target.name}经验丰富的{vagina}中快速抽送，她那已被多次开发的身体和偷情的刺激让她的呻吟异常淫荡。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "人妻{target.name}的{vagina}因多次性经验而柔软湿润，完美地容纳着{character.name}的{penis}，在背叛婚姻的快感中她显得格外放荡。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在人妻{target.name}熟练的{vagina}中猛烈抽插，她那经验丰富的身体和出轨的背德感让每一次进入都更加销魂。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "人妻{target.name}的{vagina}技巧纯熟地吞吐着{character.name}的{penis}，她那丰富的性经验和背叛丈夫的禁忌让她的呻吟格外动听。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在人妻{target.name}湿润宽松的{vagina}中自由进出，她那饱经情事的身体和偷情的刺激让她展现出极致的淫荡。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "人妻{target.name}的{vagina}因丰富经验而能灵活掌控{character.name}的{penis}，她在背叛婚姻的快感中展示着婚内不敢有的放荡姿态。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在人妻{target.name}的{vagina}中大幅度抽送，她那久经情场的身体和不伦的刺激让她的反应异常强烈。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "人妻{target.name}丰富经验的{vagina}紧密包裹着{character.name}的{penis}，她在婚外情的禁忌刺激下展现出婚内从未有过的淫荡一面。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.人妻 == 1 && selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "{character.name}的{penis}在人妻{target.name}的{vagina}里快速抽插，她那历经多次情事的身体和出轨的快感让她彻底放开了羞耻。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.受精 == 1"
 context = "人妻{target.name}刚受精怀孕的{vagina}变得更加敏感，{character.name}的{penis}每次抽送都让她想起受孕那一刻，背德感加倍刺激。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在刚怀孕的人妻{target.name}的{vagina}中轻柔抽动，她一边轻抚小腹一边在背叛丈夫的快感中沉沦。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.受精 == 1"
 context = "刚受精的人妻{target.name}的{vagina}紧紧包裹着{character.name}的{penis}，她既为腹中可能是情人的孩子而兴奋，又为背叛丈夫而羞耻。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在人妻{target.name}刚受孕的{vagina}中小心抽送，她因为怀上可能不是丈夫孩子的背德感而更加兴奋。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.受精 == 1"
 context = "刚怀孕的人妻{target.name}的{vagina}变得更加敏感，{character.name}的{penis}每次抽插都让她在不伦的快感中颤抖不已。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在刚受精的人妻{target.name}的{vagina}中轻轻研磨，她一边想着腹中的新生命一边在背叛的快感中呻吟。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.受精 == 1"
 context = "人妻{target.name}刚受孕的{vagina}包裹着{character.name}的{penis}，她在背叛丈夫的羞耻和怀孕初期的敏感中达到更强烈的高潮。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在刚怀孕的人妻{target.name}的{vagina}中缓慢抽动，她因怀上可能是情人孩子的刺激而变得更加放荡。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.受精 == 1"
 context = "刚受精的人妻{target.name}的{vagina}因荷尔蒙变化而更加敏感，{character.name}的{penis}每次抽送都让她在背德的快感中战栗。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.受精 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.受精 == 1"
 context = "{character.name}的{penis}在人妻{target.name}刚怀孕的{vagina}中小心进出，她因为背叛丈夫又怀上不明之子的复杂感受而格外敏感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.妊娠 == 1"
 context = "怀孕中期的人妻{target.name}的{vagina}含着{character.name}的{penis}，她一手护着隆起的肚子，在背叛丈夫的羞耻中享受着禁忌的快感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}在怀孕人妻{target.name}的{vagina}中轻柔抽送，小心避开她隆起的腹部，这种背德的刺激让她淫水泛滥。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.妊娠 == 1"
 context = "妊娠中期的人妻{target.name}的{vagina}因荷尔蒙变化而变得敏感多汁，紧紧包裹着{character.name}的{penis}，在背叛的快感中达到高潮。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}在怀孕人妻{target.name}湿润的{vagina}中轻轻抽动，她隆起的肚子和偷情的背德感让这场性事格外刺激。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.妊娠 == 1"
 context = "怀孕中的人妻{target.name}以侧卧姿势接纳{character.name}的{penis}，她的{vagina}因妊娠而更加敏感，背叛的快感让她不住颤抖。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}在孕中人妻{target.name}的{vagina}里小心抽送，她一边护着肚子一边在出轨的刺激中发出淫荡的呻吟。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.妊娠 == 1"
 context = "妊娠中期的人妻{target.name}的{vagina}紧紧吸附着{character.name}的{penis}，她那隆起的孕肚和背叛婚姻的羞耻感让这一刻更加难忘。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}在怀孕人妻{target.name}湿润的{vagina}中缓慢进出，她因为孕期敏感和背德偷情的双重刺激而浑身颤抖。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.妊娠 == 1"
 context = "孕肚隆起的人妻{target.name}的{vagina}包裹着{character.name}的{penis}，她在背叛丈夫的禁忌中获得比怀孕前更强烈的快感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.妊娠 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.妊娠 == 1"
 context = "{character.name}的{penis}在怀孕人妻{target.name}的{vagina}中轻柔律动，她那因妊娠而敏感的身体和出轨的背德感让每一次抽送都更加销魂。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.育儿 == 1"
 context = "产后人妻{target.name}的{vagina}包裹着{character.name}的{penis}，她的身体刚恢复不久，乳房因哺乳而丰满，在背叛丈夫的羞耻中体验着母亲的淫荡一面。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在育儿期人妻{target.name}的{vagina}中轻柔抽送，她那产后恢复的身体和背德的快感让这场性事格外刺激。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.育儿 == 1"
 context = "刚生完孩子的人妻{target.name}的{vagina}比以前更加敏感，{character.name}的{penis}每次抽插都让她在育儿期的禁忌中颤抖不已。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在产后人妻{target.name}的{vagina}中小心进出，她那因哺乳期而敏感的身体和不伦的快感让她忘记了母亲的身份。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.育儿 == 1"
 context = "育儿期的人妻{target.name}的{vagina}紧密包裹着{character.name}的{penis}，她在背叛丈夫的羞耻和产后身体的敏感中获得双重刺激。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在刚生育过的人妻{target.name}的{vagina}中缓慢抽动，她那因哺乳而微微漏奶的胸部和出轨的快感让她格外兴奋。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.育儿 == 1"
 context = "产后的人妻{target.name}的{vagina}含着{character.name}的{penis}，她一边想着自己的孩子一边在背叛丈夫的禁忌中沉沦于快感。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在育儿期人妻{target.name}的{vagina}里抽送，她那产后更加敏感的身体和背德的刺激让她忘记了母亲的责任。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.育儿 == 1"
 context = "刚为人母的{target.name}的{vagina}紧紧包裹着{character.name}的{penis}，她在哺乳期的敏感和背叛婚姻的羞耻中体验着更强烈的高潮。"
 
 [[entries]]
-conditions = "selected.talents.人妻 == 1&selected.talents.育儿 == 1"
+conditions = "selected.talents.人妻 == 1 && selected.talents.育儿 == 1"
 context = "{character.name}的{penis}在产后人妻{target.name}的{vagina}中轻柔律动，她那因为哺乳而时有漏奶的身体和偷情的禁忌让每一次抽送都更加刺激。"
 
 [[entries]]

@@ -966,123 +966,123 @@ conditions = "premise(hidden_sex_mode_4) && premise(place_someone_not_in_hidden_
 context = "躲避在隐蔽位置的{character.name}调整节奏，使{penis_s}在{target.name}的{armpit_s}间快速抽插，外面有人似乎在寻找什么。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}挺动腰部，让{penis_s}在未成年且无知的{target.name}的{armpit_s}间缓慢摩擦，告诉她这是一种特殊的游戏。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}加快腰部动作，使{penis_s}在懵懂的{target.name}的{armpit_s}处快速抽送，年幼的她不明白这意味着什么。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}调整角度，让{penis_s}在未成年{target.name}稚嫩的{armpit_s}间深入浅出，她只是按照指示夹紧双臂。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}轻轻挺动腰部，{penis_s}在性无知的{target.name}青涩的{armpit_s}处来回磨蹭，她不知这是性行为。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}用力挺胯，使{penis_s}在未成年{target.name}的{armpit_s}间快速摩擦，告诉她这是特殊的健康检查。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}控制节奏，让{penis_s}在年幼无知{target.name}的{armpit_s}深处反复抽送，她天真地配合着这“游戏”。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}加快腰部挺动，{penis_s}在未成年{target.name}稚嫩的{armpit_s}间高速摩擦，她懵懂地保持姿势。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}用力抽送，使{penis_s}在性无知{target.name}的{armpit_s}间深入浅出，谎称这是一种特殊的按摩方式。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}调整角度和力度，让{penis_s}在未成年{target.name}的{armpit_s}处快速磨蹭，她不懂这淫秽行为的含义。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{character.name}快速挺动腰身，{penis_s}在年幼{target.name}的{armpit_s}间激烈摩擦，前液沾湿了她稚嫩的皮肤。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}挺动腰部，让{penis_s}在未成年但性知识丰富的{target.name}的{armpit_s}间来回摩擦，她好奇地配合着。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}加快腰部动作，{penis_s}在未成年{target.name}的{armpit_s}间快速抽送，她虽年幼但了解这种性行为叫做腋交。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}调整角度，使{penis_s}在好奇的未成年{target.name}的{armpit_s}处深入浅出，她尝试提供更多快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}快速挺胯，让{penis_s}在未成年{target.name}的{armpit_s}间高频率摩擦，她好奇地观察着反应。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}用力抽送，{penis_s}在未成年但懂性事的{target.name}的{armpit_s}深处反复磨蹭，前液增加了润滑。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}控制节奏，让{penis_s}在未成年{target.name}的{armpit_s}间忽快忽慢地摩擦，她知道这会让{character.name}觉得舒服。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}加大力度挺动，{penis_s}在未成年{target.name}青涩但知情的{armpit_s}处激烈抽送，前液飞溅。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}快速抽送，使{penis_s}在好奇的未成年{target.name}的{armpit_s}间高速摩擦，她熟知这性行为。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}调整角度和速度，让{penis_s}在未成年{target.name}的{armpit_s}处深浅交替摩擦，满足她的好奇心。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{character.name}用力挺动腰身，{penis_s}在未成年但性知识丰富的{target.name}的{armpit_s}间快速抽插，她专注地配合。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}缓慢挺动腰部，让{penis_s}在成年但性无知的{target.name}的{armpit_s}间来回摩擦，谎称这是一种特殊治疗。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}加快腰部动作，{penis_s}在成熟却无知的{target.name}的{armpit_s}处快速抽送，她疑惑但也并不反抗。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}调整角度，使{penis_s}在成年但懵懂的{target.name}的{armpit_s}间深入浅出，告诉她这能改善身体。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}用力挺胯，让{penis_s}在性无知的成年{target.name}的{armpit_s}深处反复磨蹭，她配合但不理解。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}快速抽送，{penis_s}在成熟身体却无性知识的{target.name}的{armpit_s}间高频率摩擦，前液沾湿皮肤。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}控制节奏，让{penis_s}在成年但性无知{target.name}的{armpit_s}处忽快忽慢地抽插，她不明白在干什么，但也只能顺从地夹紧手臂。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}加大力度挺动，{penis_s}在成熟却懵懂无知的{target.name}的{armpit_s}间激烈摩擦，谎称这是特殊按摩。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}快速挺动腰身，使{penis_s}在成年无知{target.name}的{armpit_s}处来回抽送，她困惑地服从指示。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}调整角度和速度，让{penis_s}在成熟但性无知的{target.name}的{armpit_s}间深浅交替摩擦，利用她的无知来处理自己的性欲。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{character.name}用力抽送，{penis_s}在成年却不懂性事的{target.name}的{armpit_s}深处快速进出，她按指示夹紧双臂。"
 
 [[entries]]

@@ -393,62 +393,62 @@ context = "初体验"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "稚嫩"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "紧致"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "生涩"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "不适应"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 3"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 3"
 context = "紧窄"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "有经验"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "适应"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "熟练"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level <= 6&selected.abilities.阴道扩张.level > 3"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level <= 6 && selected.abilities.阴道扩张.level > 3"
 context = "恰好"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "丰富经验"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "扩张"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.阴道处女 == 0&selected.abilities.阴道扩张.level > 6"
+conditions = "selected.talents.阴道处女 == 0 && selected.abilities.阴道扩张.level > 6"
 context = "老练"
 
 [[entries]]
@@ -468,7 +468,7 @@ context = "新奇"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.阴道感度.level > 3&selected.abilities.阴道感度.level <= 6"
+conditions = "selected.abilities.阴道感度.level > 3 && selected.abilities.阴道感度.level <= 6"
 context = "适度敏感"
 
 [[entries]]

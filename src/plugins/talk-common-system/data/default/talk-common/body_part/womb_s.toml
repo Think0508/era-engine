@@ -363,67 +363,67 @@ context = "初体验"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.子宫处女 == 0&selected.abilities.子宫扩张.level <= 3"
+conditions = "selected.talents.子宫处女 == 0 && selected.abilities.子宫扩张.level <= 3"
 context = "稚嫩"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.子宫处女 == 0&selected.abilities.子宫扩张.level <= 3"
+conditions = "selected.talents.子宫处女 == 0 && selected.abilities.子宫扩张.level <= 3"
 context = "生疏"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.子宫处女 == 0&selected.abilities.子宫扩张.level <= 3"
+conditions = "selected.talents.子宫处女 == 0 && selected.abilities.子宫扩张.level <= 3"
 context = "紧致"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.子宫处女 == 0&selected.abilities.子宫扩张.level <= 3"
+conditions = "selected.talents.子宫处女 == 0 && selected.abilities.子宫扩张.level <= 3"
 context = "敏感"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.子宫处女 == 0&selected.abilities.子宫扩张.level > 3&selected.abilities.子宫扩张.level <= 6"
+conditions = "selected.talents.子宫处女 == 0 && selected.abilities.子宫扩张.level > 3 && selected.abilities.子宫扩张.level <= 6"
 context = "有经验"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.子宫处女 == 0&selected.abilities.子宫扩张.level > 3&selected.abilities.子宫扩张.level <= 6"
+conditions = "selected.talents.子宫处女 == 0 && selected.abilities.子宫扩张.level > 3 && selected.abilities.子宫扩张.level <= 6"
 context = "熟练"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.子宫处女 == 0&selected.abilities.子宫扩张.level > 3&selected.abilities.子宫扩张.level <= 6"
+conditions = "selected.talents.子宫处女 == 0 && selected.abilities.子宫扩张.level > 3 && selected.abilities.子宫扩张.level <= 6"
 context = "适应"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.子宫处女 == 0&selected.abilities.子宫扩张.level > 6"
+conditions = "selected.talents.子宫处女 == 0 && selected.abilities.子宫扩张.level > 6"
 context = "丰富经验"
 
 [[entries]]
 part = "A"
-conditions = "selected.talents.子宫处女 == 0&selected.abilities.子宫扩张.level > 6"
+conditions = "selected.talents.子宫处女 == 0 && selected.abilities.子宫扩张.level > 6"
 context = "松弛"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.子宫感度.level > 3&selected.abilities.子宫感度.level <= 6"
+conditions = "selected.abilities.子宫感度.level > 3 && selected.abilities.子宫感度.level <= 6"
 context = "有感度"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.子宫感度.level > 3&selected.abilities.子宫感度.level <= 6"
+conditions = "selected.abilities.子宫感度.level > 3 && selected.abilities.子宫感度.level <= 6"
 context = "适中"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.子宫感度.level > 3&selected.abilities.子宫感度.level <= 6"
+conditions = "selected.abilities.子宫感度.level > 3 && selected.abilities.子宫感度.level <= 6"
 context = "明显"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.子宫感度.level > 3&selected.abilities.子宫感度.level <= 6"
+conditions = "selected.abilities.子宫感度.level > 3 && selected.abilities.子宫感度.level <= 6"
 context = "反应"
 
 [[entries]]

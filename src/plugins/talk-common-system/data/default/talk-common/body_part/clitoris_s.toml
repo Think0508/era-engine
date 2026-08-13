@@ -283,27 +283,27 @@ context = "微颤"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "敏感"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "主动"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "充血"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "湿润"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.阴蒂感度.level > 3&selected.abilities.阴蒂感度.level <= 6"
+conditions = "selected.abilities.阴蒂感度.level > 3 && selected.abilities.阴蒂感度.level <= 6"
 context = "迎合"
 
 [[entries]]
@@ -353,42 +353,42 @@ context = "微肿"
 
 [[entries]]
 part = "A"
-conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "肿胀"
 
 [[entries]]
 part = "A"
-conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "湿滑"
 
 [[entries]]
 part = "A"
-conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "抽搐"
 
 [[entries]]
 part = "A"
-conditions = "selected.阴蒂 >= 1000&selected.阴蒂 < 12000"
+conditions = "selected.阴蒂 >= 1000 && selected.阴蒂 < 12000"
 context = "滚烫"
 
 [[entries]]
 part = "A"
-conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "剧烈痉挛"
 
 [[entries]]
 part = "A"
-conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "喷液"
 
 [[entries]]
 part = "A"
-conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "肿硬"
 
 [[entries]]
 part = "A"
-conditions = "selected.阴蒂 >= 12000&selected.阴蒂 < 90000"
+conditions = "selected.阴蒂 >= 12000 && selected.阴蒂 < 90000"
 context = "发红"
 
 [[entries]]

@@ -443,22 +443,22 @@ context = "生涩"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "熟练"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "有反应"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "习惯"
 
 [[entries]]
 part = "A"
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "满足"
 
 [[entries]]

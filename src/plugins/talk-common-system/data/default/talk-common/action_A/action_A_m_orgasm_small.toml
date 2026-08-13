@@ -26,43 +26,43 @@ conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0
 context = "{target.name}早已通晓男女之事，却仍怀着好奇迎来这陌生的口喉小绝顶，浅浅的快意自舌根一路酥麻到{throat}最深处。\n{mouth}轻轻绞动，那股夹着窒息与胀感的酥痒沿口腔向咽喉成条延展，虽明显却仍克制，远没到真正绝顶的地步。\n她意识清醒地感受着喉头一次次无意识吞咽，嘴角微湿，眼角泛起一层薄薄湿意，心里既清楚这是什么，又对身体这般诚实感到几分新奇。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "对这种事早已了然于心的{target.name}并不觉得新奇，只是从舌根蔓延到{throat}深处的那条酥麻通道裹着轻微的窒息感一路铺开，令她成熟的身体不受控制地轻颤了一下。\n这仅仅是快感的小峰值，远够不上真正的绝顶，她的意识依旧清醒，{mouth}里唾液悄悄增多，嘴角微微湿润，喉头轻轻吞咽，舌根不自觉地抽动，眼角泛起一丝生理性的湿意。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "{target.name}熟稔地承受着这股从口腔铺向喉咙深处的成条状酥麻，轻微的钝胀与窒息交织着漫上来，她清楚这只是浅浅的快感峰值，并不为之慌乱。\n身体却比理智诚实得多，{mouth}轻轻一绞，喉头连着吞咽了两下，少量唾液顺着嘴角悄悄渗出，舌根轻轻抽动，成熟的脸颊漾起淡淡潮红，意识仍清明，身子却已止不住地轻颤。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "这股沿着{mouth}向{throat}深处漫开的酥麻与轻微窒息，{target.name}早已不觉陌生，她成熟地明白这不过是没到绝顶的小小峰值，却依旧压不住身体的反应。\n喉头轻轻收紧又松开，舌根一下下地轻抽，少量唾液润湿了嘴角，眼角浮起一层薄薄的湿意，腰肢微微一颤，她意识清醒地感受着这条通道被酥麻填满的钝胀感。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "见惯了这般滋味的{target.name}并不好奇，只任由那从舌根延展到咽喉深处的酥麻裹着被撑开的钝胀轻轻铺展，成熟的身子无法抑制地战栗了一瞬。\n这只是快感的浅峰，尚未抵达真正的绝顶，她意识清明，{mouth}里唾液微微增多，喉头轻轻起伏吞咽，嘴角悄悄沁出水光，舌根不由自主地颤了颤，肩头也随之轻轻一抖。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "{target.name}成熟地领受着这股从{mouth}一路铺到喉咙深处的条状酥麻，轻微的窒息与钝胀混在一起漫过整条通道，她心里清楚这远不是绝顶，只是快感的一个小峰值。\n即便如此，身体仍诚实地颤动起来，喉头轻轻一咽，舌根微微抽动，少量唾液从嘴角悄悄溢出，眼角泛起淡淡湿意，成熟的面庞浮起一层红晕，意识却始终清醒。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}成熟的娇躯忽然轻轻一颤，一股酥麻从舌根蔓延到{throat}深处，攀上一个小小的快感峰值。\n那细密的酥痒里混着轻微的窒息与被撑开的钝胀，虽还远够不上真正的绝顶，却已让这具发育成熟的身体无法自抑地轻颤。\n她意识依旧清醒，只是茫然不解身体为何会这样，{mouth}微微收紧，喉头轻轻吞咽，嘴角渗出一缕唾液，眼角泛起淡淡湿意。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "稚气未脱却身姿成熟的{target.name}，喉头忽地一紧，从口腔到{throat}的整条通道涌起一阵成条铺开的酥麻。\n这只是快感的小小峰值，尚未到真正绝顶的地步，可那交织着窒息与钝胀的滋味，已叫她无从压抑地轻轻战栗。\n{mouth}不由自主地微微绞动，舌根一下下轻轻抽搐，少量唾液悄悄溢出润湿了嘴角，她圆睁着眼却满是不解与懵懂。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}发育饱满的身子蓦地一僵，一缕酥麻自舌根直窜进{throat}最深处，掀起一个浅浅的快感峰值。\n那被填满的钝胀混着若有若无的窒息在整条黏膜通道里荡开，虽然轻浅，却让成熟的躯体诚实地颤动起来。\n意识仍清明的她根本不明白这是怎么回事，{mouth}轻轻抽紧，喉头细细地上下吞咽，唾液略微增多濡湿了唇角。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "轻浅的快感自{mouth}深处一路铺向{throat}，{target.name}成熟的胴体骤然微微绷紧。\n这股沿舌根成条漫开的酥麻夹着淡淡的窒息与胀意，还远称不上真正的绝顶，却已足以令她发育完全的身体控制不住地轻轻颤栗。\n她神志依旧清醒，只是对这陌生的感受满心茫然，喉头一下下轻轻收缩，嘴角悄悄湿润，眼角沁出细微的水光。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}成熟丰盈的躯体倏地一颤，从舌根到{throat}深处腾起一阵细密的酥麻小峰值。\n那被撑开的钝胀感与轻微的窒息交缠着在整条通道里漫散，虽只是浅薄的快感高潮，却让这具成熟的身子无从抵抗地轻轻抖动。\n意识清明的她全然不解自己身体为何如此，{mouth}微微绞紧，舌根轻轻抽动，少量唾液顺着嘴角悄然溢出。"
 
 [[entries]]
@@ -406,23 +406,23 @@ conditions = "selected.abilities.口喉感度.level <= 3"
 context = "{target.name}忽然轻轻绷紧了身子，一股酥麻自舌根泛起，顺着{mouth}向{throat}深处成条铺展，夹杂着被顶开的钝胀与一丝压不住的窒闷。\n口喉的感度并不算高，因而这浅浅的快感里，更多是喉壁受压的物理钝重、黏膜温热的湿润与吞咽肌反射性的收缩，还不到真正绝顶的程度。\n她神志依旧清晰，只是无法抑制地让喉头连连轻咽，{mouth}里唾液微微增多，眼角沁出一点生理性的水光。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的身子蓦地轻轻一颤，从舌根一路铺到{throat}深处的黏膜通道泛起一阵酥麻，混着轻微的窒息与被撑开的钝胀感。\n这不过是快感的小峰值，还够不上真正的绝顶，可那股顺着{mouth}漫向喉咙深处的酥痒已叫她无从抵抗。\n{mouth}里唾液悄悄多了些，嘴角微微湿润，喉头轻轻吞咽，眼角泛起一层薄薄的湿意，意识仍清醒，身体却已诚实地颤栗起来。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "一阵细密的酥麻从{target.name}的舌根蔓延开来，沿着{mouth}向{throat}深处成条状铺展，轻微的吞咽反射与钝胀的窒息感交织在一起，令她整个人不受控制地轻轻打颤。\n这只是浅浅的快感小高潮，烈度有限，远没到真正绝顶的地步，她的神志依旧清明，可身体却全然管不住自己的反应。\n嘴角悄悄沁出少量唾液，喉头连着轻吞了几下，舌根细细抽动，脸颊漫上一层薄红。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "快感沿着{mouth}深处那条湿热的通道一路窜到{throat}，酥麻裹着被填满的钝胀与压不住的吞咽感，令{target.name}的身体猝不及防地一阵轻颤。\n这仅是快感的小峰值，还差着真正绝顶好大一截，意识清醒依旧，身体却已抑制不住地做出反应。\n{mouth}中唾液微微增多，嘴角泛起湿润的水光，喉结轻轻上下滚动，肩膀跟着细细一抖，眼角渗出一丝生理性的湿意。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}忽然绷紧了身子，一股酥痒从舌尖直窜到{throat}最深处，那条被撑开的黏膜通道又麻又胀，还夹着一丝轻微的窒息，令她控制不住地颤了颤。\n这只是轻度的快感峰值，尚不及真正绝顶的烈度，她的意识还算清明，身体却已诚实得不像话。\n{mouth}里悄悄溢出少许唾液，嘴角微微发亮，喉头一下一下地吞咽着，舌根轻轻抽动，睫毛也跟着细细地颤。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "从{mouth}一路延伸到咽喉的一整条黏膜骤然被酥麻攫住，{target.name}的身体随之轻轻一震，那种成条铺开、酥痒与窒息交织的快感是别处都不曾有过的。\n这只是快感的一个小峰值，够不上真正绝顶，可她已无力抑制身体的颤栗，意识虽清醒，反应却全然由不得自己。\n{mouth}中唾液略略增多，嘴角微湿，喉头轻轻缩了缩，腰肢无意识地一颤，眼角浮起浅浅的湿意。"
 
 [[entries]]
@@ -466,43 +466,43 @@ conditions = "selected.皮肤 < 1000"
 context = "{target.name}轻轻仰起脖颈，一条从{mouth}延伸至{throat}深处的酥麻通道忽然被快感填满，夹着轻微的窒息与钝胀，这轻浅的口喉小绝顶便悄然攀上了顶点。\n这只是快感的小峰值，尚未到真正绝顶的烈度，她神志仍清，身子却已诚实地颤栗不止。\n喉头连连吞咽，嘴角沁出少量唾液微微发亮，眼角也浮起一丝湿意。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的娇躯毫无预兆地轻轻一颤，从舌根一路延伸到{throat}深处的一整条黏膜蓦地泛起细密的酥麻，混着轻微的窒息与被撑开的钝胀。\n{mouth}里唾液不知不觉地略微增多，嘴角渗出一点微湿，喉头轻轻地吞咽了一下，舌根一下一下地抽动着。\n这不过是快感的小小峰值，还够不上真正的绝顶，她意识依旧清醒，却压不住这条从口腔铺到咽喉的酥麻，只能任由整具身子悄悄战栗。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "一股酥麻顺着{mouth}向{throat}深处成条地漫开，{target.name}的肩头猝不及防地耸了一下，整条口喉通道的黏膜都被细密的快感与轻微的窒息感裹住。\n喉头连着轻轻吞咽了两下，舌根微微发颤，少量唾液在{mouth}里悄悄泛起，润湿了嘴角。\n这只是轻浅的快感峰值，尚未抵达真正绝顶，她的神志还算清明，眼角却泛起薄薄的湿意，身体已诚实地颤栗起来。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}忽然轻轻仰了仰脖颈，一条从舌根铺到咽喉深处的酥麻窒息感悄然攀上顶点，钝胀与吞咽反射交织在一起，令这具娇躯无法自抑地轻颤。\n{mouth}内唾液微微增多，嘴角泛起一点湿润，喉头轻轻起伏吞咽。\n这轻度的高潮强度有限，她意识仍清醒，只是{mouth}与{throat}再也压不住那阵酥麻，任凭它浅浅地漫过又缓缓退去。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "从{mouth}深处直抵{throat}的一整条黏膜蓦地绷起细密的快感，{target.name}的身子轻轻一僵，混着被填满的钝胀与压不住的窒息，令她禁不住轻轻颤栗。\n喉头一下一下地小幅吞咽，舌根轻轻抽动，少量唾液悄悄溢出润湿了唇角，眼角微微泛起生理性的湿意。\n这只是快感的小峰值，远不及真正的绝顶，她神志依旧清醒，却拿这条口喉相连的酥麻毫无办法。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}猝然轻轻一颤，那股沿着{mouth}向咽喉深处成条铺开的酥麻窜到了顶点，轻微的窒息感与钝胀交缠着，逼得她整具身子控制不住地轻颤。\n{mouth}里唾液略略增多，嘴角微湿，喉头连续小幅地吞咽收缩，舌根细细发颤。\n这不过是浅浅的快感小高潮，意识仍旧清明，可这条从口到喉的酥麻窒息还是让她再无招架之力，只能任其漫过。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "被磨得极度敏感的{mouth}忽然轻轻一绞，{target.name}的舌根不受控制地抽动了一下，从舌尖直抵{throat}深处的一整条黏膜同时泛起细密的酥麻。\n那股沿着喉咙铺开的窒息感与酥痒交织成一道浅浅的快感峰值，还远远够不上真正的绝顶，意识依旧清醒，身体却已止不住地轻轻战栗。\n嘴角悄悄沁出一线晶亮的唾液，喉头轻轻吞咽了一下，眼角泛起一丝生理性的湿意。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "敏感到几乎一触即溃的{mouth}猛地涌起一阵酥麻，{target.name}只觉那股快感从舌面一路蔓延到{throat}最深处，钝胀与窒息一并漫了上来。\n这不过是一次轻浅的小高潮，尚未到真正绝顶的烈度，可那条黏膜通道上密密的酥痒已叫她无从抑制。\n喉头一下一下地轻轻吞咽，少量唾液顺着嘴角渗出，泛红的脸颊上浮起细微的颤意。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "只是极轻的一下触碰，早已敏感至极的{mouth}便骤然收紧，{target.name}那从舌根铺到{throat}深处的黏膜随之泛起一层酥麻的战栗。\n轻微的窒息与被撑开的钝胀交缠着涌来，将她推上一个浅浅的快感小峰值，虽还清醒，身体却诚实地颤抖起来。\n舌根悄悄抽动，喉头轻轻起伏吞咽，嘴角渗出一缕薄薄的唾液，眼角微微泛湿。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}早已敏感得不像话，此刻忽然无声地绞紧，一股酥麻顺着舌面直窜到{throat}深处，牵起一整条通道的细密颤栗。\n这只是快感的小小峰值，还差着真正绝顶一大截，意识仍旧清明，可那沿喉咙铺开的酥痒与窒息已令她压制不住地轻颤。\n喉头轻轻上下滑动着连连吞咽，少量唾液润湿了嘴角，睫毛微微发颤。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "一阵浅浅的酥麻毫无预兆地掠过{target.name}被开发得极度敏感的{mouth}，从舌尖到{throat}深处的黏膜一齐轻轻抽紧。\n那股酥痒混着轻微的窒息与钝胀感一路漫开，将她送上一个轻度的快感高点，还远不及真正绝顶，身体却已不由自主地细细战栗。\n她的喉头轻轻一缩，嘴角悄然溢出一线唾液，泛红的双颊透出压不住的迷乱。"
 
 [[entries]]

@@ -207,7 +207,9 @@ function extractPremiseRefs(expr: string): string[] {
 // 做法：去掉字符串字面量 → 按运算符/括号切 token → 收集含 '.' 且首字符为字母的 token
 // 不做根白名单过滤——插件自定义根字段直接走 validateField 精确匹配
 const STRING_RE = /"[^"]*"|'[^']*'/g
-const TOKEN_SPLIT_RE = /&&|\|\||[()!<>=]+|\s+/
+// 注释：单 & 也切分（2026-08-13 迁移审计：talk-common 历史数据用单 & 连接表达式段——
+// 迁移已全量转换；此处防御未来数据误入——单 & 不切会静默漏检非法表达式）
+const TOKEN_SPLIT_RE = /&&|\|\||[()!<>=&]+|\s+/
 // 聚合路径段（关系系统 v2）：any(恩人,有恩) / any_positive(group:亲属)——括号与参数需保护，
 // 否则被 TOKEN_SPLIT_RE 的括号切分切碎
 const AGG_SEG_RE = /(any|any_positive|any_negative)\([^)]*\)/g

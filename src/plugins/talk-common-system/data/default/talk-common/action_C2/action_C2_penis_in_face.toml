@@ -990,163 +990,163 @@ conditions = "premise(hidden_sex_mode_4) && premise(place_someone_not_in_hidden_
 context = "{target.name}在无人能见的地方，{face_s}被{penis_s}反复滑动，这种隐秘的性事让她既羞耻又兴奋。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "未成年的{target.name}困惑地感受着{penis_s}在{face_s}上的摩擦，不明白这种行为的含义，却本能地感到一种异样的兴奋。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "年幼无知的{target.name}的{face_s}被{penis_s}摩擦着，她不懂这是什么，却莫名感到身体深处的悸动。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{target.name}天真地让{penis_s}在{face_s}上滑动，不知道这是性行为，只是好奇地感受着这种奇怪的触感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "无知的未成年{target.name}感受着{penis_s}在{face_s}上的热度，她不明白为何自己的下体会变得湿润。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{target.name}的{face_s}被{penis_s}磨蹭着，她年幼无知，不懂这是性行为，只是本能地感到一种莫名的刺激。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "懵懂的{target.name}让{penis_s}在{face_s}上滑动，她不知道这意味着什么，却感到一种从未有过的兴奋。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "未成年的{target.name}困惑地感受着{penis_s}的硬度压在{face_s}上，不解为何这种奇怪的接触会让她感到兴奋。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{target.name}天真地让{penis_s}在{face_s}上摩擦，她对性一无所知，却本能地感到下体的湿润和心跳加速。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "无知的{target.name}的{face_s}被{penis_s}反复磨蹭，她不明白这种行为的含义，却感到一种莫名的快感。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "年幼的{target.name}好奇地感受着{penis_s}在{face_s}上的移动，不知道这是性行为，却本能地感到身体的变化。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "未成年但懂性的{target.name}好奇地感受着{penis_s}在{face_s}上的摩擦，虽然年幼却已知道这是性行为，内心既紧张又期待。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}虽年幼却了解性事，她的{face_s}被{penis_s}摩擦着，这种禁忌的体验让她既害怕又兴奋。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "懂事的未成年{target.name}主动让{penis_s}在{face_s}上滑动，她知道这是不该做的事，却忍不住想要尝试。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}年纪小却懂性，她感受着{penis_s}在{face_s}上的热度，明知这是禁忌却依然好奇地享受着。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "未成年的{target.name}知道{penis_s}摩擦{face_s}的意义，她故意表现得天真，实则内心充满了成人般的欲望。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}虽然年幼却了解性事，她好奇地感受着{penis_s}在{face_s}上的每一次滑动，禁忌的刺激让她兴奋不已。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "懂事的未成年{target.name}的{face_s}被{penis_s}磨蹭着，她明白这是性行为，这种早熟的体验让她既羞耻又期待。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}年纪小却对性充满好奇，她的{face_s}感受着{penis_s}的硬度，明知不该却依然渴望更多。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "未成年的{target.name}了解{penis_s}在{face_s}上摩擦的含义，这种不该有的认知让她的体验更加刺激和兴奋。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}虽然年幼却已懂性，她感受着{penis_s}在{face_s}上的温度，禁忌的认知让她的快感更加强烈。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "成年却无知的{target.name}困惑地感受着{penis_s}在{face_s}上的摩擦，不解这种行为的含义，却本能地感到身体的反应。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}虽已成年却对性一无所知，她的{face_s}被{penis_s}摩擦着，这种陌生的感觉让她既紧张又好奇。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "性无知的成年{target.name}感受着{penis_s}在{face_s}上滑动，不明白为何这种接触会让她的下体变得湿润。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}成年却无性经验，她的{face_s}感受着{penis_s}的热度，不解为何这种接触会让她心跳加速。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "无知的成年{target.name}让{penis_s}在{face_s}上磨蹭，她不明白这种行为的意义，却本能地感到一种莫名的快感。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}虽已成年却未经人事，她困惑地感受着{penis_s}在{face_s}上的压力，不知为何自己会因此兴奋。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "性无知的{target.name}的{face_s}被{penis_s}反复摩擦，她不懂这是性行为，却感到身体深处涌起一种奇怪的渴望。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}成年却对性懵懂无知，她感受着{penis_s}在{face_s}上的滑动，困惑地发现自己竟然期待更多。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "无经验的成年{target.name}让{penis_s}在{face_s}上移动，她不明白这种行为的含义，却本能地感到下体的湿润。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}虽已成年却性知识匮乏，她的{face_s}感受着{penis_s}的硬度，不解为何这种接触会让她全身发热。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "成熟的{target.name}享受着{penis_s}在{face_s}上的摩擦，这种直接的性刺激让她的下体湿得一塌糊涂。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "{target.name}的{face_s}被{penis_s}磨蹭着，她充分了解这种行为的意义，淫荡地享受着每一次接触。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "懂事的成年{target.name}让{penis_s}在{face_s}上滑动，她知道这种行为的意义，故意表现出一副淫荡的样子。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "{target.name}成熟地感受着{penis_s}在{face_s}上的热度，这种直接的性接触让她的欲望急剧攀升。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "对性有一定了解的{target.name}的{face_s}被{penis_s}摩擦着，她了解如何让对方更加兴奋，故意表现得既享受又淫荡。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "{target.name}熟练地让{penis_s}在{face_s}上滑动，她知道这种行为的含义，故意发出细微的呻吟来增加刺激。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "成熟的{target.name}感受着{penis_s}在{face_s}上的压力，她充分了解这种性行为，贪婪地享受着每一次接触。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "{target.name}的{face_s}被{penis_s}反复磨蹭，她熟知性事，故意表现出既羞耻又渴望的矛盾表情。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "成熟的{target.name}让{penis_s}在{face_s}上移动，她充分理解这种行为的意义，淫荡地享受着每一刻。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 0"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 0"
 context = "{target.name}熟练地感受着{penis_s}在{face_s}上的滑动，她了解这种性行为，贪婪地用脸颊去迎合每一次摩擦。"
 
 [[entries]]
@@ -1750,43 +1750,43 @@ conditions = "selected.abilities.皮肤感度.level <= 3"
 context = "{penis_s}的每次摩擦都让{target.name}的{face_s}感到微弱的触感，但想到这根东西即将在她脸上射精的画面，却让她内心无比火热。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{target.name}感受着{penis_s}在{face_s}上的每一次摩擦，皮肤的敏感程度让她能清晰地感受到茎身的纹路，带来一阵阵微妙的快感。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{penis_s}滑过{target.name}的{face_s}，每次摩擦都引起她明显的战栗，这种直接的皮肤接触让她既感到羞耻又隐隐期待更多。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{target.name}闭上眼睛享受{penis_s}在{face_s}上肆意游走的感觉，她能感受到适度的快感在脸部蔓延，让她不禁轻哼出声。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{penis_s}的热度和硬度通过{face_s}传递给{target.name}，这种半强迫的亲密接触让她下体开始变得湿润，呼吸也逐渐急促。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{target.name}的{face_s}被{penis_s}摩擦得微微发热，每一次接触都带来一种既羞耻又刺激的快感，让她忍不住想要更多。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{penis_s}在{target.name}的{face_s}上划过，前液涂抹在她的肌肤上，这种湿润的触感和淫靡的气味让她感到一阵兴奋。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{target.name}能感受到{penis_s}蹭过{face_s}的每一寸皮肤，带来的快感虽不强烈但足够明显，让她的表情变得越来越迷醉。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{penis_s}在{target.name}的{face_s}上轻重交替地摩擦，她感受着这种介于痛苦和快乐之间的刺激，忍不住轻轻呻吟起来。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{target.name}的{face_s}被{penis_s}磨蹭得发红，这种介于羞辱与快感之间的感觉让她既想逃避又希望继续，内心充满矛盾的欲望。"
 
 [[entries]]
-conditions = "selected.abilities.皮肤感度.level > 3&selected.abilities.皮肤感度.level <= 6"
+conditions = "selected.abilities.皮肤感度.level > 3 && selected.abilities.皮肤感度.level <= 6"
 context = "{penis_s}的每一次摩擦都让{target.name}的{face_s}感到一阵酥麻，这种直接的性接触让她既害羞又兴奋，期待着更加激烈的发展。"
 
 [[entries]]
@@ -1870,83 +1870,83 @@ conditions = "selected.皮肤 < 1000"
 context = "{penis_s}在{target.name}的{face_s}上来回滑动，带来的轻微刺激让她体验到一种浅尝辄止的快感，让她渴望更多。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{face_s}在{penis_s}的摩擦下传来明显的快感，她的呼吸变得急促，双颊泛起情欲的红晕。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{penis_s}在{target.name}的{face_s}上肆意游走，每一次接触都让她感到一阵酥麻，快感逐渐累积，让她忍不住轻声呻吟。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}闭着眼享受{penis_s}在{face_s}上的摩擦，每一次接触都像是小型电流穿过皮肤，带来一波波清晰的快感。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{penis_s}的热度和硬度透过{face_s}刺激着{target.name}的神经，让她感到一阵阵明显的愉悦，双腿间不自觉地变得湿润。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{face_s}被{penis_s}摩擦得发红发热，每一次接触都引发一阵快感，让她的表情逐渐变得迷醉。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{penis_s}拍打着{target.name}的{face_s}，带来的快感让她的身体微微颤抖，内心深处渴望着更加强烈的刺激。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}感受着{penis_s}在{face_s}上的每一次滑动，明显的快感让她忍不住伸出舌头舔舐自己的嘴唇，期待更多。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{penis_s}的前液涂抹在{target.name}的{face_s}上，这种湿润的触感加强了摩擦带来的快感，让她不禁呻吟出声。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{face_s}被{penis_s}摩擦得异常敏感，每一次接触都让她感到一阵酥麻的快感流过全身，让她忍不住渴望更多。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{penis_s}在{target.name}的{face_s}上来回滑动，带来的快感让她的身体变得越来越敏感，每一次接触都让她更接近高潮的边缘。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{face_s}一被{penis_s}触碰就引发了强烈的快感，她全身颤抖，双眼微闭，发出无法抑制的呻吟声。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis_s}在{target.name}的{face_s}上轻轻摩擦，就让她感到一阵电流般的快感直冲大脑，身体不受控制地痉挛起来。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{face_s}被{penis_s}摩擦时，她几乎立刻就达到了小高潮，浑身颤抖，呼吸紊乱，下体涌出一股爱液。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis_s}轻轻拍打着{target.name}的{face_s}，每一次接触都引发她全身的战栗，快感如浪潮般一波接一波地冲击着她。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}因{penis_s}在{face_s}上的摩擦而陷入快感的漩涡，她的表情完全沉浸在性欲中，身体不断颤抖着迎合每一次触碰。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis_s}的每一次摩擦都让{target.name}的{face_s}传来强烈的快感信号，她的意识已经模糊，只能本能地追逐着更多的刺激。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{face_s}在{penis_s}的刺激下变得异常敏感，轻微的触碰就能引发连锁反应般的强烈快感，让她不断呻吟颤抖。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis_s}滑过{target.name}的{face_s}，她立刻感到一阵强烈的快感袭来，让她的双腿发软，身体不受控制地痉挛，发出淫荡的呻吟。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{face_s}已经成为超级敏感的性感带，{penis_s}的每次摩擦都让她体验到接近高潮的强烈快感，让她完全沉沦。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis_s}在{target.name}的{face_s}上的每一次移动都像是在她全身点燃了快感的烟火，让她无法思考，只能沉浸在欲望的海洋中。"
 
 [[entries]]

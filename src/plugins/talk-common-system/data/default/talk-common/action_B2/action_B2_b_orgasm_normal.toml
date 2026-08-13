@@ -6,23 +6,23 @@ variable = "action_B2_b_orgasm_normal"
 description = "动作·action B2 b orgasm normal——体位条件描述文本"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{target.name}稚嫩单薄的身躯猛地绷直，{breast}整体强烈而有节奏地颤动着，乳尖充血胀硬到了极限，乳晕也随之紧紧缩起。\n稚气未脱的胸膛一下下高高挺起又落下，纤细的背脊弓成一道弧线，双腿不受控制地绷紧又颤抖，脚趾蜷缩起来。\n平坦的小腹一阵阵抽搐着，急促的呼吸变得凌乱失序，稚嫩的双肩与手臂止不住地细细颤抖，汗水沿着单薄的锁骨缓缓淌落。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{target.name}青涩的身体骤然绷紧又痉挛，{breast}随之剧烈而有节奏地晃动摇颤，乳头胀硬挺立到了极致，乳晕层层收缩。\n稚嫩的胸口大幅度地向上挺起，纤细的腰肢猛地弓起又瘫软下去，双腿绷得笔直随后又剧烈颤抖起来。\n未经发育完全的小腹一波接一波地抽紧，呼吸急促而紊乱，全身的肌肉不受控制地一阵阵痉挛，稚嫩的肌肤泛起大片潮红。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{target.name}尚显单薄的身躯猛然绷紧痉挛，{breast}剧烈而有规律地颤动起伏，乳尖胀得又红又硬，乳晕也随之紧紧收拢。\n稚嫩的胸膛一次次高高挺起，脊背弓成弧形又猛地塌落，双臂无力地垂落又骤然绷紧，手指痉挛般蜷缩起来。\n纤细的小腹反复抽搐痉挛，呼吸急促短浅而凌乱，双腿不断颤抖着夹紧又松开，稚气的肌肤上渗出细密的汗珠。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{target.name}稚嫩的身体猛地一阵剧烈绷紧，{breast}强烈而有节奏地颤动摇晃，乳尖挺立胀硬到了极限，乳晕紧紧皱缩起来。\n单薄的胸膛急促地上下起伏，纤细的腰身猛然弓起又无力软塌，双腿绷紧又不受控制地颤抖蜷曲，脚背绷得笔直。\n青涩的小腹一阵阵痉挛抽动，呼吸变得急促而破碎，稚嫩的四肢止不住地细密颤抖，汗水顺着单薄的脖颈缓缓滑落。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{target.name}青涩瘦削的身躯骤然痉挛绷紧，{breast}整体剧烈而有节奏地晃动颤抖，乳头充血胀硬得发疼，乳晕随之层层紧缩。\n稚气的胸口一下下用力挺起，脊背猛地弓起成弧后又瘫软下去，双腿绷直片刻又剧烈颤抖，脚趾用力蜷起。\n未经人事的小腹反复抽紧痉挛，呼吸急促紊乱失序，纤细的双臂与肩头不受控制地颤抖，稚嫩的肌肤上覆满细汗。"
 
 [[entries]]
@@ -226,23 +226,23 @@ conditions = "premise(FALL_LEVEL_E_-4) && premise(high_1)"
 context = "{target.name}这具献给主人的身体剧烈地痉挛起来，{breast}如浪涛般连续大幅晃荡，乳头胀硬突出绷得又红又亮，乳晕紧缩。\n她高高挺起胸膛，背脊反复弓起又落下，四肢绷紧后细细颤抖，小腹一阵阵收缩抽动，脚尖蜷曲扣紧。\n急促失序的喘息不断涌出，颈前胸口泛起浓重的红晕，细汗顺着乳沟滑下，肌肉不听使唤地阵阵战栗，整具娇躯在这标准强度的绝顶浪潮里剧烈起伏。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "未成年的{target.name}纤细的身子猛地绷直，{breast}剧烈而有节奏地颤动起来，乳尖迅速涨红胀硬到了极限，乳晕也随之紧紧收缩。\n单薄的胸膛一下下高高挺起又剧烈起伏，稚嫩的脊背用力弓起一个弧度，双腿绷得笔直又忍不住颤抖，脚趾用力蜷缩起来。\n纤细的十指死死攥紧，指节因用力而泛白，青涩的小腹一阵阵反复抽搐，呼吸变得又急又乱，汗水沿着尚未完全发育的身体线条缓缓淌落。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}青涩的躯体骤然一颤，{breast}随即大幅度地上下晃动，乳肉如波浪般层层颤动，乳头胀得又红又硬，几乎要立起来。\n稚嫩的腰背猛地向上弓起，纤细的四肢绷紧又控制不住地打颤，双腿不自觉地夹紧，脚趾蜷起。\n未发育完全的胸口剧烈起伏，呼吸急促而紊乱，双手下意识地抓紧身旁的东西，指节泛白，细密的汗珠顺着单薄的肩背滑落下去。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "稚气未脱的{target.name}身体猛然绷紧，{breast}剧烈颤抖着，乳尖胀硬到极点，乳晕也一并收紧发红。\n单薄的肩背向后大幅弓起，纤细的腰肢跟着剧烈起伏，双腿绷直又抖个不停，脚背反射性地绷紧。\n十根手指用力蜷曲攥紧，青涩的小腹一波接一波地抽搐痉挛，呼吸变得急促而断续，汗水浸湿了尚显单薄的躯体，肌肤泛起一片潮红。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}尚未成年的身躯猝然一僵，{breast}剧烈地上下颤动摇晃，乳肉层层起伏，乳头涨得又硬又挺。\n稚嫩的脊背猛地弓起一道弧线，双臂绷紧，手指死死抠住能抓到的东西，指关节泛白发紧。\n纤细的双腿控制不住地颤抖，脚趾用力蜷缩，胸口一起一伏地剧烈起伏喘息，肌肤大片泛红，汗珠一颗接一颗地从青涩的身体上滑落。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}青涩单薄的身体骤然绷成一条直线，{breast}猛烈颤动不止，乳尖硬得发烫，乳晕紧紧缩起。\n纤细的腰肢反复弓起又瘫软下去，双腿绷紧打着颤，脚尖用力蜷起，稚嫩的脚踝也随之绷紧。\n双手紧紧攥住身边能碰到的东西，指节因用力而发白，胸膛剧烈起伏，呼吸又急又乱，汗水顺着尚未完全发育的肌肤缓缓滑落，染上一层薄红。"
 
 [[entries]]
@@ -266,23 +266,23 @@ conditions = "selected.abilities.胸部感度.level <= 3"
 context = "{target.name}的{breast}整体剧烈地颤动摇晃，乳头胀硬凸起到了极限，乳晕紧紧地缩成一团。\n她的胸口一下下高高挺起，脊背深深弓起又落下，四肢时而绷直时而颤抖，小腹的肌肉密密地抽紧痉挛。\n她的呼吸急促得几乎接不上，胸膛剧烈起伏，绯红自胸前一路蔓延到脸颊，晶亮的汗液顺着颤栗的乳肉淌下。\n双手无意识地攥成拳头，脚趾用力向内勾起，全身肌肉在这完整的绝顶反应中反复绷紧又颤动，直到高潮的余韵慢慢退去。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "{target.name}的{breast}整体强烈而有节奏地晃动起来，一波接一波如浪般起伏，乳头充血胀硬到了极限，乳晕紧紧收缩成一团。\n她的胸膛猛地向上高高挺起，背部随之弓成一道绷紧的弧线，四肢瞬间绷直又轻轻颤抖，小腹一下下反复抽搐着。\n她的十指用力蜷曲攥紧，脚趾向内扣拢，颈项后仰，呼吸急促而失序，胸口大幅起伏。\n大片潮红从胸口一路漫上脖颈与脸颊，细密的汗珠顺着颤动的乳肉缓缓淌落，浸出一层薄亮的湿光。\n直到那阵剧烈的颤动渐渐平息，紧绷的躯体才一寸寸松软下来，只余{breast}仍在余韵里微微抖动。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "{target.name}的{breast}猛然剧烈地波浪般晃荡，乳肉一圈圈震颤扩散，充血的乳头挺立胀硬，乳晕收缩紧绷成硬结。\n她的胸口高高鼓起又急促落下，脊背弓起离地，双臂绷直，大腿肌肉一阵阵紧绷抽搐，腰肢不受控地反复弓动。\n她仰头咬紧牙关，喉间溢出断续的喘息，手指死死抠住身下攥成拳，脚背向下绷得笔直。\n潮红顺着起伏的胸膛迅速铺满全身，汗水自颈窝与乳沟间渗出滑落，在剧烈晃动的乳肉上留下亮晶晶的水痕。\n随着抽搐一点点减弱，她绷紧的四肢缓缓垂软，胸膛的起伏才逐渐归于平缓。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "{target.name}整个上身猛地一挺，{breast}随之剧烈而有节律地颤抖晃动，乳头胀硬到极限微微发红，乳晕一圈紧紧缩起。\n她的背脊深深弓起，胸膛向上高高耸立，四肢绷紧成一条直线又不住颤栗，小腹的肌肉一波波地收缩抽动。\n她双手攥紧，指节泛白，脚趾蜷曲扣拢，脖颈用力后仰，急促紊乱的呼吸让胸口大幅度地起起伏伏。\n绯红大片大片地在胸口与颈侧晕开，涔涔汗意顺着颤动的乳肉滑下，将饱满的胸脯浸得水光淋漓。\n待那阵剧烈的震颤缓缓退去，她紧绷的身躯才逐渐瘫软松弛，{breast}也随之慢慢停下晃动。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "{target.name}的{breast}大幅度地上下弹跳颤动，乳肉如波浪般层层荡漾，两颗乳头充血挺立硬得发胀，乳晕收缩起细密的褶皱。\n她的胸膛猛然向上挺出，腰背弓起一道深深的弧线，四肢瞬间绷紧又抖个不停，小腹随着痉挛一下下向内抽缩。\n她的双手胡乱抓握攥成拳，脚尖绷直向内勾曲，头颅后仰，急乱的喘息一声紧接一声地涌出。\n浓重的潮红从胸前直漫到耳根，滚烫的汗珠自乳缝间渗出滚落，在颤动不止的乳肉上淌成一道道湿痕。\n直到抽搐逐渐平息，紧绷战栗的躯体才慢慢松软下来，胸口的起伏也一点点趋于平静。"
 
 [[entries]]
-conditions = "selected.abilities.胸部感度.level > 3&selected.abilities.胸部感度.level <= 6"
+conditions = "selected.abilities.胸部感度.level > 3 && selected.abilities.胸部感度.level <= 6"
 context = "{target.name}的{breast}猛地剧烈震颤，成波成浪地晃动不休，充血的乳尖胀硬到了顶点，乳晕紧紧收缩绷成一圈硬结。\n她挺胸昂首，胸膛高高鼓起，脊背弓离而起，四肢僵直绷紧又阵阵发抖，小腹的软肉反复收缩抽搐个不停。\n她十指蜷起死死攥住，脚趾用力扣拢，脖颈深深后仰，紊乱失序的呼吸令胸腔剧烈起伏。\n大片绯红顺着胸脯一路烧上脸颊，晶亮的汗水沿着晃动的乳肉滑落淌下，浸润出一层湿漉漉的亮泽。\n随着那阵剧震缓缓收束，她绷得死紧的身子终于寸寸松弛，只剩{breast}仍在残余的余波里轻轻悸动。"
 
 [[entries]]
@@ -326,43 +326,43 @@ conditions = "selected.胸部 < 1000"
 context = "{target.name}的{breast}骤然剧烈地抖颤起来，成片的乳肉随着一波波痉挛上下荡漾，乳头胀硬到极点直直挺起，乳晕紧缩。\n她的胸膛高高挺立，背脊弓起又绷直，脖颈向后扬去，全身的肌肉一齐紧绷战栗。\n小腹反复地抽搐收紧，腰肢一阵阵轻颤，双腿绷成直线，脚尖用力向内勾扣，手指深深攥紧。\n潮红自乳晕迅速蔓延至颈项与脸颊，细密的汗珠不断沁出，急促失序的呼吸让胸口剧烈地起起落落，好一阵后才渐渐归于平静。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "{target.name}整个身子骤然剧烈绷紧，{breast}整体强烈而有节奏地颤动，乳肉如波浪般大幅晃荡。\n乳尖充血胀硬到极限，乳晕紧紧收缩，胸膛向上高高挺起，背部弓成一道弧线。\n她四肢绷紧发颤，小腹一下一下反复抽搐，双手死死攥紧，指节泛白，脚趾蜷缩扣拢。\n大片潮红从胸口漫上脖颈，汗珠顺着颤抖的乳肉滑落，呼吸急促失序，胸口剧烈起伏，颤栗的幅度远超先前却仍未到极端失控的地步。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "{target.name}的脊背猛地向上弓起，{breast}剧烈地上下震颤，饱满的乳肉一圈圈荡漾开来。\n两枚乳尖胀硬挺立到了顶点，乳晕收拢紧缩，胸膛高高耸起又落下，反复挺动。\n她的双腿绷直发颤，脚背绷紧，十指用力抠握，小腹肌肉一波波抽紧起伏。\n汗水从胸口的沟壑渗出滑落，皮肤大片泛起潮红，喉间溢出断续急促的喘息，整个胸廓随呼吸大幅起伏震荡，颤动明显强于之前的轻微反应。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "{target.name}浑身肌肉不受控制地颤抖起来，{breast}整体强烈晃动，乳肉波浪般翻涌不止。\n她的乳头充血挺立到极限，胸口高高挺出，背脊弓起绷直，四肢紧绷。\n小腹一阵阵深深地抽搐凹陷，双手攥紧指节发白，脚趾狠狠蜷起，腰肢一挺一挺。\n大片红晕自双乳蔓延到锁骨与面颊，细密的汗珠沿乳肉滚落，呼吸粗重而紊乱，胸膛起伏剧烈，反应完整而有力，却还没到痉挛失控的极端幅度。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "{target.name}的身躯陡然僵直，随即{breast}有节奏地大幅震颤起来，乳肉一波接一波地晃动。\n乳尖胀硬凸立，乳晕紧缩成一圈，胸膛向上高高鼓起，脊背深深弓成弧形。\n她双臂绷紧微颤，双腿夹紧发抖，脚尖绷直勾起，小腹反复抽动收紧。\n潮红大片染上胸膛与脖颈，汗水顺着起伏的乳峰淌下，急促的喘息一声声漏出，胸口如风箱般剧烈起伏，颤抖完整而剧烈但仍在可控的边缘。"
 
 [[entries]]
-conditions = "selected.胸部 >= 1000&selected.胸部 < 12000"
+conditions = "selected.胸部 >= 1000 && selected.胸部 < 12000"
 context = "{target.name}整具身子剧烈一挺，{breast}强烈而连续地颤动，丰盈的乳肉大幅度上下弹荡。\n她乳头充血硬挺到极致，乳晕收缩，胸膛高高挺起又反复起伏，背部弓起。\n四肢绷紧颤栗，双手紧攥，指节泛白，小腹一下一下地深深抽搐，脚趾扣紧。\n红潮自乳房迅速蔓延至全身，汗珠密密地渗出滑落，呼吸急促而失去节律，胸廓大幅震荡，反应齐全而猛烈，却未剧烈到彻底失控的程度。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "{target.name}高度敏感的{breast}整体强烈而有节奏地颤动起来，乳头充血胀硬到了极限，乳晕随之紧紧收缩。\n她的胸膛明显向上高高挺起，背部弓成一道弧线，四肢骤然绷紧又微微颤抖，小腹反复地抽搐收紧。\n{breast}上的乳肉如波浪般大幅晃动，大片肌肤迅速泛起潮红，细密的汗水顺着起伏的胸口一路淌落。\n她的呼吸急促而失序，喉间不受控地溢出破碎的气音，纤细的手指痉挛般收拢攥紧，脚趾也蜷曲绷直。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "{target.name}的{breast}猛然剧烈颤抖，乳肉一波接一波地晃荡不止，乳头挺立得又硬又红，乳晕皱缩成一团。\n她的背脊骤然弓起，胸口高高挺送向前，四肢肌肉绷得死紧，随即又不受控制地阵阵颤栗。\n小腹一下一下地深深抽搐，腰肢反复弓起又落下，大腿绷直后又微微夹拢，脚背绷成紧张的弧度。\n汗珠自颈窝与胸前不断沁出滑落，皮肤大片染上绯红，急促的呼吸令胸膛剧烈起伏，喉咙里滚出断续的颤音。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "被玩到极致敏感的{breast}整体大幅颤动，乳头充血挺立到极点，乳肉随着痉挛的节奏剧烈波动起伏。\n{target.name}的胸膛用力向上挺起，脊背绷成弓形，双臂骤然收紧，全身肌肉一阵接一阵地不受控颤抖。\n她的小腹连续抽搐收缩，腰部明显向上弓起，双腿绷直又颤栗，脚趾狠狠蜷缩起来。\n潮红从胸口迅速蔓延至颈脖与脸颊，密密的汗水沿着颤动的{breast}滑下，急乱的喘息一声接着一声，胸口起伏不止。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "{target.name}敏感的{breast}剧烈而有节律地颤抖着，乳晕紧缩，乳头胀硬发红，乳肉大幅度地晃荡摇颤。\n她的胸膛高高耸立向上，后背深深弓起，四肢绷得笔直，肌肉在绷紧中止不住地细密战栗。\n小腹一次次痉挛般地内缩，腰肢弓起后又微微塌陷，脚尖绷直勾紧，手指蜷缩着攥住了身边。\n大片肌肤浮起潮红的热意，汗珠顺着颤抖的胸脯不断滚落，呼吸急促失序，胸口伴着喘息剧烈地一起一伏。"
 
 [[entries]]
-conditions = "selected.胸部 >= 12000&selected.胸部 < 90000"
+conditions = "selected.胸部 >= 12000 && selected.胸部 < 90000"
 context = "{target.name}的{breast}整体绷紧后剧烈颤动，乳头挺硬充血，乳肉随高潮的节拍一波波地涌动起伏。\n她的胸口猛地向上挺送，背脊弓成满弓，四肢紧绷发颤，全身的肌肉不听使唤地阵阵抽搐。\n她的小腹深深地抽紧又松开，反复地颤缩，腰身弓起，双腿绷直后又并拢夹紧，脚趾用力蜷曲。\n汗水浸湿了泛红的胸膛，皮肤一片潮红滚烫，急促而凌乱的呼吸让胸口大起大落，喉间不断逸出破碎的喘息声。"
 
 [[entries]]
@@ -446,23 +446,23 @@ conditions = "selected.talents.普乳 == 1"
 context = "{target.name}那对柔嫩而富有弹性的{breast}随高潮剧烈地一颤一颤，饱满的乳肉大幅度晃动，充血的乳尖胀硬到顶点，乳晕紧紧地缩成一团。\n她的背部猛然弓起，胸膛高高挺出，四肢绷得笔直又剧烈发颤，小腹的肌肉一波波抽搐，腰肢弓起后又软软地落回。\n大片的红潮从胸前铺开直漫上脸颊，晶亮的汗水顺着颤动的乳肉与起伏的胸膛滚落，她双手攥紧发白，呼吸紊乱急促，整具身子沉在剧烈却尚未失控的颤抖之中。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}成熟的身躯猛地绷紧，{breast}剧烈而有节奏地颤动起来，乳头涨得又红又硬，乳晕紧缩成一圈。\n胸膛大幅度地向上挺起，脊背随之弓成一道弧线，双手茫然地在身前胡乱抓握，一会儿松开一会儿又攥紧。\n小腹一阵阵抽搐收缩，双腿不受控制地打着颤，脚尖下意识地蜷缩起来，呼吸变得又急又乱，胸口剧烈起伏个不停。\n{breast}上的乳肉如波浪般晃动，肌肤大片泛起红晕，汗水顺着起伏的胸口缓缓滑落。\n剧烈的颤抖持续了好一阵，才慢慢平息下来，四肢仍带着细碎的余颤。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}的{breast}猛然剧烈耸动，乳尖胀得又红又硬，乳晕跟着一同紧缩发皱。\n她的腰肢猝然向上弓起，脊背绷成一道弧线，双手慌乱地抓住身边能碰到的东西，指节因用力泛白。\n双腿反射性地并拢又松开，脚趾蜷缩着抠进地面，小腹一下一下地抽搐着，呼吸急促而紊乱。\n{breast}随着颤动大幅晃荡，胸口剧烈起伏，肌肤泛起一片薄红，细密的汗珠顺着锁骨滑落。\n好一阵剧烈的战栗才渐渐平复，四肢仍在微微发抖，胸口的起伏才慢慢缓和下来。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{breast}忽然剧烈地颤动起来，{target.name}的乳头胀硬挺立，乳晕收缩得又紧又皱。\n她的胸膛猛地向上挺起，脊背深深弓起，双手在半空中茫然地摆动，一时不知该抓向何处。\n大腿绷得笔直又忍不住打颤，脚跟离地又落下，小腹一阵接一阵地抽紧，呼吸又急又浅乱作一团。\n{breast}上的乳肉随颤抖不断晃动，胸口与颈侧迅速泛起红潮，薄汗沁湿了大片肌肤。\n剧烈的痉挛持续良久才渐渐消退，四肢仍残留着阵阵余颤，胸口的起伏久久未能平复。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}的身子猛地一僵，{breast}随即剧烈而密集地颤动，乳头涨得通红发硬，乳晕紧紧皱缩起来。\n腰肢不受控制地向上弓起又落下，双手茫然地抓紧又松开，反复了好几次，指尖因用力而微微泛白。\n双膝打着颤相互磕碰，脚趾蜷缩成一团，小腹一波接一波地抽搐着，急促的喘息乱了节奏。\n{breast}如波浪般剧烈晃动，胸口大片泛红，汗水顺着起伏剧烈的胸膛滑落下去。\n这阵剧烈的战栗持续了许久，才渐渐平息，四肢仍带着难以抑制的余颤。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{breast}猝然剧烈耸动起来，{target.name}的乳尖硬挺得发疼，乳晕随之紧缩发皱。\n胸膛高高挺起，脊背弓成明显的弧度，双手茫然无措地在身前胡乱摆动，一会儿抓紧一会儿又松开。\n双腿绷紧又颤抖，脚尖用力蜷起，小腹一阵阵急促地抽搐，呼吸变得又急又乱，胸口剧烈起伏不止。\n{breast}上的乳肉剧烈晃荡，肌肤大片泛红发烫，细密的汗珠顺着胸口滑落。\n剧烈的颤抖良久才慢慢平息，四肢仍残留着控制不住的细碎余颤。"
 
 [[entries]]

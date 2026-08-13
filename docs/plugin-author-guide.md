@@ -536,6 +536,7 @@ ctx.api.call('engine', 'premises.getRegisteredIds')            // → string[]
 | game:execution_start | command-executor | `{ commandId }` | 指令执行开始 |
 | game:execution_end | command-executor | `{ commandId }` | 指令执行结束 |
 | game:wake_up | game-context | `{}` | 玩家起床 |
+| character:registered | entity-system | `{ characters: [{id, data}] }` | 角色注册（微任务批量合并；插件做幂等初始化，如属性写入方） |
 | character:changed | character-system | `{ charId, attr, oldVal, newVal }` | 角色属性变化 |
 | character:ability_up | ability-progression | `{ charId, abilityId, newLevel }` | 能力升级 |
 | dialogue:start | dialogue-system | `{ character, conversationId }` | 对话开始 |

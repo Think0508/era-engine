@@ -6,63 +6,63 @@ variable = "action_C2_m_orgasm_strong"
 description = "动作·action C2 m orgasm strong——体位条件描述文本"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "一股远比从前任何一次都要凶猛的快感从{mouth}一路劈进{throat}深处，{target.name}懵懂的意识几乎被这灭顶般的洪流整个冲垮。\n那条通道仿佛在连番颤栗后变得敏感了一整个台阶，如今连黏膜的每一寸都承受不住，窒息与快感搅成一团，越是喘不上气，脑中就越烧得发白。\n年幼无知的她根本不明白自己的喉咙为何会变得这样敏感，只觉得一种从未体验过的极致快意将她彻底淹没，稚嫩的身子失神地颤栗着，心底既慌乱又迷醉，几乎要被这陌生的快感烧成一片空白。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "极强的快感如烧红的洪流从{target.name}的{mouth}深处一路烧遍全身，那种猛烈远远盖过了她此前经历的每一次绝顶，青涩的意识在顷刻间被冲得七零八落。\n从舌根一路铺满{throat}的整条通道都敏感得再也承受不住，呼吸被彻底夺走，窒息与快意纠缠着令她脑中一片发白。\n懵懂无知的她压根不懂这是什么，只能在这前所未有的极致颤栗里失神地承受，心底涌起近乎崩溃的迷乱与羞耻，对自己的喉咙竟被开发得如此敏感这一事实惊惶又茫然。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "一阵强烈到令人失神的快感从{mouth}深处轰然炸开，顺着{throat}一路烧进脑髓，{target.name}稚嫩的神志几乎被这陌生的极致冲击整个撕碎。\n这条通道像是在无数次颤栗之后敏感得高出了一整个台阶，如今连最轻微的震颤都化作难以承受的快意，窒息感越重，脑子就越是一片滚烫的空白。\n年幼的她全然不懂身体为何会这样反应，只觉得灵魂都被这股快感狠狠震了一下，心里满是迷醉与不知所措，懵懂地在这灭顶的颤栗中沉沦下去。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "前所未有的快感从{target.name}的{mouth}一路席卷到{throat}最深处，那股猛烈远超以往的每一次绝顶，将她青涩的意识几乎整个冲垮。\n整条通道的黏膜都敏感得再无一寸能承受，呼吸被彻底堵死，窒息与快意混作一团，越喘不上气，脑中便越烧得发烫发白。\n完全不懂性事的她根本无从理解这翻涌全身的滋味，只能失神地颤栗着，心底既是近乎崩溃的极致快意，又是对喉咙竟如此敏感的深深羞惭与茫然，稚嫩的心跳乱成一片。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "一道极致的快感洪流从{mouth}深处劈开，沿着{throat}烧遍{target.name}稚弱的全身，那种强烈远远压过了从前的所有绝顶，几乎将她懵懂的神志冲得一干二净。\n那条通道在连番颤栗后敏感得攀上了新的台阶，此刻连黏膜的每一分都无法承受，窒息与快感缠绕着令她脑海一片雪白。\n年幼无知的她说不清这究竟是什么，只觉得整个人都被这股灭顶的快意吞没，心底翻涌着迷醉、羞耻与说不出的震颤，对自己身体的失控既慌乱又沉沦。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "敏感度在连番绝顶后攀上新台阶的{target.name}，被一股远超以往的快感狠狠冲垮了意识，从舌根一路铺满{throat}深处的黏膜每一寸都烧得她无法承受。\n呼吸被彻底夺走的窒息感与快感搅成一团，越是喘不上气脑中就越烧得发白，那股从{mouth}劈进脑髓的极乐洪流几乎把她整个人都烫化了。\n年幼的她虽然懂得这是什么，却从未想过自己的喉咙竟能被开发到如此敏感，好奇与羞耻交织着，令她在前所未有的强绝顶里失神颤栗。\n近乎崩溃的快意灌满了稚嫩的身体，那难以言喻的灵魂震撼让她既迷醉又贪恋，只想沉溺在这一波比一波更烈的敏感冲击里。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "这是一次敏感度升上台阶后才迎来的强绝顶，快感的强度远远盖过了之前所有的普通高潮，年幼却好奇的{target.name}只觉意识被冲得七零八落。\n从{mouth}一路烧到{throat}深处的黏膜快感汹涌得让她喘不上气，窒息越重脑子就越是一片滚烫的空白，那股钝胀而灼热的极乐几乎要将她的神志彻底吞没。\n她心里清楚性事是怎么回事，可自己的喉咙居然敏感到这般地步，这一事实让她又羞又迷，好奇心却驱使她贪婪地迎着那股快感沉沦下去。\n近乎崩溃的迷醉感席卷了稚嫩的躯体，灵魂深处的震颤让她在失神中战栗不已，只剩下本能地沉溺在这陌生而极致的强烈快感中。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "连续绝顶多次之后，{target.name}那处的敏感被推上了一个全新的台阶，这记强绝顶的快感凶猛得几乎将她年幼的意识整个冲垮。\n从舌根铺满到{throat}深处的一整条黏膜都在剧烈地叫嚣着，呼吸被夺走的窒息感与快感缠成一团，越是喘不过气，脑中那片由{mouth}劈进来的灼热就烧得越白。\n懂得性知识的她本以为自己有所准备，可这远超想象的强烈快感还是让她措手不及，对自己喉咙竟如此敏感这件事，她既迷乱又羞耻，好奇的心却愈发沉迷。\n那难以言喻的灵魂震撼在稚嫩的身体里翻涌，近乎崩溃的极乐让她失神颤栗，只能任由这前所未有的绝顶将自己彻底淹没。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "敏感度陡然攀升后袭来的这场强绝顶，让年幼好奇的{target.name}尝到了远比普通高潮凶猛得多的极乐，意识几乎被这股洪流冲得溃散。\n从{mouth}一路灼烧到{throat}深处的黏膜快感汹涌澎湃，喉咙被撑开、被填满的钝胀感与窒息交叠，越喘不上气她的脑子就烧得越发空白。\n她并非不懂性事，可这具稚嫩的身体竟被开发到连喉咙都如此敏感，那份认知带来的羞耻与迷乱交织在一起，好奇的她却在其中愈陷愈深。\n近乎崩溃的甜蜜快意灌满全身，前所未有的灵魂震颤让她在极致的强绝顶里失神战栗，只想贪婪地攫住这陌生而汹涌的极乐。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "这一记敏感度升级后才降临的强绝顶，快感强烈到{target.name}年幼的意识几乎被彻底冲垮，从舌根到{throat}深处的黏膜每一寸都难以承受。\n呼吸被快感彻底掠夺，窒息与极乐搅成一团，越是喘不上气脑中就越烧得发白，那股从{mouth}奔涌进脑髓的快感洪流灼遍了她稚嫩的全身。\n懂得性知识的她心里清楚这意味着什么，却对自己喉咙竟能敏感到这般地步感到又惊又羞，好奇的探索欲却让她甘愿沉溺其中。\n难以言喻的震撼与近乎崩溃的迷醉在体内翻腾，年幼的她在这远超以往的极致绝顶里失神颤栗，只剩下本能地贪恋着这一波接一波的强烈冲击。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "从舌根一路铺满{throat}深处的黏膜快感汹涌炸开，{target.name}只觉一股滚烫的洪流劈进脑髓，意识几乎被彻底冲垮。\n这股远超以往的强烈快意烧遍全身，呼吸被死死夺走，越是喘不上气脑中就越烧得发白，{mouth}里翻涌的极乐令她失神颤栗。\n可她早已成熟的身子里装着一颗懵懂无知的心，根本不懂自己为何会被逼到这般迷醉，只是茫然又惊慌地承受着这陌生的灭顶快感，说不清究竟是好是坏。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{mouth}深处腾起的快感强得叫{target.name}几乎崩溃，那从舌根直烧到咽喉的酥麻铺满整条黏膜通道，一寸寸都承受不住。\n窒息与极乐搅成一团，她眼前阵阵发白，意识在这远超普通绝顶的洪流里几近溃散，只剩失神的颤栗与近乎崩溃的浓烈快意。\n成熟的身体诚实地沉沦，稚气的认知却一片空白，她完全不明白自己的喉咙竟能敏感到这般地步，只能在未知的极乐里迷乱地颤抖着。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "一记远比以往凶猛的强绝顶从{throat}深处炸开，那铺满黏膜的酥麻快感令{target.name}整个人都失了神。\n{mouth}被灭顶的快意填满，呼吸被彻底夺去，越喘不上气脑中越烧得雪白，灵魂仿佛被这股洪流狠狠撼动，快意浓烈到近乎崩溃。\n她成熟的躯体在极乐中战栗，懵懂的心却茫然无措，根本理解不了这陌生的感觉意味着什么，只本能地任凭那股快感将自己彻底淹没。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "从舌根直贯咽喉的一整条黏膜都在剧烈地传导着快感，{target.name}只觉这股强烈到极致的酥麻烧遍全身，意识几乎被冲散。\n{mouth}里的极乐一波高过一波，窒息感与快意纠缠着令她眼前发白，那种从未体会过的灵魂震颤令她彻底失神。\n她的身子早已长成熟，心却仍是一片天真懵懂，完全不懂自己的喉咙为何被折磨得如此敏感，只能在迷乱与困惑中颤抖着承受这未知的洪流。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{mouth}深处升腾的快感强烈得超乎想象，那铺满{throat}整条通道的酥麻一寸寸都令{target.name}无法承受，意识几近溃散。\n呼吸被死死锁住，越是喘不上气脑袋就越烧得发白，这远超普通绝顶的极乐令她失神颤栗，浑身沉浸在近乎崩溃的迷醉里。\n成熟丰盈的她却怀着孩童般的无知，根本弄不明白自己的身体为何会这样疯狂地颤抖，只是茫然又慌乱地被这陌生的灭顶快感彻底吞没。"
 
 [[entries]]
@@ -406,23 +406,23 @@ conditions = "selected.abilities.口喉感度.level <= 3"
 context = "{target.name}那对性迟钝的口喉在连绵不绝的绝顶中被磨出远超以往的敏锐，这一次积到顶的快感终于齐齐迸发，强得几乎把她的神志一并冲散。\n从{mouth}劈进脑髓的快感洪流烧遍全身，被填满的钝胀与被夺尽的呼吸拧成一团，{throat}深处每一下颤动都叫她眼前发白。\n她在灵魂震颤般的极致里失神迷醉，近乎崩溃的快意几乎将羞耻淹没，却又清楚地为自己迟钝喉咙竟被开发得如此淫荡而心乱如麻，只能任这股强绝顶将她没顶。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "在这条通道连续绝顶了太多次之后，{target.name}分明感到自己的敏感度陡然攀上了一个全新的台阶，如今连黏膜的每一寸都承受不住。\n一股从{mouth}一路劈进脑髓的快感洪流轰然炸开，从舌根铺满到{throat}深处的整条通道都在疯狂发烫，呼吸被彻底夺走的窒息与快意搅成一团，越是喘不上气脑中就越烧得发白。\n她的意识几乎被这远超以往的极致快感冲垮，在失神的颤栗里既迷醉又羞耻，简直不敢相信自己的喉咙竟被开发到这般敏感淫荡的地步。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "接连不断的绝顶把{target.name}的{throat}推上了新的台阶，此刻的快感强度远远盖过了从前任何一次寻常绝顶。\n那条从舌根一路铺到喉咙深处的黏膜通道被快感彻底填满，{mouth}深处传来撑开般的钝胀，混着令她头皮发麻的酥爽一齐涌上脑门，呼吸被夺得干干净净，脑子烧成一片空白。\n她在这灵魂都为之震颤的强烈绝顶里几乎失了神，心底翻涌起近乎崩溃的快意，又为自己竟能靠喉咙攀上如此高潮而羞得发烫，却怎么也停不下那阵沉沦。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}清楚地意识到，在无数次绝顶之后，自己这条通道的敏感度已经跃上了崭新的台阶，如今轻轻一碰便是灭顶的快感。\n这一次的绝顶凶猛得吓人，从{mouth}到{throat}深处的黏膜每一寸都在尖叫般地颤栗，窒息与快意搅在一起，越喘不上气脑中越烧得雪白一片。\n汹涌的快感几乎把她的意识整个冲垮，她在极致的迷醉里浑身战栗，既沉溺于这远超普通绝顶的销魂，又为喉咙被开发得如此敏感而涌起难以言喻的羞耻与震撼。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "敏感度攀上新台阶的{throat}此刻承受着{target.name}从未体验过的强烈快感，那是一场远比以往任何绝顶都要凶猛的高潮。\n从舌根一直烧到喉咙深处的黏膜被快感的洪流彻底淹没，{mouth}里那股被填满的钝胀感沿着脊背一路窜进脑髓，呼吸被彻底截断，脑中烧得一片空白。\n她的神智在这灭顶的快意里几乎被冲散，浑身失神地颤抖着，心底泛起近乎崩溃的甜蜜与灵魂深处的震颤，羞耻又迷乱地承认自己早已沉沦在这份喉咙的快感里。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "连续多次绝顶后，{target.name}分明感到自己的口喉敏感度上升了一整个台阶，这一次的快感强烈得让她招架不住。\n一道快感的洪流从{mouth}猛地炸开，顺着从舌根铺到{throat}深处的整条通道一路烧遍全身，窒息感与销魂的酥麻绞成一团，越是喘不上气意识就越是发白涣散。\n她在这远超寻常的极致绝顶里几乎失去神智，浑身颤栗着沉溺其中，心底翻涌着迷醉到近乎崩溃的快意，又为自己竟被开发出这般敏感淫荡的喉咙而羞耻得无地自容。"
 
 [[entries]]
@@ -466,43 +466,43 @@ conditions = "selected.皮肤 < 1000"
 context = "敏感度攀升一个台阶之后的这次强绝顶，来得比以往任何一次普通绝顶都要凶猛，{target.name}只觉从舌根一路铺满{throat}深处的黏膜快感灼烈得再也承受不住。\n呼吸被彻底夺走的窒息与快感纠缠成团，越是喘不上气脑子就越是滚烫地一片空白，意识在这灭顶冲击下几乎被冲垮。\n{mouth}里被填满的钝胀快感如熔流般烧遍全身，她在这极致的绝顶里失神颤栗，心头翻涌着迷醉、羞耻与近乎崩溃的灭顶快意，被无法言喻的震撼裹挟着彻底沉沦。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "一股远胜以往的快感从舌根轰然炸开，顺着{throat}深处一路劈进{target.name}的脑髓，烧得她眼前一片发白。\n这是{mouth}被开发得敏感度攀上新台阶后才迎来的强绝顶，每一寸黏膜都被这凶猛的快意烫得无法承受，呼吸被彻底夺走的窒息感与灭顶的快感搅成一团，越是喘不上气脑子就越是烧得空茫。\n她几乎被这股洪流冲垮了意识，只能失神地颤栗着，心底翻涌起近乎崩溃的迷醉，一想到自己的喉咙竟被玩弄得如此淫荡敏感，那股羞耻又叫她沉沦得更深。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "快感如决堤般从{mouth}深处涌起，一路烧穿{throat}直冲进{target.name}的天灵盖，令她整个灵魂都为之剧烈震颤。\n连番绝顶后敏感度爬上一档的口喉，此刻已经敏感得连黏膜的每一寸都在尖叫，那种被撑开、被填满的钝胀窒息与铺天盖地的快意纠缠在一起，把她的意识冲得七零八落。\n她在这前所未有的强烈绝顶里彻底失神，脑中一片滚烫的空白，心底涌起难以言喻的极致迷醉，既恐惧于自己被开发到这般田地，又忍不住深深沉溺进这股灭顶的快感。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "从{throat}深处一路铺满到舌根的整条黏膜都在同时尖叫，{target.name}被这股远超普通绝顶的快感洪流狠狠淹没。\n呼吸被彻底掐断的窒息感与炸裂般的快意搅作一团，越是喘不上气，脑中就越是烧得发白，意识几乎被这凶猛的高潮整个冲垮。\n她失神地剧烈颤栗着，心底翻腾起近乎崩溃的甜蜜快意，只觉得自己的喉咙竟能迸发出如此汹涌的快感，那份既迷乱又羞耻的震撼令她的{mouth}深处不住地痉挛，灵魂都仿佛在这一刻被彻底击穿。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "一道灼热的快感从{mouth}深处直劈上脑，{target.name}只觉得整个人都被这股远胜以往的绝顶洪流卷走了魂魄。\n口喉在连续高潮后敏感得可怕，此刻哪怕最轻微的触动都会引爆全身的颤栗，被填满的钝胀与令人窒息的快意交织，把她的思绪烧成一片滚烫的混沌。\n她几乎失去了对身体的所有掌控，只能在灭顶的快感里失神战栗，心底涌起狂潮般的迷醉与近乎崩塌的快意，那种连喉咙都被开发成敏感肉具的羞耻，反而叫她沉沦得愈发彻底。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "铺天盖地的快感自舌根汹涌而起，顺着{throat}深处一路灌进脑海，{target.name}被这股空前强烈的绝顶冲得几乎失去了自我。\n每一寸口喉黏膜都被烫得无法承受，窒息与快意死死缠绕在一起，越是呼吸不上来，那股灭顶的快感就越是烧得她意识涣散。\n她失神地颤栗着，心口翻涌着难以言喻的灵魂震撼与濒临崩溃的迷醉，一边惊骇于自己竟被玩弄得连{mouth}都沦为如此淫荡的快感之源，一边又忍不住深深地陷落进这前所未有的极致快意中。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "一股远超以往的强绝顶从{mouth}深处轰然爆开，{target.name}只觉整条从舌根铺到{throat}深处的黏膜都被快感烧透了。\n她清清楚楚地感觉到自己这处已被开发到连轻轻一碰都会颤栗的地步，如今这股快感比先前那些普通绝顶要凶猛太多，几乎把她的意识整个冲垮。\n窒息与快意搅成一团，越是喘不上气脑中就越烧得发白，她在这前所未有的极致快感里失神颤栗，心底涌起近乎崩溃的迷醉。\n想到自己的喉咙竟敏感成这副模样，一股难以言喻的羞耻与灵魂震颤同时将她淹没。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "快感如洪流般从{mouth}一路劈进脑髓，{target.name}整个人都在这股强绝顶里被卷得神魂颠倒。\n她能清楚地感到那条通道的敏感度不知何时又攀上了一个新台阶，如今连一丝碰触都能激起铺天盖地的快意，远比以往任何一次普通绝顶都要强烈。\n喉咙深处被撑开填满的钝胀与快感交织，呼吸被彻底夺走，脑中一片烧白，意识几乎被冲垮。\n她在这灵魂般的震颤里失神战栗，既迷乱又羞耻地意识到自己竟被这样一处开发到如此不堪，心底翻涌着近乎崩溃的快意。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}只觉一股滚烫的快感从{mouth}深处炸开，沿着{throat}一路烧遍全身，强得叫她整个人几乎散了架。\n这处连续绝顶了太多次，敏感度早已跃上新的台阶，如今每一寸黏膜都无法承受，这次强绝顶的烈度远远压过了以往的普通绝顶。\n窒息感把她的呼吸夺得干干净净，越喘不上气脑子就越是发白，她在这极致的快意里彻底失神，颤栗得停不下来。\n心底涌起难以言喻的震撼与沉沦，她迷乱地想着自己的喉咙怎会敏感到这般田地，羞耻与快感把她烧得神志恍惚。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "这一次的绝顶强得完全不像话，{target.name}觉得自己那条从舌根直通{throat}深处的通道都被快感彻底点燃了。\n她隐约意识到这处的敏感度又上了一个台阶，如今轻轻一碰便是铺天盖地的快意，比先前那些普通绝顶要猛烈太多，意识几乎撑不住地被冲垮。\n喉咙被撑开的钝胀感与快感缠绕在一起，呼吸尽失，脑中烧成一片空白，她在极致的快意里失神颤栗。\n那种近乎崩溃的迷醉与灵魂深处的震撼将她整个吞没，她又羞又乱地沉溺在自己竟被开发至此的事实里，无力自拔。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "强绝顶如潮水般从{mouth}深处涌起，{target.name}只觉快感一路从喉咙烧进脑髓，凶猛得让她几乎失了神。\n她清楚这处已被开发到极致，敏感度攀上新台阶后连吞咽都会引发全身颤栗，如今这股快意远远超出了以往那些普通绝顶所能给的。\n呼吸被彻底夺走的窒息与铺满{throat}的快感搅作一团，越是喘不上气意识就越是发白，几近被冲垮。\n她在这前所未有的极致里剧烈战栗，心底翻涌起难以言喻的震撼与羞耻，迷乱地沉溺于自己竟因这处而崩溃般攀上高峰的事实。"
 
 [[entries]]

@@ -26,43 +26,43 @@ conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1
 context = "青涩幼嫩的{target.name}忽然细细地一颤，一股沉甸甸的钝重快感如自身体最深处泛起的暗涌，缓缓地漫过她尚未发育的下腹与腰际。\n{womb}轻轻抽搐收缩，子宫口微微下沉张合，稚气的小腹深处一阵阵发热紧缩，柔嫩的腰肢发软轻扭，幼小的大腿反射性地相互夹拢，少量爱液自娇嫩缝隙悄悄溢出。\n这仅仅是快感的小小峰值，还远远不及真正的绝顶，可这源自最深处的深远酥麻已叫懵懂无知的她无法自控地轻颤，圆溜溜的眼里满是不知所措的迷茫。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "未成年却早已懂得性事的{target.name}身体最深处忽然沉沉一紧，{womb}轻轻抽缩着下沉了一分，一股钝重深远的酥麻自小腹最深处缓缓漫开，稚嫩的身子情不自禁地轻颤起来。\n这不过是快感的小小峰值，还远够不上真正的绝顶，意识依旧清醒的她带着好奇细细体味这股从体内最深处泛起的陌生快意，稚嫩的腰肢发软轻颤，幼嫩的大腿反射性地夹紧，少量爱液悄悄自娇嫩的缝隙渗出。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "一阵深沉厚重的快感自{target.name}下腹最深处泛起，{womb}微微收紧，子宫口不自觉地轻轻下沉张合，年幼的她好奇地睁大了眼，任由这沉甸甸的酥麻漫过骨盆与腰腹。\n虽已从书本上懂得这是身体最深处的高潮，可真正体会时仍只是浅浅的一波小峰值，意识清明的她抑制不住地轻颤，稚气的脸蛋泛起潮红，幼嫩的大腿悄悄夹拢，缝隙间渗出一缕晶莹爱液。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{womb}忽然轻轻一缩，深处那股钝重的甜麻沉沉地漫过{target.name}稚嫩的下腹，这个虽未成年却对性充满探索欲的少女下意识地屏住了呼吸。\n这只是轻度的绝顶，快感的小峰值尚未将她的神志冲垮，她好奇又慌乱地感受着子宫深处一沉一沉的悸动，娇小的腰肢微微弓起又软落，纤细的脚趾蜷缩，少量爱液顺着幼嫩的缝隙缓缓沁出。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "深藏体内的{womb}轻轻抽紧，一股自身体最深处涌起的深远快感沉甸甸地压过{target.name}的腰腹，年纪尚小却懂得性知识的她好奇地体察着这陌生的深处高潮。\n这不过是浅浅的快感峰值，远未到真正绝顶的地步，她意识清醒，身体却诚实地轻颤起来，下腹深处沉沉发热紧缩，幼嫩的大腿夹得更紧，娇嫩的缝隙里悄然溢出少许爱液。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "从身体最深处翻涌上来的钝重酥麻令{target.name}整个人微微一僵，{womb}一下一下地轻轻收缩，子宫口微微下沉，稚嫩的身子被这深沉的快感浪头轻轻托起。\n虽已懂得这是子宫的高潮甚至隐约明白其中孕育的可能，好奇心却胜过了羞怯，这轻度的小绝顶只令意识清醒的她轻轻发颤，腰肢发软，大腿夹紧，少量爱液自娇嫩的缝隙渗落。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "已成年却对性一无所知的{target.name}身体骤然轻轻一颤，{womb}从最深处悄悄抽紧收缩，一股沉甸甸的钝重快感自下腹深处泛起，缓缓漫过腰腹。\n她成熟丰腴的身躯毫无防备地颤栗着，稚气未脱的脸上却写满了茫然与困惑，完全不明白身体最深处为何会涌起这般奇异的滋味。\n这只是快感的小小峰值，远够不上真正的绝顶，意识依旧清醒，可娇软的腰肢仍不受控制地轻轻扭动，大腿反射性地夹紧，少量爱液顺着缝隙悄悄渗出。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "一阵深沉厚重的快感从{target.name}体内最深处缓缓升起，{womb}轻轻收缩着，子宫口微微下沉张合，将这股钝重的酥麻一点点向骨盆四周晕开。\n她的身体虽已完全长成，认知却仍似孩童般懵懂，只是顺从地任由那股沉甸甸的浪头漫过下腹，惊讶地睁大了眼睛。\n这轻度的绝顶尚未让成熟的身躯大幅弹跳，她意识清明，却压不住腰肢发软轻颤，大腿悄悄并拢，细汗与少量爱液一起渗了出来。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{womb}忽然从深处轻轻一紧，一股温热而钝重的快感自{target.name}下腹最深处泛起，沉甸甸地漫过腰腹，令这具成熟的身体不受控制地微微颤抖起来。\n已成年却全然不解性事的她，只觉得身体深处涌上一种从未有过的奇异感觉，乖巧地承受着，却半点也弄不明白这究竟是什么。\n这不过是浅浅的快感小峰值，还远不到真正绝顶，意识仍旧清醒，可下腹深处仍沉沉地发热紧缩，腰肢发软，少量爱液悄然溢出。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "深处那股沉甸甸的快感悄然攀上峰值，{target.name}成熟的身躯随之轻轻一颤，{womb}微微抽紧，子宫口一沉一张，将这钝重的酥麻缓缓漫过下腹。\n她的身体早已发育得婀娜成熟，心里却对这一切懵懵懂懂，只是茫然地顺从着，惊异于自己最深处竟也会有这般沉沉的反应。\n这仅仅是轻度的小绝顶，意识并未被冲垮，可她仍无法阻止腰肢的轻颤与大腿的夹紧，少量爱液顺着娇嫩的缝隙缓缓渗落。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "一股厚重深沉的快感自体内最深处轻轻漫开，{target.name}丰润的身体骤然绷紧，{womb}一下一下地轻柔收缩，将这钝重的甜麻沉甸甸地铺满整个下腹与腰际。\n成熟的胴体与那份幼稚天真的认知格格不入，她乖顺地承受着，却困惑地不明白身体深处为何会传来这样陌生而奇妙的滋味。\n这轻浅的快感峰值还称不上真正绝顶，她神志清醒，下腹深处却沉沉发热紧缩，大腿无意识地夹拢，少量爱液悄悄浸湿了娇嫩的缝隙。"
 
 [[entries]]
@@ -406,23 +406,23 @@ conditions = "selected.abilities.子宫感度.level <= 3"
 context = "来自身体最深处的一阵厚重快感缓缓漫过{target.name}的小腹，{womb}轻轻抽搐，子宫口微微下沉。\n她的子宫感度并不高，这份深沉的酥麻需要慢慢累积才泛成小小的浪头，是轻浅的快感峰值而非真正的绝顶。\n她神志清醒，腰腹深处却沉沉紧缩发热，大腿反射性夹拢，唇间溢出细碎的颤息，少量爱液顺着娇嫩缝隙缓缓流落。"
 
 [[entries]]
-conditions = "selected.abilities.子宫感度.level > 3&selected.abilities.子宫感度.level <= 6"
+conditions = "selected.abilities.子宫感度.level > 3 && selected.abilities.子宫感度.level <= 6"
 context = "一阵沉甸甸的钝重快感自{target.name}身体最深处缓缓泛起，{womb}轻轻抽紧收缩，子宫口微微下沉张合。\n这股深沉的快感如浅浅的浪头漫过骨盆与腰腹，虽然明显却还不至于将她整个人掀翻，只是快感的小小峰值，远远够不上真正的绝顶。\n她的意识依旧清醒，身体却已诚实地做出反应，腰肢发软轻颤，大腿反射性地夹紧，少量爱液悄悄从娇嫩的缝隙间渗出。"
 
 [[entries]]
-conditions = "selected.abilities.子宫感度.level > 3&selected.abilities.子宫感度.level <= 6"
+conditions = "selected.abilities.子宫感度.level > 3 && selected.abilities.子宫感度.level <= 6"
 context = "{target.name}的下腹最深处忽然沉沉地发热紧缩，{womb}一阵阵轻轻收拢，那股厚重的酥麻感自体内核心处沉甸甸地漫开。\n这只是轻度的小绝顶，深处的快感虽清晰可辨，却仍是克制的，身体没有大幅弹跳，只有细密的战栗一层层泛起。\n她的腰肢无力地弓了弓又软落，双腿悄悄并拢夹紧，脸颊漫上一层薄红，阴部渗出的少量爱液润湿了柔嫩的缝隙。"
 
 [[entries]]
-conditions = "selected.abilities.子宫感度.level > 3&selected.abilities.子宫感度.level <= 6"
+conditions = "selected.abilities.子宫感度.level > 3 && selected.abilities.子宫感度.level <= 6"
 context = "快感的小峰值自{target.name}体内最深处悄然涌起，{womb}微微抽紧，子宫口一沉一张地轻轻翕动。\n那种深沉钝重的快感不同于浅表的锐利刺激，而是从下腹深处沉甸甸地泛起，缓缓漫过腰腹，令她整具身子情不自禁地轻轻发颤。\n意识仍旧清明，身体却管不住自己，腰肢发软，大腿反射性收拢，脚趾微微蜷起，少量爱液顺着娇缝悄悄滑落。"
 
 [[entries]]
-conditions = "selected.abilities.子宫感度.level > 3&selected.abilities.子宫感度.level <= 6"
+conditions = "selected.abilities.子宫感度.level > 3 && selected.abilities.子宫感度.level <= 6"
 context = "{womb}忽然沉沉地抽搐了一下，一股厚重深远的快感自{target.name}小腹最深处漫开来。\n这股由体内核心泛起的钝重酥麻沉甸甸地漫过骨盆，虽然明显却只是轻轻荡起的浪头，还远不到真正绝顶的地步。\n她意识依旧清醒，却压不住那阵深处的颤栗，腰肢轻颤发软，双腿夹得更紧了些，阴部悄悄沁出少量湿意，将娇嫩的缝隙润得晶亮。"
 
 [[entries]]
-conditions = "selected.abilities.子宫感度.level > 3&selected.abilities.子宫感度.level <= 6"
+conditions = "selected.abilities.子宫感度.level > 3 && selected.abilities.子宫感度.level <= 6"
 context = "一股深沉的快感自{target.name}身体最深处沉沉泛起，{womb}轻轻收紧又缓缓松开，子宫口微微下沉。\n这轻度的小高潮如温热的浪潮般漫过下腹与腰际，带来沉甸甸的酸胀酥麻，却仍在她能承受的范围内，不曾将她彻底掀翻。\n她的意识还算清醒，身体却已无法抑制地轻颤，腰肢发软，大腿反射性夹拢，脸蛋泛红，少量爱液悄悄自娇缝间渗出。"
 
 [[entries]]
@@ -466,43 +466,43 @@ conditions = "selected.子宫 < 1000"
 context = "钝重深沉的快感自小腹最深处沉沉泛起，{target.name}的娇躯在这轻浅的冲击下毫无抵抗地轻轻颤栗。\n那不是锐利的一点刺激，而是从身体最深处漫上来的厚重浪潮，沉甸甸地压过腰腹。\n{womb}轻轻地一阵阵抽紧，子宫口微微下沉合拢，下腹深处沉沉地发热紧缩。\n这只是快感的小峰值，远未到真正绝顶的地步，她的意识仍算清醒，纤细腰肢却软软轻颤，大腿反射性夹紧，缝间少量爱液悄悄渗落。"
 
 [[entries]]
-conditions = "selected.子宫 >= 1000&selected.子宫 < 12000"
+conditions = "selected.子宫 >= 1000 && selected.子宫 < 12000"
 context = "{target.name}的身子忽然轻轻一颤，下腹最深处沉甸甸地泛起一阵钝重的酥麻，{womb}不由自主地轻轻抽紧收缩，子宫口微微下沉张合着。\n这股快感自体内最深处缓缓漫过骨盆与腰腹，虽只是轻浅的小峰值，还够不上真正的绝顶，却已让她清醒的意识里泛起迷乱。\n腰肢发软轻颤，大腿反射性地夹紧，娇嫩的缝隙里悄悄渗出少量爱液。"
 
 [[entries]]
-conditions = "selected.子宫 >= 1000&selected.子宫 < 12000"
+conditions = "selected.子宫 >= 1000 && selected.子宫 < 12000"
 context = "深处的钝重快感一波泛起，{target.name}成熟的身躯微微绷紧，{womb}轻轻地收缩了几下，下腹深处沉甸甸地发热紧缩，那股酥麻自最深处漫过腰际。\n这只是快感的小峰值，远未到真正绝顶的地步，她的神志依旧清醒，身体却已诚实地做出反应。\n腰肢无力地弓起又软落，双腿悄悄夹拢，少量爱液顺着缝隙缓缓渗落，脸颊漾起淡淡潮红。"
 
 [[entries]]
-conditions = "selected.子宫 >= 1000&selected.子宫 < 12000"
+conditions = "selected.子宫 >= 1000 && selected.子宫 < 12000"
 context = "一阵深沉厚重的快感自体内最深处悄然升腾，{target.name}的身子轻轻战栗起来，{womb}随之细密地抽紧，子宫口微微张合下沉。\n那股沉甸甸的酥麻如浅浅的浪头漫过下腹与骨盆，只是轻度的高潮小峰值，还不至于让身体大幅弹跳，意识仍旧清明。\n她的腰肢轻轻发软，大腿根不自觉地夹紧，脚趾微微蜷缩，少量爱液悄悄渗出。"
 
 [[entries]]
-conditions = "selected.子宫 >= 1000&selected.子宫 < 12000"
+conditions = "selected.子宫 >= 1000 && selected.子宫 < 12000"
 context = "快感的小峰值自下腹最深处泛起，{target.name}轻轻一颤，{womb}深处沉甸甸地发热紧缩，一阵钝重的酥麻缓缓漫过腰腹。\n这与阴蒂那种锐利刺激截然不同，是从身体最深处涌出的深沉快感，虽然明显却只是轻轻泛起的浪头，意识还算清醒。\n腰肢发软轻颤，大腿反射性地并拢，少量爱液自缝隙悄悄渗出，她的呼吸微微急促起来。"
 
 [[entries]]
-conditions = "selected.子宫 >= 1000&selected.子宫 < 12000"
+conditions = "selected.子宫 >= 1000 && selected.子宫 < 12000"
 context = "{womb}忽然轻轻抽紧了一下，一股沉甸甸的钝重快感自{target.name}体内最深处缓缓漫开，掠过下腹深处，牵起一阵酥麻的紧缩。\n这不过是快感的小峰值，还没到真正绝顶的烈度，她清醒的意识里却已被这深沉的高潮撩得迷乱。\n子宫口微微下沉张合，腰肢发软，大腿轻轻夹紧，少量爱液悄悄渗落，脸颊上悄然浮起一层薄红。"
 
 [[entries]]
-conditions = "selected.子宫 >= 12000&selected.子宫 < 90000"
+conditions = "selected.子宫 >= 12000 && selected.子宫 < 90000"
 context = "早已被快感浸透的{target.name}又是轻轻一颤，{womb}再度轻轻抽紧收缩，一股钝重深沉的快感自下腹最深处沉甸甸地泛起，缓缓漫过骨盆与腰腹。\n她的子宫经历了太多次高潮早已敏感得不像话，只需一丝深处的触动便又轻易攀上了这轻浅的峰值。\n这不过是快感的小小浪头，还远够不上真正的绝顶，意识仍旧清醒，身体却已无法抑制地做出反应。\n腰肢发软轻颤，大腿反射性地夹紧，子宫口微微下沉张合，少量爱液自娇嫩的缝隙悄悄渗出。"
 
 [[entries]]
-conditions = "selected.子宫 >= 12000&selected.子宫 < 90000"
+conditions = "selected.子宫 >= 12000 && selected.子宫 < 90000"
 context = "一阵深远而沉钝的酥麻自体内最深处轻轻涌起，{target.name}的娇躯随之微微一震，{womb}绵密地抽缩了几下。\n她那被反复调弄得极度敏感的子宫，如今稍一受刺激便又泛起了这甜腻的小峰值，来得又快又轻。\n这只是浅浅的快感高潮，尚未抵达真正绝顶的烈度，她神志清明，却管不住整具身体的战栗。\n下腹深处沉甸甸地发热紧缩，腰肢轻颤，双腿悄悄并拢，一缕爱液顺着缝隙缓缓流落。"
 
 [[entries]]
-conditions = "selected.子宫 >= 12000&selected.子宫 < 90000"
+conditions = "selected.子宫 >= 12000 && selected.子宫 < 90000"
 context = "快感的小浪头再度自{target.name}下腹最深处沉沉泛起，{womb}轻轻收紧又缓缓松开，那股钝重的酥麻厚重地漫过腰腹。\n早已高潮过无数次的子宫敏感得不可思议，仅仅一点深处的余韵便足以让她又一次轻轻攀上峰顶。\n这轻浅的绝顶强度有限，她意识依旧清醒，身体却诚实地颤栗着不受支配。\n子宫口微微下沉一张一合，大腿根部反射性地夹紧，少量晶莹的爱液悄然渗出濡湿了缝隙。"
 
 [[entries]]
-conditions = "selected.子宫 >= 12000&selected.子宫 < 90000"
+conditions = "selected.子宫 >= 12000 && selected.子宫 < 90000"
 context = "{target.name}的身子又是无声地一僵，{womb}深沉地抽紧了一下，一股自最深处泛起的钝重快感沉甸甸地漫过下腹与腰际。\n她的子宫被磨得敏感至极，如今连轻微的触动都能引出这样一阵轻浅的小高潮。\n这只是快感的小峰值，够不上真正绝顶的地步，意识清醒，可整具身体已经软得使不上劲。\n腰肢无力地轻弓又垂落，脚趾悄悄蜷起，下腹深处一阵阵发热紧缩，爱液少量地悄悄溢出。"
 
 [[entries]]
-conditions = "selected.子宫 >= 12000&selected.子宫 < 90000"
+conditions = "selected.子宫 >= 12000 && selected.子宫 < 90000"
 context = "深处的钝重快感如温热浪潮般再度漫起，{target.name}忍不住轻轻战栗，{womb}一下下地绵软收缩着。\n那颗被反复高潮磨得极其敏感的子宫，此刻只需一丝刺激便又攀上了这甜腻而轻浅的小峰。\n这轻度的绝顶来得温柔，她神志尚清，却依旧无法压下身体不由自主的颤动。\n腰肢发软微颤，大腿夹紧，子宫口沉沉下坠又张合，少量爱液自娇嫩缝隙悄悄渗落。"
 
 [[entries]]

@@ -7106,83 +7106,83 @@ conditions = "premise(t_unconscious_flag_1) && premise(target_sleep_h_awake_but_
 context = "{character.name}感受着装睡的{target.name}用{mouth}努力容纳着{penis}，她稚嫩的口腔紧致地包裹着肉棒，舌头偷偷舔过敏感的冠状沟，让{character.name}浑身酥软。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.幼女 == 1"
 context = "{character.name}感受着{penis}被小小的{mouth}勉强含住，那稚嫩的舌头生涩地舔着龟头，笨拙的动作反而让{character.name}的征服欲和快感同时高涨，想要好好调教这张幼小的嘴。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.幼女 == 1"
 context = "{character.name}的{penis}被{mouth}紧紧包裹着，小小的口腔温热又湿润，她不知所措地舔舐着肉棒，这种纯真而茫然的侍奉让{character.name}全身酥麻，下腹的热度不断攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.幼女 == 1"
 context = "{character.name}看着小小的{mouth}努力吞吐着{penis}，她生涩地试图取悦自己，那种懵懂无知的可爱模样让{character.name}心中的邪欲和快感交织，阴茎在她嘴里跳动不已。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.幼女 == 1"
 context = "{character.name}的{penis}在幼女的{mouth}里感受着极致的紧致，稚嫩的小舌头笨拙地舔弄着柱身，每一下都让{character.name}的快感逐渐累积，想要用精液填满这张天真的小嘴。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.幼女 == 1"
 context = "{character.name}感到{penis}被娇小的{mouth}含入，生涩的吸吮和舔舐让龟头一阵阵酥麻，她越是不得要领的样子，{character.name}就越发兴奋，下身的快感持续升温。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.幼女 == 1"
 context = "{character.name}的{penis}在小小的{mouth}中被稚嫩的舌头试探性地舔弄，她完全不懂技巧地含着肉棒，但这种青涩的口腔侍奉反而给{character.name}带来强烈的背德快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.幼女 == 1"
 context = "{character.name}感受到幼小的{mouth}温暖地包裹着{penis}，她生涩地吞吐着这根对她来说过于巨大的肉棒，紧致的口腔和笨拙的舌头让{character.name}的快感如浪潮般涌来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.幼女 == 1"
 context = "{character.name}的{penis}被{mouth}紧紧包住，小小的嘴努力张开容纳着龟头，她生涩地用舌尖舔着马眼，每一下都让{character.name}浑身战栗，征服幼女的快感让理智逐渐崩溃。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.幼女 == 1"
 context = "{character.name}沉浸在幼女{mouth}带来的快感中，{penis}被稚嫩的口腔温柔地包裹着，她笨拙地舔舐着冠状沟，不知所措的侍奉反而让{character.name}的欲望更加强烈。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.幼女 == 1"
 context = "{character.name}的{penis}享受着幼小的{mouth}带来的紧致感，她努力张嘴含着肉棒，生涩的小舌头在龟头上打转，这种纯真被玷污的快感让{character.name}兴奋得无法自拔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.成人 == 1"
 context = "{character.name}感受着{target.name}成熟饱满的嘴唇含住{penis}，她的{mouth}温热却动作生涩，这种成熟肉体与青涩技巧的反差让{character.name}内心涌起强烈的征服欲，快感不断攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.成人 == 1"
 context = "{target.name}那张成熟的脸庞努力地吞吐着{penis}，她的{mouth}笨拙地试图取悦{character.name}，这种大姐姐却不知所措的样子让{character.name}的支配欲得到了极大满足，阴茎在她口中愈发硬挺。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.成人 == 1"
 context = "{character.name}看着{target.name}成熟的面容上浮现出茫然的神色，她的{mouth}包裹着{penis}却不知该如何动作，这种反差萌让{character.name}兴奋不已，忍不住轻轻挺腰在她口中抽动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.成人 == 1"
 context = "{target.name}虽然身体已完全成熟，但她的{mouth}含着{penis}时的生涩动作暴露了她的缺乏经验，{character.name}享受着这种亲手教导成熟女性的快感，欲望愈加强烈。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.成人 == 1"
 context = "{character.name}的{penis}被{target.name}温软的{mouth}含住，她明明是成熟的大姐姐却像稚气的少女般笨拙地舔舐，这种纯真被污染的画面让{character.name}的征服感达到顶点，快感如潮水涌来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.成人 == 1"
 context = "{target.name}成熟丰腴的嘴唇裹住{penis}，她的{mouth}虽然湿润温暖，动作却显得不知所措，{character.name}看着这位大姐姐努力学习取悦自己的样子，满足感和快感同时充斥全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.成人 == 1"
 context = "{character.name}感受着{target.name}的{mouth}紧张地包裹着{penis}，她成熟的身体与生涩的技巧形成鲜明对比，这种违和感反而给{character.name}带来了前所未有的刺激，几乎想要立刻射出来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.成人 == 1"
 context = "{target.name}明明是见过世面的大姐姐，她的{mouth}含着{penis}时却满是青涩，舌头不知该往哪放，{character.name}享受着将这份纯净逐渐染污的快感，欲望变得越来越高涨。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.成人 == 1"
 context = "{character.name}的{penis}在{target.name}温热的{mouth}中感受着她笨拙的舔吮，她成熟的外表下藏着的纯情让{character.name}心跳加速，支配着大姐姐的满足感让快感翻倍上涌。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.成人 == 1"
 context = "{target.name}那张成熟优雅的脸正费力地吞吐着{penis}，她的{mouth}生涩地上下移动却找不到节奏，{character.name}看着这位大姐姐被自己征服的模样，一股强烈的占有欲与快感涌上心头。"
 
 [[entries]]
@@ -7226,83 +7226,83 @@ conditions = "premise(jj_0) && selected.abilities.舌技.level > 3 && selected.a
 context = "{character.name}感受着{target.name}丰润的{mouth}包裹着{penis}带来的绝妙快感，她那介于成熟与青涩之间的舌技让敏感的龟头酥麻不已，吸吮的节奏恰到好处地积累着快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.成人 == 1"
 context = "{character.name}感受着{target.name}的{mouth}以精湛的技巧包裹着{penis}，她成熟的舌头精准地按摩着每一处敏感带，却又带着一丝想要表现完美的羞涩，这种成熟与青涩交织的快感让{character.name}几乎无法自持。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.成人 == 1"
 context = "{character.name}的{penis}在{target.name}温热的{mouth}中享受着极致的舌技侍奉，她灵巧的舌尖在龟头上旋转舔舐，偶尔流露出的腼腆眼神与熟练的动作形成强烈反差，让{character.name}的快感如潮水般涌来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.成人 == 1"
 context = "{character.name}沉浸在{target.name}的{mouth}创造的快感天堂中，{penis}被她精妙的舌技伺候得舒爽无比，她想要完美取悦{character.name}的认真神情，反而暴露出了大姐姐略带青涩的一面，令{character.name}欲火焚身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.成人 == 1"
 context = "{character.name}的{penis}被{target.name}成熟的{mouth}深深吞入，她高超的舌技精准刺激着冠状沟和系带，但脸颊上泛起的红晕显示她并非老练，这种反差让{character.name}的征服欲和快感同时攀升到顶峰。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.成人 == 1"
 context = "{character.name}感受到{target.name}的{mouth}以令人惊叹的技巧吞吐着{penis}，她的舌头在柱身上娴熟地游走，却在与{character.name}对视时害羞地垂下眼帘，这种成熟身体与青涩表情的碰撞让{character.name}全身战栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.成人 == 1"
 context = "{character.name}的{penis}在{target.name}的{mouth}中体验着精湛的口腔侍奉，她成熟的嘴唇和灵活的舌头配合无间，吸吮着龟头让快感层层叠加，想要主动配合却有些腼腆的模样更是让{character.name}欲罢不能。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.成人 == 1"
 context = "{character.name}感到{penis}被{target.name}的{mouth}温柔而熟练地包裹，她精准地用舌尖刺激着马眼，喉咙收缩带来的挤压感让{character.name}浑身酥麻，大姐姐偶尔抬眼确认的青涩神情让这份快感更加甜美。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.成人 == 1"
 context = "{character.name}沉醉于{target.name}的{mouth}带来的极致快感，{penis}在她精妙舌技的侍奉下跳动不已，她成熟的身体展现着高超的技巧，眼中却闪烁着想要被夸奖的期待，让{character.name}的理智逐渐崩溃。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.成人 == 1"
 context = "{character.name}的{penis}享受着{target.name}成熟的{mouth}创造的快感旋涡，她灵巧的舌头如艺术家般在敏感处描绘，熟练的吞吐节奏中偶尔流露的害羞让{character.name}心中的欲望和怜爱同时爆发。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.成人 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.成人 == 1"
 context = "{character.name}感受着{penis}在{target.name}的{mouth}中被精湛的舌技伺候，她有节奏地吸吮着龟头，舌尖准确地挑逗着每一条神经，大姐姐成熟与青涩交织的魅力让{character.name}的快感攀升至无法抗拒的高度。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.淑女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.淑女 == 1"
 context = "{character.name}感受着{target.name}的{mouth}温热地裹住{penis}，这个成熟丰满的女人明显缺乏实战经验，她生涩地舔舐着龟头，舌尖的试探反而激起{character.name}强烈的征服欲。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.淑女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.淑女 == 1"
 context = "{character.name}的{penis}被{target.name}丰润的{mouth}笨拙地吞吐着，她丰腴成熟的嘴唇紧紧包裹住柱身，虽然动作青涩却格外色情，这种反差让{character.name}的快感愈发强烈。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.淑女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.淑女 == 1"
 context = "{character.name}享受着{target.name}成熟身躯带来的矛盾快感，她湿热的{mouth}努力容纳着{penis}，舌头生涩地缠绕，这个阅历丰富却实战为零的熟女让{character.name}兴奋不已。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.淑女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.淑女 == 1"
 context = "{character.name}感受到{target.name}的{mouth}湿润温暖地包围着{penis}，这个成熟女人理论娴熟实操却生涩，她不知所措地吸吮舔舐的样子给{character.name}带来独特的支配满足感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.淑女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.淑女 == 1"
 context = "{character.name}的{penis}在{target.name}丰厚柔软的{mouth}中享受着生涩的服侍，她成熟的脸颊努力吸吮，舌尖青涩试探着每一寸敏感皮肤，这种笨拙反而让{character.name}更加亢奋。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.淑女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.淑女 == 1"
 context = "{character.name}感受着{target.name}滚烫的{mouth}努力包裹{penis}，这个丰满成熟的女人舌技生疏，却带着急切想要取悦的心情笨拙吞吐，让{character.name}体验到调教处女熟女的淫靡快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.淑女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.淑女 == 1"
 context = "{character.name}的{penis}被{target.name}温热潮湿的{mouth}卖力地含着，她经验丰富的眼神却配上青涩的舌头动作，这种熟女的纯真性事让{character.name}的快感层层攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.淑女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.淑女 == 1"
 context = "{character.name}享受着{target.name}成熟丰腴的嘴唇裹住{penis}，她柔软的{mouth}生涩地吞吐，舌尖不知如何动作的迷茫让{character.name}的征服欲与快感同时达到巅峰。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.淑女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.淑女 == 1"
 context = "{character.name}感受到{target.name}丰满唇舌的笨拙服侍，她温暖的{mouth}紧紧吸住{penis}，成熟女人独有的肉感配合生涩舌技，给{character.name}带来前所未有的刺激。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.淑女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.淑女 == 1"
 context = "{character.name}的{penis}在{target.name}潮湿滚烫的{mouth}中感受着青涩的快感，这个成熟丰满的处女熟女努力用舌头舔舐，茫然不知技巧的样子让{character.name}欲火焚身。"
 
 [[entries]]
@@ -7386,123 +7386,123 @@ conditions = "premise(jj_3) && selected.abilities.舌技.level > 6 && selected.t
 context = "{target.name}的{mouth}被{character.name}巨大的{penis}撑到极限，但这位成熟的熟女淡定地用舌尖精准舔舐着龟头每一处褶皱，高超的技巧将局部刺激发挥到极致，让{character.name}体验到集中式的极乐快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.幼女 == 1"
 context = "{character.name}感受着{penis}被{target.name}稚嫩的{mouth}包裹住，她小巧的舌头熟练地舔弄着龟头，幼小身体带来的紧致感让快感不断涌上心头。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.幼女 == 1"
 context = "{target.name}娇小的{mouth}努力吞吐着{penis}，有节奏的吸吮动作配合灵巧的舌尖刺激，让{character.name}感到如同被幼嫩的温床紧紧缠绕般舒爽。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.幼女 == 1"
 context = "{character.name}低头看着{target.name}用她小小的{mouth}含住{penis}，她掌握的口交节奏与幼童身体的巨大反差让{character.name}的欲望更加高涨，快感一阵阵袭来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.幼女 == 1"
 context = "稚嫩的{mouth}包裹着{penis}，{target.name}小巧的舌头流畅地舔过每一处敏感点，{character.name}陶醉于小小嘴巴带来的紧致吸吮和温热湿润的快感之中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.幼女 == 1"
 context = "{character.name}享受着{penis}在{target.name}幼小{mouth}中抽插的快感，她虽然身体娇小却懂得如何用舌尖配合吞吐，让肉棒的每一寸都被精心伺候。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.幼女 == 1"
 context = "{target.name}用她稚嫩的{mouth}熟练地吸吮着{penis}，小脸被撑得鼓起却不松懈，{character.name}感受到一波波快感从下身涌向全身每一根神经。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.幼女 == 1"
 context = "{character.name}的{penis}被{target.name}小巧玲珑的{mouth}勉强容纳，她灵活的舌头有规律地按摩着柱身，幼女的口腔紧致得让{character.name}难以自持，快感层层攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.幼女 == 1"
 context = "{target.name}娇小的身体与熟练的舌技形成强烈反差，她用温热的{mouth}包住{penis}，舌尖精准地刺激着冠状沟，{character.name}被这禁忌的快感淹没。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.幼女 == 1"
 context = "{character.name}感到{penis}在{target.name}幼嫩的{mouth}中被舌头仔细舔弄，她小小的嘴唇紧紧贴住柱身，平稳的吞吐节奏让持续累积的快感几乎无法承受。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.幼女 == 1"
 context = "幼小的{target.name}用{mouth}努力吞吐着{penis}，她已掌握的舌技让龟头和柱身都受到恰到好处的刺激，{character.name}沉浸在稚嫩身体带来的背德快感中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.幼女 == 1"
 context = "{character.name}的{penis}在{target.name}稚嫩的{mouth}中感受着令人窒息的快感，这幼小的身体竟拥有如此高超的舌技，软嫩的舌头精准刺激着龟头每一处敏感，让{character.name}几乎全身酥软。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.幼女 == 1"
 context = "{target.name}娇小的{mouth}虽然只能勉强容纳{character.name}的{penis}顶端，但她那软嫩的舌头灵活地在龟头上打转舔舐，带来的剧烈快感让{character.name}的脑海一片空白。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.幼女 == 1"
 context = "{character.name}感受着幼小的{target.name}用娴熟的舌技侍奉着自己的{penis}，她那稚嫩的{mouth}包裹着龟头，小舌尖精准按压着最敏感的冠状沟，快感如电流般窜遍全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.幼女 == 1"
 context = "{target.name}那小小的{mouth}努力吞含着{character.name}的{penis}顶端，她精湛的舌技弥补了容量的不足，舌头灵活地在龟头每一寸皮肤上轻舔打转，让{character.name}浑身颤抖着享受快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.幼女 == 1"
 context = "{character.name}的{penis}被{target.name}幼嫩的{mouth}含住，那与稚嫩身体不符的高超舌技让{character.name}差点站不住脚，她的小舌头在柱身上灵活滑动，舔舐着每一条血管的纹理。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.幼女 == 1"
 context = "{target.name}稚嫩的小脸含着{character.name}的{penis}，她娇小的{mouth}只能勉强容纳龟头部分，但那精湛舌技在顶端打转舔舐，让{character.name}的快感不断攀升，几乎要溺死在这极乐中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.幼女 == 1"
 context = "{character.name}看着幼小的{target.name}用她稚嫩的{mouth}吞吐着自己的{penis}顶端，那不符年龄的熟练舌技精准刺激着龟头每一寸敏感神经，让{character.name}的理智被快感冲刷殆尽。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.幼女 == 1"
 context = "{target.name}纤细的小嘴努力张开含着{character.name}的{penis}，她的{mouth}虽小却带来了天堂般的体验，那灵活的软舌精确刺激着龟头每一处敏感位置，让{character.name}全身酥麻颤栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.幼女 == 1"
 context = "{character.name}的{penis}沉浸在{target.name}幼小的{mouth}创造的极乐中，这稚嫩的身体却拥有令人难以置信的舌技，软嫩的舌头精准舔舐着所有敏感点，让{character.name}的双腿发软难以支撑。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.幼女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.幼女 == 1"
 context = "{target.name}用她娇小的{mouth}努力侍奉着{character.name}的{penis}，尽管只能含入龟头，但她那灵活娴熟的舌头在顶端来回舔舐吸吮，汹涌的快感让{character.name}几乎要当场缴械。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.少女 == 1"
 context = "{character.name}的{penis}被{target.name}稚嫩的{mouth}包裹着，萝莉生涩的舌头小心翼翼地舔舐着龟头，那种青涩与紧张反而激起了{character.name}更强烈的征服欲望，快感如电流般袭遍全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.少女 == 1"
 context = "{target.name}的{mouth}紧紧吸住{character.name}的{penis}，萝莉努力吞吐却显得笨拙可爱，这种纯真被玷污的画面让{character.name}的快感倍增，阴茎在她口中不断涨大跳动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.少女 == 1"
 context = "{character.name}感受到{penis}被{target.name}小巧的{mouth}温热地包裹，萝莉茫然的眼神和不知所措的小舌让{character.name}心跳加速，一股强烈的支配欲涌上心头，阴茎猛地跳动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.少女 == 1"
 context = "{target.name}稚嫩的{mouth}艰难地容纳着{character.name}的{penis}，萝莉认真又慌乱的样子让{character.name}感到前所未有的视觉与心理双重刺激，快感从龟头涌向全身每一寸肌肤。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.少女 == 1"
 context = "{character.name}的{penis}在{target.name}青涩的{mouth}中感受着湿润与紧致，萝莉毫无章法的舔弄反而带来独特刺激，{character.name}看着她努力学习的模样，征服快感与肉体快感交织。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.少女 == 1"
 context = "{target.name}用小小的{mouth}吸吮着{character.name}的{penis}，萝莉生涩的动作和时不时抬头确认的眼神让{character.name}心生怜爱，阴茎被这份纯真包裹着，快感猛然上涌。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.少女 == 1"
 context = "{character.name}感到{penis}被{target.name}温热的{mouth}含住，萝莉的小舌笨拙地舔舐着前端，这份青涩羞怯让{character.name}产生了强烈的保护与污染交织的矛盾快感，勃起更加坚硬。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.少女 == 1"
 context = "{target.name}的{mouth}紧紧箍住{character.name}的{penis}，萝莉小脸涨红地努力吞吐，嘴角溢出的涎液让画面更加淫靡，{character.name}被这副纯真堕落之景刺激得浑身颤栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.少女 == 1"
 context = "{character.name}的{penis}在{target.name}的{mouth}中微微抽动，萝莉生涩的舌尖轻触着敏感的龟头，每一次试探都给{character.name}带来阵阵酥麻，征服这份纯真的快感让他欲罢不能。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.少女 == 1"
 context = "{target.name}用{mouth}虔诚地含着{character.name}的{penis}，萝莉像初次品尝糖果般小心翼翼地舔舐，这种天真与色情交织的场景让{character.name}快感暴涨，阴茎贪婪地在她口中跳动。"
 
 [[entries]]
@@ -7546,203 +7546,203 @@ conditions = "premise(jj_3) && selected.abilities.舌技.level > 3 && selected.a
 context = "{target.name}稚嫩的{mouth}无法吞下{character.name}巨大的{penis}，便专注用舌头舔弄龟头每一处褶皱，萝莉有规律的吸吮和按摩让快感不断积累，{character.name}感觉自己随时都可能缴械投降。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.少女 == 1"
 context = "{character.name}的{penis}被{target.name}娇小的{mouth}吞含，那稚嫩的舌尖却如老练的技工般精准地舔舐着敏感的冠状沟，强烈的快感让{character.name}浑身颤栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.少女 == 1"
 context = "{target.name}那小巧的{mouth}包裹着{character.name}的{penis}，灵巧的舌尖不断刺激着马眼周围的敏感带，超越年龄的技巧让{character.name}的快感不断攀升，几乎要失去理智。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.少女 == 1"
 context = "{character.name}感受着{target.name}温热的{mouth}紧紧吸附着{penis}，她那稚幼的脸颊灵活地吞吐着，每一次吮吸都精准按摩着龟头，快感如电流般窜遍全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.少女 == 1"
 context = "{target.name}小小的{mouth}含着{character.name}的{penis}，她那柔软的舌头以惊人的技巧环绕着阴茎柱身，每一处敏感神经都被精准地撩拨，让{character.name}沉溺于极致的快感之中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.少女 == 1"
 context = "{character.name}的{penis}在{target.name}娇嫩的{mouth}中享受着湿润温暖的包裹，她的小舌以不可思议的精准度按压着系带，一波波强烈的快感让{character.name}头皮发麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.少女 == 1"
 context = "{target.name}用稚幼的{mouth}吞吐着{character.name}的{penis}，她柔嫩的舌尖却展现出高超的技艺，精准地刺激每一处敏感点，让{character.name}的腰部不由自主地颤抖起来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.少女 == 1"
 context = "{character.name}感受着{target.name}小巧{mouth}带来的极致快感，她纤细的舌头如艺术家般在{penis}上描绘，每一次舔舐都精确地触动着敏感的神经末梢，令{character.name}欲仙欲死。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.少女 == 1"
 context = "{target.name}那娇小的{mouth}紧紧包裹住{character.name}的{penis}，她稚嫩的脸庞配合着老练的舌技，吮吸与舔舐的节奏恰到好处，强烈的快感让{character.name}几乎站立不稳。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.少女 == 1"
 context = "{character.name}的{penis}被{target.name}温热的{mouth}完美吞纳，她小巧的舌尖以精湛技巧抚慰着每一寸敏感肌肤，这种与稚嫩外表不符的高超技艺令{character.name}浑身酥麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.少女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.少女 == 1"
 context = "{target.name}用她那幼小的{mouth}含住{character.name}的{penis}，柔软灵活的舌头精准地按摩着阴茎上的每一处敏感带，如潮水般涌来的快感让{character.name}不禁发出舒爽的喘息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}感受着{penis}被{target.name}青涩的{mouth}笨拙地含住，少女生疏的舌头不知所措地舔舐着龟头，这份紧张羞涩的模样反而让快感如电流般窜过全身，满是征服纯洁雏儿的背德愉悦。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{target.name}稚嫩的{mouth}湿热地包裹着{penis}，她不懂如何取悦男人，只是本能地吮吸舔弄，{character.name}却从这份笨拙中获得了难以言喻的满足感，少女纯真的脸庞被肉棒填满的画面刺激着视觉神经。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}在{target.name}紧致的{mouth}里感受着少女口腔的青涩温度，她努力张大嘴巴却仍显得手足无措，舌头机械地随着吞吐移动，这种生涩却认真服侍的姿态让{character.name}心头涌起强烈的独占欲。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "少女柔软的{mouth}包含着{character.name}的{penis}，{target.name}不熟练地尝试用舌尖描绘着形状，眼角泛着紧张的泪光，这幅纯真少女努力侍奉的淫靡景象让快感与征服感同时充斥{character.name}的脑海。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}享受着{penis}被{target.name}温热的{mouth}生涩吞吐的快感，少女显然是第一次做这种事，脸颊羞红却努力迎合，不知所措的样子激发了{character.name}体内最原始的支配欲与施虐快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{target.name}用她稚嫩的{mouth}笨拙地服侍着{character.name}的{penis}，少女的技巧虽然生疏，但那份想要讨好的认真模样却带给{character.name}别样的刺激，肉棒被纯洁少女的唇舌包裹着的背德感令人沉醉。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}在{target.name}柔嫩的{mouth}中缓缓抽送，少女不谙世事的舌头生涩地舔过柱身，偶尔笨拙地吸吮，这种毫无技巧却充满顺从的口交让{character.name}体验到了亲手调教处女的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{target.name}紧张地用{mouth}含住{character.name}的{penis}，少女的舌头不知该如何动作，只是呆呆地任由肉棒在口中进出，这副不知所措的纯真模样反而让{character.name}产生了一种玷污圣洁的变态快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}感受着{penis}被{target.name}青涩的{mouth}湿润包裹，少女第一次为男人口交的紧张与羞耻让她的动作僵硬生疏，但那双含泪的眼睛向上看着{character.name}的表情却带来了难以抗拒的征服快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{target.name}的{mouth}青涩地吞吐着{character.name}的{penis}，少女稚嫩的舌头不懂技巧地四处乱舔，却意外地带来阵阵酥麻的快感，{character.name}享受着将纯洁少女一步步引入情欲深渊的背德愉悦。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "selected.talents.処女 == 1 && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "{character.name}感受着少女的{mouth}包裹着{penis}，温热湿润的口腔和灵活的舌头配合着规律的吞吐，这种熟练中带着青涩的服务让他的快感一波波涌上来。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "selected.talents.処女 == 1 && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "{penis}沉浸在少女{mouth}湿热的环境中，她的舌尖有意识地扫过敏感的冠状沟，这种流畅的技巧让{character.name}的下腹不断紧缩，快感如潮水般逐渐累积。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "selected.talents.処女 == 1 && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "{character.name}的{penis}被{mouth}紧紧含住，少女舌头有节奏的舔舐着柱身，每一次吞吐都带来持续的快感，让他不禁轻哼出声，享受着青春口腔的服务。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "selected.talents.処女 == 1 && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "少女用{mouth}包裹着{character.name}的{penis}，流畅的吞吐节奏和灵巧的舌技让快感源源不断地涌来，下身酥麻的感觉让他情不自禁地按住她的头。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "selected.talents.処女 == 1 && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "{penis}在少女温暖的{mouth}中享受着稳定的吸吮，她的舌尖精准地刺激着龟头下方，这种恰到好处的技巧让{character.name}的呼吸越来越粗重。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "selected.talents.処女 == 1 && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "{character.name}感受到{mouth}紧密包裹着{penis}的温热感，少女有规律的吞吐动作配合着舌头的按摩，持续不断的快感让他的腰部不自觉地微微挺动。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "selected.talents.処女 == 1 && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "少女{mouth}中的温热包裹着{character.name}的{penis}，她熟练的舔舐让每一寸敏感的肌肤都感受到快感，逐渐积累的酥麻感让他全身发热。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "selected.talents.処女 == 1 && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "{penis}在少女{mouth}湿滑的环境中接受着流畅的服务，她的脸颊轻轻吸吮着柱身，这种有技巧的口交让{character.name}的快感持续攀升。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "selected.talents.処女 == 1 && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "{character.name}的{penis}被{mouth}温柔地含住，少女舌头灵活地在龟头周围打转，持续的快感让他双腿发软，只想沉浸在这温热的快感中。"
 
 [[entries]]
-conditions = "selected.talents.処女 == 1&selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6"
+conditions = "selected.talents.処女 == 1 && selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6"
 context = "少女的{mouth}紧密包裹着{character.name}的{penis}，她有节奏的吞吐和熟练的舌技让快感不断涌来，酥麻的感觉从下身一直蔓延到全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{character.name}感受着{penis}被{target.name}的{mouth}紧紧包裹，少女精湛的舌技让龟头上的每一条神经都被精准刺激，快感如电流般窜遍全身，令{character.name}忍不住轻声喘息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{target.name}年轻的{mouth}温热湿润地吞吐着{penis}，她灵巧的舌尖沿着冠状沟精准地画着圈，每一下舔舐都让{character.name}浑身酥麻，快感层层叠加难以自持。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}在{target.name}的{mouth}中享受着极致服侍，少女娴熟的舌技配合恰到好处的吸吮，让阴茎上每一寸敏感肌肤都沉浸在无边的快感之中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{target.name}的{mouth}如同天堂般包裹着{penis}，她精准地用舌面按摩着柱身，舌尖则不时挑逗马眼，这种高超的技巧让{character.name}几乎立刻就想缴械投降。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{character.name}沉醉于{target.name}青春活力的{mouth}带来的快感中，少女的舌头如艺术家般精确刺激着{penis}的每一处敏感带，让{character.name}全身颤栗不已，快感如潮水般涌来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{target.name}温热的{mouth}有节奏地吞吐着{penis}，她娴熟地用嘴唇和舌头配合，精准按摩着系带和冠状沟，每一次舔弄都让{character.name}的快感攀升到新的高度。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}被{target.name}的{mouth}彻底征服，少女高超的舌技让每一条神经末梢都被充分刺激，强烈的快感让{character.name}脑海一片空白，浑身酥软到几乎站不稳。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{target.name}年轻的{mouth}湿热地包裹着{penis}，她精湛的舌技让龟头在口腔内备受宠爱，那种被彻底服侍的快感让{character.name}忍不住按住少女的头，享受这极致的愉悦。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{character.name}感受着{penis}在{target.name}的{mouth}中被精心伺候，少女灵活的舌头像是知道每一处敏感点的位置，精准的刺激让{character.name}浑身发麻，快感如浪潮般一波接一波。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{target.name}的{mouth}紧紧吸附着{penis}，她高超的舌技在口腔内创造出令人窒息的快感，少女娴熟的吞吐和舔舐让{character.name}陷入了无法自拔的极乐深渊。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}感受着{target.name}的{mouth}笨拙地吞吐着{penis}，少女青涩的舌头胡乱舔舐着龟头，这种茫然无措的生涩反应让{character.name}涌起强烈的征服快感，阴茎在她口中愈发胀大。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}被{target.name}温热的{mouth}包裹，年轻少女不知所措地含着粗大的肉棒，舌尖小心翼翼地碰触着柱身，这种纯真被玷污的画面让{character.name}的快感成倍攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{target.name}稚嫩的{mouth}努力吮吸着{character.name}的{penis}，少女眼眶含泪却依然顺从地服侍，那副青涩又努力迎合的模样让{character.name}全身酥麻，支配欲得到了极大满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}享受着{target.name}生涩的侍奉，少女的{mouth}湿润柔软地包裹着{penis}，她笨拙地转动舌头取悦肉棒，这种青春肉体学习着淫荡技巧的画面让{character.name}燃起熊熊欲火。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}在{target.name}的{mouth}中感受着湿热的吸吮，年轻少女生涩地含弄着阴茎，每当她抬眼寻求认可时那双懵懂的眼眸都让{character.name}心头火热，征服感油然而生。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{target.name}的{mouth}紧紧包裹着{character.name}的{penis}，少女稚嫩的双唇小心翼翼地套弄着龟头，舌头茫然地舔过冠状沟，这种纯洁与淫靡交织的快感让{character.name}头皮发麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}看着自己的{penis}在{target.name}的{mouth}中进出，年轻少女努力张嘴吞吐却动作生疏，口水沿着嘴角滑落，这副纯真被肉棒玷污的淫靡画面让{character.name}快要理智崩断。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}享受着{target.name}的{mouth}带来的青涩快感，{penis}被少女柔嫩的舌头生涩地舔弄着，她认真学习取悦男人的样子让{character.name}下腹燥热，想要更深地侵犯这个年轻的躯体。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{target.name}温热的{mouth}包含着{character.name}的{penis}，少女青涩地吮吸着粗壮的肉棒，舌尖茫然地在龟头上打转，这种被自己亲手调教的满足感让{character.name}的快意层层叠加。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}被{target.name}的{mouth}笨拙地服侍着，年轻少女不得要领地吞吐着肉棒，唾液和前液混合在嘴角，那纯真脸庞上挂满淫靡液体的画面让{character.name}兴奋得浑身颤抖。"
 
 [[entries]]
@@ -7986,203 +7986,203 @@ conditions = "selected.abilities.舌技.level > 6 && premise(target_visitor_flag
 context = "{target.name}的{mouth}展现出令人惊叹的控制力，包裹着{character.name}的{penis}时舌头还能灵活地刺激着每一寸敏感肌肤，即将离别的事实让{character.name}更加珍惜这无法抗拒的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.処女 == 1"
 context = "{character.name}感受着{target.name}年轻的{mouth}紧紧包裹住{penis}，少女熟练的舌技在龟头周围打转，每一下吞吐都带来阵阵酥麻快感，让{character.name}忍不住扶住她的脑袋轻声喘息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.処女 == 1"
 context = "{target.name}青春的{mouth}将{penis}含得极深，舌尖灵活地舔舐着柱身的每一处敏感地带，那种湿润温热的触感配合吸吮的力道，让{character.name}浑身一阵酥软，快感不断攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}被{target.name}稚嫩而熟练的{mouth}服侍着，她懂得用舌头按摩冠状沟，有节奏的吞吐让{character.name}感到快感逐渐堆积，少女口腔内的触感让人欲罢不能。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.処女 == 1"
 context = "{target.name}的{mouth}紧贴着{penis}上下套弄，少女舌技娴熟地刺激着铃口与茎身，那种被温软口腔包裹的酥爽快感让{character.name}不自觉挺起腰肢，渴望更深的侵入。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.処女 == 1"
 context = "{character.name}享受着{target.name}年轻{mouth}带来的口腔服务，{penis}被她娴熟的舌头舔得快感连连，少女吸吮的力道恰到好处，让{character.name}情不自禁地抚摸她柔软的秀发。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.処女 == 1"
 context = "{target.name}的{mouth}有规律地吞吐着{penis}，少女的舌尖在龟头敏感处反复刮蹭，那种被青春少女口腔紧紧裹住的快感让{character.name}呼吸变得粗重，腿根都在微微颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.処女 == 1"
 context = "{character.name}感到{penis}在{target.name}湿热的{mouth}中被巧妙玩弄，少女用舌头描绘着肉棒的轮廓，配合脸颊的吸力，让{character.name}的快感如潮水般一波波涌来，整个下体酥麻发软。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.処女 == 1"
 context = "{target.name}用她年轻的{mouth}含住{penis}深深吞吐，少女舌技已颇有章法，懂得照顾到柱身与龟头的各处敏感带，那份温暖湿润的口腔触感让{character.name}舒服得直哼出声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}被{target.name}稚嫩的{mouth}包裹，少女熟练地用嘴唇紧贴住茎身上下滑动，舌头配合着扫过每一寸敏感皮肤，那种青春口腔带来的快感让{character.name}身体阵阵发颤。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.処女 == 1"
 context = "{target.name}的{mouth}服侍着{penis}，少女有技巧地调整吞吐深浅与节奏，舌尖灵巧地舔弄着龟头缝隙，那种被年轻少女口腔紧致而温柔伺候的快感让{character.name}欲念高涨。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{character.name}感受着{target.name}精湛的舌技将{penis}玩弄于股掌之间，少女的舌尖如灵蛇般在龟头上游走，精准地刺激着每一处敏感带，这种与年龄不符的技巧让{character.name}的{mouth}中溢出满足的喘息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{target.name}年轻的{mouth}将{penis}深深吞入，她的喉咙有节奏地收缩按摩着龟头，舌头同时灵巧地舔舐柱身，这令人惊叹的口活让{character.name}的腰部不由自主地轻轻挺动，沉浸在少女带来的极致快感中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{character.name}几乎站立不稳，{target.name}的{mouth}如同天堂般包裹着{penis}，少女精准地找到每一条敏感神经，舌尖时而轻抚系带，时而用力按压冠状沟，快感如潮水般将他淹没。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{target.name}青春的面庞与她熟练至极的口技形成强烈反差，{character.name}感受着少女的{mouth}对{penis}的精心伺候，舌头描绘过每一寸敏感肌肤，让他的理智被汹涌的快感冲刷殆尽。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}在{target.name}的{mouth}中享受着极乐的刺激，少女的舌头如艺术家般精确地玩弄着每一处敏感点，温热湿润的口腔配合有节奏的吸吮，让他忍不住发出舒爽的低吟。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{target.name}用她年轻却技艺精湛的{mouth}将{penis}深深吞吐，舌尖以恰到好处的力度扫过马眼，喉咙肌肉完美配合着吸吮节奏，{character.name}感到一波波快感从下腹涌向全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{character.name}沉醉于{target.name}的{mouth}创造的淫靡快感中，少女的舌头灵活地在{penis}上滑动，精准刺激着冠状沟与系带，嘴唇与舌尖配合无间，让他几乎要失去意识般颤栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{target.name}稚嫩的容颜下隐藏着惊人的口交技巧，{character.name}感受着少女的{mouth}熟练地吞吐着{penis}，舌头有规律地按摩柱身敏感带，这种强烈的视觉与触觉刺激让他呼吸急促。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{character.name}的{penis}被{target.name}湿润的{mouth}完美包裹，少女的舌尖精准地探索着每一处褶皱和凹陷，喉咙深处传来的挤压感让龟头持续受到强烈刺激，他忍不住按住她的后脑轻轻挺腰。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.処女 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.処女 == 1"
 context = "{target.name}高超的舌技将{character.name}的{penis}玩弄得欲仙欲死，少女的{mouth}如同量身定做般完美贴合，每一次吞吐都精确地掠过最敏感的区域，层层叠加的快感让他的身体止不住地战栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.人妻 == 1"
 context = "{mouth}的温热包裹着{penis}，这位人妻生涩地舔舐着龟头，青涩的技巧和已为人妇的身份形成的强烈反差让{character.name}内心涌起一股征服的快感，肉棒忍不住跳动起来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.人妻 == 1"
 context = "{character.name}感受着已婚少妇{target.name}用{mouth}吞吐着{penis}，她生疏的舌头显然不知道如何取悦男人，这种背叛婚姻的行为和笨拙的口技让{character.name}的支配欲得到了极大的满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.人妻 == 1"
 context = "人妻{target.name}的{mouth}紧紧含住{penis}，她不熟练地用舌头舔舐柱身，眼角泛着泪光，这种有夫之妇跪在身下为自己服务的画面让{character.name}浑身酥麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.人妻 == 1"
 context = "{character.name}享受着{target.name}的{mouth}带来的湿润感，这位人妻不知所措地吞吐着{penis}，她的青涩让{character.name}萌生教导她的欲望，内心的征服感和快感交织在一起。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.人妻 == 1"
 context = "{penis}被人妻{target.name}的{mouth}笨拙地含住，她生涩地尝试舔舐敏感的冠状沟，这种有妇之夫却不谙此道的反差萌让{character.name}的欲望愈发高涨。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.人妻 == 1"
 context = "{character.name}感受到{target.name}的{mouth}在努力吞吐{penis}，已为人妻的她显然是第一次做这种事，那种紧张和羞耻混杂的表情让{character.name}体验到了独占的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.人妻 == 1"
 context = "人妻的{mouth}温热而湿润地裹住{penis}，但{target.name}生疏的舌技暴露了她的经验不足，这种已婚女性却如处子般生涩的状态让{character.name}兴奋不已。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.人妻 == 1"
 context = "{character.name}看着{target.name}努力用{mouth}服侍着{penis}，她是个有夫之妇，但生涩的技巧却像个初次尝试的少女，这种背德的刺激让{character.name}的快感成倍增加。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.人妻 == 1"
 context = "{target.name}的{mouth}含住{penis}笨拙地吞吐，作为人妻的她竟然如此不擅长这件事，{character.name}感受着她柔软的舌头小心翼翼地舔舐，内心涌起强烈的教导欲和征服感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level <= 3 && selected.talents.人妻 == 1"
 context = "{character.name}感受着人妻{target.name}的{mouth}生涩地套弄着{penis}，她的舌头试探性地触碰着柱身，那种有夫之妇却不谙男事的纯真让{character.name}体验到前所未有的兴奋。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.人妻 == 1"
 context = "{character.name}感受着{target.name}的{mouth}熟练地吞吐着{penis}，想到她是已为人妻却在背着丈夫给自己口交，这份背德的刺激让快感倍增，阴茎在她口中愈发硬挺。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.人妻 == 1"
 context = "{character.name}的{penis}在人妻{target.name}的{mouth}中感受着持续的快感，她用舌头按压着敏感的冠状沟，这个已婚女人娴熟的技巧和背叛婚姻的禁忌感让{character.name}的征服欲得到极大满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.人妻 == 1"
 context = "身为人妻的{target.name}用{mouth}包裹住{character.name}的{penis}，舌头有节奏地舔舐着柱身，{character.name}一边享受着这份肉欲，一边想着她回家后要如何面对丈夫，这份邪恶的想法令快感更加强烈。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.人妻 == 1"
 context = "{character.name}看着{target.name}认真吞吐{penis}的样子，她的{mouth}湿润温热，舌尖仔细照顾着每一寸敏感肌肤，想到这个人妻正背着家庭为自己服务，{character.name}感到前所未有的刺激与满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.人妻 == 1"
 context = "{character.name}的{penis}被{target.name}的{mouth}温柔地含住，她熟练地用舌头在龟头打转，{character.name}想到她结婚戒指下的手此刻却在抚摸自己的囊袋，这种背德感让全身都酥麻起来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.人妻 == 1"
 context = "{target.name}作为人妻却用{mouth}侍奉着{character.name}的{penis}，她的舌技已相当娴熟，知道如何按摩敏感点，{character.name}沉浸在这份禁忌的快感中，享受着征服已婚女人的满足感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.人妻 == 1"
 context = "{character.name}感受着{penis}被{target.name}的{mouth}吞吐，她的舌头熟练地缠绕着柱身，{character.name}想到这个温婉的人妻正在做着背叛婚姻的事，心中的征服欲和快感不断攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.人妻 == 1"
 context = "人妻{target.name}用湿润的{mouth}包裹着{character.name}的{penis}，舌尖有意识地刺激着马眼，{character.name}一边享受着稳定累积的快感，一边想着她丈夫若是知道妻子在给别人口交会是什么表情。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.人妻 == 1"
 context = "{character.name}的{penis}在{target.name}的{mouth}中感受着她有条不紊的吞吐，舌头的按摩带来层层叠叠的快感，想到这个人妻正对家庭撒谎只为和自己偷情，{character.name}的兴奋感难以抑制。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.talents.人妻 == 1"
 context = "{target.name}用{mouth}认真地服侍着{character.name}的{penis}，她熟练的舌技让每一次吞吐都带来稳定的快感，{character.name}看着这个美丽人妻卑躬屈膝的模样，心中充满了占有已婚女人的背德愉悦。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.人妻 == 1"
 context = "{character.name}感受着人妻{target.name}的{mouth}包裹住{penis}，她精湛的舌技如同经验丰富的情人般舔舐着每一处敏感神经，这种背德的快感让{character.name}浑身战栗，明知她已为人妻却更加兴奋。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.人妻 == 1"
 context = "{target.name}的{mouth}吞吐着{penis}，已婚人妻的舌头灵活地扫过冠状沟，{character.name}被这无与伦比的舌技和禁忌的刺激弄得头皮发麻，脑海中浮现她有夫之妇的身份更令快感加倍。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.人妻 == 1"
 context = "{character.name}的{penis}在人妻{target.name}的{mouth}中感受着极致的吸吮，她娴熟的舌技证明这不是第一次，但想到她正背着丈夫为自己口交，{character.name}的征服欲和快感同时达到顶峰。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.人妻 == 1"
 context = "人妻{target.name}用{mouth}服侍着{character.name}的{penis}，她高超的舌技有节奏地刺激着系带和龟头，{character.name}沉溺于这禁断的快感中，享受着夺走别人妻子这件事带来的极大满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.人妻 == 1"
 context = "{character.name}感受到{target.name}的{mouth}以精确的角度吞吐着{penis}，人妻那炉火纯青的技巧让快感如潮水般涌来，她戴着婚戒的手扶住柱身更添背德的刺激。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.人妻 == 1"
 context = "{target.name}的{mouth}如天堂般温暖地包裹着{penis}，人妻精湛的舌技让{character.name}的每一根神经都在尖叫，这种偷情的背德感和肉体的极致快感交织在一起，令人欲罢不能。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.人妻 == 1"
 context = "{character.name}的{penis}沉浸在{target.name}的{mouth}创造的极乐世界中，人妻老练的舌头准确地舔过每一处敏感地带，{character.name}想到她是在用服侍丈夫的嘴来服侍自己而更加兴奋。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.人妻 == 1"
 context = "人妻{target.name}用{mouth}包裹着{character.name}的{penis}，她的舌头如同艺术家般精准地刺激着龟头上的每一个敏感点，这种比她丈夫更能让她沉迷的禁断关系让{character.name}深感满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.人妻 == 1"
 context = "{character.name}感受着{target.name}的{mouth}以绝妙的力度吸吮着{penis}，人妻那无可挑剔的舌技让快感层层叠加，{character.name}享受着这份偷来的禁断快乐，心中充满了征服有夫之妇的快意。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.talents.人妻 == 1"
+conditions = "selected.abilities.舌技.level > 6 && selected.talents.人妻 == 1"
 context = "{target.name}的{mouth}热情地吞吐着{character.name}的{penis}，人妻精湛的舌尖在柱身上描绘着淫乱的轨迹，{character.name}被这技巧与背德感双重刺激弄得浑身酥麻，沉溺于掠夺他人妻子的罪恶快感中。"
 
 [[entries]]
@@ -13106,643 +13106,643 @@ conditions = "selected.abilities.舌技.level > 6 && premise(FALL_LEVEL_E_-2)"
 context = "{character.name}感受着{penis}被{target.name}的{mouth}紧紧包裹，驯服的部下用她精湛的舌技有条不紊地按摩着整根肉棒，湿润温热的口腔带来的快感让{character.name}浑身颤抖，沉醉在这极致的服务之中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}感受着{target.name}生涩的{mouth}包裹着{penis}，她笨拙地用舌头试探着龟头，这种毫无技巧却努力讨好的样子反而让{character.name}内心涌起一阵强烈的征服欲。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}的{mouth}温热地含住{penis}，她不知所措地轻轻吮吸，舌尖颤抖着舔过柱身，这种纯真而羞涩的服务让{character.name}的欲望愈发膨胀，享受着将她一步步引入淫靡深渊的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}的{penis}在{target.name}稚嫩的{mouth}中抽动，她仅凭本能舔舐着肉棒，茫然的眼神和努力迎合的样子让{character.name}兴奋不已，体内的施虐欲被这份青涩彻底点燃。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}用{mouth}含着{penis}，她的舌头像是不知道该往哪放一样胡乱地舔着，这种生疏的动作让{character.name}感受到一种独特的新鲜刺激，阴茎在她口中跳动抽搐。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}感受着{penis}被{target.name}青涩的{mouth}服侍着，她小心翼翼的吞吐和偶尔不小心刮到牙齿的感觉反而让{character.name}更加亢奋，那不知所措的可爱表情深深印在脑海。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}的{mouth}湿润温热地包裹着{penis}，她笨拙地尝试用舌头讨好{character.name}，那种纯真被玷污的背德感让{character.name}头皮发麻，腰部忍不住轻轻前挺索取更多。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}的{penis}在{target.name}顺从的{mouth}中享受着她毫无章法的舔弄，她每一次不熟练的吮吸都让{character.name}体验到教导处女的独特快感，支配欲被极大地满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}的{mouth}羞怯地含着{penis}，她的舌头僵硬地贴着龟头不知如何动作，这种纯情又色情的反差让{character.name}心中升起一阵邪火，快感从腰间窜向全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}感受着{target.name}用{mouth}笨拙地套弄{penis}，她试图模仿着某些动作却总是不得要领，这份生涩的努力让{character.name}的征服欲和保护欲交织在一起，快感不断攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}的{mouth}青涩地吞吐着{penis}，她每次含得太深都会微微干呕，那无辜又努力的模样让{character.name}的阴茎硬得发疼，一种想要彻底弄脏她的冲动在心底蔓延。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 < 1000"
 context = "{character.name}感受着{target.name}生涩的{mouth}吞吐着{penis}，她青涩的舌头小心翼翼地舔舐着柱身，这种笨拙的动作让{character.name}涌起一阵淡淡的快感，同时心中满溢着将她调教成熟的征服欲望。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 < 1000"
 context = "{target.name}的{mouth}紧紧包裹着{penis}，她不知所措地用舌尖试探着龟头，那茫然的眼神和微微颤抖的嘴唇让{character.name}心头一热，虽然快感不算强烈，但支配她的满足感却让人沉迷。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 < 1000"
 context = "{character.name}的{penis}在{target.name}温热的{mouth}中被含住，她生涩的吞吐节奏杂乱无章，但这种纯真的笨拙反而激起了{character.name}心底的兽欲，想要亲手将这个青涩少女染上自己的颜色。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 < 1000"
 context = "{target.name}努力用{mouth}取悦着{character.name}的{penis}，她的舌头生硬地舔过冠状沟，虽然技巧稚嫩让快感只有微微的酥麻，但看着她认真服侍的模样，{character.name}心中涌动着强烈的独占欲。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 < 1000"
 context = "{character.name}感受着{penis}在{target.name}的{mouth}里被笨拙地含弄，她完全不懂如何让男人舒服，只能茫然地配合着抽送节奏，这份纯洁被玷污的画面让{character.name}心底泛起一股隐秘的快意。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 < 1000"
 context = "{target.name}湿润的{mouth}紧张地包裹着{character.name}的{penis}，她毫无章法的舌头只能带来轻微的刺激，但那双不安又努力想要做好的眼睛，让{character.name}燃起了将她彻底调教堕落的渴望。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 < 1000"
 context = "{character.name}看着{target.name}用{mouth}艰难地吞吐着{penis}，她青涩的舌技只能勉强舔舐表面，带来淡淡的酥痒感，但这种羞涩模样和无助表情，比任何高超技巧都更让{character.name}感到满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 < 1000"
 context = "{target.name}的{mouth}生涩地含住{character.name}的{penis}，她如同初生幼兽般不知所措地用舌头探索着，微弱的快感缓缓积累，而{character.name}心中却被一种污染纯洁少女的背德快感所充满。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 < 1000"
 context = "{character.name}的{penis}被{target.name}紧张的{mouth}包裹，她笨拙地试图吸吮却不得要领，只能带来若有若无的舒爽，但亲手将这个纯真少女拉入情欲深渊的征服感，让{character.name}兴奋不已。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 < 1000"
 context = "{target.name}的{mouth}湿润温热地含着{character.name}的{penis}，她完全不懂口交技巧，只能被动地让阴茎在嘴里进出，这种生涩带来的快感虽然不强，但支配着她学习如何取悦自己的优越感却让{character.name}沉醉。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 < 1000"
 context = "{character.name}感受着{target.name}的{mouth}有节奏地吞吐着{penis}，她的舌头熟练地绕过柱身，舔舐着每一处敏感带，稳定的快感让{character.name}的腰部忍不住微微前挺，享受这份温柔的服侍。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 < 1000"
 context = "{character.name}的{penis}被{target.name}的{mouth}紧紧包裹，她懂得如何用舌尖挑逗冠状沟，又如何放松喉咙让阴茎探入更深处，持续累积的快感让{character.name}呼吸逐渐粗重起来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 < 1000"
 context = "{target.name}的{mouth}温热地含住{character.name}的{penis}，她的舌头按照一定的规律按摩着龟头和柱身，嘴唇紧贴着肉棒上下滑动，这种流畅的口技让{character.name}舒服得眯起了眼睛。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 < 1000"
 context = "{character.name}沉浸在{target.name}的{mouth}带来的快感中，她的舌头熟练地在{penis}上游走，时而舔舐马眼，时而绕着冠状沟打转，有条不紊的口交服务让{character.name}越发沉醉。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 < 1000"
 context = "{target.name}用{mouth}含住{character.name}的{penis}缓缓吞吐，她已掌握了基本技巧，知道如何用脸颊内侧轻轻摩擦柱身，舌头则专注于刺激敏感的龟头，持续的快感让{character.name}身体微微颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 < 1000"
 context = "{character.name}感受着{penis}在{target.name}的{mouth}中进出的快感，她的吞吐节奏平稳而有力，舌头灵活地配合着动作，不断堆叠的酥麻感从龟头蔓延至全身，让{character.name}忍不住轻声喘息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 < 1000"
 context = "{target.name}的{mouth}熟练地服侍着{character.name}的{penis}，她的舌头有目的性地按摩着柱身上的青筋，同时用嘴唇形成的真空感吸吮着龟头，双重刺激让{character.name}的快感不断攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 < 1000"
 context = "{character.name}的{penis}在{target.name}的{mouth}中感受着温润的包围，她懂得控制力度和速度，用舌尖轻扫过铃口时带来的酥麻感让{character.name}的腿根一阵战栗，快感如涟漪般扩散开来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 < 1000"
 context = "{target.name}用{mouth}有节律地吞吐着{character.name}的{penis}，她的舌头灵巧地在龟头周围画圈，偶尔探入马眼轻舔，这种细腻而稳定的刺激让{character.name}的快感源源不断地涌上心头。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 < 1000"
 context = "{character.name}享受着{target.name}的{mouth}对{penis}的服务，她已经懂得如何在深喉与浅含之间切换，舌头持续按摩着敏感的龟头与冠状沟，这份熟练的口技让{character.name}舒服得轻哼出声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 < 1000"
 context = "{character.name}感受着{target.name}精湛的舌技在{penis}上肆意游走，{mouth}温热柔软地包裹着龟头，她灵巧的舌尖精准地舔舐着冠状沟每一处敏感点，让{character.name}的腰身忍不住微微颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 < 1000"
 context = "{target.name}的{mouth}如同天鹅绒般柔软地吮吸着{penis}，她的舌头以精妙的技巧按摩着柱身的每一寸肌肤，那种被完美服侍的快感让{character.name}舒服得几乎要融化，满脑子都是淫靡的念头。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 < 1000"
 context = "{character.name}沉醉在{target.name}的{mouth}带来的极致快感中，{penis}被她老练的舌技伺候得舒爽无比，那灵活的舌尖时而轻扫马眼，时而重重按压系带，让{character.name}的快感一波比一波强烈。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 < 1000"
 context = "{target.name}高超的口活技巧让{character.name}的{penis}在她的{mouth}中获得了前所未有的刺激，她精准地找到每一处敏感带加以舔弄，那种被彻底征服的快感让{character.name}忍不住粗重地喘息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 < 1000"
 context = "{character.name}享受着{target.name}的{mouth}对{penis}的精心伺候，她娴熟的吞吐节奏配合灵活多变的舌技，让{character.name}感觉阴茎的每一条神经都被精确刺激，快感如电流般窜遍全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 < 1000"
 context = "{target.name}湿润的{mouth}紧紧包裹着{penis}，她炉火纯青的舌技在柱身上描绘出淫靡的轨迹，那种被舔得酥麻的快感让{character.name}的脑海一片空白，只剩下无尽的欢愉。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 < 1000"
 context = "{character.name}看着{target.name}用{mouth}熟练地吞吐着{penis}，她精湛的技巧让龟头每一次被舌尖刺激时都涌起强烈的快感，{character.name}忍不住按住她的头想要更深地插入那销魂的口腔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 < 1000"
 context = "{target.name}的{mouth}如同专为{penis}打造的肉穴般完美契合，她用舌头巧妙地刺激着马眼和系带的交界处，这种精准到位的技巧让{character.name}体验到了极致的口交快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 < 1000"
 context = "{character.name}的{penis}在{target.name}温暖的{mouth}中被她高超的舌技反复刺激，每一次舔舐都精准地落在最敏感的位置，那层层叠加的快感让{character.name}浑身酥软，只想永远沉沦在这淫靡的享受中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 < 1000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 < 1000"
 context = "{target.name}用她精湛的口技让{character.name}的{penis}在{mouth}中体验着极乐，舌尖灵活地扫过冠状沟的每一处褶皱，脸颊有节奏地收缩吸吮着柱身，这种全方位的刺激让{character.name}的快感直冲天灵盖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}感受着{target.name}生涩的舌头在{mouth_s}中笨拙地舔舐着{penis_s}，她虽然已经高潮过数次，却仍不知如何取悦男人，这种青涩与淫乱交织的反差让{character.name}的征服感愈发强烈。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}的{penis_s}被{target.name}的{mouth_s}包裹着，她的舌技依然稚嫩，却因口喉高潮而变得更加敏感湿润，每次不经意的触碰都让{character.name}感到一阵酥麻的快意。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}享受着{target.name}的{mouth_s}带来的温热，她生涩地吞吐着{penis_s}，舌头不知如何配合，却因已经高潮数次而分泌出更多唾液，让抽插变得更加顺滑舒爽。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}看着{target.name}茫然却努力地用{mouth_s}服侍着{penis_s}，她明明已经被口交弄到高潮好几次，舌技却依然笨拙，这种纯真被玷污的画面让{character.name}内心涌起强烈的支配欲。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}的{penis_s}在{target.name}湿热的{mouth_s}中抽送，她因多次高潮而敏感的口腔不断收缩，却因技术生涩而节奏混乱，这种矛盾的感觉反而让{character.name}愈发兴奋。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}感受{target.name}的{mouth_s}紧紧包裹着{penis_s}，她稚嫩的舌头试探性地舔弄着柱身，虽然动作生疏，但因口喉敏感而泛滥的唾液让每一次触碰都带来绝妙的湿滑感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}沉浸在{target.name}的{mouth_s}带来的快感中，她的舌头笨拙地绕着{penis_s}打转，每当嘴唇无意间擦过敏感的冠状沟时，{character.name}都忍不住发出舒服的低吟。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}的{penis_s}被{target.name}温热的{mouth_s}含住，她因为不熟练而时常用牙齿轻轻磕碰，却因口中充盈的淫液让摩擦变得温柔，这种青涩的感觉让{character.name}心生怜爱与征服欲。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}享受着{target.name}用{mouth_s}服侍{penis_s}的感觉，她虽已高潮多次却依然不知该如何使用舌头，只能本能地吮吸舔舐，这种懵懂与淫靡交织的状态让{character.name}欲望高涨。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}感受{target.name}的{mouth_s}努力吞吐着{penis_s}，她生涩的舌头小心翼翼地避开龟头，却因口腔敏感而不断分泌唾液，温热粘滑的口腔让{character.name}的快感持续攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}的{penis}被{target.name}的{mouth}温柔地吞吐着，她的舌头熟练地绕着龟头打转，每一次嘬吸都让快感从下体直冲脑门，令{character.name}忍不住发出舒爽的喘息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{mouth}紧紧包裹着{character.name}的{penis}，她已经熟悉了如何取悦男人的肉棒，舌尖灵巧地舔弄着敏感的冠状沟，快感如同电流般窜遍{character.name}全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}感受到{target.name}的{mouth}越来越熟练地吞咽着{penis}，她已经高潮过几次的口腔变得更加湿润敏感，口水和蜜液混合在一起，带来令人头皮发麻的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{mouth}有节奏地吞吐着{character.name}的{penis}，她的舌面紧贴着柱身来回滑动，每次抽出时还会用舌尖刮过马眼，酥麻的快感让{character.name}的腰不由自主地向前挺动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}的{penis}在{target.name}温热的{mouth}中被娴熟地伺候着，她的嘴唇紧紧贴合着肉棒的形状，舌头灵活地按摩着每一处敏感的神经，快感层层叠加让{character.name}浑身酥软。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{mouth}将{character.name}的{penis}含得很深，她的喉咙因多次高潮而变得更加柔顺敏感，每一次吞咽时喉头的蠕动都让{character.name}感受到令人疯狂的紧致感与快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}享受着{target.name}用{mouth}服侍{penis}的快感，她的舌技已经相当纯熟，懂得交替使用嘬吸和舔舐，时轻时重的刺激让{character.name}的理性逐渐被欲望吞噬。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}湿润的{mouth}包着{character.name}的{penis}不断吞吐，她已经学会了用脸颊内侧的嫩肉挤压肉棒，加上舌头的灵活挑逗，让{character.name}沉醉在这绝妙的口交快感之中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}的{penis}被{target.name}的{mouth}紧紧含住，她熟练的吞吐节奏配合着舌头对龟头的打圈舔弄，每一下都精准地刺激着敏感点，让{character.name}的快感不断攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{mouth}娴熟地伺候着{character.name}的{penis}，她已经高潮过数次的嘴巴变得越发贪婪，舌头缠绕着肉棒不断舔舐，口水滴落的淫靡水声让{character.name}更加兴奋。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}感受着{target.name}的{mouth}精准地刺激着{penis}的每一处敏感点，她高超的舌技让快感如电流般窜遍全身，龟头被灵巧的舌尖反复舔弄，{character.name}的腰部忍不住轻轻颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{mouth}如同为{penis}量身定制的天堂，舌头以惊人的技巧按摩着冠状沟和系带，{character.name}感到一阵阵难以抑制的快感从下腹涌起，呼吸变得急促而粗重。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}的{penis}沉浸在{target.name}温热的{mouth}中，她娴熟的吞吐节奏和恰到好处的吸吮力度让快感层层叠加，{character.name}几乎无法控制自己想要更深入的冲动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的舌尖在{penis}上灵活游走，{character.name}感受到{mouth}内壁的每一次收缩都精确地刺激着最敏感的部位，快感如潮水般一波波冲刷着理智，让{character.name}沉醉其中无法自拔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}的{penis}被{target.name}的{mouth}完美包裹，她巧妙地运用舌头和嘴唇的配合制造出令人窒息的真空吸吮感，{character.name}的双腿几乎发软，快感直冲大脑。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}精湛的口技让{character.name}感到{penis}仿佛融化在她的{mouth}中，舌头描绘着龟头的每一条纹路，{character.name}的快感不断攀升，下腹已经开始隐隐发紧，身体不由自主地颤栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}感到{penis}在{target.name}的{mouth}中被极致地服侍，她懂得何时加速何时放缓，舌尖在马眼处轻轻打转带来酥麻的快感，让{character.name}的意识逐渐模糊在无尽的欢愉中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{mouth}创造出湿滑紧致的极乐感受，{penis}的每一寸都被她的唇舌精心照顾，{character.name}感受着快感如火焰般燃烧全身，头皮发麻，呼吸急促得几乎喘不过气。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{character.name}的{penis}在{target.name}的{mouth}中肆意享受着顶级的快感，她高超的舌技刺激着柱身上每一条血管，{character.name}感到自己的理智正在被铺天盖地的性快感吞噬殆尽。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}用{mouth}展现着令人惊叹的口交技术，{penis}被她温热湿润的舌头环绕吮吸，{character.name}感受到快感从龟头向全身蔓延，整个人都沉浸在这难以言喻的极致享受之中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}感受到{target.name}的{mouth}包裹着自己的{penis}，柔软的舌头有节奏地舔舐着柱身，虽然她的口腔本身没有太多反应，但熟练的服侍让{character.name}的快感稳步攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}的{penis}在{target.name}温热的{mouth}中享受着稳定的吞吐，她的舌尖灵巧地扫过敏感的龟头，尽管她的口腔似乎不敏感，但技术足以让{character.name}舒服得轻声喘息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}的{mouth}湿润柔滑地套弄着{character.name}的{penis}，她有条不紊地舔弄着冠状沟，口腔虽无明显快感反馈，但舌技的熟练令{character.name}的欲望不断膨胀。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}感受到{target.name}的{mouth}吸吮着{penis}的顶端，她的舌头流畅地按摩着肉棒，虽然她的口腔反应平淡，但精准的刺激让{character.name}的腰肢忍不住微微颤动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}的{penis}被{target.name}的{mouth}紧紧含住，她熟练地调整吞吐深度，舌头不时刺激着敏感的马眼，虽然她本身似乎不太有感觉，但{character.name}已被服侍得欲火焚身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}用{mouth}含着{character.name}的{penis}上下套弄，她掌握了恰到好处的节奏和力度，舌头缠绕着龟头画圈，令{character.name}的快感如潮水般涌来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}的{penis}在{target.name}温暖的{mouth}里被细致地伺候着，她的舌尖滑过柱身每一道血管纹路，尽管她的口腔感受迟钝，但技巧让{character.name}爽得头皮发麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}的{mouth}有节律地吞吐着{character.name}的{penis}，嘴唇紧贴着柱身滑动，舌头灵活地照顾着各个敏感点，让{character.name}沉浸在持续累积的性愉悦中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}感受着{target.name}的{mouth}裹挟着{penis}的温热触感，她懂得如何用舌头刺激冠状沟，虽然自己的口腔没什么快感，却让{character.name}舒爽得呼吸急促。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}的{penis}在{target.name}柔嫩的{mouth}中被有规律地吞含，她熟练的舌技让每一次吞吐都带来酥麻的快感，{character.name}感到射精的冲动正在缓缓积聚。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}的{penis}被{target.name}的{mouth}以精湛的舌技伺候着，她灵活的舌尖精确地刺激着龟头的每一处敏感神经，尽管她自身没有太多感觉，却让{character.name}的快感层层攀升至顶峰。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}的{mouth}包裹着{character.name}的{penis}，她如同艺术家般精准的舌技让每一寸柱身都被照顾到，那高超的吞吐技巧让{character.name}忍不住低吟出声，全身都被快感支配。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}感受着{penis}在{target.name}的{mouth}中被精心伺候，她的舌头以惊人的技巧缠绕着冠状沟，即便对她而言只是例行服务，这份精湛的舌技也让{character.name}全身酥麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}的{mouth}以不带情欲的专注吞吐着{character.name}的{penis}，她登峰造极的舌技将龟头和柱身刺激得无比舒爽，让{character.name}的腰部忍不住微微挺动，沉溺于这无与伦比的快感中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}的{penis}在{target.name}的{mouth}中享受着极致的口腔服务，她精妙的舌技有条不紊地刺激着每一处敏感带，那纯熟的技法让{character.name}的快感如浪潮般一波接一波涌来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}的{mouth}将{character.name}的{penis}含得深入，她高超的舌技让龟头顶端被精准刺激，尽管她表情平静如水，却让{character.name}的思绪被纯粹的肉欲快感完全占据，无法自拔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}感受着{penis}在{target.name}的{mouth}中被舌头精确地伺候，她熟练的吸吮与舔舐配合默契，那无可挑剔的技巧让{character.name}的下腹酸胀不已，快感直冲大脑。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}将{character.name}的{penis}深含在{mouth}中，她炉火纯青的舌技在柱身上流转，精准地按摩着每一条血管，这份纯熟的服务让{character.name}全身颤栗，几乎要被快感击溃。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level <= 3"
 context = "{character.name}的{penis}被{target.name}的{mouth}以完美的节奏吞吐着，她的舌尖如同精准的乐器演奏，有技巧地刺激着系带和龟头，这极致的口腔快感让{character.name}眼前阵阵发白。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level <= 3"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level <= 3"
 context = "{target.name}的{mouth}熟练地呑吐着{character.name}的{penis}，她的舌技堪称完美，每一次舔舐都精确地落在敏感点上，让{character.name}沉浸在绵密的快感中无法思考任何其他事情。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}感受着{target.name}生涩的{mouth}包裹住{penis}，她笨拙地尝试吞吐，舌头不知该往哪里动，但那紧张的舔舐却意外地刺激着敏感的龟头，令{character.name}下腹一阵酥麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}的{penis}被{target.name}青涩的{mouth}含住，她不懂得如何取悦，只是本能地吸吮着，口腔内壁紧紧贴合带来的快感让{character.name}忍不住轻哼出声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的{mouth}温热湿润地包裹着{character.name}的{penis}，她生疏的舌技却因紧张而频繁触碰冠状沟，那种不规律的刺激反而让{character.name}感到一阵阵酥麻的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}享受着{target.name}稚嫩的{mouth}笨拙地含弄{penis}，她不知所措地用舌尖试探着柱身，那份青涩的臣服感让{character.name}的征服欲得到了极大的满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}的{penis}在{target.name}温暖的{mouth}中感受着她生涩的服侍，舌头虽然笨拙却努力地舔舐着，那种纯真被玷污的快感令{character.name}的欲望愈发高涨。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的{mouth}紧张地吞吐着{character.name}的{penis}，她不熟练的动作时不时刮蹭到敏感处，那种意外的刺激混合着支配的满足感令{character.name}浑身发颤。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}感到{target.name}湿热的{mouth}努力地容纳着{penis}，她笨拙地吸吮舔弄，虽缺乏技巧但那份青涩的认真却让{character.name}获得了别样的愉悦与满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}的{penis}被{target.name}生涩的{mouth}包含住，她茫然地用舌尖磨蹭着龟头，那不知所措的样子反而激起{character.name}强烈的占有欲和征服的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}温润的{mouth}裹住{character.name}的{penis}轻轻吞吐，她不懂节奏只是慌张地舔舐着，那份紧张与顺从交织的快感让{character.name}的下腹愈发滚烫。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}的{penis}沉浸在{target.name}青涩的{mouth}中，她生疏地用嘴唇和舌头服侍着，那种被自己引导污染的背德快感让{character.name}的阴茎在口中剧烈跳动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}感受着{penis}被{target.name}温热的{mouth}紧紧包裹，她灵活的舌头有节奏地舔舐着龟头的每一寸肌肤，那种湿润的触感让快感如潮水般涌遍全身，令{character.name}不由得闭上双眼沉浸其中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的{mouth}恰到好处地吸吮着{penis}，舌尖不时扫过敏感的冠状沟，每一次舔舐都让{character.name}的阴茎跳动一下，酥麻的快感从下腹蔓延至脊椎，令他呼吸逐渐粗重起来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}的{penis}在{target.name}的{mouth}中享受着温暖湿润的包裹，她柔软的舌头沿着柱身上下游走，持续的刺激让快感不断累积，{character.name}感到全身的血液都在向下身涌动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}熟练的舌技让{character.name}的{penis}沉浸在她{mouth}带来的极乐中，脸颊收紧时的吸力配合舌尖对马眼的撩拨，让{character.name}的腰不自觉地微微挺动，渴望更深的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}感受着{target.name}用{mouth}吞吐着他的{penis}，那有规律的节奏和舌头对敏感点的精准刺激，让一波波快感从龟头传遍全身，{character.name}的双腿不禁微微颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的{mouth}温柔地包裹着{character.name}的{penis}，灵巧的舌头在龟头周围打转，时而用舌尖轻挑系带，这种恰到好处的快感让{character.name}的思绪一片空白，只剩下纯粹的愉悦。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}的{penis}被{target.name}湿热的{mouth}紧紧含住，她的嘴唇紧贴着柱身上下滑动，舌头配合着按压冠状沟下方的敏感带，让{character.name}舒服得发出一声低吟。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}用她那温热的{mouth}有节奏地吞吐着{character.name}的{penis}，舌面与龟头的每一次摩擦都带来一阵阵酥麻，这种持续的快感让{character.name}的手不自觉地抚上她的头顶。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}感到{penis}被{target.name}的{mouth}吸吮着，她柔软的舌头灵活地舔过敏感的龟头，脸颊收紧带来的压迫感与湿热的包裹让快感层层叠加，令{character.name}的下腹不断收紧。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的{mouth}持续为{character.name}的{penis}带来美妙的快感，她的舌头熟练地在柱身上滑动，配合适度的吸吮力道，让{character.name}感到一股股电流从龟头传向全身，浑身酥软。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}精湛的舌技令{character.name}沉溺其中，她的舌尖在{penis}上精准地描绘着敏感神经，{mouth}中传来的温热湿润让{character.name}的快感如潮水般涌来，几乎要淹没理智。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}感受到{penis}被{target.name}的{mouth}完美包裹，她的舌头有技巧地按压着冠状沟与系带，每一下舔舐都精准地击中敏感点，快感在体内不断叠加攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{mouth}中灵巧的舌头让{character.name}的{penis}享受着极致的刺激，{target.name}对每一处敏感带的位置了如指掌，她的吞吐节奏恰到好处，快感如电流般蔓延至全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}难以自抑地轻喘着，{target.name}的{mouth}宛如天堂般温热湿润，她精湛的舌技让{penis}上的每一寸皮肤都被照顾得无微不至，快感层层叠加令人目眩神迷。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}高超的口技让{character.name}的{penis}沉浸在{mouth}带来的极乐中，她的舌尖灵活地在柱身上游走，时而轻舔时而重吮，精准的刺激令{character.name}浑身战栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}沉醉于{target.name}精湛的服侍中，她的{mouth}完美地吞吐着{penis}，舌头有节奏地按摩敏感处，脸颊吸吮带来的真空快感让{character.name}几乎无法站稳。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{penis}在{target.name}的{mouth}中被精心伺候着，她的舌尖像是通晓一切敏感点的地图，每一次舔舐都让{character.name}的快感不断累积，身体不由自主地微微颤动。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}感受着{target.name}的{mouth}带来的销魂快感，她的舌头精准地刺激着{penis}上的每一个敏感点，配合恰到好处的吸吮力度，让{character.name}的呼吸越发急促粗重。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}精准的舌技令{character.name}陷入极致的快感漩涡，{mouth}中的温热湿润与灵活舔舐在{penis}上交织出令人沉沦的刺激，让{character.name}难以自持地呻吟出声。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{character.name}的{penis}在{target.name}的{mouth}中享受着至高的服侍，她对敏感点了如指掌的舌头不断带来强烈的刺激冲击，快感如浪潮般一波接一波地侵袭着{character.name}的神经。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}感受着{target.name}生涩地含住{penis_s}，她笨拙的舌头只是轻轻碰触，{mouth_s}的内壁却敏感得立刻剧烈收缩痉挛，那紧致的吸吮让{character.name}头皮发麻，快感如电流般窜过全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}的{penis_s}在{target.name}青涩的口中抽动，她不知所措地想要配合却只能僵硬地吞吐，然而{mouth_s}极度敏感的粘膜不断颤抖收紧，反而给{character.name}带来了远超熟练技巧的淫靡快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}看着{target.name}努力想要讨好自己却不得其法，{penis_s}在她{mouth_s}中横冲直撞，每一次碰触都让她敏感的口腔剧烈痉挛，这种生涩与敏感交织的反差让{character.name}的征服欲得到了极大满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}感受到{target.name}生疏地舔舐着{penis_s}，她笨拙的动作却因{mouth_s}内壁的超高敏感度而变得淫荡无比，炽热的口腔不停颤抖绞紧，让{character.name}沉浸在被生涩小嘴侍奉的背德快感中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}的{penis_s}被{target.name}茫然无措地含入{mouth_s}，她完全不懂如何使用舌头取悦，但那敏感到极点的口腔粘膜只是轻轻触碰就疯狂痉挛吸吮，让{character.name}爽得头脑发昏。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}享受着{target.name}第一次侍奉般生涩的口活，{penis_s}每一次在她{mouth_s}中挺动都让她过敏的粘膜剧烈收缩，那种被稚嫩却极度敏感的小嘴紧紧含住的快感令{character.name}欲仙欲死。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}感到{target.name}不知该如何吞吐，她的舌头生涩得几乎不会动，但{penis_s}在她{mouth_s}中稍一抽插，敏感的口腔内壁就紧紧吸附上来，那种青涩与敏感并存的矛盾快感让{character.name}兴奋难耐。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}的{penis_s}在{target.name}毫无技巧可言的{mouth_s}中抽送，她只会本能地含住却不懂如何舔弄，但那敏感得不像话的口腔每一次碰触都会痉挛般绞紧，给{character.name}带来了淫靡至极的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}感受着{target.name}努力却不得要领的侍奉，{penis_s}在她敏感的{mouth_s}中肆意进出，生涩的舌头不知所措却因高敏体质而让整个口腔都在颤抖吸吮，{character.name}被这种独特的快感彻底俘获。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level <= 3 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}看着{target.name}紧张兮兮地含着{penis_s}，她青涩的舌头甚至不敢乱动，但{mouth_s}却敏感得只要稍有摩擦就会剧烈痉挛收缩，这种纯真与淫荡并存的反差让{character.name}的支配欲和快感同时达到顶点。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}的{penis}被{target.name}的{mouth}熟练地吞吐着，她敏感的口腔内壁不断收缩，每一次摩擦都让她发出呜咽，那颤抖的嘴唇反过来刺激着柱身，酥麻的快感让{character.name}头皮发麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 6"
 context = "{target.name}的{mouth}包裹着{character.name}的{penis}有规律地吸吮，她的舌头在龟头上打转，而她自己却因口腔的高度敏感而浑身颤抖，这种双重的视觉与触觉刺激让{character.name}感到无比满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}感受到{penis}在{target.name}的{mouth}内被温热的舌头舔舐着敏感的冠状沟，而她过于敏感的口腔让她不断发出含混的呻吟，那震动传递到阴茎上，带来一阵阵酥麻的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 6"
 context = "{target.name}熟练地舔弄着{character.name}的{penis}，她的{mouth}紧紧吸附住柱身，每一次进出都让她的身体痉挛般抖动，那因敏感而收紧的口腔给{character.name}带来了极致的夹吸快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}的{penis}在{target.name}的{mouth}中享受着她稳定的吞吐节奏，而她因口腔敏感而泛起的生理泪水和失神的眼眸，更是让{character.name}心中涌起强烈的征服欲与快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 6"
 context = "{target.name}的{mouth}湿润而温热地包裹着{character.name}的{penis}，她的舌头有意识地刺激着龟头下方，而她自己的呼吸却因快感而紊乱，那喘息的热气喷在柱身上让{character.name}更加亢奋。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}感受着{penis}被{target.name}的{mouth}吸含的快感，她熟练的舌技让每一寸都被照顾到，而她因口腔敏感而不断颤抖收缩的嘴唇和脸颊，更是带来阵阵意外的紧致刺激。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 6"
 context = "{target.name}用{mouth}含住{character.name}的{penis}并有节奏地吞吐，她敏感的口腔让她自己先陷入快感的漩涡，那失控的呜咽声和本能收紧的喉咙给{character.name}带来了超乎预期的强烈刺激。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}的{penis}享受着{target.name}的{mouth}带来的温湿快感，她的舌头按摩着马眼和柱身，而她自己却被口腔内的触感刺激得涕泗横流，这幅淫靡的画面让{character.name}欲望暴涨。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.abilities.口喉感度.level > 6"
 context = "{target.name}熟练地用{mouth}服侍着{character.name}的{penis}，她的舌头灵活地绕着龟头画圈，而她因敏感口腔带来的颤抖和压抑的呻吟，让{character.name}感到一种别样的背德快感与满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}的{penis}被{target.name}那异常敏感的{mouth}吞吐着，她精湛的舌技让每一寸柱身都被细细舔舐，敏感的口腔黏膜带来的吸附感让{character.name}浑身酥麻，快感如潮水般涌来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 6"
 context = "{target.name}的{mouth}紧紧包裹住{character.name}的{penis}，她灵活的舌尖精准地刺激着冠状沟，高度敏感的口腔肌肉不由自主地收缩，那种窒息般的夹紧让{character.name}几乎失去理智。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}感受到{target.name}的{mouth}中传来的惊人刺激，她敏感的喉咙因吞吐而颤动，精通的舌技配合极度敏感的口腔内壁，让{penis}仿佛置身于极乐的漩涡之中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 6"
 context = "{target.name}娴熟地用{mouth}伺候着{character.name}的{penis}，她舌尖划过每一处敏感带时口腔内壁都随之微微痉挛，那份高敏体质带来的紧致吸吮让{character.name}的腰身忍不住轻颤。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}的{penis}沉浸在{target.name}的{mouth}所创造的温湿天堂里，她高超的舌技让龟头被精准舔弄，敏感的口腔黏膜传来的热度与紧绷让{character.name}呼吸越发急促。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 6"
 context = "{target.name}的{mouth}如同为{penis}量身打造的温床，她精湛的口技让舌头在柱身上游走自如，异常敏感的喉头肌肉轻轻蠕动，那种紧缩的快感令{character.name}全身战栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}感受着{target.name}的{mouth}带来的极致侍奉，她那敏感得令人难以置信的口腔对{penis}的每一次抽插都报以热切的回应，高超的舌技更是让快感节节攀升。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 6"
 context = "{target.name}的{mouth}将{character.name}的{penis}吞入时，她精妙的舌技配合敏感至极的口腔内壁，让每一次吞吐都伴随着令{character.name}颤抖的紧致吸吮，脑海中一片空白。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 6"
 context = "{character.name}沉溺于{target.name}的{mouth}所带来的销魂快感之中，她的舌头如艺术家般精准地刺激着每一处敏感神经，高敏的口腔黏膜让{penis}被湿热紧裹。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.abilities.口喉感度.level > 6"
+conditions = "selected.abilities.舌技.level > 6 && selected.abilities.口喉感度.level > 6"
 context = "{target.name}用她那敏感的{mouth}深深含住{character.name}的{penis}，娴熟的舌技让龟头与马眼被反复舔舐，极度敏感的喉咙因吞吐而轻颤，那份紧致让{character.name}沉醉不已。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}感受着{target.name}的{mouth}包裹着{penis}，尽管她的舌技生涩稚嫩，但敏感至极的口腔每次抽搐都让{character.name}爽得头皮发麻，这种青涩与淫乱的反差让快感更加强烈。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}的{penis}在{target.name}的{mouth}中被柔软的舌头笨拙地舔舐，而她过度敏感的口腔不断痉挛收缩，将阴茎紧紧吸裹，生涩的技术配上淫荡的反应让{character.name}欲罢不能。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "虽然{target.name}不知该如何侍奉{penis}，但她的{mouth}早已敏感到极致，每一次抽插都让她的口腔猛烈收紧，{character.name}感受着这股极致的快感，几乎要被吸得灵魂出窍。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}挺动着{penis}在{target.name}的{mouth}中进出，她生涩的舌头努力配合却不得要领，但过度敏感的口腔因快感而不断抽搐，反而给{character.name}带来了超乎想象的销魂吸吮感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}笨拙地含着{character.name}的{penis}，稚嫩的舌技毫无章法，但她敏感至极的口腔因每次触碰而痉挛，那种不受控的紧致收缩让{character.name}的快感直冲天灵盖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}享受着{target.name}的{mouth}带来的极致快感，尽管她的舌头还不懂如何取悦{penis}，但过于敏感的口腔每抽一下都会激烈收紧，{character.name}感到自己被吸得即将融化。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}的{penis}被{target.name}敏感至极的{mouth}紧紧包裹，虽然她只会生涩地吞吐，但口腔因强烈快感而不断痉挛的感觉让{character.name}爽到脚趾蜷缩，这种青涩淫乱的反差让人上瘾。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}已经敏感得不成样子，{character.name}的{penis}每次抽动都让她的口腔激烈收缩，即便舌技还很稚嫩，但那种近乎失控的吸吮让{character.name}体验到了前所未有的快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}感受着{penis}在{target.name}的{mouth}中被湿热的嫩肉包裹，她虽然不会什么技巧，但过度敏感的口腔因每次碰触而剧烈痉挛，那种本能的收紧让{character.name}欲仙欲死。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}笨拙地用{mouth}含着{character.name}的{penis}，舌头不知所措地乱舔，但她敏感到极点的口腔每一次抽搐收紧都让{character.name}全身酥麻，这种青涩与淫乱的组合让快感达到顶峰。"
 
 [[entries]]
@@ -13986,203 +13986,203 @@ conditions = "selected.abilities.舌技.level > 6 && premise(pl_penis_not_semen_
 context = "{target.name}用她那堪称艺术的{mouth}吞吐着{character.name}濒临爆发的{penis}，精准的舌技和有节奏的收缩让龟头被无尽的快感淹没，{character.name}全身的欲望都集中在下身，随时都会射入她的口中。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}感受着{target.name}的{mouth}包裹{penis}，她那基本熟练的舌技配合着因快感而敏感至极的口腔，让{character.name}感到一阵阵酥麻，整个下身都在微微颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis}被{target.name}敏感到痉挛的{mouth}紧紧含住，她尽管已经被快感冲昏，舌头依然下意识地按摩着龟头，这种高度敏感与熟练技巧的结合令{character.name}欲仙欲死。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}因为强烈的口喉快感而不断收缩，将{penis}裹得更紧，她那有技巧的舌头仍在舔舐敏感点，让{character.name}的脑海中一片空白，只剩下纯粹的肉欲。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}的{penis}在{target.name}那已被快感淹没的{mouth}中享受着极致的温热湿润，她的舌头虽然因高潮而颤抖却依然有条不紊地刺激着冠状沟，令{character.name}爽到头皮发麻。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}敏感得几乎无法自控，却仍用学会的技巧努力服侍着{penis}，那因快感而痉挛的口腔肌肉让{character.name}感受到前所未有的快感刺激。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis}在{target.name}那因持续快感而敏感异常的{mouth}中抽送，她虽然沉浸在自己的快感里却没忘记用舌头挑逗龟头，让{character.name}感到一股电流般的快感从下身直冲大脑。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}的{penis}被{target.name}极度敏感的{mouth}吞入，她因快感而不断颤抖的口腔配合着流畅的吞吐节奏，让{character.name}的双腿发软，几乎站立不稳。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}已经敏感到了极点，却依然用熟练的技巧含住{penis}上下吞吐，那因快感而痉挛的舌头舔过柱身时，{character.name}感到一阵强烈的性快感从下腹扩散至全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis}在{target.name}那已被快感折磨得敏感至极的{mouth}中抽插，她虽然意识模糊却本能地用舌头服侍着，这种失控中的服从让{character.name}的欲望更加高涨。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}感受着{penis}被{target.name}敏感到不断痉挛的{mouth}包裹吞吐，她虽然被快感淹没却仍努力用舌头刺激着敏感点，这种极致的口交体验让{character.name}的快感层层叠加。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}感受到{target.name}的{mouth}精准地吞吐着{penis}，她的舌头如艺术家般在每一处敏感点上描绘，那种被完美服侍的快感让{character.name}几乎无法思考。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis}在{target.name}的{mouth}中被精心伺候，她精湛的舌技让每一寸肌肤都被细致地刺激着，快感如潮水般不断冲刷着{character.name}的神经。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}的{penis}沉浸在{target.name}的{mouth}创造的极乐之中，她的舌尖精确地刺激着冠状沟和系带，那种前所未有的快感让{character.name}呼吸急促。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}如天堂般包裹着{penis}，她对敏感带的精准把握和灵活的舌头配合，让{character.name}体验到了难以言喻的极致快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}感受到{target.name}的{mouth}熟练地吞吐着{penis}，她惊人的技巧让每一条神经末梢都被精确刺激，快感层层叠加让{character.name}几乎站立不稳。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis}被{target.name}的{mouth}完美地容纳着，她的舌头如同精密仪器般探索每一处敏感区域，那种被彻底征服的快感让{character.name}的理智逐渐崩溃。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}的{penis}在{target.name}的{mouth}中体验着极乐，她高超的舌技和恰到好处的吸吮让快感不断攀升，让{character.name}沉醉其中无法自拔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}将{penis}完全包裹，她精湛的口技让每一次吞吐都带来强烈的快感刺激，{character.name}的腰部不由自主地轻轻颤抖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{character.name}感受到{target.name}的{mouth}以惊人的技巧服侍着{penis}，她的舌尖和唇瓣配合无间，那种被完美取悦的感觉让{character.name}几乎要立即射精。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{penis}在{target.name}的{mouth}中享受着极致的刺激，她对每一处敏感点的精准把握让快感如电流般贯穿全身，{character.name}的意识逐渐被快感淹没。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 90000"
 context = "{character.name}的{penis}刚触及{target.name}的{mouth}，她便剧烈颤抖起来，生涩的舌头不知如何配合，却因极度敏感而频繁高潮，这种矛盾的反应令{character.name}欲火焚身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 90000"
 context = "{target.name}的{mouth}笨拙地含着{character.name}的{penis}，她明显不懂技巧，但口腔内壁因高潮而不断痉挛收缩，这种天然的紧致吸吮让{character.name}的快感远超预期。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 90000"
 context = "{character.name}感受着{penis}在{target.name}的{mouth}中抽动，她虽不会主动取悦，但那具敏感到极点的口腔却自发地痉挛吸吮，每一次抽搐都带来强烈的刺激快感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 90000"
 context = "{target.name}茫然地含着{character.name}的{penis}，她的{mouth}因过度敏感而无法自控地高潮，唾液喷涌而出，湿润的收缩令{character.name}头皮发麻，这种被动的反应反而更加淫靡。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 90000"
 context = "{character.name}的{penis}被{target.name}不知所措的{mouth}含住，她的舌头因高潮而失控地抽搐舔舐，这种无意识的刺激让{character.name}感到一种特殊的征服快感涌上心头。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 90000"
 context = "{target.name}的{mouth}虽然技术生涩，但包裹{character.name}的{penis}时却因极度敏感而不断痉挛，口腔内壁的抽动如同在热情挽留，让{character.name}沉醉其中难以自拔。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 90000"
 context = "{character.name}感到{penis}被{target.name}的{mouth}紧紧包裹，她虽不懂吞吐的节奏，但高潮引发的剧烈收缩却让{character.name}体验到了前所未有的紧致快感和支配欲的满足。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 90000"
 context = "{target.name}青涩地尝试含住{character.name}的{penis}，她的{mouth}却因敏感到了极限而剧烈痉挛，唾液混着泪水沾满面颊，这幅失控的模样令{character.name}的欲望彻底燃烧起来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 90000"
 context = "{character.name}的{penis}在{target.name}的{mouth}中感受着异常的刺激，她生涩的动作配合高潮时狂乱的舌头抽搐，这种不协调却极度色情的反应让{character.name}的快感层层叠加。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level <= 3&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level <= 3 && selected.皮肤 >= 90000"
 context = "{target.name}用{mouth}笨拙地服侍着{character.name}的{penis}，她完全不懂技巧却因口腔高潮而不断颤抖吸吮，这种纯真与淫乱的强烈反差让{character.name}内心涌起难以言喻的征服感。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 90000"
 context = "{character.name}的{penis}被{target.name}那已经敏感到极致的{mouth}包裹着，她的口腔不断痉挛收缩，每一次抽搐都让{character.name}感受到难以言喻的强烈快感，仿佛整根阴茎都被柔软的肉壁紧紧绞吸。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 90000"
 context = "{target.name}那已经高潮到崩溃的{mouth}正在疯狂地吮吸着{character.name}的{penis}，她的舌头不受控制地缠绕舔舐，每一次接触都让{character.name}的脊背窜过一阵酥麻的电流，快感直冲大脑。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 90000"
 context = "{character.name}感受着{penis}在{target.name}那持续痉挛的{mouth}中享受着极致的快感，她因过度高潮而失控的喉咙不断收缩，将他的肉棒绞得头皮发麻，差点立刻就要射出来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 90000"
 context = "{target.name}那极度敏感的{mouth}像是有了自己的意志一般紧紧吸附着{character.name}的{penis}，她颤抖的舌头不停打转，每一下舔舐都让{character.name}的快感如潮水般汹涌袭来，几乎难以承受。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 90000"
 context = "{character.name}的{penis}沉浸在{target.name}那因极度快感而不断抽搐的{mouth}中，她熟练的舌技配合着失控的口腔肌肉，让他体验到了前所未有的销魂感觉，全身都在颤栗。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 90000"
 context = "{target.name}那高潮不止的{mouth}疯狂地吞吐着{character.name}的{penis}，她温热湿滑的口腔不断痉挛，舌头胡乱地舔过每一寸敏感的皮肤，让{character.name}的腰部不由自主地挺动起来。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 90000"
 context = "{character.name}感受着{penis}被{target.name}那已经崩溃的{mouth}紧紧裹住，她失去理智的口腔像是要将他榨干一般用力吮吸，每一次收缩都让{character.name}的快感攀上新的高峰。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 90000"
 context = "{target.name}那因极度快感而痉挛的{mouth}正包裹着{character.name}的{penis}，她抽搐的舌头不停地刺激着冠状沟，配合着脸颊的吸吮，让{character.name}的意识都快要被快感淹没。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 90000"
 context = "{character.name}的{penis}在{target.name}那持续高潮的{mouth}中感受着极致的温热与紧致，她失控的舌头和不断收缩的喉咙让{character.name}的快感如浪潮般一波接一波冲击而来，难以自持。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 3&selected.abilities.舌技.level <= 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 3 && selected.abilities.舌技.level <= 6 && selected.皮肤 >= 90000"
 context = "{target.name}那极度敏感的{mouth}像活物一样绞吸着{character.name}的{penis}，她的舌头疯狂地舔舐龟头和柱身，每一次触碰都让{character.name}浑身战栗，快感直冲天灵盖。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 90000"
 context = "{target.name}高潮中剧烈痉挛的{mouth_s}紧紧绞住{character.name}的{penis_s}，那精湛舌技与不断收缩的喉壁形成的夹击令{character.name}头皮发麻，快感强烈到几乎无法承受。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 90000"
 context = "{character.name}的{penis_s}被{target.name}失控抽搐的{mouth_s}吸绞得发疼，她高超的舌技即使在高潮中也本能地刺激着敏感处，令{character.name}浑身战栗，理智几近崩溃。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 90000"
 context = "{target.name}的{mouth_s}在极度高潮中疯狂收缩，配合她已成肌肉记忆的精妙舌技，将{character.name}的{penis_s}绞得销魂蚀骨，快感汹涌得让{character.name}膝盖发软。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 90000"
 context = "{character.name}感受着{target.name}痉挛中的{mouth_s}紧紧箍住{penis_s}，她舌尖虽在抽搐却仍精准舔弄着冠状沟，这矛盾的刺激让{character.name}的快感层层叠加到了极点。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 90000"
 context = "{target.name}高潮不断的{mouth_s}像是要将{character.name}的{penis_s}吸干一般，她失神却不失水准的舌技持续刺激着每一条神经末梢，{character.name}被这极致快感逼得喘息粗重。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 90000"
 context = "{character.name}的{penis_s}被{target.name}抽搐痉挛的{mouth_s}反复吞吐，她高超舌技带来的精准刺激混合着高潮绞紧的快感，令{character.name}全身酥麻到几乎要就地射出。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 90000"
 context = "{target.name}的{mouth_s}在持续高潮中猛烈收缩，却仍凭本能用绝妙舌技伺候着{character.name}的{penis_s}，这双重夹击让{character.name}爽到头脑发白，快感强得近乎窒息。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 90000"
 context = "{character.name}感到{target.name}失控痉挛的{mouth_s}正疯狂吮吸着{penis_s}，她即使意识涣散舌技依然精湛，那不断绞紧放松的节奏令{character.name}的快感如电流般窜遍全身。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 90000"
 context = "{target.name}剧烈高潮的{mouth_s}将{character.name}的{penis_s}绞得又紧又热，她舌头虽在抽搐却仍下意识地舔舐着敏感带，这疯狂的刺激让{character.name}快感爆棚到几欲射精。"
 
 [[entries]]
-conditions = "selected.abilities.舌技.level > 6&selected.皮肤 >= 90000"
+conditions = "selected.abilities.舌技.level > 6 && selected.皮肤 >= 90000"
 context = "{character.name}的{penis_s}被{target.name}持续高潮中的{mouth_s}吸绞到发麻，她精湛的舌技即便在极度快感中也没有丝毫懈怠，{character.name}被这销魂滋味逼得浑身颤抖不止。"
 
 [[entries]]

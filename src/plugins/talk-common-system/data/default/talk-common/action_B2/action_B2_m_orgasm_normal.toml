@@ -6,63 +6,63 @@ variable = "action_B2_m_orgasm_normal"
 description = "动作·action B2 m orgasm normal——体位条件描述文本"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{mouth}整体骤然绞紧收缩，未成年{target.name}的舌根一下一下剧烈抽动着，稚嫩的舌头无力地伸出唇外垂落下来。\n{throat}深处一下一下地强烈痉挛收缩，喉头反复上下滚动吞咽，纤细的脖颈向后高高仰起，青涩的下颌绷紧颤抖。\n{mouth}中唾液大量分泌，顺着娇嫩的嘴角一道道溢出流下，脸颊泛起大片潮红，眼角挤出点点生理性泪水，汗珠顺着下巴滑落。\n瘦弱的肩背绷得笔直，四肢跟着一阵阵绷紧颤抖，稚气的身子随着痉挛的节奏细细抖动，呼吸急促而失序。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "未成年的{target.name}{mouth}猛地收拢绞紧，舌根有节奏地剧烈抽搐，青涩的舌头软软地伸出垂在唇边不停发颤。\n{throat}深处强烈地一阵阵痉挛收缩，喉结连续上下滚动吞咽，稚嫩的脖颈向后仰起，下巴绷紧微微打颤。\n{mouth}里唾液成量涌出，从娇小的唇角连成细流淌落到下颌，脸蛋涨起大片通红，眼角一颗颗挤出生理性泪水。\n单薄的肩膀与后背绷紧，纤细的四肢跟着颤抖绷直，稚气的身躯随痉挛一下下抖动，胸口起伏得又快又乱。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{mouth}整体一阵阵绞紧，年幼的{target.name}舌根剧烈而有节奏地抽动，稚嫩的舌头无力地探出唇外耷拉着。\n{throat}深处规律而强烈地痉挛收缩，喉头反复吞咽滚动，青涩纤细的脖颈高高向后仰去，下颌紧绷着轻轻颤栗。\n{mouth}分泌出的唾液比先前多出不少，顺着嘴角一道道溢出，浸湿了下巴，脸颊大片泛红，生理性泪水从眼角渗出。\n幼小的肩背绷成紧绷的直线，双手不自觉攥紧，四肢绷紧又颤抖，青涩的身子随着一波波痉挛细密地抖动，呼吸急促紊乱。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "未成年{target.name}的{mouth}骤然绞缩，舌根一下一下有力地抽动，稚气的舌头无力地伸出垂落在娇嫩的唇边。\n{throat}深处一下下强烈痉挛，喉结反复上下滚动着吞咽，纤瘦的脖颈向后仰起绷直，下巴紧咬着微微发抖。\n{mouth}里唾液大量分泌，一道道从唇角溢出流到下颌，青涩的脸颊涨成大片绯红，眼角挤出生理性的泪珠，汗水淌落。\n单薄的肩膀与背脊绷紧上耸，纤细的四肢一阵阵绷直颤抖，稚嫩的身躯顺着痉挛的节奏不停细颤，呼吸又急又乱。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 1"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 1"
 context = "{mouth}整体收紧绞缩，未成年的{target.name}舌根剧烈抽动个不停，青涩无力的舌头软软地伸出唇外垂着。\n{throat}深处强烈而连续地痉挛收缩，喉头一下一下滚动吞咽，稚嫩的颈项高高后仰，下颌绷得紧紧地打着颤。\n{mouth}中唾液汹涌分泌，顺着娇小的嘴角连成数道溢出流下，脸蛋泛起大片潮红，眼角接连沁出生理性泪水，细汗顺颈滑落。\n瘦削的肩背整个绷直，双腿绷紧微微颤抖，稚气的身子跟着一阵阵痉挛细密地抖动，急促失序的呼吸让胸口剧烈起伏。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}稚嫩的{mouth}整体绞紧收缩，舌根有节奏地剧烈抽动，舌头无力地伸出垂落在唇边。\n{throat}深处一下一下地强烈痉挛收缩，喉头反复上下滚动着吞咽，纤细的脖颈向后深深仰起，小小的下颌绷紧颤抖。\n单薄的肩背绷紧，四肢随之紧绷发颤，呼吸急促而失序。\n{mouth}里唾液大量分泌，从娇嫩的嘴角一道道溢出流下，稚嫩的脸颊泛起大片红潮，眼角挤出生理性的泪水，细汗自额角淌落。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "娇小的{target.name}{mouth}猛地绞紧，舌根一阵阵剧烈抽搐，稚嫩的舌尖无力地探出垂在外面。\n喉头一下接一下地滚动吞咽，{throat}深处强烈地痉挛收缩着，纤细的颈项向后仰起绷直，下巴微微发颤。\n幼小的双肩收紧，脊背绷成一道弧线，两条细腿绷紧发抖，胸口随急促的呼吸剧烈起伏。\n{mouth}中唾液不断涌出，沿着嘴角淌成一道道水痕，稚嫩的面颊烧得通红，眼眶里沁出点点泪光。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}那张稚气的{mouth}整个收拢绞紧，舌根有节律地剧烈跳动，舌头软软地伸出垂落。\n{throat}深处连续强烈地抽搐痉挛，喉头反复上下吞咽滚动，单薄的脖颈向后深仰，稚嫩的下颌绷得紧紧的还在轻颤。\n瘦削的肩膀与后背一同绷紧，纤细的四肢跟着紧绷颤抖，急促的呼吸乱作一团。\n{mouth}里大量唾液分泌溢出，顺着嫩白的下巴滴落，小脸涨红，眼角被逼出生理性泪水，细密的汗珠沿颈侧滑下。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "年幼的{target.name}{mouth}骤然绞紧收缩，舌根剧烈而有节奏地抽动着，稚嫩的舌头无力地垂出唇外。\n喉头一次次地滚动着吞咽，{throat}深处强烈痉挛，纤细的颈子向后仰起绷紧，小小的下颌一边绷紧一边颤抖。\n单薄的肩背骤然绷直，四肢紧绷发颤，稚嫩的胸口随失序的呼吸急促起伏。\n{mouth}中唾液汹涌分泌，一道道从嘴角溢出流淌，通红的脸颊上滚下生理性的泪珠，额头沁出细汗。"
 
 [[entries]]
-conditions = "selected.talents.未初潮 == 0&selected.talents.未成年 == 1&selected.talents.性无知 == 0"
+conditions = "selected.talents.未初潮 == 0 && selected.talents.未成年 == 1 && selected.talents.性无知 == 0"
 context = "{target.name}稚嫩的{mouth}整体绞拢收紧，舌根不住地剧烈抽搐跳动，舌头软塌塌地伸垂在外。\n{throat}深处一波接一波地强烈收缩痉挛，喉头反复上下滚动吞咽，幼细的脖颈向后深深仰起，下颌绷紧微微发抖。\n瘦小的肩背绷成紧绷的弧线，纤细四肢随之紧绷颤栗，急促的喘息毫无章法。\n{mouth}里唾液大量涌出，顺着娇嫩的嘴角淌落成痕，稚气的脸蛋泛起浓重红潮，眼角挤出泪水，薄汗浸湿了鬓角。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}成熟的身体骤然绷紧，{mouth}整体绞紧收缩，舌根有节奏地剧烈抽动，舌头无力地伸出垂落在唇边。\n{throat}深处一下一下地强烈痉挛收缩，喉头反复上下滚动着吞咽，{mouth}里大量分泌的唾液从嘴角一道道溢出流下。\n脖颈向后高高仰起，下颌绷紧颤抖，肩背绷成一条直线，四肢随之绷直发颤。\n脸颊大片泛红，眼角挤出生理性的泪水，细汗顺着脸颊淌落，急促的呼吸让胸口大幅起伏。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}的身体一阵剧烈的战栗，{mouth}反复地绞紧又松开，舌头无力地滑出垂落，{throat}深处成串地痉挛抽搐。\n喉头一下接一下地滚动吞咽，唾液在{mouth}里大量涌出，来不及咽下便顺着下巴滴落成一片湿痕。\n她的脖颈猛地扬起，肩膀高耸绷紧，脊背弓起又落下，双腿并拢着不住地打颤，脚趾向内蜷缩扣紧。\n通红的脸颊上滚下几行泪水，鼻尖沁出细密的汗珠，呼吸急促紊乱，整具成熟的躯体在完整的高潮反应里持续抽搐颤动。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "成熟的{target.name}浑身猛地一僵，{mouth}整个收紧绞动，舌根剧烈地一下下抽跳，{throat}深处强烈而有节奏地痉挛收缩起来。\n喉部反复上下滚动，连续不断地吞咽，{mouth}里分泌的唾液顺着嘴角溢出，一道道流下沾湿了下颌。\n下颌绷紧微微颤抖，脖颈向后仰起，肩背绷得笔直，四肢也随之收紧发颤。\n脸颊迅速泛起大片潮红，眼角渗出生理性泪水，急促失序的呼吸让胸膛不住地起伏。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "{target.name}成熟的躯体骤然绷紧战栗，{mouth}一阵阵地绞紧收缩，舌头软软地伸出垂在唇外，{throat}深处一下一下强烈地痉挛。\n喉头反复滚动着吞咽，大量唾液从{mouth}里涌出，顺着嘴角与下巴一道道淌落。\n她的脖颈高高仰起，下颌绷紧发颤，肩胛紧绷，双臂绷直，两腿并拢着微微打颤。\n脸蛋涨得通红，眼眶里挤出泪水，额角渗着细汗，胸口随着急促紊乱的呼吸剧烈起伏，整个高潮反应完整而剧烈。"
 
 [[entries]]
-conditions = "selected.talents.未成年 == 0&selected.talents.性无知 == 1"
+conditions = "selected.talents.未成年 == 0 && selected.talents.性无知 == 1"
 context = "成熟的{target.name}身体一下绷成弓形，{mouth}用力地绞紧又颤抖，舌根有节奏地抽动，舌头无力地垂落出来。\n{throat}深处强烈地收缩痉挛，喉头一下下地滚动吞咽，{mouth}里满溢的唾液从两侧嘴角溢出流下。\n脖颈向后仰起，肩背绷紧，腰肢弓起后又落下，四肢绷直颤抖，脚趾蜷缩收拢。\n脸颊泛起浓重的潮红，眼角沁出生理性泪水，细汗淌落，急促的喘息使胸膛剧烈地起伏不定。"
 
 [[entries]]
@@ -406,23 +406,23 @@ conditions = "selected.abilities.口喉感度.level <= 3"
 context = "{target.name}整个{mouth}骤然绞紧收缩，舌根一下一下有节奏地猛烈抽搐，舌头软塌塌地伸出唇外耷拉着。\n{throat}深处剧烈而连续地痉挛收缩，喉头一次次滚动吞咽，脖颈高高仰起又微微后折，下颌绷紧不住地颤抖。\n{mouth}中唾液成股地分泌溢出，顺着嘴角与下巴一道道淌落濡湿一片，两颊泛起浓重的潮红，眼角渗出生理性的泪水，汗珠滚落，四肢绷紧后阵阵抽颤，胸膛随着失序的急促呼吸起伏不定。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的{mouth}整体骤然绞紧收缩，舌根有节奏地剧烈抽动，舌头无力地伸出垂落在唇外。\n{throat}深处一下一下地强烈痉挛收缩，喉头反复上下滚动着吞咽，脖颈向后仰起，下颌绷紧颤抖。\n{mouth}中唾液大量分泌，顺着嘴角一道道溢出流下，沿着下巴淌落。\n她的肩背绷紧，四肢随之绷直颤抖，脸颊大片泛红，眼角挤出生理性泪水，细密的汗珠从额角淌下，呼吸急促而失序。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的{mouth}猛地收紧绞合，舌面连同舌根一齐有节奏地抽搐颤动，喉咙深处一波波强烈地痉挛收缩。\n喉结不停上下滚动，反复做出吞咽的动作，脖颈高高仰起绷成弧线，下颌一下下地颤抖。\n{mouth}里唾液汹涌溢出，顺着嘴角与下颌淌成数道亮痕，舌头无力地探在唇外。\n她的肩膀与后背绷得笔直，双手攥紧收拢，指节泛白，脸颊涨红，眼角沁出泪水，胸口随急促紊乱的呼吸剧烈起伏。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的{mouth}整片绞缩抽紧，舌根规律而剧烈地跳动，舌尖无力地垂落在外。\n{throat}深处接连不断地强烈收缩痉挛，喉头一下一下地滚动吞咽，脖子向后仰起，下巴绷紧发颤。\n大量唾液从{mouth}中不断涌出，接连顺着嘴角溢流而下。\n她的四肢绷紧，脚趾蜷缩，腰背弓起又绷直，脸颊泛起大片潮红，眼角滚出生理性泪水，呼吸变得又急又乱。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的{mouth}骤然绷紧收缩，舌根有节奏地剧烈抽动，喉咙深处一下一下地强烈痉挛。\n喉结反复上下滚动吞咽，脖颈仰起，下颌绷紧地轻轻发颤，舌头无力地伸出垂在唇边。\n{mouth}里唾液大量分泌溢出，沿着嘴角与下巴一道道淌落。\n她的肩背绷紧颤抖，双腿并拢收紧，手指蜷曲攥牢，脸颊红透，眼角挤出泪珠，汗水淌落，呼吸急促失序地起伏着。"
 
 [[entries]]
-conditions = "selected.abilities.口喉感度.level > 3&selected.abilities.口喉感度.level <= 6"
+conditions = "selected.abilities.口喉感度.level > 3 && selected.abilities.口喉感度.level <= 6"
 context = "{target.name}的{mouth}整体一阵阵绞紧收缩，舌根连着舌面剧烈而有节奏地抽搐，舌头软软地探出垂落。\n{throat}深处强烈地收紧痉挛，喉头连续滚动着做吞咽的动作，脖颈向后仰起绷直，下颌颤抖不止。\n{mouth}中唾液汹涌分泌，接连顺着嘴角溢出，滑过下颌淌下。\n她的脊背绷紧弓起，四肢一齐紧绷颤动，脸颊大面积泛红，眼角沁出生理性泪水，胸膛随紊乱急促的呼吸大幅起伏。"
 
 [[entries]]
@@ -466,43 +466,43 @@ conditions = "selected.皮肤 < 1000"
 context = "{target.name}的{mouth}一阵阵痉挛绞紧，舌根剧烈地抽动着，舌头软软地探出垂落在唇边。\n{throat}深处强烈而有节奏地连连收缩，喉头反复地滚动吞咽，脖颈高高扬起，下颌绷紧微微发颤。\n她的背脊绷成一道弧，四肢绷紧颤抖，脚趾蜷曲。\n{mouth}里唾液大量分泌，顺着嘴角连成一道道亮线淌下，脸颊泛起大片潮红，眼眶挤出泪水，胸口剧烈起伏。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{mouth}整体猛地绞紧收缩，舌根有节奏地剧烈抽动着，舌头无力地伸出垂落在外。\n{throat}深处一下一下地强烈痉挛收缩，喉头反复上下滚动吞咽，大量唾液从{mouth}里分泌出来，顺着嘴角一道道溢出流下。\n她的脖颈向后仰起，下颌绷紧颤抖，肩背绷紧，四肢跟着颤抖，脸颊泛起大片潮红，眼角挤出生理性泪水，呼吸急促而失序。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{mouth}一阵阵收紧又松开，舌根不受控制地剧烈抽搐，{throat}深处规律地强烈痉挛，喉头一次次滚动着吞咽。\n{mouth}中唾液大量涌出，从两侧嘴角连成丝线溢流而下，沾湿了下巴。\n她的脖子向后仰得笔直，下巴绷得发颤，双肩紧绷，双手攥紧，脚趾蜷缩，脸颊涨得通红，汗水顺着鬓角淌落，急促紊乱的喘息从鼻间断续漏出。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的舌根有节律地一下下猛烈抽动，{mouth}整体绞紧痉挛，舌头软软地伸出口外垂着。\n{throat}深处强烈地收缩抽搐，喉头连续上下滚动吞咽，大量唾液从{mouth}里溢出，顺着嘴角一道道往下淌。\n她的脖颈仰起绷直，下颌抖动，肩背与四肢一同绷紧颤抖，小腹一抽一抽地起伏，脸上泛起大片红潮，眼角沁出泪水。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的{mouth}猛地整体收紧，舌根剧烈而有节奏地抽动，{throat}深处一下一下地强烈痉挛收缩，喉头反复吞咽滚动。\n{mouth}分泌出的唾液大量涌出，从嘴角接连溢出流下，牵出晶亮的涎丝。\n她的脖子向后仰起，下颌紧绷颤栗，肩膀与背脊绷成一线，四肢绷紧发抖，脸颊烧得通红，泪水从眼角挤落，呼吸彻底乱了节奏。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 1000&selected.皮肤 < 12000"
+conditions = "selected.皮肤 >= 1000 && selected.皮肤 < 12000"
 context = "{target.name}的舌头无力地伸出垂落，{mouth}一阵阵剧烈绞紧，舌根有节奏地猛烈抽搐着。\n{throat}深处强烈痉挛收缩，喉头不停上下滚动吞咽，{mouth}里大量唾液从嘴角一道道溢流而下，浸湿了下巴一片。\n她脖颈向后深深仰起，下颌绷紧颤抖，双肩与后背紧绷，四肢僵直发颤，脸颊大片泛红，眼角淌出生理性泪水，急促的喘息断续而紊乱。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}整体骤然绞紧收缩，舌根有节奏地剧烈抽动，舌头无力地伸出垂落在唇外。\n{throat}深处一下一下地强烈痉挛收紧，喉头反复上下滚动着吞咽，脖颈随之向后仰起，下颌绷紧颤抖。\n{mouth}里的唾液大量分泌，顺着嘴角一道道溢出流下，脸颊泛起大片潮红，眼角挤出生理性的泪水。\n她的肩背绷紧，四肢跟着微微颤抖，呼吸急促而失序。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "随着绝顶袭来，{target.name}的{mouth}一阵阵地绞缩痉挛，舌根不住地抽搐跳动，舌尖软软地探出又垂落。\n{throat}深处传出连续而强烈的收缩，喉头反复上下滚动吞咽，脖颈笔直地绷起，双唇微微张合。\n大量唾液自{mouth}角涌出，亮晶晶地淌到下颏往下滴落，脸色通红，泪珠自眼尾滑落，额角还渗出细汗。\n她的手指蜷缩攥紧，腰背绷直战栗，呼吸紊乱急促。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}深处骤然一紧，接连不断地强烈收缩，舌根有力地一下下抽动，舌头无力地伸出耷拉着。\n{throat}随之剧烈痉挛，喉头一遍遍上下吞咽滚动，下颌绷紧颤个不停，脖颈向后高高仰起。\n{mouth}里唾液分泌个不停，顺着唇边溢流成线，脸颊烧得赤红，眼角不断沁出泪水，汗珠顺着侧脸淌落。\n她的四肢绷紧发颤，脚趾蜷起，胸口起伏得急促而凌乱。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "绝顶之下，{target.name}的{mouth}整体收紧绞缩，一阵一阵地痉挛，舌根规律地剧烈跳动，舌头软塌塌地伸垂出来。\n{throat}深处一下一下地紧缩抽搐，喉头连续上下滚动着吞咽，脖颈绷直后仰，下巴止不住地颤抖。\n涌出的唾液从{mouth}角接连滑落，濡湿了下颏，双颊泛起浓重的红晕，泪水挂在睫毛上滚落。\n她的肩头耸动，腰肢绷紧微弓，呼吸又急又乱。"
 
 [[entries]]
-conditions = "selected.皮肤 >= 12000&selected.皮肤 < 90000"
+conditions = "selected.皮肤 >= 12000 && selected.皮肤 < 90000"
 context = "{target.name}的{mouth}猛地绞紧，接二连三地收缩颤动，舌根节奏分明地抽动，舌头无力地垂出唇外。\n{throat}深处传来强烈的连续痉挛，喉头反复吞咽滚动，脖颈仰起绷直，牙关咬紧又松开。\n{mouth}中唾液大量分泌，一道道地顺着嘴角流淌下来，脸颊涨红一片，生理性泪水自眼角涌出淌落。\n她的双手攥紧发抖，大腿绷紧夹拢，气息急促散乱。"
 
 [[entries]]

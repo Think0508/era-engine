@@ -414,9 +414,29 @@ async function renderNode(nodeId: string, speakerOverride?: string): Promise<voi
 
   // 注释：渲染 choices（如果有）
   if (node.choices && node.choices.length > 0) {
+    // 注释：choices condition 过滤（2026-08-13 审计修复——原 condition 字段从未求值，
+    // UI 直接渲染全部选项，不满足条件的选项可被点击绕过；selected = 对话角色）
+    const gc = { ...gameContext.getContext(), selectedCharacterId: charId ?? undefined }
+    const visible = node.choices.filter(c => {
+      if (!c.condition) return true
+      try {
+        return conditionEngine.evaluate(c.condition.replace(/\{id\}/g, charId ?? ''), gc)
+      } catch {
+        return false
+      }
+    })
+    if (visible.length === 0) {
+      // 注释：全部选项被条件隐藏——视为终端节点（避免死对话）
+      if (node.next) {
+        renderNode(node.next)
+      } else {
+        endConversation()
+      }
+      return
+    }
     // 注释：写入 interactive entry 供玩家选择
     narrativeLog.write('选择', 'dialogue_choice', 'dialogue-system', true, {
-      choices: node.choices,
+      choices: visible,
       conversationRuntime: currentConversation,
     })
   } else if (node.next) {

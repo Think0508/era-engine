@@ -171,8 +171,13 @@ export function registerNativeCommands(): void {
     { id: '@errors', label: '@查看错误', handler: () => {
       useGameStore().addLogEntry({ id: `@err-${Date.now()}`, text: `查看控制台错误`, type: 'system', source: 'native' })
     }},
+    { id: '@premises', label: '@前提列表', handler: async () => {
+      const { conditionEngine } = await import('../core/condition-engine')
+      const ids = conditionEngine.getRegisteredPremiseIds()
+      useGameStore().addLogEntry({ id: `@pre-${Date.now()}`, text: `已注册前提(${ids.length}): ${ids.join(', ')}`, type: 'system', source: 'native' })
+    }},
     { id: '@help', label: '@帮助', handler: () => {
-      useGameStore().addLogEntry({ id: `@hlp-${Date.now()}`, text: `@命令列表: @attrs/@setattr/@teleport/@spawn/@additem/@startquest/@errors/@help/@testcombat`, type: 'system', source: 'native' })
+      useGameStore().addLogEntry({ id: `@hlp-${Date.now()}`, text: `@命令列表: @attrs/@setattr/@teleport/@spawn/@additem/@startquest/@premises/@errors/@help/@testcombat`, type: 'system', source: 'native' })
     }},
     { id: '@testcombat', label: '@测试战斗', handler: async () => {
       const uiStore = useUIStore()
@@ -200,7 +205,7 @@ export function unregisterNativeCommands(): void {
   const ids = [
     'open_player_panel', 'open_selected_panel',
     'cheat_skip_day', 'save', 'load', 'options', 'log_history',
-    '@attrs', '@setattr', '@teleport', '@spawn', '@additem', '@startquest', '@errors', '@help', '@testcombat',
+    '@attrs', '@setattr', '@teleport', '@spawn', '@additem', '@startquest', '@premises', '@errors', '@help', '@testcombat',
   ]
   for (const id of ids) {
     commandRegistry.unregister(id)

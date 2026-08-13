@@ -202,7 +202,21 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
       break
 
     case 'condition':
-      if (step.next) await advanceToStep(sceneId, step.next)
+      // 注释：条件分支（2026-08-13 审计修复——原实现从未求值 condition，else 从未处理，
+      // 条件任务静默直通 next；AGENTS §31：condition 满足 → next，否则 → else（可选））
+      let condOk = true
+      if (step.condition) {
+        try {
+          condOk = conditionEngine.evaluate(step.condition, gameContext.getContext())
+        } catch {
+          condOk = false
+        }
+      }
+      if (condOk) {
+        if (step.next) await advanceToStep(sceneId, step.next)
+      } else if (step.else) {
+        await advanceToStep(sceneId, step.else)
+      }
       break
 
     case 'scene':

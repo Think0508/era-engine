@@ -73,17 +73,10 @@ export function registerNativeCommands(): void {
     modes: ['exploration', 'daily_menu'],
     priority: 50,
     source: 'native',
-    handler: async () => {
-      try {
-        const { saveGame } = await import('../core/save-system')
-        const uiStore = useUIStore()
-        await saveGame('manual', uiStore.toSaveData(), '手动存档')
-      } catch (e: any) {
-        useGameStore().addLogEntry({
-          id: `save-err-${Date.now()}`, text: `存档失败：${e.message}`,
-          type: 'system', source: 'native',
-        })
-      }
+    handler: () => {
+      // 注释：打开存档面板（读写合一，对齐 erArk 神经连接柜——空槽直接存/已存在槽操作菜单）
+      const uiStore = useUIStore()
+      uiStore.setActivePanel('save')
     },
   })
 
@@ -94,30 +87,45 @@ export function registerNativeCommands(): void {
     modes: ['exploration', 'daily_menu'],
     priority: 51,
     source: 'native',
+    handler: () => {
+      // 注释：与 SAVE 同一面板（erArk 读写一个面板）
+      const uiStore = useUIStore()
+      uiStore.setActivePanel('save')
+    },
+  })
+
+  // 注释：退出到标题——autoSave（对齐 erArk 退出自动存）+ 清空会话状态回标题
+  commandRegistry.register({
+    id: 'exit_to_title',
+    label: '退出到标题',
+    group: 'main_menu',
+    modes: ['exploration', 'daily_menu'],
+    priority: 54,
+    source: 'native',
     handler: async () => {
       try {
-        const { getSaveSlots, loadGame, migrateSaveData, restoreFromSave } = await import('../core/save-system')
-        const slots = await getSaveSlots()
-        if (slots.length === 0) {
-          useGameStore().addLogEntry({ id: `load-${Date.now()}`, text: '无存档可读', type: 'system', source: 'native' })
-          return
-        }
-        const slot = slots[slots.length - 1] // 注释：读最新存档
-        let data = await loadGame(slot.slotId)
-        if (data) {
-          // 注释：audit-f 修复——迁移接入读档链路（此前 migrateSaveData 零生产调用，
-          // 旧格式存档从不升级；迁移幂等，新存档无操作）
-          const { modLoader } = await import('../core/mod-loader')
-          const migrations = modLoader.getMod()?.migrations ?? []
-          if (migrations.length > 0) {
-            data = migrateSaveData(data, migrations)
-          }
-          await restoreFromSave(data)
-          useGameStore().addLogEntry({ id: `load-${Date.now()}`, text: `读档成功：${slot.slotId}`, type: 'system', source: 'native' })
-        }
-      } catch (e: any) {
-        useGameStore().addLogEntry({ id: `load-err-${Date.now()}`, text: `读档失败：${e.message}`, type: 'system', source: 'native' })
+        const { autoSave } = await import('../core/save-system')
+        const uiStore = useUIStore()
+        await autoSave(uiStore.toSaveData(), '退出自动存档')
+      } catch {
+        // 注释：自动存失败不阻断退出（尽力而为）
       }
+      const uiStore = useUIStore()
+      const gameStore = useGameStore()
+      uiStore.setActivePanel(null)
+      uiStore.clearSelection()
+      uiStore.setEventOptions(null)
+      gameStore.reset()
+      // 注释：⚠️ 2026-08-14 审查修复——此前只清 Pinia，core gameContext 残留旧会话
+      // （player/location/time/modeStack）——回标题后若直接新游戏，core 与 UI 状态脱节
+      const { gameContext } = await import('../core/game-context')
+      gameContext.reset()
+      // 注释：⚠️ 2026-08-14 第四轮审查——世界卸载：清空实体池（否则"退出到标题→新游戏"
+      // 时实体残留旧会话运行时数据——移动/物品/状态污染新游戏；mod 静态数据因
+      // 深拷贝注册保持纯净，resetWorld 可从初始数据重建）
+      const { modLoader } = await import('../core/mod-loader')
+      modLoader.resetWorld()
+      uiStore.setGameScreen('title')
     },
   })
 
@@ -204,7 +212,7 @@ export function registerNativeCommands(): void {
 export function unregisterNativeCommands(): void {
   const ids = [
     'open_player_panel', 'open_selected_panel',
-    'cheat_skip_day', 'save', 'load', 'options', 'log_history',
+    'cheat_skip_day', 'save', 'load', 'options', 'log_history', 'exit_to_title',
     '@attrs', '@setattr', '@teleport', '@spawn', '@additem', '@startquest', '@premises', '@errors', '@help', '@testcombat',
   ]
   for (const id of ids) {

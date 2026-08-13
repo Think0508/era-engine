@@ -37,12 +37,23 @@ export function onEnable(ctx: PluginContext): void {
       await checkSetsForChar(payload.id)
     }
   })
+
+  // 注释：读档后重建套装账本（2026-08-14 存档复刻）——activeSetBonuses 不随存档，
+  // 读档后为空 → 直到下次角色变化才重算。效果/天赋已落实体（全量实体存档），
+  // 重建只算"当前激活集合"，不重复执行 effects（applyNew=false）
+  ctx.events.on('game:load', async () => {
+    activeSetBonuses.clear()
+    for (const char of entitySystem.getAll('character')) {
+      await checkSetsForChar(char.id, false)
+    }
+  })
 }
 
 // 注释：检查角色的所有套装——凑齐给效果，失去件移除
 // 2026-08-09：checkSets/applySetBonus 改 async——原 applySetBonus 里
 // apiSystem.call 无 await（fire-and-forget），效果执行与后续逻辑/测试断言竞态
-async function checkSetsForChar(charId: string): Promise<void> {
+// 2026-08-14：加 applyNew 参数——读档重建账本时 false（效果已落实体，不重复执行）
+async function checkSetsForChar(charId: string, applyNew = true): Promise<void> {
   const mod = modLoader.getMod()
   if (!mod) return
   const char = entitySystem.get('character', charId) as any
@@ -58,8 +69,8 @@ async function checkSetsForChar(charId: string): Promise<void> {
     for (const bonus of setDef.bonuses) {
       const bonusKey = `${setDef.id}:${bonus.required_count}`
       if (memberCount >= bonus.required_count) {
-        // 注释：凑齐——如果之前没激活，现在激活
-        if (!currentActive.has(bonusKey)) {
+        // 注释：凑齐——如果之前没激活，现在激活（读档重建时跳过——效果已落实体）
+        if (!currentActive.has(bonusKey) && applyNew) {
           await applySetBonus(charId, bonus, charId)
         }
         newActive.add(bonusKey)

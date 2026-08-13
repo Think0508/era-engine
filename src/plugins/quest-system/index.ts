@@ -14,6 +14,7 @@ import { errorReporter } from '../../core/error-reporter'
 import type { Quest, ConversationRef } from '../../core/mod-loader'
 import { parseConversationRef } from '../../core/mod-loader'
 import { conditionEngine } from '../../core/condition-engine'
+import { registerGameStateProvider } from '../../core/save-system'
 
 // 注释：scene 运行时状态
 interface SceneRuntime {
@@ -108,6 +109,36 @@ export function onEnable(ctx: PluginContext): void {
   ctx.events.on('dialogue:end', async (payload: any) => {
     await checkObjectives('talk_to', { character: payload?.character })
     checkAutoStart()
+  })
+
+  // 注释：存档 provider（2026-08-14 存档系统复刻）——进行中任务进度随存档，
+  // 读档后重建（此前 activeScenes/sceneStack 为模块级内存，读档任务直接消失）
+  registerGameStateProvider({
+    id: 'quest-system',
+    serialize: () => ({
+      activeScenes: Array.from(activeScenes.entries()).map(([sceneId, r]) => ({
+        sceneId,
+        currentStepId: r.currentStepId,
+        completedSteps: [...r.completedSteps],
+        objectiveProgress: Object.fromEntries(r.objectiveProgress),
+      })),
+      sceneStack: sceneStack.map(s => ({ ...s })),
+    }),
+    restore: (data) => {
+      activeScenes.clear()
+      sceneStack.length = 0
+      for (const entry of data?.activeScenes ?? []) {
+        activeScenes.set(entry.sceneId, {
+          sceneId: entry.sceneId,
+          currentStepId: entry.currentStepId,
+          completedSteps: Array.isArray(entry.completedSteps) ? entry.completedSteps : [],
+          objectiveProgress: new Map(Object.entries(entry.objectiveProgress ?? {})),
+        })
+      }
+      for (const s of data?.sceneStack ?? []) {
+        sceneStack.push({ sceneId: s.sceneId, resumeStepId: s.resumeStepId ?? '' })
+      }
+    },
   })
 }
 

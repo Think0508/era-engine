@@ -122,10 +122,16 @@ extends = "combat-base"   # 最多继承一个父插件
 | `bindings.set(entityId, key, value)` | `(string, string, any)` | 写绑定属性 |
 | `enterMode(mode)` | `(string)` | push 模式到栈 |
 | `exitMode()` | `()` | pop 模式出栈 |
-| `saveGame(slot, label?)` | `(string, string?)` | 手动存档 |
+| `saveGame(slot, label?)` | `(string, string?)` | 手动存档（槽位模型见 `docs/save-system.md`；slot = 数字槽 `"0".."99"` / `"auto"`） |
 | `loadGame(slot)` | `(string)` | 读档（返回 SaveData \| null） |
-| `getSaveSlots(modId?)` | `(string?)` | 获取存档列表（返回 SaveSlot[]，按模组命名空间过滤） |
-| `deleteSave(slotId)` | `(string)` | 删除存档 |
+| `getSaveSlots(modId?)` | `(string?)` | 获取存档头部列表（返回 SaveHead[]，只读 head 表，按模组命名空间过滤） |
+| `getSaveHead(slotId)` | `(string)` | 获取单槽头部（SaveHead \| null） |
+| `deleteSave(slotId)` | `(string)` | 删除存档（head+data） |
+| `exportSave(slotId)` | `(string)` | 导出存档 JSON 字符串（string \| null） |
+| `importSave(json)` | `(string)` | 导入存档（校验 modId → 分配空数字槽，返回槽位字符串；跨模组/非法结构抛错） |
+| `getSaveMemory(modId?)` | `(string?)` | 读取存档界面记忆 `{ lastSavePage, lastSaveId }`（localStorage 设备级，按 mod 隔离） |
+| `setSaveMemory(mem, modId?)` | `(object, string?)` | 写入存档界面记忆（数字槽保存后由面板调用，对齐 erArk save_info.json） |
+| `uiText.get(key)` | `(string)` | 世界观文案查询（mod `[ui_text]` 覆盖 → 引擎默认 → 原 key） |
 
 ## 插件 API 速查
 
@@ -201,6 +207,7 @@ ctx.api.call('character', 'moveTo', charId, locationId)       // → void（角�
 ctx.api.call('character', 'setOffline', charId, reason?)      // → void（置 sp_flag.offline + 清位置 + 发 character:offline {id, reason}，幂等）
 ctx.api.call('character', 'setOnline', charId, locationId?)   // → void（恢复在线；缺省位置 = home_locations 最高权重；发 character:online）
 ctx.api.call('character', 'isOffline', charId)                // → boolean
+ctx.api.call('character', 'initLocations')                    // → void（重新分配全部角色位置——世界重建后调用（新游戏）；已有位置跳过，幂等）
 ```
 
 - 离线生命周期契约：`character:offline` 是统一清理信号——各"在场活动状态"属主监听它清自己的领域（follow-system 已接入：解除跟随 reason=offline）。只清位置，不动身份持久数据（属性/关系/物品/经验）

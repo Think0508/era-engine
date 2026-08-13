@@ -667,6 +667,11 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     }
   })
 
+  // 注释：读档后重置瞬态状态（2026-08-14 存档复刻）——上条行动耗时/发现度分摊基准
+  ctx.events.on('game:load', () => {
+    lastActionTimeCost = 10
+  })
+
   // 注释：注册 UI 插槽 — 隐奸状态标签
   try {
     ctx.ui.registerSlot('character-tag', {

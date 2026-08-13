@@ -23,6 +23,7 @@
 | H 内 NPC AI | `docs/h-npc-ai.md` | src/plugins/h-npc-ai/ |
 | 睡眠系统 | `docs/sleep-system.md` | src/plugins/sleep-system/ |
 | 饥饿系统 | `docs/hunger-system.md` | src/plugins/hunger-system/ |
+| 存档系统 | `docs/save-system.md` | src/core/save-system.ts + src/ui/components/SavePanel.vue |
 
 ## 会话交接摘要（2026-07-14）
 

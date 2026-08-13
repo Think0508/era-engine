@@ -1,8 +1,19 @@
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
-import { saveGame as saveGameImpl, loadGame as loadGameImpl, getSaveSlots as getSaveSlotsImpl, deleteSave as deleteSaveImpl } from './save-system'
+import {
+  saveGame as saveGameImpl,
+  loadGame as loadGameImpl,
+  getSaveSlots as getSaveSlotsImpl,
+  getSaveHead as getSaveHeadImpl,
+  deleteSave as deleteSaveImpl,
+  exportSave as exportSaveImpl,
+  importSave as importSaveImpl,
+  getSaveMemory as getSaveMemoryImpl,
+  setSaveMemory as setSaveMemoryImpl,
+} from './save-system'
 import { gameContext } from './game-context'
 import { conditionEngine } from './condition-engine'
+import { getUIText } from './ui-text'
 
 type ApiMethod = (...args: any[]) => Promise<any>
 
@@ -61,7 +72,7 @@ class ApiSystem {
         await saveGameImpl(slot, null, label)
       },
       loadGame: async (slot: string) => {
-        await loadGameImpl(slot)
+        return loadGameImpl(slot)
       },
       // 注释：audit-h 修复（2026-08-12）——文档宣称的 engine API 补齐：
       // enterMode/exitMode/getSaveSlots/deleteSave 此前从未注册，按文档调用即抛错
@@ -73,6 +84,26 @@ class ApiSystem {
       },
       getSaveSlots: async (modId?: string) => {
         return getSaveSlotsImpl(modId)
+      },
+      // 注释：存档扩展 API（2026-08-14 存档系统完整复刻）——头部/导入导出/界面记忆
+      getSaveHead: async (slotId: string) => {
+        return getSaveHeadImpl(slotId)
+      },
+      exportSave: async (slotId: string) => {
+        return exportSaveImpl(slotId)
+      },
+      importSave: async (json: string) => {
+        return importSaveImpl(json)
+      },
+      getSaveMemory: async (modId?: string) => {
+        return getSaveMemoryImpl(modId)
+      },
+      setSaveMemory: async (mem: any, modId?: string) => {
+        setSaveMemoryImpl(mem, modId)
+      },
+      // 注释：世界观文案查询（mod [ui_text] 覆盖 → 引擎默认 → 原 key）
+      'uiText.get': async (key: string) => {
+        return getUIText(key)
       },
       deleteSave: async (slotId: string) => {
         await deleteSaveImpl(slotId)

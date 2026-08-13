@@ -1,6 +1,8 @@
 // 注释：端到端链路终验（2026-08-12 第 7 轮架构/链路审查）——
 // 把完整游戏循环串起来验证跨系统衔接：boot → 移动 → 物品 → 战斗 → 存档 → 读档 → 继续移动
 // 各环节单测已覆盖，本测试验证**衔接处**（尤其读档后地点恢复 + 移动链路——audit-a C2 修复）
+// 注释：真实 saveGame/loadGame 全链路（含 provider serialize）由 save-system.test.ts 覆盖
+// （fake-indexeddb + happy-dom 组合）；本测试聚焦插件全环境下的读档恢复链路
 import { describe, it, expect, beforeAll } from 'vitest'
 import { modLoader } from '../core/mod-loader'
 import { entitySystem } from '../core/entity-system'
@@ -65,8 +67,9 @@ describe('端到端链路终验（boot→移动→物品→战斗→存档→读
     expect(player.base.hp).toBeGreaterThan(100)
     expect(player.inventory.find((i: any) => i.itemId === '回血丹').count).toBe(1)
 
-    // 4. 构造存档数据（saveGame 走 Dexie/IndexedDB，node 测试环境不可用——save-system.test 同样跳过；
-    //    序列化本身是 JSON.stringify，此处直接构造等价 SaveData 验证**读档恢复链路**）
+    // 4. 构造存档数据（真实 saveGame/loadGame 全链路由 save-system.test.ts 覆盖——
+    //    本测试聚焦插件全环境下的读档恢复链路；序列化本身是 JSON.stringify，
+    //    此处直接构造等价 SaveData 验证**读档恢复链路**）
     const ctx = gameContext.getContext()
     const saveData = {
       modId: 'test-mod',

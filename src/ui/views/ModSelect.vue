@@ -1,7 +1,8 @@
 // 注释：ModSelect 模组选择界面
 // 列出 mods/ 下所有含 meta.toml 的目录
 // 只读 name/description（最小化，不加载 mod 数据）
-// 选择后内存设 active_mod（不写回配置文件，避免污染 git）
+// 选择后写 localStorage 覆盖键（era-engine:active-mod，config.toml 只作缺省）→ 刷新重载
+// 不写回 era-engine.config.toml（构建期 ?raw 导入不可写 + 避免污染 git）
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
@@ -17,6 +18,17 @@ interface ModInfo {
 }
 
 const mods = ref<ModInfo[]>([])
+
+function selectMod(modId: string): void {
+  try {
+    localStorage.setItem('era-engine:active-mod', modId)
+  } catch {
+    // 注释：localStorage 不可用时静默（仍以内存选择继续）
+  }
+  emit('select', modId)
+  // 注释：切换模组 = 重启加载（glob 构建期扫描 + 引擎初始化），刷新页面实现
+  window.location.reload()
+}
 
 onMounted(async () => {
   // 注释：用 Vite glob 扫描所有 mod 的 meta.toml
@@ -56,7 +68,7 @@ onMounted(async () => {
         v-for="mod in mods"
         :key="mod.id"
         class="mod-card"
-        @click="emit('select', mod.id)"
+        @click="selectMod(mod.id)"
       >
         <h2 class="mod-name">{{ mod.name }}</h2>
         <p v-if="mod.description" class="mod-description">{{ mod.description }}</p>
@@ -66,6 +78,7 @@ onMounted(async () => {
     <p v-if="mods.length === 0" class="no-mods">未找到可用模组（请在 mods/ 目录下创建模组）</p>
   </div>
 </template>
+
 
 <style scoped>
 .mod-select {

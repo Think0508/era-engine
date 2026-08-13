@@ -141,6 +141,12 @@ export function onEnable(ctx: PluginContext): void {
     if (!player) return
     await startCombat(payload?.enemies ?? [], [player.id], player.id)
   })
+
+  // 注释：读档后清理战斗运行时（2026-08-14 存档复刻）——存档只在非战斗模式创建，
+  // 但防御性清空 currentCombat，防止残留引用指向读档前的旧实体
+  ctx.events.on('game:load', () => {
+    currentCombat = null
+  })
 }
 
 // 注释：开始战斗（audit-i 修复，2026-08-12——加进行中守卫：重复 start 曾覆盖 runtime +

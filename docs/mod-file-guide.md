@@ -48,6 +48,7 @@
 | `starting_location` | string | — | — | 新游戏起始地点 ID（须在 maps/locations/ 存在） |
 | `dependencies` | 数组 | — | — | 插件依赖 `{ plugin, version }`（semver 约束） |
 | `[creation].steps` | 数组 | — | — | 角色创建流程（input/choose） |
+| `[ui_text]` | 表 | — | — | 世界观文案覆盖（key → 文本，缺省回退引擎通用中文；key 表见 `docs/save-system.md`） |
 
 不写会怎样：缺 id/name/version → 加载报错；其余缺 → 用默认行为。
 

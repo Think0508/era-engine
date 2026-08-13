@@ -89,6 +89,12 @@ export const useUIStore = defineStore('ui', () => {
   const favorites = ref<string[]>([])
   // 注释：当前打开的系统面板（null=无）
   const activePanel = ref<string | null>(null)
+  // 注释：顶层画面状态机（2026-08-14 存档复刻）——标题/模组选择/角色创建/游戏中
+  // 启动流程：mod_select（active_mod 空）→ title → creation/game；游戏内退出到标题 → title
+  const gameScreen = ref<'mod_select' | 'title' | 'creation' | 'game'>('title')
+  function setGameScreen(s: 'mod_select' | 'title' | 'creation' | 'game') {
+    gameScreen.value = s
+  }
   // 注释：状态/外观分栏显示（StatusParameter 左，Look 右）
   const splitSections = ref(false)
   // 注释：指令分类显隐开关——true=显示该类
@@ -275,6 +281,8 @@ export const useUIStore = defineStore('ui', () => {
     toggleMainParameter,
     favorites,
     activePanel,
+    gameScreen,
+    setGameScreen,
     commandCategories,
     toggleCategory,
     splitSections,

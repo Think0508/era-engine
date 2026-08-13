@@ -487,6 +487,11 @@ export interface LoadedMod {  id: string
   // 注释：meta.toml 可选字段（AGENTS §39）——起始地点/玩家实体，main.ts 启动用
   startingLocation?: string
   playerCharacter?: string
+  // 注释：标题画面素材（2026-08-14 审查补——此前 TitleScreen 用 (mod as any).meta 取
+  // title/description/title_image 恒 undefined，标题文字/描述/图片永不显示）
+  title?: string
+  description?: string
+  titleImage?: string
   // 注释：加载画面素材（方案 B，2026-08-10）——mod 声明的 loading_video/loading_image
   // 路径相对 mod 根（如 "assets/loading.gif"）；未声明 → 引擎用 index.html 的闪烁文字 fallback
   loadingImage?: string
@@ -498,6 +503,9 @@ export interface LoadedMod {  id: string
     npc_sleep: boolean
     npc_h_end: boolean
   }
+  // 注释：世界观文案（meta.toml [ui_text] 段）——引擎通用默认值由 core/ui-text.ts 提供，
+  // mod 按 key 覆盖（如"存档"→"神经连接柜"）。core 不认具体世界观词
+  uiTexts: Record<string, string>
   entities: Map<string, Map<string, EntityData>>
   locations: Map<string, LocationData>
   graph: Edge[]
@@ -589,6 +597,19 @@ function parseFile(path: string, raw: string): Record<string, any> {
     const reason = err instanceof Error ? err.message : String(err)
     throw new Error(`TOML 解析失败：${path}\n${reason}`)
   }
+}
+
+// 注释：解析 meta.toml [ui_text] 段（key → 文本；空值视为未配置，回退引擎默认）
+function parseUiTexts(metaSection: Record<string, any>): Record<string, string> {
+  const raw = metaSection.ui_text
+  if (!raw || typeof raw !== 'object') return {}
+  const result: Record<string, string> = {}
+  for (const [key, value] of Object.entries(raw as Record<string, unknown>)) {
+    if (typeof value === 'string' && value !== '') {
+      result[key] = value
+    }
+  }
+  return result
 }
 
 function loadEntriesByPrefix(
@@ -686,13 +707,14 @@ function applyAttributeDefaults(
  * 存档缺必需字段 → 用 attributes default 补齐 + warning（不静默）。
  * 先全命名空间查重——旧存档把属性存在 base（契约前写法）时不重复补 canonical 命名空间。
  * 供 save-system restoreFromSave 等恢复路径调用。
+ * 返回补齐的属性个数（读档汇总行统计用）。
  */
 export function fillMissingAttributes(
   char: EntityData,
   attributes: Record<string, AttributeDefinition>,
   source: string,
-): void {
-  if (!char || !attributes) return
+): number {
+  if (!char || !attributes) return 0
   // 已有键查重：动态扫描角色全部对象命名空间（base/params/marks/abilities/flags/talents/
   // social/economy/combat/...）——任何位置存在即视为"已有"，兼容契约前存档（base 写法）
   // 与契约后存档（canonical 命名空间）。2026-08-09 第4轮修复：此前硬编码清单漏查
@@ -705,6 +727,7 @@ export function fillMissingAttributes(
     }
     return (char as any)[name] !== undefined
   }
+  let filledCount = 0
   for (const [attrName, def] of Object.entries(attributes)) {
     const defaultValue = def.default ?? 0
     if (hasAnywhere(attrName)) continue
@@ -716,6 +739,7 @@ export function fillMissingAttributes(
       if (!char[ns]) char[ns] = {}
       char[ns][attrName] = defaultValue
     }
+    filledCount++
     errorReporter.report({
       source: 'save-system',
       severity: 'warning',
@@ -723,6 +747,7 @@ export function fillMissingAttributes(
       suggestion: '旧存档缺字段属正常（契约补齐）；如需自定义初始值请更新存档或迁移规则',
     })
   }
+  return filledCount
 }
 
 /**
@@ -905,6 +930,9 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     dependencies: (metaSection.dependencies as ModDependency[]) ?? [],
     startingLocation: (metaSection.starting_location as string) ?? undefined,
     playerCharacter: (metaSection.player_character as string) ?? undefined,
+    title: (metaSection.title as string) ?? undefined,
+    description: (metaSection.description as string) ?? undefined,
+    titleImage: (metaSection.title_image as string) ?? undefined,
     loadingImage: (metaSection.loading_image as string) ?? undefined,
     loadingVideo: (metaSection.loading_video as string) ?? undefined,
     // 注释：升级结算开关（erArk base_setting[1]/[2] 语义）——缺省全开
@@ -913,6 +941,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       npc_sleep: (metaSection.upgrade_on_npc_sleep as boolean | undefined) ?? true,
       npc_h_end: (metaSection.upgrade_on_npc_h_end as boolean | undefined) ?? true,
     },
+    // 注释：世界观文案（顶层 [ui_text] 段，key → 文本；空值视为未配置回退默认）
+    uiTexts: parseUiTexts(meta),
     sleepConfig: {},
     entities: new Map(),
     locations: new Map(),
@@ -1789,7 +1819,9 @@ export function normalizeMarksToAbilities(char: any, mod?: LoadedMod): void {
     if (typeof value !== 'number' || value <= 0) continue
     const existing = char.abilities[markName]
     if (existing && typeof existing === 'object' && (existing.level ?? 0) > 0) continue
-    char.abilities[markName] = { level: value, xp: 0 }
+    // 注释：⚠️ 2026-08-14 第七轮审计——覆盖 0 级条目时保留已有 xp（原实现
+    // {level: value, xp: 0} 会把 0 级但已有经验的条目 xp 静默清零）
+    char.abilities[markName] = { level: value, xp: existing && typeof existing === 'object' ? (existing.xp ?? 0) : 0 }
   }
 }
 
@@ -2005,15 +2037,30 @@ export class ModLoader {
   }
 
   private registerEntities(mod: LoadedMod): void {
+    // 注释：⚠️ 2026-08-14 第四轮审查——深拷贝注册：entitySystem 持有运行时可变实体，
+    // 直接存 mod.entities 的引用会让运行时修改（移动/物品/状态）污染静态初始数据——
+    // "退出到标题→新游戏"需干净的初始世界，污染后无法重建。mod.entities/locations
+    // 保持纯净模板（读档恢复/新游戏重置的数据源）
     const characters = mod.entities.get('character')
     if (characters) {
       for (const [id, data] of characters) {
-        entitySystem.register('character', id, data)
+        entitySystem.register('character', id, JSON.parse(JSON.stringify(data)))
       }
     }
     // Also register locations so map plugin can query them
     for (const [id, data] of mod.locations) {
-      entitySystem.register('location', id, data as any)
+      entitySystem.register('location', id, JSON.parse(JSON.stringify(data)) as any)
+    }
+  }
+
+  // 注释：重建世界实体（新游戏/退出到标题后的干净世界）——entitySystem.clear +
+  // 从 mod 初始数据深拷贝注册。不重新解析 TOML（71.6MB 插件默认层解析代价不可接受；
+  // mod.entities 因深拷贝注册保持纯净，可直接作重建来源）
+  resetWorld(): void {
+    entitySystem.clear()
+    const mod = this.loadedMod
+    if (mod) {
+      this.registerEntities(mod)
     }
   }
 

@@ -250,6 +250,36 @@ describe('mod-loader integration', () => {
     expect(player.base.attack).toBe(15)
   })
 
+  // 注释：⚠️ 2026-08-14 第四轮审查——深拷贝注册 + resetWorld（退出到标题→新游戏干净世界）
+  it('运行时修改实体不污染 mod 静态数据（深拷贝注册）', async () => {
+    const loader = new ModLoader()
+    await loader.loadMod('test-mod')
+    // 运行时修改 entitySystem 里的 player（模拟移动/拿物品）
+    const runtime = entitySystem.get('character', 'player') as any
+    runtime.current_location = 'tavern'
+    runtime.inventory = [{ itemId: '回血丹', count: 99 }]
+    // mod.entities 的初始数据不受影响
+    const initial = loader.getMod()!.entities.get('character')!.get('player') as any
+    expect(initial.current_location).toBeUndefined()
+    expect(initial.inventory).toBeUndefined()
+  })
+
+  it('resetWorld 重建干净世界（旧会话运行时数据不残留）', async () => {
+    const loader = new ModLoader()
+    await loader.loadMod('test-mod')
+    // 制造旧会话污染
+    const runtime = entitySystem.get('character', 'player') as any
+    runtime.current_location = 'tavern'
+    runtime.base.hp = 1
+    // 重建
+    loader.resetWorld()
+    const fresh = entitySystem.get('character', 'player') as any
+    expect(fresh).not.toBeNull()
+    expect(fresh.current_location).toBeUndefined()
+    expect(fresh.base.hp).toBe(200)
+    expect(entitySystem.get('location', 'town_square')).not.toBeNull()
+  })
+
   it('should load bindings into bindingResolver via loadMod', async () => {
     const loader = new ModLoader()
     await loader.loadMod('test-mod')

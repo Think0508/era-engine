@@ -153,6 +153,14 @@ export function onEnable(ctx: PluginContext): void {
   ctx.events.on('location:enter', (payload: any) => {
     handleNpcSpawns(payload?.to)
   })
+
+  // 注释：6. 监听 game:load → 清空分帧队列（2026-08-14 存档复刻审查）——
+  // pendingQueue 残留读档前的旧实体引用：restore 后实体整体重建，旧引用是死对象，
+  // 结算写死对象（数据丢失）+ 可能产生噪音 warning。读档后队列无意义（下一 pass
+  // fresh 全量重建），直接清空
+  ctx.events.on('game:load', () => {
+    resetPendingQueue()
+  })
 }
 
 // 注释：NPC 每日结算（对齐 erArk past_day_settle.py:76 `if character_id:` 排除玩家；

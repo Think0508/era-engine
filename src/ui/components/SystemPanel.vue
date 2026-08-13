@@ -9,23 +9,10 @@
 import { onMounted, onUnmounted } from 'vue'
 import { useUIStore } from '../stores/ui-store'
 import OptionsPanel from './OptionsPanel.vue'
-import SaveSlotList from './SaveSlotList.vue'
+import SavePanel from './SavePanel.vue'
 import CharacterPanel from './CharacterPanel.vue'
 
 const uiStore = useUIStore()
-
-async function handleLoadSave(slotId: string) {
-  try {
-    const { loadGame, restoreFromSave } = await import('../../core/save-system')
-    const data = await loadGame(slotId)
-    if (data) {
-      restoreFromSave(data)
-      closePanel()
-    }
-  } catch (e: any) {
-    alert(`读档失败：${e.message}`)
-  }
-}
 
 // 注释：面板标题映射
 const panelTitles: Record<string, string> = {
@@ -81,9 +68,9 @@ onUnmounted(() => {
       <div class="panel-content">
         <!-- 注释：选项面板 -->
         <OptionsPanel v-if="uiStore.activePanel === 'options'" />
-        <!-- 注释：存档面板 -->
+        <!-- 注释：存档面板（写模式——游戏内读写合一，erArk 神经连接柜） -->
         <div v-else-if="uiStore.activePanel === 'save'" class="save-panel">
-          <SaveSlotList @load="handleLoadSave" @back="closePanel" />
+          <SavePanel :write-save="true" @loaded="closePanel" @back="closePanel" />
         </div>
         <!-- 注释：角色属性面板 -->
         <CharacterPanel v-else-if="uiStore.activePanel === 'character-player'" target="player" />

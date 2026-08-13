@@ -444,4 +444,10 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
 
   // 注释：注册 UI 插槽 — 模板编辑器面板
   // TODO: 编辑群交模板面板（槽位分配 + NPC 邀请 + AI 类型选择）
+
+  // 注释：读档后清理群交模式开关（2026-08-14 存档复刻）——groupSexMode 为模块级瞬态，
+  // H 中不可存档（h_scene noSave），读档必回到非 H 状态 → 重置为 false
+  ctx.events.on('game:load', () => {
+    groupSexMode = false
+  })
 }

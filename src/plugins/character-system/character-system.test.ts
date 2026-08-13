@@ -96,4 +96,22 @@ describe('character-system 离线生命周期', () => {
     charApi.setOnline('online_demo', 'tavern')
     expect(onlineEvents).toHaveLength(0)
   })
+
+  // 注释：⚠️ 2026-08-14 第五轮审查——initLocations API（世界重建后重新分配 NPC 位置）
+  it('initLocations API：清空位置后重新按权重分配（已有位置跳过）', () => {
+    const online = entitySystem.get('character', 'online_demo') as any
+    const noloc = entitySystem.get('character', 'noloc_demo') as any
+    // 模拟世界重建：清空位置
+    online.current_location = undefined
+    noloc.current_location = undefined
+    charApi.initLocations()
+    // 在线者按最高权重回落位
+    expect(online.current_location).toBe('tavern')
+    // 无 home_locations 者仍无位置
+    expect(noloc.current_location).toBeUndefined()
+    // 幂等：已有位置不动
+    online.current_location = 'town_square'
+    charApi.initLocations()
+    expect(online.current_location).toBe('town_square')
+  })
 })

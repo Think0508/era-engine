@@ -172,6 +172,20 @@ export class EngineUIBridge {
     // 注释：读档后清选项条 UI（旧选项在恢复的游戏状态下执行会语义错位）
     const gameLoadHandler: BridgeHandler = () => {
       uiStore.setEventOptions(null)
+      // 注释：⚠️ 2026-08-14 第五轮审查——读档 = 回到存档时刻：清空会话日志
+      // （存档不存日志，旧会话日志混着新日志会误导叙事时间线）
+      gameStore.clearLogEntries()
+      // 注释：⚠️ 2026-08-14 审查修复——restoreFromSave 直接改 core（reset/setTime/setPlayer/
+      // setLocation），不发任何事件 → 读档后 Pinia 镜像（player/location/time/modeStack）
+      // 全是旧值：UI 布局停留旧模式、角色列表/时间显示陈旧。读档后全量重同步。
+      const ctx = gameContext.getContext()
+      gameStore.setPlayer(ctx.player)
+      gameStore.setLocation(ctx.location)
+      gameStore.setTime(ctx.time)
+      gameStore.setExecutionState('IDLE')
+      gameStore.setModeStack(['exploration'])
+      uiStore.clearSelection()
+      this.refreshCharactersAtLocation(ctx.location?.id ?? '')
     }
     eventBus.on('game:load', gameLoadHandler)
     this.handlers.push({ event: 'game:load', handler: gameLoadHandler })

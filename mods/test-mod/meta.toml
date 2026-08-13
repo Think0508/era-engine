@@ -12,3 +12,8 @@ steps = [
   { type = "input", field = "name", prompt = "你叫什么名字？" },
   { type = "choose", field = "背景", prompt = "你的出身是？", choices = ["平民", "贵族", "江湖人"] }
 ]
+
+# 注释：世界观文案示例（ui-text 机制）——test-mod 覆盖存档面板标题与角色名后缀
+[ui_text]
+"save.panel_title" = "神经连接柜"
+"save.label.character" = "博士"

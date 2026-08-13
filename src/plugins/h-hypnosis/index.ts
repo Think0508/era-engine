@@ -470,6 +470,11 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       condition: (gc: any) => gc?.selectedCharacterId ? (getUnconsciousH(gc.selectedCharacterId) >= 4 && getUnconsciousH(gc.selectedCharacterId) <= 7) : false,
     })
   } catch { /* UI 未就绪 */ }
+
+  // 注释：读档后重置上次催眠类型（2026-08-14 存档复刻）——瞬态 UI/指令默认值
+  ctx.events.on('game:load', () => {
+    lastHypnosisType = 1
+  })
 }
 
 export type { HypnosisData }

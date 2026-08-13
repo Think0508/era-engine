@@ -86,6 +86,10 @@ export const useGameStore = defineStore('game', () => {
   function popMode(): string | undefined {
     return modeStack.value.pop()
   }
+  // 注释：整体替换模式栈（读档后重置为 exploration，2026-08-14）
+  function setModeStack(stack: string[]) {
+    modeStack.value = [...stack]
+  }
   function setExecutionState(s: 'IDLE' | 'EXECUTING') {
     executionState.value = s
   }
@@ -156,6 +160,7 @@ export const useGameStore = defineStore('game', () => {
     setTime,
     pushMode,
     popMode,
+    setModeStack,
     setExecutionState,
     setCharactersAtLocation,
     addLogEntry,

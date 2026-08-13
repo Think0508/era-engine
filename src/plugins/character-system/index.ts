@@ -174,6 +174,13 @@ export function onEnable(ctx: PluginContext): void {
       const char = entitySystem.get('character', charId) as any
       return char?.sp_flag?.offline === true
     },
+    // 注释：⚠️ 2026-08-14 第五轮审查——重新初始化角色位置（世界重建后调用：
+    // 新游戏 completeCreation 的 modLoader.resetWorld 清空实体并重建——位置分配
+    // 只在 onEnable 跑一次，重建后 NPC current_location 全 undefined → 地图上
+    // NPC 全部消失（静默）。已有位置跳过（幂等，读档不受影响）
+    initLocations: (): void => {
+      initCharacterLocations()
+    },
   })
 }
 

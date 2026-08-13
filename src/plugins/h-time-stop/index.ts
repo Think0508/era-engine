@@ -11,10 +11,18 @@ import { narrativeLog } from '../../core/narrative-log'
 import { commandRegistry } from '../../core/command-registry'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
+import { registerGameStateProvider } from '../../core/save-system'
 
 let timeStopActive = false
 let lastActionTimeCost = 10  // 注释：缺省 10 分钟
 let frozenTime: { minute: number; hour: number; day: number; month: number; year: number } | null = null
+
+// 注释：时停前无意识快照（★3 修复（第六轮））——time_stop_on 全图覆写 unconscious_h=3，
+// 原 time_stop_off 全清 0 会把睡奸标记(1)/催眠(4-7)静默抹掉（催眠需重新催眠、睡奸标记丢失
+// 且 settleSleepH 因 !==1 永久早退）——off 时恢复时停前的值。
+// ⚠️ 2026-08-14 审查：原为 onLoad 闭包局部变量——时停中存档（非 H 时停可行）读档后
+// off 无快照 → 角色永久冻结。提升模块级 + 随存档 provider 序列化。
+let prevUnconscious = new Map<string, number>()
 
 function getTargetId(ctx: any): string | null {
   return ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId ?? null
@@ -52,8 +60,7 @@ export function onLoad(_ctx: PluginContext): void {
   // 注释：时停前无意识快照（★3 修复（第六轮））——time_stop_on 全图覆写 unconscious_h=3，
   // 原 time_stop_off 全清 0 会把睡奸标记(1)/催眠(4-7)静默抹掉（催眠需重新催眠、睡奸标记丢失
   // 且 settleSleepH 因 !==1 永久早退）——off 时恢复时停前的值
-  let prevUnconscious = new Map<string, number>()
-
+  // 2026-08-14 审查：快照本体已提升为模块级（随存档 provider 序列化，防时停中存档读档后永久冻结）
   // 注释：time_stop_on——开启时停（对齐 erArk 效果 1241）
   effectTypeRegistry.register('time_stop_on', (_p: any, _execCtx: any) => {
     if (timeStopActive) return true
@@ -370,5 +377,45 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       const ch = entitySystem.get('character', charId) as any
       return ch?.experience?.time_stop_xp ?? 0
     },
+  })
+
+  // 注释：存档 provider（2026-08-14 存档复刻）——时停开关/冻结时刻/无意识快照随存档，
+  // 否则读档后"实体全冻结但 timeStopActive=false"的半坏状态（时停中存不了档，
+  // 防御深度：实体标记已随存档，开关必须配对恢复）
+  registerGameStateProvider({
+    id: 'h-time-stop',
+    serialize: () => ({
+      timeStopActive,
+      frozenTime: frozenTime ? { ...frozenTime } : null,
+      prevUnconscious: Object.fromEntries(prevUnconscious),
+    }),
+    restore: (data) => {
+      timeStopActive = !!data?.timeStopActive
+      frozenTime = data?.frozenTime ? { ...data.frozenTime } : null
+      prevUnconscious = new Map(Object.entries(data?.prevUnconscious ?? {}))
+      lastActionTimeCost = 10
+    },
+  })
+
+  // 注释：读档后一致性校验（防御深度）——存档没有时停开关记录（旧存档/异常路径）
+  // 但实体带冻结标记（unconscious_h=3）→ 解冻降级（清 0）+ warning，不静默
+  ctx.events.on('game:load', () => {
+    if (timeStopActive) return
+    let frozenCount = 0
+    for (const ch of entitySystem.getAll('character')) {
+      const c = ch as any
+      if (c?.sp_flag?.unconscious_h === 3) {
+        c.sp_flag.unconscious_h = 0
+        frozenCount++
+      }
+    }
+    if (frozenCount > 0) {
+      errorReporter.report({
+        source: 'h-time-stop',
+        severity: 'warning',
+        message: `读档检测到 ${frozenCount} 个角色带时停冻结标记但无时停开关记录——已解冻（旧存档降级恢复）`,
+        suggestion: '时停中创建的存档缺少开关快照；解冻避免角色永久冻结',
+      })
+    }
   })
 }

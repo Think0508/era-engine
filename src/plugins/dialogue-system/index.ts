@@ -159,6 +159,12 @@ export function onEnable(ctx: PluginContext): void {
       }
     }
   })
+
+  // 注释：读档后清理进行中对话（2026-08-14 存档复刻）——存档只在非对话模式创建，
+  // 防御性清空 currentConversation，防止残留引用指向读档前的旧实体
+  ctx.events.on('game:load', () => {
+    currentConversation = null
+  })
 }
 
 async function executeLineEffects(line: ReactiveLine | null): Promise<void> {

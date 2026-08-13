@@ -13,6 +13,7 @@ import CombatLayout from './CombatLayout.vue'
 import MapLayout from './MapLayout.vue'
 import FullscreenOutput from '../components/FullscreenOutput.vue'
 import FullscreenHistory from '../components/FullscreenHistory.vue'
+import SystemPanel from '../components/SystemPanel.vue'
 
 // 注释：使用 main.ts 提供的 SlotRegistry（不存在时自己创建兜底）
 const slotRegistry = inject<SlotRegistry>(SLOT_REGISTRY_KEY) ?? new SlotRegistry()
@@ -58,6 +59,11 @@ const layoutComponent = computed(() => {
 <template>
   <!-- 注释：主布局 -->
   <component :is="layoutComponent" />
+
+  <!-- 注释：系统面板（全局 overlay——任何模式下可打开：SAVE/LOAD/选项/角色面板；
+       2026-08-14 第三轮审查：原只在 ExplorationLayout/ModernLayout 渲染——daily_menu
+       模式的 SAVE 按钮打开面板后无渲染容器，静默不可见。提升到 AppLayout 全局） -->
+  <SystemPanel />
 
   <!-- 注释：全屏输出 overlay（output 模式） -->
   <FullscreenOutput v-if="showOutput" @done="onOutputDone" />

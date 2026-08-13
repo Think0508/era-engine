@@ -95,6 +95,19 @@ describe('ui-store', () => {
     expect(store.activePanel).toBe(null)
   })
 
+  it('gameScreen 状态机（标题/模组选择/角色创建/游戏中）', () => {
+    const store = useUIStore()
+    expect(store.gameScreen).toBe('title')
+    store.setGameScreen('mod_select')
+    expect(store.gameScreen).toBe('mod_select')
+    store.setGameScreen('creation')
+    expect(store.gameScreen).toBe('creation')
+    store.setGameScreen('game')
+    expect(store.gameScreen).toBe('game')
+    store.setGameScreen('title')
+    expect(store.gameScreen).toBe('title')
+  })
+
   it('toggleSidebarMode', () => {
     const store = useUIStore()
     expect(store.sidebarMode).toBe('overlay')

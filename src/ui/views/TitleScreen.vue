@@ -1,16 +1,17 @@
-// 注释：TitleScreen 标题界面
-// 引擎提供 UI 框架，mod 供 title/description（meta.toml）
-// 按钮：新游戏 / 继续冒险 / 设置 / 切换模组
-// 继续 → 显示存档列表 → 选择后读档进入游戏
+// 注释：TitleScreen 标题界面（对齐 erArk title_flow 语义）
+// 按钮：新的冒险 / 继续冒险（读档面板）/ 设置 / 切换模组 / 退出（关页，不自动存）
+// 继续冒险 → SavePanel 读模式（writeSave=false：无覆盖、空数字槽不可点；
+// auto 槽存在时仍可点 → 读取/删除——对齐 erArk 神经重载）
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import SaveSlotList from '../components/SaveSlotList.vue'
+import { useUIStore } from '../stores/ui-store'
+import { getUIText } from '../../core/ui-text'
+import SavePanel from '../components/SavePanel.vue'
+import OptionsPanel from '../components/OptionsPanel.vue'
 
 const emit = defineEmits<{
   (e: 'newGame'): void
-  (e: 'continue', slotId: string): void
-  (e: 'settings'): void
   (e: 'switchMod'): void
 }>()
 
@@ -20,7 +21,25 @@ const props = defineProps<{
   titleImage?: string
 }>()
 
+const uiStore = useUIStore()
 const showSaveList = ref(false)
+const showSettings = ref(false)
+
+const u = (key: string): string => getUIText(key)
+
+// 注释：读档成功 → 切到游戏画面（restore 已把模式栈重置为 exploration）
+function onLoaded(): void {
+  showSaveList.value = false
+  uiStore.setGameScreen('game')
+}
+
+// 注释：退出（对齐 erArk 断开连接语义）——浏览器无退出进程概念，尝试关闭标签页。
+// ⚠️ 2026-08-14 第三轮审查：不在标题画面 autoSave——标题无游戏会话，写 auto 槽
+// 会覆盖玩家上次的睡醒自动档（初始状态顶掉真实进度）。游戏内退出走 exit_to_title
+// 指令（已在游戏会话内 autoSave）
+function onExit(): void {
+  window.close()
+}
 </script>
 
 <template>
@@ -30,19 +49,24 @@ const showSaveList = ref(false)
       <h1 class="title-text">{{ props.title || 'era-engine' }}</h1>
       <p v-if="props.description" class="title-description">{{ props.description }}</p>
 
-      <!-- 注释：存档列表模式 -->
-      <SaveSlotList
-        v-if="showSaveList"
-        @load="(s) => emit('continue', s)"
-        @back="showSaveList = false"
-      />
+      <!-- 注释：读档面板模式（writeSave=false——对齐 erArk 神经重载） -->
+      <div v-if="showSaveList" class="title-panel-wrap">
+        <SavePanel :write-save="false" @loaded="onLoaded" @back="showSaveList = false" />
+      </div>
+
+      <!-- 注释：设置面板模式 -->
+      <div v-else-if="showSettings" class="title-panel-wrap">
+        <OptionsPanel />
+        <button class="title-button" @click="showSettings = false">{{ u('save.action.back') }}</button>
+      </div>
 
       <!-- 注释：主菜单模式 -->
       <div v-else class="title-menu">
-        <button class="title-button" @click="emit('newGame')">新的冒险</button>
-        <button class="title-button" @click="showSaveList = true">继续冒险</button>
-        <button class="title-button" @click="emit('settings')">设置</button>
-        <button class="title-button" @click="emit('switchMod')">切换模组</button>
+        <button class="title-button" @click="emit('newGame')">{{ u('title.new_game') }}</button>
+        <button class="title-button" @click="showSaveList = true">{{ u('title.continue') }}</button>
+        <button class="title-button" @click="showSettings = true">{{ u('title.settings') }}</button>
+        <button class="title-button" @click="emit('switchMod')">{{ u('title.switch_mod') }}</button>
+        <button class="title-button" @click="onExit">{{ u('title.exit') }}</button>
       </div>
     </div>
   </div>
@@ -61,7 +85,8 @@ const showSaveList = ref(false)
 
 .title-content {
   text-align: center;
-  max-width: 500px;
+  max-width: 520px;
+  width: 100%;
   padding: var(--gap-large);
 }
 
@@ -97,6 +122,7 @@ const showSaveList = ref(false)
   font-family: var(--font-body);
   cursor: pointer;
   transition: background-color 0.2s;
+  min-height: 44px;
 }
 
 .title-button:hover {
@@ -104,9 +130,15 @@ const showSaveList = ref(false)
   color: var(--color-surface);
 }
 
-.placeholder-text {
-  color: var(--color-text-secondary);
-  font-size: 0.875rem;
-  margin-top: var(--gap-small);
+.title-panel-wrap {
+  text-align: left;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-panel);
+  padding: var(--gap-medium);
+}
+
+.title-panel-wrap .title-button {
+  margin-top: var(--gap-medium);
 }
 </style>

@@ -455,7 +455,7 @@ export interface RandomEventDef {
   side?: 'self' | 'target' | 'any' | 'both'
   /** "选项文本|正文"（父/子事件用分隔） */
   text?: string
-  /** 前提 ID 列表（premiseRegistry 权重通道，0 淘汰，返回值即权重） */
+  /** 前提 ID 列表（conditionEngine 权重通道，0 淘汰，返回值即权重） */
   premises?: string[]
   /** 现有条件表达式（布尔门） */
   condition?: string

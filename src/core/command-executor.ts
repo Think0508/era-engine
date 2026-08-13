@@ -87,7 +87,7 @@ export class CommandExecutor {
             source: 'command-executor',
             severity: 'warning',
             message: `指令 '${id}' 有前提（${cmd.premises.join(', ')}）但调用方未提供 evaluatePremises，跳过执行`,
-            suggestion: '调用方需注入 evaluatePremises（premiseRegistry 非严格求值），参考 CommandBar/command-eval',
+            suggestion: '调用方需注入 evaluatePremises（conditionEngine 严格求值），参考 CommandBar/command-eval',
           })
           return
         }

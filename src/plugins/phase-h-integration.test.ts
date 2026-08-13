@@ -406,7 +406,7 @@ describe('Phase H 集成测试', () => {
     const rest = commandRegistry.getById('rest')
     expect(rest).toBeDefined()
     expect(rest!.id.startsWith('h_')).toBe(false)
-    // premises 独立字段（不再拼接 premises: 字符串）
+    // premises 独立字段（数组简写，不再拼接旧前缀）
     expect(rest!.premises).toEqual(['NOT_H', 'TIRED_LE_84'])
     expect(rest!.condition).toBeUndefined()
     expect(rest!.category).toBe('daily')

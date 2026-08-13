@@ -1,7 +1,7 @@
 // 注释：目标搜索——前提权重 + 优先级分层（erArk find_character_target/search_target 对应物）
 // 语义对齐：
 //   - 按 layer 升序逐层搜索，首个有候选的层胜出（erArk config_target_type_index 分层顺序）
-//   - 层内：前提权重求和（conditionEngine.getWeightSum——前提返回值即权重，erArk `now_weight += premise_judge`）
+//   - 层内：前提权重求和（conditionEngine.getPremiseValue + premiseWeight——前提返回值即权重，erArk `now_weight += premise_judge`）
 //     + 目标 condition（现有条件引擎，布尔门，不参与权重）
 //   - 加权随机选目标（get_first_only 层取第一个通过的——erArk get_first_only=True 语义）
 //   - 全层无候选 → null（调用方延后重试——erArk start_time += 1 分钟）

@@ -1094,7 +1094,7 @@ export function onEnable(ctx: PluginContext): void {
   const doHCmd: CommandDef = {
     id: 'do_h', label: '邀请H', group: 'character_commands',
     modes: ['exploration'], priority: 80, timeCost: 10,
-    condition: 'premises:HAVE_TARGET,NOT_H,T_NORMAL,SCENE_ONLY_TWO,TIRED_LE_74',
+    condition: 'premise(HAVE_TARGET) && premise(NOT_H) && premise(T_NORMAL) && premise(SCENE_ONLY_TWO) && premise(TIRED_LE_74)',
     source: 'plugin:h-core',
     handler: async (execCtx: any) => {
       const s = execCtx?.uiStore?.selectedCharacterId

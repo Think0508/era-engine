@@ -1,8 +1,13 @@
-// 注释：sandbox — JS 钩子执行沙箱
+// 注释：sandbox — JS 钩子执行沙箱（占位实现）
 // 使用 new Function + Proxy 冻结 context
 // 禁止：window/document/fetch/localStorage 等全局对象
 // 注意：非完整安全，MVP 够用（mod 作者自写脚本，非第三方提交）
 // TODO(phase-15): 用 acorn AST 插入超时检查语句 + iframe 隔离
+//
+// ⚠️ W4（audit-i 2026-08-15）：本文件当前**零消费者**（grep runSandbox 无调用点）——
+// 实际使用的沙箱是 quest-system/script-runner.ts（异步 + 5s 超时 + 严格模式 set 守卫，
+// 失败姿态为"上报"而非本文件的"静默接受"）。本文件保留为未来 condition_script 等
+// 通用钩子的基础；**新增钩子一律走 script-runner 的安全姿态**，勿直接使用本文件
 
 import { errorReporter } from '../core/error-reporter'
 import { entitySystem } from '../core/entity-system'

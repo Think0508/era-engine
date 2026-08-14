@@ -305,6 +305,8 @@ next = "final"
 id = "final"
 type = "reward"
 effects = []
+```
+> ⚠️ **时序（A6）**：dialogue 步骤**启动对话后立即推进 `next`**（不等待对话结束）——对话开放期间后续步骤（如 reward）已在执行。"对话结束后才推进"的语义由 `talk_to` objective 或 `dialogue_end` trigger 提供（监听 dialogue:end）
 next = ""     # 显式结束标记（空字符串 = 立即结束场景）
 ```
 
@@ -360,7 +362,7 @@ ctx.api.call('quest', 'start', 'dynamic_quest') // 注册后即可照常启动
 - **校验范围**：registerScene 走运行时路径，但**共用 `validateSceneSteps` 步骤图校验**（步骤 id 唯一/引用字段指向存在步骤/objective/combat/goto 必填字段——与 TOML 路径同一校验函数，含场景定位）+ 空 steps/重复 id 拒绝注册（报错不覆盖）；带 `dialogues` 的 scene 自动注册进 `conversations.scene`，`scene:` 引用可用（G2-I-2 修正：与 TOML 路径一致）
 - **副作用**：注册后自动重建触发器索引（新场景的 triggers 立即拦截）+ 立即检查 condition 自动触发
 - **重复 id** → errorReporter 报错（含 id）+ 不覆盖（跳过注册）
-- **与 registerDynamicScene 的区别**：后者注册进独立动态表（不持久、注册方负责读档重建，confinement 追捕委托用）；本 API 注册后常驻 mod.quests
+- **与 registerDynamicScene 的区别**：后者注册进独立动态表（不持久、注册方负责读档重建，confinement 追捕委托用）；本 API 注册后常驻 mod.quests（**生命周期仅限会话内——读档存活但整页刷新/重启丢失**；跨会话持久请走 TOML 数据或注册方在启动时重建，W5）
 - **角色生成配套**：`ctx.api.call('character', 'spawnCharacter', templateId, atLocation, overrides?)` → 按 `templates/character/` 模板实例化角色（模板与 overrides 深合并、放置到指定地点、随存档持久化），生成 id 规则 `{templateId}_{timestamp}_{随机后缀}`；模板不存在 → errorReporter + null——支撑"先 spawn 敌人再注册追捕任务"的完整动态链路
 
 ## 存档行为

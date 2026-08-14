@@ -92,8 +92,11 @@ export function onEnable(ctx: PluginContext): void {
       return resolveConversation(mod.conversations, {
         type: type as ConversationRef['type'],
         character: type === 'character' ? key : undefined,
-        name: type === 'character' || type === 'global' ? name ?? key : undefined,
+        // 注释：C2-3.2（audit-c2 3.2）——type=scene 时 key 映射到 scene 字段、
+        // name 传对话树 id（原实现缺 scene 字段 → resolveConversation 恒 undefined）
+        name: (type === 'character' || type === 'global' || type === 'scene') ? name ?? key : undefined,
         path: (type === 'quest' || type === 'event') ? key : undefined,
+        scene: type === 'scene' ? key : undefined,
       })
     },
     // 注释：插值工具——{var} 替换
@@ -428,7 +431,20 @@ async function startConversationInternal(ref: ConversationRef, speaker?: string)
 async function renderNode(nodeId: string, speakerOverride?: string): Promise<void> {
   if (!currentConversation) return
   const node = currentConversation.nodes.get(nodeId)
-  if (!node) return
+  if (!node) {
+    // 注释：B-I-2 配套（audit-b I-2）——缺失节点兜底——原静默 return：玩家点击坏
+    // 选项后对话无输出、currentConversation 永不清空、dialogue 模式永不退出——
+    // 永久卡死且零诊断。加载期校验（mod-loader）拦不住运行期构造的对话数据，
+    // 此处上报 error + endConversation（防卡死双保险）
+    errorReporter.report({
+      source: 'dialogue-system',
+      severity: 'error',
+      message: `对话 '${currentConversation.convId}' 引用了不存在的节点 '${nodeId}'（对话已强制结束）`,
+      suggestion: '检查对话树的 choices[].next / next 是否指向已定义节点（加载期校验应已拦截，运行期数据需自查）',
+    })
+    endConversation()
+    return
+  }
   currentConversation.nodeId = nodeId
 
   // 注释：决定说话者——优先 lines 内的 speaker，回退到 speakerOverride，最后用 ref.character

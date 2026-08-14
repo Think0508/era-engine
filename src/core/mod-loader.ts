@@ -375,6 +375,10 @@ export interface QuestStep {
   target?: string
   // scene（嵌套子场景）
   scene_id?: string
+  // spawn（2026-08-14 A-I-3 接线——template/at_location/count → 实例化角色）
+  template?: string          // templates/character/ 下的模板 id
+  at_location?: string       // 生成放置地点（缺省 = 当前地点）
+  count?: number             // 生成数量（缺省 1）
   // C1：步骤执行上下文（quest-script C' 模型 Task 1）
   // 注意：target 为 goto 步骤的下一步 step id；在 reward 步骤里是执行目标角色
   // （'player' | 'selected' | 角色ID，默认 UI 选中）——按 step.type 区分语义
@@ -1510,6 +1514,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   const scenePrefixes = [`/mods/${modName}/quests/`, `/mods/${modName}/events/`]
   // C5：任务内嵌对话 → conversations.scene（sceneId 全局唯一，冲突即报错）
   const sceneConversations = new Map<string, Map<string, Conversation>>()
+  // B-I-1：scene 文件路径记录（后续引用校验报错带文件路径）
+  const scenePaths = new Map<string, string>()
   for (const [path, raw] of Object.entries(rawTomlMap)) {
     if (!path.endsWith('.toml')) continue
     if (!scenePrefixes.some(p => path.startsWith(p))) continue
@@ -1523,14 +1529,55 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       errorReporter.report({ source: 'mod-loader', severity: 'error', file: path, message: `Scene ID '${scene.id}' 重复` })
       continue
     }
+    // 注释：B-M-4（audit-b M-4）——scene id 含 '.' → error + 拒绝注册——条件路径
+    // 以 '.' 分段（quest.{id}.status），含点 id 在加载期误报未知字段、运行期把
+    // sceneId 解析成前半段（错误场景）
+    if (typeof scene.id === 'string' && scene.id.includes('.')) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error', file: path,
+        message: `Scene ID '${scene.id}' 含 '.' 字符（会破坏 quest 条件路径，如 quest.${scene.id}.status）`,
+        suggestion: '场景 id 避免使用点号——条件引擎以 "." 分段解析路径',
+      })
+      continue
+    }
     mod.quests.set(scene.id, scene)
+    scenePaths.set(scene.id, path)
+    // 注释：C2-M（audit-c2 其他发现）——triggers/dialogues 非数组防护——作者误写
+    // 单表（triggers = { ... }）时 for...of 抛裸 TypeError 崩溃 loadMod（无兜底 catch，
+    // 非精准报错格式）→ error + 跳过该字段
+    const triggersRaw = (scene as any).triggers
+    if (triggersRaw !== undefined && !Array.isArray(triggersRaw)) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error', file: path,
+        message: `任务 '${scene.id}' 的 triggers 字段必须是数组（当前是 ${typeof triggersRaw}）`,
+        suggestion: '触发声明用 [[triggers]] 表数组，不是 [triggers]',
+      })
+    }
+    const dialoguesRaw = (scene as any).dialogues
+    if (dialoguesRaw !== undefined && !Array.isArray(dialoguesRaw)) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error', file: path,
+        message: `任务 '${scene.id}' 的 dialogues 字段必须是数组（当前是 ${typeof dialoguesRaw}）`,
+        suggestion: '内嵌对话声明用 [[dialogues]] 表数组，不是 [dialogues]',
+      })
+    }
+    const triggers = Array.isArray(triggersRaw) ? triggersRaw : []
     // 注释：C6——trigger 声明校验（type 合法值）。非法 type → error；
     // 已定义但未实现（location_enter/item_used/time，Phase 2 计划）→ error——
     // 防止作者以为已生效而静默失效。含 scene id + 文件路径
     const VALID_TRIGGER_TYPES = ['command', 'dialogue_end', 'location_enter', 'item_used', 'time']
     const IMPLEMENTED_TRIGGER_TYPES = ['command', 'dialogue_end']
-    for (const trig of (scene as any).triggers ?? []) {
-      if (!trig || typeof trig !== 'object') continue
+    for (const trig of triggers) {
+      if (!trig || typeof trig !== 'object') {
+        // 注释：B-I-3（audit-b M-8）——非法 trigger 条目（null/字符串）→ error
+        //（原静默 continue：与 events/ai-targets 加载的报错风格对齐）
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file: path,
+          message: `任务 '${scene.id}' 的 triggers 含有非法条目（非表对象，已跳过）`,
+          suggestion: 'triggers 数组的每个条目必须是表（{ type, ... }）',
+        })
+        continue
+      }
       if (!VALID_TRIGGER_TYPES.includes(trig.type)) {
         errorReporter.report({
           source: 'mod-loader', severity: 'error', file: path,
@@ -1543,13 +1590,81 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
           message: `任务 '${scene.id}' 的 trigger type '${trig.type}' 尚未实现，暂不生效`,
           suggestion: '请使用 command/dialogue_end，其余类型（location_enter/item_used/time）将在后续版本支持',
         })
+      } else {
+        // 注释：B-I-3（audit-b M-9）——按 type 校验必填字段（原 buildTriggerIndex
+        // 静默跳过——触发器失效零诊断）→ 加载期 error
+        if (trig.type === 'command' && !trig.command) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error', file: path,
+            message: `任务 '${scene.id}' 的 command 触发器缺少 command 字段（触发器不会触发）`,
+            suggestion: 'triggers = [{ type = "command", command = "指令id", ... }]',
+          })
+        }
+        if (trig.type === 'dialogue_end' && !trig.character) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error', file: path,
+            message: `任务 '${scene.id}' 的 dialogue_end 触发器缺少 character 字段（触发器不会触发）`,
+            suggestion: 'triggers = [{ type = "dialogue_end", character = "角色ID" }]',
+          })
+        }
       }
     }
     // C5：任务内嵌对话树收集（[[dialogues]] 段，与独立 conversation 文件同格式）
-    const inlineDialogues = (scene as any).dialogues ?? []
+    const inlineDialogues = Array.isArray(dialoguesRaw) ? dialoguesRaw : []
     for (const dlg of inlineDialogues) {
-      if (!dlg?.id) continue
-      const conv: Conversation = { id: dlg.id, nodes: dlg.nodes ?? [] }
+      if (!dlg?.id) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file: path,
+          message: `任务 '${scene.id}' 的内嵌对话缺少 id 字段，跳过`,
+          suggestion: '每个 [[dialogues]] 条目必须有唯一 id',
+        })
+        continue
+      }
+      // 注释：B-I-2（audit-b I-2）——内嵌对话结构校验——nodes 非空 + 每节点有 id +
+      // 有 start 节点 + choices[].next 指向存在的节点（原零校验：坏引用运行期
+      // renderNode 静默 return → 玩家点击后对话卡死且零诊断，违反 §37）
+      const nodes = Array.isArray(dlg.nodes) ? dlg.nodes : []
+      if (nodes.length === 0) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file: path,
+          message: `任务 '${scene.id}' 内嵌对话 '${dlg.id}' 没有节点（nodes 为空）`,
+          suggestion: '内嵌对话至少需要一个 start 节点',
+        })
+        continue
+      }
+      const nodeIds = new Set<string>()
+      let hasStart = false
+      for (const node of nodes) {
+        if (!node?.id) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error', file: path,
+            message: `任务 '${scene.id}' 内嵌对话 '${dlg.id}' 存在缺 id 的节点`,
+            suggestion: '对话树的每个 [[dialogues.nodes]] 必须有 id 字段',
+          })
+          continue
+        }
+        nodeIds.add(node.id)
+        if (node.id === 'start') hasStart = true
+      }
+      if (!hasStart) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file: path,
+          message: `任务 '${scene.id}' 内嵌对话 '${dlg.id}' 缺少 'start' 节点`,
+          suggestion: '对话树必须从 id = "start" 的节点开始渲染',
+        })
+      }
+      for (const node of nodes) {
+        for (const choice of node?.choices ?? []) {
+          if (!choice?.next || !nodeIds.has(choice.next)) {
+            errorReporter.report({
+              source: 'mod-loader', severity: 'error', file: path,
+              message: `任务 '${scene.id}' 内嵌对话 '${dlg.id}' 的选项 next 指向不存在的节点 '${String(choice?.next)}'`,
+              suggestion: 'choices[].next 必须指向本对话树内已定义的节点 id',
+            })
+          }
+        }
+      }
+      const conv: Conversation = { id: dlg.id, nodes }
       if (!sceneConversations.has(scene.id)) sceneConversations.set(scene.id, new Map())
       const map = sceneConversations.get(scene.id)!
       if (map.has(conv.id)) {
@@ -1562,17 +1677,45 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       }
       map.set(conv.id, conv)
     }
+    // 注释：B-I-3（audit-b I-3 同族）——custom objective 的 event 加载期校验——
+    // 未知事件名 → error（原静默永不触发；CUSTOM_EVENT_TYPES 由 quest-system 注册
+    // 监听，core 数据层镜像该白名单——与 h:orgasm/h:end 事件契约同步）
+    const CUSTOM_OBJECTIVE_EVENTS = ['h:orgasm', 'h:end']
+    for (const step of scene.steps ?? []) {
+      const obj = step.objective
+      if (step.type === 'objective' && obj?.type === 'custom' && obj.event
+          && !CUSTOM_OBJECTIVE_EVENTS.includes(obj.event)) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file: path,
+          message: `任务 '${scene.id}' 步骤 '${step.id}' 的 custom objective 监听了未知事件 '${obj.event}'（目标不会推进）`,
+          suggestion: `objective.event 目前支持：${CUSTOM_OBJECTIVE_EVENTS.join(' / ')}`,
+        })
+      }
+    }
   }
   // 解析完成后 conversations.scene = sceneConversations
   mod.conversations.scene = sceneConversations
-  // 注释：校验 scene 引用（scene_id 必须存在）
+  // 注释：校验 scene 引用（scene_id 必须存在）+ B-I-1：steps.conversation 引用存在性
+  //（§37 铁律：加载时 error——原只校验 scene_id；conversation 坏引用只在运行期
+  // dialogue-system 报 warning 后任务静默跳步，作者无感知）
   for (const [id, scene] of mod.quests) {
+    const filePath = scenePaths.get(id) ?? ''
     for (const step of scene.steps ?? []) {
       if (step.type === 'scene' && step.scene_id && !mod.quests.has(step.scene_id)) {
         errorReporter.report({
           source: 'mod-loader', severity: 'error', message: `Scene '${id}' 的 step 引用了不存在的 scene_id '${step.scene_id}'`,
           suggestion: `检查 ${scenePrefixes.map(p => p.replace(`/mods/${modName}/`, '')).join(' 或 ')} 下是否有该 id 的文件`,
         })
+      }
+      if (step.conversation) {
+        const ref = parseConversationRef(step.conversation as ConversationRef | string)
+        if (!resolveConversation(mod.conversations, ref)) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error', file: filePath,
+            message: `任务 '${id}' 步骤 '${step.id}' 的对话引用不存在：${JSON.stringify(ref)}`,
+            suggestion: '检查对话引用拼写（scene: 引用需任务内嵌对话已定义；character: 引用需角色对话文件存在）',
+          })
+        }
       }
     }
   }

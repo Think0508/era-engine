@@ -766,3 +766,155 @@ describe('item 校验', () => {
     expect(err2).toBeUndefined()
   })
 })
+
+// ═══════ 批次 1：quest 加载期校验（audit-b I-1/I-2/I-3 + C2-M + B-M-4）═══════
+// makeMap 可注入任意路径的 TOML——新文件路径直接加入 rawTomlMap，无需改动真实文件
+describe('quest 加载期校验（批次 1）', () => {
+  beforeEach(() => {
+    errorReporter.clear()
+  })
+
+  function questErrors(msgPart: string) {
+    return errorReporter.getErrors().filter(e => e.severity === 'error' && e.message.includes(msgPart))
+  }
+
+  it('B-I-1：steps.conversation 引用不存在 → error（含文件路径）', () => {
+    parseModData('test-mod', makeMap({
+      '/mods/test-mod/quests/main/bad_ref.toml': [
+        'id = "bad_ref_quest"',
+        'type = "main"',
+        '[[steps]]',
+        'id = "s1"',
+        'type = "dialogue"',
+        'conversation = "character:ghost_char/ghost_dlg"',
+        'next = "final"',
+        '[[steps]]',
+        'id = "final"',
+        'type = "reward"',
+        'effects = []',
+      ].join('\n'),
+    }))
+    const errs = questErrors('对话引用不存在')
+    expect(errs.some(e => e.message.includes('bad_ref_quest') && e.file?.includes('bad_ref.toml'))).toBe(true)
+    // 合法引用（test-mod 真实数据）不误报
+    expect(questErrors('对话引用不存在').some(e => e.message.includes('test_quest'))).toBe(false)
+  })
+
+  it('B-I-2：内嵌对话 choices.next 指向不存在节点 → error（含 scene+dialogue id）', () => {
+    parseModData('test-mod', makeMap({
+      '/mods/test-mod/quests/main/bad_dlg.toml': [
+        'id = "bad_dlg_quest"',
+        'type = "main"',
+        '[[dialogues]]',
+        'id = "broken"',
+        '[[dialogues.nodes]]',
+        'id = "start"',
+        'lines = ["x"]',
+        '[[dialogues.nodes.choices]]',
+        'text = "跳"',
+        'next = "ghost_node"',
+        '[[steps]]',
+        'id = "s1"',
+        'type = "reward"',
+        'effects = []',
+      ].join('\n'),
+    }))
+    const errs = questErrors('ghost_node')
+    expect(errs.some(e => e.message.includes('bad_dlg_quest') && e.message.includes('broken'))).toBe(true)
+  })
+
+  it('B-I-2：内嵌对话缺 start 节点 / 空 nodes → error', () => {
+    parseModData('test-mod', makeMap({
+      '/mods/test-mod/quests/main/bad_dlg2.toml': [
+        'id = "bad_dlg2_quest"',
+        'type = "main"',
+        '[[dialogues]]',
+        'id = "nostart"',
+        '[[dialogues.nodes]]',
+        'id = "other"',
+        'lines = ["x"]',
+        '[[dialogues]]',
+        'id = "empty_nodes"',
+        '[[steps]]',
+        'id = "s1"',
+        'type = "reward"',
+        'effects = []',
+      ].join('\n'),
+    }))
+    expect(questErrors("缺少 'start' 节点").some(e => e.message.includes('nostart'))).toBe(true)
+    expect(questErrors('没有节点').some(e => e.message.includes('empty_nodes'))).toBe(true)
+  })
+
+  it('B-I-3：command 触发器缺 command 字段 / dialogue_end 缺 character → error', () => {
+    parseModData('test-mod', makeMap({
+      '/mods/test-mod/quests/main/bad_trigger.toml': [
+        'id = "bad_trigger_quest"',
+        'type = "event"',
+        'triggers = [',
+        '  { type = "command" },',
+        '  { type = "dialogue_end" },',
+        ']',
+        '[[steps]]',
+        'id = "s1"',
+        'type = "reward"',
+        'effects = []',
+      ].join('\n'),
+    }))
+    expect(questErrors('缺少 command 字段').some(e => e.message.includes('bad_trigger_quest'))).toBe(true)
+    expect(questErrors('缺少 character 字段').some(e => e.message.includes('bad_trigger_quest'))).toBe(true)
+  })
+
+  it('B-I-3：custom objective 监听未知事件 → error', () => {
+    parseModData('test-mod', makeMap({
+      '/mods/test-mod/quests/main/bad_obj.toml': [
+        'id = "bad_obj_quest"',
+        'type = "main"',
+        '[[steps]]',
+        'id = "s1"',
+        'type = "objective"',
+        'objective = { type = "custom", event = "h:unknown_event", script = "x.js" }',
+      ].join('\n'),
+    }))
+    expect(questErrors('h:unknown_event').some(e => e.message.includes('bad_obj_quest'))).toBe(true)
+    // 合法事件不误报
+    expect(questErrors('h:orgasm').some(e => e.message.includes('bad_obj_quest'))).toBe(false)
+  })
+
+  it('C2-M：triggers/dialogues 非数组 → error（不抛裸 TypeError 崩溃加载）', () => {
+    parseModData('test-mod', makeMap({
+      '/mods/test-mod/quests/main/bad_shape.toml': [
+        'id = "bad_shape_quest"',
+        'type = "main"',
+        'triggers = { type = "command", command = "x" }',
+        'dialogues = { id = "d" }',
+        '[[steps]]',
+        'id = "s1"',
+        'type = "reward"',
+        'effects = []',
+      ].join('\n'),
+    }))
+    expect(questErrors('triggers 字段必须是数组').some(e => e.message.includes('bad_shape_quest'))).toBe(true)
+    expect(questErrors('dialogues 字段必须是数组').some(e => e.message.includes('bad_shape_quest'))).toBe(true)
+  })
+
+  it('B-M-4：scene id 含 "." → error + 拒绝注册', () => {
+    const mod = parseModData('test-mod', makeMap({
+      '/mods/test-mod/quests/main/dot_id.toml': [
+        'id = "main.spar"',
+        'type = "main"',
+        '[[steps]]',
+        'id = "s1"',
+        'type = "reward"',
+        'effects = []',
+      ].join('\n'),
+    }))
+    expect(questErrors("含 '.' 字符").some(e => e.message.includes('main.spar'))).toBe(true)
+    expect(mod.quests.has('main.spar')).toBe(false)
+  })
+
+  it('合法 quest 数据零 error（对照——真实 embed_quest/test_quest 不误报）', () => {
+    parseModData('test-mod', rawTomlMap)
+    const errs = errorReporter.getErrors().filter(e => e.severity === 'error')
+    expect(errs).toHaveLength(0)
+  })
+})

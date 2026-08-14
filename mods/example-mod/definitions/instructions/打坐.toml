@@ -75,3 +75,21 @@ effects = [
   { type = "modify_attribute", target = "selected", params = { attr = "体力", value = -10 } },
   { type = "narrative_output", params = { text = "你与对方有仇，出手毫不留情！" } }
 ]
+
+# ═══════════════════════════════════════════════════════════════════
+# spar（切磋）——被 quests/events/spar_liqiushui.toml 的 command trigger
+# 引用（2026-08-14 audit-c2 I-4 修复）：触发器声明引用的指令必须真实存在，
+# 否则触发器永不命中且零诊断。选中李秋水时该指令被触发器改道执行任务
+#（战斗→奖励）；未命中触发条件时走本默认行为。
+# ═══════════════════════════════════════════════════════════════════
+
+[[instructions]]
+id = "spar"
+label = "切磋"
+category = "daily"
+time_cost = 10
+priority = 40
+condition = "selected != null"
+effects = [
+  { type = "narrative_output", params = { text = "你摆开架势，向对方邀战。" } }
+]

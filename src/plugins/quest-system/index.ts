@@ -259,16 +259,16 @@ export function onEnable(ctx: PluginContext): void {
     const playerId = gameContext.getContext().player?.id
     const win = payload?.winner === 'allies' || (playerId != null && payload?.winner === playerId)
     const lose = payload?.winner === 'enemies' || (payload?.outcome === 'lose')
-    for (const [sceneId, runtime] of activeScenes) {
-      const scene = getScene(sceneId)
-      if (!scene) continue
-      const step = scene.steps.find(s => s.id === runtime.currentStepId)
-      if (!step || step.type !== 'combat') continue
+    for (const [sceneId] of activeScenes) {
+      const cur = getCurrentStep(sceneId)
+      if (!cur) continue
+      const { step } = cur
+      if (step.type !== 'combat') continue
       // C1：参与者过滤——scene 的 enemies 与本次战斗 participants 有交集才推进
       //（无关战斗结束不推进，避免多场战斗串步；也防其它场景触发的战斗误推进）
       const stepEnemies = Array.isArray(step.enemies) ? step.enemies : []
       const participants = Array.isArray(payload?.participants) ? payload.participants : []
-      if (!stepEnemies.some(e => participants.includes(e))) continue
+      if (!stepEnemies.some((e: string) => participants.includes(e))) continue
       let nextStepId: string | undefined
       if (win) nextStepId = step.on_win ?? step.next
       else if (lose) nextStepId = step.on_lose ?? step.next
@@ -462,28 +462,37 @@ async function startScene(sceneId: string): Promise<void> {
   } catch (err) {
     // 注释：audit-e C3——executeStep 已内部隔离（F-3），此处仅防御性兜底：
     // executeStep 前置/回滚链异常时上报 + 回滚（防僵尸活跃场景）
+    await rollbackScene(sceneId, err, `任务 '${sceneId}' 启动失败（首步 '${runtime.currentStepId}'）`)
+  }
+}
+
+// 注释：H3（audit-h）——场景回滚唯一入口：上报（含场景定位）+ completeScene 终结。
+// 原两处（startScene 启动失败 / executeStep 步骤执行失败）各写一份 10 行相同的
+// "上报 + 回滚 + 回滚失败再上报"嵌套 catch——收敛为单函数，回滚失败也统一兜底
+async function rollbackScene(sceneId: string, err: unknown, context: string): Promise<void> {
+  errorReporter.report({
+    source: 'quest-system',
+    severity: 'error',
+    message: `${context}，场景已回滚为已完成：${err instanceof Error ? err.message : String(err)}`,
+    suggestion: '检查步骤引用的系统/API 是否可用（如 dialogue/combat 插件未加载）、步骤数据是否正确',
+  })
+  try {
+    await completeScene(sceneId)
+  } catch (rollbackErr) {
+    // 注释：回滚本身兜底——completeScene 内部可能再抛（场景已删等），不阻断调用方
     errorReporter.report({
       source: 'quest-system',
       severity: 'error',
-      message: `任务 '${sceneId}' 启动失败（首步 '${runtime.currentStepId}'），场景已回滚为已完成：${err instanceof Error ? err.message : String(err)}`,
-      suggestion: '检查步骤引用的系统/API 是否可用（如 dialogue/combat 插件未加载）、步骤数据是否正确',
+      message: `任务 '${sceneId}' 回滚失败：${rollbackErr instanceof Error ? rollbackErr.message : String(rollbackErr)}`,
+      suggestion: '检查 completeScene 内部逻辑（activeScenes 状态是否已损坏）',
     })
-    try {
-      await completeScene(sceneId)
-    } catch (rollbackErr) {
-      // 注释：回滚本身兜底——completeScene 内部可能再抛（场景已删等），不阻断调用方
-      errorReporter.report({
-        source: 'quest-system',
-        severity: 'error',
-        message: `任务 '${sceneId}' 回滚失败：${rollbackErr instanceof Error ? rollbackErr.message : String(rollbackErr)}`,
-        suggestion: '检查 completeScene 内部逻辑（activeScenes 状态是否已损坏）',
-      })
-    }
   }
 }
 
 // 注释：执行 step
 async function executeStep(sceneId: string, stepId: string): Promise<void> {
+  // 注释：按 stepId 参数定位（≠ runtime.currentStepId——advanceToStep 推进后
+  // currentStepId 尚未更新，getCurrentStep 只用于"当前步骤"查询场景）
   const scene = getScene(sceneId)
   if (!scene) {
     // 注释：A-I-4——静默早退 → 僵尸活跃场景（动态 scene 未恢复 / 已注销）——
@@ -496,7 +505,6 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
     reportExecuteStepSkip(sceneId, stepId, '场景未激活')
     return
   }
-
   const step = scene.steps.find(s => s.id === stepId)
   if (!step) {
     reportExecuteStepSkip(sceneId, stepId, '步骤不存在')
@@ -508,30 +516,33 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
   try {
     await executeStepBody(sceneId, stepId, step, runtime)
   } catch (err) {
-    // 注释：F-3（audit-f）——步骤执行抛错 → 就地隔离：上报（场景+步骤准确定位）+ 回滚。
+    // 注释：F-3——步骤执行抛错 → 就地隔离：上报（场景+步骤准确定位）+ 回滚。
     // 原错误沿嵌套链上抛（子场景 startScene catch 误归因给子、重复 completeScene、
     // 父僵尸）——executeStep 是推进唯一咽喉点，在此隔离后嵌套/恢复链全部安全
-    errorReporter.report({
-      source: 'quest-system',
-      severity: 'error',
-      message: `任务 '${sceneId}' 步骤 '${stepId}' 执行失败，场景已回滚为已完成：${err instanceof Error ? err.message : String(err)}`,
-      suggestion: '检查步骤数据（conversation/script/effects 引用）与依赖系统是否可用',
-    })
-    try {
-      await completeScene(sceneId)
-    } catch (rollbackErr) {
-      errorReporter.report({
-        source: 'quest-system',
-        severity: 'error',
-        message: `任务 '${sceneId}' 回滚失败：${rollbackErr instanceof Error ? rollbackErr.message : String(rollbackErr)}`,
-        suggestion: '检查 completeScene 内部逻辑（activeScenes 状态是否已损坏）',
-      })
-    }
+    await rollbackScene(sceneId, err, `任务 '${sceneId}' 步骤 '${stepId}' 执行失败`)
   }
 }
 
-// 注释：F-3——步骤执行主体（供 executeStep 隔离调用，保持 switch 结构与原实现一致）
-async function executeStepBody(sceneId: string, stepId: string, step: any, runtime: SceneRuntime): Promise<void> {
+// 注释：M1（audit-h）——取当前场景/运行时/步骤（三查合一；6 处调用点共用）
+function getCurrentStep(sceneId: string): { scene: Quest; runtime: SceneRuntime; step: any } | null {
+  const scene = getScene(sceneId)
+  if (!scene) return null
+  const runtime = activeScenes.get(sceneId)
+  if (!runtime) return null
+  const step = scene.steps.find(s => s.id === runtime.currentStepId)
+  if (!step) return null
+  return { scene, runtime, step }
+}
+
+// 注释：步骤执行主体——各 case 只做"执行自己的动作"，返回下一步推进决定
+//（string = 推进该步骤；'' = 显式结束标记；undefined = 挂起/事件驱动），
+// 外层统一推进一次（H2 重构：原 8 份 `if (step.next != null) await advanceToStep` 拷贝收敛）
+async function executeStepBody(sceneId: string, _stepId: string, step: any, runtime: SceneRuntime): Promise<void> {
+  const follow = await dispatchStep(sceneId, step, runtime)
+  if (follow != null) await advanceToStep(sceneId, follow)
+}
+
+async function dispatchStep(sceneId: string, step: any, runtime: SceneRuntime): Promise<string | undefined> {
   switch (step.type) {
     case 'dialogue':
       // 注释：先输出内联旁白（如果有）
@@ -547,20 +558,18 @@ async function executeStepBody(sceneId: string, stepId: string, step: any, runti
           : step.conversation as ConversationRef
         await apiSystem.call('dialogue', 'startConversation', ref, step.speaker ?? null)
       }
-      // 注释：2026-08-15——next 空字符串 = 显式结束标记（advanceToStep 找不到目标 → 完成）
-      if (step.next != null) await advanceToStep(sceneId, step.next)
-      break
+      return step.next
 
     case 'combat':
       // 注释：B3 修复（audit-c I3）——原 allies 传空数组：战斗瞬间"盟友全灭"结束
       // （combat-base checkCombatEnd：allies=[] → alliesAlive=false → 立即 lose），
       // 玩家永远无法参战，on_win/on_lose 永不读取。玩家加入参战者
       await apiSystem.call('combat', 'start', step.enemies ?? [], [gameContext.getContext().player?.id].filter(Boolean) as string[])
-      break
+      return undefined  // 事件驱动：combat:end 监听按胜负推进
 
     case 'objective':
-      runtime.objectiveProgress.set(stepId, 0)
-      break
+      runtime.objectiveProgress.set(step.id, 0)
+      return undefined  // 事件驱动：checkObjectives / checkCustomObjectives 监听
 
     case 'reward':
       if (step.effects) {
@@ -574,14 +583,11 @@ async function executeStepBody(sceneId: string, stepId: string, step: any, runti
           uiStore: { selectedCharacterId: gameContext.getContext().selectedCharacterId },
         })
       }
-      // 注释：2026-08-15——next 空字符串 = 显式结束标记
-      if (step.next != null) await advanceToStep(sceneId, step.next)
-      break
+      return step.next
 
     case 'spawn': {
-      // 注释：A-I-3/B-M-11（audit-a I-3 / audit-b M-11）——spawn 步骤接线——
-      // template/at_location/count → 循环调用 character.spawnCharacter 实例化。
-      // 原空实现：字段写了完全不生效（角色永不出现、任务静默直通，零诊断）
+      // 注释：A-I-3/B-M-11——spawn 步骤接线——template/at_location/count →
+      // 循环调用 character.spawnCharacter 实例化（原空实现：字段写了完全不生效）
       if (!step.template) {
         errorReporter.report({
           source: 'quest-system', severity: 'warning',
@@ -590,7 +596,7 @@ async function executeStepBody(sceneId: string, stepId: string, step: any, runti
         })
       } else {
         // 注释：audit-e I10——at_location 缺省且当前无地点上下文 → 落到空地点
-        //（角色注册在 '' 地图上永远看不到，spawned 计数还不报错）→ warning + 跳过本次生成
+        //（角色注册在 '' 地图上永远看不到）→ warning + 跳过本次生成
         const atLocation = step.at_location ?? gameContext.getContext().location?.id ?? ''
         if (!atLocation) {
           errorReporter.reportDedup(`spawn-no-location|${sceneId}|${step.id}`, {
@@ -614,21 +620,17 @@ async function executeStepBody(sceneId: string, stepId: string, step: any, runti
           }
         }
       }
-      // 注释：2026-08-15——next 空字符串 = 显式结束标记
-      if (step.next != null) await advanceToStep(sceneId, step.next)
-      break
+      return step.next
     }
 
-    case 'condition':
-      // 注释：条件分支（2026-08-13 审计修复——原实现从未求值 condition，else 从未处理，
-      // 条件任务静默直通 next；AGENTS §31：condition 满足 → next，否则 → else（可选））
+    case 'condition': {
+      // 注释：条件分支（AGENTS §31：condition 满足 → next，否则 → else（可选））
       let condOk = true
       if (step.condition) {
         try {
           condOk = conditionEngine.evaluate(step.condition, gameContext.getContext())
         } catch (err) {
-          // 注释：A-I-5——condition 步骤求值异常去重上报（镜像 checkAutoStart/
-          // trigger 模式；原 catch 静默走 else：表达式错误零诊断）
+          // 注释：A-I-5——条件求值异常去重上报（原 catch 静默走 else：零诊断）
           condOk = false
           errorReporter.reportDedup(`cond-step|${sceneId}|${step.id}`, {
             source: 'quest-system',
@@ -638,65 +640,41 @@ async function executeStepBody(sceneId: string, stepId: string, step: any, runti
           })
         }
       }
-      if (condOk) {
-        // 注释：2026-08-15——next 空字符串 = 显式结束标记
-        if (step.next != null) await advanceToStep(sceneId, step.next)
-      } else if (step.else) {
-        await advanceToStep(sceneId, step.else)
-      }
-      break
+      return condOk ? step.next : step.else
+    }
 
     case 'scene': {
-      if (step.scene_id) {
-        // 注释：A-I-1（audit-a I-1）——push 前预检子 scene 可启动性（镜像 startScene
-        // 的检查逻辑：存在 / 未完成 / 未活跃 / 前置满足）。原无条件 push：子 scene
-        // 已完成或前置不满足时 startScene 静默 return → 父永久挂起 + 栈条目泄漏，
-        // 且该泄漏条目会被之后任意无关 scene 的完成错误 pop（I-2 级联）
-        const child = getScene(step.scene_id)
-        const canStart = child != null
-          && !gameContext.isCompleted(step.scene_id)
-          && !activeScenes.has(step.scene_id)
-          && (child.prerequisites == null || child.prerequisites.every(pre => gameContext.isCompleted(pre)))
-        if (canStart) {
-          // 注释：G1-I-1——push 保留 step.next 原值（undefined 不转 ''）：
-          // resumeStepId 三态语义——'' = 子完成即结束父；string = 恢复推进；
-          // undefined = 父保持挂起（AGENTS §31：省略 next = active 挂起）。
-          // 原 `?? ''` 把省略 next 的 scene 步骤静默转成"结束父"（与恢复路径矛盾）
-          sceneStack.push({ parent: sceneId, child: step.scene_id, resumeStepId: step.next })
-          await startScene(step.scene_id)
-        } else {
-          const reason = !child ? '子场景不存在'
-            : gameContext.isCompleted(step.scene_id) ? '子场景已完成'
-            : activeScenes.has(step.scene_id) ? '子场景已活跃'
-            : '子场景前置条件未满足'
-          errorReporter.reportDedup(`scene-skip|${sceneId}|${step.id}`, {
-            source: 'quest-system', severity: 'warning',
-            message: `任务 '${sceneId}' 的 scene 步骤 '${step.id}' 无法启动子场景 '${step.scene_id}'（${reason}）`,
-            suggestion: '检查子场景是否已完成/前置任务是否满足——父任务按 next 继续',
-          })
-          if (step.next != null) await advanceToStep(sceneId, step.next)
-        }
-      } else if (step.next != null) {
-        await advanceToStep(sceneId, step.next)
+      // 注释：A-I-1——push 前预检子 scene 可启动性（原无条件 push：子已完成或前置
+      // 不满足时 startScene 静默 return → 父永久挂起 + 栈条目泄漏，且该泄漏条目会被
+      // 之后任意无关 scene 的完成错误 pop（I-2 级联））
+      const childId = step.scene_id
+      if (!childId) return step.next
+      const { ok, reason } = canStartChildScene(childId)
+      if (ok) {
+        // 注释：G1-I-1——push 保留 step.next 原值（undefined 不转 ''）：
+        // resumeStepId 三态语义——'' = 子完成即结束父；string = 恢复推进；
+        // undefined = 父保持挂起（AGENTS §31：省略 next = active 挂起）
+        sceneStack.push({ parent: sceneId, child: childId, resumeStepId: step.next })
+        await startScene(childId)
+        return undefined  // 子完成后由 completeScene 恢复父
       }
-      break
+      errorReporter.reportDedup(`scene-skip|${sceneId}|${step.id}`, {
+        source: 'quest-system', severity: 'warning',
+        message: `任务 '${sceneId}' 的 scene 步骤 '${step.id}' 无法启动子场景 '${childId}'（${reason}）`,
+        suggestion: '检查子场景是否已完成/前置任务是否满足——父任务按 next 继续',
+      })
+      return step.next
     }
 
     case 'goto':
-      if (step.target) await advanceToStep(sceneId, step.target)
-      break
+      return step.target
 
     case 'script': {
       // C3：脚本步骤——瞬间逻辑，返回值决定下一步
-      const execCtx = buildStepExecCtx(sceneId, step, runtime)
       const scriptCode = modLoader.getMod()?.scripts?.get(step.script ?? '')
       let result: any = undefined
       if (scriptCode) {
-        const ctx = makeScriptCtx(
-          sceneId, step.id, step.params ?? {}, execCtx.sourceId, execCtx.targetIds, null,
-          (k) => runtime.vars[k], (k, v) => { runtime.vars[k] = v },
-        )
-        result = await runQuestScript(scriptCode, ctx)
+        result = await runQuestScript(scriptCode, buildScriptCtx(sceneId, step, runtime, null))
       } else if (step.script) {
         errorReporter.report({
           source: 'quest-system', severity: 'warning',
@@ -704,30 +682,35 @@ async function executeStepBody(sceneId: string, stepId: string, step: any, runti
           suggestion: '检查 mods/{mod}/scripts/ 目录下是否有该文件',
         })
       }
-      if (typeof result === 'string') {
-        await advanceToStep(sceneId, result)
-      } else if (result === false && step.else) {
-        await advanceToStep(sceneId, step.else)
-      } else {
-        // 注释：A-M-2/A-M-3（audit-a M-2/M-3）——脚本返回值异常去重上报——
-        // 行为保持文档语义（false 无 else / 非 string / undefined 都走 next），
-        // 但作者笔误（return true / return 1）零痕迹不可接受。
-        // null = runQuestScript 内部错误哨兵（脚本抛错/超时，已上报 error）——不再重复 warning
-        if (result === false) {
-          reportScriptResultWarning(sceneId, step.id, '脚本返回 false 且步骤无 else（已按 next 继续）')
-        } else if (result !== undefined && result !== null) {
-          reportScriptResultWarning(sceneId, step.id, `脚本返回了非 string/false/undefined 值（typeof ${typeof result}，已按 next 继续）`)
-        }
-        // 注释：2026-08-15——next 空字符串 = 显式结束标记
-        if (step.next != null) await advanceToStep(sceneId, step.next)
+      if (typeof result === 'string') return result
+      if (result === false && step.else) return step.else
+      // 注释：A-M-2/A-M-3——返回值异常去重上报（行为保持文档语义走 next，但作者
+      // 笔误（return true / return 1）零痕迹不可接受；null = runQuestScript 内部
+      // 错误哨兵（脚本抛错/超时，已上报 error）——不再重复 warning）
+      if (result === false) {
+        reportScriptResultWarning(sceneId, step.id, '脚本返回 false 且步骤无 else（已按 next 继续）')
+      } else if (result !== undefined && result !== null) {
+        reportScriptResultWarning(sceneId, step.id, `脚本返回了非 string/false/undefined 值（typeof ${typeof result}，已按 next 继续）`)
       }
-      break
+      return step.next
     }
 
     default:
-      // 注释：2026-08-15——next 空字符串 = 显式结束标记
-      if (step.next != null) await advanceToStep(sceneId, step.next)
+      return step.next
   }
+}
+
+// 注释：M2（audit-h）——子场景可启动性判定（scene 步骤预检与 startScene 启动检查
+// 共享同一策略——防两处漂移；startScene 自身的启动检查保留（启动时机不同））
+function canStartChildScene(childId: string): { ok: boolean; reason: string } {
+  const child = getScene(childId)
+  if (!child) return { ok: false, reason: '子场景不存在' }
+  if (gameContext.isCompleted(childId)) return { ok: false, reason: '子场景已完成' }
+  if (activeScenes.has(childId)) return { ok: false, reason: '子场景已活跃' }
+  if (child.prerequisites && !child.prerequisites.every(pre => gameContext.isCompleted(pre))) {
+    return { ok: false, reason: '子场景前置条件未满足' }
+  }
+  return { ok: true, reason: '' }
 }
 
 // 注释：C1——构建步骤执行上下文（sourceId + targetIds）
@@ -826,10 +809,10 @@ async function completeScene(sceneId: string): Promise<void> {
 // 注释：检查 objective 推进
 async function checkObjectives(objectiveType: string, payload: any): Promise<void> {
   for (const [sceneId, runtime] of activeScenes) {
-    const scene = getScene(sceneId)
-    if (!scene) continue
-    const step = scene.steps.find(s => s.id === runtime.currentStepId)
-    if (!step || step.type !== 'objective') continue
+    const cur = getCurrentStep(sceneId)
+    if (!cur) continue
+    const { step } = cur
+    if (step.type !== 'objective') continue
     const obj = step.objective
     if (!obj || obj.type !== objectiveType) continue
 
@@ -874,6 +857,28 @@ async function checkObjectives(objectiveType: string, payload: any): Promise<voi
   }
 }
 
+// 注释：M3（audit-h）——脚本执行上下文构造统一入口（script 步骤 + custom objective
+// 共用；内部已含 buildStepExecCtx 的 sourceId/targetIds 解析与 vars 读写绑定。
+// params 来源：script 步骤 = step.params；custom objective = obj.params（调用方传入））
+function buildScriptCtx(sceneId: string, step: any, runtime: SceneRuntime, payload: any, params?: Record<string, any>): any {
+  const execCtx = buildStepExecCtx(sceneId, step, runtime)
+  return makeScriptCtx(
+    sceneId, step.id, params ?? step.params ?? {}, execCtx.sourceId, execCtx.targetIds, payload,
+    (k) => runtime.vars[k], (k, v) => { runtime.vars[k] = v },
+  )
+}
+
+// 注释：M3——custom objective 脚本执行（event/fail_event 两分支共用；脚本缺失 →
+// 去重上报 + 返回 'pending' 保持挂起）
+async function runObjectiveScript(sceneId: string, step: any, runtime: SceneRuntime, obj: any, payload: any): Promise<any> {
+  const scriptCode = modLoader.getMod()?.scripts?.get(obj.script ?? '')
+  if (scriptCode) {
+    return await runQuestScript(scriptCode, buildScriptCtx(sceneId, step, runtime, payload, obj.params))
+  }
+  if (obj.script) reportMissingCustomScript(sceneId, step.id, obj.script)
+  return 'pending'
+}
+
 // 注释：C4——custom objective 检查（事件驱动脚本化目标，独立于 checkObjectives）
 // objective = { type="custom", event, script, params, fail_event?, on_fail? }
 // 脚本签名 (payload, ctx) => 'done' | 'pending'：'done' → 走 next；
@@ -881,25 +886,19 @@ async function checkObjectives(objectiveType: string, payload: any): Promise<voi
 // 计数等状态存场景变量（runtime.vars）——任务间通信/存档随 activeScenes 持久化
 async function checkCustomObjectives(eventType: string, payload: any): Promise<void> {
   for (const [sceneId, runtime] of activeScenes) {
-    const scene = getScene(sceneId)
-    if (!scene) continue
-    const step = scene.steps.find(s => s.id === runtime.currentStepId)
-    if (!step || step.type !== 'objective') continue
+    const cur = getCurrentStep(sceneId)
+    if (!cur) continue
+    const { step } = cur
+    if (step.type !== 'objective') continue
     const obj = step.objective
     if (!obj || obj.type !== 'custom') continue
     if (obj.fail_event && eventType === obj.fail_event) {
       // 注释：失败事件——脚本判 pending → on_fail；on_fail 缺省 = 静默继续挂起
-      const scriptCode = modLoader.getMod()?.scripts?.get(obj.script ?? '')
-      const execCtx = buildStepExecCtx(sceneId, step, runtime)
-      const ctx = makeScriptCtx(sceneId, step.id, obj.params ?? {}, execCtx.sourceId, execCtx.targetIds, payload,
-        (k) => runtime.vars[k], (k, v) => { runtime.vars[k] = v })
-      let result: any = 'pending'
-      if (scriptCode) result = await runQuestScript(scriptCode, ctx)
-      else if (obj.script) reportMissingCustomScript(sceneId, step.id, obj.script)
+      const result = await runObjectiveScript(sceneId, step, runtime, obj, payload)
       if (result === 'done') {
-        // 注释：A-I-7（audit-a I-7）——fail_event 下脚本判 done = 目标实际已达成——
-        // 与主路径一致推进 next（原实现 'done' 分支无处理：objective 无 next 或
-        // 脚本对 fail 负载单独判 done 时 → 场景永久挂起）
+        // 注释：A-I-7——fail_event 下脚本判 done = 目标实际已达成——与主路径
+        // 一致推进 next（原实现 'done' 分支无处理：objective 无 next 或脚本对
+        // 失败负载单独判 done 时 → 场景永久挂起）
         await advanceToStep(sceneId, step.next)
       } else if (obj.on_fail) {
         await advanceToStep(sceneId, obj.on_fail)
@@ -907,15 +906,9 @@ async function checkCustomObjectives(eventType: string, payload: any): Promise<v
       continue
     }
     if (eventType !== obj.event) continue
-    const scriptCode = modLoader.getMod()?.scripts?.get(obj.script ?? '')
-    const execCtx = buildStepExecCtx(sceneId, step, runtime)
-    const ctx = makeScriptCtx(sceneId, step.id, obj.params ?? {}, execCtx.sourceId, execCtx.targetIds, payload,
-      (k) => runtime.vars[k], (k, v) => { runtime.vars[k] = v })
-    let result: any = 'pending'
-    if (scriptCode) result = await runQuestScript(scriptCode, ctx)
-    else if (obj.script) reportMissingCustomScript(sceneId, step.id, obj.script)
-    // 注释：audit-e C2——custom objective 判 done 后无条件 advanceToStep（next
-    // undefined → 走 completeScene 终结语义；原 `&& step.next` 无 next 时永久挂起零上报）
+    const result = await runObjectiveScript(sceneId, step, runtime, obj, payload)
+    // 注释：audit-e C2——判 done 后无条件 advanceToStep（next undefined → 走
+    // completeScene 终结语义；原 `&& step.next` 无 next 时永久挂起零上报）
     if (result === 'done') {
       await advanceToStep(sceneId, step.next)
     }

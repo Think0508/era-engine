@@ -61,5 +61,25 @@ name = "草药"
 type = "material"
 stackable = true
 
+# ── 示例任务奖励物品（2026-08-14 audit-c2 I-4 修复）──
+# quests/events/*.toml 的奖励脚本 params.item 引用它们——物品必须先定义再引用
+# （背包 addItem 引用未定义物品 → warning + 不入包，示例任务奖励就发不出来）。
+# type = "key"（钥匙/任务物品）：无标准使用流，适合秘籍/信物类奖励。
+[items."小无相功秘籍"]
+id = "小无相功秘籍"
+name = "小无相功秘籍"
+description = "逍遥派绝学，记载小无相功心法——李秋水赠予的切磋彩头"
+type = "key"
+tags = ["kungfu", "manual"]
+stackable = false
+
+[items."白虹掌力秘籍"]
+id = "白虹掌力秘籍"
+name = "白虹掌力秘籍"
+description = "逍遥派掌法秘籍，白虹贯日、掌力如虹——良宵之后的谢礼"
+type = "key"
+tags = ["kungfu", "manual"]
+stackable = false
+
 # type 五枚举见 docs/item-system.md（consumable/equipment/tool/material/key）；
 # 装备的 defense_bonus 同理（见 布衣）——加成字段按装备类型选择。

@@ -594,10 +594,11 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
       } else {
         // 注释：A-M-2/A-M-3（audit-a M-2/M-3）——脚本返回值异常去重上报——
         // 行为保持文档语义（false 无 else / 非 string / undefined 都走 next），
-        // 但作者笔误（return true / return 1）零痕迹不可接受
+        // 但作者笔误（return true / return 1）零痕迹不可接受。
+        // null = runQuestScript 内部错误哨兵（脚本抛错/超时，已上报 error）——不再重复 warning
         if (result === false) {
           reportScriptResultWarning(sceneId, step.id, '脚本返回 false 且步骤无 else（已按 next 继续）')
-        } else if (result !== undefined) {
+        } else if (result !== undefined && result !== null) {
           reportScriptResultWarning(sceneId, step.id, `脚本返回了非 string/false/undefined 值（typeof ${typeof result}，已按 next 继续）`)
         }
         if (step.next) await advanceToStep(sceneId, step.next)

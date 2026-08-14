@@ -32,6 +32,15 @@ tags = ["体质", "力量"]
 # 生效示例（取消注释即真实生效）：
 # state_adjusts = [{ states = ["苦痛"], value = -0.2 }]
 
+# ── 示例任务配套天赋（2026-08-14 audit-c2 I-4 修复）──
+# quests/events/h_with_liqiushui.toml 的奖励脚本 set_field talents.冰肌玉骨
+# 引用它——天赋必须先定义再引用（引用未定义天赋 → 加载报错）。
+[talents."冰肌玉骨"]
+name = "冰肌玉骨"
+description = "肌肤胜雪、气质清冷，江湖人称北冥仙子，魅力类判定获得加成"
+max = 1
+tags = ["体质"]
+
 # ── 写法变体：等级型天赋（max = n，0-n 级）──
 # 与 max = 1（有/无型）的区别：角色数据 talents = { "酒量" = 3 } 可写 0-3 任意等级，
 # 条件引用 character.{id}.talents.酒量 得到数值等级（>= 2 等判断可用）

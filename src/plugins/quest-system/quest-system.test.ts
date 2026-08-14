@@ -1,6 +1,6 @@
 // 注释：quest-system 战斗步骤测试（B3 修复——audit-c I3）
 // 原实现 allies 传空数组（玩家不在参战者）+ 不监听 combat:end → combat 步骤永不推进
-import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from 'vitest'
 import { modLoader } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
 import { apiSystem } from '../../core/api'
@@ -415,6 +415,65 @@ describe('quest-system combat 步骤推进（B3）', () => {
       expect(warn).toBeDefined()
       expect(warn!.message).toContain('script_test_quest')
       mod.scripts.delete('quest_bad_return.js')
+    })
+
+    it('C2-I-3：沙箱 this 逃逸关闭——严格 async function 内 this = undefined（访问 this.process 抛错被上报）', async () => {
+      const mod = modLoader.getMod()!
+      // 原实现箭头函数继承 new Function 外层 this（非严格 = globalThis）——脚本可 this.process 逃逸；
+      // 改造后 (async function(){"use strict"}) → this = undefined，读 this.process 抛 TypeError → 上报 + next
+      mod.scripts.set('quest_this.js', `try { return typeof this.process } catch (e) { return 42 }`)
+      installScriptQuest({ script: 'quest_this.js', next: 'final' })
+      errorReporter.clear()
+      await apiSystem.call('quest', 'start', 'script_test_quest')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+      // 逃逸关闭：typeof this.process 抛 TypeError 被脚本内 try 捕获 → 返回 42（非 string）→ 走 next
+      // 若逃逸未关闭：返回字符串被当作 step id 走 advanceToStep——本断言即失败
+      expect(errorReporter.getErrors().some(e => e.message.includes('非 string/false/undefined'))).toBe(true)
+      mod.scripts.delete('quest_this.js')
+    })
+
+    it('C2-I-3：未声明赋值（x = 1）不再静默吞掉——严格模式 set 拒绝 → 抛错上报 + 走 next', async () => {
+      const mod = modLoader.getMod()!
+      // 原实现 set: () => true 静默吞掉未声明赋值（值丢失零诊断）；
+      // 改造后 set: () => false + 严格模式 → TypeError 被 catch 上报（禁止静默失败）
+      mod.scripts.set('quest_undeclared.js', `x = 1; return 'x=' + x`)
+      installScriptQuest({ script: 'quest_undeclared.js', next: 'final' })
+      errorReporter.clear()
+      await apiSystem.call('quest', 'start', 'script_test_quest')
+      const err = errorReporter.getErrors().find(
+        e => e.severity === 'error' && e.source === 'quest-system' && e.message.includes('script_test_quest'),
+      )
+      expect(err).toBeDefined()
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+      // 抛错哨兵 null 不产生误导性的"非 string/false/undefined"警告（错误已上报，不重复）
+      expect(errorReporter.getErrors().some(e => e.message.includes('非 string/false/undefined'))).toBe(false)
+      mod.scripts.delete('quest_undeclared.js')
+    })
+
+    it('C2-I-3：5 秒超时保护——脚本 await 永不返回的 API → 超时上报 + 走 next（不再永久挂起）', async () => {
+      const mod = modLoader.getMod()!
+      // 挂起的 API：注册一个永不 resolve 的 namespace（沙箱内 Promise 构造被屏蔽，
+      // 挂起只能经 await api.call——超时兜底的真实威胁路径；同步死循环无法打断，
+      // 留待 phase-15 acorn 方案）
+      apiSystem.register('quest-test-hang', { never: () => new Promise(() => {}) })
+      mod.scripts.set('quest_hang.js', `await api.call('quest-test-hang', 'never'); return 'final'`)
+      installScriptQuest({ script: 'quest_hang.js', next: 'final' })
+      errorReporter.clear()
+      vi.useFakeTimers()
+      try {
+        const startPromise = apiSystem.call('quest', 'start', 'script_test_quest')
+        await vi.advanceTimersByTimeAsync(5100)
+        await startPromise
+        const err = errorReporter.getErrors().find(
+          e => e.severity === 'error' && e.source === 'quest-system' && e.message.includes('超时'),
+        )
+        expect(err).toBeDefined()
+        expect(err!.message).toContain('script_test_quest')
+        expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+      } finally {
+        vi.useRealTimers()
+        mod.scripts.delete('quest_hang.js')
+      }
     })
   })
 
@@ -1032,5 +1091,18 @@ describe('example-mod 示例任务（C8）', () => {
     const conv = resolveConversation(mod.conversations, ref)
     expect(conv).toBeDefined()
     expect(conv!.nodes.length).toBe(2)
+  })
+
+  it('C2-I-4：示例任务引用的 spar 指令 / 李秋水 / 秘籍物品全部真实存在（示例可跑通）', async () => {
+    const mod = modLoader.getMod()!
+    // spar 指令（definitions/instructions/打坐.toml）——command trigger 拦截目标
+    expect(mod.instructions.some(i => i.id === 'spar')).toBe(true)
+    // 李秋水角色（characters/named/李秋水/base.toml）——combat 敌人 + dialogue_end 触发对象
+    expect(mod.entities.get('character')?.has('李秋水')).toBe(true)
+    // 奖励物品（definitions/items.toml）——quest_reward.js 的 params.item 引用
+    expect(mod.items['小无相功秘籍']).toBeDefined()
+    expect(mod.items['白虹掌力秘籍']).toBeDefined()
+    // 冰肌玉骨天赋（definitions/talents.toml）——h 任务 set_field 奖励目标
+    expect(mod.talentDefs?.['冰肌玉骨']).toBeDefined()
   })
 })

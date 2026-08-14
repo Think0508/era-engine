@@ -1,0 +1,25 @@
+# ═══════════════════════════════════════════════════════════════════
+# characters/named/李秋水/base.toml —— 第④层：重要角色（示例任务配套）
+# ═══════════════════════════════════════════════════════════════════
+# 2026-08-14 audit-c2 I-4 修复：quests/events/spar_liqiushui.toml 的
+# combat 步骤 enemies = ["李秋水"] 与 h_with_liqiushui.toml 的
+# dialogue_end trigger 都引用她——角色必须先存在，示例任务才能真实跑通。
+# 字段字典见 characters/roster.toml 文件头注释（named/base.toml 与 roster
+# 条目同构：没写的字段自动继承模板，写了 = 覆盖）。
+# ═══════════════════════════════════════════════════════════════════
+
+id = "李秋水"                       # 角色 ID（文件夹名一致，全局唯一）
+name = "李秋水"
+template = "base-human"             # 继承模板（可选）
+# 最少字段示范：name/性别（2=女）/基础属性；属性键 = attributes.toml 定义过的
+base = { "体力" = 350, "气力" = 300, "体力上限" = 2500, "气力上限" = 2000, "好感度" = 40, "信赖度" = 20, "性别" = 2, "气血" = 180, "内力" = 280 }
+
+# ── 中段：不必需但常见的字段 ──
+abilities = { "吐纳术" = 4, "技巧" = 3 }   # 能力简写（须在 abilities.toml 定义）
+relations = { player = { "好感度" = 40 } }  # 对玩家的关系（类型须在 relations.toml 定义）
+behavior = { activity = 0.4, home_locations = { "山村" = 1.0 } }  # 常驻山村
+current_location = "山村"                   # 初始位置（运行时引擎接管）
+assets = { portrait = "assets/char/liqiushui.png" }  # 立绘（可选，文件不存在不影响加载）
+# 注：h_with_liqiushui 任务奖励的「冰肌玉骨」天赋不在此预置——那是任务的奖励，
+# 通关后才由 set_field 加上（预置了奖励就没有意义了）。天赋定义见
+# definitions/talents.toml 的 冰肌玉骨 条目。

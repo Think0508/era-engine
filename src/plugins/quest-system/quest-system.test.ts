@@ -372,4 +372,58 @@ describe('quest-system combat 步骤推进（B3）', () => {
       expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('active')
     })
   })
+
+  // ═══════ C4：custom objective（事件驱动的脚本化目标，quest-script C' 模型 Task 4）═══════
+  describe('custom objective（C4）', () => {
+    function installCustomQuest(obj: any) {
+      const mod = modLoader.getMod()!
+      mod.quests.set('custom_obj_quest', {
+        id: 'custom_obj_quest', title: '自定义目标', type: 'main', display: 'hidden',
+        steps: [
+          { id: 'wait', type: 'objective', objective: obj, next: 'final' },
+          { id: 'final', type: 'reward', effects: [], next: 'not_exist' },
+        ],
+      })
+    }
+
+    afterEach(() => {
+      modLoader.getMod()!.quests.delete('custom_obj_quest')
+    })
+
+    it('orgasm 计数：目标角色高潮 5 次推进（其他角色不计）', async () => {
+      const mod = modLoader.getMod()!
+      mod.scripts.set('orgasm_counter.js', `
+        if (payload.character !== params.target) return 'pending'
+        const cur = (getVar('orgasm_count') ?? 0) + 1
+        setVar('orgasm_count', cur)
+        return cur >= params.count ? 'done' : 'pending'
+      `)
+      installCustomQuest({ type: 'custom', event: 'h:orgasm', script: 'orgasm_counter.js', params: { target: '李秋水', count: 5 } })
+      await apiSystem.call('quest', 'start', 'custom_obj_quest')
+      for (let i = 0; i < 4; i++) {
+        await eventBus.emit('h:orgasm', { character: '李秋水', partId: 1, level: 2, count: 1 })
+        expect(await apiSystem.call('quest', 'getSceneStatus', 'custom_obj_quest')).toBe('active')
+      }
+      await eventBus.emit('h:orgasm', { character: '李秋水', partId: 1, level: 2, count: 1 })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'custom_obj_quest')).toBe('completed')
+    })
+
+    it('fail_event 触发且未达成 → 走 on_fail；未达成的次数不跨会话累计', async () => {
+      const mod = modLoader.getMod()!
+      mod.scripts.set('orgasm_counter.js', `
+        if (payload.character !== params.target) return 'pending'
+        const cur = (getVar('orgasm_count') ?? 0) + 1
+        setVar('orgasm_count', cur)
+        return cur >= params.count ? 'done' : 'pending'
+      `)
+      installCustomQuest({
+        type: 'custom', event: 'h:orgasm', script: 'orgasm_counter.js',
+        params: { target: '李秋水', count: 5 }, fail_event: 'h:end', on_fail: 'final',
+      })
+      await apiSystem.call('quest', 'start', 'custom_obj_quest')
+      await eventBus.emit('h:orgasm', { character: '李秋水', partId: 1, level: 2, count: 1 })
+      await eventBus.emit('h:end', { ally: 'player' })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'custom_obj_quest')).toBe('completed')
+    })
+  })
 })

@@ -28,7 +28,7 @@ objective = { type = "reach_location", target = "华山_正殿" }
 next = "find_clue"
 ```
 
-8 种步骤类型：`dialogue`、`combat`、`objective`、`reward`、`spawn`、`condition`、`goto`、`script`。Objective 的事件驱动：`reach_location`（监听 location:enter）、`kill_count`（combat:end）、`collect_items`（item:added）、`talk_to`（dialogue:end）。
+8 种步骤类型：`dialogue`、`combat`、`objective`、`reward`、`spawn`、`condition`、`goto`、`script`。Objective 的事件驱动：`reach_location`（监听 location:enter）、`kill_count`（combat:end）、`collect_items`（item:added）、`talk_to`（dialogue:end）、`custom`（脚本化目标，监听声明的事件，见下文 C4）。
 
 ### 步骤执行上下文（C1，2026-08-14）
 
@@ -97,6 +97,36 @@ rand(min, max)                    // [min, max] 闭区间随机整数
 - ⚠️ **未声明的变量赋值会被静默吞掉**（`x = 1` 不声明 = 无效，不报错）——所有变量必须先声明。推荐统一用 `let`/`const` 声明（`var` 在此沙箱 async 包装下可用，但与其他沙箱实现存在差异，不推荐）
 - ⚠️ 所有全局对象（`Math`/`JSON`/`Date` 等）不可用——随机数用 `rand(min, max)`（[min, max] 闭区间整数，见上），不要依赖任何全局
 - 脚本文件在 `loadMod` 时按文件名索引进 `LoadedMod.scripts`（glob `query:'?raw'`，Vite 8 语法）
+
+### custom objective（C4，2026-08-14）
+
+事件驱动的脚本化目标——objective 声明监听什么事件，脚本只做匹配逻辑。适合"H 中高潮 5 次"这类既有 4 类型覆盖不到的事件：
+
+```toml
+[[steps]]
+id = "wait"
+type = "objective"
+objective = { type = "custom", event = "h:orgasm", script = "orgasm_counter.js",
+              params = { target = "李秋水", count = 5 },
+              fail_event = "h:end", on_fail = "final" }
+next = "final"
+```
+
+字段：
+
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `type` | 是 | `"custom"` |
+| `event` | 是 | 监听的事件名。当前内置监听 `h:orgasm`（payload `{character, partId, level, count, extra}`）、`h:end`（payload `{ally}`）；其他事件如需驱动，扩 `CUSTOM_EVENT_TYPES` 表 |
+| `script` | 是 | `mods/{mod}/scripts/*.js` 文件名。脚本签名 `(payload, ctx) => 'done' | 'pending'`，`ctx.payload` = 事件 payload |
+| `params` | 否 | 注入脚本 `ctx.params` |
+| `fail_event` | 否 | 失败事件：触发时脚本返回 `'pending'` → 走 `on_fail`；返回 `'done'` 不推进 |
+| `on_fail` | 否 | 失败时跳转的 step id；缺省 = 静默继续挂起 |
+
+- **语义**：`event` 触发 → 脚本返回 `'done'` → 走 `next`；脚本返回 `'pending'` → 继续挂起（计数存场景变量 `getVar`/`setVar`，随存档持久化）
+- 脚本匹配逻辑自由（如 `payload.character !== params.target → 'pending'` 只计目标角色）
+- 计数状态放场景变量（`setVar('orgasm_count', ...)`）——场景变量随存档序列化，但"未达成的次数不跨会话累计"由 mod 作者按需设计（任务完成后场景变量不可读）
+- 与既有 4 类型 objective（`checkObjectives`）独立并存：标准事件监听不动，custom 独立监听 `CUSTOM_EVENT_TYPES`
 
 ## Mod 作者使用
 

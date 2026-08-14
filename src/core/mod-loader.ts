@@ -324,6 +324,25 @@ export function resolveConversation(
   }
 }
 
+// 注释：objective 目标定义（C4 扩展——事件驱动的脚本化目标）
+// 既有类型（reach_location/kill_count/collect_items/talk_to）：target/item/count/character
+// C4 custom 类型：event（监听的事件名）+ script（scripts/ 下 .js）+ params（脚本参数）
+// + fail_event（失败事件，脚本返回 'pending' 时触发 on_fail 步骤；缺省 = 继续挂起）
+export interface QuestObjective {
+  type: string
+  // C4：custom objective
+  event?: string
+  script?: string
+  params?: Record<string, any>
+  fail_event?: string
+  on_fail?: string
+  // 既有类型字段保持
+  target?: string
+  item?: string
+  count?: number
+  character?: string
+}
+
 export interface QuestStep {
   id: string
   type: string          // dialogue/combat/objective/reward/spawn/condition/goto/scene
@@ -337,7 +356,7 @@ export interface QuestStep {
   on_win?: string
   on_lose?: string
   // objective
-  objective?: { type: string; target?: string; count?: number; item?: string; character?: string }
+  objective?: QuestObjective
   // reward
   effects?: any[]
   // condition

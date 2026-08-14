@@ -38,6 +38,10 @@ const sceneStack: { sceneId: string; resumeStepId: string }[] = []
 // 在 restore 时按原样重建）
 const dynamicScenes = new Map<string, Quest>()
 
+// 注释：C4——custom objective 事件监听——objective 声明监听什么事件，脚本只做匹配逻辑
+// h:orgasm / h:end 由 h-core 发出；现有标准事件（location:enter 等）由既有监听覆盖
+const CUSTOM_EVENT_TYPES = ['h:orgasm', 'h:end']
+
 export function onLoad(_ctx: PluginContext): void {
   // 注释：start_scene——后台激活 scene（不打断当前操作）
   // event 和 quest 通用
@@ -63,6 +67,14 @@ export function onLoad(_ctx: PluginContext): void {
     if (r) r.vars[params.var] = params.value
     return true
   })
+
+  // 注释：C4——custom objective 监听（onLoad 注册，每次插件加载一次；幂等无碍）
+  // 与 checkObjectives（既有 4 类型）独立并存：标准事件走 ctx.events 监听，custom 走本表
+  for (const evt of CUSTOM_EVENT_TYPES) {
+    eventBus.on(evt, async (payload: any) => {
+      await checkCustomObjectives(evt, payload)
+    })
+  }
 }
 
 export function onEnable(ctx: PluginContext): void {
@@ -467,6 +479,45 @@ async function checkObjectives(objectiveType: string, payload: any): Promise<voi
     }
 
     if (matched && step.next) {
+      await advanceToStep(sceneId, step.next)
+    }
+  }
+}
+
+// 注释：C4——custom objective 检查（事件驱动脚本化目标，独立于 checkObjectives）
+// objective = { type="custom", event, script, params, fail_event?, on_fail? }
+// 脚本签名 (payload, ctx) => 'done' | 'pending'：'done' → 走 next；
+// fail_event 触发且脚本返回 'pending' → 走 on_fail（无 on_fail → 继续挂起）
+// 计数等状态存场景变量（runtime.vars）——任务间通信/存档随 activeScenes 持久化
+async function checkCustomObjectives(eventType: string, payload: any): Promise<void> {
+  for (const [sceneId, runtime] of activeScenes) {
+    const scene = getScene(sceneId)
+    if (!scene) continue
+    const step = scene.steps.find(s => s.id === runtime.currentStepId)
+    if (!step || step.type !== 'objective') continue
+    const obj = step.objective
+    if (!obj || obj.type !== 'custom') continue
+    if (obj.fail_event && eventType === obj.fail_event) {
+      // 注释：失败事件——脚本判 pending → on_fail；on_fail 缺省 = 静默继续挂起
+      const scriptCode = modLoader.getMod()?.scripts?.get(obj.script ?? '')
+      const execCtx = buildStepExecCtx(sceneId, step, runtime)
+      const ctx = makeScriptCtx(sceneId, step.id, obj.params ?? {}, execCtx.sourceId, execCtx.targetIds, payload,
+        (k) => runtime.vars[k], (k, v) => { runtime.vars[k] = v })
+      let result: any = 'pending'
+      if (scriptCode) result = await runQuestScript(scriptCode, ctx)
+      if (result !== 'done' && obj.on_fail) {
+        await advanceToStep(sceneId, obj.on_fail)
+      }
+      continue
+    }
+    if (eventType !== obj.event) continue
+    const scriptCode = modLoader.getMod()?.scripts?.get(obj.script ?? '')
+    const execCtx = buildStepExecCtx(sceneId, step, runtime)
+    const ctx = makeScriptCtx(sceneId, step.id, obj.params ?? {}, execCtx.sourceId, execCtx.targetIds, payload,
+      (k) => runtime.vars[k], (k, v) => { runtime.vars[k] = v })
+    let result: any = 'pending'
+    if (scriptCode) result = await runQuestScript(scriptCode, ctx)
+    if (result === 'done' && step.next) {
       await advanceToStep(sceneId, step.next)
     }
   }

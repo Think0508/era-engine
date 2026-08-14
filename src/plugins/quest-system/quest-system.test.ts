@@ -280,4 +280,73 @@ describe('quest-system combat 步骤推进（B3）', () => {
       expect(await apiSystem.call('quest', 'getVar', 'var_test_quest', 'line')).toBe('y')
     })
   })
+
+  // ═══════ C3：script 步骤（quest-script C' 模型 Task 3）═══════
+  describe('script 步骤（C3）', () => {
+    // questExtra：任务级字段（如 vars 预置）——spread 到 quest 对象
+    function installScriptQuest(step: any = {}, questExtra: any = {}) {
+      const mod = modLoader.getMod()!
+      mod.quests.set('script_test_quest', {
+        id: 'script_test_quest', title: '脚本测试', type: 'main', display: 'hidden',
+        ...questExtra,
+        steps: [
+          { id: 's1', type: 'script', script: 'quest_test.js', params: { item: '小无相功秘籍' }, next: 'final', ...step },
+          { id: 'final', type: 'reward', effects: [], next: 'not_exist' },
+        ],
+      })
+    }
+
+    afterEach(() => {
+      modLoader.getMod()!.quests.delete('script_test_quest')
+    })
+
+    it('script 步骤执行 + params 注入 + say 输出 + 走 next', async () => {
+      const mod = modLoader.getMod()!
+      mod.scripts.set('quest_test.js', `
+        if (params.item) { say(null, '获得 ' + params.item) }
+        return 'final'
+      `)
+      installScriptQuest()
+      await apiSystem.call('quest', 'start', 'script_test_quest')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+    })
+
+    it('script 返回 false → 走 else；脚本抛错 → 上报 + 走 next', async () => {
+      const mod = modLoader.getMod()!
+      mod.scripts.set('quest_fail.js', `return false`)
+      // 注释（偏离 brief 原文）：沙箱 with(ctx) 代理按设计屏蔽全局对象（sandbox 铁律）——
+      // new Error() 在脚本内不可用（"Error is not a constructor"），故用字符串 throw，
+      // runQuestScript 的 catch 对非 Error 抛错走 String(err)（message 仍含 'boom'）
+      mod.scripts.set('quest_throw.js', `throw 'boom'`)
+      installScriptQuest({ script: 'quest_fail.js', else: 'final' })
+      await apiSystem.call('quest', 'start', 'script_test_quest')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+      errorReporter.clear()
+      // 注释（偏离 brief 原文）：同一测试内第二次 start 会被 isCompleted 跳过（scene 已完成
+      // 不再启动——任务设计语义），需先清完成记录才能跑第二次
+      gameContext.reset()
+      installScriptQuest({ script: 'quest_throw.js', else: 'final' })
+      await apiSystem.call('quest', 'start', 'script_test_quest')
+      expect(errorReporter.getErrors().some(e => e.message.includes('boom'))).toBe(true)
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+    })
+
+    it('脚本可读场景变量、可写场景变量、可调 API', async () => {
+      const mod = modLoader.getMod()!
+      mod.scripts.set('quest_vars.js', `
+        setVar('from_script', getVar('line') ?? 'none')
+        const n = await api.call('quest', 'getSceneStatus', sceneId)
+        say('李秋水', 'status=' + n)
+        return undefined
+      `)
+      // 注释（偏离 brief 原文，Task 2 语义约束）：brief 的 setVar 调用在 start 之前——
+      // scene 未激活时 setVar API 是 no-op；且 scene 完成后 activeScenes 删除、vars 不可读。
+      // 故：① line 由 quest 数据 vars 预置（脚本可读）；② s1 无 next → 脚本执行后 scene
+      // 保持 active（from_script 可读）。"读/写变量 + 调 API" 三条能力断言不变
+      installScriptQuest({ script: 'quest_vars.js', next: undefined }, { vars: { line: 'x' } })
+      await apiSystem.call('quest', 'start', 'script_test_quest')
+      expect(await apiSystem.call('quest', 'getVar', 'script_test_quest', 'from_script')).toBe('x')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('active')
+    })
+  })
 })

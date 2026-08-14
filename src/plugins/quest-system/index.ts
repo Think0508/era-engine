@@ -15,6 +15,7 @@ import type { Quest, ConversationRef } from '../../core/mod-loader'
 import { parseConversationRef } from '../../core/mod-loader'
 import { conditionEngine } from '../../core/condition-engine'
 import { registerGameStateProvider } from '../../core/save-system'
+import { runQuestScript, makeScriptCtx } from './script-runner'
 
 // 注释：scene 运行时状态
 interface SceneRuntime {
@@ -329,6 +330,34 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
     case 'goto':
       if (step.target) await advanceToStep(sceneId, step.target)
       break
+
+    case 'script': {
+      // C3：脚本步骤——瞬间逻辑，返回值决定下一步
+      const execCtx = buildStepExecCtx(sceneId, step, runtime)
+      const scriptCode = modLoader.getMod()?.scripts?.get(step.script ?? '')
+      let result: any = undefined
+      if (scriptCode) {
+        const ctx = makeScriptCtx(
+          sceneId, step.id, step.params ?? {}, execCtx.sourceId, execCtx.targetIds, null,
+          (k) => runtime.vars[k], (k, v) => { runtime.vars[k] = v },
+        )
+        result = await runQuestScript(scriptCode, ctx)
+      } else if (step.script) {
+        errorReporter.report({
+          source: 'quest-system', severity: 'warning',
+          message: `任务 '${sceneId}' 步骤 '${step.id}' 引用脚本 '${step.script}' 不存在`,
+          suggestion: '检查 mods/{mod}/scripts/ 目录下是否有该文件',
+        })
+      }
+      if (typeof result === 'string') {
+        await advanceToStep(sceneId, result)
+      } else if (result === false && step.else) {
+        await advanceToStep(sceneId, step.else)
+      } else if (step.next) {
+        await advanceToStep(sceneId, step.next)
+      }
+      break
+    }
 
     default:
       if (step.next) await advanceToStep(sceneId, step.next)

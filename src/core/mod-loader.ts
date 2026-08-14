@@ -544,6 +544,8 @@ export interface LoadedMod {  id: string
   juelDefs: Record<string, JuelDef>
   // 注释：任务
   quests: Map<string, Quest>
+  // 注释：C3：mod 自定义脚本（scripts/*.js 的 raw 文本，按文件名索引）——script 步骤用
+  scripts: Map<string, string>
   // 注释：天赋定义
   talentDefs: Record<string, TalentDef>
   // 注释：命名样式——[styles] 注册表
@@ -978,6 +980,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     juelDefs: {},
     abilities: {},
     quests: new Map(),
+    // 注释：C3：mod 自定义脚本（parseModData 只给空 Map——脚本 glob 加载在 loadMod 副作用区）
+    scripts: new Map(),
     talentDefs: {},
     styles: {},
     relationTypes: {},
@@ -1992,6 +1996,15 @@ const layoutModules = import.meta.glob('/mods/**/maps/layout/*.json', {
   eager: false,
 })
 
+// 注释：C3：mod 自定义脚本（scripts/*.js，raw 文本）——Vite 8 语法 query:'?raw'；
+// glob 参数必须是字面量（Vite 禁止变量插值），故用 /mods/*/scripts/*.js，
+// loadMod 时按 mod 前缀过滤（同 tomlModules 模式）
+const scriptModules = import.meta.glob<string>('/mods/*/scripts/*.js', {
+  query: '?raw',
+  import: 'default',
+  eager: false,
+})
+
 export class ModLoader {
   private loadedMod: LoadedMod | null = null
 
@@ -2027,6 +2040,17 @@ export class ModLoader {
       }
     }
     const mod = parseModData(modName, rawTomlMap)
+    // 注释：C3：加载 mod 自定义脚本（raw 文本，按文件名索引）——副作用区（glob 惰性加载
+    // 需 await；parseModData 保持纯函数无 glob 副作用）。test-mod 无 scripts/ 目录时
+    // glob 返回空对象，scripts 保持 parseModData 的空 Map
+    const scripts = new Map<string, string>()
+    const scriptPrefix = `/mods/${modName}/scripts/`
+    for (const [path, loader] of Object.entries(scriptModules)) {
+      if (!path.startsWith(scriptPrefix)) continue
+      const name = path.slice(scriptPrefix.length)
+      if (name) scripts.set(name, await loader() as string)
+    }
+    mod.scripts = scripts
     this.registerEntities(mod)
     bindingResolver.loadBindings(mod.bindings)
     conditionRegistry.clear()

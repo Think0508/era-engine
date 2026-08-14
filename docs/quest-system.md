@@ -28,7 +28,7 @@ objective = { type = "reach_location", target = "华山_正殿" }
 next = "find_clue"
 ```
 
-7 种步骤类型：`dialogue`、`combat`、`objective`、`reward`、`spawn`、`condition`、`goto`。Objective 的事件驱动：`reach_location`（监听 location:enter）、`kill_count`（combat:end）、`collect_items`（item:added）、`talk_to`（dialogue:end）。
+8 种步骤类型：`dialogue`、`combat`、`objective`、`reward`、`spawn`、`condition`、`goto`、`script`。Objective 的事件驱动：`reach_location`（监听 location:enter）、`kill_count`（combat:end）、`collect_items`（item:added）、`talk_to`（dialogue:end）。
 
 ### 步骤执行上下文（C1，2026-08-14）
 
@@ -52,6 +52,47 @@ next = "find_clue"
 - **初始值**：任务数据顶层 `vars = { won_duel = "no" }` 预置，启动时展开进运行时
 - **条件校验**：`quest.{id}.var.{name}` 已在条件字典注册（加载期可校验、自动进手册）
 - ⚠️ 场景完成（从 activeScenes 移除）后 vars 不可读（返回 undefined）——读方需保证写方 scene 仍激活；跨任务通信在"两个任务都激活"的时间窗内进行
+
+### script 步骤（C3，2026-08-14）
+
+步骤内 JS 瞬间逻辑（沙箱执行）：`type = "script"` 的步骤把 `script`（`mods/{mod}/scripts/*.js` 文件名）交给沙箱 runner 执行，返回值决定下一步：
+
+```toml
+[[steps]]
+id = "win_duel"
+type = "script"
+script = "duel_reward.js"          # mods/{mod}/scripts/ 下的 .js 文件名（raw 文本加载，不执行模块）
+params = { item = "小无相功秘籍" }  # 注入脚本 ctx.params
+next = "final"
+else = "retry"                     # 可选：脚本返回 false 时跳转
+```
+
+**返回值语义**（executeStep 内判定）：
+
+| 脚本返回 | 行为 |
+|----------|------|
+| `string` | 跳转到该 step id（`advanceToStep`） |
+| `false` | 走 `step.else`（无 else 走 `step.next`） |
+| `undefined`/其他 | 走 `step.next`（无 next = 场景完成） |
+| 抛错 | errorReporter 上报（脚本异常已隔离）+ 走 `step.next`（无 next = 场景完成） |
+
+脚本不存在时 → warning 上报 + 走 `step.next`（无 next = 场景完成）。
+
+**脚本内可用 ctx**（沙箱 `with(ctx)` 包裹，禁止访问全局对象/DOM/文件系统；await 只允许瞬间 Promise，禁止跨存档点挂起）：
+
+```js
+// sceneId/stepId/params/sourceId/targetIds/payload —— 直接读
+getVar(key)                       // 读场景变量（同 quest.getVar）
+setVar(key, value)                // 写场景变量（同 quest.setVar）
+say(speaker, text)                // 输出到叙事日志（dialogue 类别）
+await api.call(ns, method, ...)   // 异步调用任意已注册 API（如 quest.getSceneStatus）
+getBinding(entityId, key)         // 读绑定属性（bindings.toml 通用键）
+rand(min, max)                    // [min, max] 闭区间随机整数
+```
+
+- 沙箱实现：`src/plugins/quest-system/script-runner.ts`（`runQuestScript` / `makeScriptCtx` / `QuestScriptCtx`）
+- ⚠️ `Error` 等全局构造器被沙箱屏蔽（`new Error()` 不可用）——脚本内抛错请用 `throw '文本'`，message 经 `String(err)` 上报
+- 脚本文件在 `loadMod` 时按文件名索引进 `LoadedMod.scripts`（glob `query:'?raw'`，Vite 8 语法）
 
 ## Mod 作者使用
 

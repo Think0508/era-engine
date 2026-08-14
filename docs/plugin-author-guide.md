@@ -355,6 +355,28 @@ ctx.api.call('quest', 'setVar', sceneId, key, value)          // → void（写�
 // 条件路径：quest.{sceneId}.var.{name}（如 quest.切磋任务.var.won_duel == 'yes'）；quest.{sceneId}.status 同域
 ```
 
+##### script 步骤（C3，2026-08-14）——脚本执行上下文（非 ctx.api.call，脚本内直接可用的变量/函数）
+
+```typescript
+// 任务步骤 type = "script"、script = "xxx.js"（mods/{mod}/scripts/ 下，raw 文本加载）时，
+// 脚本在沙箱 with(ctx) 中执行，ctx 提供：
+sceneId: string                            // 当前 scene id
+stepId: string                             // 当前步骤 id
+params: Record<string, any>                // 步骤 params 字段（TOML 注入）
+sourceId: string | null                    // 执行来源角色（step.source，默认 player）
+targetIds: string[]                        // 执行目标角色（step.target，默认 UI 选中）
+payload: any                               // custom objective 时 = 事件 payload，否则 null
+getVar(key)                                // 读场景变量（同 quest.getVar 语义）
+setVar(key, value)                         // 写场景变量（同 quest.setVar 语义）
+say(speaker, text)                         // → void（narrativeLog.write(text, 'dialogue', 'quest-system')）
+await api.call(ns, method, ...args)        // → Promise<any>（异步调用任意已注册 API）
+getBinding(entityId, key)                  // → any（读绑定属性）
+rand(min, max)                             // → number（[min, max] 闭区间随机整数）
+// 返回值语义：string = 跳转该 step id；false = 走 step.else；undefined/其他 = 走 step.next；
+// 抛错 = errorReporter 上报 + 走 step.next。沙箱屏蔽全局对象（Error 不可用，抛错用 throw '文本'）
+// 完整说明见 docs/quest-system.md「script 步骤（C3）」
+```
+
 ### H 系统插件
 
 #### h-core — H 核心

@@ -128,6 +128,47 @@ next = "final"
 - 计数状态放场景变量（`setVar('orgasm_count', ...)`）——场景变量随存档序列化，但"未达成的次数不跨会话累计"由 mod 作者按需设计（任务完成后场景变量不可读）
 - 与既有 4 类型 objective（`checkObjectives`）独立并存：标准事件监听不动，custom 独立监听 `CUSTOM_EVENT_TYPES`
 
+### 任务内嵌对话树（C5，2026-08-14）
+
+任务文件可直接内嵌对话树（`[[dialogues]]` 段，与独立 conversation 文件同格式），不用另建 `conversations/*.toml`——"聊天→H→奖励"一条龙任务单文件写完：
+
+```toml
+# quests/event/seduce_night.toml
+id = "seduce_night"
+title = "夜访"
+type = "event"
+display = "hidden"
+
+[[dialogues]]
+id = "seduce"
+[[dialogues.nodes]]
+id = "start"
+lines = ["李秋水道：夜深了。"]
+[[dialogues.nodes.choices]]
+text = "好"
+next = "end"
+[[dialogues.nodes]]
+id = "end"
+lines = ["你留了下来。"]
+
+[[steps]]
+id = "s1"
+type = "dialogue"
+conversation = "scene:seduce_night/seduce"   # scene:{任务ID}/{内嵌对话ID}
+next = "final"
+
+[[steps]]
+id = "final"
+type = "reward"
+effects = []
+next = "not_exist"
+```
+
+- **引用写法**：`conversation = "scene:{sceneId}/{dialogueId}"` 字符串简写，或对象 `{ type = "scene", scene = "{sceneId}", name = "{dialogueId}" }`
+- **注册时机**：loadMod 解析 quests//events/ 下的任务文件时，`[[dialogues]]` 自动注册进 `mod.conversations.scene`（sceneId → dialogueId → Conversation）；同一任务内 dialogue id 重复 → 加载期 error
+- **语义**：`scene:` 引用与角色/全局对话完全等价——dialogue 步骤照常走 `dialogue.startConversation`（resolveConversation 的 case 'scene'），对话树格式（nodes/lines/choices/effects/next）与独立 conversation 文件一致
+- **作用域**：内嵌对话归属任务（sceneId），只在该任务作用域内可引用；跨任务复用请用独立的 conversation 文件
+
 ## Mod 作者使用
 
 放 quests/main/ 或 quests/side/。用 `auto_start_condition` 或 `start_quest` effect 启动。

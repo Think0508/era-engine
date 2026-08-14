@@ -220,8 +220,8 @@ ctx.api.call('character', 'initLocations')                    // → void（重�
 
 ```typescript
 ctx.api.call('dialogue', 'triggerScene', scene, charId?)      // → void（演出管线）
-ctx.api.call('dialogue', 'startConversation', ref, speaker?)// → void（交互对话；ref = ConversationRef 或 "character:令狐冲/teach_sword" 简写，speaker 可选默认说话者）
-ctx.api.call('dialogue', 'getConversation', type, key, name?) // → Conversation | undefined（查找对话数据；type=character|global|quest|event）
+ctx.api.call('dialogue', 'startConversation', ref, speaker?)// → void（交互对话；ref = ConversationRef 或 "character:令狐冲/teach_sword" / "scene:任务ID/内嵌对话ID" 简写，speaker 可选默认说话者）
+ctx.api.call('dialogue', 'getConversation', type, key, name?) // → Conversation | undefined（查找对话数据；type=character|global|quest|event|scene）
 ctx.api.call('dialogue', 'interpolate', text, context)        // → string（{var} 插值）
 // 场景角色过滤器（2026-08-10）——scene+charId 命中任一过滤器则跳过该角色口上（含 talk-common 兜底）
 ctx.api.call('dialogue', 'registerSceneCharFilter', scene, (charId) => boolean) // → () => void（注销函数）

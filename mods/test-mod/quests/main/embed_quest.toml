@@ -1,0 +1,33 @@
+# mods/test-mod/quests/main/embed_quest.toml
+# C5（quest-script C' 模型 Task 5）：任务内嵌对话树（[[dialogues]] 段）——
+# 引用写法 conversation = "scene:{sceneId}/{dialogueId}"，loadMod 解析时注册进
+# mod.conversations.scene（sceneId → dialogueId → Conversation）
+id = "embed_quest"
+title = "内嵌对话任务"
+description = "测试任务内嵌对话树（C5）"
+type = "event"
+display = "hidden"
+
+[[dialogues]]
+id = "seduce"
+[[dialogues.nodes]]
+id = "start"
+lines = ["李秋水道：夜深了。"]
+[[dialogues.nodes.choices]]
+text = "好"
+next = "end"
+[[dialogues.nodes]]
+id = "end"
+lines = ["你留了下来。"]
+
+[[steps]]
+id = "s1"
+type = "dialogue"
+conversation = "scene:embed_quest/seduce"
+next = "final"
+
+[[steps]]
+id = "final"
+type = "reward"
+effects = []
+next = "not_exist"

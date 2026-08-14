@@ -279,10 +279,11 @@ export interface JuelDef {
 
 // 注释：任务定义
 export interface ConversationRef {
-  type: 'character' | 'global' | 'quest' | 'event'
+  type: 'character' | 'global' | 'quest' | 'event' | 'scene'
   character?: string    // type=character 时：角色 ID
-  name?: string         // type=character/global 时：文件名（不含.toml）
+  name?: string         // type=character/global 时：文件名（不含.toml）；type=scene 时：对话树 ID
   path?: string         // type=quest/event 时：相对路径
+  scene?: string        // type=scene 时：任务 ID（sceneId，内嵌对话归属）
 }
 
 // 注释：解析 ConversationRef → Conversation 数据
@@ -301,6 +302,11 @@ export function parseConversationRef(ref: string | ConversationRef): Conversatio
     }
     if (type === 'global') return { type: 'global', name: rest }
     if (type === 'quest' || type === 'event') return { type, path: rest }
+    if (type === 'scene') {
+      // 格式 "scene:{sceneId}/{dialogueId}"
+      const slashIdx = rest.indexOf('/')
+      return { type: 'scene', scene: rest.slice(0, slashIdx), name: rest.slice(slashIdx + 1) }
+    }
     return { type: 'global', name: ref }
   }
   return ref
@@ -321,6 +327,9 @@ export function resolveConversation(
       return ref.path ? conversations.quest.get(ref.path) : undefined
     case 'event':
       return ref.path ? conversations.event.get(ref.path) : undefined
+    case 'scene':
+      // C5：任务内嵌对话——sceneId（任务 ID）→ dialogueId → Conversation
+      return ref.scene ? conversations.scene.get(ref.scene)?.get(ref.name ?? '') : undefined
   }
 }
 
@@ -388,6 +397,9 @@ export interface Quest {
   visible?: string      // 可选：条件——满足时 quest 在 UI 中可见
   vars?: Record<string, any>  // C2：场景变量初始值（任务间通信走数据）
   steps: QuestStep[]
+  // C5：任务内嵌对话树（[[dialogues]] 段，与独立 conversation 文件同格式）——
+  // 引用写法 conversation = "scene:{sceneId}/{dialogueId}" 或 {type="scene", scene, name}
+  dialogues?: { id: string; nodes: ConversationNode[] }[]
 }
 
 // 注释：关系类型定义（关系系统 v2，2026-08-10 grill 定稿）
@@ -553,6 +565,7 @@ export interface LoadedMod {  id: string
     global: Map<string, Conversation>                    // name → Conversation
     quest: Map<string, Conversation>                     // path → Conversation
     event: Map<string, Conversation>                     // path → Conversation
+    scene: Map<string, Map<string, Conversation>>        // C5：sceneId（任务 ID）→ dialogueId → Conversation（任务内嵌对话树）
   }
   // 注释：Phase 8-10 新增
   items: Record<string, ItemDef>
@@ -991,6 +1004,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       global: new Map(),
       quest: new Map(),
       event: new Map(),
+      scene: new Map(),
     },
     // 注释：Phase 8-10 新增
     items: {},
@@ -1478,6 +1492,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   // 注释：加载 scenes（quests/ + events/ 下所有 toml，子目录自动支持）
   // scene 是统一单位，type=main/side/event 只影响 UI 显示
   const scenePrefixes = [`/mods/${modName}/quests/`, `/mods/${modName}/events/`]
+  // C5：任务内嵌对话 → conversations.scene（sceneId 全局唯一，冲突即报错）
+  const sceneConversations = new Map<string, Map<string, Conversation>>()
   for (const [path, raw] of Object.entries(rawTomlMap)) {
     if (!path.endsWith('.toml')) continue
     if (!scenePrefixes.some(p => path.startsWith(p))) continue
@@ -1492,7 +1508,26 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       continue
     }
     mod.quests.set(scene.id, scene)
+    // C5：任务内嵌对话树收集（[[dialogues]] 段，与独立 conversation 文件同格式）
+    const inlineDialogues = (scene as any).dialogues ?? []
+    for (const dlg of inlineDialogues) {
+      if (!dlg?.id) continue
+      const conv: Conversation = { id: dlg.id, nodes: dlg.nodes ?? [] }
+      if (!sceneConversations.has(scene.id)) sceneConversations.set(scene.id, new Map())
+      const map = sceneConversations.get(scene.id)!
+      if (map.has(conv.id)) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file: path,
+          message: `任务 '${scene.id}' 内嵌对话 id '${conv.id}' 重复`,
+          suggestion: '同任务内嵌对话 id 必须唯一',
+        })
+        continue
+      }
+      map.set(conv.id, conv)
+    }
   }
+  // 解析完成后 conversations.scene = sceneConversations
+  mod.conversations.scene = sceneConversations
   // 注释：校验 scene 引用（scene_id 必须存在）
   for (const [id, scene] of mod.quests) {
     for (const step of scene.steps ?? []) {

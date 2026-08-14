@@ -437,4 +437,34 @@ describe('quest-system combat 步骤推进（B3）', () => {
       expect(await apiSystem.call('quest', 'getSceneStatus', 'custom_obj_quest')).toBe('active')
     })
   })
+
+  // ═══════ C5：任务内嵌对话树（quest-script C' 模型 Task 5）═══════
+  // 测试数据：mods/test-mod/quests/main/embed_quest.toml（真实 loadMod 解析链路——
+  // [[dialogues]] 在解析时注册进 mod.conversations.scene，与运行时数据流一致）
+  describe('内嵌对话（C5）', () => {
+    it('scene: 引用解析到任务内嵌对话树（loadMod 真实解析链路）', () => {
+      const mod = modLoader.getMod()!
+      // 数据存在性：embed_quest 的内嵌对话已注册进 conversations.scene
+      expect(mod.conversations.scene.get('embed_quest')?.has('seduce')).toBe(true)
+      // 任务数据引用解析：dialogue 步骤用 scene: 简写
+      const quest = mod.quests.get('embed_quest')!
+      const step = quest.steps[0]
+      expect(step.conversation).toBe('scene:embed_quest/seduce')
+      const ref = parseConversationRef(step.conversation as string)
+      expect(ref.type).toBe('scene')
+      expect(ref.scene).toBe('embed_quest')
+      expect(ref.name).toBe('seduce')
+      // resolveConversation 解析到内嵌对话（nodes 数据来自真实 TOML 文件）
+      const conv = resolveConversation(mod.conversations, ref)
+      expect(conv).toBeDefined()
+      expect(conv!.nodes.length).toBe(2)
+    })
+
+    it('dialogue 步骤执行内嵌对话（startConversation 可用）', async () => {
+      await apiSystem.call('quest', 'start', 'embed_quest')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'embed_quest')).toBe('completed')
+      // 内嵌对话真的被渲染（startConversation 解析到 scene 对话而非回退 global 报"对话不存在"）
+      expect(narrativeLog.getEntries().some(e => e.text === '李秋水道：夜深了。')).toBe(true)
+    })
+  })
 })

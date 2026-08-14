@@ -1,0 +1,13 @@
+# 插件默认层物品（Layer 1）——携袋（erArk Item 151 干员携袋 通用化）
+# mod 覆盖：mods/[模组名]/definitions/items.toml（同 id 胜出）——可改名/改图标/改描述
+# tag 约定：confinement_bag 标记携袋（HAVE_BAG 前提按此 tag 查背包）
+# 决策 ADR：confinement-0004（地点/道具归属——道具=插件默认层，地点=mod 内容）
+
+[items."携袋"]
+name = "携袋"
+type = "tool"
+use = ["tool"]
+stackable = true
+consume = false
+tags = ["confinement_bag", "tool"]
+description = "把失去意识的角色装进去搬走，用于投入监牢。"

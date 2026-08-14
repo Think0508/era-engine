@@ -219,7 +219,10 @@ export function handleNpcInstructCondition(actorId: string): boolean {
     target.h_state.is_h = false
   }
   clearSleepFlags(target)
-  // TODO(h-npc-ai)：监禁（未实装）与陷落判定（get_character_fall_level 未实装）——恒继续
+  // 注释：监禁修正（erArk handle_npc_ai_in_h.py:308——交互对象被监禁 → 直接满足继续H条件；
+  // confinement-system 的 sp_flag.imprisonment 直查，不依赖插件注册）
+  // TODO(h-npc-ai)：陷落判定（get_character_fall_level 未实装）——恒继续
+  if (target.sp_flag?.imprisonment) return true
   return true
 }
 

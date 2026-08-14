@@ -7,26 +7,33 @@
 name = "华山剑法"
 type = "active"
 max_level = 10
-tags = ["combat_active", "sword"]
+tags = ["combat_active", "sword", "combat"]
 description = "华山派基础剑法（test-mod 示范：mod 自定义能力）"
 
 [abilities."混元功"]
 name = "混元功"
 type = "passive"
 max_level = 10
-tags = ["combat_passive", "internal"]
+tags = ["combat_passive", "internal", "combat"]
 description = "华山派内功（test-mod 示范：roster 简写引用）"
 
 [abilities."基础攻击"]
 name = "基础攻击"
 type = "active"
 max_level = 10
-tags = ["combat_active"]
+tags = ["combat_active", "combat"]
 description = "普通攻击（test-mod 示范：roster 简写引用）"
 
 [abilities."采药"]
 name = "采药"
 type = "active"
 max_level = 10
-tags = ["combat_active"]
+tags = ["combat_active", "combat"]
 description = "野外采药（test-mod 示范：roster 简写引用）"
+
+[abilities."学识"]
+name = "学识"
+type = "passive"
+max_level = 10
+tags = ["knowledge"]
+description = "学识（confinement-system 逃脱公式 knowledge 技能来源）"

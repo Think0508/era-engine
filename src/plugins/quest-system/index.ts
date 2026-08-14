@@ -28,6 +28,13 @@ interface SceneRuntime {
 const activeScenes = new Map<string, SceneRuntime>()
 // 注释：嵌套场景栈——push 子 scene 时暂停父，完成后 pop
 const sceneStack: { sceneId: string; resumeStepId: string }[] = []
+// 注释：运行时注册的动态 scene（2026-08-14 confinement-system 追捕委托用）——
+// mod.quests 是 TOML 静态数据，动态敌人（逃犯 id）写不进去 → 本表运行时注册，
+// getScene 优先查本表。存档恢复：动态 scene 由注册方（confinement）的 provider
+// 恢复后重新注册，本表不随存档序列化（activeScenes 持久化引用 sceneId，读档后
+// 若动态 scene 未恢复 → getScene 返回 undefined → 任务无法推进——注册方负责
+// 在 restore 时按原样重建）
+const dynamicScenes = new Map<string, Quest>()
 
 export function onLoad(_ctx: PluginContext): void {
   // 注释：start_scene——后台激活 scene（不打断当前操作）
@@ -74,6 +81,21 @@ export function onEnable(ctx: PluginContext): void {
         triggered.push(id)
       }
       return triggered
+    },
+    // 注释：运行时注册动态 scene（2026-08-14 confinement-system 追捕委托）——
+    // 解决"敌人 id 运行时才知道，写不进 TOML"：构造 Quest 对象 → 注册 → 启动。
+    // 注册方负责在存档 restore 后重建（动态 scene 不随存档序列化）
+    registerDynamicScene: async (sceneId: string, scene: Quest): Promise<void> => {
+      dynamicScenes.set(sceneId, scene)
+    },
+    // 注释：运行时构造并启动动态 scene（registerDynamicScene + start 一步完成）
+    startDynamicScene: async (sceneId: string, scene: Quest): Promise<void> => {
+      dynamicScenes.set(sceneId, scene)
+      await startScene(sceneId)
+    },
+    // 注释：移除动态 scene（追捕结束/读档重建后清理）
+    unregisterDynamicScene: async (sceneId: string): Promise<void> => {
+      dynamicScenes.delete(sceneId)
     },
   })
 
@@ -401,6 +423,9 @@ function checkAutoStart(): void {
 const reportedAutoStartErrors = new Set<string>()
 
 function getScene(sceneId: string): Quest | undefined {
+  // 注释：动态 scene 优先（confinement 追捕委托——运行时构造）
+  const dyn = dynamicScenes.get(sceneId)
+  if (dyn) return dyn
   const mod = modLoader.getMod() as any
   return mod?.quests?.get?.(sceneId) as Quest | undefined
 }

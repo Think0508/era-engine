@@ -1,0 +1,39 @@
+[meta]
+id = "confinement-system"
+name = "监禁调教系统"
+version = "1.0.0"
+description = "复刻 erArk 监禁系统——装袋搬运/投入监牢/囚犯状态/逃脱结算/追捕委托/监狱长/调教三件套。阶段A=核心闭环+逃脱结算+管理面板；阶段B=追捕委托闭环；阶段C=监狱长+调教。"
+
+# 必需绑定：逃脱对抗公式需要 hp/mp 百分比（ADR：confinement-0002）
+# mod 在 bindings.toml 的 [bindings.confinement-system] 绑定
+[required_attributes]
+hp = { type = "number", description = "体力（逃脱对抗/生活条件回复）" }
+mp = { type = "number", description = "气力（逃脱对抗）" }
+
+# 可选能力标签：逃脱概率公式的战斗/学识技能来源（erArk ability[42]/[45]）
+# ⚠️ TODO(confinement-system)：当前先用 erArk 迁移的能力（非通用），
+# 自研 mod 时按我们的公式与技能改（见 docs/confinement-system.md 设计注记）
+[optional_ability_tags]
+combat = { description = "战斗技能（逃脱概率累积用；mod 无此标签 → 按 0 处理）" }
+knowledge = { description = "学识技能（逃脱概率累积用；mod 无此标签 → 按 0 处理）" }
+
+[condition_fields]
+"character.{id}.imprisonment" = { type = "boolean", description = "是否被监禁" }
+"character.{id}.escaping" = { type = "boolean", description = "是否逃跑中" }
+"character.{id}.be_bagged" = { type = "boolean", description = "是否在袋中" }
+
+[data_dependencies]
+provides = ["confinement:ready"]
+depends_on = ["characters:initialized", "combat:ready", "dialogue:ready", "h-npc-ai:ready"]
+
+[[events.listen]]
+name = "game:new_day"
+description = "每日逃脱结算 + 监狱长训练结算（阶段C）"
+
+[[events.listen]]
+name = "h:start"
+description = "调教助手：监狱长加入 H（阶段C）"
+
+[[events.listen]]
+name = "h:end"
+description = "调教助手：监狱长结束 H（阶段C）"

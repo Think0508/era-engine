@@ -132,6 +132,10 @@ extends = "combat-base"   # 最多继承一个父插件
 | `getSaveMemory(modId?)` | `(string?)` | 读取存档界面记忆 `{ lastSavePage, lastSaveId }`（localStorage 设备级，按 mod 隔离） |
 | `setSaveMemory(mem, modId?)` | `(object, string?)` | 写入存档界面记忆（数字槽保存后由面板调用，对齐 erArk save_info.json） |
 | `uiText.get(key)` | `(string)` | 世界观文案查询（mod `[ui_text]` 覆盖 → 引擎默认 → 原 key） |
+| `abilities.getByTag(charId, tag)` | `(string, string)` | 角色带指定 tag 的能力列表 `[{id, level, xp}]`（mod 无此 tag → `[]`；AGENTS §35 标准 API，2026-08-14 补） |
+| `abilities.hasTag(charId, tag)` | `(string, string)` | 角色是否有带指定 tag 的能力（boolean） |
+| `premises.register(id, handler)` | `(string, fn)` | 注册命名前提（mod 插件自定义前提，不依赖 h-core） |
+| `premises.evaluate(ids, ctx)` | `(string[], ctx)` | 前提数组求值（全部 truthy 才 true） |
 
 ## 插件 API 速查
 
@@ -289,6 +293,7 @@ ctx.api.call('inventory', 'useItem', charId, itemId, targetId?)// → Promise<bo
                                                               //   返回 false 不执行 effects；consume=false 只执行 effects；
                                                               //   targetId 提供时 effects 目标用 targetId）
 ctx.api.call('inventory', 'getInventory', charId)             // → {itemId, count}[]
+ctx.api.call('inventory', 'getByTag', charId, tag)            // → {itemId, count}[]（按物品 tag 查询——confinement 携袋等）
 ctx.api.call('inventory', 'equip', charId, itemId, slot)      // → void
 ctx.api.call('inventory', 'unequip', charId, slot)            // → void
 ```
@@ -337,6 +342,11 @@ ctx.api.call('quest', 'getActiveScenes')                      // → string[]（
 ctx.api.call('quest', 'getSceneStatus', sceneId)              // → 'not_started' | 'active' | 'completed'
 ctx.api.call('quest', 'advanceStep', sceneId, nextStepId)     // → void
 ctx.api.call('quest', 'checkTriggerConditions')               // → string[]（未开始且带 condition 的 scene；由调用方求值）
+// 动态 scene（2026-08-14 confinement-system 追捕委托）——解决"敌人 id 运行时才知道，写不进 TOML"
+ctx.api.call('quest', 'registerDynamicScene', sceneId, scene) // → void（注册运行时构造的 Quest 对象）
+ctx.api.call('quest', 'startDynamicScene', sceneId, scene)    // → void（注册 + 启动一步完成）
+ctx.api.call('quest', 'unregisterDynamicScene', sceneId)      // → void（移除动态 scene——追捕结束/读档重建）
+// ⚠️ 动态 scene 不随存档序列化：注册方（如 confinement）负责在存档 restore 后按原样重建
 ```
 
 ### H 系统插件
@@ -402,9 +412,11 @@ ctx.api.call('h-exposure', 'getModeName', charId)             // → string
 
 ```typescript
 ctx.api.call('h-mark', 'getLevel', charId, markId)            // → number
+ctx.api.call('h-mark', 'setLevel', charId, markId, level)     // → void（直接设刻印等级，不小于当前才生效；触发副作用——
+                                                               //   confinement-system 强制刻印用；2026-08-14 审查补）
 ctx.api.call('h-mark', 'checkOne', charId, markId)            // → void（检查并尝试升级指定刻印）
-ctx.api.call('h-mark', 'checkAll', charId)                    // → void（遍历全部刻印执行 checkOne）
-ctx.api.call('h-mark', 'getMarkAdjust', charId, markId)       // → number（修正系数）
+ctx.api.call('h-mark', 'checkAll', charId)                    // → void（对所有刻印执行 checkOne）
+ctx.api.call('h-mark', 'getMarkAdjust', charId, markId)       // → number（刻印系数）
 ```
 
 #### h-hypnosis — 催眠
@@ -450,12 +462,43 @@ ctx.api.call('h-npc-ai', 'setActiveH', charId, on)            // → void（手�
 ctx.api.call('h-npc-ai', 'triggerActiveH', npcId)             // → Promise<boolean>（触发一次逆推执行器：NPC 选行为赋给玩家执行）
 ctx.api.call('h-npc-ai', 'tryActiveH', npcId, judgeBase?)     // → Promise<boolean>（尝试夺回主动权，默认 base=150——M20 修正，与代码一致）
 ctx.api.call('h-npc-ai', 'recoverFromUnconsciousH', actorId, infoText?)  // → Promise<void>（从无意识H中恢复：erArk recover_from_unconscious_h，2026-08-11 无意识组）
+ctx.api.call('h-npc-ai', 'registerSexAssistSource', source)   // → void（注册调教助手行为源——confinement-system 调用：
+                                                               //   source(wardenId) → 指令id | null；per-tick 消费执行）
+ctx.api.call('h-npc-ai', 'enterHBlock', charId)               // → void（置 h_wait 冻结块——助手拉入 H 的监狱长补日常 AI 冻结）
+ctx.api.call('h-npc-ai', 'exitHBlock', charId)                // → void（置 h_end 立即过期块——H 结束衔接日常 AI）
 ```
 
 效果类型（指令/脚本可调用）：`npc_active_h_on` / `npc_active_h_off`（开关目标逆推）、
 `npc_active_h_act`（触发逆推执行器）、`try_pl_active_h`（夺回判定，`params.base` 默认 100）。
 指令 tag 词表（part:/flag:）与逆推/群交 AI 机制详见 `docs/h-npc-ai.md`。
 无意识H（睡奸结算/醒来判定/恢复流程）详见 `docs/sleep-system.md` §7。
+调教助手（sex_assist，confinement-system 协同 H）详见 `docs/confinement-system.md` §八。
+
+#### confinement-system — 监禁调教（2026-08-14）
+
+```typescript
+ctx.api.call('confinement', 'becomePrisoner', charId)         // → Promise<void>（成为囚犯——投牢/追捕归还）
+ctx.api.call('confinement', 'release', charId)                // → Promise<void>（释放囚犯：清 flag/记录/回宿舍/取回衣服）
+ctx.api.call('confinement', 'isImprisoned', charId)           // → boolean（是否被监禁）
+ctx.api.call('confinement', 'isEscaping', charId)             // → boolean（是否逃跑中）
+ctx.api.call('confinement', 'getPrisoners')                   // → { [charId]: { imprisonedAt, escapeProbability } }
+ctx.api.call('confinement', 'getSettings')                    // → ConfinementSettings（管理面板读取）
+ctx.api.call('confinement', 'setSettings', patch)             // → void（管理面板写入，发 confinement:settings_changed）
+ctx.api.call('confinement', 'getUnusedPrisonCell')            // → string（空牢房 id；无 → ''）
+ctx.api.call('confinement', 'getWardenId')                    // → string | null（当前监狱长）
+ctx.api.call('confinement', 'designateWarden', charId)        // → Promise<boolean>（任命监狱长）
+ctx.api.call('confinement', 'removeWarden')                   // → void（解除监狱长）
+ctx.api.call('confinement', 'getFugitives')                   // → { [charId]: { hideout, escapedDay } }（追捕委托状态）
+ctx.api.call('confinement', 'debugPrisoners')                 // → string[]（@ debug 命令辅助）
+```
+
+效果类型：`confinement_bagging`（装袋）、`confinement_put_into_prison`（投牢）、
+`confinement_set_free`（释放）、`confinement_release_from_bag`（放出袋中人）、
+`confinement_recapture`（抓回逃犯，params.fugitive 必填）、`confinement_designate_warden`、
+`confinement_remove_warden`、`confinement_train_prisoners`（每日训练结算）、
+`confinement_prepare_training`（调教前准备：三方移动调教室 + 清洗/润滑/道具）。
+前提（T_IMPRISONMENT_1/0、HAVE_BAG、IN_PRISON、PRISONER_IN_CUSTODY 等）、指令集、数据格式
+与 6 模式训练扩展指南详见 `docs/confinement-system.md`。
 
 #### sleep-system — 睡眠系统（2026-08-11）
 

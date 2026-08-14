@@ -14,6 +14,7 @@ import {
 import { gameContext } from './game-context'
 import { conditionEngine } from './condition-engine'
 import { getUIText } from './ui-text'
+import { modLoader } from './mod-loader'
 
 type ApiMethod = (...args: any[]) => Promise<any>
 
@@ -118,6 +119,35 @@ class ApiSystem {
       },
       'premises.getRegisteredIds': async () => {
         return conditionEngine.getRegisteredPremiseIds()
+      },
+      // 注释：能力按 tag 查询（AGENTS §35 声明的标准 API——原实现缺失，2026-08-14 补）。
+      // 返回角色所有带该 tag 的能力 [{id, level, xp}]；mod 无此 tag → []
+      'abilities.getByTag': async (charId: string, tag: string) => {
+        const char = entitySystem.get('character', charId) as any
+        if (!char?.abilities) return []
+        const mod = modLoader.getMod()
+        const result: { id: string; level: number; xp: number }[] = []
+        for (const [abilityId, entry] of Object.entries(char.abilities)) {
+          const def = mod?.abilities?.[abilityId] as any
+          if (!def?.tags?.includes(tag)) continue
+          const e = entry as any
+          result.push({
+            id: abilityId,
+            level: typeof e?.level === 'number' ? e.level : 0,
+            xp: typeof e?.xp === 'number' ? e.xp : 0,
+          })
+        }
+        return result
+      },
+      'abilities.hasTag': async (charId: string, tag: string) => {
+        const char = entitySystem.get('character', charId) as any
+        if (!char?.abilities) return false
+        const mod = modLoader.getMod()
+        for (const abilityId of Object.keys(char.abilities)) {
+          const def = mod?.abilities?.[abilityId] as any
+          if (def?.tags?.includes(tag)) return true
+        }
+        return false
       },
     })
   }

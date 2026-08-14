@@ -378,6 +378,10 @@ export function registerInstructPremises(registry: any): void {
   // TODO 各系统落地时补语义（校验测试会盯防新未注册前提）：
   //   子宫体位（B3）/ 露出 / 隐奸 / 群交 / 逆推 / 催眠逆推·木头人 / 精液·射精（h-ejaculation 对接）
   //   今日首次（h-first-time）/ 时停解放 / 助手 / 监狱 / 女儿 / 访客 / 睡眠装睡（L1.7）
+  // ★1 修复（confinement 落地 2026-08-14）：T_IMPRISONMENT_1 **已从 placeholder 列表移除**——
+  //   真语义由 confinement-system 在 onLoad 注册（语义所有者），本列表在 onEnable 注册会
+  //   最后覆盖它（生命周期：全部 onLoad 先行、全部 onEnable 后行）——与
+  //   TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP 同款处理（第七轮修复）
   const pendingFalse = [
     'DR_WOMB_POSITION_INSERT', 'DR_WOMB_POSITION_SEX',
     'EXHIBITIONISM_SEX_MODE_1', 'EXHIBITIONISM_SEX_MODE_2', 'EXHIBITIONISM_SEX_MODE_3', 'EXHIBITIONISM_SEX_MODE_4',
@@ -387,7 +391,7 @@ export function registerInstructPremises(registry: any): void {
     'T_HYPNOSIS_ACTIVE_H', 'T_HYPNOSIS_BLOCKHEAD',
     'T_FIRST_A_SEX_IN_TODAY', 'T_FIRST_SEX_IN_TODAY', 'T_FIRST_U_SEX_IN_TODAY',
     'TARGET_TIME_STOP_ORGASM_RELASE',
-    'T_IS_ASSISTANT', 'T_IMPRISONMENT_1', 'TARGET_IS_PLAYER_DAUGHTER', 'TARGET_VISITOR_FLAG_1',
+    'T_IS_ASSISTANT', 'TARGET_IS_PLAYER_DAUGHTER', 'TARGET_VISITOR_FLAG_1',
     // 注释：★1 修复（2026-08-11 第七轮）：TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP 两条
     // **已从 placeholder 列表移除**——真语义由 sleep-system 在 onLoad 注册（语义所有者），
     // 本列表在 onEnable 注册会最后覆盖它（生命周期：全部 onLoad 先行、全部 onEnable 后行）→

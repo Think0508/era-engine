@@ -126,7 +126,8 @@ describe('parseModData', () => {
   })
 
   it('parses locations correctly (2 locations, parent chain, graph)', () => {
-    expect(mod.locations.size).toBe(2)
+    // 注释：2026-08-14 confinement-system 测试数据——新增微型关押区 4 地点（走廊/牢1/牢2/调教室）
+    expect(mod.locations.size).toBe(6)
     const tavern = mod.locations.get('tavern')!
     expect(tavern.name).toBe('酒馆')
     expect(tavern.parent).toBe('town_square')
@@ -138,11 +139,15 @@ describe('parseModData', () => {
     expect(square.name).toBe('城镇广场')
     expect(square.parent).toBeNull()
     expect((square as any).exits).toBeUndefined()
-    // graph has two edges（test-mod/maps/graph/test.toml——反向边避免顶级地点"不可达"warning）
-    expect(mod.graph).toEqual([
-      { from: 'town_square', to: 'tavern', time_cost: 5 },
-      { from: 'tavern', to: 'town_square', time_cost: 5 },
-    ])
+    // 微型关押区（confinement-system 测试数据）
+    expect(mod.locations.get('detention_corridor')!.tags).toContain('detention')
+    expect(mod.locations.get('prison_cell_1')!.tags).toContain('prison')
+    expect(mod.locations.get('prison_cell_2')!.tags).toContain('prison')
+    expect(mod.locations.get('humiliation_room')!.tags).toContain('humiliation_room')
+    // graph（test-mod/maps/graph/test.toml——反向边避免顶级地点"不可达"warning + 关押区连通）
+    expect(mod.graph).toContainEqual({ from: 'town_square', to: 'tavern', time_cost: 5 })
+    expect(mod.graph).toContainEqual({ from: 'town_square', to: 'detention_corridor', time_cost: 30 })
+    expect(mod.graph).toContainEqual({ from: 'detention_corridor', to: 'prison_cell_1', time_cost: 5 })
   })
 
   it('parses theme.toml correctly', () => {

@@ -123,6 +123,15 @@ export function onLoad(_ctx: PluginContext): void {
         })
       }
     }
+    // 注释：监禁修正 +9999（erArk instuct_judege.py:278——被监禁角色无法拒绝任何指令；
+    // confinement-system 插件在 onLoad 注册 premises 前本插件需容错——读 sp_flag 直查）
+    for (const id of targetIds) {
+      const ch = entitySystem.get('character', id) as any
+      if (ch?.sp_flag?.imprisonment) {
+        bonus += 9999
+        break
+      }
+    }
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any
       // 注释：audit-b I1——好感/信赖 canonical 在 social 命名空间，直读 base 恒丢修正。

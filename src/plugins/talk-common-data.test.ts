@@ -18,6 +18,10 @@ import { registerInstructPremises } from './h-core/premise/premise-instruct'
 // 等（7700+ 条），真语义在 sleep-system（h-core placeholder 已移除——onEnable 注册会覆盖
 // onLoad 真语义，见 premise-instruct.ts 注释）
 import { registerSleepPremises } from './sleep-system/premise/sleep'
+// ★ 修复（confinement 落地）：数据引用 t_imprisonment_1（监狱情境地文），真语义在
+// confinement-system onEnable 注册（h-core placeholder 已移除——onLoad 注册会被 sleep-system
+// 等后注册覆盖，见 premises.ts 注释）——镜像注册
+import { registerConfinementPremises } from './confinement-system/premises'
 
 // 注释：与 talk-common index.ts loadTomlDir 相同的数据收集逻辑（避免跨插件耦合）
 const defaultModules = import.meta.glob<string>(
@@ -64,6 +68,7 @@ describe('T2 talk-common 全量数据校验', () => {
     registerBodyItemPremises(conditionEngine)
     registerInstructPremises(conditionEngine)
     registerSleepPremises(conditionEngine)
+    registerConfinementPremises(conditionEngine)
   })
 
   it('数据文件可解析（完整 TOML 解析——description 损坏即失败）', () => {

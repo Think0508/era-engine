@@ -10,12 +10,13 @@
 import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
-import { getNpcActiveH, setNpcActiveH, enterHBlocksForAllInH, exitHBlock } from './state'
+import { getNpcActiveH, setNpcActiveH, enterHBlocksForAllInH, exitHBlock, enterHBlock } from './state'
 import { judgeCharacterHStateTick, groupSexModeOff } from './per-tick'
 import { recoverFromUnconsciousH } from './sleep-h'
 import { npcActiveH, tryPlActiveH } from './active-h'
 import { onTemplateExecute } from './group-sex-ai'
 import { validateTagVocabulary } from './filter'
+import { registerSexAssistSource } from './sex-assist'
 
 // 注释：h:end 时把所有 h_* 行为块转 h_end（立即过期）——endHScene 会清空 is_h，
 // 遍历 is_h 会漏；按行为块类型兜底（任何 H 退出路径都收敛到这里）
@@ -126,6 +127,19 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     // 注释：从无意识H中恢复（sleep-system 吵醒判定后调用——erArk recover_from_unconscious_h）
     recoverFromUnconsciousH: (actorId: string, infoText?: string): Promise<void> =>
       recoverFromUnconsciousH(actorId, infoText),
+    // 注释：注册调教助手行为源（confinement-system 调用——助手判定+选行为在监禁模块，
+    // 本插件只负责每时间片消费行为执行；erArk 同款职责切分，见 sex-assist.ts）
+    registerSexAssistSource: (source: (wardenId: string) => string | null | Promise<string | null>): void => {
+      registerSexAssistSource(source)
+    },
+    // 注释：H 行为块管理（2026-08-14 审查补——confinement 调教助手拉监狱长入 H 需要：
+    // 监狱长在 h:start 之后才 is_h，未走 enterHBlocksForAllInH，需手动补 h_wait 块冻结日常 AI）
+    enterHBlock: (charId: string): void => {
+      enterHBlock(entitySystem.get('character', charId) as any)
+    },
+    exitHBlock: (charId: string): void => {
+      exitHBlock(entitySystem.get('character', charId) as any)
+    },
   })
 
   // 注释：tag 词表校验（未知 part:/flag: 值 → warning；指令数据驱动 AI，词表是契约）

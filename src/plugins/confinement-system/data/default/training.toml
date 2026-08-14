@@ -1,0 +1,63 @@
+# 插件默认层训练模式（Layer 1）——监狱长日常训练 6 模式（erArk Confinement_Training_Setting 设置1）
+# mod 覆盖：mods/[模组名]/definitions/training.toml（同 id 胜出）
+# 扩展指南见 docs/confinement-system.md §训练模式扩展——增/改模式 = 在此加一个 [[modes]]，
+# 效果字段（state/experienceId/ability/setFields）可自由组合，引擎只做通用结算。
+#
+# 字段说明：
+#   state          → h-core settleState 的状态名（部位快感/苦痛/好意 等）
+#   stateBase      → 状态基础值
+#   experienceId   → 经验 id（0-7 部位经验；其他 id 见各系统约定）
+#   experienceValue→ 每次结算加的经验
+#   ability        → 能力名（abilities.能力名.level +abilityValue，封顶 10）
+#   abilityValue   → 能力提升值
+#   setFields      → 直接字段（如 心理服从 = 屈服刻印提升；数值直接设）
+#   wardenAbility  → 监狱长的该能力等级作为结算等级（abilityLevel）
+#   interval       → 结算间隔（分钟）。⚠️ 当前每日结算一次（每日 new_day 时执行），
+#                    通用工作系统落地后按此字段切回工作行为链（半成品标记，见 warden.ts）
+
+[[modes]]
+id = 1
+name = "部位快感训练"
+state = "快乐"
+stateBase = 30
+experienceId = 2
+experienceValue = 1
+wardenAbility = "经验"
+
+[[modes]]
+id = 2
+name = "部位扩张训练"
+state = "快乐"
+stateBase = 25
+experienceId = 4
+experienceValue = 1
+wardenAbility = "经验"
+
+[[modes]]
+id = 3
+name = "苦痛快感训练"
+state = "苦痛"
+stateBase = 30
+experienceId = 5
+experienceValue = 1
+wardenAbility = "经验"
+
+[[modes]]
+id = 4
+name = "性爱技巧训练"
+ability = "技巧"
+abilityValue = 1
+wardenAbility = "技巧"
+
+[[modes]]
+id = 5
+name = "身体锻炼训练"
+setFields = []
+
+[[modes]]
+id = 6
+name = "心理服从训练"
+state = "好意"
+stateBase = 20
+setFields = [{ path = "abilities.屈服刻印.level", value = 1 }]
+wardenAbility = "经验"

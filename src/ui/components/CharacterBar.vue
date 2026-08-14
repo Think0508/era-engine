@@ -35,6 +35,16 @@ function getCharacterName(char: any): string {
 function isFollowing(char: any): boolean {
   return (char?.sp_flag?.is_follow ?? 0) !== 0
 }
+
+// 注释：监禁状态标记（erArk 状态栏 <监> 红色标记——confinement-system 运行时写入）
+// 优先级：囚犯 <监> > 逃跑中 <逃> > 袋中 <袋>
+function getConfinementTag(char: any): { text: string; cls: string } | null {
+  const sp = char?.sp_flag ?? {}
+  if (sp.imprisonment) return { text: '监', cls: 'confinement-tag' }
+  if (sp.escaping) return { text: '逃', cls: 'escaping-tag' }
+  if (sp.be_bagged) return { text: '袋', cls: 'bagged-tag' }
+  return null
+}
 </script>
 
 <template>
@@ -48,6 +58,7 @@ function isFollowing(char: any): boolean {
     >
       {{ getCharacterName(char) }}
       <span v-if="isFollowing(char)" class="follow-tag">同行</span>
+      <span v-if="getConfinementTag(char)" :class="getConfinementTag(char)!.cls">{{ getConfinementTag(char)!.text }}</span>
     </span>
   </div>
 </template>
@@ -92,5 +103,21 @@ function isFollowing(char: any): boolean {
   color: var(--color-surface);
   font-size: 0.6rem;
   line-height: 1.4;
+}
+
+.confinement-tag,
+.escaping-tag,
+.bagged-tag {
+  margin-left: 4px;
+  padding: 0 4px;
+  border-radius: var(--radius-button);
+  background-color: var(--color-danger);
+  color: var(--color-surface);
+  font-size: 0.6rem;
+  line-height: 1.4;
+}
+
+.bagged-tag {
+  background-color: var(--color-warning);
 }
 </style>

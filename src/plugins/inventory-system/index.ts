@@ -84,6 +84,24 @@ export function onEnable(ctx: PluginContext): void {
       const char = entitySystem.get('character', charId) as any
       return char?.inventory ?? []
     },
+    // 注释：按物品 tag 查询（对齐 abilities.getByTag——confinement-system 携袋等消费）
+    // 返回 [{ itemId, count }] 列表；无 tag 匹配 → []
+    getByTag: (charId: string, tag: string): { itemId: string; count: number }[] => {
+      const char = entitySystem.get('character', charId) as any
+      const inv = char?.inventory
+      if (!Array.isArray(inv)) return []
+      const mod = modLoader.getMod()
+      if (!mod) return []
+      const result: { itemId: string; count: number }[] = []
+      for (const entry of inv) {
+        if (!entry?.itemId) continue
+        const def = mod.items?.[entry.itemId] as any
+        if (def?.tags?.includes(tag)) {
+          result.push({ itemId: entry.itemId, count: entry.count ?? 1 })
+        }
+      }
+      return result
+    },
     // 注释：装备穿着——从背包移除 + 设 equipment 字段
     // 静默错误审计修复（2026-08-12）：背包无物品拒绝装备（不凭空写槽）；
     // 槽位已有物品先回背包（旧装备不再被覆盖丢失）

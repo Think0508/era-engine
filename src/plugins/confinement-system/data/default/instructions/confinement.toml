@@ -1,0 +1,125 @@
+# 插件默认层指令（Layer 1）——监禁系统四条核心指令
+# mod 覆盖：mods/[模组名]/definitions/instructions/confinement.toml（同 id 胜出）
+# 复刻依据：erArk InstructConfig 5036/5038/5039 + RELEASE_FROM_BAG（见 docs/confinement-system.md）
+# 每次 10 分钟（erArk Behavior BAGGING_AND_MOVING/PUT_INTO_PRISON/SET_FREE 均 10 分钟）
+
+[[instructions]]
+id = "bagging_and_moving"
+label = "装袋搬走"
+erark_id = "5036"
+erark_behavior = "BAGGING_AND_MOVING"
+category = "obscenity"
+sub_category = "item"
+time_cost = 10
+priority = 70
+# 前提（erArk 5036 前提链通用化）：
+#   HAVE_TARGET 有交互对象
+#   HAVE_BAG 背包有携袋（tag=confinement_bag）
+#   T_IMPRISONMENT_0 目标未被监禁
+#   TARGET_DEEP_UNCONSCIOUS 目标深度无意识（confinement 注册——熟睡/时停/空气催眠；
+#     2026-08-14 审查修复：原 T_UNCONSCIOUS_FLAG_6 是 unconscious_h===6（不存在的等级），
+#     装袋永不触发；改用真语义前提）
+#   TARGET_NOT_VISITOR_FLAG 目标非访客（访客概念本引擎无 → 不注册）
+#   T_UNCONSCIOUS_FLAG_0 玩家清醒（h-core 注册：unconscious_h==0）
+#   SCENE_ALL_UNCONSCIOUS_OR_SLEEP 场景全员无意识/睡眠（sleep-system 注册）
+#   PL_NOT_BAGGING_CHARA 玩家未在搬运该目标（confinement 注册）
+#   NOT_CARRY_ANYBODY_IN_TIME_STOP 时停中未搬运任何人（h-time-stop 注册）
+premises = ["HAVE_TARGET", "HAVE_BAG", "T_IMPRISONMENT_0", "TARGET_DEEP_UNCONSCIOUS", "T_UNCONSCIOUS_FLAG_0", "SCENE_ALL_UNCONSCIOUS_OR_SLEEP", "PL_NOT_BAGGING_CHARA", "NOT_CARRY_ANYBODY_IN_TIME_STOP"]
+tags = ["kind:item", "system:confinement"]
+effects = [{ type = "confinement_bagging", params = {} }]
+
+[[instructions]]
+id = "put_into_prison"
+label = "投入监牢"
+erark_id = "5038"
+erark_behavior = "PUT_INTO_PRISON"
+category = "obscenity"
+sub_category = "scene"
+time_cost = 10
+priority = 70
+# 前提：IN_PRISON 当前在牢房（location.tags.prison，confinement 注册）
+#   SCENE_ONLY_ONE 场景只有自己（h-core 注册）
+#   PL_BAGGING_CHARA 玩家正在搬运该目标（confinement 注册）
+premises = ["IN_PRISON", "SCENE_ONLY_ONE", "PL_BAGGING_CHARA"]
+tags = ["kind:scene", "system:confinement"]
+effects = [{ type = "confinement_put_into_prison", params = {} }]
+
+[[instructions]]
+id = "set_free"
+label = "解除囚禁"
+erark_id = "5039"
+erark_behavior = "SET_FREE"
+category = "obscenity"
+sub_category = "scene"
+time_cost = 10
+priority = 70
+# 前提：HAVE_TARGET 有交互对象
+#   IN_PRISON 当前在牢房
+#   SCENE_ONLY_TWO 场景只有自己和目标（h-core 注册）
+#   T_IMPRISONMENT_1 目标被监禁（confinement 注册）
+premises = ["HAVE_TARGET", "IN_PRISON", "SCENE_ONLY_TWO", "T_IMPRISONMENT_1"]
+tags = ["kind:scene", "system:confinement"]
+effects = [{ type = "confinement_set_free", params = {} }]
+
+[[instructions]]
+id = "release_from_bag"
+label = "从袋中放出"
+erark_id = "RELEASE_FROM_BAG"
+erark_behavior = "RELEASE_FROM_BAG"
+category = "obscenity"
+sub_category = "item"
+time_cost = 10
+priority = 70
+# 前提：PL_BAGGING_CHARA 玩家正在搬运该目标
+#   T_BE_BAGGED_1 目标在袋中
+premises = ["PL_BAGGING_CHARA", "T_BE_BAGGED_1"]
+tags = ["kind:item", "system:confinement"]
+effects = [{ type = "confinement_release_from_bag", params = {} }]
+
+# ── 监狱长（阶段C，grill Q7 定案：最小化——任命即生效，AI 移动留工作系统）──
+
+[[instructions]]
+id = "designate_warden"
+label = "任命监狱长"
+category = "work"
+sub_category = "work"
+time_cost = 30
+priority = 60
+# 前提：HAVE_TARGET 有交互对象
+#   PRISONER_IN_CUSTODY 有囚犯在押
+#   FALL_LEVEL_GE_3 目标陷落 ≥3（h-core premise-fall 注册）
+#   T_IMPRISONMENT_0 目标未被监禁（囚犯不能当监狱长）
+premises = ["HAVE_TARGET", "PRISONER_IN_CUSTODY", "FALL_LEVEL_GE_3", "T_IMPRISONMENT_0"]
+tags = ["kind:work", "system:confinement"]
+effects = [{ type = "confinement_designate_warden", params = {} }]
+
+[[instructions]]
+id = "remove_warden"
+label = "解除监狱长"
+category = "work"
+sub_category = "work"
+time_cost = 30
+priority = 60
+# 前提：HAVE_WARDEN 已有监狱长（confinement 注册）
+premises = ["HAVE_WARDEN"]
+tags = ["kind:work", "system:confinement"]
+effects = [{ type = "confinement_remove_warden", params = {} }]
+
+# ── 调教（阶段C）──
+
+[[instructions]]
+id = "prepare_training"
+label = "调教前准备"
+erark_id = "5043"
+erark_behavior = "PREPARE_TRAINING"
+category = "obscenity"
+sub_category = "sex"
+time_cost = 10
+priority = 65
+# 前提（erArk 5043）：HAVE_TARGET 有交互对象
+#   T_IMPRISONMENT_1 目标被监禁
+#   HAVE_WARDEN 有监狱长
+#   TARGET_HP_NE_1 目标非力竭（h-core HP_G_1 玩家版——目标版用条件代替，简化跳过）
+premises = ["HAVE_TARGET", "T_IMPRISONMENT_1", "HAVE_WARDEN"]
+tags = ["kind:sex", "system:confinement"]
+effects = [{ type = "confinement_prepare_training", params = {} }]

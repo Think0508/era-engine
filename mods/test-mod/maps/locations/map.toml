@@ -10,3 +10,32 @@ name = "酒馆"
 parent = "town_square"
 type = "building"
 tags = ["has_drink", "rest", "has_bedroom"]
+
+# ── 微型关押区（confinement-system 测试用——牢房 tag=prison，调教室 tag=humiliation_room）──
+[[locations]]
+id = "detention_corridor"
+name = "关押区走廊"
+parent = "town_square"
+type = "corridor"
+tags = ["detention"]
+
+[[locations]]
+id = "prison_cell_1"
+name = "牢1"
+parent = "detention_corridor"
+type = "prison"
+tags = ["prison", "detention"]
+
+[[locations]]
+id = "prison_cell_2"
+name = "牢2"
+parent = "detention_corridor"
+type = "prison"
+tags = ["prison", "detention"]
+
+[[locations]]
+id = "humiliation_room"
+name = "调教室"
+parent = "detention_corridor"
+type = "room"
+tags = ["humiliation_room", "detention"]

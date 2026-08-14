@@ -8,3 +8,44 @@ time_cost = 5
 from = "tavern"
 to = "town_square"
 time_cost = 5
+
+# 关押区连通（confinement-system 测试用）
+[[edges]]
+from = "town_square"
+to = "detention_corridor"
+time_cost = 30
+
+[[edges]]
+from = "detention_corridor"
+to = "town_square"
+time_cost = 30
+
+[[edges]]
+from = "detention_corridor"
+to = "prison_cell_1"
+time_cost = 5
+
+[[edges]]
+from = "prison_cell_1"
+to = "detention_corridor"
+time_cost = 5
+
+[[edges]]
+from = "detention_corridor"
+to = "prison_cell_2"
+time_cost = 5
+
+[[edges]]
+from = "prison_cell_2"
+to = "detention_corridor"
+time_cost = 5
+
+[[edges]]
+from = "detention_corridor"
+to = "humiliation_room"
+time_cost = 5
+
+[[edges]]
+from = "humiliation_room"
+to = "detention_corridor"
+time_cost = 5

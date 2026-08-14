@@ -22,6 +22,7 @@ import { settleTired, settleUrine, settleHunger, sleepPassSettle } from '../../c
 import { getPlayerId, isInH, isTimeStopped, isBlockhead, exitHBlock, getStamina, nowMinutes } from './state'
 import { runGroupSexAi } from './group-sex-ai'
 import { settleSleepH } from './sleep-h'
+import { runSexAssist } from './sex-assist'
 
 // 注释：疲劳等级 ≥2 的疲劳度阈值（erArk get_tired_level：疲劳度/160，≤0.74→0，
 // ≤0.84→1，<1→2，≥1→3 → level≥2 ⟺ 疲劳度 > 134.4）——handle_npc_ai.py:57
@@ -299,6 +300,13 @@ export async function judgeCharacterHStateTick(minutes = 0): Promise<void> {
       // 群交中 + AI type 1/2 → 群交 AI（erArk :129-135；type 3 由模板执行事件触发）
       if (isInH(c) && await isGroupSexMode()) {
         await runGroupSexAi(c.id)
+      }
+      // 注释：调教助手（erArk h_state.sex_assist + handle_npc_ai_in_h.py:154-157）——
+      // 监狱长协同 H 的参与者每时间片向行为源取指令执行；行为源由 confinement-system
+      // 注册（registerSexAssistSource），未注册/返回空 → 静默跳过（监狱长只是"陪着"）
+      // 2026-08-14 审查修复：传 nowMinutes 做间隔守卫（防 1 分钟窗口内行为密度爆炸）
+      if (isInH(c) && c.h_state?.sex_assist === true && minutes > 0) {
+        await runSexAssist(c.id, nowMinutes())
       }
       // 注释：H 中 NPC 窗口结算（erArk WAIT 行为 character_aotu_change_value：
       // 疲劳/尿意/饥饿照常积累 → 疲劳等级 ≥2 触发退出，H 不会无限持续）

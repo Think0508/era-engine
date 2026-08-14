@@ -7,6 +7,7 @@
 import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { narrativeLog } from '../../core/narrative-log'
+import { eventBus } from '../../core/event-bus'
 import { getEntityAttr } from '../../core/entity-utils'
 
 // 注释：刻印 ID 映射
@@ -51,6 +52,28 @@ export function onEnable(ctx: PluginContext): void {
       if (!char?.abilities) return 0
       const ab = char.abilities[MARK_ABILITY[markId]]
       return ab?.level ?? 0
+    },
+
+    // 注释：直接设定刻印等级（2026-08-14 审查补——confinement-system 强制刻印用：
+    // 入狱给屈服2/恐怖1/反发1-3。能力名由本插件 MARK_ABILITY 契约决定，调用方只传 markId——
+    // 避免调用方硬编码中文能力名（架构铁律）。不小于当前等级才生效（不降级）。
+    // 触发副作用（MARK_SIDE_EFFECTS 对应能力最低值，对齐 checkOne 升级语义）
+    setLevel: (charId: string, markId: number, level: number): void => {
+      const char = entitySystem.get('character', charId) as any
+      if (!char) return
+      const key = MARK_ABILITY[markId]
+      if (!key) return
+      const current = char.abilities?.[key]?.level ?? 0
+      if (level <= current) return
+      if (!char.abilities) char.abilities = {}
+      if (!char.abilities[key]) char.abilities[key] = { level: 0, xp: 0 }
+      char.abilities[key].level = level
+      const name = Object.entries(MARKS).find(([, id]) => id === markId)?.[0]
+      if (name) {
+        narrativeLog.write(`${char.name} 获得 ${name}刻印 LV${level}`, 'system', 'h-mark')
+      }
+      applySideEffect(char, markId, level)
+      eventBus.emit('character:changed', { id: charId })
     },
 
     // 注释：检查并尝试升级指定刻印

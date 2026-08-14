@@ -15,9 +15,10 @@ import { errorReporter } from '../core/error-reporter'
 import { onLoad as effectOnLoad, onEnable as effectOnEnable } from './effect-system/index'
 import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from './h-core/index'
 import { onLoad as sleepOnLoad } from './sleep-system/index'
-import { onLoad as timeStopOnLoad } from './h-time-stop/index'
+import { onLoad as timeStopOnLoad, onEnable as timeStopOnEnable } from './h-time-stop/index'
 import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable } from './dialogue-system/index'
 import { onEnable as talkCommonOnEnable } from './talk-common-system/index'
+import { onEnable as confinementOnEnable } from './confinement-system/index'
 import { validateInstructionData } from './instruction-loader'
 import { eventBus } from '../core/event-bus'
 import { clearBehaviorHistory } from '../core/command-executor'
@@ -67,9 +68,12 @@ describe('chat（1004）复刻', () => {
     hCoreOnEnable(stubCtx)
     sleepOnLoad(stubCtx)
     timeStopOnLoad(stubCtx)
+    await timeStopOnEnable(stubCtx)
     dialogueOnLoad(stubCtx)
     dialogueOnEnable(stubCtx)
     await talkCommonOnEnable(stubCtx)
+    // 注释：confinement onEnable 前提注册（test-mod 含监禁指令，前提未注册会 error+注销）
+    await confinementOnEnable(stubCtx)
 
     const p = entitySystem.get('character', 'player') as any
     p.current_location = 'town_square'

@@ -5,3 +5,12 @@ attack = "attack"
 
 [bindings.sleep-system]
 sanity = "精力"
+
+# 监禁系统绑定（ADR：confinement-0002——逃脱对抗公式需要 hp/mp）
+# hp_max/mp_max：百分比归一化用（2026-08-14 五轮审查——mod 声明上限，逃脱公式用
+# 当前值/上限 而非"当前值封顶 100"；不绑 → 回退旧近似）
+[bindings.confinement-system]
+hp = "hp"
+mp = "mp"
+hp_max = "体力上限"
+mp_max = "气力上限"

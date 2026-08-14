@@ -570,5 +570,31 @@ describe('quest-system combat 步骤推进（B3）', () => {
       expect(errorReporter.getErrors().some(e => e.message.includes('trigger_quest'))).toBe(true)
       commandRegistry.unregister('test_spar')
     })
+
+    it('trigger condition 求值抛错 → 上报 warning + 不拦截（指令默认 handler 正常执行）', async () => {
+      // 注释（Important-1 修复验证）：未知字段路径 evaluate 走默认值机制不抛错
+      // （resolvePath 返回 0/undefined/false），须用求值期真实抛错表达式：
+      // 未注册前提 premise(NO_SUCH_PREMISE) → "Premise is not registered"
+      //（前提拼写错误 = 现实中最常见的触发条件故障，诊断信息清晰）
+      installTriggerQuest([{ type: 'command', command: 'test_spar', condition: 'premise(NO_SUCH_PREMISE)' }])
+      let cmdRan = false
+      commandRegistry.register({
+        id: 'test_spar', label: '切磋', group: 'character_commands', modes: ['exploration'],
+        handler: async () => { cmdRan = true },
+      } as any)
+      errorReporter.clear()
+      await apiSystem.call('quest', 'reindexTriggers')
+      await commandExecutor.execute('test_spar', { gameStore: { player: { id: 'player' } } } as any)
+      // 求值失败 → 不拦截 → 默认 handler 执行（现有语义不变）
+      expect(cmdRan).toBe(true)
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'trigger_quest')).toBe('not_started')
+      // 去重上报 warning（message 含 scene id + 错误信息）
+      const warn = errorReporter.getErrors().find(
+        e => e.severity === 'warning' && e.source === 'quest-system' && e.message.includes('trigger_quest'),
+      )
+      expect(warn).toBeDefined()
+      expect(warn!.message).toContain('NO_SUCH_PREMISE')
+      commandRegistry.unregister('test_spar')
+    })
   })
 })

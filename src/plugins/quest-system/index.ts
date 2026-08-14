@@ -602,6 +602,12 @@ function checkAutoStart(): void {
 // 注释：auto_start 条件求值失败去重上报（2026-08-13 审计）
 const reportedAutoStartErrors = new Set<string>()
 
+// 注释：trigger condition 求值失败去重上报（2026-08-14 review Important-1——
+// 原 command hook 空 catch 静默失败：触发器永不触发且零诊断，违反"禁止静默失败"铁律。
+// 镜像 checkAutoStart 的 reportedAutoStartErrors 模式；key = sceneId + condition（同场景
+// 多个坏条件各自上报一次））
+const reportedTriggerCondErrors = new Set<string>()
+
 // 注释：C6——构建触发器索引（triggers 声明 → command hook + dialogue_end 索引）
 // 调用时机：onEnable（初始）/ game:load（读档后 mod.quests 重建）/ reindexTriggers API
 // command 拦截语义：条件满足时指令改道执行场景、指令自身 effects/handler 不执行；
@@ -637,7 +643,19 @@ function buildTriggerIndex(): void {
             // ctx.selectedCharacterId（UI 选中已由 bridge 同步进 gameContext），无需从
             // execCtx.uiStore 手工搬运
             ok = conditionEngine.evaluate(h.condition, gameContext.getContext())
-          } catch {
+          } catch (err) {
+            // 注释：Important-1 修复——原空 catch 静默失败（触发器永不触发且零诊断）。
+            // 去重上报 warning，ok 保持 false → 不拦截，走指令默认行为（现有语义不变）
+            const key = `${h.sceneId}|${h.condition}`
+            if (!reportedTriggerCondErrors.has(key)) {
+              reportedTriggerCondErrors.add(key)
+              errorReporter.report({
+                source: 'quest-system',
+                severity: 'warning',
+                message: `触发场景 '${h.sceneId}' 的指令触发条件求值失败（触发器不会触发）：${err instanceof Error ? err.message : String(err)}`,
+                suggestion: '检查 triggers[].condition 表达式（字段路径/前提拼写）',
+              })
+            }
             ok = false
           }
         }

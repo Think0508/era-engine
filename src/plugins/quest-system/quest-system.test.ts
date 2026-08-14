@@ -16,7 +16,7 @@ import { narrativeLog } from '../../core/narrative-log'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { getGameStateProviders } from '../../core/save-system'
 import type { Quest } from '../../core/mod-loader'
-import { parseConversationRef, resolveConversation } from '../../core/mod-loader'
+import { parseConversationRef, resolveConversation, validateSceneSteps } from '../../core/mod-loader'
 
 async function bootPlugins() {
   const pluginManager = new PluginManager(apiSystem, eventBus, new SlotRegistry(), commandRegistry)
@@ -1106,6 +1106,41 @@ describe('quest-system combat 步骤推进（B3）', () => {
   })
 })
 
+// ═══════ Audit F 回归：next="" 结束标记（F-1/F-2）═══════
+describe('audit-f：next 空串结束标记（F-1/F-2）', () => {
+  function installQuest(id: string, steps: any[]) {
+    const mod = modLoader.getMod()!
+    mod.quests.set(id, { id, title: id, type: 'event', display: 'hidden', steps })
+  }
+
+  afterEach(() => {
+    const mod = modLoader.getMod()!
+    mod.quests.delete('f_parent_quest')
+    mod.quests.delete('f_child_quest')
+  })
+
+  it('F-1：scene 步骤 next="" → 子完成即结束父（原 truthy 检查静默挂起父场景）', async () => {
+    installQuest('f_parent_quest', [
+      { id: 's1', type: 'scene', scene_id: 'f_child_quest', next: '' },
+    ])
+    installQuest('f_child_quest', [
+      { id: 'c1', type: 'reward', effects: [], next: 'not_exist' },
+    ])
+    await apiSystem.call('quest', 'start', 'f_parent_quest')
+    // 子场景完成 → completeScene(child) pop → resumeStepId === '' → completeScene(parent)
+    expect(await apiSystem.call('quest', 'getSceneStatus', 'f_parent_quest')).toBe('completed')
+    expect(await apiSystem.call('quest', 'getSceneStatus', 'f_child_quest')).toBe('completed')
+  })
+
+  it('F-2：combat 步骤 next="" 通过 validateSceneSteps（空串是合法出路，非假阳性）', () => {
+    const errCount = validateSceneSteps({
+      id: 'f_combat_quest', title: '', type: 'event', display: 'hidden',
+      steps: [{ id: 'f', type: 'combat', enemies: ['enemy_bandit'], next: '' }],
+    } as any)
+    expect(errCount).toBe(0)
+  })
+})
+
 // ═══════ C8：example-mod 示例任务集成验收（quest-script C' 模型 Task 8）═══════
 // 注释：必须放文件最末尾——loadMod('example-mod') 会替换 modLoader 的全局 mod，
 // 影响同文件后续用例（文件已结束，无后续用例，故不再恢复 test-mod）
@@ -1113,6 +1148,12 @@ describe('example-mod 示例任务（C8）', () => {
   beforeAll(async () => {
     entitySystem.clear()
     errorReporter.clear()
+    // E2E 链路需要插件 API（quest/combat/dialogue/effect/inventory/h-core）——
+    // 独立运行本 describe（-t 过滤）时 B3 的 bootPlugins 不会执行，此处自举（幂等：
+    // 全量运行时 quest API 已注册，跳过重复 boot——apiSystem.register 重复会 throw）
+    if (!apiSystem.has('quest', 'start')) {
+      await bootPlugins()
+    }
     const mod = await modLoader.loadMod('example-mod')
     bindingResolver.loadBindings(mod.bindings)
   })
@@ -1156,5 +1197,96 @@ describe('example-mod 示例任务（C8）', () => {
     expect(mod.items['白虹掌力秘籍']).toBeDefined()
     // 冰肌玉骨天赋（definitions/talents.toml）——h 任务 set_field 奖励目标
     expect(mod.talentDefs?.['冰肌玉骨']).toBeDefined()
+  })
+
+  // ═══════ 端到端链路验证（2026-08-15 第三轮检查）═══════
+  // 用 example-mod 真实 TOML 数据跑完整链路（非注入数据）：
+  // 链路 1：spar 指令拦截 → 战斗 → 打赢李秋水 → script 奖励（小无相功秘籍）
+  // 链路 2：dialogue_end 触发 → 内嵌对话 → 选"好"（h_start_h）→ H 中高潮 5 次
+  //         → 天赋（冰肌玉骨）+ 物品（白虹掌力秘籍）
+  describe('端到端链路（E2E，example-mod 真实数据）', () => {
+    beforeAll(() => {
+      gameContext.setPlayer('player')
+      // 玩家实体（example-mod 已注册 player_character）——补战斗属性，
+      // 真实数据链路需要可参战的 player（hp 缺失会瞬间判负走失败分支）
+      const player = entitySystem.get('character', 'player') as any
+      if (!player) {
+        entitySystem.register('character', 'player', { id: 'player', name: '玩家', base: {} })
+      }
+      player.base = { ...(player.base ?? {}), hp: 500, attack: 100, defense: 50, speed: 60 }
+
+      // spar 指令注册（真实游戏由 h-core 在 game:plugins_loaded 时 loadInstructions
+      // 注册；测试时序下 mod 在 boot 之后才加载，指令未注册 → command trigger 无法
+      // 拦截。此处按 example-mod 数据补注册入口，模拟真实加载结果）
+      if (!commandRegistry.getById('spar')) {
+        const mod = modLoader.getMod()!
+        const spar = mod.instructions.find((i: any) => i.id === 'spar')
+        if (spar) {
+          commandRegistry.register({
+            id: 'spar', label: spar.label ?? '切磋', group: 'character_commands',
+            modes: spar.modes ?? ['exploration'], priority: 50,
+            timeCost: spar.time_cost ?? 10,
+            effects: [{ type: 'narrative_output', params: { text: '你与对方切磋起来。' } }],
+          } as any)
+        }
+      }
+    })
+
+    it('链路 1：spar 拦截 → 战斗胜利 → 获得小无相功秘籍 → 场景完成', async () => {
+      // 任务状态：C8 loadMod 后从未启动 → 可直接使用 TOML 数据（无需重置）
+      gameContext.setSelectedCharacterId('李秋水')
+      await apiSystem.call('quest', 'reindexTriggers')
+      errorReporter.clear()
+
+      // 执行 spar 指令 → 应被 trigger 拦截（条件：selected == 李秋水）
+      await commandExecutor.execute('spar', { gameStore: { player: { id: 'player' } }, uiStore: { selectedCharacterId: '李秋水' } } as any)
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'spar_liqiushui')).toBe('active')
+
+      // 模拟战斗胜利（combat 步骤已启动战斗；直接以 allies 胜利结束）
+      const combatCtx = await apiSystem.call('combat', 'getCombatContext')
+      expect(combatCtx).not.toBeNull()
+      await apiSystem.call('combat', 'end', 'allies', 'win')
+
+      // combat:end → on_win='reward' → quest_reward.js → addItem + next='' → 完成
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'spar_liqiushui')).toBe('completed')
+      const player = entitySystem.get('character', 'player') as any
+      expect(player.inventory ?? []).toEqual(
+        expect.arrayContaining([expect.objectContaining({ itemId: '小无相功秘籍' })])
+      )
+      expect(errorReporter.getErrors().length).toBe(0)
+    })
+
+    it('链路 2：dialogue_end → 内嵌对话 → 选"好"开始 H → 高潮 5 次 → 天赋+秘籍 → 完成', async () => {
+      gameContext.setSelectedCharacterId('李秋水')
+      await apiSystem.call('quest', 'reindexTriggers')
+      errorReporter.clear()
+
+      // dialogue_end → 场景启动 → story 步骤起内嵌对话（渲染 start 节点，等待选择）
+      await eventBus.emit('dialogue:end', { character: '李秋水' })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'h_liqiushui')).toBe('active')
+
+      // 玩家选择"好" → choice effects（h_start_h）→ 进入 H（h_scene 模式）
+      const { selectChoice } = await import('../../plugins/dialogue-system/index')
+      await selectChoice('e2e-entry', 0)
+      expect(gameContext.getCurrentMode()).toBe('h_scene')
+      const lqs = entitySystem.get('character', '李秋水') as any
+      expect(lqs.h_state).toBeDefined()
+
+      // H 中高潮 4 次 → 未达成；第 5 次 → done → reward → 完成
+      for (let i = 0; i < 4; i++) {
+        await eventBus.emit('h:orgasm', { character: '李秋水', partId: 1, level: 2, count: 1 })
+        expect(await apiSystem.call('quest', 'getSceneStatus', 'h_liqiushui')).toBe('active')
+      }
+      await eventBus.emit('h:orgasm', { character: '李秋水', partId: 1, level: 2, count: 1 })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'h_liqiushui')).toBe('completed')
+
+      // 奖励落位：李秋水获得天赋 + 玩家获得秘籍
+      expect(lqs.talents?.['冰肌玉骨']).toBe(1)
+      const player = entitySystem.get('character', 'player') as any
+      expect(player.inventory ?? []).toEqual(
+        expect.arrayContaining([expect.objectContaining({ itemId: '白虹掌力秘籍' })])
+      )
+      expect(errorReporter.getErrors().length).toBe(0)
+    })
   })
 })

@@ -39,6 +39,14 @@
 "气血" = { type = "number", default = 100, category = "base", display = true, display_group = "status" }
 "内力" = { type = "number", default = 50, category = "base", display = true, display_group = "status" }
 
+# combat 战斗属性（bindings.toml 的 [bindings.combat-base] 映射目标——hp/attack/defense/speed）：
+# 示例任务的"切磋"任务（quests/events/spar_liqiushui.toml）需要李秋水具备战斗属性，
+# 否则战斗按绑定缺省值（hp=0）瞬间判负，任务走失败分支（2026-08-15 链路验证修复）
+"hp" = { type = "number", default = 100, category = "base", display = false }
+"attack" = { type = "number", default = 10, category = "base", display = false }
+"defense" = { type = "number", default = 0, category = "base", display = false }
+"speed" = { type = "number", default = 5, category = "base", display = false }
+
 # ── 写法变体：type 不只 number，category 也可以自定义 ───────────────
 # 写法 A：string 类型属性（只支持 == != 比较）——用于身份/标签类设定
 # "出身" = { type = "string", default = "山村少年", category = "base", display = true }

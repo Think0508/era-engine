@@ -40,9 +40,11 @@ id = "reward"
 type = "script"
 script = "quest_reward.js"
 params = { set_talent = { target = "李秋水", path = "talents.冰肌玉骨", value = 1 }, item = "白虹掌力秘籍", lines = ["李秋水慵懒地靠在榻上：倒是个可人儿。"] }
+next = ""
 
 [[steps]]
 id = "tease"
 type = "script"
 script = "quest_reward.js"
 params = { lines = ["李秋水轻笑：就这点本事？"] }
+next = ""

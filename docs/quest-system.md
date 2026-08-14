@@ -263,7 +263,7 @@ next = "final"
 | `event` | 是 | 监听的事件名。当前内置监听 `h:orgasm`（payload `{character, partId, level, count, extra}`）、`h:end`（payload `{ally}`）；其他事件如需驱动，扩 `CUSTOM_EVENT_TYPES` 表 |
 | `script` | 是 | `mods/{mod}/scripts/*.js` 文件名。脚本在沙箱 `with(ctx)` 中执行，`payload` = 事件 payload（直接可读），返回 `'done' | 'pending'` |
 | `params` | 否 | 注入脚本 `ctx.params` |
-| `fail_event` | 否 | 失败事件：触发时脚本返回 `'pending'` → 走 `on_fail`；返回 `'done'` 不推进 |
+| `fail_event` | 否 | 失败事件：触发时脚本返回 `'pending'` → 走 `on_fail`；返回 `'done'`（目标实际已达成）→ 与主路径一致走 `next` |
 | `on_fail` | 否 | 失败时跳转的 step id；缺省 = 静默继续挂起 |
 
 - **语义**：`event` 触发 → 脚本返回 `'done'` → 走 `next`；脚本返回 `'pending'` → 继续挂起（计数存场景变量 `getVar`/`setVar`，随存档持久化）
@@ -388,7 +388,7 @@ ctx.api.call('quest', 'registerDynamicScene', sceneId, scene)     → void（动
 ctx.api.call('quest', 'startDynamicScene', sceneId, scene)        → void（注册 + 启动一步完成）
 ctx.api.call('quest', 'unregisterDynamicScene', sceneId)          → void（移除动态 scene）
 ctx.api.call('quest', 'reindexTriggers')                → void（C6 重建触发器索引）
-ctx.api.call('quest', 'registerScene', scene)           → void（C7 运行时注册 scene——写入 mod.quests，立即重建触发器索引 + 检查自动触发；重复 id 报错不覆盖；不做 TOML 加载期校验）
+ctx.api.call('quest', 'registerScene', scene)           → void（C7 运行时注册 scene——写入 mod.quests，立即重建触发器索引 + 检查自动触发；重复 id/空 steps 报错不覆盖；共用 validateSceneSteps 步骤图校验；带 dialogues 自动注册进 conversations.scene）
 ```
 
 ## Override 规则

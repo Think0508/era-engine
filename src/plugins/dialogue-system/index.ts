@@ -37,24 +37,6 @@ interface ConversationRuntime {
 // 通用机制：未来送别/移动场景、其他插件（隐奸隐藏等）均可注册。
 const sceneCharFilters = new Map<string, Array<(charId: string) => boolean>>()
 
-// 注释：口上条件求值失败去重上报（2026-08-13 审计——原 catch 静默淘汰口上行）
-const reportedLineConditionErrors = new Set<string>()
-
-// 注释：对话节点 lines 异常去重上报（audit-e C1/M5，2026-08-15——缺 lines 抛裸
-// TypeError 软死锁、lines 为字符串逐字符输出零报错；key = 类型|convId|nodeId）
-const reportedNodeLinesErrors = new Set<string>()
-
-// 注释：选项 condition 求值失败去重上报（audit-e I1——原静默隐藏选项零痕迹；
-// key = choice-cond|convId|nodeId|condition）
-const reportedChoiceCondErrors = new Set<string>()
-
-// 注释：效果执行管线错误去重上报（audit-e I2——外层 catch 吞掉的是 API 管线错误，
-// effect-system 内部单效果隔离不覆盖此类；key = 上下文|effects JSON）
-const reportedEffectErrors = new Set<string>()
-
-// 注释：场景 condition 求值失败去重上报（audit-e I7——key = scene-cond|sceneId|condition）
-const reportedSceneCondErrors = new Set<string>()
-
 let currentConversation: ConversationRuntime | null = null
 
 // 注释：onLoad——注册 effect types
@@ -193,33 +175,37 @@ export function onEnable(ctx: PluginContext): void {
   })
 }
 
+// 注释：M5（audit-h）——对话效果执行上下文统一构造（node/choice/line 三处共用）。
+// 语义：sourceId = 玩家；targetIds = 对话对象角色（character 型对话取 ref.character，
+// scene/quest 型对话无固定角色 → 回退当前 UI 选中）；uiStore 供 effect 显式写
+// target='selected' 时解析（effect-system resolveTarget 读 ctx.uiStore?.selectedCharacterId）
+function buildDialogueExecCtx(charId: string | null | undefined): { sourceId: string | null; _targetIds: string[]; uiStore: { selectedCharacterId: string | null } } {
+  const gc = gameContext.getContext()
+  const dialogCharId = charId ?? gc.selectedCharacterId ?? null
+  return {
+    sourceId: gc.player?.id ?? null,
+    _targetIds: dialogCharId ? [dialogCharId] : [],
+    uiStore: { selectedCharacterId: dialogCharId },
+  }
+}
+
 async function executeLineEffects(line: ReactiveLine | null, charId?: string | null): Promise<void> {
   if (!line?.effects?.length) return
   try {
     // 注释：G2-I-1——补口上执行上下文（原空 {}：effect target='selected'/'self'
-    // 全部解析失败 → 口上行 effects 文档承诺功能实际失效且刷未去重 warning）。
-    // 与 node/choice effects 对齐：sourceId = 玩家、targetIds = 说话角色
-    const gc = gameContext.getContext()
-    const lineCharId = charId ?? null
-    const execCtx = {
-      sourceId: gc.player?.id ?? null,
-      _targetIds: lineCharId ? [lineCharId] : [],
-      uiStore: { selectedCharacterId: lineCharId },
-    }
-    await apiSystem.call('effect-system', 'execute', line.effects, execCtx)
+    // 全部解析失败 → 口上行 effects 文档承诺功能实际失效）
+    await apiSystem.call('effect-system', 'execute', line.effects, buildDialogueExecCtx(charId ?? null))
   } catch (err) {
     // 注释：audit-e I2——外层 catch 吞掉的是 API 管线错误（effect-system 未启用等，
     // effect-system 内部不会上报这类错误）→ 去重上报 warning，保留"不阻断口上输出"语义
     const key = `line-effects|${JSON.stringify(line.effects)}`
-    if (!reportedEffectErrors.has(key)) {
-      reportedEffectErrors.add(key)
-      errorReporter.report({
+    errorReporter.reportDedup(key, {
         source: 'dialogue-system',
         severity: 'warning',
         message: `口上效果执行失败（已跳过，不阻断输出）：${err instanceof Error ? err.message : String(err)}`,
         suggestion: '检查 effect-system 插件是否启用、effects 数据类型是否正确',
       })
-    }
+
   }
 }
 
@@ -268,15 +254,13 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
           // 注释：audit-e I7——condition 求值失败原静默跳过（依赖 quest 侧
           // checkAutoStart 巧合补报，且 quest 侧晚一个事件批次）→ 此处直接去重上报
           const key = `scene-cond|${sid}|${sceneDef.condition}`
-          if (!reportedSceneCondErrors.has(key)) {
-            reportedSceneCondErrors.add(key)
-            errorReporter.report({
+          errorReporter.reportDedup(key, {
               source: 'dialogue-system',
               severity: 'warning',
               message: `任务 '${sid}' 的场景 condition 求值失败（自动触发跳过）：${err instanceof Error ? err.message : String(err)}`,
               suggestion: '检查场景 condition 表达式（字段路径/前提拼写）',
             })
-          }
+
         }
       }
     }
@@ -420,15 +404,13 @@ function pickWeightedLine(pool: WeightedCandidate[], premiseTargetId?: string): 
       try {
         if (!conditionEngine.evaluate(cond, premiseCtx)) continue
       } catch (err) {
-        if (!reportedLineConditionErrors.has(cond)) {
-          reportedLineConditionErrors.add(cond)
-          errorReporter.report({
+        errorReporter.reportDedup(cond, {
             source: 'dialogue-system',
             severity: 'warning',
             message: `口上条件求值失败（该行被跳过）：${err instanceof Error ? err.message : String(err)}`,
             suggestion: '检查口上 condition 表达式（字段路径/前提拼写）',
           })
-        }
+
         continue
       }
       // 注释：前提权重（premise(X) 引用提取 → weightAllToOne；无条件/无前提引用 → 静态权重）
@@ -540,26 +522,22 @@ async function renderNodeInner(nodeId: string, speakerOverride?: string): Promis
   const rawLines = node.lines
   if (rawLines == null) {
     const key = `lines-missing|${currentConversation.convId}|${nodeId}`
-    if (!reportedNodeLinesErrors.has(key)) {
-      reportedNodeLinesErrors.add(key)
-      errorReporter.report({
+    errorReporter.reportDedup(key, {
         source: 'dialogue-system',
         severity: 'warning',
         message: `对话 '${currentConversation.convId}' 节点 '${nodeId}' 缺少 lines 字段（按空行处理）`,
         suggestion: '对话节点声明 lines = ["一句台词"]（纯选择节点也建议至少一行空台词）',
       })
-    }
+
   } else if (!Array.isArray(rawLines)) {
     const key = `lines-type|${currentConversation.convId}|${nodeId}`
-    if (!reportedNodeLinesErrors.has(key)) {
-      reportedNodeLinesErrors.add(key)
-      errorReporter.report({
+    errorReporter.reportDedup(key, {
         source: 'dialogue-system',
         severity: 'warning',
         message: `对话 '${currentConversation.convId}' 节点 '${nodeId}' 的 lines 必须是数组（当前是 ${typeof rawLines}，按单行处理）`,
         suggestion: 'lines 用表数组写法：lines = ["一句台词"]（单字符串会被逐字符输出）',
       })
-    }
+
   }
   const lines = Array.isArray(rawLines) ? rawLines : (rawLines == null ? [] : [rawLines])
   for (const line of lines) {
@@ -572,30 +550,19 @@ async function renderNodeInner(nodeId: string, speakerOverride?: string): Promis
   if (node.effects?.length) {
     try {
       // 注释：链路修复（2026-08-15）——原 execCtx 空 {}：effect target='selected'
-      // 解析读 uiStore（对话触发时的 UI 选中，可能不是对话角色）、h_start_h 等
-      // 依赖 sourceId 的 effect 直接失效（sourceId undefined）——补对话上下文：
-      // sourceId = 玩家，targetIds = 对话角色（scene/quest 类型对话取当前 UI 选中）
-      const gc = gameContext.getContext()
-      const dialogCharId = charId ?? gc.selectedCharacterId ?? null
-      const execCtx = {
-        sourceId: gc.player?.id ?? null,
-        _targetIds: dialogCharId ? [dialogCharId] : [],
-        uiStore: { selectedCharacterId: dialogCharId },
-      }
-      await apiSystem.call('effect-system', 'execute', node.effects, execCtx)
+      // 解析读 uiStore、h_start_h 等依赖 sourceId 的 effect 直接失效——补对话上下文
+      await apiSystem.call('effect-system', 'execute', node.effects, buildDialogueExecCtx(charId))
     } catch (err) {
       // 注释：audit-e I2——外层 catch 吞掉的是 API 管线错误（effect-system 未启用等，
       // effect-system 内部不会上报这类错误）→ 去重上报 warning，保留"不阻断对话"语义
       const key = `node-effects|${currentConversation.convId}|${nodeId}|${JSON.stringify(node.effects)}`
-      if (!reportedEffectErrors.has(key)) {
-        reportedEffectErrors.add(key)
-        errorReporter.report({
+      errorReporter.reportDedup(key, {
           source: 'dialogue-system',
           severity: 'warning',
           message: `对话 '${currentConversation.convId}' 节点 '${nodeId}' 的效果执行失败（已跳过，不阻断对话）：${err instanceof Error ? err.message : String(err)}`,
           suggestion: '检查 effect-system 插件是否启用、effects 数据类型是否正确',
         })
-      }
+
     }
   }
 
@@ -614,15 +581,13 @@ async function renderNodeInner(nodeId: string, speakerOverride?: string): Promis
         // 注释：audit-e I1——选项 condition 求值失败静默淘汰该选项（玩家永远看不到、
         // 零上报）→ 镜像口上条件（reportedLineConditionErrors）的去重上报模式
         const key = `choice-cond|${convId}|${convNodeId}|${c.condition}`
-        if (!reportedChoiceCondErrors.has(key)) {
-          reportedChoiceCondErrors.add(key)
-          errorReporter.report({
+        errorReporter.reportDedup(key, {
             source: 'dialogue-system',
             severity: 'warning',
             message: `对话 '${convId}' 节点 '${convNodeId}' 的选项条件求值失败（该选项被隐藏）：${err instanceof Error ? err.message : String(err)}`,
             suggestion: '检查选项 condition 表达式（字段路径/前提拼写）',
           })
-        }
+
         return false
       }
     })
@@ -653,37 +618,26 @@ async function renderNodeInner(nodeId: string, speakerOverride?: string): Promis
 
 // 注释：执行 choice 级 effects（链路修复 2026-08-15——原 choice.effects 死功能：
 // 两个选择通道（dialogue:select 事件 / selectChoice）都只跳 node，choice 级 effects
-// 从未执行。执行上下文与 node effects 一致：sourceId = 玩家、targetIds = 对话角色）
+// 从未执行。执行上下文与 node/line effects 统一（buildDialogueExecCtx））
 async function executeChoiceEffects(choice: { effects?: any[] }): Promise<void> {
   if (!currentConversation || !choice.effects?.length) return
   const charId = currentConversation.ref.type === 'character' ? currentConversation.ref.character : undefined
-  // 注释：target='selected' 在对话上下文 = 对话对象（scene/quest 类型对话取 UI 选中）
-  const gc = gameContext.getContext()
-  const dialogCharId = charId ?? gc.selectedCharacterId ?? null
-  const execCtx = {
-    sourceId: gc.player?.id ?? null,
-    _targetIds: dialogCharId ? [dialogCharId] : [],
-    uiStore: { selectedCharacterId: dialogCharId },
-  }
   try {
-    await apiSystem.call('effect-system', 'execute', choice.effects, execCtx)
+    await apiSystem.call('effect-system', 'execute', choice.effects, buildDialogueExecCtx(charId))
   } catch (err) {
     const key = `choice-effects|${currentConversation.convId}|${currentConversation.nodeId}|${JSON.stringify(choice.effects)}`
-    if (!reportedEffectErrors.has(key)) {
-      reportedEffectErrors.add(key)
-      errorReporter.report({
+    errorReporter.reportDedup(key, {
         source: 'dialogue-system',
         severity: 'warning',
         message: `对话 '${currentConversation.convId}' 节点 '${currentConversation.nodeId}' 的选项效果执行失败（已跳过，不阻断对话）：${err instanceof Error ? err.message : String(err)}`,
         suggestion: '检查 effect-system 插件是否启用、effects 数据类型是否正确',
       })
-    }
+
   }
 }
 
-// 注释：玩家选择 choice——由 UI（FullscreenOutput）经 dialogue:select 事件驱动推进
-// （2026-08-13 实现——本标记为历史遗留，对话分支推进已可达）
-// 依赖 dialogue UI 交互通道设计（随 dialogue-system 补齐，勿局部修补）。
+// 注释：玩家选择 choice——生产 UI 走 dialogue:select 事件通道（本函数保留供
+// 测试/脚本化调用，行为与事件通道一致：过滤后索引 + choice effects + 终端处理）
 export async function selectChoice(entryId: string, choiceIndex: number): Promise<void> {
   if (!currentConversation) return
   // 注释：G1-I-3——改从 pendingChoices（condition 过滤后的可见列表）取值——

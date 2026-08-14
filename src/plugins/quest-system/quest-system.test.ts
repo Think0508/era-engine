@@ -425,5 +425,16 @@ describe('quest-system combat 步骤推进（B3）', () => {
       await eventBus.emit('h:end', { ally: 'player' })
       expect(await apiSystem.call('quest', 'getSceneStatus', 'custom_obj_quest')).toBe('completed')
     })
+
+    it('objective 引用不存在的脚本 → 上报 warning 且任务保持 active（不误推进）', async () => {
+      installCustomQuest({ type: 'custom', event: 'h:orgasm', script: 'no_such_script.js' })
+      await apiSystem.call('quest', 'start', 'custom_obj_quest')
+      await eventBus.emit('h:orgasm', { character: '李秋水', partId: 1, level: 2, count: 1 })
+      const warn = errorReporter.getErrors().find(
+        e => e.severity === 'warning' && e.source === 'quest-system' && e.message.includes('no_such_script.js'),
+      )
+      expect(warn).toBeDefined()
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'custom_obj_quest')).toBe('active')
+    })
   })
 })

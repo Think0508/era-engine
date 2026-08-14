@@ -505,6 +505,7 @@ async function checkCustomObjectives(eventType: string, payload: any): Promise<v
         (k) => runtime.vars[k], (k, v) => { runtime.vars[k] = v })
       let result: any = 'pending'
       if (scriptCode) result = await runQuestScript(scriptCode, ctx)
+      else if (obj.script) reportMissingCustomScript(sceneId, step.id, obj.script)
       if (result !== 'done' && obj.on_fail) {
         await advanceToStep(sceneId, obj.on_fail)
       }
@@ -517,10 +518,27 @@ async function checkCustomObjectives(eventType: string, payload: any): Promise<v
       (k) => runtime.vars[k], (k, v) => { runtime.vars[k] = v })
     let result: any = 'pending'
     if (scriptCode) result = await runQuestScript(scriptCode, ctx)
+    else if (obj.script) reportMissingCustomScript(sceneId, step.id, obj.script)
     if (result === 'done' && step.next) {
       await advanceToStep(sceneId, step.next)
     }
   }
+}
+
+// 注释：custom objective 引用脚本不存在 → 去重上报（2026-08-14 review Minor-1——
+// 原实现静默 pending 导致任务永久挂起且零诊断，违反"禁止静默失败"铁律。
+// 与 script 步骤（executeStep case 'script'）的缺失分支对齐，仅多一次性去重）
+const reportedMissingCustomScripts = new Set<string>()
+
+function reportMissingCustomScript(sceneId: string, stepId: string, script: string): void {
+  const key = `${sceneId}|${stepId}|${script}`
+  if (reportedMissingCustomScripts.has(key)) return
+  reportedMissingCustomScripts.add(key)
+  errorReporter.report({
+    source: 'quest-system', severity: 'warning',
+    message: `任务 '${sceneId}' 步骤 '${stepId}' 的 custom objective 引用脚本 '${script}' 不存在（目标将保持挂起）`,
+    suggestion: '检查 mods/{mod}/scripts/ 目录下是否有该文件',
+  })
 }
 
 // 注释：检查所有 scene 的 auto_start_condition / condition

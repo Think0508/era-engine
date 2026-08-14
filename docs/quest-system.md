@@ -73,10 +73,12 @@ else = "retry"                     # 可选：脚本返回 false 时跳转
 |----------|------|
 | `string` | 跳转到该 step id（`advanceToStep`） |
 | `false` | 走 `step.else`（无 else 走 `step.next`） |
-| `undefined`/其他 | 走 `step.next`（无 next = 场景完成） |
-| 抛错 | errorReporter 上报（脚本异常已隔离）+ 走 `step.next`（无 next = 场景完成） |
+| `undefined`/其他 | 走 `step.next`（无 next = 场景保持 active 挂起） |
+| 抛错 | errorReporter 上报（脚本异常已隔离）+ 走 `step.next`（无 next = 场景保持 active 挂起） |
 
-脚本不存在时 → warning 上报 + 走 `step.next`（无 next = 场景完成）。
+脚本不存在时 → warning 上报 + 走 `step.next`（无 next = 场景保持 active 挂起）。
+
+场景完成只在 `advanceToStep` 找不到目标步骤时发生（`next`/`else`/返回值指向不存在的步骤 id → 完成）——与其它步骤类型一致；无 next 只是挂起，不会完成。
 
 **脚本内可用 ctx**（沙箱 `with(ctx)` 包裹，禁止访问全局对象/DOM/文件系统；await 只允许瞬间 Promise，禁止跨存档点挂起）：
 
@@ -92,6 +94,8 @@ rand(min, max)                    // [min, max] 闭区间随机整数
 
 - 沙箱实现：`src/plugins/quest-system/script-runner.ts`（`runQuestScript` / `makeScriptCtx` / `QuestScriptCtx`）
 - ⚠️ `Error` 等全局构造器被沙箱屏蔽（`new Error()` 不可用）——脚本内抛错请用 `throw '文本'`，message 经 `String(err)` 上报
+- ⚠️ **未声明的变量赋值会被静默吞掉**（`x = 1` 不声明 = 无效，不报错）——所有变量必须先声明。推荐统一用 `let`/`const` 声明（`var` 在此沙箱 async 包装下可用，但与其他沙箱实现存在差异，不推荐）
+- ⚠️ 所有全局对象（`Math`/`JSON`/`Date` 等）不可用——随机数用 `rand(min, max)`（[min, max] 闭区间整数，见上），不要依赖任何全局
 - 脚本文件在 `loadMod` 时按文件名索引进 `LoadedMod.scripts`（glob `query:'?raw'`，Vite 8 语法）
 
 ## Mod 作者使用

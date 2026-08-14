@@ -11,6 +11,7 @@ import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
 import { commandRegistry } from '../../core/command-registry'
 import { errorReporter } from '../../core/error-reporter'
+import { narrativeLog } from '../../core/narrative-log'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { getGameStateProviders } from '../../core/save-system'
 import type { Quest } from '../../core/mod-loader'
@@ -292,6 +293,9 @@ describe('quest-system combat 步骤推进（B3）', () => {
         steps: [
           { id: 's1', type: 'script', script: 'quest_test.js', params: { item: '小无相功秘籍' }, next: 'final', ...step },
           { id: 'final', type: 'reward', effects: [], next: 'not_exist' },
+          // 注释（C3 Fix Round）：final2 只被 step.next 指向——else 与 next 指向不同步骤，
+          // 分支语义才能被独立钉住（false→else='final' vs 抛错→next='final2'）
+          { id: 'final2', type: 'reward', effects: [], next: 'not_exist' },
         ],
       })
     }
@@ -309,6 +313,8 @@ describe('quest-system combat 步骤推进（B3）', () => {
       installScriptQuest()
       await apiSystem.call('quest', 'start', 'script_test_quest')
       expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+      // 注释（C3 Fix Round）：钉住 params 注入 + say 输出（narrative-log 可读）
+      expect(narrativeLog.getEntries().some(e => e.text === '获得 小无相功秘籍')).toBe(true)
     })
 
     it('script 返回 false → 走 else；脚本抛错 → 上报 + 走 next', async () => {
@@ -318,17 +324,34 @@ describe('quest-system combat 步骤推进（B3）', () => {
       // new Error() 在脚本内不可用（"Error is not a constructor"），故用字符串 throw，
       // runQuestScript 的 catch 对非 Error 抛错走 String(err)（message 仍含 'boom'）
       mod.scripts.set('quest_throw.js', `throw 'boom'`)
-      installScriptQuest({ script: 'quest_fail.js', else: 'final' })
-      await apiSystem.call('quest', 'start', 'script_test_quest')
-      expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
-      errorReporter.clear()
-      // 注释（偏离 brief 原文）：同一测试内第二次 start 会被 isCompleted 跳过（scene 已完成
-      // 不再启动——任务设计语义），需先清完成记录才能跑第二次
-      gameContext.reset()
-      installScriptQuest({ script: 'quest_throw.js', else: 'final' })
-      await apiSystem.call('quest', 'start', 'script_test_quest')
-      expect(errorReporter.getErrors().some(e => e.message.includes('boom'))).toBe(true)
-      expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+      // 注释（C3 Fix Round）：else='final' 与 next='final2' 指向不同步骤——监听 scene:updated
+      // 记录实际进入的步骤，两条分支各自独立断言（此前 else 与 next 同指 final，无法判别）
+      const visited: string[] = []
+      const onSceneUpdated = (payload: any) => { visited.push(payload.step) }
+      eventBus.on('scene:updated', onSceneUpdated)
+      try {
+        // 分支 1：return false → else='final'（next='final2' 必须不被走）
+        installScriptQuest({ script: 'quest_fail.js', else: 'final', next: 'final2' })
+        await apiSystem.call('quest', 'start', 'script_test_quest')
+        expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+        expect(visited).toContain('final')
+        expect(visited).not.toContain('final2')
+
+        // 分支 2：抛错 → 上报 + 走 next='final2'（无 else——else 分支不许被走）
+        visited.length = 0
+        errorReporter.clear()
+        // 注释（偏离 brief 原文）：同一测试内第二次 start 会被 isCompleted 跳过（scene 已完成
+        // 不再启动——任务设计语义），需先清完成记录才能跑第二次
+        gameContext.reset()
+        installScriptQuest({ script: 'quest_throw.js', next: 'final2' })
+        await apiSystem.call('quest', 'start', 'script_test_quest')
+        expect(errorReporter.getErrors().some(e => e.message.includes('boom'))).toBe(true)
+        expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+        expect(visited).toContain('final2')
+        expect(visited).not.toContain('final')
+      } finally {
+        eventBus.off('scene:updated', onSceneUpdated)
+      }
     })
 
     it('脚本可读场景变量、可写场景变量、可调 API', async () => {

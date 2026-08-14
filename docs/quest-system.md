@@ -43,6 +43,16 @@ next = "find_clue"
 
 `combat:end` 只推进 `step.enemies` 与本次战斗 `participants` **有交集**的战斗——其他战斗（无关敌人/其他场景触发的战斗）结束不推进该步骤，避免多场战斗串步。
 
+### 场景变量（C2，2026-08-14）
+
+任务间通信走数据：每个活跃 scene 带一个 `vars` 字典（`Record<string, any>`），随存档序列化/恢复。
+
+- **写入**：`set_var` effect —— `{ type = "set_var", params = { scene?, var = "key", value = ... } }`；`scene` 省略 = 最新激活场景。也可用 API `ctx.api.call('quest', 'setVar', sceneId, key, value)`
+- **读取**：API `ctx.api.call('quest', 'getVar', sceneId, key)`（同步）；条件路径 `quest.{sceneId}.var.{name}`（如 `quest.切磋任务.var.won_duel == 'yes'`、`quest.采集任务.var.count >= 5`）
+- **初始值**：任务数据顶层 `vars = { won_duel = "no" }` 预置，启动时展开进运行时
+- **条件校验**：`quest.{id}.var.{name}` 已在条件字典注册（加载期可校验、自动进手册）
+- ⚠️ 场景完成（从 activeScenes 移除）后 vars 不可读（返回 undefined）——读方需保证写方 scene 仍激活；跨任务通信在"两个任务都激活"的时间窗内进行
+
 ## Mod 作者使用
 
 放 quests/main/ 或 quests/side/。用 `auto_start_condition` 或 `start_quest` effect 启动。
@@ -55,6 +65,8 @@ ctx.api.call('quest', 'getActiveScenes')                → string[]（活跃 sc
 ctx.api.call('quest', 'getSceneStatus', sceneId)        → 'not_started' | 'active' | 'completed'
 ctx.api.call('quest', 'advanceStep', sceneId, stepId)   → void
 ctx.api.call('quest', 'checkTriggerConditions')         → string[]（未开始且带 condition 的 scene）
+ctx.api.call('quest', 'getVar', sceneId, key)           → any（场景变量；不存在 → undefined）
+ctx.api.call('quest', 'setVar', sceneId, key, value)    → void（写场景变量）
 ```
 
 ## Override 规则

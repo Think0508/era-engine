@@ -12,6 +12,7 @@ import { SlotRegistry } from '../../ui/slots/slot-registry'
 import { commandRegistry } from '../../core/command-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
+import { getGameStateProviders } from '../../core/save-system'
 import type { Quest } from '../../core/mod-loader'
 import { parseConversationRef, resolveConversation } from '../../core/mod-loader'
 
@@ -226,6 +227,57 @@ describe('quest-system combat 步骤推进（B3）', () => {
       // 相关战斗 → 推进
       await eventBus.emit('combat:end', { winner: 'allies', outcome: 'win', participants: ['player', 'enemy_bandit'] })
       expect(await apiSystem.call('quest', 'getSceneStatus', 'ctx_test_quest')).toBe('completed')
+    })
+  })
+
+  // ═══════ C2：场景变量（quest-script C' 模型 Task 2）═══════
+  describe('场景变量（C2）', () => {
+    // 注释：terminal=true → final 步骤无 next（scene 保持 active，vars 可读/可序列化）；
+    // 默认完整链路 → 条件命中后走完（next='not_exist'）→ 完成（证明 set_var + quest.{id}.var.{name} 分支正确）
+    function installVarQuest(opts: { terminal?: boolean } = {}) {
+      const mod = modLoader.getMod()!
+      mod.quests.set('var_test_quest', {
+        id: 'var_test_quest', title: '变量测试', type: 'main', display: 'hidden',
+        steps: [
+          { id: 'a', type: 'reward', effects: [
+              { type: 'set_var', params: { scene: 'var_test_quest', var: 'line', value: 'x' } },
+            ], next: 'b' },
+          { id: 'b', type: 'condition', condition: "quest.var_test_quest.var.line == 'x'", next: 'final', else: 'a' },
+          opts.terminal
+            ? { id: 'final', type: 'reward', effects: [] }
+            : { id: 'final', type: 'reward', effects: [], next: 'not_exist' },
+        ],
+      })
+    }
+
+    afterEach(() => {
+      modLoader.getMod()!.quests.delete('var_test_quest')
+    })
+
+    it('set_var → 条件路径可读 → 分支正确（完整链路走到完成）', async () => {
+      installVarQuest()
+      await apiSystem.call('quest', 'start', 'var_test_quest')
+      // 完成 = 条件步骤求值 true（若 quest.{id}.var.{name} 读不到变量 → else 死循环/卡死）
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'var_test_quest')).toBe('completed')
+    })
+
+    it('getVar/setVar 读写 + 场景变量随存档序列化/恢复', async () => {
+      installVarQuest({ terminal: true })
+      await apiSystem.call('quest', 'start', 'var_test_quest')
+      // set_var effect 写入 → getVar API 可读
+      expect(await apiSystem.call('quest', 'getVar', 'var_test_quest', 'line')).toBe('x')
+      // setVar API 手动改值 → 写生效
+      await apiSystem.call('quest', 'setVar', 'var_test_quest', 'line', 'y')
+      expect(await apiSystem.call('quest', 'getVar', 'var_test_quest', 'line')).toBe('y')
+      // 序列化：vars 随 activeScenes 存档（provider 经 save-system 导出查询）
+      const provider = getGameStateProviders().find(p => p.id === 'quest-system')
+      expect(provider).toBeDefined()
+      const data = provider!.serialize()
+      const entry = data.activeScenes.find((e: any) => e.sceneId === 'var_test_quest')
+      expect(entry?.vars).toEqual({ line: 'y' })
+      // 恢复：读档后 vars 保留
+      provider!.restore(data)
+      expect(await apiSystem.call('quest', 'getVar', 'var_test_quest', 'line')).toBe('y')
     })
   })
 })

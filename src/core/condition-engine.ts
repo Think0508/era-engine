@@ -6,6 +6,7 @@
 
 import type { GameContext } from './types'
 import { getEntityAttr } from './entity-utils'
+import { apiSystem } from './api'
 
 // ============ Tokenizer ============
 
@@ -138,7 +139,7 @@ interface NotNode { kind: 'not'; child: ExprNode }
 type OperandNode = PathNode | LitNode | PremiseNode
 type ExprNode = OperandNode | CmpNode | BoolNode | NotNode
 
-const ROOT_RE = /^(player|selected|target|character|location|game|inventory)(\.|$)/
+const ROOT_RE = /^(player|selected|target|character|location|game|inventory|quest)(\.|$)/
 
 class Parser {
   private tokens: Token[]
@@ -271,6 +272,24 @@ function resolvePath(node: PathNode, ctx: GameContext): any {
         current = ctx.getEntity('character', ctx.selectedCharacterId)
         if (!current) return undefined
         continue
+      }
+      // 注释：C2——quest 域（任务状态/场景变量）——quest-system 未启用或场景不存在时
+      // callSync 抛错 → 容错返回 undefined（走默认值机制，不阻断求值）
+      if (part === 'quest') {
+        const sceneId = parts[i + 1]
+        const field = parts[i + 2]  // 'status' 或 'var'
+        i += 2
+        try {
+          if (field === 'var') {
+            const varKey = parts[i + 1]
+            i++
+            const v = apiSystem.callSync('quest', 'getVar', sceneId, varKey)
+            return v ?? undefined
+          }
+          return apiSystem.callSync('quest', 'getSceneStatus', sceneId)
+        } catch {
+          return undefined
+        }
       }
     }
 

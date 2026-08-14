@@ -24,7 +24,9 @@ class ConditionRegistry {
     { path: 'game.time.month', type: 'number', description: 'Current month', operators: '> < >= <= == !=', source: 'engine' },
     // 注释：当前模式（模式栈栈顶，B1 修复）——战斗门控条件 game.mode == 'combat' 取值源
     { path: 'game.mode', type: 'string', description: 'Current mode (mode stack top)', operators: '== !=', source: 'engine' },
-    { path: 'quest.{id}.status', type: 'string', description: 'Quest status', operators: '== !=', source: 'engine' }
+    { path: 'quest.{id}.status', type: 'string', description: 'Quest status', operators: '== !=', source: 'engine' },
+    // 注释：C2——场景变量（任务自定义 key，比较用 == !=；值可为任意 JSON 类型）
+    { path: 'quest.{id}.var.{name}', type: 'any', description: 'Quest scene variable (custom key)', operators: '== !=', source: 'engine' }
   ]
   // 注释：结构路径惯例（AGENTS §8 路径结构）——数据化字段（talents/abilities/relations 等）按结构校验
   private structuralFields: ConditionField[] = [

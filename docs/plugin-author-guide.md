@@ -347,6 +347,12 @@ ctx.api.call('quest', 'registerDynamicScene', sceneId, scene) // → void（注�
 ctx.api.call('quest', 'startDynamicScene', sceneId, scene)    // → void（注册 + 启动一步完成）
 ctx.api.call('quest', 'unregisterDynamicScene', sceneId)      // → void（移除动态 scene——追捕结束/读档重建）
 // ⚠️ 动态 scene 不随存档序列化：注册方（如 confinement）负责在存档 restore 后按原样重建
+// 场景变量（C2，2026-08-14）——任务间通信走数据；同步实现（条件引擎 resolvePath 同步求值链直接调用）
+ctx.api.call('quest', 'getVar', sceneId, key)                 // → any（场景变量值；场景不存在/未设置 → undefined）
+ctx.api.call('quest', 'setVar', sceneId, key, value)          // → void（写场景变量；scene 必须已激活）
+// 对应 effect：set_var = { type = "set_var", params = { scene?, var = "key", value = ... } }
+//   scene 省略 → 最新激活场景
+// 条件路径：quest.{sceneId}.var.{name}（如 quest.切磋任务.var.won_duel == 'yes'）；quest.{sceneId}.status 同域
 ```
 
 ### H 系统插件

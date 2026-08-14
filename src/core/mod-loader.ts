@@ -367,6 +367,7 @@ export interface Quest {
   condition?: string    // 可选：自动触发条件（event 和 quest 通用）
   display?: string      // "current" 显示剧情面板 / "hidden" 全程隐藏 / "log" 只记大事志
   visible?: string      // 可选：条件——满足时 quest 在 UI 中可见
+  vars?: Record<string, any>  // C2：场景变量初始值（任务间通信走数据）
   steps: QuestStep[]
 }
 

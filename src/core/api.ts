@@ -49,6 +49,24 @@ class ApiSystem {
     return fn(...args)
   }
 
+  // 注释：同步调用已注册 API——仅限同步实现的方法（如 quest-system 的 getSceneStatus/getVar）；
+  // 异步方法（返回 Promise）抛明确错误。条件引擎 resolvePath 等同步求值链用
+  callSync(namespace: string, method: string, ...args: any[]): any {
+    const ns = this.registry.get(namespace)
+    if (!ns) {
+      throw new Error(`API namespace '${namespace}' does not exist`)
+    }
+    const fn = ns[method]
+    if (!fn) {
+      throw new Error(`API method '${namespace}.${method}' does not exist`)
+    }
+    const result = fn(...args)
+    if (result instanceof Promise) {
+      throw new Error(`API method '${namespace}.${method}' is async and cannot be called synchronously`)
+    }
+    return result
+  }
+
   has(namespace: string, method: string): boolean {
     const ns = this.registry.get(namespace)
     return !!ns && method in ns

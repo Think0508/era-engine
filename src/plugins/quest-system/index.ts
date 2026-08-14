@@ -22,6 +22,7 @@ interface SceneRuntime {
   currentStepId: string
   completedSteps: string[]
   objectiveProgress: Map<string, number>
+  vars: Record<string, any>      // C2：场景变量
 }
 
 // 注释：所有活跃 scene 的运行时
@@ -52,6 +53,15 @@ export function onLoad(_ctx: PluginContext): void {
     if (questId) await startScene(questId)
     return true
   })
+
+  // 注释：set_var——C2 写场景变量（任务间通信走数据）
+  // params: { scene?, var, value }——scene 省略 = 最新激活场景
+  effectTypeRegistry.register('set_var', async (params: any) => {
+    const sceneId = params.scene ?? Array.from(activeScenes.keys()).pop()
+    const r = sceneId ? activeScenes.get(sceneId) : undefined
+    if (r) r.vars[params.var] = params.value
+    return true
+  })
 }
 
 export function onEnable(ctx: PluginContext): void {
@@ -64,6 +74,15 @@ export function onEnable(ctx: PluginContext): void {
       if (gameContext.isCompleted(sceneId)) return 'completed'
       if (activeScenes.has(sceneId)) return 'active'
       return 'not_started'
+    },
+    // 注释：C2——场景变量读写（同步——条件引擎 resolvePath 同步求值链直接调用；
+    // 场景不存在/无该变量 → undefined）
+    getVar: (sceneId: string, key: string): any => {
+      return activeScenes.get(sceneId)?.vars?.[key]
+    },
+    setVar: (sceneId: string, key: string, value: any): void => {
+      const r = activeScenes.get(sceneId)
+      if (r) r.vars[key] = value
     },
     advanceStep: async (sceneId: string, nextStepId: string): Promise<void> => {
       await advanceToStep(sceneId, nextStepId)
@@ -148,6 +167,7 @@ export function onEnable(ctx: PluginContext): void {
         currentStepId: r.currentStepId,
         completedSteps: [...r.completedSteps],
         objectiveProgress: Object.fromEntries(r.objectiveProgress),
+        vars: { ...(r.vars ?? {}) },
       })),
       sceneStack: sceneStack.map(s => ({ ...s })),
     }),
@@ -160,6 +180,7 @@ export function onEnable(ctx: PluginContext): void {
           currentStepId: entry.currentStepId,
           completedSteps: Array.isArray(entry.completedSteps) ? entry.completedSteps : [],
           objectiveProgress: new Map(Object.entries(entry.objectiveProgress ?? {})),
+          vars: { ...(entry.vars ?? {}) },
         })
       }
       for (const s of data?.sceneStack ?? []) {
@@ -205,6 +226,8 @@ async function startScene(sceneId: string): Promise<void> {
     currentStepId: scene.steps[0]?.id ?? 'start',
     completedSteps: [],
     objectiveProgress: new Map(),
+    // C2：场景变量——scene 数据里的初始 vars 展开进运行时（task 数据可预置变量）
+    vars: { ...(scene.vars ?? {}) },
   }
   activeScenes.set(sceneId, runtime)
   await eventBus.emit('scene:started', { sceneId })

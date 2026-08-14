@@ -650,3 +650,43 @@ describe('quest-system combat 步骤推进（B3）', () => {
     })
   })
 })
+
+// ═══════ C8：example-mod 示例任务集成验收（quest-script C' 模型 Task 8）═══════
+// 注释：必须放文件最末尾——loadMod('example-mod') 会替换 modLoader 的全局 mod，
+// 影响同文件后续用例（文件已结束，无后续用例，故不再恢复 test-mod）
+describe('example-mod 示例任务（C8）', () => {
+  beforeAll(async () => {
+    entitySystem.clear()
+    errorReporter.clear()
+    const mod = await modLoader.loadMod('example-mod')
+    bindingResolver.loadBindings(mod.bindings)
+  })
+
+  it('两个李秋水任务数据加载无报错、引用可解析', async () => {
+    const mod = modLoader.getMod()!
+    const spar = mod.quests.get('spar_liqiushui')
+    const h = mod.quests.get('h_liqiushui')
+    expect(spar).toBeDefined()
+    expect(h).toBeDefined()
+    // spar：command trigger 声明 + combat → script 奖励骨架
+    expect(spar!.triggers?.[0]?.type).toBe('command')
+    expect(spar!.triggers?.[0]?.command).toBe('spar')
+    expect(spar!.steps[0].type).toBe('combat')
+    expect(spar!.steps.length).toBe(3)
+    // h：内嵌对话注册 + 步骤骨架（dialogue → custom objective → script 奖励）
+    expect(h!.dialogues?.length).toBe(1)
+    expect(h!.dialogues![0].id).toBe('seduce')
+    expect(h!.steps[1].type).toBe('objective')
+    expect(h!.steps[1].objective!.type).toBe('custom')
+    // scripts 按文件名索引进 mod.scripts
+    expect(mod.scripts?.has('quest_reward.js')).toBe(true)
+    expect(mod.scripts?.has('orgasm_counter.js')).toBe(true)
+    // scene: 简写引用可解析到任务内嵌对话树（resolveConversation 完整链路）
+    const ref = parseConversationRef('scene:h_liqiushui/seduce')
+    expect(ref.type).toBe('scene')
+    expect(ref.scene).toBe('h_liqiushui')
+    const conv = resolveConversation(mod.conversations, ref)
+    expect(conv).toBeDefined()
+    expect(conv!.nodes.length).toBe(2)
+  })
+})

@@ -2,7 +2,132 @@
 
 ## 做什么
 
-管理剧情任务的生命周期：开始、分步推进、目标追踪、完成。任务文件按 main/side 分类放在 `quests/`。步骤由事件驱动自动推进（到达地点、击杀计数、收集物品、对话结束）。发出 `quest:started`、`quest:updated`、`quest:completed` 事件。
+管理剧情任务的生命周期：开始、分步推进、目标追踪、完成。任务文件按 main/side/event 分类放在 `quests/`。步骤由事件驱动自动推进（到达地点、击杀计数、收集物品、对话结束、H 事件）。发出 `scene:started`、`scene:updated`、`scene:completed` 事件。
+
+## 核心概念：C' 模型
+
+任务 = **数据步骤骨架（存档边界）+ 步骤内 JS 脚本（瞬间逻辑）**：
+
+- **步骤骨架是存档边界**：所有跨存档点的状态（进行到哪一步、目标进度、场景变量）都在 `activeScenes` 运行时对象里，随存档序列化/恢复。步骤本身（`[[steps]]`）是纯数据，推进由事件驱动。
+- **脚本是瞬间逻辑**：`script` 步骤 / custom objective 的 JS 只做"匹配、计数、发奖励"这类瞬间判断，`await` 只允许瞬间 Promise，**绝不跨存档点挂起**。
+- 任务间通信走**数据**（场景变量），不靠模块级共享状态；换/删/加任务对其他部分零影响。
+- 台词不占步骤：`say()`（脚本内）、`lines`（dialogue 步骤内联旁白）、内嵌 `[[dialogues]]` 三层选择，不写死在效果链里。
+
+## 完整示例（两个李秋水任务，example-mod）
+
+```toml
+# mods/example-mod/quests/events/spar_liqiushui.toml
+# 示例：切磋打赢李秋水 → 得小无相功秘籍（单文件）
+id = "spar_liqiushui"
+title = "与李秋水切磋"
+type = "event"
+display = "log"
+
+triggers = [
+  { type = "command", command = "spar", condition = "selected.id == '李秋水'" },
+]
+
+[[steps]]
+id = "fight"
+type = "combat"
+enemies = ["李秋水"]
+on_win = "reward"
+on_lose = "lost"
+
+[[steps]]
+id = "reward"
+type = "script"
+script = "quest_reward.js"
+params = { item = "小无相功秘籍", lines = ["李秋水将秘籍掷来：拿去，莫要辱了它。"] }
+
+[[steps]]
+id = "lost"
+type = "script"
+script = "quest_reward.js"
+params = { lines = ["你落败了，李秋水摇头不语。"] }
+```
+
+```toml
+# mods/example-mod/quests/events/h_with_liqiushui.toml
+# 示例：聊天触发 → H → 高潮5次 → 她得天独 + 我得秘籍（单文件）
+id = "h_liqiushui"
+title = "与李秋水共度良宵"
+type = "event"
+display = "log"
+
+triggers = [
+  { type = "dialogue_end", character = "李秋水" },
+]
+
+[[dialogues]]
+id = "seduce"
+
+[[dialogues.nodes]]
+id = "start"
+lines = ["李秋水轻声道：夜深了……你留下来可好？"]
+choices = [
+  { text = "好", effects = [{ type = "h_start_h", target = "selected" }], next = "end" },
+  { text = "改天吧", next = "end" },
+]
+
+[[dialogues.nodes]]
+id = "end"
+lines = ["烛影摇红。"]
+
+[[steps]]
+id = "story"
+type = "dialogue"
+conversation = "scene:h_liqiushui/seduce"
+next = "count"
+
+[[steps]]
+id = "count"
+type = "objective"
+objective = { type = "custom", event = "h:orgasm", script = "orgasm_counter.js", params = { target = "李秋水", count = 5 }, fail_event = "h:end", on_fail = "tease" }
+next = "reward"
+
+[[steps]]
+id = "reward"
+type = "script"
+script = "quest_reward.js"
+params = { set_talent = { target = "李秋水", path = "talents.冰肌玉骨", value = 1 }, item = "白虹掌力秘籍", lines = ["李秋水慵懒地靠在榻上：倒是个可人儿。"] }
+
+[[steps]]
+id = "tease"
+type = "script"
+script = "quest_reward.js"
+params = { lines = ["李秋水轻笑：就这点本事？"] }
+```
+
+配套脚本（`mods/{mod}/scripts/`，按文件名索引）：
+
+```js
+// quest_reward.js —— 通用奖励脚本：发物品 / 加天赋 / 输出台词（params 驱动，可复用）
+if (params.item) {
+  await api.call('inventory', 'addItem', sourceId, params.item, 1)
+}
+if (params.set_talent) {
+  const t = params.set_talent
+  const targetIds = t.target === 'player' ? [sourceId] : [t.target]
+  await api.call('effect-system', 'execute',
+    [{ type: 'set_field', target: targetIds[0], params: { path: t.path, value: t.value } }],
+    { sourceId, _targetIds: targetIds })
+}
+for (const line of params.lines ?? []) {
+  say(null, line)
+}
+return undefined
+```
+
+```js
+// orgasm_counter.js —— 通用高潮计数：目标角色在一次 H 会话内高潮 N 次
+if (payload.character !== params.target) return 'pending'
+const cur = (getVar('orgasm_count') ?? 0) + 1
+setVar('orgasm_count', cur)
+return cur >= params.count ? 'done' : 'pending'
+```
+
+两个任务各展示一条"单文件完整链路"：前者 = command 触发 → 战斗 → 按胜负发不同奖励；后者 = dialogue_end 触发 → 内嵌对话（含 H 启动选项）→ custom objective 数高潮 → 脚本发天赋+物品。
 
 ## 数据格式
 
@@ -28,16 +153,30 @@ objective = { type = "reach_location", target = "华山_正殿" }
 next = "find_clue"
 ```
 
-8 种步骤类型：`dialogue`、`combat`、`objective`、`reward`、`spawn`、`condition`、`goto`、`script`。Objective 的事件驱动：`reach_location`（监听 location:enter）、`kill_count`（combat:end）、`collect_items`（item:added）、`talk_to`（dialogue:end）、`custom`（脚本化目标，监听声明的事件，见下文 C4）。
+任务文件放 `quests/main/`（主线）、`quests/side/`（支线）或 `quests/events/`（事件型任务，`type = "event"`，无 UI 追踪入口，靠 triggers/指令启动）。
+
+**8 种步骤类型**：
+
+| 类型 | 说明 | 特有字段 |
+|------|------|----------|
+| `dialogue` | 委托 dialogue-system（可含内联旁白 lines） | character, conversation, lines, speaker |
+| `combat` | 委托 combat-system | enemies, on_win, on_lose |
+| `objective` | 目标追踪，事件驱动自动检查 | objective |
+| `reward` | 执行效果 | effects |
+| `spawn` | 创建角色/物品 | template, at_location, count |
+| `condition` | 检查游戏状态分支 | condition, next(满足), else(不满足,可选) |
+| `goto` | 跳转到另一个步骤 | target |
+| `script` | 步骤内 JS 瞬间逻辑（沙箱），返回值决定下一步 | script, params, next, else |
+
+所有步骤通用可选字段：`source`（`'player' | 'selected' | 角色ID`，默认 `'player'` 触发者，决定 effects/脚本的 `sourceId`）、`target`（`'player' | 'selected' | 角色ID`，默认 UI 选中，决定 `_targetIds`）。⚠️ `target` 字段双语义：`goto` 步骤里是"下一步 step id"；其他步骤里是"执行目标角色"——按 `step.type` 区分。
 
 ### 步骤执行上下文（C1，2026-08-14）
 
-`reward` 步骤的 effects 执行时注入上下文 `{ sourceId, _targetIds, uiStore }`（effect-system execute 的 execCtx）：
+`reward` 步骤的 effects 与 `script` 步骤的脚本执行时注入上下文 `{ sourceId, _targetIds, uiStore }`：
 
 - `step.source`（可选）：`'player' | 'selected' | 角色ID`，默认 `'player'`（触发者）。决定 effects 的 `sourceId`
 - `step.target`（可选）：`'player' | 'selected' | 角色ID`，默认 UI 选中角色，无选中回退 player。决定 `_targetIds`（effects 省略 `target` 时的默认目标）
 - `uiStore.selectedCharacterId` = 当前 UI 选中角色，供 effect 显式写 `target = "selected"` 时解析
-- ⚠️ `target` 字段双语义：`goto` 步骤里是"下一步 step id"；`reward` 步骤里是"执行目标角色"——按 `step.type` 区分
 
 ### combat 步骤参与者过滤（C1，2026-08-14）
 
@@ -78,7 +217,7 @@ else = "retry"                     # 可选：脚本返回 false 时跳转
 
 脚本不存在时 → warning 上报 + 走 `step.next`（无 next = 场景保持 active 挂起）。
 
-场景完成只在 `advanceToStep` 找不到目标步骤时发生（`next`/`else`/返回值指向不存在的步骤 id → 完成）——与其它步骤类型一致；无 next 只是挂起，不会完成。
+场景完成只在 `advanceToStep` 找不到目标步骤时发生（`next`/`else`/返回值指向不存在的步骤 id → 完成）——与其它步骤类型一致；**无 next 只是挂起，不会完成**。
 
 **脚本内可用 ctx**（沙箱 `with(ctx)` 包裹，禁止访问全局对象/DOM/文件系统；await 只允许瞬间 Promise，禁止跨存档点挂起）：
 
@@ -94,7 +233,7 @@ rand(min, max)                    // [min, max] 闭区间随机整数
 
 - 沙箱实现：`src/plugins/quest-system/script-runner.ts`（`runQuestScript` / `makeScriptCtx` / `QuestScriptCtx`）
 - ⚠️ `Error` 等全局构造器被沙箱屏蔽（`new Error()` 不可用）——脚本内抛错请用 `throw '文本'`，message 经 `String(err)` 上报
-- ⚠️ **未声明的变量赋值会被静默吞掉**（`x = 1` 不声明 = 无效，不报错）——所有变量必须先声明。推荐统一用 `let`/`const` 声明（`var` 在此沙箱 async 包装下可用，但与其他沙箱实现存在差异，不推荐）
+- ⚠️ **禁止 `var` 声明**（用 `let`/`const`）——`var` 的初始化赋值会被 with 代理静默吞掉（不生效也不报错）；未声明的变量赋值同样被静默吞掉（`x = 1` 不声明 = 无效）。所有变量必须先 `let`/`const` 声明
 - ⚠️ 所有全局对象（`Math`/`JSON`/`Date` 等）不可用——随机数用 `rand(min, max)`（[min, max] 闭区间整数，见上），不要依赖任何全局
 - 脚本文件在 `loadMod` 时按文件名索引进 `LoadedMod.scripts`（glob `query:'?raw'`，Vite 8 语法）
 
@@ -118,7 +257,7 @@ next = "final"
 |------|------|------|
 | `type` | 是 | `"custom"` |
 | `event` | 是 | 监听的事件名。当前内置监听 `h:orgasm`（payload `{character, partId, level, count, extra}`）、`h:end`（payload `{ally}`）；其他事件如需驱动，扩 `CUSTOM_EVENT_TYPES` 表 |
-| `script` | 是 | `mods/{mod}/scripts/*.js` 文件名。脚本签名 `(payload, ctx) => 'done' | 'pending'`，`ctx.payload` = 事件 payload |
+| `script` | 是 | `mods/{mod}/scripts/*.js` 文件名。脚本在沙箱 `with(ctx)` 中执行，`payload` = 事件 payload（直接可读），返回 `'done' | 'pending'` |
 | `params` | 否 | 注入脚本 `ctx.params` |
 | `fail_event` | 否 | 失败事件：触发时脚本返回 `'pending'` → 走 `on_fail`；返回 `'done'` 不推进 |
 | `on_fail` | 否 | 失败时跳转的 step id；缺省 = 静默继续挂起 |
@@ -126,6 +265,7 @@ next = "final"
 - **语义**：`event` 触发 → 脚本返回 `'done'` → 走 `next`；脚本返回 `'pending'` → 继续挂起（计数存场景变量 `getVar`/`setVar`，随存档持久化）
 - 脚本匹配逻辑自由（如 `payload.character !== params.target → 'pending'` 只计目标角色）
 - 计数状态放场景变量（`setVar('orgasm_count', ...)`）——场景变量随存档序列化，但"未达成的次数不跨会话累计"由 mod 作者按需设计（任务完成后场景变量不可读）
+- 脚本缺失 → 去重 warning + 目标保持挂起（不误推进）
 - 与既有 4 类型 objective（`checkObjectives`）独立并存：标准事件监听不动，custom 独立监听 `CUSTOM_EVENT_TYPES`
 
 ### 任务内嵌对话树（C5，2026-08-14）
@@ -197,13 +337,13 @@ effects = [{ type = "narrative_output", params = { text = "剧情开始" } }]
 - **command 拦截语义**：条件满足时指令改道执行场景，**指令自身的 effects/handler 不执行**（时间也不推进）；条件不满足 → 走指令默认行为。场景已活跃/已完成 → 跳过
 - **冲突检测**：同一指令多个 trigger 条件同时满足 → errorReporter 报错（含各 scene id）+ 不拦截（走指令默认行为）——触发条件需互斥（如按 `selected.id` 区分）
 - **dialogue_end 语义**：与指定角色对话结束（`dialogue:end` 事件 payload 的 `character`）时启动匹配场景；已活跃/已完成 → 跳过
-- **条件求值**：用 `gameContext.getContext()` 的 `selected`/`player` 路径（UI 选中已由 bridge 同步，无需额外参数）
+- **条件求值**：用 `gameContext.getContext()` 的 `selected`/`player` 路径（UI 选中已由 bridge 同步，无需额外参数）；求值抛错 → 去重 warning + 不拦截（指令默认 handler 正常执行）
 - **索引生命周期**：onEnable 初始构建；`game:load`（读档后 mod.quests 重建）自动重建；运行时增删带 triggers 的任务（如动态 scene）需调 `ctx.api.call('quest', 'reindexTriggers')`
 - **类型校验**：加载期校验 `type` 合法值——非法 type / 未实现类型（`location_enter`/`item_used`/`time`，Phase 2 计划）→ error（含任务 id + 文件），防止作者以为已生效而静默失效
 
 ### 运行时 scene 注册（C7，2026-08-14）
 
-动态/制式任务生成入口——运行时构造 Quest 对象并注册，数据走与 TOML 任务同一套校验/执行链路（steps 链、triggers、auto_start 全部生效）：
+动态/制式任务生成入口——运行时构造 Quest 对象并注册，数据走与 TOML 任务同一套执行链路（steps 链、triggers、auto_start 全部生效）：
 
 ```typescript
 // 构造完整 Quest 对象（steps 必需）——id 需全局唯一（建议前缀/时间戳）
@@ -213,14 +353,22 @@ ctx.api.call('quest', 'start', 'dynamic_quest') // 注册后即可照常启动
 ```
 
 - **写入位置**：`mod.quests`（与 TOML 任务同表）——start/getSceneStatus/advanceStep/checkAutoStart 等全部既有 API 立即生效
+- **校验范围**：registerScene 走运行时路径，**不做 TOML 加载期校验**（结构/trigger type/重复 dialogue 等校验只发生在 loadMod 的 TOML 解析路径）；运行时只做重复 id 检查（报错不覆盖）。内嵌 `[[dialogues]]` 收集同样**仅 TOML 加载路径**——运行时注册的 scene 带 `dialogues` 不会注册进 `conversations.scene`，`scene:` 引用不可用，需用独立 conversation 文件
 - **副作用**：注册后自动重建触发器索引（新场景的 triggers 立即拦截）+ 立即检查 condition 自动触发
 - **重复 id** → errorReporter 报错（含 id）+ 不覆盖（跳过注册）
 - **与 registerDynamicScene 的区别**：后者注册进独立动态表（不持久、注册方负责读档重建，confinement 追捕委托用）；本 API 注册后常驻 mod.quests
 - **角色生成配套**：`ctx.api.call('character', 'spawnCharacter', templateId, atLocation, overrides?)` → 按 `templates/character/` 模板实例化角色（模板与 overrides 深合并、放置到指定地点、随存档持久化），生成 id 规则 `{templateId}_{timestamp}_{随机后缀}`；模板不存在 → errorReporter + null——支撑"先 spawn 敌人再注册追捕任务"的完整动态链路
 
+## 存档行为
+
+- quest-system 注册存档 provider（`id = 'quest-system'`，经 `src/core/save-system.ts` 的 provider 注册表）：进行中任务（`activeScenes`）、场景变量（vars）、嵌套场景栈（sceneStack）随存档序列化，读档后按原样恢复
+- 已完成任务由 `gameContext` 维护（`addCompletedScene`），随存档保存——读档后已完成任务不会重新启动（`start` 跳过、触发跳过）
+- 恢复后 `mod.quests`（TOML 数据 + 运行时注册的 scene）重建，triggers 索引由 `game:load` 事件自动重建
+- 动态 scene（`registerDynamicScene`）**不随存档序列化**——注册方（如 confinement）负责在存档 restore 后按原样重建
+
 ## Mod 作者使用
 
-放 quests/main/ 或 quests/side/。用 `auto_start_condition` 或 `start_quest` effect 启动。
+放 quests/main/、quests/side/ 或 quests/events/。用 `auto_start_condition`、`start_quest` effect 或 triggers 启动。任务间通信用场景变量（不要共享模块级状态）。
 
 ## API（见 `docs/plugin-author-guide.md`）
 
@@ -229,10 +377,14 @@ ctx.api.call('quest', 'start', sceneId)                 → void（event/quest �
 ctx.api.call('quest', 'getActiveScenes')                → string[]（活跃 scene ID 列表）
 ctx.api.call('quest', 'getSceneStatus', sceneId)        → 'not_started' | 'active' | 'completed'
 ctx.api.call('quest', 'advanceStep', sceneId, stepId)   → void
-ctx.api.call('quest', 'checkTriggerConditions')         → string[]（未开始且带 condition 的 scene）
+ctx.api.call('quest', 'checkTriggerConditions')         → string[]（未开始且带 condition 的 scene；保留兼容）
 ctx.api.call('quest', 'getVar', sceneId, key)           → any（场景变量；不存在 → undefined）
 ctx.api.call('quest', 'setVar', sceneId, key, value)    → void（写场景变量）
-ctx.api.call('quest', 'registerScene', scene)           → void（C7 运行时注册 scene——写入 mod.quests，立即重建触发器索引 + 检查自动触发；重复 id 报错不覆盖）
+ctx.api.call('quest', 'registerDynamicScene', sceneId, scene)     → void（动态 scene，不持久）
+ctx.api.call('quest', 'startDynamicScene', sceneId, scene)        → void（注册 + 启动一步完成）
+ctx.api.call('quest', 'unregisterDynamicScene', sceneId)          → void（移除动态 scene）
+ctx.api.call('quest', 'reindexTriggers')                → void（C6 重建触发器索引）
+ctx.api.call('quest', 'registerScene', scene)           → void（C7 运行时注册 scene——写入 mod.quests，立即重建触发器索引 + 检查自动触发；重复 id 报错不覆盖；不做 TOML 加载期校验）
 ```
 
 ## Override 规则

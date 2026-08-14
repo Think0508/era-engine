@@ -1189,7 +1189,7 @@ effects = [{type = "exit_mode", params = {}}]
 
 ### 31. 任务数据格式
 
-每个任务一个 TOML 文件，放在 `quests/main/` 或 `quests/side/`：
+每个任务一个 TOML 文件，放在 `quests/main/` 或 `quests/side/`（或 `quests/events/`——`type = "event"` 的事件型任务，无 UI 追踪入口，靠 triggers/指令启动）：
 
 ```toml
 # quests/main/find_master.toml
@@ -1244,7 +1244,7 @@ conversation = "try_again"
 next = "find_clue"
 ```
 
-**步骤类型**（7种）：
+**步骤类型**（8种）：
 | 类型 | 说明 | 特有字段 |
 |------|------|----------|
 | `dialogue` | 委托 dialogue-system | character, conversation |
@@ -1254,6 +1254,9 @@ next = "find_clue"
 | `spawn` | 创建角色/物品 | template, at_location, count |
 | `condition` | 检查游戏状态分支 | condition, next(满足), else(不满足,可选) |
 | `goto` | 跳转到另一个步骤 | target |
+| `script` | 步骤内 JS 瞬间逻辑（沙箱），返回值决定下一步 | script, params, next, else |
+
+所有步骤通用可选字段：`source`（`'player' | 'selected' | 角色ID`，默认 `'player'` 触发者，决定 effects/脚本的 `sourceId`）、`target`（`'player' | 'selected' | 角色ID`，默认 UI 选中，决定 `_targetIds`）。⚠️ `target` 双语义：`goto` 步骤里是"下一步 step id"，其他步骤里是"执行目标角色"——按 `step.type` 区分。
 
 **objective 子格式**（事件驱动）：
 ```toml
@@ -1261,8 +1264,40 @@ objective = { type = "reach_location", target = "华山_正殿" }      # 监 loc
 objective = { type = "kill_count", target = "华山_弟子", count = 5 } # 监 combat:end
 objective = { type = "collect_items", item = "回血丹", count = 3 }   # 监 item:added
 objective = { type = "talk_to", character = "令狐冲" }              # 监 dialogue:end
+objective = { type = "custom", event = "h:orgasm", script = "orgasm_counter.js", params = { target = "李秋水", count = 5 }, fail_event = "h:end", on_fail = "tease" }  # 脚本化目标：监听声明的事件，脚本判 done/pending
 ```
 目标满足后自动跳转到 `next`。插件可注册更多 objective 类型。
+
+**custom objective 字段**（`type = "custom"`）：
+- `event`（必填）：监听的事件名（当前内置 `h:orgasm`/`h:end`）；`script`（必填）：`mods/{mod}/scripts/*.js` 文件名，沙箱执行（`payload` = 事件 payload 直接可读），返回 `'done'` → 走 `next`，`'pending'` → 继续挂起
+- `params`：注入脚本 `ctx.params`；`fail_event`（可选）：失败事件，触发时脚本返回 `'pending'` → 走 `on_fail`（缺省 = 静默继续挂起）
+- 计数等状态存场景变量（`getVar`/`setVar`，随存档持久化）；脚本缺失 → 去重 warning + 目标保持挂起
+
+**任务内嵌对话**（`[[dialogues]]` 段，单文件写完对话树，与独立 conversation 文件同格式）：
+- dialogue 步骤引用写 `conversation = "scene:{任务ID}/{内嵌对话ID}"`（或对象 `{ type = "scene", scene = "...", name = "..." }`）
+- loadMod 解析时自动注册进 `mod.conversations.scene`；同任务内 dialogue id 重复 → 加载期 error；内嵌对话只在该任务作用域内可引用
+
+**script 步骤**（步骤内 JS 瞬间逻辑，沙箱 `with(ctx)` 执行；`mods/{mod}/scripts/*.js` 按文件名索引）：
+- 返回值：`string` = 跳转该 step id；`false` = 走 `else`（无 else 走 `next`）；`undefined`/其他 = 走 `next`；抛错 = errorReporter 上报 + 走 `next`
+- **无 `next` 且无返回值 = 场景保持 active 挂起**（不是完成）；场景完成只在 `advanceToStep` 找不到目标步骤时发生
+- 脚本内可用：`sceneId/stepId/params/sourceId/targetIds/payload`、`getVar`/`setVar`、`say(speaker, text)`、`await api.call(ns, method, ...)`、`getBinding(entityId, key)`、`rand(min, max)`
+- ⚠️ 禁 `var` 声明（用 `let`/`const`——`var`/未声明赋值会被 with 代理静默吞掉）；禁全局对象（`Error` 等不可用，抛错用 `throw '文本'`；随机数用 `rand()`）；`await` 只允许瞬间 Promise，绝不跨存档点挂起
+
+**triggers 触发声明**（事件型任务自动启动，无需写启动代码）：
+```toml
+triggers = [
+  { type = "command", command = "spar", condition = "selected.id == '李秋水'" },  # 指令拦截：条件满足时指令改道执行本任务（指令自身 effects 不执行），不满足走指令默认行为
+  { type = "dialogue_end", character = "李秋水" },                                 # 与指定角色对话结束（dialogue:end）时启动
+]
+```
+- 冲突检测：同一 command 多个 trigger 条件同时满足 → errorReporter 报错（含各 scene id）+ 不拦截（触发条件需互斥，如按 `selected.id` 区分）；求值抛错 → 去重 warning + 不拦截
+- 场景已活跃/已完成 → 触发跳过；非法/未实现 trigger type（`location_enter`/`item_used`/`time`）→ 加载期 error
+- 索引生命周期：onEnable 初始构建、`game:load` 自动重建；运行时增删带 triggers 的任务调 `ctx.api.call('quest', 'reindexTriggers')`
+
+**场景变量**（任务间通信走数据）：
+- 写：`set_var` effect `{ type = "set_var", params = { scene?, var = "key", value = ... } }`（scene 省略 = 最新激活场景）或 API `ctx.api.call('quest', 'setVar', sceneId, key, value)`
+- 读：API `getVar`（同步）；条件路径 `quest.{sceneId}.var.{name}`（如 `quest.切磋任务.var.won_duel == 'yes'`）
+- 初始值：任务顶层 `vars = { won_duel = "no" }` 预置，启动时展开；随存档序列化/恢复；场景完成后 vars 不可读
 
 **任务启动方式**：
 1. `auto_start_condition`：条件满足时自动开始

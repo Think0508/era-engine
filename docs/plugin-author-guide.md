@@ -265,6 +265,8 @@ ctx.api.call('effect-system', 'hasType', type)                // → boolean
 ```
 
 - effect handler 签名：`(params, execCtx) => boolean | Promise<boolean | void>`
+- 任务系统注册的 effect 类型（quest-system 域内使用）：
+  `set_var = { type = "set_var", params = { scene?, var = "key", value = ... } }`（写场景变量；`scene` 省略 = 最新激活场景，详见 `docs/quest-system.md` 场景变量）
 
 #### status — 状态效果
 
@@ -345,7 +347,7 @@ ctx.api.call('quest', 'start', sceneId)                       // → void（star
 ctx.api.call('quest', 'getActiveScenes')                      // → string[]（活跃 scene ID 列表）
 ctx.api.call('quest', 'getSceneStatus', sceneId)              // → 'not_started' | 'active' | 'completed'
 ctx.api.call('quest', 'advanceStep', sceneId, nextStepId)     // → void
-ctx.api.call('quest', 'checkTriggerConditions')               // → string[]（未开始且带 condition 的 scene；由调用方求值）
+ctx.api.call('quest', 'checkTriggerConditions')               // → string[]（未开始且带 condition 的 scene；由调用方求值；保留兼容——新代码用 triggers/registerScene）
 // 动态 scene（2026-08-14 confinement-system 追捕委托）——解决"敌人 id 运行时才知道，写不进 TOML"
 ctx.api.call('quest', 'registerDynamicScene', sceneId, scene) // → void（注册运行时构造的 Quest 对象）
 ctx.api.call('quest', 'startDynamicScene', sceneId, scene)    // → void（注册 + 启动一步完成）

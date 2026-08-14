@@ -1,0 +1,28 @@
+# 示例：切磋打赢李秋水 → 得小无相功秘籍（单文件）
+id = "spar_liqiushui"
+title = "与李秋水切磋"
+type = "event"
+display = "log"
+
+triggers = [
+  { type = "command", command = "spar", condition = "selected.id == '李秋水'" },
+]
+
+[[steps]]
+id = "fight"
+type = "combat"
+enemies = ["李秋水"]
+on_win = "reward"
+on_lose = "lost"
+
+[[steps]]
+id = "reward"
+type = "script"
+script = "quest_reward.js"
+params = { item = "小无相功秘籍", lines = ["李秋水将秘籍掷来：拿去，莫要辱了它。"] }
+
+[[steps]]
+id = "lost"
+type = "script"
+script = "quest_reward.js"
+params = { lines = ["你落败了，李秋水摇头不语。"] }

@@ -1,0 +1,48 @@
+# 示例：聊天触发 → H → 高潮5次 → 她得天独 + 我得秘籍（单文件）
+id = "h_liqiushui"
+title = "与李秋水共度良宵"
+type = "event"
+display = "log"
+
+triggers = [
+  { type = "dialogue_end", character = "李秋水" },
+]
+
+[[dialogues]]
+id = "seduce"
+
+[[dialogues.nodes]]
+id = "start"
+lines = ["李秋水轻声道：夜深了……你留下来可好？"]
+choices = [
+  { text = "好", effects = [{ type = "h_start_h", target = "selected" }], next = "end" },
+  { text = "改天吧", next = "end" },
+]
+
+[[dialogues.nodes]]
+id = "end"
+lines = ["烛影摇红。"]
+
+[[steps]]
+id = "story"
+type = "dialogue"
+conversation = "scene:h_liqiushui/seduce"
+next = "count"
+
+[[steps]]
+id = "count"
+type = "objective"
+objective = { type = "custom", event = "h:orgasm", script = "orgasm_counter.js", params = { target = "李秋水", count = 5 }, fail_event = "h:end", on_fail = "tease" }
+next = "reward"
+
+[[steps]]
+id = "reward"
+type = "script"
+script = "quest_reward.js"
+params = { set_talent = { target = "李秋水", path = "talents.冰肌玉骨", value = 1 }, item = "白虹掌力秘籍", lines = ["李秋水慵懒地靠在榻上：倒是个可人儿。"] }
+
+[[steps]]
+id = "tease"
+type = "script"
+script = "quest_reward.js"
+params = { lines = ["李秋水轻笑：就这点本事？"] }

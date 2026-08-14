@@ -1244,7 +1244,7 @@ conversation = "try_again"
 next = "find_clue"
 ```
 
-**步骤类型**（8种）：
+**步骤类型**（9种）：
 | 类型 | 说明 | 特有字段 |
 |------|------|----------|
 | `dialogue` | 委托 dialogue-system | character, conversation |
@@ -1254,9 +1254,12 @@ next = "find_clue"
 | `spawn` | 创建角色/物品 | template, at_location, count |
 | `condition` | 检查游戏状态分支 | condition, next(满足), else(不满足,可选) |
 | `goto` | 跳转到另一个步骤 | target |
+| `scene` | 嵌套子场景 | scene_id, next |
 | `script` | 步骤内 JS 瞬间逻辑（沙箱），返回值决定下一步 | script, params, next, else |
 
 所有步骤通用可选字段：`source`（`'player' | 'selected' | 角色ID`，默认 `'player'` 触发者，决定 effects/脚本的 `sourceId`）、`target`（`'player' | 'selected' | 角色ID`，默认 UI 选中，决定 `_targetIds`）。⚠️ `target` 双语义：`goto` 步骤里是"下一步 step id"，其他步骤里是"执行目标角色"——按 `step.type` 区分。
+
+**`next` 语义（2026-08-15 修订）**：`next`/`on_win`/`on_lose`/`else`/`on_fail`/`goto.target` 存在时必须指向**本场景内存在的 step id**（加载期 error，`validateSceneSteps` 校验）；**显式结束标记 = `next = ""`**（空字符串 = 执行完立即结束场景）；省略 `next` = 场景保持 active 挂起（等事件推进）；`objective` 步骤达成但无 `next` → 场景直接完成。禁止再用"`next` 指向不存在 id"作为完成手段（旧哨兵写法已废除，会报 error）。
 
 **objective 子格式**（事件驱动）：
 ```toml

@@ -1,6 +1,6 @@
 // 注释：quest-system 战斗步骤测试（B3 修复——audit-c I3）
 // 原实现 allies 传空数组（玩家不在参战者）+ 不监听 combat:end → combat 步骤永不推进
-import { describe, it, expect, beforeAll, afterEach } from 'vitest'
+import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest'
 import { modLoader } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
 import { apiSystem } from '../../core/api'
@@ -11,6 +11,7 @@ import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
 import { commandRegistry } from '../../core/command-registry'
 import { errorReporter } from '../../core/error-reporter'
+import { effectTypeRegistry } from '../../core/effect-type-registry'
 import type { Quest } from '../../core/mod-loader'
 import { parseConversationRef, resolveConversation } from '../../core/mod-loader'
 
@@ -164,6 +165,67 @@ describe('quest-system combat 步骤推进（B3）', () => {
       // 胜利 + 目标参战 → 推进
       await eventBus.emit('combat:end', { winner: 'allies', outcome: 'win', participants: ['player', 'enemy_bandit'] })
       expect(await apiSystem.call('quest', 'getSceneStatus', 'objective_test_quest')).toBe('completed')
+    })
+  })
+
+  // ═══════ C1：步骤执行上下文注入（quest-script C' 模型 Task 1）═══════
+  describe('步骤执行上下文注入（C1）', () => {
+    function installCtxQuest(step: any) {
+      const mod = modLoader.getMod()!
+      mod.quests.set('ctx_test_quest', {
+        id: 'ctx_test_quest', title: '上下文测试', type: 'main', display: 'hidden',
+        steps: [
+          { id: 's1', type: 'reward', effects: [], next: 'final', ...step },
+          { id: 'final', type: 'reward', effects: [], next: 'not_exist' },
+        ],
+      })
+    }
+
+    beforeEach(() => {
+      // 注释：外层 afterEach 的 gameContext.reset() 清掉了 player——
+      // C1 用例需重建（否则 combat 步骤 allies 为空 → 瞬间判负自动结束）
+      gameContext.setPlayer('player')
+    })
+
+    afterEach(() => {
+      modLoader.getMod()!.quests.delete('ctx_test_quest')
+      // 注释：gameContext.reset() 不清 selectedCharacterId（2026-08-14 确认），测试内用完置 null
+      gameContext.setSelectedCharacterId(null)
+    })
+
+    it('reward 步骤 execCtx 默认 sourceId=player、targetIds 含 UI 选中角色', async () => {
+      const captured: any[] = []
+      effectTypeRegistry.register('capture_ctx', (_params: any, execCtx: any) => {
+        captured.push({ sourceId: execCtx.sourceId, targetIds: execCtx._targetIds })
+        return true
+      })
+      installCtxQuest({ effects: [{ type: 'capture_ctx' }] })
+      gameContext.setSelectedCharacterId('enemy_bandit')
+      await apiSystem.call('quest', 'start', 'ctx_test_quest')
+      expect(captured[0]).toEqual({ sourceId: 'player', targetIds: ['enemy_bandit'] })
+    })
+
+    it('step.target 显式指定角色 ID 时覆盖 UI 选中', async () => {
+      const captured: any[] = []
+      effectTypeRegistry.register('capture_ctx2', (_params: any, execCtx: any) => {
+        captured.push(execCtx._targetIds)
+        return true
+      })
+      installCtxQuest({ target: 'enemy_bandit', effects: [{ type: 'capture_ctx2' }] })
+      gameContext.setSelectedCharacterId('other_npc')
+      await apiSystem.call('quest', 'start', 'ctx_test_quest')
+      expect(captured[0]).toEqual(['enemy_bandit'])
+    })
+
+    it('combat 步骤只推进与 participants 有交集的战斗（其他战斗不推进）', async () => {
+      installCtxQuest({ type: 'combat', enemies: ['enemy_bandit'], on_win: 'final', next: 'final' })
+      await apiSystem.call('quest', 'start', 'ctx_test_quest')
+      // 无关战斗（目标不在 participants）→ 不推进
+      await eventBus.emit('combat:end', { winner: 'allies', outcome: 'win', participants: ['player', 'other_enemy'] })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'ctx_test_quest')).toBe('active')
+      // 相关战斗 → 推进
+      await eventBus.emit('combat:end', { winner: 'allies', outcome: 'win', participants: ['player', 'enemy_bandit'] })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'ctx_test_quest')).toBe('completed')
     })
   })
 })

@@ -30,6 +30,19 @@ next = "find_clue"
 
 7 种步骤类型：`dialogue`、`combat`、`objective`、`reward`、`spawn`、`condition`、`goto`。Objective 的事件驱动：`reach_location`（监听 location:enter）、`kill_count`（combat:end）、`collect_items`（item:added）、`talk_to`（dialogue:end）。
 
+### 步骤执行上下文（C1，2026-08-14）
+
+`reward` 步骤的 effects 执行时注入上下文 `{ sourceId, _targetIds, uiStore }`（effect-system execute 的 execCtx）：
+
+- `step.source`（可选）：`'player' | 'selected' | 角色ID`，默认 `'player'`（触发者）。决定 effects 的 `sourceId`
+- `step.target`（可选）：`'player' | 'selected' | 角色ID`，默认 UI 选中角色，无选中回退 player。决定 `_targetIds`（effects 省略 `target` 时的默认目标）
+- `uiStore.selectedCharacterId` = 当前 UI 选中角色，供 effect 显式写 `target = "selected"` 时解析
+- ⚠️ `target` 字段双语义：`goto` 步骤里是"下一步 step id"；`reward` 步骤里是"执行目标角色"——按 `step.type` 区分
+
+### combat 步骤参与者过滤（C1，2026-08-14）
+
+`combat:end` 只推进 `step.enemies` 与本次战斗 `participants` **有交集**的战斗——其他战斗（无关敌人/其他场景触发的战斗）结束不推进该步骤，避免多场战斗串步。
+
 ## Mod 作者使用
 
 放 quests/main/ 或 quests/side/。用 `auto_start_condition` 或 `start_quest` effect 启动。

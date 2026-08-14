@@ -347,6 +347,13 @@ export interface QuestStep {
   target?: string
   // scene（嵌套子场景）
   scene_id?: string
+  // C1：步骤执行上下文（quest-script C' 模型 Task 1）
+  // 注意：target 为 goto 步骤的下一步 step id；在 reward 步骤里是执行目标角色
+  // （'player' | 'selected' | 角色ID，默认 UI 选中）——按 step.type 区分语义
+  source?: string             // 'player' | 'selected' | 角色ID，默认 'player'
+  // C3：script 步骤（Task 3 使用，先定义字段）
+  script?: string             // mod scripts/ 下的 .js 文件名
+  params?: Record<string, any>
 }
 
 export interface Quest {

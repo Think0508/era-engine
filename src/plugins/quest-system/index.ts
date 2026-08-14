@@ -117,6 +117,11 @@ export function onEnable(ctx: PluginContext): void {
       if (!scene) continue
       const step = scene.steps.find(s => s.id === runtime.currentStepId)
       if (!step || step.type !== 'combat') continue
+      // C1：参与者过滤——scene 的 enemies 与本次战斗 participants 有交集才推进
+      //（无关战斗结束不推进，避免多场战斗串步；也防其它场景触发的战斗误推进）
+      const stepEnemies = Array.isArray(step.enemies) ? step.enemies : []
+      const participants = Array.isArray(payload?.participants) ? payload.participants : []
+      if (!stepEnemies.some(e => participants.includes(e))) continue
       let nextStepId: string | undefined
       if (win) nextStepId = step.on_win ?? step.next
       else if (lose) nextStepId = step.on_lose ?? step.next
@@ -253,7 +258,15 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
 
     case 'reward':
       if (step.effects) {
-        await apiSystem.call('effect-system', 'execute', step.effects, {})
+        // C1：步骤执行上下文注入（sourceId + targetIds）
+        // uiStore.selectedCharacterId 供 effect 显式写 target='selected' 时解析
+        //（effect-system resolveTarget 读 ctx.uiStore?.selectedCharacterId）
+        const ctx = buildStepExecCtx(sceneId, step, runtime)
+        await apiSystem.call('effect-system', 'execute', step.effects, {
+          sourceId: ctx.sourceId,
+          _targetIds: ctx.targetIds,
+          uiStore: { selectedCharacterId: gameContext.getContext().selectedCharacterId },
+        })
       }
       if (step.next) await advanceToStep(sceneId, step.next)
       break
@@ -297,6 +310,24 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
     default:
       if (step.next) await advanceToStep(sceneId, step.next)
   }
+}
+
+// 注释：C1——构建步骤执行上下文（sourceId + targetIds）
+// step.source：'player' | 'selected' | 角色ID（默认 'player'，即触发者）
+// step.target：'player' | 'selected' | 角色ID（默认 UI 选中，无选中回退 player）
+function buildStepExecCtx(_sceneId: string, step: any, _runtime: SceneRuntime): { sourceId: string | null; targetIds: string[] } {
+  const gc = gameContext.getContext()
+  const playerId = gc.player?.id ?? null
+  const selected = gc.selectedCharacterId ?? null
+  const resolveOne = (v: string | undefined): string | null => {
+    if (!v) return null
+    if (v === 'player') return playerId
+    if (v === 'selected') return selected
+    return v // 角色 ID 直传
+  }
+  const sourceId = resolveOne(step.source) ?? playerId
+  const targetIds = [resolveOne(step.target) ?? selected ?? playerId].filter(Boolean) as string[]
+  return { sourceId, targetIds }
 }
 
 // 注释：推进到指定 step

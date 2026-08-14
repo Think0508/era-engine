@@ -219,6 +219,8 @@ else = "retry"                     # 可选：脚本返回 false 时跳转
 
 场景完成只在 `advanceToStep` 找不到目标步骤时发生（`next`/`else`/返回值指向不存在的步骤 id → 完成）——与其它步骤类型一致；**无 next 只是挂起，不会完成**。
 
+> **显式结束写法（2026-08-15）**：`next = ""`（空字符串）= 立即结束场景（advanceToStep 找不到空 id → 完成）。替代旧 `next = "不存在的id"` 哨兵写法——加载期校验（validateSceneSteps）会把未定义的步骤引用报为 error，空字符串是唯一合法的"结束"引用。
+
 **脚本内可用 ctx**（沙箱 `with(ctx)` 包裹，禁止访问全局对象/DOM/文件系统；await 只允许瞬间 Promise，禁止跨存档点挂起）：
 
 ```js
@@ -232,9 +234,11 @@ rand(min, max)                    // [min, max] 闭区间随机整数
 ```
 
 - 沙箱实现：`src/plugins/quest-system/script-runner.ts`（`runQuestScript` / `makeScriptCtx` / `QuestScriptCtx`）
+- ⚠️ **沙箱为 MVP 级（防意外访问，非安全边界）**：可拦截裸全局标识符与 this 逃逸，但对象字面量的 constructor 链（如 `({}).constructor('return process')()`）可构造新函数访问全局——脚本须视为同 TOML 信任级别的 mod 作者代码，**勿处理不可信输入**（根治方案：phase-15 acorn 白名单沙箱）
 - ⚠️ `Error` 等全局构造器被沙箱屏蔽（`new Error()` 不可用）——脚本内抛错请用 `throw '文本'`，message 经 `String(err)` 上报
-- ⚠️ **禁止 `var` 声明**（用 `let`/`const`）——`var` 的初始化赋值会被 with 代理静默吞掉（不生效也不报错）；未声明的变量赋值同样被静默吞掉（`x = 1` 不声明 = 无效）。所有变量必须先 `let`/`const` 声明
+- ⚠️ **变量必须声明后使用**（`let`/`const`）——脚本在严格模式沙箱内运行，未声明赋值（`x = 1`）会抛 **TypeError**（`'set' on proxy: trap returned falsish`）被上报并隔离（按 next 分支推进）；`var` 声明可用但风格上推荐 `let`/`const`
 - ⚠️ 所有全局对象（`Math`/`JSON`/`Date` 等）不可用——随机数用 `rand(min, max)`（[min, max] 闭区间整数，见上），不要依赖任何全局
+- ⚠️ **超时保护（5 秒）**：脚本 `await` 的 API 超过 5 秒 → 上报 error + 按 next 分支推进；但超时中止后脚本已开始的副作用（变量/状态修改）仍可能完成（Promise 无法取消，仅结果被丢弃）
 - 脚本文件在 `loadMod` 时按文件名索引进 `LoadedMod.scripts`（glob `query:'?raw'`，Vite 8 语法）
 
 ### custom objective（C4，2026-08-14）
@@ -301,7 +305,7 @@ next = "final"
 id = "final"
 type = "reward"
 effects = []
-next = "not_exist"
+next = ""     # 显式结束标记（空字符串 = 立即结束场景）
 ```
 
 - **引用写法**：`conversation = "scene:{sceneId}/{dialogueId}"` 字符串简写，或对象 `{ type = "scene", scene = "{sceneId}", name = "{dialogueId}" }`

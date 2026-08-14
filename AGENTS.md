@@ -1281,7 +1281,7 @@ objective = { type = "custom", event = "h:orgasm", script = "orgasm_counter.js",
 - 返回值：`string` = 跳转该 step id；`false` = 走 `else`（无 else 走 `next`）；`undefined`/其他 = 走 `next`；抛错 = errorReporter 上报 + 走 `next`
 - **无 `next` 且无返回值 = 场景保持 active 挂起**（不是完成）；场景完成只在 `advanceToStep` 找不到目标步骤时发生
 - 脚本内可用：`sceneId/stepId/params/sourceId/targetIds/payload`、`getVar`/`setVar`、`say(speaker, text)`、`await api.call(ns, method, ...)`、`getBinding(entityId, key)`、`rand(min, max)`
-- ⚠️ 禁 `var` 声明（用 `let`/`const`——`var`/未声明赋值会被 with 代理静默吞掉）；禁全局对象（`Error` 等不可用，抛错用 `throw '文本'`；随机数用 `rand()`）；`await` 只允许瞬间 Promise，绝不跨存档点挂起
+- ⚠️ 变量必须声明后使用（`let`/`const`——严格模式沙箱内未声明赋值抛 **TypeError**（`'set' on proxy: trap returned falsish`）被上报隔离）；禁全局对象（`Error` 等不可用，抛错用 `throw '文本'`；随机数用 `rand()`）；`await` 只允许瞬间 Promise，绝不跨存档点挂起
 
 **triggers 触发声明**（事件型任务自动启动，无需写启动代码）：
 ```toml

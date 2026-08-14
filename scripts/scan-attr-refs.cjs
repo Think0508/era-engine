@@ -105,6 +105,8 @@ const STRUCTURAL_NS = new Set([
   'relationGroups', 'relationTypes', 'relationPairs',
   // mod 数据访问（2026-08-12 hunger 测试注入）——modItems['中文'] 是物品定义注入，非属性引用
   'modItems',
+  // mod 数据访问（2026-08-15 全量套件修复）——mod.items['中文'] 是物品定义查询，非属性引用
+  'items',
 ])
 
 // 形如 ns['a'] / ns['a']['b'] 的索引链（最后一段可未闭合）→ 返回链首命名空间

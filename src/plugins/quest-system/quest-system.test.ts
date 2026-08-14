@@ -785,10 +785,9 @@ describe('quest-system combat 步骤推进（B3）', () => {
       )
       expect(warn).toBeDefined()
       expect(warn!.message).toContain('trigger_quest')
-      // 去重：重复 reindex 不再刷屏
-      errorReporter.clear()
+      // 去重：同 key 不重复上报（不 clear——clear 会重置去重状态，那是用例隔离语义）
       await apiSystem.call('quest', 'reindexTriggers')
-      expect(errorReporter.getErrors().filter(e => e.message.includes('no_such_cmd'))).toHaveLength(0)
+      expect(errorReporter.getErrors().filter(e => e.message.includes('no_such_cmd'))).toHaveLength(1)
     })
 
     it('B-I-3：触发器条件引用未注册字段 → 加载期校验 error（registry 完整时）', async () => {

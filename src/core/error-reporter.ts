@@ -17,6 +17,8 @@ class ErrorReporter {
   // 注释：订阅者（2026-08-12 round 13 接线修复）——UI 层经此显示游戏内警告
   // （AGENTS §7"弹红色警告"此前断链：错误只进 console，玩家无感知）
   private listeners: ((err: ErrorReport) => void)[] = []
+  // 注释：reportDedup 去重键（H1 重构）——clear() 时一并清空，测试隔离
+  private deduped = new Set<string>()
 
   report(err: ErrorReport): void {
     this.errors.push(err)
@@ -34,6 +36,14 @@ class ErrorReporter {
         // 订阅者异常不影响错误上报本身
       }
     }
+  }
+
+  // 注释：去重上报——同一 key 只报一次（H1 重构：统一替代各插件的模块级
+  // reported* Set 样板；key 通常含场景/步骤/表达式定位，如 `${sceneId}|${stepId}`）
+  reportDedup(key: string, err: ErrorReport): void {
+    if (this.deduped.has(key)) return
+    this.deduped.add(key)
+    this.report(err)
   }
 
   // 注释：订阅错误上报（返回退订函数）
@@ -54,6 +64,8 @@ class ErrorReporter {
 
   clear(): void {
     this.errors = []
+    // 注释：H1——去重状态随错误列表清空（测试用例间隔离；运行时 clear 仅测试使用）
+    this.deduped.clear()
   }
 }
 

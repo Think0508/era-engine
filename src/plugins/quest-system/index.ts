@@ -91,32 +91,18 @@ export function onLoad(_ctx: PluginContext): void {
     // 注释：audit-e M2——var 键缺失 → 去重 warning（原静默创建键名 "undefined" 的
     // 条目 = 数据污染，条件路径 quest.{id}.var.undefined 才能读到）
     if (params.var === undefined || params.var === null || params.var === '') {
-      const key = `${String(sceneId ?? '')}|<missing>`
-      if (!reportedSetVarMissing.has(key)) {
-        reportedSetVarMissing.add(key)
-        errorReporter.report({
-          source: 'quest-system', severity: 'warning',
-          message: `set_var 缺少 var 键（变量名不能为空，未写入）`,
-          suggestion: 'set_var 的 params 需声明 var = "变量名"（任务间通信写读同一键名）',
-        })
-      }
+      reportSetVarIssue(`${String(sceneId ?? '')}|<missing>`, 'set_var 缺少 var 键（变量名不能为空，未写入）')
       return true
     }
     if (r) {
       r.vars[params.var] = params.value
     } else if (params.scene != null) {
-      // 注释：B-M-12/A-M-9（audit-b M-12 / audit-a M-9）——显式指定场景但不存在/
-      // 未激活 → 去重 warning（任务间通信写丢失零诊断不可接受；省略 scene 的
-      // 隐式目标保持静默——无活跃场景是合法状态）
-      const key = `${params.scene}|${params.var}`
-      if (!reportedSetVarMissing.has(key)) {
-        reportedSetVarMissing.add(key)
-        errorReporter.report({
-          source: 'quest-system', severity: 'warning',
-          message: `set_var 目标场景 '${params.scene}' 不存在或未激活（变量 '${params.var}' 未写入）`,
-          suggestion: '检查 set_var 的 scene 参数——任务间通信只能写活跃场景的变量',
-        })
-      }
+      // 注释：B-M-12/A-M-9——显式指定场景但不存在/未激活 → 去重 warning（任务间
+      // 通信写丢失零诊断不可接受；省略 scene 的隐式目标保持静默——无活跃场景是合法状态）
+      reportSetVarIssue(
+        `${params.scene}|${params.var}`,
+        `set_var 目标场景 '${params.scene}' 不存在或未激活（变量 '${params.var}' 未写入）`,
+      )
     }
     return true
   })
@@ -353,19 +339,16 @@ export function onEnable(ctx: PluginContext): void {
       activeScenes.clear()
       sceneStack.length = 0
       for (const entry of data?.activeScenes ?? []) {
-        // 注释：audit-e I9——镜像 sceneStack 循环的对象守卫（原直接 entry.sceneId：
-        // null/非对象条目 → TypeError → save-system 按 provider 隔离上报 → 整段恢复
-        // 中断，其余进行中任务全部消失且无条目定位）——单条目跳过不中断整段
+        // 注释：audit-e I9——对象守卫（原直接 entry.sceneId：null/非对象条目 →
+        // TypeError → save-system 按 provider 隔离上报 → 整段恢复中断，其余进行中
+        // 任务全部消失且无条目定位）——单条目跳过不中断整段
         if (!entry || typeof entry !== 'object') {
-          if (!reportedRestoreEntrySkips.has('bad-active-scene-entry')) {
-            reportedRestoreEntrySkips.add('bad-active-scene-entry')
-            errorReporter.report({
-              source: 'quest-system',
-              severity: 'warning',
-              message: `读档恢复：activeScenes 含非法条目（${entry === null ? 'null' : typeof entry}，已跳过）——该条目的任务进度可能丢失`,
-              suggestion: '存档数据损坏或任务 id 格式异常；其余进行中任务不受影响',
-            })
-          }
+          errorReporter.reportDedup('restore|bad-active-scene-entry', {
+            source: 'quest-system',
+            severity: 'warning',
+            message: `读档恢复：activeScenes 含非法条目（${entry === null ? 'null' : typeof entry}，已跳过）——该条目的任务进度可能丢失`,
+            suggestion: '存档数据损坏或任务 id 格式异常；其余进行中任务不受影响',
+          })
           continue
         }
         activeScenes.set(entry.sceneId, {
@@ -393,18 +376,14 @@ export function onEnable(ctx: PluginContext): void {
         }
       }
       for (const s of data?.sceneStack ?? []) {
-        // 注释：F-4（audit-f）——坏条目守卫镜像 activeScenes 循环：静默跳过 →
-        // 去重 warning（栈条目丢失时嵌套任务恢复状态与存档不符无提示）
+        // 注释：F-4——坏条目守卫（栈条目丢失时嵌套任务恢复状态与存档不符无提示）
         if (!s || typeof s !== 'object') {
-          if (!reportedRestoreEntrySkips.has('bad-scene-stack-entry')) {
-            reportedRestoreEntrySkips.add('bad-scene-stack-entry')
-            errorReporter.report({
-              source: 'quest-system',
-              severity: 'warning',
-              message: `读档恢复：sceneStack 含非法条目（${s === null ? 'null' : typeof s}，已跳过）——嵌套场景恢复状态可能与存档不符`,
-              suggestion: '存档数据损坏；其余条目不受影响',
-            })
-          }
+          errorReporter.reportDedup('restore|bad-scene-stack-entry', {
+            source: 'quest-system',
+            severity: 'warning',
+            message: `读档恢复：sceneStack 含非法条目（${s === null ? 'null' : typeof s}，已跳过）——嵌套场景恢复状态可能与存档不符`,
+            suggestion: '存档数据损坏；其余条目不受影响',
+          })
           continue
         }
         // 注释：A-I-1——新条目结构 {parent, child, resumeStepId}（child = push 时
@@ -420,15 +399,12 @@ export function onEnable(ctx: PluginContext): void {
           sceneStack.push({ parent: s.parent ?? '', child: s.child, resumeStepId: s.resumeStepId ?? '' })
         } else if (s.sceneId !== undefined) {
           sceneStack.push({ parent: s.sceneId, child: '', resumeStepId: s.resumeStepId })
-          if (!reportedOldStackRestore.has(String(s.sceneId))) {
-            reportedOldStackRestore.add(String(s.sceneId))
-            errorReporter.report({
-              source: 'quest-system',
-              severity: 'warning',
-              message: `读档恢复：场景 '${String(s.sceneId)}' 的嵌套栈条目来自旧存档格式（未记录子场景 id，嵌套关系无法精确恢复）`,
-              suggestion: '旧格式存档的嵌套任务恢复后可能停在挂起步骤，如遇卡住请重新触发该任务或迁移存档',
-            })
-          }
+          errorReporter.reportDedup(`restore|old-stack|${String(s.sceneId)}`, {
+            source: 'quest-system',
+            severity: 'warning',
+            message: `读档恢复：场景 '${String(s.sceneId)}' 的嵌套栈条目来自旧存档格式（未记录子场景 id，嵌套关系无法精确恢复）`,
+            suggestion: '旧格式存档的嵌套任务恢复后可能停在挂起步骤，如遇卡住请重新触发该任务或迁移存档',
+          })
         }
       }
     },
@@ -617,15 +593,11 @@ async function executeStepBody(sceneId: string, stepId: string, step: any, runti
         //（角色注册在 '' 地图上永远看不到，spawned 计数还不报错）→ warning + 跳过本次生成
         const atLocation = step.at_location ?? gameContext.getContext().location?.id ?? ''
         if (!atLocation) {
-          const key = `${sceneId}|${step.id}`
-          if (!reportedSpawnNoLocation.has(key)) {
-            reportedSpawnNoLocation.add(key)
-            errorReporter.report({
-              source: 'quest-system', severity: 'warning',
-              message: `任务 '${sceneId}' 的 spawn 步骤 '${step.id}' 无法确定生成地点（当前无地点上下文且未声明 at_location，已跳过生成）`,
-              suggestion: 'spawn 步骤显式声明 at_location，或确保在进入地点后执行该步骤',
-            })
-          }
+          errorReporter.reportDedup(`spawn-no-location|${sceneId}|${step.id}`, {
+            source: 'quest-system', severity: 'warning',
+            message: `任务 '${sceneId}' 的 spawn 步骤 '${step.id}' 无法确定生成地点（当前无地点上下文且未声明 at_location，已跳过生成）`,
+            suggestion: 'spawn 步骤显式声明 at_location，或确保在进入地点后执行该步骤',
+          })
         } else {
           const count = Math.max(1, step.count ?? 1)
           let spawned = 0
@@ -655,19 +627,15 @@ async function executeStepBody(sceneId: string, stepId: string, step: any, runti
         try {
           condOk = conditionEngine.evaluate(step.condition, gameContext.getContext())
         } catch (err) {
-          // 注释：A-I-5（audit-a I-5）——镜像 checkAutoStart/trigger 的去重上报模式
-          // （原 catch 静默走 else：表达式错误零诊断，是唯一还静默的求值点）
+          // 注释：A-I-5——condition 步骤求值异常去重上报（镜像 checkAutoStart/
+          // trigger 模式；原 catch 静默走 else：表达式错误零诊断）
           condOk = false
-          const key = `${sceneId}|${step.id}`
-          if (!reportedConditionStepErrors.has(key)) {
-            reportedConditionStepErrors.add(key)
-            errorReporter.report({
-              source: 'quest-system',
-              severity: 'warning',
-              message: `任务 '${sceneId}' 步骤 '${step.id}' 的条件求值失败（走 else 分支）：${err instanceof Error ? err.message : String(err)}`,
-              suggestion: '检查 condition 表达式（字段路径/前提拼写）',
-            })
-          }
+          errorReporter.reportDedup(`cond-step|${sceneId}|${step.id}`, {
+            source: 'quest-system',
+            severity: 'warning',
+            message: `任务 '${sceneId}' 步骤 '${step.id}' 的条件求值失败（走 else 分支）：${err instanceof Error ? err.message : String(err)}`,
+            suggestion: '检查 condition 表达式（字段路径/前提拼写）',
+          })
         }
       }
       if (condOk) {
@@ -701,15 +669,11 @@ async function executeStepBody(sceneId: string, stepId: string, step: any, runti
             : gameContext.isCompleted(step.scene_id) ? '子场景已完成'
             : activeScenes.has(step.scene_id) ? '子场景已活跃'
             : '子场景前置条件未满足'
-          const key = `${sceneId}|${step.id}`
-          if (!reportedSceneStepSkips.has(key)) {
-            reportedSceneStepSkips.add(key)
-            errorReporter.report({
-              source: 'quest-system', severity: 'warning',
-              message: `任务 '${sceneId}' 的 scene 步骤 '${step.id}' 无法启动子场景 '${step.scene_id}'（${reason}）`,
-              suggestion: '检查子场景是否已完成/前置任务是否满足——父任务按 next 继续',
-            })
-          }
+          errorReporter.reportDedup(`scene-skip|${sceneId}|${step.id}`, {
+            source: 'quest-system', severity: 'warning',
+            message: `任务 '${sceneId}' 的 scene 步骤 '${step.id}' 无法启动子场景 '${step.scene_id}'（${reason}）`,
+            suggestion: '检查子场景是否已完成/前置任务是否满足——父任务按 next 继续',
+          })
           if (step.next != null) await advanceToStep(sceneId, step.next)
         }
       } else if (step.next != null) {
@@ -958,16 +922,10 @@ async function checkCustomObjectives(eventType: string, payload: any): Promise<v
   }
 }
 
-// 注释：custom objective 引用脚本不存在 → 去重上报（2026-08-14 review Minor-1——
-// 原实现静默 pending 导致任务永久挂起且零诊断，违反"禁止静默失败"铁律。
-// 与 script 步骤（executeStep case 'script'）的缺失分支对齐，仅多一次性去重）
-const reportedMissingCustomScripts = new Set<string>()
-
+// 注释：custom objective 引用脚本不存在 → 去重上报（原静默 pending 导致任务永久
+// 挂起且零诊断——与 script 步骤缺失分支对齐）
 function reportMissingCustomScript(sceneId: string, stepId: string, script: string): void {
-  const key = `${sceneId}|${stepId}|${script}`
-  if (reportedMissingCustomScripts.has(key)) return
-  reportedMissingCustomScripts.add(key)
-  errorReporter.report({
+  errorReporter.reportDedup(`missing-script|${sceneId}|${stepId}|${script}`, {
     source: 'quest-system', severity: 'warning',
     message: `任务 '${sceneId}' 步骤 '${stepId}' 的 custom objective 引用脚本 '${script}' 不存在（目标将保持挂起）`,
     suggestion: '检查 mods/{mod}/scripts/ 目录下是否有该文件',
@@ -987,90 +945,28 @@ async function checkAutoStart(): Promise<void> {
     // 任务永不自动开始）→ 用条件引擎真实求值
     // 2026-08-13 审计：原 catch 写 narrativeLog（违规 + 无去重刷屏）→ errorReporter 去重上报
     try {
-      if (conditionEngine.evaluate(cond, gameContext.getContext())) {
-        // 注释：A-I-6（audit-a I-6）——await + 隔离（原 fire-and-forget：
-        // startScene 抛错 → unhandled rejection，任务静默卡步骤且零诊断——
-        // 依赖插件未加载/API namespace 缺失时触发。镜像 command hook 隔离模式）
-        try {
-          await startScene(id)
-        } catch (err) {
-          errorReporter.report({
-            source: 'quest-system',
-            severity: 'error',
-            message: `任务 '${id}' 自动开始失败：${err instanceof Error ? err.message : String(err)}`,
-            suggestion: '检查任务步骤引用的系统/API 是否可用（如 dialogue/combat 插件未加载）',
-          })
-        }
-      }
+      // 注释：A-I-6——await + 隔离（原 fire-and-forget：startScene 抛错 → unhandled
+      // rejection，任务静默卡步骤且零诊断。executeStep 已内部隔离，此处兜底前置缝）
+      await startScene(id)
     } catch (err) {
-      if (!reportedAutoStartErrors.has(id)) {
-        reportedAutoStartErrors.add(id)
-        errorReporter.report({
-          source: 'quest-system',
-          severity: 'warning',
-          message: `任务 '${id}' 的 auto_start 条件求值失败（任务不会自动开始）：${err instanceof Error ? err.message : String(err)}`,
-          suggestion: '检查 auto_start_condition 表达式（字段路径/前提拼写）',
-        })
-      }
+      errorReporter.report({
+        source: 'quest-system',
+        severity: 'error',
+        message: `任务 '${id}' 自动开始失败：${err instanceof Error ? err.message : String(err)}`,
+        suggestion: '检查任务步骤引用的系统/API 是否可用（如 dialogue/combat 插件未加载）',
+      })
     }
   }
 }
 
-// 注释：auto_start 条件求值失败去重上报（2026-08-13 审计）
-const reportedAutoStartErrors = new Set<string>()
-
-// 注释：B-M-12/A-M-9——set_var 显式场景缺失去重上报（key = scene|var）
-const reportedSetVarMissing = new Set<string>()
-
-// 注释：A-I-5——condition 步骤求值异常去重上报（key = sceneId|stepId）
-const reportedConditionStepErrors = new Set<string>()
-
-// 注释：A-I-4——executeStep 静默早退去重上报（key = sceneId|stepId）
-const reportedExecuteStepSkips = new Set<string>()
-
-// 注释：A-I-1——嵌套 scene 步骤不可启动去重上报（key = parentId|stepId）
-const reportedSceneStepSkips = new Set<string>()
-
-// 注释：A-M-2/A-M-3——脚本返回值异常去重上报（key = sceneId|stepId|原因）
-const reportedScriptResultWarnings = new Set<string>()
-
-// 注释：旧存档 sceneStack 条目恢复去重上报（2026-08-15 audit-d I-1——旧格式
-// {sceneId, resumeStepId} 的 sceneId 语义是父场景；恢复为 parent + warning，key = sceneId）
-const reportedOldStackRestore = new Set<string>()
-
-// 注释：存档恢复非法条目去重上报（audit-e I9——activeScenes 含 null/非对象条目时
-// 单条目跳过不中断整段，去重后只报一次）
-const reportedRestoreEntrySkips = new Set<string>()
-
-// 注释：spawn 步骤无地点上下文去重上报（audit-e I10——key = sceneId|stepId）
-const reportedSpawnNoLocation = new Set<string>()
-
-// 注释：effect 缺参数去重上报（audit-e M3——key = effectType|param）
-const reportedMissingEffectParams = new Set<string>()
-
-function reportMissingEffectParam(effectType: string, param: string): void {
-  const key = `${effectType}|${param}`
-  if (reportedMissingEffectParams.has(key)) return
-  reportedMissingEffectParams.add(key)
-  errorReporter.report({
+// 注释：B-M-12/A-M-9——set_var 缺 var 键 / 目标场景不存在去重上报（key = scene|var）
+function reportSetVarIssue(key: string, message: string): void {
+  errorReporter.reportDedup(`set_var|${key}`, {
     source: 'quest-system', severity: 'warning',
-    message: `效果 ${effectType} 缺少参数 '${param}'（已跳过）`,
-    suggestion: `effects 的 params 需声明 ${param} = "任务 id"（作者漏写参数时零痕迹不可接受）`,
+    message,
+    suggestion: 'set_var 的 params 需声明 var = "变量名"；scene 参数须指向活跃场景（任务间通信写读同一键名）',
   })
 }
-
-// 注释：B-I-3——trigger 引用不存在指令去重上报（key = sceneId|command）
-const reportedUnknownTriggerCommands = new Set<string>()
-
-// 注释：trigger condition 求值失败去重上报（2026-08-14 review Important-1——
-// 原 command hook 空 catch 静默失败：触发器永不触发且零诊断，违反"禁止静默失败"铁律。
-// 镜像 checkAutoStart 的 reportedAutoStartErrors 模式；key = sceneId + condition（同场景
-// 多个坏条件各自上报一次））
-const reportedTriggerCondErrors = new Set<string>()
-
-// 注释：指令多 trigger 冲突去重上报（audit-e I8——key = commandId；冲突为数据层面
-// 稳定状态，原每次执行指令都刷 error）
-const reportedTriggerConflicts = new Set<string>()
 
 // 注释：C6——构建触发器索引（triggers 声明 → command hook + dialogue_end 索引）
 // 调用时机：onEnable（初始）/ game:load（读档后 mod.quests 重建）/ reindexTriggers API
@@ -1087,19 +983,15 @@ function buildTriggerIndex(): void {
   for (const [sceneId, scene] of mod.quests) {
     for (const trig of scene.triggers ?? []) {
       if (trig.type === 'command' && trig.command) {
-        // 注释：B-I-3（audit-c2 I-4）——trigger 引用不存在的指令 → 去重 warning +
-        // 不挂 hook（原静默挂载：触发器永不命中且零诊断。加载期无法校验——指令由
-        // 插件 onEnable 注册——在索引构建时补查）
+        // 注释：B-I-3——trigger 引用不存在的指令 → 去重 warning + 不挂 hook
+        //（原静默挂载：触发器永不命中且零诊断。加载期无法校验——指令由插件
+        // onEnable 注册——在索引构建时补查）
         if (!commandRegistry.getById(trig.command)) {
-          const key = `${sceneId}|${trig.command}`
-          if (!reportedUnknownTriggerCommands.has(key)) {
-            reportedUnknownTriggerCommands.add(key)
-            errorReporter.report({
-              source: 'quest-system', severity: 'warning',
-              message: `任务 '${sceneId}' 的触发器引用不存在的指令 '${trig.command}'（触发器不会触发）`,
-              suggestion: '检查 triggers[].command 是否拼写正确、指令是否已注册（插件 onEnable 注册）',
-            })
-          }
+          errorReporter.reportDedup(`unknown-cmd|${sceneId}|${trig.command}`, {
+            source: 'quest-system', severity: 'warning',
+            message: `任务 '${sceneId}' 的触发器引用不存在的指令 '${trig.command}'（触发器不会触发）`,
+            suggestion: '检查 triggers[].command 是否拼写正确、指令是否已注册（插件 onEnable 注册）',
+          })
           continue
         }
         const list = perCommand.get(trig.command) ?? []
@@ -1125,18 +1017,14 @@ function buildTriggerIndex(): void {
             // execCtx.uiStore 手工搬运
             ok = conditionEngine.evaluate(h.condition, gameContext.getContext())
           } catch (err) {
-            // 注释：Important-1 修复——原空 catch 静默失败（触发器永不触发且零诊断）。
-            // 去重上报 warning，ok 保持 false → 不拦截，走指令默认行为（现有语义不变）
-            const key = `${h.sceneId}|${h.condition}`
-            if (!reportedTriggerCondErrors.has(key)) {
-              reportedTriggerCondErrors.add(key)
-              errorReporter.report({
-                source: 'quest-system',
-                severity: 'warning',
-                message: `触发场景 '${h.sceneId}' 的指令触发条件求值失败（触发器不会触发）：${err instanceof Error ? err.message : String(err)}`,
-                suggestion: '检查 triggers[].condition 表达式（字段路径/前提拼写）',
-              })
-            }
+            // 注释：触发器条件求值失败 → 去重上报（原空 catch 静默失败：触发器
+            // 永不触发且零诊断），ok 保持 false → 不拦截，走指令默认行为
+            errorReporter.reportDedup(`trigger-cond|${h.sceneId}|${h.condition}`, {
+              source: 'quest-system',
+              severity: 'warning',
+              message: `触发场景 '${h.sceneId}' 的指令触发条件求值失败（触发器不会触发）：${err instanceof Error ? err.message : String(err)}`,
+              suggestion: '检查 triggers[].condition 表达式（字段路径/前提拼写）',
+            })
             ok = false
           }
         }
@@ -1146,14 +1034,11 @@ function buildTriggerIndex(): void {
       if (satisfied.length > 1) {
         // 注释：audit-e I8——冲突是数据层面的稳定状态，每次执行指令都刷一条 error
         // → 按 commandId 去重（原每次执行都报，玩家每点一次刷屏一条）
-        if (!reportedTriggerConflicts.has(commandId)) {
-          reportedTriggerConflicts.add(commandId)
-          errorReporter.report({
-            source: 'quest-system', severity: 'error',
-            message: `指令 '${commandId}' 的多个触发条件同时满足：${satisfied.join(', ')}`,
-            suggestion: '调整触发条件的互斥性（如 selected.id 判断），只保留一个场景命中',
-          })
-        }
+        errorReporter.reportDedup(`trigger-conflict|${commandId}`, {
+          source: 'quest-system', severity: 'error',
+          message: `指令 '${commandId}' 的多个触发条件同时满足：${satisfied.join(', ')}`,
+          suggestion: '调整触发条件的互斥性（如 selected.id 判断），只保留一个场景命中',
+        })
         return false // 冲突 → 不拦截，走指令默认行为
       }
       await startScene(satisfied[0])
@@ -1165,40 +1050,38 @@ function buildTriggerIndex(): void {
 // 注释：A-I-4——executeStep 静默早退去重上报（场景不存在/未激活/步骤不存在——
 // 原裸 return：任务永久卡在 activeScenes 且零诊断，存档持续携带）
 function reportExecuteStepSkip(sceneId: string, stepId: string, reason: string): void {
-  const key = `${sceneId}|${stepId}`
-  if (reportedExecuteStepSkips.has(key)) return
-  reportedExecuteStepSkips.add(key)
-  errorReporter.report({
+  errorReporter.reportDedup(`step-skip|${sceneId}|${stepId}`, {
     source: 'quest-system', severity: 'warning',
     message: `任务 '${sceneId}' 步骤 '${stepId}' 无法执行（${reason}，任务可能无法推进）`,
     suggestion: '检查动态场景是否已恢复注册/任务数据步骤 id 是否存在',
   })
 }
 
-// 注释：advanceToStep 静默早退去重上报（audit-e I5——场景未激活/不存在时推进被
-// 丢弃零痕迹；key = sceneId|nextStepId，镜像 executeStep skip 模式）
-const reportedAdvanceStepSkips = new Set<string>()
-
+// 注释：advanceToStep 静默早退去重上报（场景未激活/不存在时推进被丢弃零痕迹）
 function reportAdvanceStepSkip(sceneId: string, nextStepId: string | undefined, reason: string): void {
-  const key = `${sceneId}|${String(nextStepId ?? '')}`
-  if (reportedAdvanceStepSkips.has(key)) return
-  reportedAdvanceStepSkips.add(key)
-  errorReporter.report({
+  errorReporter.reportDedup(`advance-skip|${sceneId}|${String(nextStepId ?? '')}`, {
     source: 'quest-system', severity: 'warning',
     message: `任务 '${sceneId}' 推进到步骤 '${String(nextStepId ?? '')}' 被丢弃（${reason}）`,
     suggestion: '检查嵌套场景完成顺序/动态场景注册生命周期是否与推进时序冲突',
   })
 }
 
-// 注释：A-M-2/A-M-3——脚本返回值异常去重上报（key = sceneId|stepId|原因）
+// 注释：A-M-2/A-M-3——脚本返回值异常去重上报（行为保持文档语义走 next，但作者
+// 笔误（return true / return 1）零痕迹不可接受）
 function reportScriptResultWarning(sceneId: string, stepId: string, reason: string): void {
-  const key = `${sceneId}|${stepId}|${reason}`
-  if (reportedScriptResultWarnings.has(key)) return
-  reportedScriptResultWarnings.add(key)
-  errorReporter.report({
+  errorReporter.reportDedup(`script-result|${sceneId}|${stepId}|${reason}`, {
     source: 'quest-system', severity: 'warning',
     message: `任务 '${sceneId}' 步骤 '${stepId}'：${reason}`,
     suggestion: '脚本返回值应为 string（跳转步骤 id）/ false（走 else）/ undefined（走 next）',
+  })
+}
+
+// 注释：effect 缺参数去重上报（audit-e M3）
+function reportMissingEffectParam(effectType: string, param: string): void {
+  errorReporter.reportDedup(`missing-param|${effectType}|${param}`, {
+    source: 'quest-system', severity: 'warning',
+    message: `效果 ${effectType} 缺少参数 '${param}'（已跳过）`,
+    suggestion: `effects 的 params 需声明 ${param} = "任务 id"（作者漏写参数时零痕迹不可接受）`,
   })
 }
 

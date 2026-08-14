@@ -325,6 +325,11 @@ export function onEnable(ctx: PluginContext): void {
   // 放 buildTriggerIndex 内会在测试/早期环境（registry 未填充）误报，故独立延迟校验
   const onPluginsLoaded = (): void => {
     validateQuestTriggerConditions()
+    // 注释：G2-M-8——插件全就绪后重建触发器索引（幂等、owner 隔离）——
+    // 覆盖任何迟到注册的指令（模组专属插件 plugin.toml [ui] 指令在 quest-system
+    // 之后 onEnable 的场景：首次 buildTriggerIndex 时指令不存在被去重 warning
+    // 跳过且不挂 hook，此处一劳永逸补挂）
+    buildTriggerIndex()
     eventBus.off('game:plugins_loaded', onPluginsLoaded)
   }
   eventBus.on('game:plugins_loaded', onPluginsLoaded)
@@ -685,7 +690,11 @@ async function executeStepBody(sceneId: string, stepId: string, step: any, runti
           && !activeScenes.has(step.scene_id)
           && (child.prerequisites == null || child.prerequisites.every(pre => gameContext.isCompleted(pre)))
         if (canStart) {
-          sceneStack.push({ parent: sceneId, child: step.scene_id, resumeStepId: step.next ?? '' })
+          // 注释：G1-I-1——push 保留 step.next 原值（undefined 不转 ''）：
+          // resumeStepId 三态语义——'' = 子完成即结束父；string = 恢复推进；
+          // undefined = 父保持挂起（AGENTS §31：省略 next = active 挂起）。
+          // 原 `?? ''` 把省略 next 的 scene 步骤静默转成"结束父"（与恢复路径矛盾）
+          sceneStack.push({ parent: sceneId, child: step.scene_id, resumeStepId: step.next })
           await startScene(step.scene_id)
         } else {
           const reason = !child ? '子场景不存在'

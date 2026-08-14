@@ -357,7 +357,7 @@ ctx.api.call('quest', 'start', 'dynamic_quest') // 注册后即可照常启动
 ```
 
 - **写入位置**：`mod.quests`（与 TOML 任务同表）——start/getSceneStatus/advanceStep/checkAutoStart 等全部既有 API 立即生效
-- **校验范围**：registerScene 走运行时路径，**不做 TOML 加载期校验**（结构/trigger type/重复 dialogue 等校验只发生在 loadMod 的 TOML 解析路径）；运行时只做重复 id 检查（报错不覆盖）。内嵌 `[[dialogues]]` 收集同样**仅 TOML 加载路径**——运行时注册的 scene 带 `dialogues` 不会注册进 `conversations.scene`，`scene:` 引用不可用，需用独立 conversation 文件
+- **校验范围**：registerScene 走运行时路径，但**共用 `validateSceneSteps` 步骤图校验**（步骤 id 唯一/引用字段指向存在步骤/objective/combat/goto 必填字段——与 TOML 路径同一校验函数，含场景定位）+ 空 steps/重复 id 拒绝注册（报错不覆盖）；带 `dialogues` 的 scene 自动注册进 `conversations.scene`，`scene:` 引用可用（G2-I-2 修正：与 TOML 路径一致）
 - **副作用**：注册后自动重建触发器索引（新场景的 triggers 立即拦截）+ 立即检查 condition 自动触发
 - **重复 id** → errorReporter 报错（含 id）+ 不覆盖（跳过注册）
 - **与 registerDynamicScene 的区别**：后者注册进独立动态表（不持久、注册方负责读档重建，confinement 追捕委托用）；本 API 注册后常驻 mod.quests

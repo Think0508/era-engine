@@ -1108,6 +1108,19 @@ describe('quest-system combat 步骤推进（B3）', () => {
 
 // ═══════ Audit F 回归：next="" 结束标记（F-1/F-2）═══════
 describe('audit-f：next 空串结束标记（F-1/F-2）', () => {
+  beforeAll(async () => {
+    // 注释：G1-I-4——自举守卫（-t 过滤运行本 describe 时 B3 的 bootPlugins 不执行，
+    // modLoader/mod 数据/插件 API 均不存在——实测 -t "audit-f" 直接崩）
+    if (!apiSystem.has('quest', 'start')) {
+      entitySystem.clear()
+      errorReporter.clear()
+      await modLoader.loadMod('test-mod')
+      bindingResolver.loadBindings(modLoader.getMod()!.bindings)
+      await bootPlugins()
+      gameContext.setPlayer('player')
+    }
+  })
+
   function installQuest(id: string, steps: any[]) {
     const mod = modLoader.getMod()!
     mod.quests.set(id, { id, title: id, type: 'event', display: 'hidden', steps })
@@ -1117,6 +1130,9 @@ describe('audit-f：next 空串结束标记（F-1/F-2）', () => {
     const mod = modLoader.getMod()!
     mod.quests.delete('f_parent_quest')
     mod.quests.delete('f_child_quest')
+    // 注释：completedScenes 跨用例残留（F-1 完成 f_parent_quest 后 F-1b 同 id
+    // 重启被 isCompleted 跳过）——每个用例后重置游戏上下文
+    gameContext.reset()
   })
 
   it('F-1：scene 步骤 next="" → 子完成即结束父（原 truthy 检查静默挂起父场景）', async () => {
@@ -1130,6 +1146,19 @@ describe('audit-f：next 空串结束标记（F-1/F-2）', () => {
     // 子场景完成 → completeScene(child) pop → resumeStepId === '' → completeScene(parent)
     expect(await apiSystem.call('quest', 'getSceneStatus', 'f_parent_quest')).toBe('completed')
     expect(await apiSystem.call('quest', 'getSceneStatus', 'f_child_quest')).toBe('completed')
+  })
+
+  it('F-1b：scene 步骤省略 next → 子完成后父保持挂起（G1-I-1——push 保留 undefined）', async () => {
+    installQuest('f_parent_quest', [
+      { id: 's1', type: 'scene', scene_id: 'f_child_quest' },
+    ])
+    installQuest('f_child_quest', [
+      { id: 'c1', type: 'reward', effects: [], next: 'not_exist' },
+    ])
+    await apiSystem.call('quest', 'start', 'f_parent_quest')
+    // 省略 next = 父挂起（AGENTS §31 语义）——不被 '' 转换误完成
+    expect(await apiSystem.call('quest', 'getSceneStatus', 'f_child_quest')).toBe('completed')
+    expect(await apiSystem.call('quest', 'getSceneStatus', 'f_parent_quest')).toBe('active')
   })
 
   it('F-2：combat 步骤 next="" 通过 validateSceneSteps（空串是合法出路，非假阳性）', () => {
@@ -1232,6 +1261,22 @@ describe('example-mod 示例任务（C8）', () => {
       }
     })
 
+    beforeEach(async () => {
+      // 注释：E2E 链路测试间状态隔离——completedScenes 跨用例残留会让同一任务
+      // 无法二次启动（isCompleted 跳过）——每个用例前重置游戏上下文
+      gameContext.reset()
+      gameContext.setPlayer('player')
+      gameContext.setSelectedCharacterId('李秋水')
+      // 实体状态重置（reset 不清 entitySystem）——链路 2 的奖励（天赋/物品）
+      // 残留在李秋水/玩家实体上会污染 2b 的"无奖励"断言
+      const lqs = entitySystem.get('character', '李秋水') as any
+      if (lqs?.talents) delete lqs.talents['冰肌玉骨']
+      const player = entitySystem.get('character', 'player') as any
+      if (player?.inventory) player.inventory = []
+      await apiSystem.call('quest', 'reindexTriggers')
+      errorReporter.clear()
+    })
+
     it('链路 1：spar 拦截 → 战斗胜利 → 获得小无相功秘籍 → 场景完成', async () => {
       // 任务状态：C8 loadMod 后从未启动 → 可直接使用 TOML 数据（无需重置）
       gameContext.setSelectedCharacterId('李秋水')
@@ -1287,6 +1332,83 @@ describe('example-mod 示例任务（C8）', () => {
         expect.arrayContaining([expect.objectContaining({ itemId: '白虹掌力秘籍' })])
       )
       expect(errorReporter.getErrors().length).toBe(0)
+    })
+
+    it('链路 2b（G2-M-7.2）：fail_event 全链——H 结束未达 5 次 → tease 分支 → 完成且无奖励', async () => {
+      await eventBus.emit('dialogue:end', { character: '李秋水' })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'h_liqiushui')).toBe('active')
+
+      // 只高潮 1 次就结束 H → fail_event（h:end）→ 脚本返回 pending → on_fail='tease'
+      await eventBus.emit('h:orgasm', { character: '李秋水', partId: 1, level: 2, count: 1 })
+      await eventBus.emit('h:end', { ally: 'player' })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'h_liqiushui')).toBe('completed')
+
+      // 失败分支：无天赋、无物品（奖励未发放）
+      const lqs = entitySystem.get('character', '李秋水') as any
+      expect(lqs.talents?.['冰肌玉骨']).toBeUndefined()
+      const player = entitySystem.get('character', 'player') as any
+      expect((player.inventory ?? []).some((i: any) => i.itemId === '白虹掌力秘籍')).toBe(false)
+    })
+
+    it('链路 2c（G2-M-7.1）：存档恢复后 custom objective 续计——挂起计数恢复后达标推进', async () => {
+      await eventBus.emit('dialogue:end', { character: '李秋水' })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'h_liqiushui')).toBe('active')
+
+      // 3 次高潮（未达成 5）→ 序列化 → 恢复 → 再 2 次 → 完成
+      for (let i = 0; i < 3; i++) {
+        await eventBus.emit('h:orgasm', { character: '李秋水', partId: 1, level: 2, count: 1 })
+      }
+      const provider = getGameStateProviders().find((p: any) => p.id === 'quest-system')!
+      const data = provider.serialize()
+      provider.restore(JSON.parse(JSON.stringify(data)))
+
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'h_liqiushui')).toBe('active')
+      for (let i = 0; i < 2; i++) {
+        await eventBus.emit('h:orgasm', { character: '李秋水', partId: 1, level: 2, count: 1 })
+      }
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'h_liqiushui')).toBe('completed')
+    })
+
+    it('G1-I-3：selectChoice 走过滤后索引——condition 隐藏首选项时选中可见项（不执行隐藏项 effects）', async () => {
+      // 动态注册带 condition 选项的对话场景（首选项 condition 恒 false → 隐藏）
+      await apiSystem.call('quest', 'registerScene', {
+        id: 'choice_filter_quest', title: '选项过滤', type: 'event', display: 'hidden',
+        dialogues: [{
+          id: 'choose',
+          nodes: [
+            { id: 'start', lines: ['选一个。'],
+              choices: [
+                { text: '隐藏项', condition: "selected.id == '不存在的角色'", effects: [{ type: 'narrative_output', params: { text: '隐藏项被选中（错误）' } }], next: 'bad' },
+                { text: '可见项', effects: [{ type: 'narrative_output', params: { text: '可见项被选中' } }], next: 'end' },
+              ] },
+            { id: 'bad', lines: ['不应到达。'] },
+            { id: 'end', lines: ['正确到达。'] },
+          ],
+        }],
+        steps: [
+          { id: 's1', type: 'dialogue', conversation: 'scene:choice_filter_quest/choose', next: 's2' },
+          { id: 's2', type: 'reward', effects: [], next: '' },
+        ],
+      } as any)
+      await apiSystem.call('quest', 'start', 'choice_filter_quest')
+
+      const { selectChoice } = await import('../../plugins/dialogue-system/index')
+      await selectChoice('filter-entry', 0)
+      // 过滤后可见列表 = [可见项]——index 0 应选中可见项（原实现按原始数组取到隐藏项）
+      const log = narrativeLog.getEntries()
+      expect(log.some((e: any) => e.text === '可见项被选中')).toBe(true)
+      expect(log.some((e: any) => e.text === '隐藏项被选中（错误）')).toBe(false)
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'choice_filter_quest')).toBe('completed')
+    })
+
+    it('G1-I-2：effect 缺 params → 无静默脏写（不产生 itemId=undefined 的垃圾条目）', async () => {
+      // add_item 缺 params（无 itemId）→ 无 items 可加——关键是不得产生
+      // {itemId: undefined} 垃圾条目（G1-I-2 撤销全局兜底后维持 handler 原语义）
+      await apiSystem.call('effect-system', 'execute',
+        [{ type: 'add_item' }],
+        { sourceId: 'player', _targetIds: ['player'] })
+      const player = entitySystem.get('character', 'player') as any
+      expect((player.inventory ?? []).some((i: any) => i.itemId === undefined)).toBe(false)
     })
   })
 })

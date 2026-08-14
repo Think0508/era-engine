@@ -1700,6 +1700,15 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
           suggestion: `objective.event 目前支持：${CUSTOM_OBJECTIVE_EVENTS.join(' / ')}`,
         })
       }
+      // 注释：G2-M-5——fail_event 与 event 同名 → 主计数路径被失败路径遮蔽
+      //（每次事件都走 fail 分支，目标永不推进，静默失效零诊断）
+      if (step.type === 'objective' && obj?.type === 'custom' && obj.event && obj.fail_event === obj.event) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file: path,
+          message: `任务 '${scene.id}' 步骤 '${step.id}' 的 custom objective 的 fail_event（'${obj.fail_event}'）与 event 相同（主计数路径被失败分支遮蔽）`,
+          suggestion: 'fail_event 必须是与 event 不同的事件（如 event = "h:orgasm"、fail_event = "h:end"）',
+        })
+      }
     }
   }
   // 解析完成后 conversations.scene = sceneConversations

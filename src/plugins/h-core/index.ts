@@ -412,7 +412,9 @@ export function onLoad(_ctx: PluginContext): void {
 
   effectTypeRegistry.register('h_start_h', async (_p: any, execCtx: any) => {
     const allyId = execCtx.sourceId
-    const targetId = _p.targetId ?? execCtx._targetIds?.[0]
+    // 注释：G1-I-2——params 可省略（{ type = "h_start_h", target = "selected" }
+    // 是对话选项的常见写法，effect-system 不再全局兜底 params）——handler 自防御
+    const targetId = _p?.targetId ?? execCtx._targetIds?.[0]
     if (!allyId || !targetId) return
     // 注释：H 开始时自动脱 auto_off 槽位（胸罩/内裤等）
     autoClothOff(allyId)

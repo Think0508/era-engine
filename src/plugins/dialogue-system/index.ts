@@ -81,11 +81,16 @@ export function onEnable(ctx: PluginContext): void {
     const index = Number(payload?.index ?? 0)
     if (!currentConversation) return
     const choice = currentConversation.pendingChoices?.[index]
-    if (!choice?.next) return
-    // 注释：链路修复（2026-08-15）——choice.effects 死功能：原两通道只跳 node，
-    // choice 级 effects（如对话选项触发 H/任务）从未执行——先执行 effects 再渲染
+    // 注释：G1-M-2——无 next 的选项按终端处理：先执行 effects 再结束对话
+    //（原提前 return：effects 不执行 + 对话永久卡死零诊断；B-I-2 加载期校验
+    // 拦不住 registerScene 运行时注册的坏对话数据）
+    if (!choice) return
     await executeChoiceEffects(choice)
-    await renderNode(choice.next)
+    if (choice.next) {
+      await renderNode(choice.next)
+    } else {
+      await endConversation()
+    }
   })
 
   // 注释：注册 dialogue API
@@ -188,10 +193,20 @@ export function onEnable(ctx: PluginContext): void {
   })
 }
 
-async function executeLineEffects(line: ReactiveLine | null): Promise<void> {
+async function executeLineEffects(line: ReactiveLine | null, charId?: string | null): Promise<void> {
   if (!line?.effects?.length) return
   try {
-    await apiSystem.call('effect-system', 'execute', line.effects, {})
+    // 注释：G2-I-1——补口上执行上下文（原空 {}：effect target='selected'/'self'
+    // 全部解析失败 → 口上行 effects 文档承诺功能实际失效且刷未去重 warning）。
+    // 与 node/choice effects 对齐：sourceId = 玩家、targetIds = 说话角色
+    const gc = gameContext.getContext()
+    const lineCharId = charId ?? null
+    const execCtx = {
+      sourceId: gc.player?.id ?? null,
+      _targetIds: lineCharId ? [lineCharId] : [],
+      uiStore: { selectedCharacterId: lineCharId },
+    }
+    await apiSystem.call('effect-system', 'execute', line.effects, execCtx)
   } catch (err) {
     // 注释：audit-e I2——外层 catch 吞掉的是 API 管线错误（effect-system 未启用等，
     // effect-system 内部不会上报这类错误）→ 去重上报 warning，保留"不阻断口上输出"语义
@@ -334,7 +349,7 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
       narrativeLog.write(outputText, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
     }
     if (outputIsChar) {
-      await executeLineEffects(matched.line)
+      await executeLineEffects(matched.line, charId)
     }
     hasOutput = true
   }
@@ -614,7 +629,8 @@ async function renderNodeInner(nodeId: string, speakerOverride?: string): Promis
     if (visible.length === 0) {
       // 注释：全部选项被条件隐藏——视为终端节点（避免死对话）
       if (node.next) {
-        renderNode(node.next)
+        // 注释：G2-M-2——补 await（原缺 await：链式渲染与调用方推进竞态）
+        await renderNode(node.next)
       } else {
         await endConversation()
       }
@@ -670,17 +686,24 @@ async function executeChoiceEffects(choice: { effects?: any[] }): Promise<void> 
 // 依赖 dialogue UI 交互通道设计（随 dialogue-system 补齐，勿局部修补）。
 export async function selectChoice(entryId: string, choiceIndex: number): Promise<void> {
   if (!currentConversation) return
-  const node = currentConversation.nodes.get(currentConversation.nodeId)
-  if (!node?.choices || choiceIndex >= node.choices.length) return
-
-  const choice = node.choices[choiceIndex]
+  // 注释：G1-I-3——改从 pendingChoices（condition 过滤后的可见列表）取值——
+  // 原按原始 node.choices 索引：某选项被 condition 隐藏时下标错位，会选中
+  // 不可见选项（配合 choice effects 管线 = 执行了本不该可见的 effects）。
+  // 与 dialogue:select 事件通道同源，行为一致
+  const choices = currentConversation.pendingChoices
+  const choice = choices?.[choiceIndex]
+  if (!choice) return
   // 注释：标记当前 choice entry consumed
   narrativeLog.markConsumed(entryId)
   // 注释：链路修复（2026-08-15）——choice.effects 死功能：原只跳 node，
   // choice 级 effects 从未执行——先执行 effects 再渲染
   await executeChoiceEffects(choice)
-  // 注释：跳转到 choice.next
-  await renderNode(choice.next)
+  // 注释：跳转到 choice.next（无 next = 终端选项：结束对话，与 dialogue:select 一致）
+  if (choice.next) {
+    await renderNode(choice.next)
+  } else {
+    await endConversation()
+  }
 }
 
 // 注释：结束对话

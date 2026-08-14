@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { CommandExecutor, type ExecutionContext } from './command-executor'
+import {
+  CommandExecutor, type ExecutionContext,
+  registerCommandHook, clearCommandHooks,
+  recordBehaviorHistory, clearBehaviorHistory, getContinuousAdjust,
+} from './command-executor'
 import { commandRegistry } from './command-registry'
 import { errorReporter } from './error-reporter'
 import { gameContext } from './game-context'
@@ -208,5 +212,58 @@ describe('command-executor', () => {
     // execution_end 发出的是 0 而非 -1（监听者拿不到负数 addTime）
     const endEvt = emittedEvents.find(e => e.event === 'game:execution_end')
     expect(endEvt?.payload.timeCost).toBe(0)
+  })
+
+  it('B-M-1：clearCommandHooks(owner) 只清该 owner 的 hook（其他插件 hook 保留）', async () => {
+    const handler = vi.fn()
+    const ownerAHook = vi.fn().mockResolvedValue(true)
+    const ownerBHook = vi.fn().mockResolvedValue(true)
+    commandRegistry.register({
+      id: 'hooked',
+      label: '钩子指令',
+      group: 'main_menu',
+      modes: ['exploration'],
+      handler,
+      source: 'native',
+    })
+    registerCommandHook('hooked', 'plugin-a', ownerAHook)
+    registerCommandHook('hooked', 'plugin-b', ownerBHook)
+    // 清 A → B 的 hook 仍在 → 执行被 B 拦截（handler 不执行）
+    clearCommandHooks('plugin-a')
+    await executor.execute('hooked', makeCtx())
+    expect(ownerAHook).not.toHaveBeenCalled()
+    expect(ownerBHook).toHaveBeenCalledOnce()
+    expect(handler).not.toHaveBeenCalled()
+    // 清 B → 无 hook → 默认行为恢复
+    clearCommandHooks('plugin-b')
+    await executor.execute('hooked', makeCtx())
+    expect(handler).toHaveBeenCalledOnce()
+  })
+
+  it('B-M-2：被拦截的指令不计入 behaviorHistory（连续重复不衰减）', async () => {
+    clearBehaviorHistory()
+    recordBehaviorHistory('chat')
+    recordBehaviorHistory('chat')
+    const handler = vi.fn()
+    commandRegistry.register({
+      id: 'intercepted-cmd',
+      label: '可拦截指令',
+      group: 'main_menu',
+      modes: ['exploration'],
+      handler,
+      source: 'native',
+    })
+    registerCommandHook('intercepted-cmd', 'test-owner', async () => true)
+    await executor.execute('intercepted-cmd', makeCtx())
+    expect(handler).not.toHaveBeenCalled()
+    // 拦截未记录 → 历史仍为 2 次 chat → 无衰减
+    expect(getContinuousAdjust()).toBe(1)
+    // 清掉 hook 后真正执行三次 → 第 3 次连续起开始衰减
+    clearCommandHooks('test-owner')
+    await executor.execute('intercepted-cmd', makeCtx())
+    await executor.execute('intercepted-cmd', makeCtx())
+    await executor.execute('intercepted-cmd', makeCtx())
+    expect(getContinuousAdjust()).toBeLessThan(1)
+    clearBehaviorHistory()
   })
 })

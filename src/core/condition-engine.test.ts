@@ -371,4 +371,17 @@ describe('conditionEngine 前提注册表', () => {
     expect(() => conditionEngine.evaluate('premise(TMP)', ctx)).toThrow()
     expect(conditionEngine.evaluate('player.hp < 100', ctx)).toBe(true)
   })
+
+  // ═══════ B-M-3：quest 域段数/字段守卫（audit-b M-3）═══════
+  it('B-M-3：quest 裸根 / 未知字段段 / var 缺键——不抛错返回默认值语义', () => {
+    // quest（裸根）——恒 undefined（数值比较走默认值 0，字符串比较恒 false）
+    expect(conditionEngine.evaluate('quest == "active"', ctx)).toBe(false)
+    expect(conditionEngine.evaluate('quest != null', ctx)).toBe(false)
+    // 未知字段段（quest.xxx.zzz）——不被当作 status 解析
+    expect(conditionEngine.evaluate('quest.xxx.zzz == "active"', ctx)).toBe(false)
+    // var 缺变量键（quest.xxx.var）——undefined
+    expect(conditionEngine.evaluate('quest.xxx.var == "y"', ctx)).toBe(false)
+    // 合法 3 段 status 不误伤（quest-system 未启用 → callSync 容错 undefined）
+    expect(conditionEngine.evaluate('quest.find_master.status == "active"', ctx)).toBe(false)
+  })
 })

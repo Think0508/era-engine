@@ -31,6 +31,9 @@ class ConditionRegistry {
   // 注释：结构路径惯例（AGENTS §8 路径结构）——数据化字段（talents/abilities/relations 等）按结构校验
   private structuralFields: ConditionField[] = [
     { path: 'location.tags.{tag}', type: 'boolean', description: 'Location has tag (array includes)', operators: '== !=', source: 'engine' },
+    // 注释：实体 id 路径（selected.id == '角色名' 是 trigger/条件文档惯用法——
+    // selected./target. 根归一化为 character.{id}.——id 不是属性，需显式登记
+    { path: 'character.{id}.id', type: 'string', description: 'Character entity id', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.base.{attr}', type: 'number', description: 'Character base attribute', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.talents.{talent}', type: 'number', description: 'Character talent level', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.abilities.{ability}', type: 'number', description: 'Character ability level', operators: '> < >= <= == !=', source: 'engine' },

@@ -281,20 +281,30 @@ function resolvePath(node: PathNode, ctx: GameContext): any {
       // 注释：C2——quest 域（任务状态/场景变量）——quest-system 未启用或场景不存在时
       // callSync 抛错 → 容错返回 undefined（走默认值机制，不阻断求值）
       if (part === 'quest') {
+        // 注释：B-M-3（audit-b M-3）——段数/字段守卫——裸根（quest == 'active'）与
+        // 未知字段段（quest.xxx.zzz）不再被当作 status 解析（原越界读取产生恒假
+        // 字符串/undefined 的怪异语义；保持与加载期校验行为一致，返回 undefined）
         const sceneId = parts[i + 1]
-        const field = parts[i + 2]  // 'status' 或 'var'
-        i += 2
-        try {
-          if (field === 'var') {
-            const varKey = parts[i + 1]
-            i++
+        const field = parts[i + 2]
+        if (field === 'status') {
+          i += 2
+          try {
+            return apiSystem.callSync('quest', 'getSceneStatus', sceneId)
+          } catch {
+            return undefined
+          }
+        }
+        if (field === 'var' && parts[i + 3] !== undefined) {
+          const varKey = parts[i + 3]
+          i += 3
+          try {
             const v = apiSystem.callSync('quest', 'getVar', sceneId, varKey)
             return v ?? undefined
+          } catch {
+            return undefined
           }
-          return apiSystem.callSync('quest', 'getSceneStatus', sceneId)
-        } catch {
-          return undefined
         }
+        return undefined
       }
     }
 

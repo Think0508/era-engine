@@ -68,16 +68,29 @@ export interface ExecutionContext {
 // 指令默认行为（handler/effects/时间推进）不执行，改道由注册方负责（如启动场景）
 export type CommandHookHandler = (execCtx: any) => Promise<boolean>
 
-const commandHooks = new Map<string, CommandHookHandler[]>()
+// 注释：C2-I-2/B-M-1（audit-b M-1 / audit-c2 I-2）——hook 带 owner 归属——
+// 原全局清空：quest-system 每次重建索引（onEnable/game:load/reindexTriggers）都
+// clear() 全量表，任何未来插件注册的 hook 会被静默清除（拦截失效零诊断）。
+// 现按 owner 隔离，clearCommandHooks(owner) 只清该注册方的条目
+interface CommandHookEntry {
+  owner: string
+  handler: CommandHookHandler
+}
 
-export function registerCommandHook(commandId: string, handler: CommandHookHandler): void {
+const commandHooks = new Map<string, CommandHookEntry[]>()
+
+export function registerCommandHook(commandId: string, owner: string, handler: CommandHookHandler): void {
   const list = commandHooks.get(commandId) ?? []
-  list.push(handler)
+  list.push({ owner, handler })
   commandHooks.set(commandId, list)
 }
 
-export function clearCommandHooks(): void {
-  commandHooks.clear()
+export function clearCommandHooks(owner: string): void {
+  for (const [commandId, list] of commandHooks) {
+    const remaining = list.filter(e => e.owner !== owner)
+    if (remaining.length > 0) commandHooks.set(commandId, remaining)
+    else commandHooks.delete(commandId)
+  }
 }
 
 export class CommandExecutor {
@@ -148,9 +161,6 @@ export class CommandExecutor {
       return
     }
 
-    // 注释：记录执行历史（连续重复指令减值用）——前提/条件通过后、执行开始前
-    recordBehaviorHistory(id)
-
     // 注释：包裹 EXECUTING
     const engine = ctx.engine
     if (engine?.setExecutionState) {
@@ -177,9 +187,9 @@ export class CommandExecutor {
       // 状态流转与正常执行一致。hook 抛错 → 上报 + 继续默认执行（异常隔离）
       const hooks = commandHooks.get(id)
       if (hooks) {
-        for (const hook of hooks) {
+        for (const hookEntry of hooks) {
           try {
-            if (await hook(ctx)) {
+            if (await hookEntry.handler(ctx)) {
               // 注释：M-2——拦截：时间未推进，execution_end 上报 0 而非指令默认耗时
               settleTimeCost = 0
               return
@@ -194,6 +204,11 @@ export class CommandExecutor {
           }
         }
       }
+
+      // 注释：B-M-2（audit-b M-2）——执行历史记录移到拦截检查之后——
+      // 被 trigger 拦截的指令并未真正执行，不应计入连续重复序列（原位置在拦截前，
+      // 同一指令被拦截三次后真正执行时错误触发 0.85 减值系数）
+      recordBehaviorHistory(id)
 
       // 注释：推进时间（effects 类指令才推进）
       if (duration > 0 && cmd.effects) {

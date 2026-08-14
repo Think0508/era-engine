@@ -138,6 +138,25 @@ export function onEnable(ctx: PluginContext): void {
     reindexTriggers: (): void => {
       buildTriggerIndex()
     },
+    // 注释：C7——运行时注册 scene（动态/制式任务生成入口）——写入 mod.quests，
+    // 数据走与 TOML 任务同一套校验/执行链路。与 registerDynamicScene 的区别：
+    // 本 API 注册的 scene 持久进 mod.quests（后续 start/getSceneStatus 等 API 生效），
+    // 且立即重建触发器索引 + 检查 condition 自动触发
+    registerScene: (scene: any): void => {
+      const mod = modLoader.getMod()
+      if (!mod) return
+      if (mod.quests.has(scene.id)) {
+        errorReporter.report({
+          source: 'quest-system', severity: 'error',
+          message: `registerScene 失败：场景 id '${scene.id}' 已存在`,
+          suggestion: '动态任务 id 需全局唯一（可加前缀/时间戳）',
+        })
+        return
+      }
+      mod.quests.set(scene.id, scene as Quest)
+      buildTriggerIndex()   // C6：新场景的 triggers 立即生效
+      checkAutoStart()      // 立即检查 condition 自动触发
+    },
   })
 
   ctx.events.on('location:enter', async (payload: any) => {

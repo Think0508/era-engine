@@ -201,6 +201,23 @@ effects = [{ type = "narrative_output", params = { text = "剧情开始" } }]
 - **索引生命周期**：onEnable 初始构建；`game:load`（读档后 mod.quests 重建）自动重建；运行时增删带 triggers 的任务（如动态 scene）需调 `ctx.api.call('quest', 'reindexTriggers')`
 - **类型校验**：加载期校验 `type` 合法值——非法 type / 未实现类型（`location_enter`/`item_used`/`time`，Phase 2 计划）→ error（含任务 id + 文件），防止作者以为已生效而静默失效
 
+### 运行时 scene 注册（C7，2026-08-14）
+
+动态/制式任务生成入口——运行时构造 Quest 对象并注册，数据走与 TOML 任务同一套校验/执行链路（steps 链、triggers、auto_start 全部生效）：
+
+```typescript
+// 构造完整 Quest 对象（steps 必需）——id 需全局唯一（建议前缀/时间戳）
+const scene = { id: 'dynamic_quest', title: '动态任务', type: 'side', display: 'hidden', steps: [...] }
+ctx.api.call('quest', 'registerScene', scene)   // → void
+ctx.api.call('quest', 'start', 'dynamic_quest') // 注册后即可照常启动
+```
+
+- **写入位置**：`mod.quests`（与 TOML 任务同表）——start/getSceneStatus/advanceStep/checkAutoStart 等全部既有 API 立即生效
+- **副作用**：注册后自动重建触发器索引（新场景的 triggers 立即拦截）+ 立即检查 condition 自动触发
+- **重复 id** → errorReporter 报错（含 id）+ 不覆盖（跳过注册）
+- **与 registerDynamicScene 的区别**：后者注册进独立动态表（不持久、注册方负责读档重建，confinement 追捕委托用）；本 API 注册后常驻 mod.quests
+- **角色生成配套**：`ctx.api.call('character', 'spawnCharacter', templateId, atLocation, overrides?)` → 按 `templates/character/` 模板实例化角色（模板与 overrides 深合并、放置到指定地点、随存档持久化），生成 id 规则 `{templateId}_{timestamp}_{随机后缀}`；模板不存在 → errorReporter + null——支撑"先 spawn 敌人再注册追捕任务"的完整动态链路
+
 ## Mod 作者使用
 
 放 quests/main/ 或 quests/side/。用 `auto_start_condition` 或 `start_quest` effect 启动。
@@ -215,6 +232,7 @@ ctx.api.call('quest', 'advanceStep', sceneId, stepId)   → void
 ctx.api.call('quest', 'checkTriggerConditions')         → string[]（未开始且带 condition 的 scene）
 ctx.api.call('quest', 'getVar', sceneId, key)           → any（场景变量；不存在 → undefined）
 ctx.api.call('quest', 'setVar', sceneId, key, value)    → void（写场景变量）
+ctx.api.call('quest', 'registerScene', scene)           → void（C7 运行时注册 scene——写入 mod.quests，立即重建触发器索引 + 检查自动触发；重复 id 报错不覆盖）
 ```
 
 ## Override 规则

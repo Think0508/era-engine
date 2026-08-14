@@ -212,6 +212,10 @@ ctx.api.call('character', 'setOffline', charId, reason?)      // → void（置 
 ctx.api.call('character', 'setOnline', charId, locationId?)   // → void（恢复在线；缺省位置 = home_locations 最高权重；发 character:online）
 ctx.api.call('character', 'isOffline', charId)                // → boolean
 ctx.api.call('character', 'initLocations')                    // → void（重新分配全部角色位置——世界重建后调用（新游戏）；已有位置跳过，幂等）
+// 运行时角色生成（C7，2026-08-14）——按模板实例化角色（模板怪物/临时 NPC）：
+// 模板（templates/character/ 或运行时注入）与 overrides 深合并 → 注册进 entitySystem
+//（随存档持久化）→ 放置到 atLocation。返回实体 id；模板不存在 → errorReporter + null
+ctx.api.call('character', 'spawnCharacter', templateId, atLocation, overrides?) // → string | null（id 规则 {templateId}_{timestamp}_{随机后缀}）
 ```
 
 - 离线生命周期契约：`character:offline` 是统一清理信号——各"在场活动状态"属主监听它清自己的领域（follow-system 已接入：解除跟随 reason=offline）。只清位置，不动身份持久数据（属性/关系/物品/经验）
@@ -349,6 +353,10 @@ ctx.api.call('quest', 'unregisterDynamicScene', sceneId)      // → void（移�
 // ⚠️ 动态 scene 不随存档序列化：注册方（如 confinement）负责在存档 restore 后按原样重建
 // 触发器索引（C6，2026-08-14）——triggers 声明 → command hook + dialogue_end 索引重建
 ctx.api.call('quest', 'reindexTriggers')                      // → void（新增/删除带 triggers 的任务后调用；初始/读档自动重建）
+// 运行时注册（C7，2026-08-14）——动态/制式任务生成入口：写入 mod.quests（数据走与 TOML 任务
+// 同一套校验/执行链路）+ 立即重建触发器索引 + 检查 condition 自动触发。重复 id → errorReporter
+//（区别于 registerDynamicScene：后者注册进独立动态表，不持久；本 API 注册后常驻 mod.quests）
+ctx.api.call('quest', 'registerScene', scene)                 // → void（scene 为完整 Quest 对象；id 需全局唯一，建议前缀/时间戳）
 // 场景变量（C2，2026-08-14）——任务间通信走数据；同步实现（条件引擎 resolvePath 同步求值链直接调用）
 ctx.api.call('quest', 'getVar', sceneId, key)                 // → any（场景变量值；场景不存在/未设置 → undefined）
 ctx.api.call('quest', 'setVar', sceneId, key, value)          // → void（写场景变量；scene 必须已激活）

@@ -597,4 +597,56 @@ describe('quest-system combat 步骤推进（B3）', () => {
       commandRegistry.unregister('test_spar')
     })
   })
+
+  // ═══════ C7：运行时 scene 注册 + 角色 spawn（quest-script C' 模型 Task 7）═══════
+  describe('运行时注册与生成（C7）', () => {
+    afterEach(() => {
+      const mod = modLoader.getMod()!
+      // 注释：只清理注入的 test_bandit 模板；dynamic_quest 故意不删——用例 2（重复 id）
+      // 依赖用例 1 注册后留在 mod.quests 的残留（若 afterEach 清理，重复检测将失效）。
+      // C7 是文件最后一个 describe，残留不外溢到其他用例
+      mod.entities.get('__templates_character__')?.delete('test_bandit')
+    })
+
+    it('registerScene 后可启动、可触发、可完成', async () => {
+      await apiSystem.call('quest', 'registerScene', {
+        id: 'dynamic_quest', title: '动态任务', type: 'side', display: 'hidden',
+        steps: [
+          { id: 's1', type: 'reward', effects: [{ type: 'narrative_output', params: { text: '动态奖励' } }], next: 'not_exist' },
+        ],
+      } as any)
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'dynamic_quest')).toBe('not_started')
+      await apiSystem.call('quest', 'start', 'dynamic_quest')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'dynamic_quest')).toBe('completed')
+    })
+
+    it('registerScene 重复 id → errorReporter 报错且不覆盖', async () => {
+      errorReporter.clear()
+      await apiSystem.call('quest', 'registerScene', {
+        id: 'dynamic_quest', title: '重复', type: 'side', display: 'hidden', steps: [],
+      } as any)
+      expect(errorReporter.getErrors().some(e => e.message.includes('dynamic_quest'))).toBe(true)
+    })
+
+    it('spawnCharacter 按模板实例化并放置到指定地点', async () => {
+      const mod = modLoader.getMod()!
+      const templates = mod.entities.get('__templates_character__')!
+      // 注释（偏离 brief 原文）：templates 是 Map（mod-loader loadEntriesByPrefix）——
+      // 对象式赋值 templates['test_bandit'] = {...} 不会进入 Map，须用 .set()
+      templates.set('test_bandit', { id: 'test_bandit', template: null, name: '山贼', base: { hp: 20 } })
+      const id = await apiSystem.call('character', 'spawnCharacter', 'test_bandit', 'town_square', { base: { hp: 30 } })
+      expect(id).not.toBeNull()
+      const char = entitySystem.get('character', id as string) as any
+      expect(char).toBeDefined()
+      expect(char.current_location).toBe('town_square')
+      expect(char.base.hp).toBe(30)
+    })
+
+    it('spawnCharacter 模板不存在 → null + errorReporter', async () => {
+      errorReporter.clear()
+      const id = await apiSystem.call('character', 'spawnCharacter', 'not_exist_template', 'town_square')
+      expect(id).toBeNull()
+      expect(errorReporter.getErrors().length).toBeGreaterThan(0)
+    })
+  })
 })

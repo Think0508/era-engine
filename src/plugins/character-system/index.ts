@@ -12,6 +12,7 @@ import { setEntityPath, ATTR } from '../../core/entity-utils'
 import { eventBus } from '../../core/event-bus'
 import { modLoader } from '../../core/mod-loader'
 import { errorReporter } from '../../core/error-reporter'
+import { deepMerge } from '../../core/template'
 import { resolveRelationPanel, resolveRelationAddress } from '../../core/relation-display'
 
 // 注释：关系三档字符串映射（关系系统 v2）——与 mod-loader 的转换一致
@@ -180,6 +181,31 @@ export function onEnable(ctx: PluginContext): void {
     // NPC 全部消失（静默）。已有位置跳过（幂等，读档不受影响）
     initLocations: (): void => {
       initCharacterLocations()
+    },
+    // 注释：C7——运行时按模板实例化角色（模板怪物/临时 NPC）：模板数据（templates/
+    // character/ 下的 TOML，或运行时注入）与 overrides 深合并，注册进 entitySystem
+    //（随存档机制持久化），放置到指定地点。返回生成的实体 id；模板不存在 → errorReporter + null。
+    // id 规则 {templateId}_{timestamp}_{随机后缀}——随机后缀防同毫秒同模板两次 spawn 撞 id
+    spawnCharacter: (templateId: string, atLocation: string, overrides?: Record<string, any>): string | null => {
+      const mod = modLoader.getMod() as any
+      const templates = mod?.entities?.get?.('__templates_character__')
+      const template = templates?.get?.(templateId)
+      if (!template) {
+        errorReporter.report({
+          source: 'character-system', severity: 'error',
+          message: `spawnCharacter 失败：模板 '${templateId}' 不存在`,
+          suggestion: '检查 templates/character/ 目录下是否定义了该模板',
+        })
+        return null
+      }
+      const id = `${templateId}_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+      // 注释：深拷贝模板（JSON 序列化隔离模板缓存，防运行时污染——registerEntities 同款）
+      // 后按模板深合并规则并入 overrides（子覆盖父；对象深合并；数组替换）
+      const data = deepMerge(JSON.parse(JSON.stringify(template)), overrides ?? {})
+      data.id = id
+      data.current_location = atLocation
+      entitySystem.register('character', id, data)
+      return id
     },
   })
 }

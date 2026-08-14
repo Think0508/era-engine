@@ -40,6 +40,21 @@ const sceneCharFilters = new Map<string, Array<(charId: string) => boolean>>()
 // 注释：口上条件求值失败去重上报（2026-08-13 审计——原 catch 静默淘汰口上行）
 const reportedLineConditionErrors = new Set<string>()
 
+// 注释：对话节点 lines 异常去重上报（audit-e C1/M5，2026-08-15——缺 lines 抛裸
+// TypeError 软死锁、lines 为字符串逐字符输出零报错；key = 类型|convId|nodeId）
+const reportedNodeLinesErrors = new Set<string>()
+
+// 注释：选项 condition 求值失败去重上报（audit-e I1——原静默隐藏选项零痕迹；
+// key = choice-cond|convId|nodeId|condition）
+const reportedChoiceCondErrors = new Set<string>()
+
+// 注释：效果执行管线错误去重上报（audit-e I2——外层 catch 吞掉的是 API 管线错误，
+// effect-system 内部单效果隔离不覆盖此类；key = 上下文|effects JSON）
+const reportedEffectErrors = new Set<string>()
+
+// 注释：场景 condition 求值失败去重上报（audit-e I7——key = scene-cond|sceneId|condition）
+const reportedSceneCondErrors = new Set<string>()
+
 let currentConversation: ConversationRuntime | null = null
 
 // 注释：onLoad——注册 effect types
@@ -174,8 +189,19 @@ async function executeLineEffects(line: ReactiveLine | null): Promise<void> {
   if (!line?.effects?.length) return
   try {
     await apiSystem.call('effect-system', 'execute', line.effects, {})
-  } catch {
-    // 注释：效果执行错误隔离，不阻断口上输出
+  } catch (err) {
+    // 注释：audit-e I2——外层 catch 吞掉的是 API 管线错误（effect-system 未启用等，
+    // effect-system 内部不会上报这类错误）→ 去重上报 warning，保留"不阻断口上输出"语义
+    const key = `line-effects|${JSON.stringify(line.effects)}`
+    if (!reportedEffectErrors.has(key)) {
+      reportedEffectErrors.add(key)
+      errorReporter.report({
+        source: 'dialogue-system',
+        severity: 'warning',
+        message: `口上效果执行失败（已跳过，不阻断输出）：${err instanceof Error ? err.message : String(err)}`,
+        suggestion: '检查 effect-system 插件是否启用、effects 数据类型是否正确',
+      })
+    }
   }
 }
 
@@ -220,10 +246,26 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
           if (conditionEngine.evaluate(sceneDef.condition, gc)) {
             await apiSystem.call('quest', 'start', sid)
           }
-        } catch { /* condition 求值失败，跳过 */ }
+        } catch (err) {
+          // 注释：audit-e I7——condition 求值失败原静默跳过（依赖 quest 侧
+          // checkAutoStart 巧合补报，且 quest 侧晚一个事件批次）→ 此处直接去重上报
+          const key = `scene-cond|${sid}|${sceneDef.condition}`
+          if (!reportedSceneCondErrors.has(key)) {
+            reportedSceneCondErrors.add(key)
+            errorReporter.report({
+              source: 'dialogue-system',
+              severity: 'warning',
+              message: `任务 '${sid}' 的场景 condition 求值失败（自动触发跳过）：${err instanceof Error ? err.message : String(err)}`,
+              suggestion: '检查场景 condition 表达式（字段路径/前提拼写）',
+            })
+          }
+        }
       }
     }
-  } catch { /* quest API 未就绪，跳过 */ }
+  } catch {
+    // 注释：quest API 未就绪（quest-system 插件未加载）→ 场景级自动触发整体降级跳过，
+    // 属有意降级（无 quest 插件 = 无任务系统），不阻断口上输出
+  }
 
   // 注释：场景角色过滤（2026-08-10）——命中任一过滤器 → 跳过该角色的口上输出
   // 放在 quest 自动触发之后、口上选择之前：场景级任务触发不被抑制，角色说话被抑制
@@ -427,8 +469,26 @@ async function startConversationInternal(ref: ConversationRef, speaker?: string)
   await renderNode('start', defaultSpeaker)
 }
 
-// 注释：渲染当前 node
+// 注释：渲染当前 node——外层兜底（audit-e C1）：renderNodeInner 内任何意外抛错
+//（对话数据损坏/管线错误）都会穿过对话模式 → 玩家永久卡 dialogue 模式（软死锁，
+// 无任何 exitMode/currentConversation 清理）。上报（含 conversationId+nodeId）后
+// endConversation 强制结束（endConversation 对已结束状态幂等）
 async function renderNode(nodeId: string, speakerOverride?: string): Promise<void> {
+  if (!currentConversation) return
+  try {
+    await renderNodeInner(nodeId, speakerOverride)
+  } catch (err) {
+    errorReporter.report({
+      source: 'dialogue-system',
+      severity: 'error',
+      message: `对话 '${currentConversation?.convId ?? '?'}' 渲染节点 '${nodeId}' 失败（对话已强制结束）：${err instanceof Error ? err.message : String(err)}`,
+      suggestion: '检查对话数据（节点字段类型/lines 格式/effects 引用）——加载期校验外的运行期数据需自查',
+    })
+    endConversation()
+  }
+}
+
+async function renderNodeInner(nodeId: string, speakerOverride?: string): Promise<void> {
   if (!currentConversation) return
   const node = currentConversation.nodes.get(nodeId)
   if (!node) {
@@ -457,7 +517,34 @@ async function renderNode(nodeId: string, speakerOverride?: string): Promise<voi
 
   // 注释：渲染 lines——speaker 作为元数据，不自动加前缀
   // speaker 由 UI 消费（样式/头像），mod 作者决定是否写在文字里
-  for (const line of node.lines) {
+  // audit-e C1/M5：缺 lines 或 lines 为字符串 → 去重上报 + 兜底渲染（原缺 lines
+  // 抛裸 TypeError 软死锁、字符串逐字符输出零报错）
+  const rawLines = node.lines
+  if (rawLines == null) {
+    const key = `lines-missing|${currentConversation.convId}|${nodeId}`
+    if (!reportedNodeLinesErrors.has(key)) {
+      reportedNodeLinesErrors.add(key)
+      errorReporter.report({
+        source: 'dialogue-system',
+        severity: 'warning',
+        message: `对话 '${currentConversation.convId}' 节点 '${nodeId}' 缺少 lines 字段（按空行处理）`,
+        suggestion: '对话节点声明 lines = ["一句台词"]（纯选择节点也建议至少一行空台词）',
+      })
+    }
+  } else if (!Array.isArray(rawLines)) {
+    const key = `lines-type|${currentConversation.convId}|${nodeId}`
+    if (!reportedNodeLinesErrors.has(key)) {
+      reportedNodeLinesErrors.add(key)
+      errorReporter.report({
+        source: 'dialogue-system',
+        severity: 'warning',
+        message: `对话 '${currentConversation.convId}' 节点 '${nodeId}' 的 lines 必须是数组（当前是 ${typeof rawLines}，按单行处理）`,
+        suggestion: 'lines 用表数组写法：lines = ["一句台词"]（单字符串会被逐字符输出）',
+      })
+    }
+  }
+  const lines = Array.isArray(rawLines) ? rawLines : (rawLines == null ? [] : [rawLines])
+  for (const line of lines) {
     const interpolated = await interpolateLine(line, charId)
     eventBus.emit('dialogue:line', { speaker: speakerName ?? null, text: interpolated, style: speakerStyle })
     narrativeLog.write(interpolated, 'dialogue', 'dialogue-system', undefined, undefined, speakerStyle)
@@ -467,8 +554,19 @@ async function renderNode(nodeId: string, speakerOverride?: string): Promise<voi
   if (node.effects?.length) {
     try {
       await apiSystem.call('effect-system', 'execute', node.effects, {})
-    } catch {
-      // 注释：效果执行错误隔离，不阻断对话流程
+    } catch (err) {
+      // 注释：audit-e I2——外层 catch 吞掉的是 API 管线错误（effect-system 未启用等，
+      // effect-system 内部不会上报这类错误）→ 去重上报 warning，保留"不阻断对话"语义
+      const key = `node-effects|${currentConversation.convId}|${nodeId}|${JSON.stringify(node.effects)}`
+      if (!reportedEffectErrors.has(key)) {
+        reportedEffectErrors.add(key)
+        errorReporter.report({
+          source: 'dialogue-system',
+          severity: 'warning',
+          message: `对话 '${currentConversation.convId}' 节点 '${nodeId}' 的效果执行失败（已跳过，不阻断对话）：${err instanceof Error ? err.message : String(err)}`,
+          suggestion: '检查 effect-system 插件是否启用、effects 数据类型是否正确',
+        })
+      }
     }
   }
 
@@ -477,11 +575,25 @@ async function renderNode(nodeId: string, speakerOverride?: string): Promise<voi
     // 注释：choices condition 过滤（2026-08-13 审计修复——原 condition 字段从未求值，
     // UI 直接渲染全部选项，不满足条件的选项可被点击绕过；selected = 对话角色）
     const gc = { ...gameContext.getContext(), selectedCharacterId: charId ?? undefined }
+    const convId = currentConversation.convId
+    const convNodeId = currentConversation.nodeId
     const visible = node.choices.filter(c => {
       if (!c.condition) return true
       try {
         return conditionEngine.evaluate(c.condition.replace(/\{id\}/g, charId ?? ''), gc)
-      } catch {
+      } catch (err) {
+        // 注释：audit-e I1——选项 condition 求值失败静默淘汰该选项（玩家永远看不到、
+        // 零上报）→ 镜像口上条件（reportedLineConditionErrors）的去重上报模式
+        const key = `choice-cond|${convId}|${convNodeId}|${c.condition}`
+        if (!reportedChoiceCondErrors.has(key)) {
+          reportedChoiceCondErrors.add(key)
+          errorReporter.report({
+            source: 'dialogue-system',
+            severity: 'warning',
+            message: `对话 '${convId}' 节点 '${convNodeId}' 的选项条件求值失败（该选项被隐藏）：${err instanceof Error ? err.message : String(err)}`,
+            suggestion: '检查选项 condition 表达式（字段路径/前提拼写）',
+          })
+        }
         return false
       }
     })

@@ -12,7 +12,7 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { gameContext } from '../../core/game-context'
 import { errorReporter } from '../../core/error-reporter'
 import type { Quest, ConversationRef } from '../../core/mod-loader'
-import { parseConversationRef } from '../../core/mod-loader'
+import { parseConversationRef, validateSceneSteps } from '../../core/mod-loader'
 import { conditionEngine } from '../../core/condition-engine'
 import { conditionRegistry } from '../../core/condition-registry'
 import { registerCommandHook, clearCommandHooks } from '../../core/command-executor'
@@ -63,7 +63,11 @@ export function onLoad(_ctx: PluginContext): void {
   // event 和 quest 通用
   effectTypeRegistry.register('start_scene', async (params: any) => {
     const sceneId = params.scene as string
-    if (!sceneId) return true
+    if (!sceneId) {
+      // 注释：audit-e M3——缺参静默返回零痕迹 → 去重 warning（不阻断）
+      reportMissingEffectParam('start_scene', 'scene')
+      return true
+    }
     await startScene(sceneId)
     return true
   })
@@ -71,7 +75,11 @@ export function onLoad(_ctx: PluginContext): void {
   // 注释：start_quest——start_scene 的别名，向后兼容
   effectTypeRegistry.register('start_quest', async (params: any) => {
     const questId = params.quest as string
-    if (questId) await startScene(questId)
+    if (!questId) {
+      reportMissingEffectParam('start_quest', 'quest')
+      return true
+    }
+    await startScene(questId)
     return true
   })
 
@@ -80,6 +88,20 @@ export function onLoad(_ctx: PluginContext): void {
   effectTypeRegistry.register('set_var', async (params: any) => {
     const sceneId = params.scene ?? Array.from(activeScenes.keys()).pop()
     const r = sceneId ? activeScenes.get(sceneId) : undefined
+    // 注释：audit-e M2——var 键缺失 → 去重 warning（原静默创建键名 "undefined" 的
+    // 条目 = 数据污染，条件路径 quest.{id}.var.undefined 才能读到）
+    if (params.var === undefined || params.var === null || params.var === '') {
+      const key = `${String(sceneId ?? '')}|<missing>`
+      if (!reportedSetVarMissing.has(key)) {
+        reportedSetVarMissing.add(key)
+        errorReporter.report({
+          source: 'quest-system', severity: 'warning',
+          message: `set_var 缺少 var 键（变量名不能为空，未写入）`,
+          suggestion: 'set_var 的 params 需声明 var = "变量名"（任务间通信写读同一键名）',
+        })
+      }
+      return true
+    }
     if (r) {
       r.vars[params.var] = params.value
     } else if (params.scene != null) {
@@ -198,6 +220,18 @@ export function onEnable(ctx: PluginContext): void {
         })
         return
       }
+      // 注释：audit-e I6——运行时注册路径跳过全部步骤级校验（坏数据直接触发
+      // C2/I3 类静默挂起）→ 与 TOML 路径共用 mod-loader 的 validateSceneSteps
+      //（步骤引用/必填字段/combat 出路等）。校验失败 → error + 拒绝注册
+      const sceneErrCount = validateSceneSteps(scene as Quest)
+      if (sceneErrCount > 0) {
+        errorReporter.report({
+          source: 'quest-system', severity: 'error',
+          message: `registerScene 失败：场景 '${scene.id}' 存在 ${sceneErrCount} 处步骤图校验错误（已拒绝注册）`,
+          suggestion: '修复上述步骤引用/必填字段错误后重新注册（动态场景数据与 TOML 任务同一标准）',
+        })
+        return
+      }
       // 注释：B-M-10（audit-b M-10）——运行时注册 scene 的内嵌对话同步写入
       // conversations.scene——否则自引用 scene:{id}/{name} 运行期必 miss
       //（resolveConversation 查不到 → "对话不存在"warning + 步骤跳步）
@@ -252,7 +286,8 @@ export function onEnable(ctx: PluginContext): void {
       let nextStepId: string | undefined
       if (win) nextStepId = step.on_win ?? step.next
       else if (lose) nextStepId = step.on_lose ?? step.next
-      if (nextStepId) {
+      // 注释：2026-08-15——空字符串 = 显式结束标记（advanceToStep 找不到目标 → 完成）
+      if (nextStepId != null) {
         await advanceToStep(sceneId, nextStepId)
       }
     }
@@ -313,6 +348,21 @@ export function onEnable(ctx: PluginContext): void {
       activeScenes.clear()
       sceneStack.length = 0
       for (const entry of data?.activeScenes ?? []) {
+        // 注释：audit-e I9——镜像 sceneStack 循环的对象守卫（原直接 entry.sceneId：
+        // null/非对象条目 → TypeError → save-system 按 provider 隔离上报 → 整段恢复
+        // 中断，其余进行中任务全部消失且无条目定位）——单条目跳过不中断整段
+        if (!entry || typeof entry !== 'object') {
+          if (!reportedRestoreEntrySkips.has('bad-active-scene-entry')) {
+            reportedRestoreEntrySkips.add('bad-active-scene-entry')
+            errorReporter.report({
+              source: 'quest-system',
+              severity: 'warning',
+              message: `读档恢复：activeScenes 含非法条目（${entry === null ? 'null' : typeof entry}，已跳过）——该条目的任务进度可能丢失`,
+              suggestion: '存档数据损坏或任务 id 格式异常；其余进行中任务不受影响',
+            })
+          }
+          continue
+        }
         activeScenes.set(entry.sceneId, {
           sceneId: entry.sceneId,
           currentStepId: entry.currentStepId,
@@ -341,12 +391,24 @@ export function onEnable(ctx: PluginContext): void {
         if (!s || typeof s !== 'object') continue
         // 注释：A-I-1——新条目结构 {parent, child, resumeStepId}（child = push 时
         // 实际启动的子 scene）——completeScene 只弹 child === 完成者的条目。
-        // 旧存档 {sceneId, resumeStepId} 兼容：sceneId 视为 child，parent 置空
-        //（旧格式不记录子 scene，无法精确恢复嵌套关系）
+        // 旧存档 {sceneId, resumeStepId} 兼容：sceneId 语义是**父**（旧 push 代码
+        // sceneStack.push({ sceneId, resumeStepId: step.next }) 中 sceneId = 挂起的父，
+        // 非子 scene）——旧格式不记录子 id，无法精确恢复嵌套关系：child 置空
+        //（completeScene 的 top.child === 完成者恒不匹配 → 条目安全搁置不会误弹），
+        // parent 恢复为 sceneId，恢复时发 warning 告知"无法精确恢复"
         if (s.child !== undefined) {
           sceneStack.push({ parent: s.parent ?? '', child: s.child, resumeStepId: s.resumeStepId ?? '' })
         } else if (s.sceneId !== undefined) {
-          sceneStack.push({ parent: '', child: s.sceneId, resumeStepId: s.resumeStepId ?? '' })
+          sceneStack.push({ parent: s.sceneId, child: '', resumeStepId: s.resumeStepId ?? '' })
+          if (!reportedOldStackRestore.has(String(s.sceneId))) {
+            reportedOldStackRestore.add(String(s.sceneId))
+            errorReporter.report({
+              source: 'quest-system',
+              severity: 'warning',
+              message: `读档恢复：场景 '${String(s.sceneId)}' 的嵌套栈条目来自旧存档格式（未记录子场景 id，嵌套关系无法精确恢复）`,
+              suggestion: '旧格式存档的嵌套任务恢复后可能停在挂起步骤，如遇卡住请重新触发该任务或迁移存档',
+            })
+          }
         }
       }
     },
@@ -399,7 +461,31 @@ async function startScene(sceneId: string): Promise<void> {
   if (display !== 'hidden') {
     narrativeLog.write(`开始：${scene.title ?? sceneId}`, 'quest', 'quest-system')
   }
-  await executeStep(sceneId, runtime.currentStepId)
+  try {
+    await executeStep(sceneId, runtime.currentStepId)
+  } catch (err) {
+    // 注释：audit-e C3——首步抛错 → 僵尸活跃场景：activeScenes 已写入但执行失败，
+    // 场景 status 恒为 active（auto_start/triggers/dialogue_end 全部永久跳过，且随
+    // 存档持久化）。上报（含 sceneId+stepId）后 completeScene 回滚（错误留痕 +
+    // 场景不僵尸；completeScene 标记 completed 后可被后续 start 跳过）
+    errorReporter.report({
+      source: 'quest-system',
+      severity: 'error',
+      message: `任务 '${sceneId}' 首步 '${runtime.currentStepId}' 执行失败，场景已回滚为已完成：${err instanceof Error ? err.message : String(err)}`,
+      suggestion: '检查步骤引用的系统/API 是否可用（如 dialogue/combat 插件未加载）、步骤数据是否正确',
+    })
+    try {
+      await completeScene(sceneId)
+    } catch (rollbackErr) {
+      // 注释：回滚本身兜底——completeScene 内部可能再抛（场景已删等），不阻断调用方
+      errorReporter.report({
+        source: 'quest-system',
+        severity: 'error',
+        message: `任务 '${sceneId}' 回滚失败：${rollbackErr instanceof Error ? rollbackErr.message : String(rollbackErr)}`,
+        suggestion: '检查 completeScene 内部逻辑（activeScenes 状态是否已损坏）',
+      })
+    }
+  }
 }
 
 // 注释：执行 step
@@ -440,7 +526,8 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
           : step.conversation as ConversationRef
         await apiSystem.call('dialogue', 'startConversation', ref, step.speaker ?? null)
       }
-      if (step.next) await advanceToStep(sceneId, step.next)
+      // 注释：2026-08-15——next 空字符串 = 显式结束标记（advanceToStep 找不到目标 → 完成）
+      if (step.next != null) await advanceToStep(sceneId, step.next)
       break
 
     case 'combat':
@@ -466,7 +553,8 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
           uiStore: { selectedCharacterId: gameContext.getContext().selectedCharacterId },
         })
       }
-      if (step.next) await advanceToStep(sceneId, step.next)
+      // 注释：2026-08-15——next 空字符串 = 显式结束标记
+      if (step.next != null) await advanceToStep(sceneId, step.next)
       break
 
     case 'spawn': {
@@ -480,22 +568,37 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
           suggestion: 'spawn 步骤需声明 template（templates/character/ 下的模板 id）',
         })
       } else {
+        // 注释：audit-e I10——at_location 缺省且当前无地点上下文 → 落到空地点
+        //（角色注册在 '' 地图上永远看不到，spawned 计数还不报错）→ warning + 跳过本次生成
         const atLocation = step.at_location ?? gameContext.getContext().location?.id ?? ''
-        const count = Math.max(1, step.count ?? 1)
-        let spawned = 0
-        for (let i = 0; i < count; i++) {
-          const id = await apiSystem.call('character', 'spawnCharacter', step.template, atLocation)
-          if (id) spawned++
-        }
-        if (spawned === 0) {
-          errorReporter.report({
-            source: 'quest-system', severity: 'warning',
-            message: `任务 '${sceneId}' 的 spawn 步骤 '${step.id}' 未生成任何角色（模板 '${step.template}'）`,
-            suggestion: '检查模板是否存在（character-system spawnCharacter 已上报详细原因）',
-          })
+        if (!atLocation) {
+          const key = `${sceneId}|${step.id}`
+          if (!reportedSpawnNoLocation.has(key)) {
+            reportedSpawnNoLocation.add(key)
+            errorReporter.report({
+              source: 'quest-system', severity: 'warning',
+              message: `任务 '${sceneId}' 的 spawn 步骤 '${step.id}' 无法确定生成地点（当前无地点上下文且未声明 at_location，已跳过生成）`,
+              suggestion: 'spawn 步骤显式声明 at_location，或确保在进入地点后执行该步骤',
+            })
+          }
+        } else {
+          const count = Math.max(1, step.count ?? 1)
+          let spawned = 0
+          for (let i = 0; i < count; i++) {
+            const id = await apiSystem.call('character', 'spawnCharacter', step.template, atLocation)
+            if (id) spawned++
+          }
+          if (spawned === 0) {
+            errorReporter.report({
+              source: 'quest-system', severity: 'warning',
+              message: `任务 '${sceneId}' 的 spawn 步骤 '${step.id}' 未生成任何角色（模板 '${step.template}'）`,
+              suggestion: '检查模板是否存在（character-system spawnCharacter 已上报详细原因）',
+            })
+          }
         }
       }
-      if (step.next) await advanceToStep(sceneId, step.next)
+      // 注释：2026-08-15——next 空字符串 = 显式结束标记
+      if (step.next != null) await advanceToStep(sceneId, step.next)
       break
     }
 
@@ -523,7 +626,8 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
         }
       }
       if (condOk) {
-        if (step.next) await advanceToStep(sceneId, step.next)
+        // 注释：2026-08-15——next 空字符串 = 显式结束标记
+        if (step.next != null) await advanceToStep(sceneId, step.next)
       } else if (step.else) {
         await advanceToStep(sceneId, step.else)
       }
@@ -601,13 +705,15 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
         } else if (result !== undefined && result !== null) {
           reportScriptResultWarning(sceneId, step.id, `脚本返回了非 string/false/undefined 值（typeof ${typeof result}，已按 next 继续）`)
         }
-        if (step.next) await advanceToStep(sceneId, step.next)
+        // 注释：2026-08-15——next 空字符串 = 显式结束标记
+        if (step.next != null) await advanceToStep(sceneId, step.next)
       }
       break
     }
 
     default:
-      if (step.next) await advanceToStep(sceneId, step.next)
+      // 注释：2026-08-15——next 空字符串 = 显式结束标记
+      if (step.next != null) await advanceToStep(sceneId, step.next)
   }
 }
 
@@ -629,10 +735,16 @@ function buildStepExecCtx(_sceneId: string, step: any, _runtime: SceneRuntime): 
   return { sourceId, targetIds }
 }
 
-// 注释：推进到指定 step
-async function advanceToStep(sceneId: string, nextStepId: string): Promise<void> {
+// 注释：推进到指定 step（nextStepId 可缺省——找不到目标步骤 = 场景完成，
+// audit-e C2 起客观步骤达成但无 next 时按此语义终结场景，而非永久挂起）
+async function advanceToStep(sceneId: string, nextStepId: string | undefined): Promise<void> {
   const runtime = activeScenes.get(sceneId)
-  if (!runtime) return
+  if (!runtime) {
+    // 注释：audit-e I5——场景被先完成的调用移除（嵌套非 LIFO 完成等竞态）→ 推进
+    // 静默丢弃。原裸 return 零痕迹（与 executeStep skip 纪律不一致）→ 去重上报
+    reportAdvanceStepSkip(sceneId, nextStepId, '场景未激活（可能已被完成流程移除）')
+    return
+  }
 
   // 注释：I-1——循环守卫：每次推进 +1，超过上限 → 上报 + 终结（防 advanceToStep →
   // executeStep 无限递归卡死 EXECUTING；终结后 activeScenes 已删，递归栈逐帧空返）
@@ -651,7 +763,11 @@ async function advanceToStep(sceneId: string, nextStepId: string): Promise<void>
   runtime.completedSteps.push(runtime.currentStepId)
 
   const scene = getScene(sceneId)
-  if (!scene) return
+  if (!scene) {
+    // 注释：audit-e I5——场景不存在（动态 scene 已注销等竞态）→ 原裸 return 零痕迹
+    reportAdvanceStepSkip(sceneId, nextStepId, '场景不存在（可能已被注销）')
+    return
+  }
 
   const nextStep = scene.steps.find(s => s.id === nextStepId)
   if (!nextStep) {
@@ -661,7 +777,7 @@ async function advanceToStep(sceneId: string, nextStepId: string): Promise<void>
   }
 
   await eventBus.emit('scene:updated', { sceneId, step: nextStepId })
-  await executeStep(sceneId, nextStepId)
+  if (nextStepId) await executeStep(sceneId, nextStepId)
 }
 
 // 注释：标记 scene 完成
@@ -730,7 +846,11 @@ async function checkObjectives(objectiveType: string, payload: any): Promise<voi
         break
     }
 
-    if (matched && step.next) {
+    // 注释：audit-e C2——objective 达成但步骤无 next → 无条件 advanceToStep
+    //（next undefined → advanceToStep 找不到目标步骤 → completeScene 终结，与既有
+    // 语义一致）。原 `matched && step.next`：无 next 时什么都不做 → 场景永久活跃
+    // 挂起且零上报（条件 quest.{id}.status == 'active' 恒真）
+    if (matched) {
       await advanceToStep(sceneId, step.next)
     }
   }
@@ -762,7 +882,7 @@ async function checkCustomObjectives(eventType: string, payload: any): Promise<v
         // 注释：A-I-7（audit-a I-7）——fail_event 下脚本判 done = 目标实际已达成——
         // 与主路径一致推进 next（原实现 'done' 分支无处理：objective 无 next 或
         // 脚本对 fail 负载单独判 done 时 → 场景永久挂起）
-        if (step.next) await advanceToStep(sceneId, step.next)
+        await advanceToStep(sceneId, step.next)
       } else if (obj.on_fail) {
         await advanceToStep(sceneId, obj.on_fail)
       }
@@ -776,7 +896,9 @@ async function checkCustomObjectives(eventType: string, payload: any): Promise<v
     let result: any = 'pending'
     if (scriptCode) result = await runQuestScript(scriptCode, ctx)
     else if (obj.script) reportMissingCustomScript(sceneId, step.id, obj.script)
-    if (result === 'done' && step.next) {
+    // 注释：audit-e C2——custom objective 判 done 后无条件 advanceToStep（next
+    // undefined → 走 completeScene 终结语义；原 `&& step.next` 无 next 时永久挂起零上报）
+    if (result === 'done') {
       await advanceToStep(sceneId, step.next)
     }
   }
@@ -858,6 +980,31 @@ const reportedSceneStepSkips = new Set<string>()
 // 注释：A-M-2/A-M-3——脚本返回值异常去重上报（key = sceneId|stepId|原因）
 const reportedScriptResultWarnings = new Set<string>()
 
+// 注释：旧存档 sceneStack 条目恢复去重上报（2026-08-15 audit-d I-1——旧格式
+// {sceneId, resumeStepId} 的 sceneId 语义是父场景；恢复为 parent + warning，key = sceneId）
+const reportedOldStackRestore = new Set<string>()
+
+// 注释：存档恢复非法条目去重上报（audit-e I9——activeScenes 含 null/非对象条目时
+// 单条目跳过不中断整段，去重后只报一次）
+const reportedRestoreEntrySkips = new Set<string>()
+
+// 注释：spawn 步骤无地点上下文去重上报（audit-e I10——key = sceneId|stepId）
+const reportedSpawnNoLocation = new Set<string>()
+
+// 注释：effect 缺参数去重上报（audit-e M3——key = effectType|param）
+const reportedMissingEffectParams = new Set<string>()
+
+function reportMissingEffectParam(effectType: string, param: string): void {
+  const key = `${effectType}|${param}`
+  if (reportedMissingEffectParams.has(key)) return
+  reportedMissingEffectParams.add(key)
+  errorReporter.report({
+    source: 'quest-system', severity: 'warning',
+    message: `效果 ${effectType} 缺少参数 '${param}'（已跳过）`,
+    suggestion: `effects 的 params 需声明 ${param} = "任务 id"（作者漏写参数时零痕迹不可接受）`,
+  })
+}
+
 // 注释：B-I-3——trigger 引用不存在指令去重上报（key = sceneId|command）
 const reportedUnknownTriggerCommands = new Set<string>()
 
@@ -866,6 +1013,10 @@ const reportedUnknownTriggerCommands = new Set<string>()
 // 镜像 checkAutoStart 的 reportedAutoStartErrors 模式；key = sceneId + condition（同场景
 // 多个坏条件各自上报一次））
 const reportedTriggerCondErrors = new Set<string>()
+
+// 注释：指令多 trigger 冲突去重上报（audit-e I8——key = commandId；冲突为数据层面
+// 稳定状态，原每次执行指令都刷 error）
+const reportedTriggerConflicts = new Set<string>()
 
 // 注释：C6——构建触发器索引（triggers 声明 → command hook + dialogue_end 索引）
 // 调用时机：onEnable（初始）/ game:load（读档后 mod.quests 重建）/ reindexTriggers API
@@ -939,11 +1090,16 @@ function buildTriggerIndex(): void {
       }
       if (satisfied.length === 0) return false
       if (satisfied.length > 1) {
-        errorReporter.report({
-          source: 'quest-system', severity: 'error',
-          message: `指令 '${commandId}' 的多个触发条件同时满足：${satisfied.join(', ')}`,
-          suggestion: '调整触发条件的互斥性（如 selected.id 判断），只保留一个场景命中',
-        })
+        // 注释：audit-e I8——冲突是数据层面的稳定状态，每次执行指令都刷一条 error
+        // → 按 commandId 去重（原每次执行都报，玩家每点一次刷屏一条）
+        if (!reportedTriggerConflicts.has(commandId)) {
+          reportedTriggerConflicts.add(commandId)
+          errorReporter.report({
+            source: 'quest-system', severity: 'error',
+            message: `指令 '${commandId}' 的多个触发条件同时满足：${satisfied.join(', ')}`,
+            suggestion: '调整触发条件的互斥性（如 selected.id 判断），只保留一个场景命中',
+          })
+        }
         return false // 冲突 → 不拦截，走指令默认行为
       }
       await startScene(satisfied[0])
@@ -965,6 +1121,21 @@ function reportExecuteStepSkip(sceneId: string, stepId: string, reason: string):
   })
 }
 
+// 注释：advanceToStep 静默早退去重上报（audit-e I5——场景未激活/不存在时推进被
+// 丢弃零痕迹；key = sceneId|nextStepId，镜像 executeStep skip 模式）
+const reportedAdvanceStepSkips = new Set<string>()
+
+function reportAdvanceStepSkip(sceneId: string, nextStepId: string | undefined, reason: string): void {
+  const key = `${sceneId}|${String(nextStepId ?? '')}`
+  if (reportedAdvanceStepSkips.has(key)) return
+  reportedAdvanceStepSkips.add(key)
+  errorReporter.report({
+    source: 'quest-system', severity: 'warning',
+    message: `任务 '${sceneId}' 推进到步骤 '${String(nextStepId ?? '')}' 被丢弃（${reason}）`,
+    suggestion: '检查嵌套场景完成顺序/动态场景注册生命周期是否与推进时序冲突',
+  })
+}
+
 // 注释：A-M-2/A-M-3——脚本返回值异常去重上报（key = sceneId|stepId|原因）
 function reportScriptResultWarning(sceneId: string, stepId: string, reason: string): void {
   const key = `${sceneId}|${stepId}|${reason}`
@@ -980,11 +1151,28 @@ function reportScriptResultWarning(sceneId: string, stepId: string, reason: stri
 // 注释：B-I-3——triggers[].condition 加载期校验（延迟到 game:plugins_loaded 执行——
 // 此时 conditionRegistry 已完整）。未知字段/未注册前提 → error（违反 §21"加载时
 // 校验，禁止静默失效"——原坏条件只在玩家执行指令时才暴露去重 warning，触发器
-// 静默失效期间作者无感知）。与 validateInstructionData 同标准同强度
+// 静默失效期间作者无感知）。与 validateInstructionData 同标准同强度。
+// audit-e I4：扩展校验所有 scene 的 condition / auto_start_condition（原只有 trigger
+// 条件升级为加载期 error，场景条件仍滞后到运行时 checkAutoStart 去重 warning——
+// 同一挂点统一校验）
 export function validateQuestTriggerConditions(): void {
   const mod = modLoader.getMod()
   if (!mod) return
   for (const [sceneId, scene] of mod.quests) {
+    const conds: [string, string][] = []
+    if (scene.condition) conds.push(['condition', scene.condition])
+    if (scene.auto_start_condition) conds.push(['auto_start_condition', scene.auto_start_condition])
+    for (const [kind, cond] of conds) {
+      const { ok, unknown } = conditionRegistry.validateExpression(cond)
+      if (!ok) {
+        errorReporter.report({
+          source: 'quest-system',
+          severity: 'error',
+          message: `任务 '${sceneId}' 的 ${kind} 引用了未注册字段/前提：${unknown.join(', ')}（条件：${cond}，任务不会自动开始）`,
+          suggestion: '对照 可用条件属性手册 检查字段路径；premise(X) 需在插件 onLoad 注册（engine API premises.register）',
+        })
+      }
+    }
     for (const trig of scene.triggers ?? []) {
       if (!trig?.condition) continue
       const { ok, unknown } = conditionRegistry.validateExpression(trig.condition)

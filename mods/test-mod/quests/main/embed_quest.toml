@@ -30,4 +30,4 @@ next = "final"
 id = "final"
 type = "reward"
 effects = []
-next = "not_exist"
+next = ""   # 2026-08-15：显式结束标记（替代旧 not_exist 哨兵——加载期校验会拦截未定义步骤引用）

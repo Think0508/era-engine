@@ -169,6 +169,25 @@ describe('quest-system combat 步骤推进（B3）', () => {
       await eventBus.emit('combat:end', { winner: 'allies', outcome: 'win', participants: ['player', 'enemy_bandit'] })
       expect(await apiSystem.call('quest', 'getSceneStatus', 'objective_test_quest')).toBe('completed')
     })
+
+    it('audit-e C2：objective 达成但步骤无 next → 场景 completed（原永久活跃挂起零上报）', async () => {
+      const mod = modLoader.getMod()!
+      mod.quests.set('objective_terminal_quest', {
+        id: 'objective_terminal_quest', title: '终态目标', type: 'main', display: 'hidden',
+        // 注释：无 next 的终态 objective 步骤——达成事件命中后按 completeScene 语义终结
+        steps: [
+          { id: 'obj_step', type: 'objective', objective: { type: 'talk_to', character: '李秋水' } },
+        ],
+      })
+      try {
+        await apiSystem.call('quest', 'start', 'objective_terminal_quest')
+        expect(await apiSystem.call('quest', 'getSceneStatus', 'objective_terminal_quest')).toBe('active')
+        await eventBus.emit('dialogue:end', { character: '李秋水' })
+        expect(await apiSystem.call('quest', 'getSceneStatus', 'objective_terminal_quest')).toBe('completed')
+      } finally {
+        mod.quests.delete('objective_terminal_quest')
+      }
+    })
   })
 
   // ═══════ C1：步骤执行上下文注入（quest-script C' 模型 Task 1）═══════
@@ -602,7 +621,7 @@ describe('quest-system combat 步骤推进（B3）', () => {
       await apiSystem.call('quest', 'registerScene', {
         id: 'broken_dlg_quest', title: '坏对话任务', type: 'side', display: 'hidden',
         dialogues: [{ id: 'bad', nodes: [{ id: 'not_start', lines: ['x'] }] }],
-        steps: [{ id: 's1', type: 'dialogue', conversation: 'scene:broken_dlg_quest/bad', next: 'not_exist' }],
+        steps: [{ id: 's1', type: 'dialogue', conversation: 'scene:broken_dlg_quest/bad', next: '' }],
       } as any)
       errorReporter.clear()
       await apiSystem.call('quest', 'start', 'broken_dlg_quest')
@@ -811,7 +830,9 @@ describe('quest-system combat 步骤推进（B3）', () => {
       await apiSystem.call('quest', 'registerScene', {
         id: 'dynamic_quest', title: '动态任务', type: 'side', display: 'hidden',
         steps: [
-          { id: 's1', type: 'reward', effects: [{ type: 'narrative_output', params: { text: '动态奖励' } }], next: 'not_exist' },
+          // 注释（2026-08-15）：next = "" 显式结束标记（替代旧 not_exist 哨兵——
+          // registerScene 现走 validateSceneSteps 加载期校验，未定义引用会被拒绝注册）
+          { id: 's1', type: 'reward', effects: [{ type: 'narrative_output', params: { text: '动态奖励' } }], next: '' },
         ],
       } as any)
       expect(await apiSystem.call('quest', 'getSceneStatus', 'dynamic_quest')).toBe('not_started')
@@ -871,7 +892,7 @@ describe('quest-system combat 步骤推进（B3）', () => {
         id: 'dyn_dialogue_quest', title: '动态对话任务', type: 'side', display: 'hidden',
         dialogues: [{ id: 'greet', nodes: [{ id: 'start', lines: ['动态你好'] }] }],
         steps: [
-          { id: 's1', type: 'dialogue', conversation: 'scene:dyn_dialogue_quest/greet', next: 'not_exist' },
+          { id: 's1', type: 'dialogue', conversation: 'scene:dyn_dialogue_quest/greet', next: '' },
         ],
       } as any)
       const mod = modLoader.getMod()!
@@ -999,6 +1020,37 @@ describe('quest-system combat 步骤推进（B3）', () => {
         sceneStack: [],
       })
       expect(errorReporter.getErrors().some(e => e.message.includes('ghost_step_quest'))).toBe(false)
+    })
+
+    it('audit-d I-1：旧格式 sceneStack 条目恢复为 parent 语义 + warning（方向不反转）', async () => {
+      const provider = getGameStateProviders().find(p => p.id === 'quest-system')!
+      // 旧格式 {sceneId, resumeStepId}——sceneId 语义是父场景（旧 push 代码
+      // sceneStack.push({ sceneId, resumeStepId: step.next })），新恢复必须放 parent
+      //（原实现放进 child → 子完成时 top.child === 完成者恒不匹配 → 栈条目永久泄漏）
+      errorReporter.clear()
+      provider.restore({
+        activeScenes: [],
+        sceneStack: [{ sceneId: 'old_parent_quest', resumeStepId: 'b' }],
+      })
+      const stack = provider.serialize().sceneStack
+      expect(stack).toHaveLength(1)
+      expect(stack[0].parent).toBe('old_parent_quest')
+      expect(stack[0].child).toBe('')
+      expect(stack[0].resumeStepId).toBe('b')
+      // 旧格式条目 → warning（嵌套关系无法精确恢复）
+      const warn = errorReporter.getErrors().find(
+        e => e.severity === 'warning' && e.source === 'quest-system' && e.message.includes('旧存档'),
+      )
+      expect(warn).toBeDefined()
+      expect(warn!.message).toContain('old_parent_quest')
+      // 新格式（含 child 字段）照旧原样恢复、不误报 warning
+      errorReporter.clear()
+      provider.restore({
+        activeScenes: [],
+        sceneStack: [{ parent: 'p', child: 'c', resumeStepId: 'r' }],
+      })
+      expect(provider.serialize().sceneStack).toEqual([{ parent: 'p', child: 'c', resumeStepId: 'r' }])
+      expect(errorReporter.getErrors().some(e => e.message.includes('旧存档'))).toBe(false)
     })
 
     it('A-M-10：恢复时 stepAdvanceCount 重置为 0（循环守卫计数不跨会话持久化）', async () => {

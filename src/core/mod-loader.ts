@@ -354,7 +354,7 @@ export interface QuestObjective {
 
 export interface QuestStep {
   id: string
-  type: string          // dialogue/combat/objective/reward/spawn/condition/goto/scene
+  type: string          // dialogue/combat/objective/reward/spawn/condition/goto/scene/script
   next?: string
   // dialogue
   conversation?: ConversationRef | string  // 对象或字符串简写 "type:参数"
@@ -1643,6 +1643,15 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
           })
           continue
         }
+        // 注释：audit-e M5——lines 为字符串时运行期逐字符输出（零报错）；
+        // 加载期校验 lines 存在时必须为数组（含 scene+dialogue id 定位）
+        if (node.lines !== undefined && !Array.isArray(node.lines)) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error', file: path,
+            message: `任务 '${scene.id}' 内嵌对话 '${dlg.id}' 节点 '${node.id}' 的 lines 必须是数组（当前是 ${typeof node.lines}）`,
+            suggestion: 'lines 用表数组写法：lines = ["一句台词"]（单字符串会被逐字符输出）',
+          })
+        }
         nodeIds.add(node.id)
         if (node.id === 'start') hasStart = true
       }
@@ -1697,13 +1706,16 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   mod.conversations.scene = sceneConversations
   // 注释：校验 scene 引用（scene_id 必须存在）+ B-I-1：steps.conversation 引用存在性
   //（§37 铁律：加载时 error——原只校验 scene_id；conversation 坏引用只在运行期
-  // dialogue-system 报 warning 后任务静默跳步，作者无感知）
+  // dialogue-system 报 warning 后任务静默跳步，作者无感知）+ 步骤图拓扑校验（audit-e I3：
+  // 步骤引用/必填字段——TOML 路径与 quest-system registerScene 运行时路径共用
+  // validateSceneSteps；含 file 定位）
   for (const [id, scene] of mod.quests) {
     const filePath = scenePaths.get(id) ?? ''
+    validateSceneSteps(scene, filePath)
     for (const step of scene.steps ?? []) {
       if (step.type === 'scene' && step.scene_id && !mod.quests.has(step.scene_id)) {
         errorReporter.report({
-          source: 'mod-loader', severity: 'error', message: `Scene '${id}' 的 step 引用了不存在的 scene_id '${step.scene_id}'`,
+          source: 'mod-loader', severity: 'error', file: filePath, message: `Scene '${id}' 的 step 引用了不存在的 scene_id '${step.scene_id}'`,
           suggestion: `检查 ${scenePrefixes.map(p => p.replace(`/mods/${modName}/`, '')).join(' 或 ')} 下是否有该 id 的文件`,
         })
       }
@@ -1854,6 +1866,133 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   validateCharacterContract(mod, modName)
 
   return mod
+}
+
+// 注释：步骤图拓扑校验（audit-e I3/I6，2026-08-15）——步骤引用字段
+//（next/on_win/on_lose/else/on_fail/goto.target/objective.on_fail）必须指向本场景内
+// 存在的 step id；objective 步骤必须有 objective 字段；combat 步骤必须声明 next 或
+// on_win/on_lose 之一（否则胜利后挂起）+ enemies 非空（否则秒胜直通）；goto 步骤
+// 必须有 target；step id 不得重复。terminal 步骤（无 next 的 reward/dialogue 等）
+// 合法不报。`next`/`on_win`/`on_lose` 空字符串 = 显式结束标记（立即 completeScene），
+// 合法不报（2026-08-15：替代旧 `next = "不存在的id"` 哨兵写法——旧哨兵仍可运行但
+// 加载期会报未定义引用 error）。TOML 路径（parseModData 解析循环）与 quest-system
+// registerScene 运行时路径共用。返回上报的 error 数量（调用方据此决定是否拒绝注册）
+export function validateSceneSteps(scene: Quest, file?: string): number {
+  if (!Array.isArray(scene.steps)) return 0
+  let errCount = 0
+  const stepIds = new Set<string>()
+  for (const step of scene.steps) {
+    if (step && typeof step === 'object' && typeof step.id === 'string') stepIds.add(step.id)
+  }
+  // 注释：步骤 id 重复检查
+  const seenIds = new Set<string>()
+  for (const step of scene.steps) {
+    if (!step || typeof step !== 'object') {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error', file,
+        message: `任务 '${scene.id}' 的 steps 含有非法条目（非表对象）`,
+        suggestion: 'steps 数组的每个条目必须是表（{ id, type, ... }）',
+      })
+      errCount++
+      continue
+    }
+    if (typeof step.id !== 'string' || !step.id) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error', file,
+        message: `任务 '${scene.id}' 存在缺 id 的步骤`,
+        suggestion: '每个步骤必须有唯一 id（executeStep 按 id 定位）',
+      })
+      errCount++
+      continue
+    }
+    if (seenIds.has(step.id)) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error', file,
+        message: `任务 '${scene.id}' 存在重复的步骤 id '${step.id}'`,
+        suggestion: '同场景内步骤 id 必须唯一（advanceToStep/executeStep 按 id 定位）',
+      })
+      errCount++
+      continue
+    }
+    seenIds.add(step.id)
+    // 注释：引用字段校验——next/on_win/on_lose 空串 = 显式结束标记（合法）；
+    // 非空引用必须指向存在的步骤（原静默：next 失效走"提前完成"、combat 胜利走
+    // 挂起、else/goto 失效走挂起——作者无感知，audit-e I3）
+    const refs: Record<string, string | undefined> = {
+      next: step.next,
+      on_win: (step as any).on_win,
+      on_lose: (step as any).on_lose,
+      else: (step as any).else,
+      on_fail: (step as any).on_fail,
+      'goto.target': step.type === 'goto' ? (step as any).target : undefined,
+    }
+    const obj = step.objective as any
+    if (step.type === 'objective' && obj && typeof obj === 'object' && typeof obj.on_fail === 'string') {
+      refs['objective.on_fail'] = obj.on_fail
+    }
+    for (const [field, ref] of Object.entries(refs)) {
+      if (ref === undefined || ref === null) continue
+      if (typeof ref !== 'string') {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file,
+          message: `任务 '${scene.id}' 步骤 '${step.id}' 的 ${field} 必须是字符串（当前是 ${typeof ref}）`,
+          suggestion: `${field} 应指向本场景内已定义的步骤 id`,
+        })
+        errCount++
+        continue
+      }
+      const isEndMarker = (field === 'next' || field === 'on_win' || field === 'on_lose') && ref === ''
+      if (isEndMarker) continue
+      if (!stepIds.has(ref)) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file,
+          message: `任务 '${scene.id}' 步骤 '${step.id}' 的 ${field} 引用了不存在的步骤 '${ref}'`,
+          suggestion: `${field} 必须指向本场景内已定义的步骤 id（可用：${Array.from(stepIds).join('、')}）；显式结束场景请用空字符串（next = ""）`,
+        })
+        errCount++
+      }
+    }
+    // 注释：objective 步骤必须有 objective 字段（缺失 → 目标永不达成，场景挂起）
+    if (step.type === 'objective' && !obj) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error', file,
+        message: `任务 '${scene.id}' 的 objective 步骤 '${step.id}' 缺少 objective 字段`,
+        suggestion: 'objective 步骤需声明 objective = { type = ..., ... }（否则目标永不达成，场景挂起）',
+      })
+      errCount++
+    }
+    // 注释：combat 步骤必须有出路（next 或 on_win/on_lose）——否则胜利后静默挂起
+    if (step.type === 'combat') {
+      const hasWayOut = !!step.next || !!((step as any).on_win) || !!((step as any).on_lose)
+      if (!hasWayOut) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file,
+          message: `任务 '${scene.id}' 的 combat 步骤 '${step.id}' 未声明 next / on_win / on_lose 任一`,
+          suggestion: '战斗结束后需要出路——声明 next（通用推进）或 on_win/on_lose（分胜负推进），否则胜利后任务挂起',
+        })
+        errCount++
+      }
+      // 注释：combat 步骤 enemies 非空（audit-e I10——空/缺失 enemies → 战斗秒胜直通，数据错误静默成功）
+      if (!Array.isArray((step as any).enemies) || (step as any).enemies.length === 0) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file,
+          message: `任务 '${scene.id}' 的 combat 步骤 '${step.id}' 的 enemies 为空或缺失`,
+          suggestion: 'combat 步骤需声明 enemies = ["角色ID", ...]（空敌人列表会秒胜直通）',
+        })
+        errCount++
+      }
+    }
+    // 注释：goto 步骤必须有 target（缺失 → 静默挂起）
+    if (step.type === 'goto' && !(step as any).target) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error', file,
+        message: `任务 '${scene.id}' 的 goto 步骤 '${step.id}' 缺少 target 字段`,
+        suggestion: 'goto 步骤需声明 target = 目标步骤 id（否则静默挂起）',
+      })
+      errCount++
+    }
+  }
+  return errCount
 }
 
 // 注释：展开角色 abilities 简写（数字→{level, xp:0}），已是对象则保持

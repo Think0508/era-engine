@@ -122,7 +122,7 @@ export interface ReactiveLine {
 export interface ConversationNode {
   id: string
   lines: string[]
-  choices?: { text: string; next: string; condition?: string }[]
+  choices?: { text: string; next: string; condition?: string; effects?: any[] }[]
   effects?: any[]
   next?: string
 }
@@ -1927,7 +1927,10 @@ export function validateSceneSteps(scene: Quest, file?: string): number {
       'goto.target': step.type === 'goto' ? (step as any).target : undefined,
     }
     const obj = step.objective as any
-    if (step.type === 'objective' && obj && typeof obj === 'object' && typeof obj.on_fail === 'string') {
+    // 注释：F-6——objective.on_fail 存在时（无论类型）加入引用校验——
+    // 原仅 string 才查：数字/对象 on_fail 漏检 → 运行时 truthy 推进到不存在的
+    // 步骤 → 静默完成（错误完成而非走失败分支）
+    if (step.type === 'objective' && obj && typeof obj === 'object' && obj.on_fail != null) {
       refs['objective.on_fail'] = obj.on_fail
     }
     for (const [field, ref] of Object.entries(refs)) {
@@ -1943,6 +1946,9 @@ export function validateSceneSteps(scene: Quest, file?: string): number {
       }
       const isEndMarker = (field === 'next' || field === 'on_win' || field === 'on_lose') && ref === ''
       if (isEndMarker) continue
+      // 注释：F-10——goto.target 空串只报"缺 target"一条（missing-target 检查
+      // 已覆盖空串语义），避免与"引用了不存在的步骤 ''"双报
+      if (field === 'goto.target' && ref === '') continue
       if (!stepIds.has(ref)) {
         errorReporter.report({
           source: 'mod-loader', severity: 'error', file,
@@ -1952,18 +1958,34 @@ export function validateSceneSteps(scene: Quest, file?: string): number {
         errCount++
       }
     }
-    // 注释：objective 步骤必须有 objective 字段（缺失 → 目标永不达成，场景挂起）
-    if (step.type === 'objective' && !obj) {
+    // 注释：objective 步骤的 objective 字段必须是含 string type 的表对象——
+    // 原只拦 falsy：objective = "foo"（非空字符串）通过校验，运行时 obj.type
+    // undefined → 永不匹配 → 场景挂起零诊断（audit-f F-6）
+    if (step.type === 'objective') {
+      if (!obj || typeof obj !== 'object' || typeof obj.type !== 'string' || !obj.type) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file,
+          message: `任务 '${scene.id}' 的 objective 步骤 '${step.id}' 的 objective 字段非法（需为含 string type 的表对象）`,
+          suggestion: 'objective = { type = "reach_location", ... }（否则目标永不达成，场景挂起）',
+        })
+        errCount++
+      }
+    }
+    // 注释：dialogue 步骤的 lines 必须为数组（audit-f F-7——字符串 lines 运行时
+    // 逐字符输出零报错；内嵌对话节点已有同类校验，此处补步骤级）
+    if (step.type === 'dialogue' && (step as any).lines != null && !Array.isArray((step as any).lines)) {
       errorReporter.report({
         source: 'mod-loader', severity: 'error', file,
-        message: `任务 '${scene.id}' 的 objective 步骤 '${step.id}' 缺少 objective 字段`,
-        suggestion: 'objective 步骤需声明 objective = { type = ..., ... }（否则目标永不达成，场景挂起）',
+        message: `任务 '${scene.id}' 的 dialogue 步骤 '${step.id}' 的 lines 必须是数组（当前是 ${typeof (step as any).lines}）`,
+        suggestion: 'lines = ["旁白文本", ...]（字符串会逐字符输出）',
       })
       errCount++
     }
     // 注释：combat 步骤必须有出路（next 或 on_win/on_lose）——否则胜利后静默挂起
     if (step.type === 'combat') {
-      const hasWayOut = !!step.next || !!((step as any).on_win) || !!((step as any).on_lose)
+      // 注释：F-2——空串结束标记也是出路（next="" 胜即结束场景）——原 !! 判定
+      // 把 "" 误判为无出路（加载期假阳性，运行时 next != null 完全支持）
+      const hasWayOut = step.next != null || (step as any).on_win != null || (step as any).on_lose != null
       if (!hasWayOut) {
         errorReporter.report({
           source: 'mod-loader', severity: 'error', file,

@@ -28,7 +28,7 @@ interface ConversationRuntime {
   nodes: Map<string, ConversationNode>
   // 注释：当前可选项（2026-08-13 审计——原选择依赖 narrativeLog 按 entryId 查找，
   // core 日志淘汰（1000 条）后选择静默失效；运行时持有，选择直接按索引取）
-  pendingChoices?: { text: string; next?: string }[]
+  pendingChoices?: { text: string; next?: string; effects?: any[] }[]
 }
 
 // 注释：场景角色过滤器（2026-08-10）——按 scene 分组注册，触发某场景的某角色时
@@ -82,6 +82,9 @@ export function onEnable(ctx: PluginContext): void {
     if (!currentConversation) return
     const choice = currentConversation.pendingChoices?.[index]
     if (!choice?.next) return
+    // 注释：链路修复（2026-08-15）——choice.effects 死功能：原两通道只跳 node，
+    // choice 级 effects（如对话选项触发 H/任务）从未执行——先执行 effects 再渲染
+    await executeChoiceEffects(choice)
     await renderNode(choice.next)
   })
 
@@ -484,7 +487,7 @@ async function renderNode(nodeId: string, speakerOverride?: string): Promise<voi
       message: `对话 '${currentConversation?.convId ?? '?'}' 渲染节点 '${nodeId}' 失败（对话已强制结束）：${err instanceof Error ? err.message : String(err)}`,
       suggestion: '检查对话数据（节点字段类型/lines 格式/effects 引用）——加载期校验外的运行期数据需自查',
     })
-    endConversation()
+    await endConversation()
   }
 }
 
@@ -502,7 +505,7 @@ async function renderNodeInner(nodeId: string, speakerOverride?: string): Promis
       message: `对话 '${currentConversation.convId}' 引用了不存在的节点 '${nodeId}'（对话已强制结束）`,
       suggestion: '检查对话树的 choices[].next / next 是否指向已定义节点（加载期校验应已拦截，运行期数据需自查）',
     })
-    endConversation()
+    await endConversation()
     return
   }
   currentConversation.nodeId = nodeId
@@ -553,7 +556,18 @@ async function renderNodeInner(nodeId: string, speakerOverride?: string): Promis
   // 注释：执行 node effects
   if (node.effects?.length) {
     try {
-      await apiSystem.call('effect-system', 'execute', node.effects, {})
+      // 注释：链路修复（2026-08-15）——原 execCtx 空 {}：effect target='selected'
+      // 解析读 uiStore（对话触发时的 UI 选中，可能不是对话角色）、h_start_h 等
+      // 依赖 sourceId 的 effect 直接失效（sourceId undefined）——补对话上下文：
+      // sourceId = 玩家，targetIds = 对话角色（scene/quest 类型对话取当前 UI 选中）
+      const gc = gameContext.getContext()
+      const dialogCharId = charId ?? gc.selectedCharacterId ?? null
+      const execCtx = {
+        sourceId: gc.player?.id ?? null,
+        _targetIds: dialogCharId ? [dialogCharId] : [],
+        uiStore: { selectedCharacterId: dialogCharId },
+      }
+      await apiSystem.call('effect-system', 'execute', node.effects, execCtx)
     } catch (err) {
       // 注释：audit-e I2——外层 catch 吞掉的是 API 管线错误（effect-system 未启用等，
       // effect-system 内部不会上报这类错误）→ 去重上报 warning，保留"不阻断对话"语义
@@ -602,7 +616,7 @@ async function renderNodeInner(nodeId: string, speakerOverride?: string): Promis
       if (node.next) {
         renderNode(node.next)
       } else {
-        endConversation()
+        await endConversation()
       }
       return
     }
@@ -617,7 +631,37 @@ async function renderNodeInner(nodeId: string, speakerOverride?: string): Promis
     await renderNode(node.next)
   } else {
     // 注释：终端节点——对话结束
-    endConversation()
+    await endConversation()
+  }
+}
+
+// 注释：执行 choice 级 effects（链路修复 2026-08-15——原 choice.effects 死功能：
+// 两个选择通道（dialogue:select 事件 / selectChoice）都只跳 node，choice 级 effects
+// 从未执行。执行上下文与 node effects 一致：sourceId = 玩家、targetIds = 对话角色）
+async function executeChoiceEffects(choice: { effects?: any[] }): Promise<void> {
+  if (!currentConversation || !choice.effects?.length) return
+  const charId = currentConversation.ref.type === 'character' ? currentConversation.ref.character : undefined
+  // 注释：target='selected' 在对话上下文 = 对话对象（scene/quest 类型对话取 UI 选中）
+  const gc = gameContext.getContext()
+  const dialogCharId = charId ?? gc.selectedCharacterId ?? null
+  const execCtx = {
+    sourceId: gc.player?.id ?? null,
+    _targetIds: dialogCharId ? [dialogCharId] : [],
+    uiStore: { selectedCharacterId: dialogCharId },
+  }
+  try {
+    await apiSystem.call('effect-system', 'execute', choice.effects, execCtx)
+  } catch (err) {
+    const key = `choice-effects|${currentConversation.convId}|${currentConversation.nodeId}|${JSON.stringify(choice.effects)}`
+    if (!reportedEffectErrors.has(key)) {
+      reportedEffectErrors.add(key)
+      errorReporter.report({
+        source: 'dialogue-system',
+        severity: 'warning',
+        message: `对话 '${currentConversation.convId}' 节点 '${currentConversation.nodeId}' 的选项效果执行失败（已跳过，不阻断对话）：${err instanceof Error ? err.message : String(err)}`,
+        suggestion: '检查 effect-system 插件是否启用、effects 数据类型是否正确',
+      })
+    }
   }
 }
 
@@ -632,17 +676,34 @@ export async function selectChoice(entryId: string, choiceIndex: number): Promis
   const choice = node.choices[choiceIndex]
   // 注释：标记当前 choice entry consumed
   narrativeLog.markConsumed(entryId)
+  // 注释：链路修复（2026-08-15）——choice.effects 死功能：原只跳 node，
+  // choice 级 effects 从未执行——先执行 effects 再渲染
+  await executeChoiceEffects(choice)
   // 注释：跳转到 choice.next
   await renderNode(choice.next)
 }
 
 // 注释：结束对话
-function endConversation(): void {
+async function endConversation(): Promise<void> {
   if (!currentConversation) return
   const charId = currentConversation.ref.type === 'character' ? currentConversation.ref.character : undefined
   const convId = currentConversation.convId
   currentConversation = null
-  gameContext.exitMode()
+  // 注释：链路修复（2026-08-15）——只弹 dialogue 模式，保留其上的嵌套模式：
+  // 原无条件 exitMode() 弹栈顶——对话内 choice effect 推入的新模式（如 h_start_h
+  // 进入的 h_scene）会被对话收尾一并弹掉（玩家选择"好"开始 H 后对话结束 → H 被
+  // 意外退出）。弹出 dialogue 后把其上的模式按原序推回
+  const above: string[] = []
+  while (gameContext.getCurrentMode() !== 'exploration' && gameContext.getCurrentMode() !== 'dialogue') {
+    above.push(gameContext.getCurrentMode())
+    await gameContext.exitMode()
+  }
+  if (gameContext.getCurrentMode() === 'dialogue') {
+    await gameContext.exitMode()
+  }
+  for (const m of above.reverse()) {
+    await gameContext.enterMode(m)
+  }
   eventBus.emit('dialogue:end', { character: charId ?? null, conversationId: convId })
 }
 

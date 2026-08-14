@@ -336,7 +336,10 @@ async function executeEffects(effects: Effect[], execCtx: any): Promise<void> {
     const handlerCtx = Object.assign(execCtx, { _targetIds: targetIds, settlement })
 
     try {
-      const result = await handler(effect.params, handlerCtx)
+      // 注释：链路修复（2026-08-15）——params 兜底 {}：effect 允许省略 params
+      //（如 { type = "h_start_h", target = "selected" } 只有 type/target）——
+      // 原传 undefined → handler 内 `_p.xxx` 读 undefined 属性抛裸 TypeError
+      const result = await handler(effect.params ?? {}, handlerCtx)
       if (effect.id) {
         // 注释：handler 没抛错且没返回 false = 成功
         results.set(effect.id, result !== false)

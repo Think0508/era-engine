@@ -388,18 +388,33 @@ export function onEnable(ctx: PluginContext): void {
         }
       }
       for (const s of data?.sceneStack ?? []) {
-        if (!s || typeof s !== 'object') continue
+        // 注释：F-4（audit-f）——坏条目守卫镜像 activeScenes 循环：静默跳过 →
+        // 去重 warning（栈条目丢失时嵌套任务恢复状态与存档不符无提示）
+        if (!s || typeof s !== 'object') {
+          if (!reportedRestoreEntrySkips.has('bad-scene-stack-entry')) {
+            reportedRestoreEntrySkips.add('bad-scene-stack-entry')
+            errorReporter.report({
+              source: 'quest-system',
+              severity: 'warning',
+              message: `读档恢复：sceneStack 含非法条目（${s === null ? 'null' : typeof s}，已跳过）——嵌套场景恢复状态可能与存档不符`,
+              suggestion: '存档数据损坏；其余条目不受影响',
+            })
+          }
+          continue
+        }
         // 注释：A-I-1——新条目结构 {parent, child, resumeStepId}（child = push 时
         // 实际启动的子 scene）——completeScene 只弹 child === 完成者的条目。
         // 旧存档 {sceneId, resumeStepId} 兼容：sceneId 语义是**父**（旧 push 代码
         // sceneStack.push({ sceneId, resumeStepId: step.next }) 中 sceneId = 挂起的父，
         // 非子 scene）——旧格式不记录子 id，无法精确恢复嵌套关系：child 置空
         //（completeScene 的 top.child === 完成者恒不匹配 → 条目安全搁置不会误弹），
-        // parent 恢复为 sceneId，恢复时发 warning 告知"无法精确恢复"
+        // parent 恢复为 sceneId，恢复时发 warning 告知"无法精确恢复"。
+        // resumeStepId 缺省保持 undefined（旧格式无 next = 父挂起；勿 ?? '' 否则
+        // 被 F-1 的空串结束标记误触发 completeScene(parent)）
         if (s.child !== undefined) {
           sceneStack.push({ parent: s.parent ?? '', child: s.child, resumeStepId: s.resumeStepId ?? '' })
         } else if (s.sceneId !== undefined) {
-          sceneStack.push({ parent: s.sceneId, child: '', resumeStepId: s.resumeStepId ?? '' })
+          sceneStack.push({ parent: s.sceneId, child: '', resumeStepId: s.resumeStepId })
           if (!reportedOldStackRestore.has(String(s.sceneId))) {
             reportedOldStackRestore.add(String(s.sceneId))
             errorReporter.report({
@@ -464,14 +479,12 @@ async function startScene(sceneId: string): Promise<void> {
   try {
     await executeStep(sceneId, runtime.currentStepId)
   } catch (err) {
-    // 注释：audit-e C3——首步抛错 → 僵尸活跃场景：activeScenes 已写入但执行失败，
-    // 场景 status 恒为 active（auto_start/triggers/dialogue_end 全部永久跳过，且随
-    // 存档持久化）。上报（含 sceneId+stepId）后 completeScene 回滚（错误留痕 +
-    // 场景不僵尸；completeScene 标记 completed 后可被后续 start 跳过）
+    // 注释：audit-e C3——executeStep 已内部隔离（F-3），此处仅防御性兜底：
+    // executeStep 前置/回滚链异常时上报 + 回滚（防僵尸活跃场景）
     errorReporter.report({
       source: 'quest-system',
       severity: 'error',
-      message: `任务 '${sceneId}' 首步 '${runtime.currentStepId}' 执行失败，场景已回滚为已完成：${err instanceof Error ? err.message : String(err)}`,
+      message: `任务 '${sceneId}' 启动失败（首步 '${runtime.currentStepId}'），场景已回滚为已完成：${err instanceof Error ? err.message : String(err)}`,
       suggestion: '检查步骤引用的系统/API 是否可用（如 dialogue/combat 插件未加载）、步骤数据是否正确',
     })
     try {
@@ -511,6 +524,33 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
 
   runtime.currentStepId = stepId
 
+  try {
+    await executeStepBody(sceneId, stepId, step, runtime)
+  } catch (err) {
+    // 注释：F-3（audit-f）——步骤执行抛错 → 就地隔离：上报（场景+步骤准确定位）+ 回滚。
+    // 原错误沿嵌套链上抛（子场景 startScene catch 误归因给子、重复 completeScene、
+    // 父僵尸）——executeStep 是推进唯一咽喉点，在此隔离后嵌套/恢复链全部安全
+    errorReporter.report({
+      source: 'quest-system',
+      severity: 'error',
+      message: `任务 '${sceneId}' 步骤 '${stepId}' 执行失败，场景已回滚为已完成：${err instanceof Error ? err.message : String(err)}`,
+      suggestion: '检查步骤数据（conversation/script/effects 引用）与依赖系统是否可用',
+    })
+    try {
+      await completeScene(sceneId)
+    } catch (rollbackErr) {
+      errorReporter.report({
+        source: 'quest-system',
+        severity: 'error',
+        message: `任务 '${sceneId}' 回滚失败：${rollbackErr instanceof Error ? rollbackErr.message : String(rollbackErr)}`,
+        suggestion: '检查 completeScene 内部逻辑（activeScenes 状态是否已损坏）',
+      })
+    }
+  }
+}
+
+// 注释：F-3——步骤执行主体（供 executeStep 隔离调用，保持 switch 结构与原实现一致）
+async function executeStepBody(sceneId: string, stepId: string, step: any, runtime: SceneRuntime): Promise<void> {
   switch (step.type) {
     case 'dialogue':
       // 注释：先输出内联旁白（如果有）
@@ -661,9 +701,9 @@ async function executeStep(sceneId: string, stepId: string): Promise<void> {
               suggestion: '检查子场景是否已完成/前置任务是否满足——父任务按 next 继续',
             })
           }
-          if (step.next) await advanceToStep(sceneId, step.next)
+          if (step.next != null) await advanceToStep(sceneId, step.next)
         }
-      } else if (step.next) {
+      } else if (step.next != null) {
         await advanceToStep(sceneId, step.next)
       }
       break
@@ -799,7 +839,12 @@ async function completeScene(sceneId: string): Promise<void> {
   const top = sceneStack[sceneStack.length - 1]
   if (top && top.child === sceneId) {
     sceneStack.pop()
-    if (top.resumeStepId && activeScenes.has(top.parent)) {
+    // 注释：F-1（audit-f）——next="" 结束标记在 scene 步骤的空串感知：
+    // resumeStepId === ''（子完成后立即结束父）≠ undefined（父保持挂起）。
+    // 原 truthy 检查把 '' 与 undefined 混同——子完成后父永久停留 scene 步骤（僵尸）
+    if (top.resumeStepId === '' && activeScenes.has(top.parent)) {
+      await completeScene(top.parent)
+    } else if (top.resumeStepId && activeScenes.has(top.parent)) {
       await advanceToStep(top.parent, top.resumeStepId)
     }
   }

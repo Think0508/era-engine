@@ -6,7 +6,9 @@ description = "7种step类型+objective事件驱动+auto_start"
 
 [data_dependencies]
 provides = ["quests:ready"]
-depends_on = ["dialogue:ready", "combat:ready"]
+# 注释：h:ready——h-core onEnable 会 loadInstructions 注册 mod 指令；buildTriggerIndex
+# 的 command 存在性校验（B-I-3）依赖指令已注册，quest-system 必须排在其后
+depends_on = ["dialogue:ready", "combat:ready", "h:ready"]
 
 [condition_fields]
 "quest.{questId}.status" = { type = "string", description = "任务状态: not_started/active/completed" }

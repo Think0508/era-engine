@@ -397,6 +397,25 @@ describe('quest-system combat 步骤推进（B3）', () => {
         mod.scripts.delete('quest_loop.js')
       }
     })
+
+    it('A-M-2/A-M-3：脚本返回非 string/false/undefined → 去重 warning（行为仍走 next）', async () => {
+      // 前序用例残留的活跃场景清理（'脚本可读场景变量' 用例无 next 挂起同名场景）
+      getGameStateProviders().find(p => p.id === 'quest-system')?.restore({ activeScenes: [], sceneStack: [] })
+      const mod = modLoader.getMod()!
+      // 笔误场景：return true / return 1——原静默走 next 零诊断
+      mod.scripts.set('quest_bad_return.js', `return true`)
+      installScriptQuest({ script: 'quest_bad_return.js', next: 'final' })
+      errorReporter.clear()
+      await apiSystem.call('quest', 'start', 'script_test_quest')
+      // 行为不变：走 next → 完成
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('completed')
+      const warn = errorReporter.getErrors().find(
+        e => e.severity === 'warning' && e.source === 'quest-system' && e.message.includes('非 string/false/undefined'),
+      )
+      expect(warn).toBeDefined()
+      expect(warn!.message).toContain('script_test_quest')
+      mod.scripts.delete('quest_bad_return.js')
+    })
   })
 
   // ═══════ C4：custom objective（事件驱动的脚本化目标，quest-script C' 模型 Task 4）═══════
@@ -462,6 +481,21 @@ describe('quest-system combat 步骤推进（B3）', () => {
       expect(warn).toBeDefined()
       expect(await apiSystem.call('quest', 'getSceneStatus', 'custom_obj_quest')).toBe('active')
     })
+
+    it('A-I-7：fail_event 下脚本返回 done → 推进 next（不再静默挂起）', async () => {
+      const mod = modLoader.getMod()!
+      // 脚本对 fail 负载（h:end）单独判 done（如最后一次计数恰好在结束时达标）
+      mod.scripts.set('fail_done.js', `
+        if (payload.ally === 'x') return 'done'
+        return 'pending'
+      `)
+      // 无 on_fail——原实现 result==='done' 分支无处理：既不推进也不走 on_fail，
+      // objective 无 next 时永久挂起
+      installCustomQuest({ type: 'custom', event: 'h:orgasm', script: 'fail_done.js', fail_event: 'h:end' })
+      await apiSystem.call('quest', 'start', 'custom_obj_quest')
+      await eventBus.emit('h:end', { ally: 'x' })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'custom_obj_quest')).toBe('completed')
+    })
   })
 
   // ═══════ C5：任务内嵌对话树（quest-script C' 模型 Task 5）═══════
@@ -491,6 +525,37 @@ describe('quest-system combat 步骤推进（B3）', () => {
       expect(await apiSystem.call('quest', 'getSceneStatus', 'embed_quest')).toBe('completed')
       // 内嵌对话真的被渲染（startConversation 解析到 scene 对话而非回退 global 报"对话不存在"）
       expect(narrativeLog.getEntries().some(e => e.text === '李秋水道：夜深了。')).toBe(true)
+    })
+
+    it('C2-3.2：getConversation scene 分支——key→scene、name→dialogueId（不再恒 undefined）', async () => {
+      const conv = await apiSystem.call('dialogue', 'getConversation', 'scene', 'embed_quest', 'seduce')
+      expect(conv).toBeDefined()
+      expect(conv!.id).toBe('seduce')
+      expect(conv!.nodes.some((n: any) => n.id === 'start')).toBe(true)
+      // 不存在的对话 → undefined（不抛错）
+      const missing = await apiSystem.call('dialogue', 'getConversation', 'scene', 'embed_quest', 'no_such_dlg')
+      expect(missing).toBeUndefined()
+    })
+
+    it('B-I-2 配套：renderNode 缺失节点 → 上报 error + 强制结束对话（防卡死）', async () => {
+      // 运行期注册坏对话数据（registerScene 不做节点结构校验——加载期校验只覆盖
+      // TOML 数据；此处验证 dialogue-system 运行期兜底）
+      await apiSystem.call('quest', 'registerScene', {
+        id: 'broken_dlg_quest', title: '坏对话任务', type: 'side', display: 'hidden',
+        dialogues: [{ id: 'bad', nodes: [{ id: 'not_start', lines: ['x'] }] }],
+        steps: [{ id: 's1', type: 'dialogue', conversation: 'scene:broken_dlg_quest/bad', next: 'not_exist' }],
+      } as any)
+      errorReporter.clear()
+      await apiSystem.call('quest', 'start', 'broken_dlg_quest')
+      // renderNode('start') 缺失 → dialogue-system error 上报
+      const err = errorReporter.getErrors().find(e => e.severity === 'error' && e.source === 'dialogue-system')
+      expect(err).toBeDefined()
+      expect(err!.message).toContain("'start'")
+      // 对话被强制结束（endConversation 清理 currentConversation）——任务继续推进完成
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'broken_dlg_quest')).toBe('completed')
+      const mod = modLoader.getMod()!
+      mod.quests.delete('broken_dlg_quest')
+      mod.conversations.scene.delete('broken_dlg_quest')
     })
   })
 
@@ -632,6 +697,44 @@ describe('quest-system combat 步骤推进（B3）', () => {
       expect(warn!.message).toContain('NO_SUCH_PREMISE')
       commandRegistry.unregister('test_spar')
     })
+
+    it('B-I-3：触发器引用不存在的指令 → 去重 warning + 不挂 hook', async () => {
+      installTriggerQuest([{ type: 'command', command: 'no_such_cmd' }])
+      errorReporter.clear()
+      await apiSystem.call('quest', 'reindexTriggers')
+      const warn = errorReporter.getErrors().find(
+        e => e.severity === 'warning' && e.source === 'quest-system' && e.message.includes('no_such_cmd'),
+      )
+      expect(warn).toBeDefined()
+      expect(warn!.message).toContain('trigger_quest')
+      // 去重：重复 reindex 不再刷屏
+      errorReporter.clear()
+      await apiSystem.call('quest', 'reindexTriggers')
+      expect(errorReporter.getErrors().filter(e => e.message.includes('no_such_cmd'))).toHaveLength(0)
+    })
+
+    it('B-I-3：触发器条件引用未注册字段 → 加载期校验 error（registry 完整时）', async () => {
+      // 模拟 main.ts 步骤 4（registerFromAttributes）——registry 完整后校验才有意义
+      const { conditionRegistry } = await import('../../core/condition-registry')
+      conditionRegistry.registerFromAttributes(modLoader.getMod()!.attributes)
+      const { validateQuestTriggerConditions } = await import('../quest-system/index')
+      // 坏条件 → error
+      errorReporter.clear()
+      installTriggerQuest([{ type: 'command', command: 'test_spar', condition: 'player.不存在的属性 == 1' }])
+      validateQuestTriggerConditions()
+      const err = errorReporter.getErrors().find(
+        e => e.severity === 'error' && e.source === 'quest-system' && e.message.includes('trigger_quest'),
+      )
+      expect(err).toBeDefined()
+      expect(err!.message).toContain('不存在的属性')
+      // 合法条件不误报
+      errorReporter.clear()
+      installTriggerQuest([{ type: 'command', command: 'test_spar', condition: 'player.hp > 0' }])
+      validateQuestTriggerConditions()
+      expect(errorReporter.getErrors().some(
+        e => e.severity === 'error' && e.source === 'quest-system' && e.message.includes('trigger_quest'),
+      )).toBe(false)
+    })
   })
 
   // ═══════ C7：运行时 scene 注册 + 角色 spawn（quest-script C' 模型 Task 7）═══════
@@ -684,6 +787,210 @@ describe('quest-system combat 步骤推进（B3）', () => {
       const id = await apiSystem.call('character', 'spawnCharacter', 'not_exist_template', 'town_square')
       expect(id).toBeNull()
       expect(errorReporter.getErrors().length).toBeGreaterThan(0)
+    })
+
+    it('C-1：spawnCharacter 生成实体经过契约最终化（abilities 简写展开 + 属性默认值落位）', async () => {
+      const mod = modLoader.getMod()!
+      const templates = mod.entities.get('__templates_character__')!
+      templates.set('test_bandit_full', {
+        id: 'test_bandit_full', template: null, name: '完整山贼',
+        // 作者自然写法：能力简写数字——契约最终化必须展开为 {level, xp}
+        abilities: { 华山剑法: 3 },
+      })
+      const id = await apiSystem.call('character', 'spawnCharacter', 'test_bandit_full', 'town_square')
+      expect(id).not.toBeNull()
+      const char = entitySystem.get('character', id as string) as any
+      // 能力简写展开（原实现裸数字入库 → gain_ability_xp 读到 xp/level undefined 静默丢弃）
+      expect(char.abilities['华山剑法']).toEqual({ level: 3, xp: 0 })
+      // attributes.toml 默认值落位（test-mod hp default=100——模板未写 base → 默认值）
+      expect(char.base.hp).toBe(100)
+      templates.delete('test_bandit_full')
+    })
+
+    it('B-M-10：registerScene 带内嵌对话 → conversations.scene 同步注册、scene: 引用可解析', async () => {
+      await apiSystem.call('quest', 'registerScene', {
+        id: 'dyn_dialogue_quest', title: '动态对话任务', type: 'side', display: 'hidden',
+        dialogues: [{ id: 'greet', nodes: [{ id: 'start', lines: ['动态你好'] }] }],
+        steps: [
+          { id: 's1', type: 'dialogue', conversation: 'scene:dyn_dialogue_quest/greet', next: 'not_exist' },
+        ],
+      } as any)
+      const mod = modLoader.getMod()!
+      expect(mod.conversations.scene.get('dyn_dialogue_quest')?.has('greet')).toBe(true)
+      const ref = parseConversationRef('scene:dyn_dialogue_quest/greet')
+      expect(resolveConversation(mod.conversations, ref)).toBeDefined()
+      // 启动 → dialogue 步骤解析到内嵌对话并真实渲染（非"对话不存在"跳步）
+      errorReporter.clear()
+      await apiSystem.call('quest', 'start', 'dyn_dialogue_quest')
+      expect(errorReporter.getErrors().some(e => e.message.includes('对话不存在'))).toBe(false)
+      expect(narrativeLog.getEntries().some(e => e.text === '动态你好')).toBe(true)
+      mod.quests.delete('dyn_dialogue_quest')
+      mod.conversations.scene.delete('dyn_dialogue_quest')
+    })
+
+    it('A-M-7：registerScene 空 steps → 拒绝注册 + error（不产生永久 active 僵尸场景）', async () => {
+      errorReporter.clear()
+      await apiSystem.call('quest', 'registerScene', {
+        id: 'empty_steps_quest', title: '空任务', type: 'side', display: 'hidden', steps: [],
+      } as any)
+      const err = errorReporter.getErrors().find(e => e.severity === 'error' && e.message.includes('empty_steps_quest'))
+      expect(err).toBeDefined()
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'empty_steps_quest')).toBe('not_started')
+    })
+  })
+
+  // ═══════ A 批修复验证：嵌套场景栈纪律 / 静默错误上报 / 恢复校验 ═══════
+  describe('嵌套场景与执行防护（A-I）', () => {
+    function installStepsQuest(id: string, steps: any[]) {
+      const mod = modLoader.getMod()!
+      mod.quests.set(id, { id, title: id, type: 'main', display: 'hidden', steps })
+    }
+
+    afterEach(() => {
+      const mod = modLoader.getMod()!
+      for (const id of ['nested_child', 'nested_parent', 'nested_child2', 'nested_parent2', 'nest_independent',
+        'ghost_step_quest', 'count_quest', 'cond_err_quest', 'spawn_quest', 'setvar_quest']) {
+        mod.quests.delete(id)
+      }
+      mod.entities.get('__templates_character__')?.delete('spawn_mob')
+      // 清空 activeScenes / sceneStack（挂起场景跨用例残留会串步）
+      getGameStateProviders().find(p => p.id === 'quest-system')?.restore({ activeScenes: [], sceneStack: [] })
+      gameContext.reset()
+    })
+
+    it('A-I-1：子场景已完成 → 父 scene 步骤不 push、按 next 继续（无栈条目残留）', async () => {
+      installStepsQuest('nested_child', [{ id: 's', type: 'reward', effects: [], next: 'not_exist' }])
+      await apiSystem.call('quest', 'start', 'nested_child')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'nested_child')).toBe('completed')
+      installStepsQuest('nested_parent', [
+        { id: 'a', type: 'scene', scene_id: 'nested_child', next: 'b' },
+        { id: 'b', type: 'reward', effects: [], next: 'not_exist' },
+      ])
+      errorReporter.clear()
+      await apiSystem.call('quest', 'start', 'nested_parent')
+      // 父直接完成（跳过不可启动的子场景）
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'nested_parent')).toBe('completed')
+      // 有去重提示（不可启动原因）
+      expect(errorReporter.getErrors().some(e => e.message.includes('nested_parent') && e.message.includes('已完成'))).toBe(true)
+      // 无栈条目残留（serialize 可见）
+      const provider = getGameStateProviders().find(p => p.id === 'quest-system')!
+      expect(provider.serialize().sceneStack).toHaveLength(0)
+    })
+
+    it('A-I-2：独立 scene 完成不弹错父（A 挂起→C 完成→A 栈条目仍在）；子完成才弹栈恢复父', async () => {
+      // 父：scene 步骤挂起等待子
+      installStepsQuest('nested_parent2', [
+        { id: 'a', type: 'scene', scene_id: 'nested_child2', next: 'b' },
+        { id: 'b', type: 'reward', effects: [], next: 'not_exist' },
+      ])
+      // 子：无 next 挂起（保持 active）
+      installStepsQuest('nested_child2', [{ id: 's', type: 'reward', effects: [] }])
+      // 独立任务：立即完成
+      installStepsQuest('nest_independent', [{ id: 's', type: 'reward', effects: [], next: 'not_exist' }])
+      await apiSystem.call('quest', 'start', 'nested_parent2')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'nested_child2')).toBe('active')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'nested_parent2')).toBe('active') // 挂起
+      // 独立 scene 完成 → 父不被弹错（原实现无条件 pop：恢复错误父并二次执行）
+      await apiSystem.call('quest', 'start', 'nest_independent')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'nest_independent')).toBe('completed')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'nested_parent2')).toBe('active')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'nested_child2')).toBe('active')
+      // 栈条目仍在（child=nested_child2）
+      const provider = getGameStateProviders().find(p => p.id === 'quest-system')!
+      expect(provider.serialize().sceneStack).toHaveLength(1)
+      // 子完成 → 栈顶.child === 完成者 → 弹栈恢复父 → 父完成
+      await apiSystem.call('quest', 'advanceStep', 'nested_child2', 'not_exist')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'nested_child2')).toBe('completed')
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'nested_parent2')).toBe('completed')
+      expect(provider.serialize().sceneStack).toHaveLength(0)
+    })
+
+    it('A-I-3：spawn 步骤按 template/at_location/count 实例化（count=2 生成 2 个）', async () => {
+      const mod = modLoader.getMod()!
+      const templates = mod.entities.get('__templates_character__')!
+      templates.set('spawn_mob', { id: 'spawn_mob', template: null, name: '野怪', base: {} })
+      installStepsQuest('spawn_quest', [
+        { id: 's', type: 'spawn', template: 'spawn_mob', at_location: 'town_square', count: 2, next: 'not_exist' },
+      ])
+      await apiSystem.call('quest', 'start', 'spawn_quest')
+      const spawned = entitySystem.getAll('character').filter((c: any) =>
+        c.current_location === 'town_square' && (c as any).name === '野怪')
+      expect(spawned.length).toBe(2)
+      // 生成的实体也走契约最终化（能力/属性默认值）
+      expect((spawned[0] as any).base.hp).toBe(100)
+    })
+
+    it('A-I-4：读档恢复——active scene 的 currentStepId 不存在 → 上报 warning（不阻止恢复）', async () => {
+      installStepsQuest('ghost_step_quest', [{ id: 'real_step', type: 'reward', effects: [] }])
+      const provider = getGameStateProviders().find(p => p.id === 'quest-system')!
+      errorReporter.clear()
+      provider.restore({
+        activeScenes: [{ sceneId: 'ghost_step_quest', currentStepId: 'ghost_step', completedSteps: [], objectiveProgress: {}, vars: {} }],
+        sceneStack: [],
+      })
+      const warn = errorReporter.getErrors().find(
+        e => e.severity === 'warning' && e.source === 'quest-system' && e.message.includes('ghost_step_quest'),
+      )
+      expect(warn).toBeDefined()
+      expect(warn!.message).toContain('ghost_step')
+      // 合法 currentStepId 不误报
+      errorReporter.clear()
+      provider.restore({
+        activeScenes: [{ sceneId: 'ghost_step_quest', currentStepId: 'real_step', completedSteps: [], objectiveProgress: {}, vars: {} }],
+        sceneStack: [],
+      })
+      expect(errorReporter.getErrors().some(e => e.message.includes('ghost_step_quest'))).toBe(false)
+    })
+
+    it('A-M-10：恢复时 stepAdvanceCount 重置为 0（循环守卫计数不跨会话持久化）', async () => {
+      installStepsQuest('count_quest', [{ id: 's', type: 'reward', effects: [] }])
+      await apiSystem.call('quest', 'start', 'count_quest')
+      const provider = getGameStateProviders().find(p => p.id === 'quest-system')!
+      const data = provider.serialize()
+      const entry = data.activeScenes.find((e: any) => e.sceneId === 'count_quest')
+      entry.stepAdvanceCount = 95
+      provider.restore(data)
+      const after = provider.serialize()
+      expect(after.activeScenes.find((e: any) => e.sceneId === 'count_quest')?.stepAdvanceCount).toBe(0)
+    })
+
+    it('A-I-5：condition 步骤求值抛错 → 去重上报 warning（不再静默走 else）', async () => {
+      // 未注册前提 → 条件引擎求值抛错（与 trigger/auto_start 测试同款表达式）
+      installStepsQuest('cond_err_quest', [
+        { id: 'c', type: 'condition', condition: 'premise(NO_SUCH_PREMISE)', next: 'final', else: 'other' },
+        { id: 'other', type: 'reward', effects: [], next: 'not_exist' },
+        { id: 'final', type: 'reward', effects: [], next: 'not_exist' },
+      ])
+      errorReporter.clear()
+      await apiSystem.call('quest', 'start', 'cond_err_quest')
+      const warn = errorReporter.getErrors().find(
+        e => e.severity === 'warning' && e.source === 'quest-system' && e.message.includes('cond_err_quest'),
+      )
+      expect(warn).toBeDefined()
+      expect(warn!.message).toContain('NO_SUCH_PREMISE')
+    })
+
+    it('B-M-12：set_var 显式指定不存在/未激活的场景 → 去重 warning；省略 scene 保持静默', async () => {
+      installStepsQuest('setvar_quest', [
+        { id: 'a', type: 'reward', effects: [
+            { type: 'set_var', params: { scene: 'ghost_scene', var: 'k', value: 1 } },
+          ], next: 'b' },
+        // 无 next → 场景保持 active（完成后 vars 不可读——需挂起才能断言写入）
+        { id: 'b', type: 'reward', effects: [
+            { type: 'set_var', params: { var: 'k', value: 2 } },
+          ] },
+      ])
+      errorReporter.clear()
+      await apiSystem.call('quest', 'start', 'setvar_quest')
+      // 显式 ghost_scene → warning
+      const warn = errorReporter.getErrors().find(
+        e => e.severity === 'warning' && e.source === 'quest-system' && e.message.includes('ghost_scene'),
+      )
+      expect(warn).toBeDefined()
+      // 省略 scene → 写进最新激活场景（静默无警告）
+      expect(await apiSystem.call('quest', 'getVar', 'setvar_quest', 'k')).toBe(2)
+      // 无其他误报
+      expect(errorReporter.getErrors().filter(e => e.source === 'quest-system' && !e.message.includes('ghost_scene'))).toHaveLength(0)
     })
   })
 })

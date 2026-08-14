@@ -10,7 +10,7 @@ import { entitySystem } from '../../core/entity-system'
 import { bindingResolver } from '../../core/binding-resolver'
 import { setEntityPath, ATTR } from '../../core/entity-utils'
 import { eventBus } from '../../core/event-bus'
-import { modLoader } from '../../core/mod-loader'
+import { modLoader, finalizeCharacterData } from '../../core/mod-loader'
 import { errorReporter } from '../../core/error-reporter'
 import { deepMerge } from '../../core/template'
 import { resolveRelationPanel, resolveRelationAddress } from '../../core/relation-display'
@@ -204,6 +204,13 @@ export function onEnable(ctx: PluginContext): void {
       const data = deepMerge(JSON.parse(JSON.stringify(template)), overrides ?? {})
       data.id = id
       data.current_location = atLocation
+      // 注释：C-1（audit-b Critical-1）——merge 后必须过 finalizeCharacterData——
+      // 任何进入 entity-system 的角色都须契约最终化（attributes 默认值落位 /
+      // abilities 简写展开 / talents 初始化 / relations 归一化），与 pendingSpawns
+      // 激活路径同构。原实现直接注册：模板写 `abilities = { 华山剑法 = 3 }` 展开
+      // 失败 → 实体裸数字入库，gain_ability_xp/checkUpgrade/UI 读到 xp/level
+      // undefined 被静默丢弃（数字加属性不报错不生效）
+      finalizeCharacterData(data, mod)
       entitySystem.register('character', id, data)
       return id
     },

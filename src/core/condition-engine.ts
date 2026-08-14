@@ -223,7 +223,12 @@ class Parser {
   }
 
   private parseOperand(): OperandNode {
+    // 注释：M-1——残缺表达式（"a =="）在比较右值处 token 耗尽 → next() 返回 undefined，
+    // 原 switch (tok.type) 抛裸 TypeError；改为友好错误
     const tok = this.next()
+    if (!tok) {
+      throw new Error('Condition expression is invalid: unexpected end of expression (missing right-hand value)')
+    }
     switch (tok.type) {
       case 'string': return { kind: 'lit', value: tok.value }
       case 'number': return { kind: 'lit', value: tok.value }

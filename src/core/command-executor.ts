@@ -166,7 +166,9 @@ export class CommandExecutor {
     const duration = cmd.advanceToHour != null
       ? gameContext.minutesUntilHour(cmd.advanceToHour)
       : timeCost
-    const settleTimeCost = duration > 0 ? duration : 0
+    // 注释：M-2——拦截路径可改（置 0）——hook 拦截时时间未推进，finally 上报的
+    // execution_end timeCost 必须为 0（原 const 只读，报出指令默认耗时误报）
+    let settleTimeCost = duration > 0 ? duration : 0
 
     try {
       // 注释：C6——command 触发拦截——任一 hook 返回 true 则指令改道，默认行为不执行
@@ -177,7 +179,11 @@ export class CommandExecutor {
       if (hooks) {
         for (const hook of hooks) {
           try {
-            if (await hook(ctx)) return
+            if (await hook(ctx)) {
+              // 注释：M-2——拦截：时间未推进，execution_end 上报 0 而非指令默认耗时
+              settleTimeCost = 0
+              return
+            }
           } catch (err) {
             errorReporter.report({
               source: 'command-executor',

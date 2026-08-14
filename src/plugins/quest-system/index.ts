@@ -25,7 +25,13 @@ interface SceneRuntime {
   completedSteps: string[]
   objectiveProgress: Map<string, number>
   vars: Record<string, any>      // C2：场景变量
+  stepAdvanceCount: number      // I-1：步骤推进计数（循环守卫）
 }
+
+// 注释：I-1——步骤推进循环守卫——script 步骤返回自身 step id（或 script/condition/goto
+// 跨步互指成环）会 advanceToStep → executeStep 无限异步递归，游戏永久卡 EXECUTING 且零诊断。
+// 超过该次数 → 上报 error + completeScene 终结（防卡死）
+const MAX_STEP_ADVANCES = 100
 
 // 注释：所有活跃 scene 的运行时
 const activeScenes = new Map<string, SceneRuntime>()
@@ -228,6 +234,7 @@ export function onEnable(ctx: PluginContext): void {
         completedSteps: [...r.completedSteps],
         objectiveProgress: Object.fromEntries(r.objectiveProgress),
         vars: { ...(r.vars ?? {}) },
+        stepAdvanceCount: r.stepAdvanceCount,
       })),
       sceneStack: sceneStack.map(s => ({ ...s })),
     }),
@@ -241,6 +248,8 @@ export function onEnable(ctx: PluginContext): void {
           completedSteps: Array.isArray(entry.completedSteps) ? entry.completedSteps : [],
           objectiveProgress: new Map(Object.entries(entry.objectiveProgress ?? {})),
           vars: { ...(entry.vars ?? {}) },
+          // I-1：防御性恢复（旧存档无该字段 → 0）
+          stepAdvanceCount: Number(entry.stepAdvanceCount) || 0,
         })
       }
       for (const s of data?.sceneStack ?? []) {
@@ -286,6 +295,7 @@ async function startScene(sceneId: string): Promise<void> {
     currentStepId: scene.steps[0]?.id ?? 'start',
     completedSteps: [],
     objectiveProgress: new Map(),
+    stepAdvanceCount: 0,
     // C2：场景变量——scene 数据里的初始 vars 展开进运行时（task 数据可预置变量）
     vars: { ...(scene.vars ?? {}) },
   }
@@ -445,6 +455,21 @@ function buildStepExecCtx(_sceneId: string, step: any, _runtime: SceneRuntime): 
 async function advanceToStep(sceneId: string, nextStepId: string): Promise<void> {
   const runtime = activeScenes.get(sceneId)
   if (!runtime) return
+
+  // 注释：I-1——循环守卫：每次推进 +1，超过上限 → 上报 + 终结（防 advanceToStep →
+  // executeStep 无限递归卡死 EXECUTING；终结后 activeScenes 已删，递归栈逐帧空返）
+  runtime.stepAdvanceCount++
+  if (runtime.stepAdvanceCount > MAX_STEP_ADVANCES) {
+    errorReporter.report({
+      source: 'quest-system',
+      severity: 'error',
+      message: `场景 '${sceneId}' 步骤推进超过 ${MAX_STEP_ADVANCES} 次（当前步骤 '${runtime.currentStepId}'），疑似循环`,
+      suggestion: '检查 script 返回值/goto/condition 分支是否成环',
+    })
+    await completeScene(sceneId)
+    return
+  }
+
   runtime.completedSteps.push(runtime.currentStepId)
 
   const scene = getScene(sceneId)

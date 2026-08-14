@@ -372,6 +372,31 @@ describe('quest-system combat 步骤推进（B3）', () => {
       expect(await apiSystem.call('quest', 'getVar', 'script_test_quest', 'from_script')).toBe('x')
       expect(await apiSystem.call('quest', 'getSceneStatus', 'script_test_quest')).toBe('active')
     })
+
+    it('script 步骤返回自身 step id → 循环守卫终结（不无限递归，I-1）', async () => {
+      const mod = modLoader.getMod()!
+      mod.scripts.set('quest_loop.js', `return 'loop_self'`)
+      mod.quests.set('loop_quest', {
+        id: 'loop_quest', title: '循环测试', type: 'main', display: 'hidden',
+        steps: [{ id: 'loop_self', type: 'script', script: 'quest_loop.js' }],
+      })
+      errorReporter.clear()
+      try {
+        // 注释（I-1）：start 前原实现无守卫——advanceToStep → executeStep 无限异步递归，
+        // 测试会栈溢出/超时挂死；守卫在 100 次后上报 + completeScene 终结
+        await apiSystem.call('quest', 'start', 'loop_quest')
+        const err = errorReporter.getErrors().find(
+          e => e.source === 'quest-system' && e.severity === 'error'
+            && (e.message.includes('100') || e.message.includes('循环')),
+        )
+        expect(err).toBeDefined()
+        // 场景被终结（completeScene）而非永久 active 卡死
+        expect(await apiSystem.call('quest', 'getSceneStatus', 'loop_quest')).toBe('completed')
+      } finally {
+        mod.quests.delete('loop_quest')
+        mod.scripts.delete('quest_loop.js')
+      }
+    })
   })
 
   // ═══════ C4：custom objective（事件驱动的脚本化目标，quest-script C' 模型 Task 4）═══════
@@ -519,9 +544,20 @@ describe('quest-system combat 步骤推进（B3）', () => {
       } as any)
       gameContext.setSelectedCharacterId('李秋水')
       await apiSystem.call('quest', 'reindexTriggers')
-      await commandExecutor.execute('test_spar', { gameStore: { player: { id: 'player' } } } as any)
+      // 注释（M-2）：注入 engine mock 捕获 execution_end——拦截路径时间未推进，
+      // 上报的 timeCost 必须为 0（原实现误报指令默认 10）
+      const endEvents: any[] = []
+      const mockEngine = {
+        setExecutionState: () => {},
+        emit: async (event: string, payload: any) => {
+          if (event === 'game:execution_end') endEvents.push(payload)
+        },
+      }
+      await commandExecutor.execute('test_spar', { gameStore: { player: { id: 'player' } }, engine: mockEngine } as any)
       expect(cmdRan).toBe(false)
       expect(await apiSystem.call('quest', 'getSceneStatus', 'trigger_quest')).toBe('active')
+      expect(endEvents).toHaveLength(1)
+      expect(endEvents[0].timeCost).toBe(0)
       commandRegistry.unregister('test_spar')
     })
 
@@ -604,7 +640,8 @@ describe('quest-system combat 步骤推进（B3）', () => {
       const mod = modLoader.getMod()!
       // 注释：只清理注入的 test_bandit 模板；dynamic_quest 故意不删——用例 2（重复 id）
       // 依赖用例 1 注册后留在 mod.quests 的残留（若 afterEach 清理，重复检测将失效）。
-      // C7 是文件最后一个 describe，残留不外溢到其他用例
+      // 后续的 C8 describe 自带 loadMod('example-mod') 替换全局 mod，残留不外溢（M-3：
+      // 原注释称"C7 是文件最后一个 describe"已过期——C8 在其后）
       mod.entities.get('__templates_character__')?.delete('test_bandit')
     })
 

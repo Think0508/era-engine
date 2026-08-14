@@ -254,6 +254,16 @@ describe('conditionEngine.evaluate', () => {
     expect(conditionEngine.evaluate('foo == "x"', ctx)).toBe(false)
   })
 
+  it('残缺表达式——友好报错而非裸 TypeError（M-1）', () => {
+    // 注释（M-1）："a ==" 在比较右值处 token 耗尽 → parseOperand 读 undefined token——
+    // 原实现 switch (tok.type) 抛裸 TypeError「Cannot read properties of undefined」；
+    // 修复后抛可读的 "Condition expression is invalid" 错误
+    expect(() => conditionEngine.evaluate('a ==', ctx)).toThrow(/Condition expression is invalid/)
+    expect(() => conditionEngine.evaluate('player.气血 >=', ctx)).toThrow(/Condition expression is invalid/)
+    expect(() => conditionEngine.evaluate('a !=', ctx)).toThrow(/Condition expression is invalid/)
+    expect(() => conditionEngine.evaluate('', ctx)).toThrow(/Condition expression is invalid/)
+  })
+
   it('clear 后求值仍正确（幂等）', () => {
     conditionEngine.clear()
     expect(conditionEngine.evaluate('player.hp < 100', ctx)).toBe(true)

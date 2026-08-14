@@ -794,7 +794,7 @@ describe('quest-system combat 步骤推进（B3）', () => {
       // 模拟 main.ts 步骤 4（registerFromAttributes）——registry 完整后校验才有意义
       const { conditionRegistry } = await import('../../core/condition-registry')
       conditionRegistry.registerFromAttributes(modLoader.getMod()!.attributes)
-      const { validateQuestTriggerConditions } = await import('../quest-system/index')
+      const { validateQuestTriggerConditions } = await import('../quest-system/triggers')
       // 坏条件 → error
       errorReporter.clear()
       installTriggerQuest([{ type: 'command', command: 'test_spar', condition: 'player.不存在的属性 == 1' }])
@@ -814,7 +814,7 @@ describe('quest-system combat 步骤推进（B3）', () => {
     })
 
     it('M2（audit-i）：custom objective 未知事件 → 延迟校验 error（白名单单一来源 = quest-system）', async () => {
-      const { validateQuestTriggerConditions } = await import('../quest-system/index')
+      const { validateQuestTriggerConditions } = await import('../quest-system/triggers')
       const mod = modLoader.getMod()!
       errorReporter.clear()
       mod.quests.set('m2_obj_quest', {

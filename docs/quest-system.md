@@ -381,7 +381,7 @@ ctx.api.call('quest', 'start', sceneId)                 → void（event/quest �
 ctx.api.call('quest', 'getActiveScenes')                → string[]（活跃 scene ID 列表）
 ctx.api.call('quest', 'getSceneStatus', sceneId)        → 'not_started' | 'active' | 'completed'
 ctx.api.call('quest', 'advanceStep', sceneId, stepId)   → void
-ctx.api.call('quest', 'checkTriggerConditions')         → string[]（未开始且带 condition 的 scene；保留兼容）
+ctx.api.call('quest', 'checkAutoStart')                  → void（M3：统一自动启动入口——求值所有未开始场景的 condition/auto_start_condition，满足即启动；dialogue 口上链也经此转发）
 ctx.api.call('quest', 'getVar', sceneId, key)           → any（场景变量；不存在 → undefined）
 ctx.api.call('quest', 'setVar', sceneId, key, value)    → void（写场景变量）
 ctx.api.call('quest', 'registerDynamicScene', sceneId, scene)     → void（动态 scene，不持久）

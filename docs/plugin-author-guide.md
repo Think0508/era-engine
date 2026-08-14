@@ -347,7 +347,7 @@ ctx.api.call('quest', 'start', sceneId)                       // → void（star
 ctx.api.call('quest', 'getActiveScenes')                      // → string[]（活跃 scene ID 列表）
 ctx.api.call('quest', 'getSceneStatus', sceneId)              // → 'not_started' | 'active' | 'completed'
 ctx.api.call('quest', 'advanceStep', sceneId, nextStepId)     // → void
-ctx.api.call('quest', 'checkTriggerConditions')               // → string[]（未开始且带 condition 的 scene；由调用方求值；保留兼容——新代码用 triggers/registerScene）
+ctx.api.call('quest', 'checkAutoStart')                       // → void（M3：统一自动启动入口——求值所有未开始场景的 condition/auto_start_condition，满足即启动）
 // 动态 scene（2026-08-14 confinement-system 追捕委托）——解决"敌人 id 运行时才知道，写不进 TOML"
 ctx.api.call('quest', 'registerDynamicScene', sceneId, scene) // → void（注册运行时构造的 Quest 对象）
 ctx.api.call('quest', 'startDynamicScene', sceneId, scene)    // → void（注册 + 启动一步完成）

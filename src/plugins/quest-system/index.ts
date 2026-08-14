@@ -141,19 +141,11 @@ export function onEnable(ctx: PluginContext): void {
     advanceStep: async (sceneId: string, nextStepId: string): Promise<void> => {
       await advanceToStep(sceneId, nextStepId)
     },
-    // 注释：检查是否有未开始的 scene 的 condition 满足当前游戏状态
-    checkTriggerConditions: (): string[] => {
-      const mod = modLoader.getMod()
-      if (!mod) return []
-      const triggered: string[] = []
-      for (const [id, scene] of mod.quests) {
-        if (!scene.condition) continue
-        if (activeScenes.has(id)) continue
-        if (gameContext.isCompleted(id)) continue
-        // 注释：condition 求值由调用方完成（需要 GameContext）
-        triggered.push(id)
-      }
-      return triggered
+    // 注释：M3（audit-i）——自动启动单一实现入口：dialogue 侧口上触发链曾复制一份
+    // "求值 condition + start"（借 checkTriggerConditions API，条件源还不一致——
+    // 只看 condition 不看 auto_start_condition）→ 收敛为统一调用本 API
+    checkAutoStart: async (): Promise<void> => {
+      await checkAutoStart()
     },
     // 注释：运行时注册动态 scene（2026-08-14 confinement-system 追捕委托）——
     // 解决"敌人 id 运行时才知道，写不进 TOML"：构造 Quest 对象 → 注册 → 启动。

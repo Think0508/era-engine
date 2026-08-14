@@ -235,35 +235,12 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
 
   let hasOutput = false
 
-  // 注释：0. 事件 condition 检查——已完成的/活跃的跳过，未开始的求值
-  // condition 满足 → auto start scene（不打断当前口上）
+  // 注释：0. 事件 condition 自动启动——统一委托 quest-system（M3 收敛：原 step-0
+  // 在此复制"求值 condition + start"实现（借 checkTriggerConditions API，条件源
+  // 还不一致）——quest 侧 checkAutoStart 是唯一实现，本处仅转发；时机语义由
+  // quest 侧监听（location:enter/dialogue:end/combat:end）决定
   try {
-    const gc = gameContext.getContext()
-    const { conditionEngine } = await import('../../core/condition-engine')
-    const candidates = await apiSystem.call('quest', 'checkTriggerConditions')
-    if (Array.isArray(candidates)) {
-      for (const sid of candidates) {
-        const sMod = modLoader.getMod()
-        const sceneDef = sMod?.quests?.get?.(sid)
-        if (!sceneDef?.condition) continue
-        try {
-          if (conditionEngine.evaluate(sceneDef.condition, gc)) {
-            await apiSystem.call('quest', 'start', sid)
-          }
-        } catch (err) {
-          // 注释：audit-e I7——condition 求值失败原静默跳过（依赖 quest 侧
-          // checkAutoStart 巧合补报，且 quest 侧晚一个事件批次）→ 此处直接去重上报
-          const key = `scene-cond|${sid}|${sceneDef.condition}`
-          errorReporter.reportDedup(key, {
-              source: 'dialogue-system',
-              severity: 'warning',
-              message: `任务 '${sid}' 的场景 condition 求值失败（自动触发跳过）：${err instanceof Error ? err.message : String(err)}`,
-              suggestion: '检查场景 condition 表达式（字段路径/前提拼写）',
-            })
-
-        }
-      }
-    }
+    await apiSystem.call('quest', 'checkAutoStart')
   } catch {
     // 注释：quest API 未就绪（quest-system 插件未加载）→ 场景级自动触发整体降级跳过，
     // 属有意降级（无 quest 插件 = 无任务系统），不阻断口上输出

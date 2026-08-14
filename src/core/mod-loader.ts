@@ -1686,28 +1686,27 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       }
       map.set(conv.id, conv)
     }
-    // 注释：B-I-3（audit-b I-3 同族）——custom objective 的 event 加载期校验——
-    // 未知事件名 → error（原静默永不触发；CUSTOM_EVENT_TYPES 由 quest-system 注册
-    // 监听，core 数据层镜像该白名单——与 h:orgasm/h:end 事件契约同步）
-    const CUSTOM_OBJECTIVE_EVENTS = ['h:orgasm', 'h:end']
+    // 注释：custom objective 结构校验（M2 重构：事件名白名单不属 core——
+    // h:orgasm/h:end 是 h-core 插件领域事件，core 只做结构校验；
+    // 事件名合法性由 quest-system 延迟校验（game:plugins_loaded 挂点，
+    // 与条件字段校验同强度）。fail_event ≠ event 属结构问题（同名遮蔽主计数路径）
     for (const step of scene.steps ?? []) {
       const obj = step.objective
-      if (step.type === 'objective' && obj?.type === 'custom' && obj.event
-          && !CUSTOM_OBJECTIVE_EVENTS.includes(obj.event)) {
-        errorReporter.report({
-          source: 'mod-loader', severity: 'error', file: path,
-          message: `任务 '${scene.id}' 步骤 '${step.id}' 的 custom objective 监听了未知事件 '${obj.event}'（目标不会推进）`,
-          suggestion: `objective.event 目前支持：${CUSTOM_OBJECTIVE_EVENTS.join(' / ')}`,
-        })
-      }
-      // 注释：G2-M-5——fail_event 与 event 同名 → 主计数路径被失败路径遮蔽
-      //（每次事件都走 fail 分支，目标永不推进，静默失效零诊断）
-      if (step.type === 'objective' && obj?.type === 'custom' && obj.event && obj.fail_event === obj.event) {
-        errorReporter.report({
-          source: 'mod-loader', severity: 'error', file: path,
-          message: `任务 '${scene.id}' 步骤 '${step.id}' 的 custom objective 的 fail_event（'${obj.fail_event}'）与 event 相同（主计数路径被失败分支遮蔽）`,
-          suggestion: 'fail_event 必须是与 event 不同的事件（如 event = "h:orgasm"、fail_event = "h:end"）',
-        })
+      if (step.type === 'objective' && obj?.type === 'custom') {
+        if (typeof obj.event !== 'string' || !obj.event) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error', file: path,
+            message: `任务 '${scene.id}' 步骤 '${step.id}' 的 custom objective 缺少 event 字段（目标不会推进）`,
+            suggestion: 'objective.event 声明监听的事件名（如 "h:orgasm"），由 quest-system 在插件就绪后校验合法性',
+          })
+        }
+        if (obj.fail_event && obj.fail_event === obj.event) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error', file: path,
+            message: `任务 '${scene.id}' 步骤 '${step.id}' 的 custom objective 的 fail_event（'${obj.fail_event}'）与 event 相同（主计数路径被失败分支遮蔽）`,
+            suggestion: 'fail_event 必须是与 event 不同的事件（如 event = "h:orgasm"、fail_event = "h:end"）',
+          })
+        }
       }
     }
   }

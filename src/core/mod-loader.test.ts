@@ -864,7 +864,7 @@ describe('quest 加载期校验（批次 1）', () => {
     expect(questErrors('缺少 character 字段').some(e => e.message.includes('bad_trigger_quest'))).toBe(true)
   })
 
-  it('B-I-3：custom objective 监听未知事件 → error', () => {
+  it('M2（audit-i）：custom objective 结构校验（缺 event 字段 → error；事件名合法性由 quest-system 延迟校验，core 不认事件名）', () => {
     parseModData('test-mod', makeMap({
       '/mods/test-mod/quests/main/bad_obj.toml': [
         'id = "bad_obj_quest"',
@@ -872,12 +872,24 @@ describe('quest 加载期校验（批次 1）', () => {
         '[[steps]]',
         'id = "s1"',
         'type = "objective"',
-        'objective = { type = "custom", event = "h:unknown_event", script = "x.js" }',
+        'objective = { type = "custom", script = "x.js" }',
       ].join('\n'),
     }))
-    expect(questErrors('h:unknown_event').some(e => e.message.includes('bad_obj_quest'))).toBe(true)
-    // 合法事件不误报
-    expect(questErrors('h:orgasm').some(e => e.message.includes('bad_obj_quest'))).toBe(false)
+    expect(questErrors('缺少 event 字段').some(e => e.message.includes('bad_obj_quest'))).toBe(true)
+    // 结构校验不认具体事件名（h:orgasm 是 h-core 插件领域事件——core 零玩法名词铁律）
+    expect(questErrors('h:unknown_event').length).toBe(0)
+    // fail_event 与 event 同名属结构问题（遮蔽主计数路径）→ 仍由 core 校验
+    parseModData('test-mod', makeMap({
+      '/mods/test-mod/quests/main/bad_obj2.toml': [
+        'id = "bad_obj2_quest"',
+        'type = "main"',
+        '[[steps]]',
+        'id = "s1"',
+        'type = "objective"',
+        'objective = { type = "custom", event = "h:orgasm", script = "x.js", fail_event = "h:orgasm" }',
+      ].join('\n'),
+    }))
+    expect(questErrors('与 event 相同').some(e => e.message.includes('bad_obj2_quest'))).toBe(true)
   })
 
   it('C2-M：triggers/dialogues 非数组 → error（不抛裸 TypeError 崩溃加载）', () => {

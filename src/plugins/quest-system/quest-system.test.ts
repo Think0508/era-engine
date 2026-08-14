@@ -812,6 +812,37 @@ describe('quest-system combat 步骤推进（B3）', () => {
         e => e.severity === 'error' && e.source === 'quest-system' && e.message.includes('trigger_quest'),
       )).toBe(false)
     })
+
+    it('M2（audit-i）：custom objective 未知事件 → 延迟校验 error（白名单单一来源 = quest-system）', async () => {
+      const { validateQuestTriggerConditions } = await import('../quest-system/index')
+      const mod = modLoader.getMod()!
+      errorReporter.clear()
+      mod.quests.set('m2_obj_quest', {
+        id: 'm2_obj_quest', title: 'M2', type: 'event', display: 'hidden',
+        steps: [
+          { id: 's1', type: 'objective', objective: { type: 'custom', event: 'h:unknown_event', script: 'x.js' }, next: 's2' },
+          { id: 's2', type: 'reward', effects: [], next: '' },
+        ],
+      } as any)
+      validateQuestTriggerConditions()
+      const err = errorReporter.getErrors().find(
+        e => e.severity === 'error' && e.source === 'quest-system' && e.message.includes('h:unknown_event'),
+      )
+      expect(err).toBeDefined()
+      expect(err!.message).toContain('m2_obj_quest')
+      // 合法事件不误报
+      errorReporter.clear()
+      mod.quests.set('m2_obj_quest', {
+        id: 'm2_obj_quest', title: 'M2', type: 'event', display: 'hidden',
+        steps: [
+          { id: 's1', type: 'objective', objective: { type: 'custom', event: 'h:orgasm', script: 'x.js' }, next: 's2' },
+          { id: 's2', type: 'reward', effects: [], next: '' },
+        ],
+      } as any)
+      validateQuestTriggerConditions()
+      expect(errorReporter.getErrors().some(e => e.message.includes('h:orgasm'))).toBe(false)
+      mod.quests.delete('m2_obj_quest')
+    })
   })
 
   // ═══════ C7：运行时 scene 注册 + 角色 spawn（quest-script C' 模型 Task 7）═══════
@@ -1130,8 +1161,12 @@ describe('audit-f：next 空串结束标记（F-1/F-2）', () => {
     mod.quests.delete('f_parent_quest')
     mod.quests.delete('f_child_quest')
     // 注释：completedScenes 跨用例残留（F-1 完成 f_parent_quest 后 F-1b 同 id
-    // 重启被 isCompleted 跳过）——每个用例后重置游戏上下文
+    // 重启被 isCompleted 跳过）+ 模块级 activeScenes 残留（gameContext.reset()
+    // 不清 quest-system 的 activeScenes——挂起场景挡住同 id 重启）——
+    // 每个用例后重置游戏上下文 + 清空 quest 运行时
     gameContext.reset()
+    const provider = getGameStateProviders().find((p: any) => p.id === 'quest-system')
+    provider?.restore({ activeScenes: [], sceneStack: [] })
   })
 
   it('F-1：scene 步骤 next="" → 子完成即结束父（原 truthy 检查静默挂起父场景）', async () => {
@@ -1156,6 +1191,32 @@ describe('audit-f：next 空串结束标记（F-1/F-2）', () => {
     ])
     await apiSystem.call('quest', 'start', 'f_parent_quest')
     // 省略 next = 父挂起（AGENTS §31 语义）——不被 '' 转换误完成
+    expect(await apiSystem.call('quest', 'getSceneStatus', 'f_child_quest')).toBe('completed')
+    expect(await apiSystem.call('quest', 'getSceneStatus', 'f_parent_quest')).toBe('active')
+  })
+
+  it('M1（audit-i）：scene 步骤省略 next → 存档往返后父仍保持挂起（restore 不把 undefined 强转 ""）', async () => {
+    installQuest('f_parent_quest', [
+      { id: 's1', type: 'scene', scene_id: 'f_child_quest' },
+    ])
+    // 子场景用事件驱动 objective（挂起不立即完成——restore 后可通过事件重新完成）
+    installQuest('f_child_quest', [
+      { id: 'c1', type: 'objective', objective: { type: 'talk_to', character: '测试角色' }, next: 'c2' },
+      { id: 'c2', type: 'reward', effects: [], next: 'not_exist' },
+    ])
+    await apiSystem.call('quest', 'start', 'f_parent_quest')
+    expect(await apiSystem.call('quest', 'getSceneStatus', 'f_child_quest')).toBe('active')
+
+    // 序列化 → JSON 往返 → 恢复（模拟存档流程）
+    const provider = getGameStateProviders().find((p: any) => p.id === 'quest-system')!
+    const data = provider.serialize()
+    provider.restore(JSON.parse(JSON.stringify(data)))
+    expect(await apiSystem.call('quest', 'getSceneStatus', 'f_parent_quest')).toBe('active')
+    expect(await apiSystem.call('quest', 'getSceneStatus', 'f_child_quest')).toBe('active')
+
+    // 恢复后子场景完成 → 弹栈 → resumeStepId 若被强转 '' 则父被错误终结
+    //（M1 修复前：restore 的 ?? '' 使省略 next 变成"子完成即结束父"）
+    await eventBus.emit('dialogue:end', { character: '测试角色' })
     expect(await apiSystem.call('quest', 'getSceneStatus', 'f_child_quest')).toBe('completed')
     expect(await apiSystem.call('quest', 'getSceneStatus', 'f_parent_quest')).toBe('active')
   })

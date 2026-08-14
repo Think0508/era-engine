@@ -38,11 +38,13 @@ const MAX_STEP_ADVANCES = 100
 // 注释：所有活跃 scene 的运行时
 const activeScenes = new Map<string, SceneRuntime>()
 // 注释：嵌套场景栈——push 子 scene 时暂停父，完成后 pop。
-// A-I-1/A-I-2（audit-a I-1/I-2）：条目记录 {parent, child, resumeStepId}——
-// child = push 时实际启动的子 scene id；completeScene 只在 栈顶.child === 完成者
-// 时 pop（原无条件 pop：非嵌套 scene 完成会弹错父；且子 scene 无法启动时父
-// 永久挂起 + 栈条目泄漏）。旧存档格式 {sceneId, resumeStepId} 恢复时兼容
-const sceneStack: { parent: string; child: string; resumeStepId: string }[] = []
+// 条目记录 {parent, child, resumeStepId}——child = push 时实际启动的子 scene id；
+// completeScene 只在 栈顶.child === 完成者 时 pop（原无条件 pop：非嵌套 scene 完成
+// 会弹错父；且子 scene 无法启动时父永久挂起 + 栈条目泄漏）。旧存档格式
+// {sceneId, resumeStepId} 恢复时兼容。
+// resumeStepId 三态（M1/A1）：'' = 子完成即结束父；string = 恢复推进；
+// undefined = 父保持挂起——push 与 restore 都必须保留 undefined（勿 ?? ''）
+const sceneStack: { parent: string; child: string; resumeStepId: string | undefined }[] = []
 // 注释：运行时注册的动态 scene（2026-08-14 confinement-system 追捕委托用）——
 // mod.quests 是 TOML 静态数据，动态敌人（逃犯 id）写不进去 → 本表运行时注册，
 // getScene 优先查本表。存档恢复：动态 scene 由注册方（confinement）的 provider
@@ -393,10 +395,11 @@ export function onEnable(ctx: PluginContext): void {
         // 非子 scene）——旧格式不记录子 id，无法精确恢复嵌套关系：child 置空
         //（completeScene 的 top.child === 完成者恒不匹配 → 条目安全搁置不会误弹），
         // parent 恢复为 sceneId，恢复时发 warning 告知"无法精确恢复"。
-        // resumeStepId 缺省保持 undefined（旧格式无 next = 父挂起；勿 ?? '' 否则
-        // 被 F-1 的空串结束标记误触发 completeScene(parent)）
+        // resumeStepId 缺省保持 undefined（两种格式都是：新格式省略 next / 旧格式
+        // 无 next = 父挂起；勿 ?? '' 否则被 F-1 的空串结束标记误触发 completeScene(parent)
+        // ——M1 修复：新格式分支此前漏改，嵌套任务存档往返后父场景被错误终结）
         if (s.child !== undefined) {
-          sceneStack.push({ parent: s.parent ?? '', child: s.child, resumeStepId: s.resumeStepId ?? '' })
+          sceneStack.push({ parent: s.parent ?? '', child: s.child, resumeStepId: s.resumeStepId })
         } else if (s.sceneId !== undefined) {
           sceneStack.push({ parent: s.sceneId, child: '', resumeStepId: s.resumeStepId })
           errorReporter.reportDedup(`restore|old-stack|${String(s.sceneId)}`, {
@@ -1112,6 +1115,21 @@ export function validateQuestTriggerConditions(): void {
           severity: 'error',
           message: `任务 '${sceneId}' 的触发器条件引用了未注册字段/前提：${unknown.join(', ')}（条件：${trig.condition}，触发器不会触发）`,
           suggestion: '对照 可用条件属性手册 检查字段路径；premise(X) 需在插件 onLoad 注册（engine API premises.register）',
+        })
+      }
+    }
+    // 注释：M2（audit-i）——custom objective 事件名合法性校验（原在 mod-loader
+    // core 层硬编码 h: 事件白名单 = 玩法名词泄漏 + 双份拷贝漂移风险）——
+    // 白名单单一来源 = 本插件的 CUSTOM_EVENT_TYPES 监听表，延迟到插件就绪后校验
+    for (const step of scene.steps ?? []) {
+      const obj = step.objective
+      if (step.type !== 'objective' || obj?.type !== 'custom') continue
+      if (typeof obj.event === 'string' && obj.event && !CUSTOM_EVENT_TYPES.includes(obj.event)) {
+        errorReporter.report({
+          source: 'quest-system',
+          severity: 'error',
+          message: `任务 '${sceneId}' 步骤 '${step.id}' 的 custom objective 监听了未知事件 '${obj.event}'（目标不会推进）`,
+          suggestion: `objective.event 目前可监听：${CUSTOM_EVENT_TYPES.join(' / ')}（事件由各插件发出，新增事件需在 quest-system 注册监听）`,
         })
       }
     }

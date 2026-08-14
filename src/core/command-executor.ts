@@ -63,6 +63,23 @@ export interface ExecutionContext {
   evaluatePremises?: (premises: string[]) => boolean
 }
 
+// 注释：C6——command hook（指令拦截机制，core 通用能力）
+// 插件注册拦截器（如 quest-system 的 triggers 声明）：handler 返回 true = 已拦截，
+// 指令默认行为（handler/effects/时间推进）不执行，改道由注册方负责（如启动场景）
+export type CommandHookHandler = (execCtx: any) => Promise<boolean>
+
+const commandHooks = new Map<string, CommandHookHandler[]>()
+
+export function registerCommandHook(commandId: string, handler: CommandHookHandler): void {
+  const list = commandHooks.get(commandId) ?? []
+  list.push(handler)
+  commandHooks.set(commandId, list)
+}
+
+export function clearCommandHooks(): void {
+  commandHooks.clear()
+}
+
 export class CommandExecutor {
   // 注释：执行指令——统一入口，CommandBar/ScreenNumpad/键盘输入都调此方法
   async execute(id: string, ctx: ExecutionContext): Promise<void> {
@@ -152,6 +169,26 @@ export class CommandExecutor {
     const settleTimeCost = duration > 0 ? duration : 0
 
     try {
+      // 注释：C6——command 触发拦截——任一 hook 返回 true 则指令改道，默认行为不执行
+      // 位置：premise/condition 通过 + EXECUTING 包裹之后、handler/effects 之前。
+      // 拦截 return 在 try 块内 → 走 finally 正常收尾（回 IDLE + execution_end + 天赋检查），
+      // 状态流转与正常执行一致。hook 抛错 → 上报 + 继续默认执行（异常隔离）
+      const hooks = commandHooks.get(id)
+      if (hooks) {
+        for (const hook of hooks) {
+          try {
+            if (await hook(ctx)) return
+          } catch (err) {
+            errorReporter.report({
+              source: 'command-executor',
+              severity: 'warning',
+              message: `command hook '${id}' 抛错：${err instanceof Error ? err.message : String(err)}`,
+              suggestion: '检查钩子注册方实现（异常已隔离，继续默认执行）',
+            })
+          }
+        }
+      }
+
       // 注释：推进时间（effects 类指令才推进）
       if (duration > 0 && cmd.effects) {
         await gameContext.advanceTime(duration)

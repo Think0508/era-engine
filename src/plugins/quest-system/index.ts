@@ -14,6 +14,7 @@ import { errorReporter } from '../../core/error-reporter'
 import type { Quest, ConversationRef } from '../../core/mod-loader'
 import { parseConversationRef } from '../../core/mod-loader'
 import { conditionEngine } from '../../core/condition-engine'
+import { registerCommandHook, clearCommandHooks } from '../../core/command-executor'
 import { registerGameStateProvider } from '../../core/save-system'
 import { runQuestScript, makeScriptCtx } from './script-runner'
 
@@ -41,6 +42,9 @@ const dynamicScenes = new Map<string, Quest>()
 // 注释：C4——custom objective 事件监听——objective 声明监听什么事件，脚本只做匹配逻辑
 // h:orgasm / h:end 由 h-core 发出；现有标准事件（location:enter 等）由既有监听覆盖
 const CUSTOM_EVENT_TYPES = ['h:orgasm', 'h:end']
+
+// 注释：C6——dialogue_end 触发索引（character → sceneIds），buildTriggerIndex 时重建
+const dialogueEndTriggers = new Map<string, string[]>()
 
 export function onLoad(_ctx: PluginContext): void {
   // 注释：start_scene——后台激活 scene（不打断当前操作）
@@ -129,6 +133,11 @@ export function onEnable(ctx: PluginContext): void {
     unregisterDynamicScene: async (sceneId: string): Promise<void> => {
       dynamicScenes.delete(sceneId)
     },
+    // 注释：C6——重建触发器索引（triggers 声明 → command hook + dialogue_end 索引）。
+    // 新增/删除带 triggers 的任务后调用（运行时注册动态 scene 等场景）
+    reindexTriggers: (): void => {
+      buildTriggerIndex()
+    },
   })
 
   ctx.events.on('location:enter', async (payload: any) => {
@@ -169,6 +178,25 @@ export function onEnable(ctx: PluginContext): void {
     await checkObjectives('talk_to', { character: payload?.character })
     checkAutoStart()
   })
+  // 注释：C6——dialogue_end 触发（与既有 talk_to objective 监听并存，职责分离）：
+  // 与指定角色对话结束时启动匹配场景（已活跃/已完成 → 跳过）
+  ctx.events.on('dialogue:end', async (payload: any) => {
+    const sceneIds = dialogueEndTriggers.get(payload?.character) ?? []
+    for (const sceneId of sceneIds) {
+      if (!activeScenes.has(sceneId) && !gameContext.isCompleted(sceneId)) {
+        await startScene(sceneId)
+      }
+    }
+  })
+
+  // 注释：C6——读档后 mod.quests 已重建 → 重建触发器索引
+  ctx.events.on('game:load', () => {
+    buildTriggerIndex()
+  })
+
+  // 注释：C6——初始构建触发器索引（新游戏启动即生效；读档由 game:load 重建，
+  // 运行时增删任务由 reindexTriggers API 重建）
+  buildTriggerIndex()
 
   // 注释：存档 provider（2026-08-14 存档系统复刻）——进行中任务进度随存档，
   // 读档后重建（此前 activeScenes/sceneStack 为模块级内存，读档任务直接消失）
@@ -573,6 +601,62 @@ function checkAutoStart(): void {
 
 // 注释：auto_start 条件求值失败去重上报（2026-08-13 审计）
 const reportedAutoStartErrors = new Set<string>()
+
+// 注释：C6——构建触发器索引（triggers 声明 → command hook + dialogue_end 索引）
+// 调用时机：onEnable（初始）/ game:load（读档后 mod.quests 重建）/ reindexTriggers API
+// command 拦截语义：条件满足时指令改道执行场景、指令自身 effects/handler 不执行；
+// 同一 command 多个 hook 条件同时满足 → errorReporter 报错 + 不拦截（走指令默认行为）
+function buildTriggerIndex(): void {
+  clearCommandHooks()
+  dialogueEndTriggers.clear()
+  const mod = modLoader.getMod()
+  if (!mod) return
+  const perCommand = new Map<string, { sceneId: string; condition?: string }[]>()
+  for (const [sceneId, scene] of mod.quests) {
+    for (const trig of scene.triggers ?? []) {
+      if (trig.type === 'command' && trig.command) {
+        const list = perCommand.get(trig.command) ?? []
+        list.push({ sceneId, condition: trig.condition })
+        perCommand.set(trig.command, list)
+      } else if (trig.type === 'dialogue_end' && trig.character) {
+        const list = dialogueEndTriggers.get(trig.character) ?? []
+        list.push(sceneId)
+        dialogueEndTriggers.set(trig.character, list)
+      }
+    }
+  }
+  for (const [commandId, hooks] of perCommand) {
+    registerCommandHook(commandId, async (_execCtx: any) => {
+      const satisfied: string[] = []
+      for (const h of hooks) {
+        if (activeScenes.has(h.sceneId) || gameContext.isCompleted(h.sceneId)) continue
+        let ok = true
+        if (h.condition) {
+          try {
+            // 注释：条件求值直接用 gameContext.getContext()——条件引擎 selected 路径读
+            // ctx.selectedCharacterId（UI 选中已由 bridge 同步进 gameContext），无需从
+            // execCtx.uiStore 手工搬运
+            ok = conditionEngine.evaluate(h.condition, gameContext.getContext())
+          } catch {
+            ok = false
+          }
+        }
+        if (ok) satisfied.push(h.sceneId)
+      }
+      if (satisfied.length === 0) return false
+      if (satisfied.length > 1) {
+        errorReporter.report({
+          source: 'quest-system', severity: 'error',
+          message: `指令 '${commandId}' 的多个触发条件同时满足：${satisfied.join(', ')}`,
+          suggestion: '调整触发条件的互斥性（如 selected.id 判断），只保留一个场景命中',
+        })
+        return false // 冲突 → 不拦截，走指令默认行为
+      }
+      await startScene(satisfied[0])
+      return true
+    })
+  }
+}
 
 function getScene(sceneId: string): Quest | undefined {
   // 注释：动态 scene 优先（confinement 追捕委托——运行时构造）

@@ -169,6 +169,38 @@ next = "not_exist"
 - **语义**：`scene:` 引用与角色/全局对话完全等价——dialogue 步骤照常走 `dialogue.startConversation`（resolveConversation 的 case 'scene'），对话树格式（nodes/lines/choices/effects/next）与独立 conversation 文件一致
 - **作用域**：内嵌对话归属任务（sceneId），只在该任务作用域内可引用；跨任务复用请用独立的 conversation 文件
 
+### triggers 触发声明（C6，2026-08-14）
+
+任务文件可声明触发条件——指令拦截 / 对话结束自动启动，mod 作者不用写任何启动代码：
+
+```toml
+# quests/event/duel_reward.toml
+id = "duel_reward"
+type = "event"
+display = "hidden"
+
+[[triggers]]
+type = "command"                              # 指令拦截：执行该指令时（条件满足）改道启动本任务
+command = "spar"                              # 指令 id（CommandRegistry）
+condition = "selected.id == '李秋水'"          # 可选：触发条件（条件引擎表达式）
+
+[[triggers]]
+type = "dialogue_end"                         # 对话结束触发：与指定角色对话结束时启动本任务
+character = "李秋水"
+
+[[steps]]
+id = "s1"
+type = "reward"
+effects = [{ type = "narrative_output", params = { text = "剧情开始" } }]
+```
+
+- **command 拦截语义**：条件满足时指令改道执行场景，**指令自身的 effects/handler 不执行**（时间也不推进）；条件不满足 → 走指令默认行为。场景已活跃/已完成 → 跳过
+- **冲突检测**：同一指令多个 trigger 条件同时满足 → errorReporter 报错（含各 scene id）+ 不拦截（走指令默认行为）——触发条件需互斥（如按 `selected.id` 区分）
+- **dialogue_end 语义**：与指定角色对话结束（`dialogue:end` 事件 payload 的 `character`）时启动匹配场景；已活跃/已完成 → 跳过
+- **条件求值**：用 `gameContext.getContext()` 的 `selected`/`player` 路径（UI 选中已由 bridge 同步，无需额外参数）
+- **索引生命周期**：onEnable 初始构建；`game:load`（读档后 mod.quests 重建）自动重建；运行时增删带 triggers 的任务（如动态 scene）需调 `ctx.api.call('quest', 'reindexTriggers')`
+- **类型校验**：加载期校验 `type` 合法值——非法 type / 未实现类型（`location_enter`/`item_used`/`time`，Phase 2 计划）→ error（含任务 id + 文件），防止作者以为已生效而静默失效
+
 ## Mod 作者使用
 
 放 quests/main/ 或 quests/side/。用 `auto_start_condition` 或 `start_quest` effect 启动。

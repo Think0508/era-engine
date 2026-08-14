@@ -10,6 +10,7 @@ import { gameContext } from '../../core/game-context'
 import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
 import { commandRegistry } from '../../core/command-registry'
+import { commandExecutor } from '../../core/command-executor'
 import { errorReporter } from '../../core/error-reporter'
 import { narrativeLog } from '../../core/narrative-log'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
@@ -465,6 +466,109 @@ describe('quest-system combat 步骤推进（B3）', () => {
       expect(await apiSystem.call('quest', 'getSceneStatus', 'embed_quest')).toBe('completed')
       // 内嵌对话真的被渲染（startConversation 解析到 scene 对话而非回退 global 报"对话不存在"）
       expect(narrativeLog.getEntries().some(e => e.text === '李秋水道：夜深了。')).toBe(true)
+    })
+  })
+
+  // ═══════ C6：triggers 触发声明（quest-script C' 模型 Task 6）═══════
+  describe('triggers 触发声明（C6）', () => {
+    function installTriggerQuest(triggers: any[], steps?: any[]) {
+      const mod = modLoader.getMod()!
+      mod.quests.set('trigger_quest', {
+        id: 'trigger_quest', title: '触发测试', type: 'event', display: 'hidden',
+        triggers,
+        // 注释（偏离 brief 原文）：brief 默认 steps 的 next='not_exist' 会在启动时立即
+        // 完成 scene（advanceToStep 找不到 → completeScene）——状态断言 active 无法成立。
+        // 改为无 next 的挂起 reward 步骤：启动后保持 active（executeStep 只推进有 next 的步骤）
+        steps: steps ?? [
+          { id: 's1', type: 'reward', effects: [{ type: 'narrative_output', params: { text: '剧情开始' } }] },
+        ],
+      })
+    }
+
+    beforeAll(() => {
+      // 注释：条件 selected.id == '李秋水' 依赖角色实体存在（selected 根路径走 getEntity 解析）
+      entitySystem.register('character', '李秋水', { id: '李秋水', name: '李秋水', base: {} })
+    })
+
+    beforeEach(() => {
+      // 注释：外层 afterEach 的 gameContext.reset() 清掉了 player——重建（execute 收尾的
+      // 天赋习得检查/结算路径需要玩家实体存在）
+      gameContext.setPlayer('player')
+      // 注释：C6 用例间清选中（gameContext.reset() 不清 selectedCharacterId）
+      gameContext.setSelectedCharacterId(null)
+    })
+
+    afterEach(() => {
+      const mod = modLoader.getMod()!
+      mod.quests.delete('trigger_quest')
+      mod.quests.delete('trigger_quest_2')
+      // 注释：清空 activeScenes（provider restore 空数据 = 运行时清空）——C6 场景无 next
+      // 挂起在 activeScenes，不清会跨用例残留（用例 2 断言 not_started 会误判为 active）
+      getGameStateProviders().find(p => p.id === 'quest-system')?.restore({ activeScenes: [], sceneStack: [] })
+      gameContext.setSelectedCharacterId(null)
+      gameContext.reset()
+    })
+
+    it('command 触发：条件满足 → 拦截执行场景（指令自身 effects 不执行）', async () => {
+      installTriggerQuest([{ type: 'command', command: 'test_spar', condition: "selected.id == '李秋水'" }])
+      let cmdRan = false
+      commandRegistry.register({
+        id: 'test_spar', label: '切磋', group: 'character_commands', modes: ['exploration'],
+        effects: [{ type: 'narrative_output', params: { text: '默认切磋' } }],
+        handler: async () => { cmdRan = true },
+      } as any)
+      gameContext.setSelectedCharacterId('李秋水')
+      await apiSystem.call('quest', 'reindexTriggers')
+      await commandExecutor.execute('test_spar', { gameStore: { player: { id: 'player' } } } as any)
+      expect(cmdRan).toBe(false)
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'trigger_quest')).toBe('active')
+      commandRegistry.unregister('test_spar')
+    })
+
+    it('command 触发：条件不满足 → 走指令默认行为', async () => {
+      installTriggerQuest([{ type: 'command', command: 'test_spar', condition: "selected.id == '李秋水'" }])
+      let cmdRan = false
+      commandRegistry.register({
+        id: 'test_spar', label: '切磋', group: 'character_commands', modes: ['exploration'],
+        handler: async () => { cmdRan = true },
+      } as any)
+      gameContext.setSelectedCharacterId('其他角色')
+      await apiSystem.call('quest', 'reindexTriggers')
+      await commandExecutor.execute('test_spar', { gameStore: { player: { id: 'player' } } } as any)
+      expect(cmdRan).toBe(true)
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'trigger_quest')).toBe('not_started')
+      commandRegistry.unregister('test_spar')
+    })
+
+    it('dialogue_end 触发：与指定角色对话结束时启动场景', async () => {
+      installTriggerQuest([{ type: 'dialogue_end', character: '李秋水' }])
+      // 注释（偏离 brief 原文）：brief 未在此用例调 reindexTriggers——但 buildTriggerIndex
+      // 只在 onEnable/game:load/reindexTriggers 时执行，用例内新装的任务必须显式重建索引
+      await apiSystem.call('quest', 'reindexTriggers')
+      await eventBus.emit('dialogue:end', { character: '李秋水' })
+      expect(await apiSystem.call('quest', 'getSceneStatus', 'trigger_quest')).toBe('active')
+    })
+
+    it('同一 command 多个 hook 条件同时满足 → 报错 + 不拦截', async () => {
+      const mod = modLoader.getMod()!
+      installTriggerQuest([{ type: 'command', command: 'test_spar', condition: "selected.id == '李秋水'" }])
+      mod.quests.set('trigger_quest_2', {
+        id: 'trigger_quest_2', title: '触发测试2', type: 'event', display: 'hidden',
+        triggers: [{ type: 'command', command: 'test_spar', condition: "selected.id == '李秋水'" }],
+        steps: [{ id: 's1', type: 'reward', effects: [] }],
+      })
+      let cmdRan = false
+      commandRegistry.register({
+        id: 'test_spar', label: '切磋', group: 'character_commands', modes: ['exploration'],
+        handler: async () => { cmdRan = true },
+      } as any)
+      gameContext.setSelectedCharacterId('李秋水')
+      errorReporter.clear()
+      await apiSystem.call('quest', 'reindexTriggers')
+      await commandExecutor.execute('test_spar', { gameStore: { player: { id: 'player' } } } as any)
+      expect(cmdRan).toBe(true) // 冲突 → 不拦截，走默认
+      expect(errorReporter.getErrors().some(e => e.message.includes('trigger_quest'))).toBe(true)
+      commandRegistry.unregister('test_spar')
     })
   })
 })

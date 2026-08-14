@@ -384,6 +384,20 @@ export interface QuestStep {
   params?: Record<string, any>
 }
 
+// 注释：C6——scene 触发声明（triggers 字段）
+// type=command：指定指令执行时（condition 满足）改道启动本场景（指令自身行为不执行）
+// type=dialogue_end：与指定角色对话结束时启动本场景
+// location_enter/item_used/time：Phase 2 计划类型（本次未实现——数据里出现报 error，
+// 防止作者以为已生效）
+export type QuestTriggerType = 'command' | 'dialogue_end' | 'location_enter' | 'item_used' | 'time'
+
+export interface QuestTrigger {
+  type: QuestTriggerType
+  command?: string    // type=command：指令 id
+  character?: string  // type=dialogue_end：对话角色 id
+  condition?: string  // 可选触发条件（条件引擎表达式，type=command 常用）
+}
+
 export interface Quest {
   id: string
   title?: string
@@ -400,6 +414,8 @@ export interface Quest {
   // C5：任务内嵌对话树（[[dialogues]] 段，与独立 conversation 文件同格式）——
   // 引用写法 conversation = "scene:{sceneId}/{dialogueId}" 或 {type="scene", scene, name}
   dialogues?: { id: string; nodes: ConversationNode[] }[]
+  // C6：触发声明（command 拦截 / dialogue_end）——条件满足时自动启动本场景
+  triggers?: QuestTrigger[]
 }
 
 // 注释：关系类型定义（关系系统 v2，2026-08-10 grill 定稿）
@@ -1508,6 +1524,27 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       continue
     }
     mod.quests.set(scene.id, scene)
+    // 注释：C6——trigger 声明校验（type 合法值）。非法 type → error；
+    // 已定义但未实现（location_enter/item_used/time，Phase 2 计划）→ error——
+    // 防止作者以为已生效而静默失效。含 scene id + 文件路径
+    const VALID_TRIGGER_TYPES = ['command', 'dialogue_end', 'location_enter', 'item_used', 'time']
+    const IMPLEMENTED_TRIGGER_TYPES = ['command', 'dialogue_end']
+    for (const trig of (scene as any).triggers ?? []) {
+      if (!trig || typeof trig !== 'object') continue
+      if (!VALID_TRIGGER_TYPES.includes(trig.type)) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file: path,
+          message: `任务 '${scene.id}' 的 trigger type '${String(trig.type)}' 非法（合法值：command/dialogue_end/location_enter/item_used/time）`,
+          suggestion: '检查 triggers 声明拼写——非法 type 的任务不会触发',
+        })
+      } else if (!IMPLEMENTED_TRIGGER_TYPES.includes(trig.type)) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error', file: path,
+          message: `任务 '${scene.id}' 的 trigger type '${trig.type}' 尚未实现，暂不生效`,
+          suggestion: '请使用 command/dialogue_end，其余类型（location_enter/item_used/time）将在后续版本支持',
+        })
+      }
+    }
     // C5：任务内嵌对话树收集（[[dialogues]] 段，与独立 conversation 文件同格式）
     const inlineDialogues = (scene as any).dialogues ?? []
     for (const dlg of inlineDialogues) {

@@ -1,0 +1,39 @@
+# h-time-stop — 时停系统
+
+> 完全对齐 erArk 时停语义（realtime_settle.py / default.py / character_behavior.py），素质门槛决策见 ADR-0015。
+
+## 概念
+
+- **资源**：精力（`bindings.toml [bindings.h-time-stop].sanity` 绑定，通常 = "精力"）。TSP 与精力统一（2026-08-15）。
+- **激活**：`time_stop_on` 指令（前提：精力>0、疲劳≤84、未时停）。激活时全场 `sp_flag.unconscious_h=3`，游戏时间冻结。
+- **行动扣费**：时停中任何行动按耗时×2 扣精力（至少 1，截断到当前值），归零自动解除时停。
+- **绝顶累积**：H 中绝顶在时停期间累积到 `h_state.time_stop_orgasm_count`，解除时一次性释放（累积≥3 触发超强绝顶）。
+- **搬运/自由**：carry_target（搬运目标随玩家移动）、free（目标自由活动，扣 50 精力）。
+- **自动时停移动**：UI 开关（指令栏 Ex_COM）。开启后普通场景移动自动 时停on→瞬移→时停off（完全静默，时间不前进，扣精力）。
+
+## 数据
+
+- 指令：插件默认层 `data/default/instructions/time-stop.toml`（5 条：time_stop_on/off/off_in_h/carry_target/stop_carry_target），mod 可 override
+- 前提：TIME_STOP_ON/OFF、SANITY_POINT_G_0、PRIMARY/INTERMEDIATE/ADVANCED_TIME_STOP（恒 true，无门槛，见 ADR-0015）、搬运/自由全套、时停解放前提（self/target_time_stop_orgasm_relase）
+- 存档：时停开关/冻结时刻/无意识快照/时长统计随存档（gameState provider `h-time-stop`）
+
+## 与其他系统交互
+
+| 系统 | 交互 |
+|------|------|
+| h-core | 时停门控（settle-gate）、judge_check +9999、绝顶释放 effect |
+| sleep-system | consume_sanity 扣费（计入今日消耗→睡眠精力成长）、add_small_sanity_point 恢复 |
+| map-system | moveStart 瞬移改道（可选集成，try/catch 降级） |
+| npc-ai-system | 跳过集（unconscious 冻结，不结算） |
+| follow-system | 冻结角色不跟随；搬运目标随玩家移动 |
+| dialogue-system | 无意识屏蔽（时停目标只出 unconscious 口上） |
+
+## 前提速查（mod 作者）
+
+| 前提 | 语义 |
+|------|------|
+| TIME_STOP_ON / TIME_STOP_OFF | 时停激活 / 未激活 |
+| SANITY_POINT_G_0 | 精力 > 0 |
+| NOT_CARRY_ANYBODY_IN_TIME_STOP / CARRY_SOMEBODY_IN_TIME_STOP / TARGET_IS_CARRIED_IN_TIME_STOP | 搬运状态 |
+| NOBODY_FREE_IN_TIME_STOP / SOMEBODY_FREE_IN_TIME_STOP / SELF_FREE_IN_TIME_STOP / TARGET_FREE_IN_TIME_STOP（+ NOT 变体） | 自由活动状态 |
+| self_time_stop_orgasm_relase / target_time_stop_orgasm_relase | 时停解放状态（口上情境加权） |

@@ -27,6 +27,7 @@
 | H 核心 | `docs/h-core.md` + h-*.md（h-pregnancy/h-mark/h-hypnosis/h-hidden/h-bondage/h-ejaculation…） | src/plugins/h-*/ |
 | H 内 NPC AI | `docs/h-npc-ai.md` | src/plugins/h-npc-ai/ |
 | 睡眠系统 | `docs/sleep-system.md` | src/plugins/sleep-system/ |
+| 时停系统 | `docs/h-time-stop.md` | src/plugins/h-time-stop/ |
 | 饥饿系统 | `docs/hunger-system.md` | src/plugins/hunger-system/ |
 | 存档系统 | `docs/save-system.md` | src/core/save-system.ts + src/ui/components/SavePanel.vue |
 | 属性系统 | `docs/attributes-system.md` / `docs/bindings.md` / `docs/character-schema.md` / `docs/entity-namespaces.md` | src/core/entity-utils.ts + binding-resolver.ts |

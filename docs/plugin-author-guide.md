@@ -594,8 +594,11 @@ ctx.api.call('h-time-stop', 'getAutoMove')                     // → boolean（
 ctx.api.call('h-time-stop', 'setAutoMove', on)                 // → void（设置自动时停移动开关）
 ```
 
-资源：时停内行动按耗时扣精力（`consume_sanity` 通道，公式 `min(max(耗时×2, 1), 当前精力)`），
-归零自动中断（自动执行 TIME_STOP_OFF 全链）。旧 `getTSP/getTSPMax/getXP`（TSP/tsp_max 属性）已删除。
+资源：时停内每次行动（含移动）按耗时扣精力（`consume_sanity` 通道，公式
+`min(max(耗时×2, 1), 当前精力)`，erArk realtime_settle.py:412），扣费计入今日消耗
+（`today_sanity_point_cost`）参与睡眠精力成长；精力归零自动中断（自动执行 TIME_STOP_OFF 全链）。
+自动时停移动开关（`getAutoMove`/`setAutoMove`）为 UI 偏好，不随存档。
+旧 `getTSP/getTSPMax/getXP`（TSP/tsp_max 属性）已删除。
 
 移动集成（2026-08-15，Task 3）：`moveStart` 由 map-system 的 `moveTo` 在可达性校验后调用——
 时停中返回 `{mode:'teleport', cost}`（扣 `cost` 精力，归零自动解除），map-system 以零耗时

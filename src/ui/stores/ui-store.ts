@@ -39,6 +39,7 @@ interface UIPreferences {
   showGroupTitles: boolean
   commandPopoverMode: boolean
   cheatCommands: boolean
+  autoTimeStopMove: boolean
   sidebarShowParameter: boolean
   mainShowParameter: boolean
   splitSections: boolean
@@ -85,6 +86,8 @@ export const useUIStore = defineStore('ui', () => {
   const commandPopoverMode = ref(false)
   // 注释：作弊/调试指令可见开关（默认隐藏，在选项面板开启）
   const cheatCommands = ref(false)
+  // 注释：自动时停移动开关（操作偏好）——开启后移动自动进入 时停on→瞬移→off 循环
+  const autoTimeStopMove = ref(false)
   // 注释：收藏指令 ID 列表
   const favorites = ref<string[]>([])
   // 注释：当前打开的系统面板（null=无）
@@ -174,6 +177,9 @@ export const useUIStore = defineStore('ui', () => {
   function toggleCheatCommands() {
     cheatCommands.value = !cheatCommands.value
   }
+  function toggleAutoTimeStopMove() {
+    autoTimeStopMove.value = !autoTimeStopMove.value
+  }
   function toggleSidebarParameter() {
     sidebarShowParameter.value = !sidebarShowParameter.value
   }
@@ -200,6 +206,7 @@ export const useUIStore = defineStore('ui', () => {
       showGroupTitles: showGroupTitles.value,
       commandPopoverMode: commandPopoverMode.value,
       cheatCommands: cheatCommands.value,
+      autoTimeStopMove: autoTimeStopMove.value,
       sidebarShowParameter: sidebarShowParameter.value,
       mainShowParameter: mainShowParameter.value,
       splitSections: splitSections.value,
@@ -235,6 +242,7 @@ export const useUIStore = defineStore('ui', () => {
       showGroupTitles.value = prefs.showGroupTitles
       commandPopoverMode.value = prefs.commandPopoverMode
       cheatCommands.value = prefs.cheatCommands ?? false
+      autoTimeStopMove.value = prefs.autoTimeStopMove ?? false
       sidebarShowParameter.value = prefs.sidebarShowParameter ?? true
       mainShowParameter.value = prefs.mainShowParameter ?? true
       splitSections.value = prefs.splitSections ?? false
@@ -275,6 +283,8 @@ export const useUIStore = defineStore('ui', () => {
     commandPopoverMode,
     cheatCommands,
     toggleCheatCommands,
+    autoTimeStopMove,
+    toggleAutoTimeStopMove,
     sidebarShowParameter,
     toggleSidebarParameter,
     mainShowParameter,

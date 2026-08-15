@@ -117,6 +117,15 @@ describe('ui-store', () => {
     expect(store.sidebarMode).toBe('overlay')
   })
 
+  it('toggleAutoTimeStopMove', () => {
+    const store = useUIStore()
+    expect(store.autoTimeStopMove).toBe(false)
+    store.toggleAutoTimeStopMove()
+    expect(store.autoTimeStopMove).toBe(true)
+    store.toggleAutoTimeStopMove()
+    expect(store.autoTimeStopMove).toBe(false)
+  })
+
   it('eventOptions set/clear', () => {
     const store = useUIStore()
     expect(store.eventOptions).toBeNull()

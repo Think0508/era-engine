@@ -58,6 +58,7 @@ export const useGameStore = defineStore('game', () => {
   const time = ref<GameTimeData>({ ...DEFAULT_TIME })
   const modeStack = ref<string[]>(['exploration'])
   const executionState = ref<'IDLE' | 'EXECUTING'>('IDLE')
+  const timeStopActive = ref(false)
   const charactersAtLocation = ref<EntityData[]>([])
   const narrativeLogEntries = ref<LogEntry[]>([])
   const historyLog = ref<LogEntry[]>([])
@@ -92,6 +93,9 @@ export const useGameStore = defineStore('game', () => {
   }
   function setExecutionState(s: 'IDLE' | 'EXECUTING') {
     executionState.value = s
+  }
+  function setTimeStopActive(v: boolean) {
+    timeStopActive.value = v
   }
   function setCharactersAtLocation(chars: EntityData[]) {
     charactersAtLocation.value = chars
@@ -146,6 +150,7 @@ export const useGameStore = defineStore('game', () => {
     time,
     modeStack,
     executionState,
+    timeStopActive,
     charactersAtLocation,
     narrativeLogEntries,
     historyLog,
@@ -162,6 +167,7 @@ export const useGameStore = defineStore('game', () => {
     popMode,
     setModeStack,
     setExecutionState,
+    setTimeStopActive,
     setCharactersAtLocation,
     addLogEntry,
     clearLogEntries,

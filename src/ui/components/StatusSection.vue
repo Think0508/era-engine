@@ -79,6 +79,7 @@ const emotionBars = computed(() => {
       <!-- 注释：玩家行 -->
       <div class="status-row">
         <span class="row-label">你</span>
+        <span v-if="gameStore.timeStopActive" class="ts-mark">[时停中]</span>
         <ResourceBar
           v-for="bar in playerStatusBars"
           :key="bar.label"
@@ -137,5 +138,12 @@ const emotionBars = computed(() => {
   color: var(--color-text);
   font-weight: bold;
   font-size: 0.875rem;
+}
+
+/* 注释：时停状态标记 */
+.ts-mark {
+  color: var(--color-warning);
+  font-size: 0.75rem;
+  font-weight: bold;
 }
 </style>

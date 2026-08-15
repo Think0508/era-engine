@@ -137,6 +137,15 @@ useKeyInput({
 })
 
 watch(() => gameStore.currentMode, () => {})
+
+// 注释：自动时停移动 toggle——偏好状态在 ui-store（localStorage 持久化），
+// 核心开关经 h-time-stop.setAutoMove 同步（引擎未 boot 时静默跳过，下次点击再同步）
+function onAutoTimeStopToggle() {
+  uiStore.toggleAutoTimeStopMove()
+  try {
+    apiSystem.call('h-time-stop', 'setAutoMove', uiStore.autoTimeStopMove)
+  } catch { /* 引擎未 boot */ }
+}
 </script>
 
 <template>
@@ -174,6 +183,9 @@ watch(() => gameStore.currentMode, () => {})
     <div class="ex-com-header" @click="exComFolded = !exComFolded">
       <span class="toggle-icon">{{ exComFolded ? '[+]' : '[-]' }}</span>
       <span class="section-title">Ex_COM</span>
+      <button class="ts-toggle" :class="{ on: uiStore.autoTimeStopMove }"
+        title="自动时停移动：开启后移动自动进入时停瞬移（消耗精力）"
+        @click.stop="onAutoTimeStopToggle">⏱自动时停移动</button>
     </div>
     <div v-show="!exComFolded" class="ex-com-body">
       <div class="cmd-row">
@@ -244,6 +256,25 @@ watch(() => gameStore.currentMode, () => {})
 .cat-toggle.fav.on {
   color: var(--color-warning);
   opacity: 1;
+}
+
+/* 注释：自动时停移动 toggle——on 态变蓝（--color-primary 主题主色，语义=激活） */
+.ts-toggle {
+  padding: 0 4px;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-family: var(--font-body);
+  line-height: 1.4;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+
+.ts-toggle.on {
+  opacity: 1;
+  color: var(--color-primary);
 }
 
 /* 注释：指令内容区 */

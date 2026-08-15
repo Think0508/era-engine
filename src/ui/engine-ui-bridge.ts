@@ -60,6 +60,18 @@ export class EngineUIBridge {
     eventBus.on('game:execution_end', execEndHandler)
     this.handlers.push({ event: 'game:execution_end', handler: execEndHandler })
 
+    // 注释：时停状态标记——执行结束/移动后同步 h-time-stop.isActive 到 game-store
+    // 自动时停移动的静默循环发生在移动路径（不走指令生命周期），location:enter 兜底
+    const syncTimeStopActive: BridgeHandler = () => {
+      apiSystem.call('h-time-stop', 'isActive')
+        .then((result: any) => gameStore.setTimeStopActive(!!result))
+        .catch(() => gameStore.setTimeStopActive(false))
+    }
+    eventBus.on('game:execution_end', syncTimeStopActive)
+    this.handlers.push({ event: 'game:execution_end', handler: syncTimeStopActive })
+    eventBus.on('location:enter', syncTimeStopActive)
+    this.handlers.push({ event: 'location:enter', handler: syncTimeStopActive })
+
     // 注释：监听 location:enter → setLocation + refreshCharactersAtLocation
     const locationEnterHandler: BridgeHandler = (payload: any) => {
       const loc = entitySystem.get('location', payload.to) as any

@@ -12,6 +12,23 @@ export interface SettleOptions {
   isSleep?: boolean
 }
 
+// ── 实时结算冻结规则（2026-08-15 复查轮 3）──
+// core 通用机制：插件可注册"实体结算冻结"谓词（skip-registry 同款先例——
+// core 不认知具体玩法字段，谓词由插件提供）。命中 = 该实体的实时身体结算
+// （疲劳/饥饿/尿意/精液/射精欲）整体跳过。h-time-stop 注册时停冻结
+// （erArk realtime_settle.py:306：时停中疲劳不结算；时间冻结 → 身体数值冻结）。
+const bodySettleFreezeRules: ((entity: any) => boolean)[] = []
+
+export function registerBodySettleFreezeRule(fn: (entity: any) => boolean): void {
+  bodySettleFreezeRules.push(fn)
+}
+
+export function isBodySettleFrozen(entity: any): boolean {
+  return bodySettleFreezeRules.some(fn => {
+    try { return !!fn(entity) } catch { return false }
+  })
+}
+
 // ── 疲劳 ──
 // 注释：opts.isRest/isSleep 时跳过——玩家侧（指令休息/睡眠不积累疲劳，恢复走指令 effect）。
 // erArk 原义（realtime_settle.py:326-357）：仅 SLEEP 行为跳过，REST 行为照常积累——
@@ -175,6 +192,9 @@ function settleEjaDecay(entity: any, minutes: number): void {
 // ── 入口 ──
 export function realtimeSettle(entity: any, minutes: number, opts: SettleOptions = {}): void {
   if (!entity || minutes <= 0) return
+  // 2026-08-15 复查轮 3：冻结规则命中（时停等）→ 身体数值不结算——
+  // 时间随后被回拨但副作用不回滚，必须在结算入口拦截
+  if (isBodySettleFrozen(entity)) return
   settleTired(entity, minutes, opts)
   settleRestRecovery(entity, minutes, opts)
   settleHunger(entity, minutes)

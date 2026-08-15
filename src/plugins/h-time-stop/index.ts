@@ -13,6 +13,7 @@ import { errorReporter } from '../../core/error-reporter'
 import { registerGameStateProvider } from '../../core/save-system'
 import { bindingResolver } from '../../core/binding-resolver'
 import { getEntityAttr, ATTR } from '../../core/entity-utils'
+import { registerBodySettleFreezeRule } from '../../core/realtime-settle'
 
 let timeStopActive = false
 let timeStopDuration = 0  // 注释：时停总时长（分钟，erArk achievement.time_stop_duration）
@@ -241,6 +242,11 @@ export function onLoad(_ctx: PluginContext): void {
 }
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
+  // 注释：时停中身体实时结算冻结（复查轮 3，erArk realtime_settle.py:306 时停中疲劳不结算；
+  // 时间冻结 → 疲劳/饥饿/尿意/精液/射精欲全冻结——行动推进的时间在 execution_end 回拨，
+  // 但结算副作用不回滚，必须在入口拦截。core 通用机制 + 插件谓词，skip-registry 同款分层）
+  registerBodySettleFreezeRule((entity: any) => entity?.sp_flag?.unconscious_h === 3)
+
   let premiseRegWarned = false
   const reg = async (id: string, fn: (c: any) => boolean) => {
     try { await ctx.api.call('engine', 'premises.register', id, fn) } catch (err) {

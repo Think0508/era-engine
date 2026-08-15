@@ -9,6 +9,7 @@ import { entitySystem } from '../../core/entity-system'
 import { narrativeLog } from '../../core/narrative-log'
 import { eventBus } from '../../core/event-bus'
 import { getEntityAttr, ATTR } from '../../core/entity-utils'
+import { apiSystem } from '../../core/api'
 
 // 注释：刻印 ID 映射
 const MARKS: Record<string, number> = {
@@ -150,7 +151,11 @@ export function onEnable(ctx: PluginContext): void {
   })
 
   // 注释：每日睡眠结算也检查（非 H 下累积值推进）
+  // 2026-08-15 复查轮 3 M-1：时停守卫——时停中跨午夜（回拨在 execution_end）不推进
   ctx.events.on('game:new_day', (payload: any) => {
+    let tsActive = false
+    try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+    if (tsActive) return
     if (payload?.reason === 'forced') return
     for (const char of entitySystem.getAll('character')) {
       const c = char as any

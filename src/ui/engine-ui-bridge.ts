@@ -56,6 +56,11 @@ export class EngineUIBridge {
 
     const execEndHandler: BridgeHandler = () => {
       gameStore.setExecutionState('IDLE')
+      // 注释：2026-08-15 复查轮 3 I-1——时停中行动推进的时间被 h-time-stop 在 execution_end
+      // 回拨（setTime 不发事件）→ 此处重同步 UI 时钟（h-time-stop 监听器先注册先执行，
+      // 读到的是已回拨的冻结时刻）；否则 UI 时钟停在"冻结时刻+上次行动耗时"
+      const t = gameContext.getContext().time
+      gameStore.setTime(t)
     }
     eventBus.on('game:execution_end', execEndHandler)
     this.handlers.push({ event: 'game:execution_end', handler: execEndHandler })
@@ -109,7 +114,13 @@ export class EngineUIBridge {
     this.handlers.push({ event: 'character:changed', handler: charHandler })
 
     // 注释：监听 game:new_day → 检查 reason，非 'forced' → pushMode('daily_menu')
+    // 2026-08-15 复查轮 3 I-1：时停守卫——时停中行动跨午夜真实发出 new_day（core 回拨在
+    // execution_end），daily_menu 是 UI 模式（core 模式栈无对应 enter）——时停中不推，
+    // 避免模式栈错位；解除后跨天再由正常 new_day 触发
     const newDayHandler: BridgeHandler = (payload: any) => {
+      let tsActive = false
+      try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+      if (tsActive) return
       if (payload?.reason !== 'forced') {
         gameStore.pushMode('daily_menu')
       }

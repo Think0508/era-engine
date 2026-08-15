@@ -181,9 +181,14 @@ export function onEnable(ctx: PluginContext): void {
   // 注释：expiry 到期清槽（2026-08-12 复刻 erArk realtime_settle.py:270-283）——
   // 安眠药/事前避孕药等 body_auto_remove=expiry 的物品到点自动清除槽位
   // （不归还背包，药已消耗——grill Q4 定案）。每次游戏小时变化检查。
+  // 2026-08-15 复查轮 3 M-1：时停守卫——时停中跨小时（回拨在 execution_end）道具到期
+  // 永久清除，与回拨时钟错位（冻结世界内道具应保持）
   if (!hCoreExpiryListener) {
     hCoreExpiryListener = true
     ctx.events.on('game:hour_changed', () => {
+      let tsActive = false
+      try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+      if (tsActive) return
       const ct = gameContext.getContext().time
       const nowMin = ct.hour * 60 + ct.minute
       for (const ch of entitySystem.getAll('character')) {

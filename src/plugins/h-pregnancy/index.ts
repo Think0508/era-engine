@@ -10,6 +10,7 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
 import { narrativeLog } from '../../core/narrative-log'
+import { apiSystem } from '../../core/api'
 export function onLoad(_ctx: PluginContext): void {
   // 注释：受孕判定——对齐 erArk pregnancy.py get_fertilization_rate + check_fertilization
   // 公式：rate = (semen/1000)² × 100 + semen_level × 5（只取子宫 W(7) 精液，pregnancy.py:45-46）
@@ -42,7 +43,12 @@ export function onEnable(ctx: PluginContext): void {
   })
 
   // 注释：每日推进——排卵周期 + 孕期 + 分娩
+  // 2026-08-15 复查轮 3 M-1：时停守卫——时停中行动跨午夜会真实发出 new_day（回拨在
+  // execution_end），孕期/分娩推进副作用不回滚（冻结世界内怀孕角色可能分娩）
   ctx.events.on('game:new_day', () => {
+    let tsActive = false
+    try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+    if (tsActive) return
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
       // 注释：排卵周期推进（7 日循环 0-6）
@@ -117,7 +123,11 @@ export function onEnable(ctx: PluginContext): void {
   // 注释：涨奶——对齐 erArk realtime_settle.py:142-146
   // 持有泌乳天赋(talent[27])即涨奶：milk += add_time × 2/3 × (0.8~1.2 随机)，上限 milk_max
   // erArk 在 realtime 结算（每次行动 add_time，非睡眠路径）；此处监听 execution_end
+  // 2026-08-15 复查轮 3 I-2：时停守卫——时停中行动时间回拨但涨奶副作用不回滚
   ctx.events.on('game:execution_end', (payload: any) => {
+    let tsActive = false
+    try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+    if (tsActive) return
     // 休息/睡眠不走 realtime 涨奶（erArk 睡眠走 sleep_settle）
     if (payload?.commandId === 'rest' || payload?.commandId === 'sleep') return
     const addTime = payload?.timeCost ?? 10

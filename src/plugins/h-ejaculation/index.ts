@@ -15,6 +15,7 @@ import { entitySystem } from '../../core/entity-system'
 import { ATTR } from '../../core/entity-utils'
 import { eventBus } from '../../core/event-bus'
 import { narrativeLog } from '../../core/narrative-log'
+import { apiSystem } from '../../core/api'
 import { gameContext, gameTimeToTotalMinutes, isPlayerChar } from '../../core/game-context'
 import { modLoader } from '../../core/mod-loader'
 import { BODY_PART_CID } from './body-parts'
@@ -305,7 +306,12 @@ export function onEnable(ctx: PluginContext): void {
   // 与之重复导致双重衰减（2026-08-15 审查 C1 修复，erArk realtime_settle.py:102-108 语义）
 
   // 注释：H 每次行动后 → 精液吸收（erArk realtime_settle.py:130-139）
+  // 2026-08-15 复查轮 3 I-2：时停守卫——时停中 H 行动推进的时间在 execution_end 回拨，
+  // 精液吸收副作用不回滚（冻结世界内精液被吸收，偏离 erArk realtime_settle 时停冻结语义）
   ctx.events.on('game:execution_end', (payload: any) => {
+    let tsActive = false
+    try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+    if (tsActive) return
     const mode = gameContext.getCurrentMode()
     if (mode !== 'h_scene') return
     const addTime = payload?.timeCost ?? 10

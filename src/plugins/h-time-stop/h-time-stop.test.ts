@@ -317,4 +317,22 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
       { type: 'time_stop_off', params: { quiet: true } },
     ], { sourceId: 'player', _targetIds: ['player'] })
   })
+
+  it('时停中身体实时结算冻结（复查轮 3：erArk realtime_settle.py:306 时停中疲劳不结算）', async () => {
+    // 玩家带疲劳度——行动推进的时间在 execution_end 回拨，但 realtimeSettle 副作用不回滚
+    // （realtimeSettle 在 command-executor 内同步调用，必须走真实指令链测试）
+    player().base['疲劳度'] = 50
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    await commandExecutor.execute('wait', execCtx())  // time_cost=30，非 rest/sleep → 疲劳 +5
+    expect(player().base['疲劳度']).toBe(50)  // 时停中：疲劳冻结
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_off', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    // 非时停对照：同行动疲劳 +5（30 分钟 / 6）
+    player().base['疲劳度'] = 50
+    await commandExecutor.execute('wait', execCtx())
+    expect(player().base['疲劳度']).toBe(55)
+  })
 })

@@ -12,6 +12,7 @@ import type { CommandDef } from '../../core/command-registry'
 import { modLoader } from '../../core/mod-loader'
 import { conditionEngine } from '../../core/condition-engine'
 import { apiSystem } from '../../core/api'
+import { errorReporter } from '../../core/error-reporter'
 
 interface ReachableLocation {
   target: string
@@ -235,11 +236,17 @@ export function onEnable(ctx: PluginContext): void {
 
       // 注释：时停集成（可选——h-time-stop 未启用/出错 → 普通移动；h-core judge_check 同款模式）
       // 时停中/自动时停移动开关开 → 瞬移（不推进时间）；返回 teleport 时本函数直接完成移动
+      // 2026-08-15 审计 M-4：错误不静默吞——上报（moveStart 内部 effect 有隔离，此处兜底）
       let tsMode: { mode: 'teleport' | 'normal'; cost: number } | null = null
       try {
         tsMode = await apiSystem.call('h-time-stop', 'moveStart', r.time_cost)
-      } catch {
+      } catch (err) {
         tsMode = null
+        errorReporter.report({
+          source: 'map-system',
+          severity: 'warning',
+          message: `时停移动检查失败，按普通移动处理：${err instanceof Error ? err.message : String(err)}`,
+        })
       }
       if (tsMode?.mode === 'teleport') {
         await gameContext.moveTo(targetLocationId, 0)

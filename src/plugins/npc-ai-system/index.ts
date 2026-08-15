@@ -5,6 +5,7 @@
 
 import type { PluginContext } from '../../core/types'
 import { eventBus } from '../../core/event-bus'
+import { apiSystem } from '../../core/api'
 import { modLoader } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
 import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
@@ -150,7 +151,15 @@ export function onEnable(ctx: PluginContext): void {
   })
 
   // 注释：5. 监听 location:enter → NPC spawns（npc.toml 路人生成，原 character-system 归位）
+  // 2026-08-15 审计 B-I-1：时停中瞬移进入新地点会 spawn 清醒 NPC（unconscious_h=0 不在
+  // prevUnconscious 快照）——破坏"世界冻结"不变量且该路人随 time_advanced 在冻结世界走动。
+  // 守卫：时停激活时不生成（世界静止无新人；spawn 留待时停解除后的下一次进入）。
   ctx.events.on('location:enter', (payload: any) => {
+    let tsActive = false
+    try {
+      tsActive = !!apiSystem.callSync('h-time-stop', 'isActive')
+    } catch { /* 插件缺失，正常生成 */ }
+    if (tsActive) return
     handleNpcSpawns(payload?.to)
   })
 

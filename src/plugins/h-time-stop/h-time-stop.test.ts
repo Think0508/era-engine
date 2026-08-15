@@ -268,4 +268,36 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
     ], { sourceId: 'player', _targetIds: ['player'] })
     expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
   })
+
+  it('时停中绝顶：settleOrgasm 门控累积、不推 h:orgasm、解除时恰好释放一次（审计 A-I-1 回归）', async () => {
+    // 背景：h-time-stop 原 h:orgasm 监听器与 h-core settleOrgasm 的门控累积功能重复——
+    // 时停中 spawn 的清醒 NPC（unconscious_h=0）绝顶会实时结算 + 监听器累计 → 解除时双结算。
+    // 监听器已删除；本测试钉死正确语义：时停角色绝顶 → 只累积（无数值无事件）→ 释放一次。
+    const { settleOrgasm, releaseTimeStopOrgasm } = await import('../h-core/settle/orgasm')
+    const ch = entitySystem.get('character', 'npc_1') as any
+    ch.sp_flag = { unconscious_h: 3 }
+    ch.h_state = { orgasm_level: {}, extra_orgasm_feel: {}, extra_orgasm_count: 0, orgasm_edge_count: {}, time_stop_orgasm_count: {} }
+    let orgasmEvents = 0
+    const hOrgasmHandler = () => { orgasmEvents++ }
+    eventBus.on('h:orgasm', hOrgasmHandler)
+    try {
+      // 时停中绝顶 1 次 → 门控累积（orgasm.ts:397-400），不结算不推事件
+      const r = settleOrgasm('npc_1', { 4: 1 }, {}, {})
+      expect(ch.h_state.time_stop_orgasm_count[4]).toBe(1)
+      expect(orgasmEvents).toBe(0)
+      expect(r.orgasms.length).toBe(0)
+      // 解除：先恢复冻结标记（time_stop_off 的快照恢复步骤）→ release 恰好一次结算 + count 清空
+      ch.sp_flag.unconscious_h = 0
+      const rel = releaseTimeStopOrgasm('npc_1')
+      expect(rel.orgasms.length).toBeGreaterThan(0)
+      expect(ch.h_state.time_stop_orgasm_count[4]).toBe(0)
+      // 二次释放 → 空（无双结算）
+      const rel2 = releaseTimeStopOrgasm('npc_1')
+      expect(rel2.orgasms.length).toBe(0)
+    } finally {
+      eventBus.off('h:orgasm', hOrgasmHandler)
+      ch.sp_flag = {}
+      ch.h_state = undefined
+    }
+  })
 })

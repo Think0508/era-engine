@@ -19,6 +19,9 @@ let timeStopDuration = 0  // 注释：时停总时长（分钟，erArk achieveme
 let frozenTime: { minute: number; hour: number; day: number; month: number; year: number } | null = null
 // 注释：自动时停移动开关（Task 3）——开：未时停的普通移动自动执行 时停on→瞬移→时停off 循环（完全静默）
 let autoTimeStopMove = false
+// 注释：sanity 绑定懒校验标记（2026-08-15 审计 C-I-1）——首次开时停时检查并提示一次；
+// 放使用点而非 onEnable：插件全局加载，不用时停的 mod（如 example-mod）不该收到加载期噪音
+let sanityBindWarned = false
 
 // 注释：时停前无意识快照（★3 修复（第六轮））——time_stop_on 全图覆写 unconscious_h=3，
 // 原 time_stop_off 全清 0 会把睡奸标记(1)/催眠(4-7)静默抹掉（催眠需重新催眠、睡奸标记丢失
@@ -66,8 +69,11 @@ export function onLoad(_ctx: PluginContext): void {
     return (getStamina(playerId) ?? 0) > 0
   })
 
-  // 注释：时停解放前提（2026-08-13 审计补真语义——h-config talk.situations 情境加权引用；
-  // h-core pendingFalse 的 TARGET_TIME_STOP_ORGASM_RELASE 恒 false 占位被本注册覆盖（后注册覆盖））
+  // 注释：时停解放前提（2026-08-13 审计补真语义——h-config talk.situations 情境加权引用）
+  // ⚠️ 注册覆盖链（2026-08-15 审计修正注释）：本处 onLoad 先注册真语义 → h-core onEnable
+  // 的恒 false 占位（premise-instruct.ts）后注册覆盖 → onEnable 末尾 reg() 再次覆盖回真语义。
+  // 最终正确依赖 onEnable 的 reg()——若 reg 失败（premiseRegWarned 只报一次 warning），
+  // 时停解放口上（地文 180 条引用）会静默全灭。
   // self_ = 行为发起者（sourceId）；target_ = 选中/被判定者
   const releaseOf = (charId: string | null | undefined): boolean => {
     const ch = charId ? entitySystem.get('character', charId) as any : null
@@ -87,6 +93,22 @@ export function onLoad(_ctx: PluginContext): void {
   // 注释：time_stop_on——开启时停（对齐 erArk 效果 1241）
   effectTypeRegistry.register('time_stop_on', (params: any, _execCtx: any) => {
     if (timeStopActive) return true
+    // 注释：sanity 绑定懒校验（2026-08-15 审计 C-I-1）——首次使用时检查；绑漏时
+    // SANITY_POINT_G_0 恒 false（指令不可用）+ 行动误报"精力值不足自动解除"，此处
+    // 一次性指明修复路径。放使用点：插件全局加载，不用时停的 mod 零加载期噪音。
+    if (!sanityBindWarned) {
+      sanityBindWarned = true
+      const playerId = gameContext.getContext().player?.id
+      const anyBound = playerId ? getStamina(playerId) !== null : false
+      if (!anyBound) {
+        errorReporter.report({
+          source: 'h-time-stop',
+          severity: 'warning',
+          message: '时停无法读取精力：mod 未绑定 sanity（读取键 [bindings.h-time-stop].sanity；扣费键 [bindings.sleep-system].sanity，两键都需配置）——时停指令将不可用',
+          suggestion: 'bindings.toml 追加：\n[bindings.h-time-stop]\nsanity = "精力"\n[bindings.sleep-system]\nsanity = "精力"',
+        })
+      }
+    }
     timeStopActive = true
     frozenTime = { ...gameContext.getContext().time }
     prevUnconscious = new Map()
@@ -137,7 +159,9 @@ export function onLoad(_ctx: PluginContext): void {
           })
         } catch (err) {
           const msg = err instanceof Error ? err.message : String(err)
-          if (!msg.includes('release_time_stop_orgasm') && !msg.includes('未注册')) {
+          // 注释：只静默"未注册"（插件缺失降级）；其余错误如实上报（2026-08-15 审计收紧——
+          // 原按消息含 'release_time_stop_orgasm' 过滤会把 handler 内部异常一并吞掉）
+          if (!msg.includes('未注册')) {
             errorReporter.report({
               source: 'h-time-stop',
               severity: 'error',
@@ -187,6 +211,10 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
+  // ⚠️ 半成品标记（2026-08-15 审计 C-I-2）：free 目标"在时停中自由活动"的 AI 豁免未实现——
+  // npc-ai 跳过集对 unconscious_h>=1 一律跳过（无 freeTargetId 豁免），被"自由"的角色仍被冻结。
+  // 本效果 + 8 个自由前提已注册（mod 可用前提做口上/条件），但目标的实际自由行动待 npc-ai
+  // 豁免机制（skip-registry 无反向豁免）落地。无默认指令暴露本效果（erArk 原指令已砍，未实装）。
   effectTypeRegistry.register('time_stop_free', async (_p: any, execCtx: any) => {
     const ids = execCtx._targetIds as string[]
     if (ids.length > 0) {
@@ -306,15 +334,11 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     return (ch?.h_state?.orgasm_edge === 2) || (ch?.h_state?.time_stop_release === true)
   })
 
-  // 注释：H 中绝顶时，若时停中则累积不处理
-  ctx.events.on('h:orgasm', (payload: any) => {
-    if (!timeStopActive || !payload?.character) return
-    const ch = entitySystem.get('character', payload.character) as any
-    if (!ch?.h_state) return
-    if (!ch.h_state.time_stop_orgasm_count) ch.h_state.time_stop_orgasm_count = {}
-    const partId = payload.partId ?? 0
-    ch.h_state.time_stop_orgasm_count[partId] = (ch.h_state.time_stop_orgasm_count[partId] ?? 0) + 1
-  })
+  // 注释：时停中 H 绝顶的累积由 h-core settleOrgasm 门控承担（orgasm.ts:395-400——
+  // unconscious_h===3 → time_stop_orgasm_count[part] += climaxCount 且不结算不推事件）。
+  // ⚠️ 2026-08-15 审计删除原 h:orgasm 监听器（累积 +1）：它只在"非冻结角色绝顶"时触发
+  // （门控角色不发 h:orgasm），会把正常结算的绝顶再累计一次 → 解除时双结算。
+  // 唯一合法累积入口 = settleOrgasm 门控；release 由 time_stop_off 调 release_time_stop_orgasm。
 
   // 注释：每次 H 行动后，若时停中，给时姦经验（对齐 erArk common_default.py:938-941）
   // B9 修复（audit-b I8）：原写自定义字符串键（time_stop_rape/time_stop_raped）——
@@ -422,6 +446,8 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       if (!playerId) return null
       const timeCostNum = Number(timeCost ?? 0)
       if (timeStopActive) {
+        // 注释：时停时长统计对齐 erArk 口径（character_behavior.py:60 每次玩家行动含移动）
+        timeStopDuration += timeCostNum
         const cost = calcTimeStopCost(timeCostNum, getStamina(playerId) ?? 0)
         if (cost > 0) {
           await apiSystem.call('effect-system', 'execute', [
@@ -442,6 +468,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
         const notH = conditionEngine.getPremiseValue('NOT_H', ctx)
         if (sanityOk && tiredOk && notH) {
           await quietTimeStop(true, playerId)
+          timeStopDuration += timeCostNum
           const cost = calcTimeStopCost(timeCostNum, getStamina(playerId) ?? 0)
           if (cost > 0) {
             await apiSystem.call('effect-system', 'execute', [

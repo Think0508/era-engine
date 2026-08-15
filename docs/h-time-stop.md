@@ -4,11 +4,17 @@
 
 ## 概念
 
-- **资源**：精力（`bindings.toml [bindings.h-time-stop].sanity` 绑定，通常 = "精力"）。TSP 与精力统一（2026-08-15）。
+- **资源**：精力。⚠️ **双绑定键**（2026-08-15 审计）：读取走 `[bindings.h-time-stop].sanity`，扣费通道走 `[bindings.sleep-system].sanity`（consume_sanity）——**两个键都必须绑定**（通常同值 `"精力"`），漏绑时插件加载期 warning + 时停指令不可用：
+  ```toml
+  [bindings.h-time-stop]
+  sanity = "精力"
+  [bindings.sleep-system]
+  sanity = "精力"
+  ```
 - **激活**：`time_stop_on` 指令（前提：精力>0、疲劳≤84、未时停）。激活时全场 `sp_flag.unconscious_h=3`，游戏时间冻结。
 - **行动扣费**：时停中任何行动按耗时×2 扣精力（至少 1，截断到当前值），归零自动解除时停。
-- **绝顶累积**：H 中绝顶在时停期间累积到 `h_state.time_stop_orgasm_count`，解除时一次性释放（累积≥3 触发超强绝顶）。
-- **搬运/自由**：carry_target（搬运目标随玩家移动）、free（目标自由活动，扣 50 精力）。
+- **绝顶累积**：H 中绝顶在时停期间累积到 `h_state.time_stop_orgasm_count`（h-core settleOrgasm 门控承担），解除时一次性释放（累积≥3 触发超强绝顶）。
+- **搬运/自由**：carry_target（搬运目标随玩家移动）、free（目标自由活动，扣 50 精力）。⚠️ **free 为半成品**（2026-08-15 标注）：效果+前提已注册，但 NPC 侧"自由活动"的 AI 豁免未实现（npc-ai 跳过集无 freeTargetId 豁免，目标仍被冻结）；无默认指令暴露本效果（erArk 原指令未实装已砍）。
 - **自动时停移动**：UI 开关（指令栏 Ex_COM）。开启后普通场景移动自动 时停on→瞬移→时停off（完全静默，时间不前进，扣精力）。
 
 ## 数据
@@ -24,7 +30,8 @@
 | h-core | 时停门控（settle-gate）、judge_check +9999、绝顶释放 effect |
 | sleep-system | consume_sanity 扣费（计入今日消耗→睡眠精力成长）、add_small_sanity_point 恢复 |
 | map-system | moveStart 瞬移改道（可选集成，try/catch 降级） |
-| npc-ai-system | 跳过集（unconscious 冻结，不结算） |
+| npc-ai-system | 跳过集（unconscious 冻结，不结算）；时停中不生成路人（spawn 守卫） |
+| random-event-system | 时停中不触发玩家随机事件（守卫） |
 | follow-system | 冻结角色不跟随；搬运目标随玩家移动 |
 | dialogue-system | 无意识屏蔽（时停目标只出 unconscious 口上） |
 

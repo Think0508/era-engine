@@ -1153,6 +1153,9 @@ erArk 高潮结算更新对齐�?026-08-08，用户提�?erArk 三处改进：
   验收: npm run typecheck �?/ npm run test 400 通过 ✅（40 文件，连�?2 次稳定）
   📌 待办登记：时停中退�?H 的边缘（releaseOrgasmEdge 时停分支会把寸止计数并入 time_stop_orgasm_count�?
     随后 h_state 清理丢失——erArk 时停中不判定寸止故无此路径，B3 时停指令化时一并核对）�?
+    ⚠️ 2026-08-15 审计 A-I-2 扩范围：时停中直接 end_h（无寸止）同样丢——endHScene 清 h_state �?
+    整包 time_stop_orgasm_count 蒸发（时姦累计静默丢失）。修复方向：endHScene 时停守卫转存
+    （或 h_state 清理前把 time_stop_orgasm_count/release 迁出）；时停中射精不冻结（eja）为既有登记�?
     玩家射精�?p_orgasm 绝顶行为（erArk orgasm_judge 射精分支 p_orgasm_small/normal/strong�?
     eja_climax 已有忍耐判定，绝顶计数未接入）
 

@@ -9,6 +9,7 @@ import { entitySystem } from '../../core/entity-system'
 import { errorReporter } from '../../core/error-reporter'
 import { gameContext } from '../../core/game-context'
 import { eventBus } from '../../core/event-bus'
+import { apiSystem } from '../../core/api'
 import { randomEventEngine } from '../../core/random-event'
 import { commandRegistry } from '../../core/command-registry'
 import { conditionRegistry } from '../../core/condition-registry'
@@ -47,7 +48,14 @@ export function onEnable(ctx: PluginContext): void {
   })
 
   // 注释：3. 玩家事件挂钩——每次指令/移动/等待结算后
+  // 2026-08-15 审计 B-I-2：时停中玩家行动/移动不再触发随机事件——世界冻结（文本/子选项
+  // 会破坏自动时停移动的静默承诺，advance_time 类效果还会让冻结时钟漂移——移动路径无
+  // execution_end 回拨）。可选集成：h-time-stop 缺失 → 正常触发。
+  const timeStopActive = (): boolean => {
+    try { return !!apiSystem.callSync('h-time-stop', 'isActive') } catch { return false }
+  }
   ctx.events.on('game:execution_end', async (payload: any) => {
+    if (timeStopActive()) return
     const playerId = modLoader.getMod()?.playerCharacter
     if (!playerId) return
     const commandId = payload?.commandId as string | undefined
@@ -74,6 +82,7 @@ export function onEnable(ctx: PluginContext): void {
   // 注释：3b. 玩家移动事件挂钩——地图移动不经 commandExecutor（moveTo 直达），
   // location:enter {from} 是移动完成的信号（erArk 移动行为事件挂载键 move）
   ctx.events.on('location:enter', async (payload: any) => {
+    if (timeStopActive()) return
     clearPendingOptions()
     const playerId = modLoader.getMod()?.playerCharacter
     if (!playerId) return

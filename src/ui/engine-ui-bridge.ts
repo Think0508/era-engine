@@ -198,6 +198,11 @@ export class EngineUIBridge {
       gameStore.setModeStack(['exploration'])
       uiStore.clearSelection()
       this.refreshCharactersAtLocation(ctx.location?.id ?? '')
+      // 注释：2026-08-15 审计 C-M-2——读档后时停标记重同步（时停中存档→读档：restore 已恢复
+      // 开关，但标记只靠 execution_end/location:enter 刷新，这里补一次初始同步）
+      apiSystem.call('h-time-stop', 'isActive').then((v: boolean) => {
+        gameStore.setTimeStopActive(!!v)
+      }).catch(() => { /* 引擎未 boot */ })
     }
     eventBus.on('game:load', gameLoadHandler)
     this.handlers.push({ event: 'game:load', handler: gameLoadHandler })

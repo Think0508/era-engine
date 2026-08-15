@@ -1,0 +1,36 @@
+# 场景通用口上
+
+[[scene_lines]]
+scene = "rest"
+text = "你坐下来调息。"
+
+[[scene_lines]]
+scene = "chat"
+text = "你和{character.name}聊了起来。"
+
+[[scene_lines]]
+scene = "time_stop_on"
+# T5 无意识屏蔽（erArk talk.py:224-237）：时停冻结目标（unconscious_h=3）只出带
+# unconscious 前提的口上——本行在 time_stop_on 效果后触发（目标已冻结），必须有
+# T_UNCONSCIOUS_FLAG_3 前提否则被静默淘汰
+condition = "premise(T_UNCONSCIOUS_FLAG_3)"
+text = "你握紧了时间，世界凝固在眼前。"
+
+[[scene_lines]]
+scene = "time_stop_off"
+text = "时间重新流动，世界恢复了喧闹。"
+
+[[scene_lines]]
+scene = "time_stop_off_in_h"
+text = "时间恢复流动。"
+
+[[scene_lines]]
+scene = "carry_target"
+# 时停中触发（目标冻结）→ 同 time_stop_on 需要 unconscious 前提
+condition = "premise(T_UNCONSCIOUS_FLAG_3)"
+text = "你将{character.name}扛了起来。"
+
+[[scene_lines]]
+scene = "stop_carry_target"
+condition = "premise(T_UNCONSCIOUS_FLAG_3)"
+text = "你将{character.name}轻轻放下。"

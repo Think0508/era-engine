@@ -139,12 +139,11 @@ useKeyInput({
 watch(() => gameStore.currentMode, () => {})
 
 // 注释：自动时停移动 toggle——偏好状态在 ui-store（localStorage 持久化），
-// 核心开关经 h-time-stop.setAutoMove 同步（引擎未 boot 时静默跳过，下次点击再同步）
+// 核心开关经 h-time-stop.setAutoMove 同步（apiSystem.call 是 async——用 .catch 兜 rejection，
+// 引擎未 boot 时静默跳过，下次点击再同步）
 function onAutoTimeStopToggle() {
   uiStore.toggleAutoTimeStopMove()
-  try {
-    apiSystem.call('h-time-stop', 'setAutoMove', uiStore.autoTimeStopMove)
-  } catch { /* 引擎未 boot */ }
+  apiSystem.call('h-time-stop', 'setAutoMove', uiStore.autoTimeStopMove).catch(() => { /* 引擎未 boot */ })
 }
 </script>
 

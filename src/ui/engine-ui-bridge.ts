@@ -225,6 +225,14 @@ export class EngineUIBridge {
         })
       })
     })
+
+    // 注释：启动同步（最终审查 I-1）——localStorage 偏好与核心开关一致：
+    // 刷新页面后 UI 显示开但引擎实为关的静默不一致；api 未就绪时静默跳过
+    apiSystem.call('h-time-stop', 'setAutoMove', uiStore.autoTimeStopMove).catch(() => { /* 引擎未 boot */ })
+    // 注释：启动同步（最终审查 M-6）——读档/刷新后时停标记初始一致
+    apiSystem.call('h-time-stop', 'isActive').then((v: boolean) => {
+      gameStore.setTimeStopActive(!!v)
+    }).catch(() => { /* 引擎未 boot */ })
   }
 
   // 注释：刷新当前地点角色列表

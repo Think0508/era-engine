@@ -170,6 +170,7 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
   })
 
   it('开关开但精力 0：自动 on 前置检查失败 → normal（不进时停）', async () => {
+    await apiSystem.call('h-time-stop', 'setAutoMove', true)
     player().base['精力'] = 0
     const r = await apiSystem.call('h-time-stop', 'moveStart', 10)
     expect(r!.mode).toBe('normal')

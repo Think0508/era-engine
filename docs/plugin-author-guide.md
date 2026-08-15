@@ -589,7 +589,7 @@ ctx.api.call('h-time-stop', 'getStamina', charId)              // → number（�
 ctx.api.call('h-time-stop', 'getStaminaMax', charId)           // → number（精力上限属性，缺省 100）
 ctx.api.call('h-time-stop', 'getDuration')                     // → number（时停总时长（分钟），erArk achievement.time_stop_duration）
 ctx.api.call('h-time-stop', 'getOrgasmCount', charId, partId?) // → number
-ctx.api.call('h-time-stop', 'moveStart', timeCost)             // → Promise<{mode, cost}>（时停中=瞬移扣费；开关开且前置满足=自动 on→瞬移→off 静默循环；否则 {mode:'normal', cost:0}）
+ctx.api.call('h-time-stop', 'moveStart', timeCost)             // → Promise<{mode:'teleport'|'normal', cost:number}|null>（时停中=瞬移扣费；开关开且前置满足=自动 on→瞬移→off 静默循环；否则 {mode:'normal', cost:0}；无玩家角色时返回 null）
 ctx.api.call('h-time-stop', 'getAutoMove')                     // → boolean（自动时停移动开关）
 ctx.api.call('h-time-stop', 'setAutoMove', on)                 // → void（设置自动时停移动开关）
 ```

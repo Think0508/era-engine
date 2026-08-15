@@ -121,6 +121,10 @@ export function onLoad(_ctx: PluginContext): void {
       if (c.sp_flag && prevUnconscious.has(c.id)) {
         c.sp_flag.unconscious_h = prevUnconscious.get(c.id) ?? 0
       }
+      // 注释：时停解放标记全场置位（最终审查 I-2——erArk default.py:6678
+      // TIME_STOP_ORGASM_RELEASE 对全场无条件 time_stop_release=True；
+      // 原实现只有带累积的角色经 release_time_stop_orgasm 置位）
+      if (c.h_state) c.h_state.time_stop_release = true
       // 注释：绝顶释放（对齐 527 / erArk TIME_STOP_ORGASM_RELEASE，default.py:6764-6800）
       // 2026-08-08 修复：原只输出日志无数值——时停累计的绝顶被静默丢弃。
       // 经 effect 通道调 h-core 的 release_time_stop_orgasm（跨插件禁止直接 import），

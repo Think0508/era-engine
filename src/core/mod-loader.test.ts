@@ -255,6 +255,21 @@ describe('mod-loader integration', () => {
     expect(player.base.attack).toBe(15)
   })
 
+  // 注释：B1 回归测试（2026-08-15）——插件自加载数据目录（SELF_LOADED_DATA_DIRS，
+  // 如 talk-common 168 文件 / 73MB）不得进入 pluginDefaultCache：既防 73MB 死内存回潮，
+  // 也防登记表误删后其他插件默认数据仍正常消费（误伤防护）
+  it('B1: 插件自加载数据不驻留 pluginDefaultCache，其他默认数据照常缓存', async () => {
+    const loader = new ModLoader()
+    await loader.loadMod('test-mod')
+    const cache = (loader as any).pluginDefaultCache as Map<string, string>
+    const selfLoaded = [...cache.keys()].filter(k => k.includes('/talk-common/'))
+    expect(selfLoaded).toEqual([])
+    // 其他插件默认数据（parseModData 消费的）必须仍被缓存：h-core attributes/items + confinement instructions
+    expect([...cache.keys()].some(k => k.includes('/data/default/attributes.toml'))).toBe(true)
+    expect([...cache.keys()].some(k => k.includes('/data/default/items.toml'))).toBe(true)
+    expect([...cache.keys()].some(k => k.includes('/data/default/instructions/'))).toBe(true)
+  })
+
   // 注释：⚠️ 2026-08-14 第四轮审查——深拷贝注册 + resetWorld（退出到标题→新游戏干净世界）
   it('运行时修改实体不污染 mod 静态数据（深拷贝注册）', async () => {
     const loader = new ModLoader()

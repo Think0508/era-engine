@@ -14,6 +14,7 @@ import { conditionRegistry } from './condition-registry'
 import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
 import { resetPendingSpawns } from './spawn-system'
+import { eventBus } from './event-bus'
 import type { LoadedMod, RawTomlMap } from './mod-types'
 
 export * from './mod-types'
@@ -44,20 +45,34 @@ const scriptModules = import.meta.glob<string>('/mods/*/scripts/*.js', {
   eager: false,
 })
 
+// 注释：插件"自加载数据目录"登记表（B1，2026-08-15）——
+// parseModData 只消费特定文件名模式（attributes/items/abilities/h-config/instructions/
+// events/ai-targets/sleep 等，见 mod-parse.ts）；不匹配的插件默认数据不会被 core 消费。
+// 若插件选择自己加载自己的数据（如 talk-common-system 的 168 文件 / 73MB 口上层），
+// 必须在 loadMod 前把数据目录登记在此，否则其 raw 字符串会永久驻留 pluginDefaultCache
+// （73MB 级死内存 + 每次 loadMod 全量 fetch）。新增此类数据目录时必须同步登记，
+// 否则视为回归（见 mod-loader.test.ts B1 回归测试）。
+const SELF_LOADED_DATA_DIRS = ['/talk-common/']
+
 export class ModLoader {
   private loadedMod: LoadedMod | null = null
 
   // 注释：插件默认层 rawTomlMap 缓存（2026-08-11 全量超时优化）——
-  // talk-common-system 默认层 165 个 TOML / 71.6MB，每次 loadMod 全量 await loader() 是
+  // 插件默认数据（attributes/items/instructions 等）每次 loadMod 全量 await loader() 是
   // 测试超时热点（单 fork 串行下每个文件重复解析）。loader() 结果（字符串）模块级缓存，
   // 首次 loadMod 解析一次，后续复用。生产零影响（只 loadMod 一次）；插件默认层本不在
   // HMR 监听范围（AGENTS §28 只监听 /mods/**），无热更新损失。
+  // 注：talk-common 口上层不在此缓存内（SELF_LOADED_DATA_DIRS 登记，B1 跳过）。
   private pluginDefaultCache = new Map<string, string>()
 
   async loadMod(modName: string): Promise<LoadedMod> {
     const rawTomlMap: RawTomlMap = {}
-    // 注释：Layer 1——插件默认数据（优先级最低；缓存复用，避免 71.6MB 重复解析）
+    // 注释：Layer 1——插件默认数据（优先级最低；缓存复用避免重复解析）
     for (const [path, loader] of Object.entries(pluginDefaultModules)) {
+      // 注释：B1——跳过插件自加载数据目录（见 SELF_LOADED_DATA_DIRS）：
+      // 该数据由插件自己 glob+parse（如 talk-common 168 文件 / 73MB），
+      // parseModData 不消费，排除避免 73MB raw 字符串永久驻留（纯死内存）
+      if (SELF_LOADED_DATA_DIRS.some(dir => path.includes(dir))) continue
       let raw = this.pluginDefaultCache.get(path)
       if (raw === undefined) {
         raw = await loader() as string
@@ -104,6 +119,9 @@ export class ModLoader {
     // （processedIds 跨 loadMod 残留 → 同 id pending 在新世界永不激活，静默）。
     // 运行时调用无循环问题（spawn-system 顶层不访问 modLoader 实例）
     resetPendingSpawns()
+    // 注释：C1（2026-08-15）——模组数据重载通知（插件层监听重载口上等数据；
+    // 启动时序 loadMod 先于插件 onEnable → 启动时无监听者，不产生重复加载）
+    await eventBus.emit('game:mod_loaded', { mod: modName })
     return mod
   }
 
@@ -125,8 +143,9 @@ export class ModLoader {
   }
 
   // 注释：重建世界实体（新游戏/退出到标题后的干净世界）——entitySystem.clear +
-  // 从 mod 初始数据深拷贝注册。不重新解析 TOML（71.6MB 插件默认层解析代价不可接受；
-  // mod.entities 因深拷贝注册保持纯净，可直接作重建来源）
+  // 从 mod 初始数据深拷贝注册。不重新解析 TOML（插件默认层 + mod 定义全量解析代价不可接受；
+  // 且 73MB 级 talk-common 口上层本不在 rawTomlMap，见 SELF_LOADED_DATA_DIRS——重建世界
+  // 无需重载静态数据）。mod.entities 因深拷贝注册保持纯净，可直接作重建来源）
   resetWorld(): void {
     entitySystem.clear()
     const mod = this.loadedMod

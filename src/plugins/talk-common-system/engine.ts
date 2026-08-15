@@ -9,11 +9,27 @@ import type { CommonTextIndex, CommonTextEntry } from './types'
 export type VariableData = Record<string, {
   parts: string[]
   description: string
-  entries: Array<{ context: string; conditions?: string; part?: string }>
+  entries: Array<{ context: string; conditions?: string | string[]; part?: string }>
 }>
 
 // 注释：地文条件求值失败去重上报（2026-08-13 审计——原 catch 静默淘汰条目）
 const reportedCondErrors = new Set<string>()
+
+// 注释：条目归一化（幂等，B3 修复 2026-08-15）——入口已归一化（conditions 为数组 +
+// premiseRefs 已预计算）时直接复用对象（解析缓存命中路径，避免 203k 条目重复拷贝与
+// 正则重算）；原始数据（string conditions）在此归一化 + 预计算静态元数据
+// （premiseRefs / hasUnconsciousRef——A1，加载期一次）。index.ts parseFile 也走本函数，
+// 使缓存的默认层/新解析的 mod 层在 loadFromData 时全部命中幂等短路。
+export function normalizeCommonTextEntry(e: VariableData[string]['entries'][number]): CommonTextEntry {
+  if (Array.isArray(e.conditions) && Array.isArray((e as CommonTextEntry).premiseRefs)) {
+    return e as CommonTextEntry
+  }
+  const conds = Array.isArray(e.conditions) ? e.conditions : (e.conditions ? [e.conditions] : [])
+  const premiseRefs: string[] = []
+  for (const c of conds) premiseRefs.push(...extractPremiseRefs(c))
+  const hasUnconsciousRef = conds.some(c => /unconscious/i.test(c))
+  return { context: e.context, conditions: conds, part: e.part, premiseRefs, hasUnconsciousRef }
+}
 
 export class CommonTextsEngine {
   private index: CommonTextIndex = {}
@@ -25,6 +41,11 @@ export class CommonTextsEngine {
 
   get variables(): string[] {
     return Object.keys(this.index)
+  }
+
+  // 注释：归一化入口（见 normalizeCommonTextEntry——幂等；缓存命中直接别名）
+  private normalizeEntry(e: VariableData[string]['entries'][number]): CommonTextEntry {
+    return normalizeCommonTextEntry(e)
   }
 
   loadFromData(defaultData: VariableData, modData: VariableData): void {
@@ -40,20 +61,11 @@ export class CommonTextsEngine {
         variable,
         description: def.description ?? '',
         parts: def.parts ?? [],
-        entries: def.entries.map(e => ({
-          context: e.context,
-          conditions: e.conditions ? this.parseConditions(e.conditions) : [],
-          part: e.part,
-        })),
+        entries: def.entries.map(e => this.normalizeEntry(e)),
       }
     }
 
     this.loaded = true
-  }
-
-  private parseConditions(raw: string): string[] {
-    // 注释：条件 = 完整表达式（premise(X) 命名引用内联，多个前提用 && 连接）
-    return [raw]
   }
 
   private pickEntry(entries: CommonTextEntry[], targetId: string | null, actorId?: string, unconsciousPass = false): string | null {
@@ -78,13 +90,9 @@ export class CommonTextsEngine {
     const out: { text: string; weight: number }[] = []
     for (const e of this.filterEntries(entries, targetId, actorId, { unconsciousPass })) {
       let weight = 1
-      // 注释：从条件表达式提取 premise(X) 命名引用（权重 = weightAllToOne 语义）
-      const premiseList: string[] = []
-      for (const cond of e.conditions) {
-        premiseList.push(...extractPremiseRefs(cond))
-      }
-      if (premiseList.length > 0) {
-        const w = weightAllToOne(premiseList, premiseCtx)
+      // 注释：前提权重 = weightAllToOne 语义；premiseRefs 为加载期预计算（A1），免运行时正则
+      if (e.premiseRefs.length > 0) {
+        const w = weightAllToOne(e.premiseRefs, premiseCtx)
         if (w <= 0) continue
         weight = w
       }
@@ -95,11 +103,10 @@ export class CommonTextsEngine {
 
   /** 列出通过条件筛选的全部候选（行为地文组合用——B/C 组合并池后统一随机） */
   private filterEntries(entries: CommonTextEntry[], targetId: string | null, _actorId?: string, opts?: { unconsciousPass?: boolean }): CommonTextEntry[] {
-    const getContext = () => {
-      const gc = gameContext.getContext()
-      if (targetId) (gc as any).selectedCharacterId = targetId
-      return gc
-    }
+    // 注释：A3——上下文在调用级创建一次（targetId 在本次调用内固定），原每条目新建
+    // GameContext（含 time 拷贝）是 3 万次/调用的无谓分配
+    const gc = gameContext.getContext()
+    if (targetId) (gc as any).selectedCharacterId = targetId
     // 注释：T8 审查补漏——无意识过滤（erArk talk_common_judge :683-687 + get_weight_from_premise_dict :224-237）
     // 动作类（unconsciousPass=false）：目标无意识（unconscious_h>=1）且本条条件无 unconscious 前提 → 跳过；
     // 部位类（unconsciousPass=true）：跳过无意识检查（部位描述在无意识时仍可用）
@@ -107,8 +114,8 @@ export class CommonTextsEngine {
     const unconscious = (target?.sp_flag?.unconscious_h ?? 0) >= 1
     return entries.filter(e => {
       if (unconscious && !opts?.unconsciousPass) {
-        const hasUnconsciousPremise = e.conditions.some(c => /unconscious/i.test(c))
-        if (!hasUnconsciousPremise) return false
+        // 注释：A1——预计算标记（原每条目 /unconscious/i 正则）
+        if (!e.hasUnconsciousRef) return false
       }
       if (e.conditions.length === 0) return true
       for (const cond of e.conditions) {
@@ -116,7 +123,6 @@ export class CommonTextsEngine {
         // 权重值比较——erArk get_weight_from_premise_dict 语义，表达式引擎原生支持）
         // 求值失败 → 淘汰该行 + 去重上报（2026-08-13 审计——原 catch 静默，行永不出现且无痕迹）
         try {
-          const gc = getContext()
           if (!conditionEngine.evaluate(cond, gc)) return false
         } catch (err) {
           if (!reportedCondErrors.has(cond)) {

@@ -222,7 +222,7 @@ erark CSV 目录 → 本系统 TOML 路径 → 变量名：
 | `action_A/penis_in_body/penis_in_vagina_A.csv` | `action_A/penis_in_vagina.toml` | `{action_penis_in_vagina_A}` | 单段 |
 | `action_A/orgasm/v_orgasm_small_A.csv` | `action_A/v_orgasm_small.toml` | `{action_v_orgasm_small_A}` | 单段 |
 
-完整对照表见 talk-common-system 默认数据目录下的 `_index.toml`。
+完整对照表见 talk-common-system 默认数据目录（`src/plugins/talk-common-system/data/default/talk-common/`，按 `action_A/`、`body/`、`body_part/` 等子目录组织——无 `_index.toml`，以目录 + `variable` 字段为准）。
 
 ### `str.format()` 变量（由 dialogue-system 插值器处理）
 
@@ -326,6 +326,11 @@ interface InterpolationContext {
 ### 覆盖默认数据
 
 在模组的 `definitions/talk-common/` 下创建同名同路径 TOML 文件即可覆盖默认值：
+
+> **数据加载与重载（2026-08-15）**：插件 `onEnable` 时加载默认层（168 文件 / 73MB，解析结果
+> 缓存——重复启用不重解析）并合并当前 mod 的 `definitions/talk-common/` 覆盖。运行期再次
+> `loadMod`（`game:mod_loaded` 事件，本插件监听）会重载当前 mod 的口上数据；dev 下改 mod
+> 口上 TOML 后重新 loadMod 即可生效。切换模组仍走页面刷新（ModSelect → reload），无需依赖该机制。
 
 ```toml
 # mods/武侠/definitions/talk-common/body_part/vagina_s.toml

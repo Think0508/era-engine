@@ -251,6 +251,51 @@ class Parser {
   }
 }
 
+// ============ AST 子表达式重排（2026-08-15 性能优化）============
+// 原理：布尔交换律——&& / || 操作数交换不改变结果。求值时左操作数先行短路，
+// 把"不含路径的子表达式"（premise/字面量，便宜）换到"含路径子表达式"（贵）之前，
+// 前提失败即短路跳过路径求值（talk-common 数据常见 `path == X && premise(Y)` 形态）。
+// 前提 handler 是纯函数（AGENTS 定义契约），重排不影响语义；`premise(X) == N` 比较结构不拆。
+// ⚠️ 约束：handler 必须"只读 ctx + 不抛错"——若某前提未注册（抛错）或依赖求值次数/
+// 顺序，重排会改变报告时机/调用次数（talk-common 消费方 catch 后结果等价，见等价性测试）。
+// 全局受益：所有条件消费方（talk-common / npc-ai / random-event / quest / 指令）。
+
+function containsPath(node: ExprNode): boolean {
+  switch (node.kind) {
+    case 'path': return true
+    case 'lit':
+    case 'premise': return false
+    case 'not': return containsPath(node.child)
+    case 'cmp': return containsPath(node.left) || containsPath(node.right)
+    case 'bool': return containsPath(node.left) || containsPath(node.right)
+  }
+}
+
+function reorderBoolOperands(node: ExprNode): ExprNode {
+  switch (node.kind) {
+    case 'not':
+      node.child = reorderBoolOperands(node.child)
+      return node
+    case 'cmp':
+      node.left = reorderBoolOperands(node.left)
+      node.right = reorderBoolOperands(node.right) as OperandNode
+      return node
+    case 'bool': {
+      node.left = reorderBoolOperands(node.left)
+      node.right = reorderBoolOperands(node.right)
+      // 左含路径且右不含 → 交换（便宜在前，短路优先命中）
+      if (containsPath(node.left) && !containsPath(node.right)) {
+        const tmp = node.left
+        node.left = node.right
+        node.right = tmp
+      }
+      return node
+    }
+    default:
+      return node
+  }
+}
+
 // ============ 值解析（resolveValue 语义移植，行为逐条对齐旧引擎）============
 
 function resolvePath(node: PathNode, ctx: GameContext): any {
@@ -494,6 +539,9 @@ function getPremiseValueInternal(id: string, ctx: GameContext): boolean | number
 class ConditionEngine {
   private astCache = new Map<string, ExprNode>()
 
+  // 注释：A2 重排开关——等价性测试用（重排前后求值结果必须一致）
+  reorderEnabled = true
+
   // 注册（大小写不敏感；后注册覆盖——mod override 设计特性）
   registerPremise(id: string, handler: PremiseHandler): void {
     enginePremises.set(id.toLowerCase(), handler)
@@ -543,7 +591,21 @@ class ConditionEngine {
 
   private parse(expr: string): ExprNode {
     const tokens = tokenize(expr)
-    return new Parser(tokens).parse()
+    let ast = new Parser(tokens).parse()
+    if (this.reorderEnabled) ast = reorderBoolOperands(ast)
+    return ast
+  }
+
+  // 注释：A4——加载期 AST 预热（talk-common loadFromData 后传全部去重条件，
+  // 把首句口上的解析成本摊到加载期；解析失败跳过——运行时求值会正常上报）
+  warm(exprs: Iterable<string>): void {
+    for (const expr of exprs) {
+      try {
+        this.parseCached(expr)
+      } catch {
+        // 非法表达式运行时求值时报错（talk-common 有去重上报）
+      }
+    }
   }
 
   private evaluateNode(node: ExprNode, ctx: GameContext): any {

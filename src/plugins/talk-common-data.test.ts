@@ -8,6 +8,8 @@ import { parse as parseTOML } from '@iarna/toml'
 import { modLoader } from '../core/mod-loader'
 import { gameContext } from '../core/game-context'
 import { conditionRegistry } from '../core/condition-registry'
+import { entitySystem } from '../core/entity-system'
+import { CommonTextsEngine } from './talk-common-system/engine'
 import { registerFallPremises } from './h-core/premise/premise-fall'
 import { registerHPremises } from './h-core/premise/premise-h'
 import { registerTargetPremises } from './h-core/premise/premise-target'
@@ -30,7 +32,7 @@ const defaultModules = import.meta.glob<string>(
 )
 
 interface TomlEntry { context?: string; conditions?: string; part?: string }
-interface TomlVariable { variable?: string; parts?: string[]; entries?: TomlEntry[] }
+interface TomlVariable { variable?: string; description?: string; parts?: string[]; entries?: TomlEntry[] }
 
 function collectConditions(): string[] {
   const out: string[] = []
@@ -132,5 +134,71 @@ describe('T2 talk-common 全量数据校验', () => {
       if (!ok) bad.push(`${cond} -> ${unknown.join(',')}`)
     }
     expect(bad.slice(0, 20)).toEqual([])
+  })
+
+  it('真实数据热路径基准（warm getBehaviorText，宽松阈值守回归）', () => {
+    // 注释：最重的行为地文调用（penis_in_anal = 5 段变量 × ~6500 条 = 约 3.2 万条目求值）
+    const vars: Record<string, { parts: string[]; description: string; entries: any[] }> = {}
+    for (const raw of Object.values(defaultModules)) {
+      const parsed = parseTomlVariable(raw)
+      for (const [name, v] of Object.entries(parsed)) {
+        vars[name] = { parts: v.parts ?? [], description: v.description ?? '', entries: v.entries ?? [] }
+      }
+    }
+    const engine = new CommonTextsEngine()
+    engine.loadFromData(vars, {})
+
+    engine.getBehaviorText('penis_in_anal', null)
+    const t0 = performance.now()
+    engine.getBehaviorText('penis_in_anal', null)
+    const ms = performance.now() - t0
+
+    console.log(`[perf-real] getBehaviorText('penis_in_anal') = ${ms.toFixed(0)}ms`)
+    expect(ms).toBeLessThan(2000)
+  })
+
+  it('AST 重排等价性（reorder 开关前后全量 203k 条件求值结果一致）', () => {
+    // 注释：A2（2026-08-15）——布尔交换律重排 && / || 操作数（前提/字面量换到路径前）。
+    // 语义必须逐条等价：关闭重排（旧 AST）→ 开启重排（新 AST）→ 同一上下文逐条对比。
+    // 上下文充实化（审查补强）：注册实体让路径可解析为真、前提有通过有失败——
+    // 真实覆盖"交换后短路"路径，而非全 false 退化对比
+    entitySystem.register('character', 'eq_target', {
+      id: 'eq_target',
+      base: { 好感度: 60, 体力: 100, 魅力: 50 },
+      talents: { 幼女: 1, 剑骨: 1 },
+      sp_flag: {},
+      first_times: { 初体验: 1 },
+    })
+    gameContext.setPlayer('eq_target')
+    gameContext.setSelectedCharacterId('eq_target')
+
+    const conditions = collectConditions()
+    const gc = gameContext.getContext()
+    const registerAll = () => {
+      registerHPremises(conditionEngine)
+      registerTargetPremises(conditionEngine)
+      registerFallPremises(conditionEngine)
+      registerClothingPremises(conditionEngine)
+      registerBodyItemPremises(conditionEngine)
+      registerInstructPremises(conditionEngine)
+      registerSleepPremises(conditionEngine)
+      registerConfinementPremises(conditionEngine)
+    }
+
+    conditionEngine.reorderEnabled = false
+    conditionEngine.clear()
+    registerAll()
+    const before = conditions.map(c => conditionEngine.evaluate(c, gc))
+
+    conditionEngine.reorderEnabled = true
+    conditionEngine.clear()
+    registerAll()
+    const after = conditions.map(c => conditionEngine.evaluate(c, gc))
+
+    const diffs: string[] = []
+    for (let i = 0; i < before.length; i++) {
+      if (before[i] !== after[i]) diffs.push(`${conditions[i]} -> ${before[i]} / ${after[i]}`)
+    }
+    expect(diffs.slice(0, 10)).toEqual([])
   })
 })

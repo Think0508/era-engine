@@ -172,7 +172,7 @@ export function dailySettle(): void {
     const c = char as any
     if (!c?.id || c.id === playerId || c.id === '0') continue
     if (isSkipped(c.id, c)) continue
-    const abl33 = c.abilities?.['欲望']?.level ?? 0
+    const abl33 = c.abilities?.[ATTR.LUST]?.level ?? 0
       if (abl33 > 0) {
         const add = abl33 + Math.floor(Math.random() * (abl33 + 1))
         const desire = getEntityAttr(c, ATTR.DESIRE)

@@ -11,7 +11,7 @@
 import { eventBus } from '../../core/event-bus'
 import { apiSystem } from '../../core/api'
 import { gameContext, gameTimeToTotalMinutes } from '../../core/game-context'
-import { getEntityAttr, setEntityAttr } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
 import { modLoader } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
 import { errorReporter } from '../../core/error-reporter'
@@ -82,17 +82,17 @@ function restRecovery(char: any, minutes: number): void {
   const home = char?.behavior?.home_locations as Record<string, number> | undefined
   const atHome = !!home && !!char?.current_location && home[char.current_location] !== undefined
   const adjust = atHome ? 1.0 : 0.3
-  const hpMax = getEntityAttr(char, '体力上限')
-  const hp = getEntityAttr(char, '体力')
+  const hpMax = getEntityAttr(char, ATTR.HP_MAX)
+  const hp = getEntityAttr(char, ATTR.HP)
   if (typeof hpMax === 'number' && hpMax > 0 && typeof hp === 'number') {
     const hpBase = hpMax * 0.003 + 10
-    setEntityAttr(char, '体力', Math.min(hpMax, hp + Math.floor(hpBase * minutes * adjust)))
+    setEntityAttr(char, ATTR.HP, Math.min(hpMax, hp + Math.floor(hpBase * minutes * adjust)))
   }
-  const mpMax = getEntityAttr(char, '气力上限')
-  const mp = getEntityAttr(char, '气力')
+  const mpMax = getEntityAttr(char, ATTR.MP_MAX)
+  const mp = getEntityAttr(char, ATTR.MP)
   if (typeof mpMax === 'number' && mpMax > 0 && typeof mp === 'number') {
     const mpBase = mpMax * 0.006 + 20
-    setEntityAttr(char, '气力', Math.min(mpMax, mp + Math.floor(mpBase * minutes * adjust)))
+    setEntityAttr(char, ATTR.MP, Math.min(mpMax, mp + Math.floor(mpBase * minutes * adjust)))
   }
 }
 

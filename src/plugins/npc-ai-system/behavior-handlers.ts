@@ -7,6 +7,7 @@ import { modLoader } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
 import { errorReporter } from '../../core/error-reporter'
+import { weightedRandom } from '../../utils/weighted-random'
 import type { BehaviorBlock, BehaviorSpec, WorkTypeDef, EntertainmentTypeDef } from './types'
 
 export interface HandlerContext {
@@ -282,19 +283,12 @@ export async function wanderHandler(ctx: HandlerContext): Promise<BehaviorBlock>
     return { id: ctx.spec.type, type: 'wait', start_time: ctx.start_time, duration: resolveDuration(ctx.spec, 60) }
   }
   const entries = Object.entries(home).map(([locId, weight]) => ({ locId, weight: weight as number }))
+  // 注释：全 0/负权重 → 原地等待（wander 语义；C3 后统一走 weightedRandom 的零回退）
   const total = entries.reduce((sum, e) => sum + Math.max(e.weight, 0), 0)
   if (total <= 0) {
     return { id: ctx.spec.type, type: 'wait', start_time: ctx.start_time, duration: resolveDuration(ctx.spec, 60) }
   }
-  let roll = Math.random() * total
-  let picked = entries[0].locId
-  for (const e of entries) {
-    roll -= Math.max(e.weight, 0)
-    if (roll <= 0) {
-      picked = e.locId
-      break
-    }
-  }
+  const picked = weightedRandom(entries.map(e => ({ item: e.locId, weight: e.weight })))
   // 注释：activity 系数——activity 越低，闲逛时更倾向原地停留（老版本语义保留：
   // activity=0 的角色由 settle-pass 直接跳过，不走到这里）
   const activity = ctx.char?.behavior?.activity ?? 1

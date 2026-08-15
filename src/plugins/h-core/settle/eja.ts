@@ -49,3 +49,18 @@ export async function addEja(charId: string, delta: number): Promise<void> {
     }
   }
 }
+
+/** 射精欲直接设值（如绝顶不射精归零；h-ejaculation 未启用 → 静默降级） */
+export async function setEja(charId: string, value: number): Promise<void> {
+  try {
+    await apiSystem.call('h-ejaculation', 'setEja', charId, value)
+  } catch (err) {
+    if (!isEjaculationMissing(err)) {
+      errorReporter.report({
+        source: 'h-core',
+        severity: 'error',
+        message: `射精欲设值失败（${charId}）：${err instanceof Error ? err.message : String(err)}`,
+      })
+    }
+  }
+}

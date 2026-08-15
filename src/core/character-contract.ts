@@ -11,7 +11,7 @@
 // 同属"引擎结构"先例；属性名（好感度等）不在此表（属性层走 attributes.toml）。
 
 import type { EntityData } from './types'
-import type { LoadedMod } from './mod-loader'
+import type { LoadedMod } from './mod-types'
 import { errorReporter } from './error-reporter'
 
 /** L1：角色层直接可写（顶层键） */

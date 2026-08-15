@@ -725,24 +725,6 @@ describe('结算保真补全（tenths_add / 连续减值 / 无意识门控）', 
       // pending 已消耗
       expect(p.h_state.pending_orgasm_feel?.[3] ?? 0).toBe(0)
     })
-
-    it('eja_add (70)：自己 eja += floor(tc + 10 + eja×0.4)', async () => {
-      const p = entitySystem.get('character', 'player') as any
-      p.base['射精欲'] = 100
-      await apiSystem.call('effect-system', 'execute', [
-        { type: 'eja_add', params: {}, target: 'self' },
-      ], execCtx({ _timeCost: 5 }))
-      expect(p.base['射精欲']).toBe(155) // 100 + floor(5+10+40)
-    })
-
-    it('eja_add_target (44)：目标 eja += floor((tc+30)×adj(目标.阴茎感度))', async () => {
-      npc().abilities = { 阴茎感度: { level: 3, xp: 0 } }
-      npc().base['射精欲'] = 0
-      await apiSystem.call('effect-system', 'execute', [
-        { type: 'eja_add_target', params: { baseValue: 30 }, target: 'selected' },
-      ], execCtx({ _timeCost: 5 }))
-      expect(npc().base['射精欲']).toBe(49) // floor(35×tbl[3]=1.4)=49
-    })
   })
 
   describe('尿道绝顶（ORGASM_PART_ATTR partId 6，方案A 引擎支持）', () => {

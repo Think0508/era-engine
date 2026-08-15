@@ -106,7 +106,7 @@ export function onLoad(_ctx: PluginContext): void {
       // 概率: now_count <= 技巧 → 100%；超出后 rate = 100 - over×(50 - 技巧×5)，下限 0
       // 手动弹窗模式（系统设置11==2）未实现（依赖 UI 弹窗），默认自动概率判定
       const endureCount = char.h_state?.endure_not_shoot_count ?? 0
-      const techLv = char.abilities?.['技巧']?.level ?? 0
+      const techLv = char.abilities?.[ATTR.TECHNIQUE]?.level ?? 0
       let endureRate = 100
       if (endureCount > techLv) {
         const downRate = 50 - techLv * 5
@@ -226,40 +226,6 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：eja_add——自己射精欲增加（erArk 效果 70 ADD_SMALL_P_FEEL，default.py:3648-3672）
-  // 公式：eja += floor(tc + 10 + eja×0.4)；语义"自身"——作用于发起者（target=self）
-  effectTypeRegistry.register('eja_add', (_p: any, ctx: any) => {
-    // 退缩门控（与 settle_* 一致：judge_check 判定退缩 → 整链跳过）
-    if ((ctx as any)?._judgeResult?.retreated) return true
-    const tc = ctx._timeCost ?? 10
-    const ownerId = ctx.sourceId ?? (ctx._targetIds as string[])[0]
-    const char = entitySystem.get('character', ownerId) as any
-    if (!char?.base) return true
-    const cur = char.base[ATTR.EJA_GAUGE] ?? 0
-    char.base['射精欲'] = Math.max(0, cur + Math.floor(tc + 10 + cur * 0.4))
-    touchLastEajAddTime(char)
-    return true
-  })
-
-  // 注释：eja_add_target——目标射精欲增加（erArk 效果 44 TARGET_ADD_SMALL_P_FEEL，
-  // default.py:3219-3251；非部位快感结算！）公式：eja += floor((tc + baseValue) × adj(目标.阴茎感度))
-  effectTypeRegistry.register('eja_add_target', (params: any, ctx: any) => {
-    if ((ctx as any)?._judgeResult?.retreated) return true
-    const tc = ctx._timeCost ?? 10
-    const bv = params.baseValue ?? 30
-    const hc = (modLoader.getMod()?.hConfig as any) ?? {}
-    const tbl = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
-    for (const id of ctx._targetIds as string[]) {
-      const char = entitySystem.get('character', id) as any
-      if (!char?.base) continue
-      const sensLv = char?.abilities?.['阴茎感度']?.level ?? 0
-      const adjust = tbl[Math.min(Math.max(0, sensLv), 10)] ?? 4.0
-      char.base['射精欲'] = Math.max(0, (char.base[ATTR.EJA_GAUGE] ?? 0) + Math.floor((tc + bv) * adjust))
-      touchLastEajAddTime(char)
-    }
-    return true
-  })
-
   // 注释：clean_penis_semen——清洗玩家阴茎精液（erArk default.py:4174）
   effectTypeRegistry.register('clean_penis_semen', (_p: any, _execCtx: any) => {
     const player = entitySystem.get('character', '0') as any
@@ -308,7 +274,7 @@ export function onEnable(ctx: PluginContext): void {
     conditionEngine.registerPremise(`jj_${size}`, (pctx: GameContext) => {
       const actorId = pctx.sourceId ?? pctx.player?.id ?? null
       const actor = actorId ? entitySystem.get('character', actorId) as any : null
-      return (actor?.base?.['阴茎大小'] ?? 1) === targetSize
+      return (actor?.base?.[ATTR.PENIS_SIZE] ?? 1) === targetSize
     })
   }
 
@@ -321,11 +287,11 @@ export function onEnable(ctx: PluginContext): void {
     for (const { data } of payload.characters ?? []) {
       const ch = data as any
       if (!ch || typeof ch !== 'object') continue
-      if (ch.base && typeof ch.base['阴茎大小'] === 'number') continue
+      if (ch.base && typeof ch.base[ATTR.PENIS_SIZE] === 'number') continue
       const roll = Math.random()
       const size = roll < 0.05 ? 0 : roll < 0.6 ? 1 : roll < 0.9 ? 2 : 3
       if (!ch.base || typeof ch.base !== 'object') ch.base = {}
-      ch.base['阴茎大小'] = size
+      ch.base[ATTR.PENIS_SIZE] = size
     }
   }
   ctx.events.on('character:registered', initPenisSize)
@@ -334,21 +300,9 @@ export function onEnable(ctx: PluginContext): void {
     initPenisSize({ characters: [{ id: (ch as any).id, data: ch }] })
   }
 
-  // 注释：每小时衰减射精欲（B6 修复，audit-b I5——对齐 erArk realtime_settle.py:102-108）：
-  // 仅玩家、仅非 H、仅 (当前时间 - last_eaj_add_time) > 30 分钟才衰减；
-  // 衰减量 int(true_add_time×10)——引擎按整点结算每小时 60 分钟 = -600
-  ctx.events.on('game:hour_changed', () => {
-    const playerId = gameContext.getContext().player?.id
-    if (!playerId) return
-    const ch = entitySystem.get('character', playerId) as any
-    if (!ch?.base || ch?.h_state?.is_h) return
-    const now = gameTimeToTotalMinutes(gameContext.getContext().time)
-    const lastAdd = ch.action_info?.last_eaj_add_time
-    if (lastAdd != null && now - lastAdd <= 30) return
-    if ((ch.base['射精欲'] ?? 0) > 0) {
-      ch.base['射精欲'] = Math.max(0, ch.base['射精欲'] - 600)
-    }
-  })
+  // 注：射精欲自然消退只有一条路径——core realtime-settle.settleEjaDecay（行动级，
+  // 仅玩家、非 H、距上次射精 >30 分钟、-10/分钟）。曾经的 game:hour_changed 监听
+  // 与之重复导致双重衰减（2026-08-15 审查 C1 修复，erArk realtime_settle.py:102-108 语义）
 
   // 注释：H 每次行动后 → 精液吸收（erArk realtime_settle.py:130-139）
   ctx.events.on('game:execution_end', (payload: any) => {
@@ -363,7 +317,7 @@ export function onEnable(ctx: PluginContext): void {
         const currentMl = c.body_semen[partId]?.[1] ?? 0
         if (currentMl <= 0) continue
         const maxVol = BODY_PART_MAX_VOLUME[partId] ?? 100
-          const hunger = c.base?.['饥饿值'] ?? 0
+          const hunger = c.base?.[ATTR.HUNGER] ?? 0
         const result = calcSemenAbsorb(currentMl, addTime, maxVol, hunger)
         if (!result) continue
         c.body_semen[partId][1] = result.remaining
@@ -376,11 +330,11 @@ export function onEnable(ctx: PluginContext): void {
   ctx.api.register('h-ejaculation', {
     getEja: (charId: string) => {
       const char = entitySystem.get('character', charId) as any
-      return char?.base?.['射精欲'] ?? 0
+      return char?.base?.[ATTR.EJA_GAUGE] ?? 0
     },
     setEja: (charId: string, val: number) => {
       const char = entitySystem.get('character', charId) as any
-      if (char?.base) char.base['射精欲'] = Math.max(0, val)
+      if (char?.base) char.base[ATTR.EJA_GAUGE] = Math.max(0, val)
     },
     // 注释：射精欲增加（delta 可为负——非 H 衰减走本 API 的减法语义）
     // 射精欲字段的唯一写入口（h-core 结算经此 API 写入，禁止直接改字段）
@@ -388,7 +342,7 @@ export function onEnable(ctx: PluginContext): void {
     addEja: (charId: string, delta: number) => {
       const char = entitySystem.get('character', charId) as any
       if (char?.base) {
-        char.base['射精欲'] = Math.max(0, (char.base[ATTR.EJA_GAUGE] ?? 0) + (delta ?? 0))
+        char.base[ATTR.EJA_GAUGE] = Math.max(0, (char.base[ATTR.EJA_GAUGE] ?? 0) + (delta ?? 0))
         if ((delta ?? 0) > 0) touchLastEajAddTime(char)
       }
     },
@@ -403,7 +357,7 @@ export function onEnable(ctx: PluginContext): void {
         const currentMl = char.body_semen[partId]?.[1] ?? 0
         if (currentMl <= 0) continue
         const maxVol = BODY_PART_MAX_VOLUME[partId] ?? 100
-          const hunger = char.base?.['饥饿值'] ?? 0
+          const hunger = char.base?.[ATTR.HUNGER] ?? 0
         const result = calcSemenAbsorb(currentMl, addTime, maxVol, hunger)
         if (!result) continue
         char.body_semen[partId][1] = result.remaining
@@ -437,8 +391,8 @@ interface SemenResult {
 function calcSemenAmount(char: any, level: string): SemenResult {
   const baseMap: Record<string, number> = { small: 10, normal: 20, strong: 50 }
   // 1. 精液量 ≤ 2 → 无精液可射
-  const semenPoint = char.base?.['精液量'] ?? 0
-  const extraSemen = char.base?.['额外精液量'] ?? 0
+  const semenPoint = char.base?.[ATTR.SEMEN] ?? 0
+  const extraSemen = char.base?.[ATTR.EXTRA_SEMEN] ?? 0
   if (semenPoint + extraSemen <= 2) {
     return { amount: 0, noSemen: true }
   }
@@ -475,7 +429,7 @@ function calcSemenAmount(char: any, level: string): SemenResult {
   }
 
   // 6. 积攒精液 ×2（erArk handle_pl_semen_tmp_ge_max：额外精液量 ≥ 最大精液量）
-  if (extraSemen >= (char.base?.['精液量上限'] ?? 100)) {
+  if (extraSemen >= (char.base?.[ATTR.SEMEN_MAX] ?? 100)) {
     amount *= 2
   }
 
@@ -493,14 +447,14 @@ function calcSemenAmount(char: any, level: string): SemenResult {
 // 注释：精液量扣减（erArk common_ejaculation 尾部：优先扣临时额外精液，再扣基础精液）
 function deductSemen(char: any, amount: number): void {
   let remaining = amount
-  const extraSemen = char.base?.['额外精液量'] ?? 0
+  const extraSemen = char.base?.[ATTR.EXTRA_SEMEN] ?? 0
   if (extraSemen > remaining) {
-    char.base['额外精液量'] = extraSemen - remaining
+    char.base[ATTR.EXTRA_SEMEN] = extraSemen - remaining
     return
   }
   remaining -= extraSemen
-  char.base['额外精液量'] = 0
-  char.base['精液量'] = Math.max(0, (char.base['精液量'] ?? 0) - remaining)
+  char.base[ATTR.EXTRA_SEMEN] = 0
+  char.base[ATTR.SEMEN] = Math.max(0, (char.base[ATTR.SEMEN] ?? 0) - remaining)
 }
 
 // 注释：精液追踪——对齐 erArk 索引：[0]=未使用, [1]=当前量, [2]=等级, [3]=总量

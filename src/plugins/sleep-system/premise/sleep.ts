@@ -5,7 +5,7 @@
 import { entitySystem } from '../../../core/entity-system'
 import { gameContext } from '../../../core/game-context'
 import { modLoader } from '../../../core/mod-loader'
-import { getEntityAttr } from '../../../core/entity-utils'
+import { getEntityAttr, ATTR } from '../../../core/entity-utils'
 import { isSleeping, getSleepLevel } from '../sleep-state'
 
 function self(_ctx: any): any {
@@ -23,7 +23,7 @@ function target(_ctx: any): any {
 // 注释：premise 求值上下文（command-eval 注入）——本文件只用 ctx 取选中角色；self 无 ctx 依赖
 
 function getFatigue(char: any): number {
-  const v = char ? getEntityAttr(char, '疲劳度') : 0
+  const v = char ? getEntityAttr(char, ATTR.FATIGUE) : 0
   return typeof v === 'number' ? v : 0
 }
 
@@ -65,7 +65,7 @@ export function registerSleepPremises(registry: any): void {
     if (!ch) return false
     if (getFatigue(ch) >= TIRED_GE_75_THRESHOLD) return true
     if (isSleepTimeWindow()) return true
-    const hp = getEntityAttr(ch, '体力')
+    const hp = getEntityAttr(ch, ATTR.HP)
     return typeof hp === 'number' && hp <= 1
   })
 

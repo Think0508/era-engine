@@ -1,5 +1,5 @@
 import { entitySystem } from '../../core/entity-system'
-import { getEntityAttr, setEntityAttr, getLevel } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, getLevel, clampAttrValue } from '../../core/entity-utils'
 import { modLoader } from '../../core/mod-loader'
 
 interface ChangeRecord {
@@ -156,61 +156,10 @@ export class SettlementContext {
 
   // ── private ──
 
-  /** 钳制属性值到有效范围（体力不超上限、属性不低于0等） */
+  /** 钳制属性值到有效范围（下限 0；上限查 core ATTR_CAPS——C6 合并 effect-system 与
+   * realtime-settle 的双份 cap 表为单一来源） */
   private clampValue(char: any, attr: string, value: number): number {
-    // 下限统一为 0（除非没找到该属性）
-    let v = Math.max(0, value)
-
-    // 体力 → 不超 体力上限
-    if (attr === '体力') {
-      const max = this.resolveValue(char, '体力上限')
-      if (max > 0) v = Math.min(max, v)
-    }
-    // 气力 → 不超 气力上限
-    else if (attr === '气力') {
-      const max = this.resolveValue(char, '气力上限')
-      if (max > 0) v = Math.min(max, v)
-    }
-    // 疲劳度上限 160
-    else if (attr === '疲劳度') {
-      v = Math.min(160, v)
-    }
-    // 信赖度上限 300（erArk base_chara_favorability_and_trust_common_settle:663/:667）
-    else if (attr === '信赖度') {
-      v = Math.min(300, v)
-    }
-    // 好感度上限 100000（erArk character_handle.add_favorability:395/:403）
-    else if (attr === '好感度') {
-      v = Math.min(100000, v)
-    }
-    // 饥饿值上限 240
-    else if (attr === '饥饿值') {
-      v = Math.min(240, v)
-    }
-    // 尿意上限 300（G6 决策 2026-08-09：erArk 代码 min(...,300) 为准——注释 240 与代码矛盾）
-    else if (attr === '尿意') {
-      v = Math.min(300, v)
-    }
-    // 射精欲 → 不超 射精欲上限
-    else if (attr === '射精欲') {
-      const max = this.resolveValue(char, '射精欲上限')
-      if (max > 0) v = Math.min(max, v)
-    }
-    // 精液量 → 不超 精液量上限
-    else if (attr === '精液量') {
-      const max = this.resolveValue(char, '精液量上限')
-      if (max > 0) v = Math.min(max, v)
-    }
-    // 欲望值上限 100
-    else if (attr === '欲望值') {
-      v = Math.min(100, v)
-    }
-    // 通用上限 99999（erArk 状态值 clamp，common_default.py:249）
-    else {
-      v = Math.min(99999, v)
-    }
-
-    return v
+    return clampAttrValue(char, attr, value)
   }
 
   private record(charId: string, attr: string, oldVal: number, newVal: number): void {

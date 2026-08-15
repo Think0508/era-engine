@@ -30,7 +30,7 @@ import { gameContext, isPlayerChar } from '../../../core/game-context'
 import { getContinuousAdjust } from '../../../core/command-executor'
 import { settleOneState, ORGASM_PART_ATTR, applyStateChange } from './state-settle'
 import { calcHpMpChange, type HpMpInput } from './hp-mp'
-import { getEja, addEja } from './eja'
+import { getEja, addEja, setEja } from './eja'
 
 // 部位状态ID → 属性名（与 state-settle 同源；外部兼容导出）
 export { ORGASM_PART_ATTR, ORGASM_ATTR_TO_PART, accumulateOrgasmFeel } from './state-settle'
@@ -233,16 +233,16 @@ function settleOrgasmSideEffects(ch: any, charId: string, degree: number, opts: 
   const ctx = { sourceId: gameContext.getContext().player?.id ?? null, settlement: opts?.settlement }
   // 润滑（state 8；erArk 无 ability_level → 系数 1.0）
   if (eff.lube !== undefined) {
-    settleOneState(ctx, ch, charId, '润滑', eff.lube, 0, 0, null, isGroupSex, continuous, false, false)
+    settleOneState(ctx, ch, charId, ATTR.LUBE, eff.lube, 0, 0, null, isGroupSex, continuous, false, false)
   }
   // 欲情（state 12，能力=欲望 33）
   if (eff.desire) {
-    const desireLv = ch?.abilities?.['欲望']?.level ?? 0
+    const desireLv = ch?.abilities?.[ATTR.LUST]?.level ?? 0
     settleOneState(ctx, ch, charId, ATTR.AROUSAL, eff.desire.value, 0, desireLv, null, isGroupSex, continuous, false, eff.desire.tenths)
   }
   // 快乐（state 13，能力=快乐刻印 13）
   if (eff.happy) {
-    const happyLv = ch?.abilities?.['快乐刻印']?.level ?? 0
+    const happyLv = ch?.abilities?.[ATTR.MARK_PLEASURE]?.level ?? 0
     settleOneState(ctx, ch, charId, ATTR.PLEASURE, eff.happy.value, 0, happyLv, null, isGroupSex, continuous, false, eff.happy.tenths)
   }
   // 体力/气力（base_chara_hp_mp_common_settle：各自 add_time/degree，分开结算——共用会串档）
@@ -263,7 +263,7 @@ function settleOrgasmSideEffects(ch: any, charId: string, degree: number, opts: 
       isTimeStop: false,
     }
     const result = calcHpMpChange(input)
-    if (result.self?.hp !== 0) applyStateChange(ctx, ch, charId, '体力', result.self?.hp ?? 0)
+    if (result.self?.hp !== 0) applyStateChange(ctx, ch, charId, ATTR.HP, result.self?.hp ?? 0)
   }
   if (eff.mp) {
     const input: HpMpInput = {
@@ -282,13 +282,13 @@ function settleOrgasmSideEffects(ch: any, charId: string, degree: number, opts: 
       isTimeStop: false,
     }
     const result = calcHpMpChange(input)
-    if (result.self?.mp !== 0) applyStateChange(ctx, ch, charId, '气力', result.self?.mp ?? 0)
+    if (result.self?.mp !== 0) applyStateChange(ctx, ch, charId, ATTR.MP, result.self?.mp ?? 0)
   }
   // 苦痛/反感递减（erArk DOWN_*_PAIN/DISGUST：now_add_lust 负值，add_time 传负）
   if (eff.painReduce) {
     const p = PAIN_REDUCE_PARAMS[eff.painReduce]
-    const painLv = ch?.abilities?.['苦痛刻印']?.level ?? 0
-    const hateLv = ch?.abilities?.['反发刻印']?.level ?? 0
+    const painLv = ch?.abilities?.[ATTR.MARK_PAIN]?.level ?? 0
+    const hateLv = ch?.abilities?.[ATTR.MARK_REBEL]?.level ?? 0
     const curPain = ch.base?.[ATTR.PAIN] ?? 0
     const curHate = ch.base?.[ATTR.RESENTMENT] ?? 0
     settleOneState(ctx, ch, charId, ATTR.PAIN, 0, -(p.base + curPain / p.divisor), painLv, null, isGroupSex, continuous, false, false)
@@ -353,7 +353,7 @@ export function settleOrgasm(
     const player = entitySystem.get('character', gameContext.getContext().player?.id ?? (entitySystem.get('character', '0') ? '0' : 'player')) as any
     // 注释：技巧等级按名读 abilities（存 {level, xp} 对象）——2026-08-08 审查修复：
     // 原 getEntityAttr 返回对象（typeof !== number → 0），寸止判定技巧恒 0（静默偏差）
-    const skillAb = player?.abilities?.['技巧']
+    const skillAb = player?.abilities?.[ATTR.TECHNIQUE]
     const skillLv = skillAb && typeof skillAb === 'object'
       ? (skillAb.level ?? 0)
       : (typeof skillAb === 'number' ? skillAb : 0)
@@ -586,12 +586,12 @@ export async function orgasmJudge(charId: string, _statusDelta?: Record<number, 
   // 2026-08-08 修复：精液量+额外 ≤ 2ml → 无精液高潮（p_no_semen_climax）——
   // 绝顶但不射精：射精欲归零、忍耐计数清零（erArk orgasm_settle.py:52-59）
   if (charId === '0' || charId === 'player') {
-    const ejaPoint = char.base?.['射精欲'] ?? 0
-    const ejaMax = char.base?.['射精欲上限'] ?? 1000
+    const ejaPoint = await getEja(charId)
+    const ejaMax = char.base?.[ATTR.EJA_GAUGE_MAX] ?? 1000
     if (ejaPoint >= ejaMax) {
-      const semen = (char.base?.['精液量'] ?? 0) + (char.base?.['额外精液量'] ?? 0)
+      const semen = (char.base?.[ATTR.SEMEN] ?? 0) + (char.base?.[ATTR.EXTRA_SEMEN] ?? 0)
       if (semen <= 2) {
-        char.base['射精欲'] = 0
+        await setEja(charId, 0)
         if (hs) hs.endure_not_shoot_count = 0
       } else {
         empty.shouldEjaculate = true

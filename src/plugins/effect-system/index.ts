@@ -13,6 +13,7 @@ import { errorReporter } from '../../core/error-reporter'
 import { apiSystem } from '../../core/api'
 import { conditionEngine } from '../../core/condition-engine'
 import { modLoader } from '../../core/mod-loader'
+import { setEntityPath, ATTR } from '../../core/entity-utils'
 import { SettlementContext } from './settlement-context'
 
 // attributes.toml category=ability 的属性 → canonical 存储是 abilities[name].level（{level,xp} 结构）。
@@ -79,19 +80,15 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：set_field——直接改实体字段，不走 binding
+  // 注释：set_field——直接改实体字段，不走 binding（setEntityPath 统一嵌套写入，
+  // 2026-08-15 审查 C2：旧内联实现复刻了 2026-08-13 修复前的 setEntityPath——
+  // `!obj[parts[i]]` 会覆盖中间存在的 0/空串等 falsy 值，此处收敛到单一实现）
   effectTypeRegistry.register('set_field', (params: any, ctx: any) => {
     const targetIds = ctx._targetIds as string[]
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any
       if (!char) continue
-      const parts = params.path.split('.')
-      let obj = char
-      for (let i = 0; i < parts.length - 1; i++) {
-        if (!obj[parts[i]]) obj[parts[i]] = {}
-        obj = obj[parts[i]]
-      }
-      obj[parts[parts.length - 1]] = params.value
+      setEntityPath(char, params.path, params.value)
     }
     return true
   })
@@ -101,7 +98,7 @@ export function onLoad(_ctx: PluginContext): void {
     const targetIds = ctx._targetIds as string[]
     const attr = params.attr as string
     const rate = params.rate as number ?? 100
-    const maxAttr = attr === '体力' ? '体力上限' : attr === '气力' ? '气力上限' : null
+    const maxAttr = attr === ATTR.HP ? ATTR.HP_MAX : attr === ATTR.MP ? ATTR.MP_MAX : null
     if (!maxAttr) return true
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any

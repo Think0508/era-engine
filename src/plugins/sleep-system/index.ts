@@ -96,11 +96,11 @@ export function onLoad(_ctx: PluginContext): void {
       if (id !== playerId) continue
       const char = entitySystem.get('character', id) as any
       if (!char) continue
-      const max = getEntityAttr(char, '精液量上限')
-      const cur = getEntityAttr(char, '精液量')
+      const max = getEntityAttr(char, ATTR.SEMEN_MAX)
+      const cur = getEntityAttr(char, ATTR.SEMEN)
       if (typeof max !== 'number' || typeof cur !== 'number' || max <= 0) continue
       const add = Math.floor(addTime / 60 * 0.15 * max)
-      setEntityAttr(char, '精液量', Math.min(max, cur + add))
+      setEntityAttr(char, ATTR.SEMEN, Math.min(max, cur + add))
     }
     return true
   })

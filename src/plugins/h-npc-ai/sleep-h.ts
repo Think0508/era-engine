@@ -13,7 +13,7 @@ import { narrativeLog } from '../../core/narrative-log'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
 import { behaviorHistory } from '../../core/command-executor'
-import { getEntityAttr, setEntityAttr } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
 import { modLoader } from '../../core/mod-loader'
 import { getPlayerId, isInH } from './state'
 
@@ -30,7 +30,7 @@ function sleepLevels(): { name: string; sleep_point: number }[] {
 }
 
 function sleepPointOf(c: any): number {
-  const v = getEntityAttr(c, '熟睡值')
+  const v = getEntityAttr(c, ATTR.SLEEP)
   return typeof v === 'number' ? v : 0
 }
 
@@ -118,7 +118,7 @@ export async function settleSleepH(minutes: number): Promise<void> {
   } else {
     // M3 修复：熟睡值不钳下界（erArk :459 无下钳——负熟睡值时 weak_rate >60 必醒）
     const downSleep = Math.floor(minutes * 3)
-    setEntityAttr(target, '熟睡值', sleepPointOf(target) - downSleep)
+    setEntityAttr(target, ATTR.SLEEP, sleepPointOf(target) - downSleep)
     sleepLevel = sleepLevelOf(target)
   }
   if (sleepLevel <= 1) {
@@ -143,8 +143,8 @@ export async function judgeWeakUpInSleepH(actorId: string): Promise<boolean> {
   // 清空疲劳和睡眠程度（:343-344）+ unnormal bit5 清（:345）
   // 注意：sleeping 标记不清——erArk 此处目标行为仍为 SLEEP，recover_from_unconscious_h
   // 内 handle_action_sleep(target) 判定需要它（M2 修复：sleep_h_awake 仅在睡眠中被吵醒时设）
-  setEntityAttr(target, '疲劳度', 0)
-  setEntityAttr(target, '熟睡值', 0)
+  setEntityAttr(target, ATTR.FATIGUE, 0)
+  setEntityAttr(target, ATTR.SLEEP, 0)
   if (target.sp_flag) {
     target.sp_flag.unnormal_flag = (target.sp_flag.unnormal_flag ?? 0) & ~0x10
   }

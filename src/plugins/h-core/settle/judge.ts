@@ -11,7 +11,7 @@
 //   6. 陷落修正（爱情/隶属链）
 //   7. 天赋个性（淫乱/性好奇/底线/把柄等）
 
-import { getLevel, getEntityAttr } from '../../../core/entity-utils'
+import { getLevel, getEntityAttr, ATTR } from '../../../core/entity-utils'
 import { entitySystem } from '../../../core/entity-system'
 import { modLoader } from '../../../core/mod-loader'
 import { gameContext } from '../../../core/game-context'
@@ -112,31 +112,31 @@ export function calcJudge(
     const char = entitySystem.get('character', charId) as any
     if (char) {
       // 注释：2. 状态修正——欲情+快乐 ×5，恭顺+屈服 ×10，羞耻+抑郁 ×-5，苦痛+恐怖+反感 ×-10
-      const addS = getStatLevel(char, '欲情') + getStatLevel(char, '快乐')
-      const addL = getStatLevel(char, '恭顺') + getStatLevel(char, '屈服')
-      const subS = getStatLevel(char, '羞耻') + getStatLevel(char, '抑郁')
-      const subL = getStatLevel(char, '苦痛') + getStatLevel(char, '恐怖') + getStatLevel(char, '反感')
+      const addS = getStatLevel(char, ATTR.AROUSAL) + getStatLevel(char, ATTR.PLEASURE)
+      const addL = getStatLevel(char, ATTR.DEFERENCE) + getStatLevel(char, ATTR.OBEDIENCE)
+      const subS = getStatLevel(char, ATTR.SHAME) + getStatLevel(char, ATTR.DEPRESSION)
+      const subL = getStatLevel(char, ATTR.PAIN) + getStatLevel(char, ATTR.FEAR) + getStatLevel(char, ATTR.RESENTMENT)
       total += addS * 5 + addL * 10 - subS * 5 - subL * 10
 
       // 注释：3. 能力修正——亲密×10 + 欲望×5
-      const ablIntimacy = getAbilityLevel(char, '亲密')
-      const ablDesire = getAbilityLevel(char, '欲望')
+      const ablIntimacy = getAbilityLevel(char, ATTR.INTIMACY)
+      const ablDesire = getAbilityLevel(char, ATTR.LUST)
       total += ablIntimacy * 10 + ablDesire * 5
 
       // 注释：4. 刻印修正——快乐/屈服×50，苦痛/无觉×25，反发×-100，恐怖-时姦>0时 ×-50
-      const markPleasure = getAbilityLevel(char, '快乐刻印')
-      const markSubmit = getAbilityLevel(char, '屈服刻印')
-      const markPain = getAbilityLevel(char, '苦痛刻印')
-      const markVoid = getAbilityLevel(char, '无觉刻印')
-      const markFear = getAbilityLevel(char, '恐怖刻印')
-      const markTimestop = getAbilityLevel(char, '时姦刻印')
-      const markRebel = getAbilityLevel(char, '反发刻印')
+      const markPleasure = getAbilityLevel(char, ATTR.MARK_PLEASURE)
+      const markSubmit = getAbilityLevel(char, ATTR.MARK_OBEDIENCE)
+      const markPain = getAbilityLevel(char, ATTR.MARK_PAIN)
+      const markVoid = getAbilityLevel(char, ATTR.MARK_VOID)
+      const markFear = getAbilityLevel(char, ATTR.MARK_FEAR)
+      const markTimestop = getAbilityLevel(char, ATTR.MARK_TIMESTOP)
+      const markRebel = getAbilityLevel(char, ATTR.MARK_REBEL)
       total += markPleasure * 50 + markSubmit * 50 + markPain * 10 + markVoid * 25
       total -= Math.min(markFear - markTimestop, 0) * 50 + markRebel * 100
 
       // 注释：5. 心情修正——erArk: get_angry_level(angry_point) * 20
       // 愤怒≤5→Lv1(+20), 5<≤30→Lv0, 30<≤50→Lv-1(-20), >50→Lv-3(-60)
-      const anger = (char.base?.['愤怒'] ?? 0) as number
+      const anger = (char.base?.[ATTR.ANGER] ?? 0) as number
       let angryLevel = 0
       if (anger <= 5) angryLevel = 1
       else if (anger <= 30) angryLevel = 0
@@ -202,7 +202,7 @@ export function calcJudge(
         if (judgeClass === '群交' || judgeClass === '隐奸') otherBase = 60 + 60 * otherCount
         else if (judgeClass && S_TYPE_JUDGE_CLASSES.has(judgeClass)) otherBase = 40 + 40 * otherCount
         else otherBase = 25 + 25 * otherCount
-        const exposeLv = target?.abilities?.['露出']?.level ?? 0
+        const exposeLv = target?.abilities?.[ATTR.EXPOSURE]?.level ?? 0
         const exposeAdj = adjTable[Math.min(Math.max(0, exposeLv), 10)] ?? 4.0
         const otherPeople = Math.floor(otherBase * (exposeAdj - 1.6))
         total += otherPeople

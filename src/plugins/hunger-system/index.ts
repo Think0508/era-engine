@@ -10,8 +10,9 @@ import { modLoader } from '../../core/mod-loader'
 import { narrativeLog } from '../../core/narrative-log'
 import { useRegistry } from '../../core/use-registry'
 import { gameContext } from '../../core/game-context'
+import { ATTR } from '../../core/entity-utils'
 
-const HUNGER_ATTR = '饥饿值'
+const HUNGER_ATTR = ATTR.HUNGER
 const DIGESTION_ATTR = '消化剩余'
 
 function getHungerConfig(): any {
@@ -105,14 +106,14 @@ export function onLoad(_ctx: PluginContext): void {
       ch.base[DIGESTION_ATTR] = Math.floor(digestTime * talentMod)
 
       // 注释：回HP/MP（erArk default.py:63-120 公式）
-      const hpMax = ch.base['体力上限'] ?? 2500
-      const mpMax = ch.base['气力上限'] ?? 2000
+      const hpMax = ch.base[ATTR.HP_MAX] ?? 2500
+      const mpMax = ch.base[ATTR.MP_MAX] ?? 2000
       const hpRate = itemDef.hp_recovery ?? 1.0
       const mpRate = itemDef.mp_recovery ?? 1.0
       const hpGain = Math.floor(timeCost * (10 + hpMax * 0.005) * hpRate)
       const mpGain = Math.floor(timeCost * (20 + hpMax * 0.01) * mpRate)
-      ch.base['体力'] = Math.min(hpMax, (ch.base['体力'] ?? 0) + hpGain)
-      ch.base['气力'] = Math.min(mpMax, (ch.base['气力'] ?? 0) + mpGain)
+      ch.base[ATTR.HP] = Math.min(hpMax, (ch.base[ATTR.HP] ?? 0) + hpGain)
+      ch.base[ATTR.MP] = Math.min(mpMax, (ch.base[ATTR.MP] ?? 0) + mpGain)
 
       narrativeLog.write(`${ch.name ?? id} 吃完了${itemDef.name ?? itemId}，HP+${hpGain} MP+${mpGain}`, 'system', 'hunger-system')
     }

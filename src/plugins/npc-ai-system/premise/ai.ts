@@ -10,7 +10,7 @@
 import { conditionEngine } from '../../../core/condition-engine'
 import { entitySystem } from '../../../core/entity-system'
 import { modLoader } from '../../../core/mod-loader'
-import { getEntityAttr } from '../../../core/entity-utils'
+import { getEntityAttr, ATTR } from '../../../core/entity-utils'
 import type { GameContext } from '../../../core/types'
 
 // 注释：疲劳等级（erArk attr_calculation.get_tired_level，:764）——
@@ -36,7 +36,7 @@ export function registerAiPremises(): void {
     conditionEngine.registerPremise(`AI_TIRED_LEVEL_${level}`, (ctx: GameContext) => {
       const char = charOf(ctx)
       if (!char) return 0
-      const tired = getEntityAttr(char, '疲劳度')
+      const tired = getEntityAttr(char, ATTR.FATIGUE)
       if (typeof tired !== 'number') return 0
       const lv = getTiredLevel(tired)
       return lv >= level ? lv : 0

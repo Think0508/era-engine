@@ -6,6 +6,7 @@
 
 import { modLoader } from '../../core/mod-loader'
 import { gameContext } from '../../core/game-context'
+import { weightedRandom } from '../../utils/weighted-random'
 import { moveHandler } from './behavior-handlers'
 import type { BehaviorBlock, EntertainmentPeriod, EntertainmentTypeDef, WorkTypeDef } from './types'
 
@@ -131,19 +132,11 @@ export async function tryScheduleBehavior(
   return null
 }
 
-// 注释：规则加权随机（weight 缺省 1；全 0 → 第一个）
+// 注释：规则加权随机（weight 缺省 1；全 0 → 第一个）——统一走 utils/weighted-random（C3）
 function weightedRulePick(
   rules: { target: string; hour_range: [number, number]; weight?: number }[],
 ): { target: string; hour_range: [number, number]; weight?: number } | null {
-  let total = 0
-  for (const r of rules) total += Math.max(r.weight ?? 1, 0)
-  if (total <= 0) return rules[0]
-  let roll = Math.random() * total
-  for (const r of rules) {
-    roll -= Math.max(r.weight ?? 1, 0)
-    if (roll <= 0) return r
-  }
-  return rules[rules.length - 1]
+  return weightedRandom(rules.map(r => ({ item: r, weight: r.weight ?? 1 })))
 }
 
 // 注释：到某小时的分钟数——已过（≤0）→ 明天同刻。

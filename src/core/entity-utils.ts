@@ -5,8 +5,10 @@ export const ATTR = {
   FATIGUE: '疲劳度', HUNGER: '饥饿值', SLEEP: '熟睡值', URINE: '尿意',
   HP_MAX: '体力上限', MP_MAX: '气力上限',
   DESIRE: '欲望值', EJA_GAUGE: '射精欲', EJA_GAUGE_MAX: '射精欲上限',
-  SEMEN: '精液量', SEMEN_MAX: '精液量上限',
+  SEMEN: '精液量', SEMEN_MAX: '精液量上限', EXTRA_SEMEN: '额外精液量',
+  PENIS_SIZE: '阴茎大小',
   ANGER: '愤怒', ALCOHOL: '酒气',
+  AGE: '年龄',
   // 情绪
   MOOD: '情绪', REASON: '理性',
   // 性别
@@ -21,7 +23,7 @@ export const ATTR = {
   MONEY: '金钱',
   // PALAM（参数）
   SKIN: '皮肤', BREAST: '胸部', CLITORIS: '阴蒂', PENIS: '阴茎',
-  VAGINA: '阴道', ANUS: '后穴', WOMB: '子宫', THROAT: '口喉', MIND: '心理',
+  VAGINA: '阴道', ANUS: '后穴', URETHRA: '尿道', WOMB: '子宫', THROAT: '口喉', MIND: '心理',
   LUBE: '润滑', LEARN: '习得', DEFERENCE: '恭顺', FONDNESS: '好意',
   AROUSAL: '欲情', PLEASURE: '快乐', ANTICIPATION: '先导', OBEDIENCE: '屈服',
   SHAME: '羞耻', PAIN: '苦痛', FEAR: '恐怖', DEPRESSION: '抑郁', RESENTMENT: '反感',
@@ -148,4 +150,42 @@ export function getLevel(value: number, thresholds: number[]): number {
     if (value >= thresholds[i]) return i
   }
   return 0
+}
+
+// ── 属性上限表（era-baseline，ADR-0013）──
+// 2026-08-15 审查 C6：effect-system clampValue 与 realtime-settle 内联 caps 双份实现，
+// 合并为单表（core 单一来源；数值来自 erArk 复刻决策，改动前读各决策注记）
+export interface AttrCapRule {
+  /** 固定上限 */
+  cap?: number
+  /** 上限属性名——读目标实体的该属性作为上限（如 体力上限） */
+  maxAttr?: string
+}
+
+export const ATTR_CAPS: Record<string, AttrCapRule> = {
+  [ATTR.HP]: { maxAttr: ATTR.HP_MAX },
+  [ATTR.MP]: { maxAttr: ATTR.MP_MAX },
+  [ATTR.EJA_GAUGE]: { maxAttr: ATTR.EJA_GAUGE_MAX },
+  [ATTR.SEMEN]: { maxAttr: ATTR.SEMEN_MAX },
+  [ATTR.FATIGUE]: { cap: 160 },          // erArk realtime_settle.py 疲劳上限
+  [ATTR.TRUST]: { cap: 300 },            // erArk base_chara_favorability_and_trust_common_settle:663/:667
+  [ATTR.FAVORABILITY]: { cap: 100000 },  // erArk character_handle.add_favorability:395/:403
+  [ATTR.HUNGER]: { cap: 240 },           // erArk realtime_settle.py 饥饿上限
+  [ATTR.URINE]: { cap: 300 },            // G6 决策 2026-08-09：代码 min(...,300) 为准（注释 240 矛盾）
+  [ATTR.DESIRE]: { cap: 100 },
+  // 通用上限（erArk 状态值 clamp，common_default.py:249）
+  _default: { cap: 99999 },
+}
+
+/** 钳制属性值到有效范围（下限 0，上限查 ATTR_CAPS）——effect-system/realtime-settle 共用（C6） */
+export function clampAttrValue(char: any, attr: string, value: number): number {
+  let v = Math.max(0, value)
+  const rule = ATTR_CAPS[attr] ?? ATTR_CAPS._default
+  if (rule.maxAttr) {
+    const max = getEntityAttr(char, rule.maxAttr)
+    if (typeof max === 'number' && max > 0) v = Math.min(max, v)
+  } else if (typeof rule.cap === 'number') {
+    v = Math.min(rule.cap, v)
+  }
+  return v
 }

@@ -8,12 +8,12 @@
 // condition_fields 与 premises 注册完毕（plugin-manager 在全部 onEnable 后发 game:plugins_loaded），
 // 因此 validateInstructionData() 由 h-core 监听该事件时调用，注册本身在 h-core onEnable 即完成。
 
-import { conditionEngine } from '../core/condition-engine'
-import { commandRegistry, type CommandDef } from '../core/command-registry'
-import { modLoader, type LoadedMod, type HInstruction } from '../core/mod-loader'
-import { errorReporter } from '../core/error-reporter'
-import { conditionRegistry } from '../core/condition-registry'
-import type { Effect } from '../core/effect-type-registry'
+import { conditionEngine } from './condition-engine'
+import { commandRegistry, type CommandDef } from './command-registry'
+import { modLoader, type LoadedMod, type HInstruction } from './mod-loader'
+import { errorReporter } from './error-reporter'
+import { conditionRegistry } from './condition-registry'
+import type { Effect } from './effect-type-registry'
 
 function resolveEffects(
   raw: HInstruction,

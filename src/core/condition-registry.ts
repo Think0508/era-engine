@@ -1,4 +1,4 @@
-import { conditionEngine } from './condition-engine'
+import { conditionEngine, extractPremiseRefs } from './condition-engine'
 
 interface ConditionField {
   path: string
@@ -193,22 +193,8 @@ function pathMatch(pattern: string, actual: string): boolean {
   return true
 }
 
-// 注释：提取条件表达式中的 premise(X) 命名引用（premise 参数不被当作字段路径提取）
-const PREMISE_RE = /premise\(([^)]*)\)/g
-function extractPremiseRefs(expr: string): string[] {
-  const out: string[] = []
-  const stripped = expr.replace(STRING_RE, '')
-  let m: RegExpExecArray | null
-  PREMISE_RE.lastIndex = 0
-  while ((m = PREMISE_RE.exec(stripped)) !== null) {
-    const id = m[1].trim()
-    if (id) out.push(id)
-  }
-  return out
-}
-
-// 注释：从条件表达式中提取字段路径（location.tags.has_x / player.气血 / selected.xxx / target.xxx /
-// 插件注册的自定义根（如 combat.in_progress）等）
+// 注释：premise(X) 命名引用提取统一走 condition-engine.extractPremiseRefs（2026-08-15 C4 去重）
+// 字段路径提取（location.tags.has_x / player.气血 / 插件自定义根等）：
 // 做法：去掉字符串字面量 → 按运算符/括号切 token → 收集含 '.' 且首字符为字母的 token
 // 不做根白名单过滤——插件自定义根字段直接走 validateField 精确匹配
 const STRING_RE = /"[^"]*"|'[^']*'/g

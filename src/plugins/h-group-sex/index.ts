@@ -11,6 +11,7 @@ import { commandRegistry, type CommandDef } from '../../core/command-registry'
 import { eventBus } from '../../core/event-bus'
 import { gameContext, isPlayerChar } from '../../core/game-context'
 import { errorReporter } from '../../core/error-reporter'
+import { ATTR } from '../../core/entity-utils'
 
 // 注释：群交模板——5 个单目标槽位 + 1 个多目标侍奉槽
 // 槽位行为标识 = 指令 id（string，2026-08-11 grill Q10 定案——取代 erArk 数字 behaviorId，
@@ -154,8 +155,8 @@ function applyGroupSexRealtimeTick(charId: string, addTime: number): void {
   const othersCount = Math.max(0, sceneCount - 2)
   const adjust = Math.min(othersCount * 0.1, 2)
   if (!ch?.base) return
-  ch.base['羞耻'] = Math.min(99999, (ch.base['羞耻'] ?? 0) + Math.floor(addTime * adjust))
-  ch.base['心理'] = Math.min(99999, (ch.base['心理'] ?? 0) + Math.floor(addTime * adjust))
+  ch.base[ATTR.SHAME] = Math.min(99999, (ch.base[ATTR.SHAME] ?? 0) + Math.floor(addTime * adjust))
+  ch.base[ATTR.MIND] = Math.min(99999, (ch.base[ATTR.MIND] ?? 0) + Math.floor(addTime * adjust))
 }
 
 export function onLoad(_ctx: PluginContext): void {
@@ -193,11 +194,11 @@ export function onLoad(_ctx: PluginContext): void {
       for (const arr of Object.values(oc)) { if (Array.isArray(arr) && arr.length > 0) orgasmCount += arr[0] }
       if (orgasmCount <= 0) continue
       if (!c.base) c.base = {}
-      c.base['体力上限'] = Math.min(99999, (c.base['体力上限'] ?? 0) + orgasmCount * 2)
-      c.base['气力上限'] = Math.min(99999, (c.base['气力上限'] ?? 0) + orgasmCount * 3)
-      c.base['欲望值'] = Math.max(0, (c.base['欲望值'] ?? 0) - orgasmCount * 20)
+      c.base[ATTR.HP_MAX] = Math.min(99999, (c.base[ATTR.HP_MAX] ?? 0) + orgasmCount * 2)
+      c.base[ATTR.MP_MAX] = Math.min(99999, (c.base[ATTR.MP_MAX] ?? 0) + orgasmCount * 3)
+      c.base[ATTR.DESIRE] = Math.max(0, (c.base[ATTR.DESIRE] ?? 0) - orgasmCount * 20)
       if (isPlayerChar(c.id)) {
-        c.base['精液量上限'] = Math.min(999, (c.base['精液量上限'] ?? 0) + orgasmCount)
+        c.base[ATTR.SEMEN_MAX] = Math.min(999, (c.base[ATTR.SEMEN_MAX] ?? 0) + orgasmCount)
       }
     }
     return true
@@ -209,8 +210,8 @@ export function onLoad(_ctx: PluginContext): void {
       const c = ch as any
       if (!c?.h_state?.is_h) continue
       if (!c.base) c.base = {}
-      c.base['体力'] = Math.max(1, (c.base['体力'] ?? 0) - 10)
-      c.base['气力'] = Math.max(1, (c.base['气力'] ?? 0) - 10)
+      c.base[ATTR.HP] = Math.max(1, (c.base[ATTR.HP] ?? 0) - 10)
+      c.base[ATTR.MP] = Math.max(1, (c.base[ATTR.MP] ?? 0) - 10)
     }
     const refused = entitySystem.getAll('character').filter((c: any) =>
       c?.action_info?.ask_group_sex_refuse_chara_id_list?.length
@@ -356,7 +357,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     return !sceneCharacters().some((c: any) => c?.h_state?.is_h)
   })
   reg('SCENE_ALL_NOT_TIRED', () => {
-    return !sceneCharacters().some((c: any) => (c?.base?.['疲劳度'] ?? 0) > 74)
+    return !sceneCharacters().some((c: any) => (c?.base?.[ATTR.FATIGUE] ?? 0) > 74)
   })
 
   // 注释：Step 6 — 流程前提

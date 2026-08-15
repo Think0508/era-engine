@@ -18,6 +18,7 @@ import { errorReporter } from '../../core/error-reporter'
 import { conditionEngine } from '../../core/condition-engine'
 import { getNpcActiveH, setNpcActiveH, getPlayerId } from './state'
 import { filterInstructions, partTagsOfPartId } from './filter'
+import { ATTR } from '../../core/entity-utils'
 
 // 注释：部位权重映射——经验权重 1 + 性技能力权重 10（erArk evaluate_npc_body_part_prefs）
 // 性技能力映射为近似（erArk config_ability 表未随提取目录提供，见 复刻攻略/README）：
@@ -28,21 +29,7 @@ export const PART_TECHNIQUE: Record<number, string> = {
   4: '膣技', 5: '肛技', 6: '指技', 7: '膣技',
 }
 
-function weightedPick<T>(items: T[], weights: number[]): T | null {
-  if (items.length === 0) return null
-  if (items.length === 1) return items[0]
-  let total = 0
-  for (const w of weights) total += Math.max(0, w)
-  if (total <= 0) {
-    return items[Math.floor(Math.random() * items.length)]
-  }
-  let roll = Math.random() * total
-  for (let i = 0; i < items.length; i++) {
-    roll -= Math.max(0, weights[i])
-    if (roll < 0) return items[i]
-  }
-  return items[items.length - 1]
-}
+import { weightedRandom } from '../../utils/weighted-random'
 
 // 注释：部位喜好加权随机（erArk :390-458）
 // 部位 0-7（0=乳 1=胸 2=阴蒂 3=阴茎(强制排除) 4=阴道 5=肛门 6=尿道 7=子宫）
@@ -62,7 +49,7 @@ export function evaluateBodyPartPrefs(charId: string): number {
     w += lv * 10
     weights.push(w)
   }
-  const picked = weightedPick(partIds, weights)
+  const picked = weightedRandom(partIds, weights, { zeroFallback: 'uniform' })
   return picked ?? 0
 }
 
@@ -156,8 +143,8 @@ export async function npcActiveH(npcId: string): Promise<boolean> {
 export async function tryPlActiveH(npcId: string, judgeBase = 150): Promise<boolean> {
   const npc = entitySystem.get('character', npcId) as any
   if (!npc) return false
-  const fav = npc?.base?.['好感度'] ?? 0
-  const trust = npc?.base?.['信赖度'] ?? 0
+  const fav = npc?.base?.[ATTR.FAVORABILITY] ?? 0
+  const trust = npc?.base?.[ATTR.TRUST] ?? 0
   let result: { success: boolean; partial: boolean; retreated: boolean }
   try {
     result = await apiSystem.call('h-core', 'calcJudge', judgeBase, fav, trust, npcId, '掌握主动权')

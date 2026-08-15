@@ -4,7 +4,7 @@
 // 条件字段镜像：sleeping 镜像到实体顶层（condition_fields 消费——条件路径 resolution 只走实体直接键）
 
 import { modLoader } from '../../core/mod-loader'
-import { getEntityAttr } from '../../core/entity-utils'
+import { getEntityAttr, ATTR } from '../../core/entity-utils'
 
 export const UNNORMAL_BIT_5 = 0x10
 export const UNNORMAL_BIT_6 = 0x20
@@ -38,7 +38,7 @@ export function getSleepLevelInfo(sleepPoint: number): SleepLevelInfo {
 // 角色当前睡眠等级（读熟睡值属性）
 export function getSleepLevel(char: any): number {
   if (!char) return 0
-  const sp = getEntityAttr(char, '熟睡值')
+  const sp = getEntityAttr(char, ATTR.SLEEP)
   return getSleepLevelInfo(typeof sp === 'number' ? sp : 0).level
 }
 

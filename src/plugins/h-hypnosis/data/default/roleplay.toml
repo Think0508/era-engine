@@ -1,0 +1,332 @@
+# 注释：h-hypnosis 默认角色扮演数据（插件默认层，mod 可 override）
+# 数据源：Roleplay.csv 静态表（erArk），2026-08-15 从 index.ts ROLEPLAY_DATA 常量迁出
+# 结构镜像原对象：[[roleplay]] 数组，每项 { id, name, type, subType, info }
+
+[[roleplay]]
+id = 0
+name = "无"
+type = "无"
+subType = "无"
+info = "不进行角色扮演。"
+
+[[roleplay]]
+id = 1
+name = "妻子"
+type = "家庭"
+subType = "无"
+info = "对方是自己的妻子，和自己感情十分深厚。"
+
+[[roleplay]]
+id = 2
+name = "姐姐"
+type = "家庭"
+subType = "无"
+info = "对方是自己的亲姐姐，对自己这个弟弟十分照顾。"
+
+[[roleplay]]
+id = 3
+name = "妹妹"
+type = "家庭"
+subType = "无"
+info = "对方是自己的亲妹妹，很依赖自己这个哥哥。"
+
+[[roleplay]]
+id = 4
+name = "女儿"
+type = "家庭"
+subType = "无"
+info = "对方是自己的亲生女儿，天真可爱，非常依赖自己。"
+
+[[roleplay]]
+id = 5
+name = "妈妈"
+type = "家庭"
+subType = "无"
+info = "对方是自己的妈妈，对自己有强烈的保护欲和溺爱。"
+
+[[roleplay]]
+id = 11
+name = "小学生"
+type = "职业"
+subType = "校园"
+info = "对方是正在上小学的学生，天真无邪，充满好奇心。"
+
+[[roleplay]]
+id = 12
+name = "初中生"
+type = "职业"
+subType = "校园"
+info = "对方是正在上初中的学生，正值叛逆期。"
+
+[[roleplay]]
+id = 13
+name = "高中生"
+type = "职业"
+subType = "校园"
+info = "对方是正在上高中的学生，青春活泼。"
+
+[[roleplay]]
+id = 14
+name = "大学生"
+type = "职业"
+subType = "校园"
+info = "对方是正在上大学的学生，追求梦想。"
+
+[[roleplay]]
+id = 15
+name = "教师"
+type = "职业"
+subType = "校园"
+info = "对方是学校的教师，关心学生的成长与学习。"
+
+[[roleplay]]
+id = 21
+name = "护士"
+type = "职业"
+subType = "护士"
+info = "对方是照顾病人的护士，温柔体贴。"
+
+[[roleplay]]
+id = 22
+name = "警察"
+type = "职业"
+subType = "无"
+info = "对方是维护社会秩序的警察。"
+
+[[roleplay]]
+id = 23
+name = "白领"
+type = "职业"
+subType = "无"
+info = "对方是公司职员，工作繁忙压力大。"
+
+[[roleplay]]
+id = 24
+name = "偶像"
+type = "职业"
+subType = "偶像"
+info = "对方是国民级的美少女偶像。"
+
+[[roleplay]]
+id = 25
+name = "家庭女仆"
+type = "职业"
+subType = "家庭女仆"
+info = "对方是自己家雇佣的女仆。"
+
+[[roleplay]]
+id = 26
+name = "咖啡厅女仆"
+type = "职业"
+subType = "咖啡厅女仆"
+info = "对方是在女仆咖啡厅工作的女仆。"
+
+[[roleplay]]
+id = 27
+name = "巫女"
+type = "职业"
+subType = "巫女"
+info = "对方是神社的巫女。"
+
+[[roleplay]]
+id = 31
+name = "陌生人"
+type = "关系"
+subType = "非家庭"
+info = "自己和对方之间没有任何关系。"
+
+[[roleplay]]
+id = 32
+name = "师生"
+type = "关系"
+subType = "校园"
+info = "对方和自己是教导的师生关系。"
+
+[[roleplay]]
+id = 33
+name = "同学"
+type = "关系"
+subType = "校园"
+info = "对方是自己的同班同学。"
+
+[[roleplay]]
+id = 34
+name = "同事"
+type = "关系"
+subType = "非家庭"
+info = "对方是自己的同事，工作上互相支持。"
+
+[[roleplay]]
+id = 35
+name = "邻居"
+type = "关系"
+subType = "非家庭"
+info = "对方是住在自己隔壁的邻居。"
+
+[[roleplay]]
+id = 51
+name = "宠物猫"
+type = "人外"
+subType = "特殊"
+info = "对方以为自己是一只猫，拥有猫的所有特征和习性。"
+
+[[roleplay]]
+id = 52
+name = "宠物狗"
+type = "人外"
+subType = "特殊"
+info = "对方以为自己是一只狗，拥有狗的所有特征和习性。"
+
+[[roleplay]]
+id = 53
+name = "魅魔"
+type = "人外"
+subType = "无"
+info = "对方以为自己是魅魔，以吸取精气为生。"
+
+[[roleplay]]
+id = 101
+name = "电车痴汉"
+type = "场景"
+subType = "通用"
+info = "在拥挤的电车上进行痴汉行为。"
+
+[[roleplay]]
+id = 102
+name = "户外当众"
+type = "场景"
+subType = "通用"
+info = "在公共场所进行亲密行为。"
+
+[[roleplay]]
+id = 103
+name = "公共厕所（主动）"
+type = "场景"
+subType = "通用"
+info = "对方把自己捆在公共厕所隔间里。"
+
+[[roleplay]]
+id = 104
+name = "公共厕所（被动）"
+type = "场景"
+subType = "通用"
+info = "对方被自己捆在公共厕所隔间里。"
+
+[[roleplay]]
+id = 105
+name = "俘虏拷问"
+type = "场景"
+subType = "特殊"
+info = "对方是被俘虏的敌人，自己是审讯官。"
+
+[[roleplay]]
+id = 106
+name = "榨精护士"
+type = "场景"
+subType = "护士"
+info = "对方是医院的护士，负责精液采集。"
+
+[[roleplay]]
+id = 107
+name = "战败魔法少女"
+type = "场景"
+subType = "特殊"
+info = "对方是魔法少女，被自己打败后沦为自己的玩物。"
+
+[[roleplay]]
+id = 108
+name = "VTuber直播中"
+type = "场景"
+subType = "家庭"
+info = "对方是正在直播的VTuber。"
+
+[[roleplay]]
+id = 109
+name = "向神灵祭祀"
+type = "场景"
+subType = "巫女"
+info = "在神像面前进行交合。"
+
+[[roleplay]]
+id = 110
+name = "向自己祭祀"
+type = "场景"
+subType = "巫女"
+info = "对方是巫女，自己化身神灵。"
+
+[[roleplay]]
+id = 111
+name = "女仆惩罚调教"
+type = "场景"
+subType = "家庭女仆"
+info = "对方做了错事，必须接受主人的惩罚。"
+
+[[roleplay]]
+id = 112
+name = "女仆咖啡厅里菜单"
+type = "场景"
+subType = "咖啡厅女仆"
+info = "点了特殊的菜单，女仆必须满足要求。"
+
+[[roleplay]]
+id = 121
+name = "偶像台前准备室"
+type = "场景"
+subType = "偶像"
+info = "在准备室里对偶像进行特殊的准备。"
+
+[[roleplay]]
+id = 122
+name = "偶像单人LIVE"
+type = "场景"
+subType = "偶像"
+info = "对方为自己开了一场私人演出。"
+
+[[roleplay]]
+id = 123
+name = "偶像演出后粉丝答谢"
+type = "场景"
+subType = "偶像"
+info = "演出结束后进行特殊的粉丝答谢。"
+
+[[roleplay]]
+id = 124
+name = "偶像枕营业"
+type = "场景"
+subType = "特殊"
+info = "为了上台表演必须与自己发生关系。"
+
+[[roleplay]]
+id = 131
+name = "放学后教室H"
+type = "场景"
+subType = "校园"
+info = "在空无一人的教室里偷偷进行性行为。"
+
+[[roleplay]]
+id = 132
+name = "体育仓库H"
+type = "场景"
+subType = "校园"
+info = "在体育器材仓库中偷偷进行性行为。"
+
+[[roleplay]]
+id = 133
+name = "天台H"
+type = "场景"
+subType = "校园"
+info = "在学校的天台上进行性行为。"
+
+[[roleplay]]
+id = 134
+name = "学校厕所H"
+type = "场景"
+subType = "校园"
+info = "在学校的厕所里进行性行为。"
+
+[[roleplay]]
+id = 135
+name = "保健室H"
+type = "场景"
+subType = "校园"
+info = "藏在保健室的同一张床上进行性行为。"

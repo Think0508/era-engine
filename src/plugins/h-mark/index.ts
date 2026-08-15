@@ -8,7 +8,7 @@ import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { narrativeLog } from '../../core/narrative-log'
 import { eventBus } from '../../core/event-bus'
-import { getEntityAttr } from '../../core/entity-utils'
+import { getEntityAttr, ATTR } from '../../core/entity-utils'
 
 // 注释：刻印 ID 映射
 const MARKS: Record<string, number> = {
@@ -19,7 +19,7 @@ const MARKS: Record<string, number> = {
 // 与 abilities.toml 按名存储（'快乐刻印' 等）双轨分裂——settle_state/calcJudge/h-bondage/
 // h-hypnosis 读按名键恒 0，刻印升级对判定/状态系数静默失效；统一按名键为唯一存储）
 const MARK_ABILITY: Record<number, string> = {
-  13: '快乐刻印', 14: '屈服刻印', 15: '苦痛刻印', 16: '时姦刻印', 17: '恐怖刻印', 18: '反发刻印', 19: '无觉刻印',
+  13: ATTR.MARK_PLEASURE, 14: ATTR.MARK_OBEDIENCE, 15: ATTR.MARK_PAIN, 16: ATTR.MARK_TIMESTOP, 17: ATTR.MARK_FEAR, 18: ATTR.MARK_REBEL, 19: ATTR.MARK_VOID,
 }
 
 // 注释：刻印升级条件
@@ -37,10 +37,10 @@ const MARK_UP_CONDITIONS: Record<string, (number | number[])[]> = {
 
 // 注释：刻印副作用——升级后设定对应能力的最低值
 const MARK_SIDE_EFFECTS: Record<number, ([string, number] | [])[]> = {
-  13: [['欲情', 1], ['欲情', 3], ['欲情', 5]],     // 快乐→欲望最低
-  14: [['顺从', 1], ['顺从', 3], ['顺从', 5]],     // 屈服→顺从最低
-  15: [['受虐', 1], ['受虐', 3], ['受虐', 5]],     // 苦痛→受虐最低
-  19: [[], [], [], ['欲情', 6], ['欲情', 7], ['欲情', 8]],  // 无觉→欲望最低
+  13: [[ATTR.AROUSAL, 1], [ATTR.AROUSAL, 3], [ATTR.AROUSAL, 5]],     // 快乐→欲望最低
+  14: [[ATTR.SUBMISSION, 1], [ATTR.SUBMISSION, 3], [ATTR.SUBMISSION, 5]],     // 屈服→顺从最低
+  15: [[ATTR.MASOCHISM, 1], [ATTR.MASOCHISM, 3], [ATTR.MASOCHISM, 5]],     // 苦痛→受虐最低
+  19: [[], [], [], [ATTR.AROUSAL, 6], [ATTR.AROUSAL, 7], [ATTR.AROUSAL, 8]],  // 无觉→欲望最低
 }
 
 export function onLoad(_ctx: PluginContext): void {}
@@ -174,15 +174,15 @@ function getCheckValue(char: any, markId: number): number {
     case 19: // 无觉——本次 H 无意识绝顶次数
       return countUnconsciousOrgasmThisSession(h)
     case 14: // 屈服
-      return (getEntityAttr(char, '屈服') ?? 0) + (getEntityAttr(char, '恭顺') ?? 0) + (getEntityAttr(char, '羞耻') ?? 0) / 5
+      return (getEntityAttr(char, ATTR.OBEDIENCE) ?? 0) + (getEntityAttr(char, ATTR.DEFERENCE) ?? 0) + (getEntityAttr(char, ATTR.SHAME) ?? 0) / 5
     case 15: // 苦痛
-      return (getEntityAttr(char, '苦痛') ?? 0) * 5
+      return (getEntityAttr(char, ATTR.PAIN) ?? 0) * 5
     case 16: // 时姦——无自动升级
       return 0
     case 17: // 恐怖
-      return (getEntityAttr(char, '恐怖') ?? 0) * 5 + (getEntityAttr(char, '苦痛') ?? 0)
+      return (getEntityAttr(char, ATTR.FEAR) ?? 0) * 5 + (getEntityAttr(char, ATTR.PAIN) ?? 0)
     case 18: // 反发
-      return (getEntityAttr(char, '反感') ?? 0) * 5 + (getEntityAttr(char, '抑郁') ?? 0) + (getEntityAttr(char, '恐怖') ?? 0) + (getEntityAttr(char, '苦痛') ?? 0)
+      return (getEntityAttr(char, ATTR.RESENTMENT) ?? 0) * 5 + (getEntityAttr(char, ATTR.DEPRESSION) ?? 0) + (getEntityAttr(char, ATTR.FEAR) ?? 0) + (getEntityAttr(char, ATTR.PAIN) ?? 0)
     default:
       return 0
   }

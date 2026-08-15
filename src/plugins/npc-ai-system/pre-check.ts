@@ -3,7 +3,7 @@
 // 本次注册 3 道：① tired 标记 ② cant_move（监禁） ③ follow 接管
 // （助理问安/ H 失神后置——Q8 决策：无机制位，后续用目标前提数据实现）
 
-import { getEntityAttr } from '../../core/entity-utils'
+import { getEntityAttr, ATTR } from '../../core/entity-utils'
 import { gameContext } from '../../core/game-context'
 import { errorReporter } from '../../core/error-reporter'
 import { setBehaviorBlock } from './behavior-block'
@@ -36,8 +36,8 @@ export function registerPreCheck(id: string, fn: PreCheckHandler): void {
 // 2026-08-10 排查修复：无"体力"属性的角色（getEntityAttr 缺失返回 0）此前被
 // 恒判为 HP≤1 → tired 永远为 true（静默误报）——加存在性检查
 export function tiredGate(_charId: string, char: any, _now: number): PreCheckResult {
-  const hp = getEntityAttr(char, '体力')
-  const hasHpStat = hasAttr(char, '体力')
+  const hp = getEntityAttr(char, ATTR.HP)
+  const hasHpStat = hasAttr(char, ATTR.HP)
   const prev = !!char?.sp_flag?.tired
   const next = hasHpStat && typeof hp === 'number' && hp <= 1
   if (prev !== next) {

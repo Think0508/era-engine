@@ -3,8 +3,15 @@ import type { PluginContext } from './types'
 import type { ApiSystem } from './api'
 import type { EventBus } from './event-bus'
 import { conditionRegistry } from './condition-registry'
-import type { SlotRegistry } from '../ui/slots/slot-registry'
 import type { CommandRegistry, CommandDef } from './command-registry'
+import type { UISlotItem } from './types'
+
+// 注释：SlotRegistry 最小结构接口——core 不依赖 ui 层实现，只声明所需方法
+// 真实 SlotRegistry 类（src/ui/slots/slot-registry.ts）结构兼容此接口
+export interface SlotRegistryLike {
+  register(slotName: string, item: UISlotItem): void
+  unregister(slotName: string, id: string): void
+}
 import { resolveDataDependencies, type DataDependencyInfo } from './data-dependencies'
 import { errorReporter } from './error-reporter'
 
@@ -70,7 +77,7 @@ interface PluginDef {
 class PluginManager {
   private apiSystem: ApiSystem
   private eventBus: EventBus
-  private slotRegistry: SlotRegistry | null
+  private slotRegistry: SlotRegistryLike | null
   private commandRegistry: CommandRegistry | null
   private plugins = new Map<string, PluginDef>()
   private activeParentApis = new Map<string, Record<string, any>>()
@@ -79,7 +86,7 @@ class PluginManager {
   constructor(
     apiSystem: ApiSystem,
     eventBus: EventBus,
-    slotRegistry: SlotRegistry | null = null,
+    slotRegistry: SlotRegistryLike | null = null,
     commandRegistry: CommandRegistry | null = null,
   ) {
     this.apiSystem = apiSystem

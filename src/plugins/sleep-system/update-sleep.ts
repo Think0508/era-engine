@@ -50,13 +50,13 @@ function growStaminaMax(char: any): void {
 function refreshTempSemenMax(char: any, minutes: number): void {
   if (minutes < 360) return
   const semen = getEntityAttr(char, ATTR.SEMEN)
-  const semenMax = getEntityAttr(char, '精液量上限')
+  const semenMax = getEntityAttr(char, ATTR.SEMEN_MAX)
   if (typeof semen !== 'number' || semen <= 0) return
   if (typeof semenMax !== 'number' || semenMax <= 0) return
   const extraMax = semenMax * 4
-  const extra = getEntityAttr(char, '额外精液量')
+  const extra = getEntityAttr(char, ATTR.EXTRA_SEMEN)
   const newExtra = Math.min(extraMax, (typeof extra === 'number' ? extra : 0) + Math.floor(semen / 2))
-  setEntityAttr(char, '额外精液量', newExtra)
+  setEntityAttr(char, ATTR.EXTRA_SEMEN, newExtra)
   if (!char.talents) char.talents = {}
   if (newExtra >= extraMax) {
     char.talents['浓厚精液'] = 1
@@ -101,7 +101,21 @@ export async function updateSleepAll(minutes: number): Promise<void> {
       // 玩家分支
       if (!c.action_info) c.action_info = {}
       // eja_point = 0（erArk sleep_settle.py:56，无条件——射精欲不清则睡醒仍满）
-      setEntityAttr(c, ATTR.EJA_GAUGE, 0)
+      // 写路径走 h-ejaculation setEja API（射精欲唯一写入口，C5 修复——跨插件禁止直接改字段；
+      // 未启用 → 静默降级；真实错误照报——与 h-core settle/eja.ts 同模式，禁止裸 catch 吞错）
+      try {
+        await apiSystem.call('h-ejaculation', 'setEja', c.id, 0)
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        const apiMissing = msg.includes('h-ejaculation') || msg.includes('未注册') || msg.includes('does not exist')
+        if (!apiMissing) {
+          errorReporter.report({
+            source: 'sleep-system',
+            severity: 'error',
+            message: `睡眠结算射精欲清零失败（${c.id}）：${msg}`,
+          })
+        }
+      }
       // day_first_shoot_semen = True（:57，无条件——睡醒第一发翻倍）
       c.action_info.day_first_shoot_semen = true
       // 醒来时间记录（erArk RECORD_WAKE_TIME 语义 + game_type.py:600 wake_time）

@@ -13,6 +13,7 @@ import { conditionEngine, premiseWeight } from '../../core/condition-engine'
 import { conditionRegistry } from '../../core/condition-registry'
 import { gameContext } from '../../core/game-context'
 import { errorReporter } from '../../core/error-reporter'
+import { weightedRandom } from '../../utils/weighted-random'
 import type { GameContext } from '../../core/types'
 import type { AITargetDef } from './types'
 
@@ -146,17 +147,9 @@ function collectCandidates(
   return results
 }
 
-// 注释：加权随机选择（权重 0/负值防御：全 0 → 第一个）
+// 注释：加权随机选择（权重 0/负值防御：全 0 → 第一个）——统一走 utils/weighted-random（C3）
 function weightedPick(results: SearchResult[]): SearchResult {
-  let total = 0
-  for (const r of results) total += Math.max(r.weight, 0)
-  if (total <= 0) return results[0]
-  let roll = Math.random() * total
-  for (const r of results) {
-    roll -= Math.max(r.weight, 0)
-    if (roll <= 0) return r
-  }
-  return results[results.length - 1]
+  return weightedRandom(results.map(r => ({ item: r, weight: r.weight })))
 }
 
 // 注释：主搜索——按层升序；首个有候选的层胜出；层内 get_first_only 取第一个，

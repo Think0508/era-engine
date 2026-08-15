@@ -72,10 +72,10 @@ interface PainPartCfg {
 }
 
 const PAIN_PARTS: Record<string, PainPartCfg> = {
-  '阴道': { dilateAbility: '阴道扩张', baseValue: 30, levelOffset: 1 },
-  '后穴': { dilateAbility: '后穴扩张', baseValue: 30, levelOffset: 1 },
-  '尿道': { dilateAbility: '尿道扩张', baseValue: 1000, levelOffset: -3 },
-  '子宫': { dilateAbility: '子宫扩张', baseValue: 100, levelOffset: -1 },
+  [ATTR.VAGINA]: { dilateAbility: '阴道扩张', baseValue: 30, levelOffset: 1 },
+  [ATTR.ANUS]: { dilateAbility: '后穴扩张', baseValue: 30, levelOffset: 1 },
+  [ATTR.URETHRA]: { dilateAbility: '尿道扩张', baseValue: 1000, levelOffset: -3 },
+  [ATTR.WOMB]: { dilateAbility: '子宫扩张', baseValue: 100, levelOffset: -1 },
 }
 
 // 注释：121 TARGET_LUBRICATION_ADJUST_ADD_PAIN（default.py:8255-8284）
@@ -91,8 +91,8 @@ export async function runPainByLubrication(execCtx: any): Promise<boolean> {
     const target = entitySystem.get('character', id) as any
     if (!target) continue
     const painAdjust = getPainAdjust(getEntityAttr(target, ATTR.LUBE), false)
-    const painLv = getAbilityLv(target, '苦痛刻印')
-    settleOneState(execCtx, target, id, ATTR.PAIN, 30, tc, painLv, '苦痛刻印', isGroupSex, continuous, false, true, painAdjust)
+    const painLv = getAbilityLv(target, ATTR.MARK_PAIN)
+    settleOneState(execCtx, target, id, ATTR.PAIN, 30, tc, painLv, ATTR.MARK_PAIN, isGroupSex, continuous, false, true, painAdjust)
   }
   return true
 }
@@ -119,7 +119,7 @@ export async function runPainByPart(execCtx: any, part: string): Promise<boolean
   const tbl = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
   const initiator = execCtx.sourceId ? entitySystem.get('character', execCtx.sourceId) as any : null
   // 发起者阴茎大小（erArk pl_ability.jj_size，默认 1）
-  const jjSize = getEntityAttr(initiator, '阴茎大小') || 1
+  const jjSize = getEntityAttr(initiator, ATTR.PENIS_SIZE) || 1
   const waistLv = getAbilityLv(initiator, '腰技')
   const waistAdjust = getAdj(tbl, waistLv) - 1
   const wombSex = initiator?.h_state?.current_womb_sex_position === 2
@@ -131,10 +131,10 @@ export async function runPainByPart(execCtx: any, part: string): Promise<boolean
     const finalLevel = dilateLv - jjSize + cfg.levelOffset
     let sizeAdjust = getPainAdjust(finalLevel, true)
     // 子宫奸 → 尺寸调整 ×3（default.py:8462-8463）
-    if (part === '子宫' && wombSex) sizeAdjust *= 3
+    if (part === ATTR.WOMB && wombSex) sizeAdjust *= 3
     const finalAdjust = Math.max(painAdjust - waistAdjust, 0) * sizeAdjust
-    const painLv = getAbilityLv(target, '苦痛刻印')
-    settleOneState(execCtx, target, id, ATTR.PAIN, cfg.baseValue, tc, painLv, '苦痛刻印', isGroupSex, continuous, false, true, finalAdjust)
+    const painLv = getAbilityLv(target, ATTR.MARK_PAIN)
+    settleOneState(execCtx, target, id, ATTR.PAIN, cfg.baseValue, tc, painLv, ATTR.MARK_PAIN, isGroupSex, continuous, false, true, finalAdjust)
   }
   return true
 }
@@ -160,11 +160,11 @@ export async function runFeelBySex(execCtx: any, part: string): Promise<boolean>
   const hc = (modLoader.getMod()?.hConfig as any) ?? {}
   const tbl = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
   const initiator = execCtx.sourceId ? entitySystem.get('character', execCtx.sourceId) as any : null
-  const jjSize = getEntityAttr(initiator, '阴茎大小') || 1
+  const jjSize = getEntityAttr(initiator, ATTR.PENIS_SIZE) || 1
   const sizeAdjust = getAdj(tbl, jjSize) / 2
   const waistAdjust = getAdj(tbl, getAbilityLv(initiator, '腰技')) / 2
   const extraAdjust = sizeAdjust + waistAdjust
-  const techLv = getAbilityLv(initiator, '技巧')
+  const techLv = getAbilityLv(initiator, ATTR.TECHNIQUE)
   for (const id of ids) {
     const target = entitySystem.get('character', id) as any
     if (!target) continue
@@ -172,7 +172,7 @@ export async function runFeelBySex(execCtx: any, part: string): Promise<boolean>
     settleOneState(execCtx, target, id, part, 50, tc, null, null, isGroupSex, continuous, false, true, extraAdjust, techLv)
     // 欲情（目标部位感度系数；A/后穴 extra 只用 size_adjust——erArk :8552）
     const sensLv = getAbilityLv(target, PART_ABILITY[part] ?? part)
-    const lustExtra = part === '后穴' ? sizeAdjust : extraAdjust
+    const lustExtra = part === ATTR.ANUS ? sizeAdjust : extraAdjust
     settleOneState(execCtx, target, id, ATTR.AROUSAL, 50, tc, sensLv, null, isGroupSex, continuous, false, true, lustExtra)
   }
   return true
@@ -192,19 +192,19 @@ export async function runPainToH(execCtx: any): Promise<boolean> {
   const hc = (modLoader.getMod()?.hConfig as any) ?? {}
   const tbl = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
   const initiator = execCtx.sourceId ? entitySystem.get('character', execCtx.sourceId) as any : null
-  const techLv = getAbilityLv(initiator, '技巧')
+  const techLv = getAbilityLv(initiator, ATTR.TECHNIQUE)
   const techAdjust = getAdj(tbl, techLv)
   for (const id of ids) {
     const target = entitySystem.get('character', id) as any
     if (!target) continue
-    const masochismAdjust = getAdj(tbl, getAbilityLv(target, '受虐'))
+    const masochismAdjust = getAdj(tbl, getAbilityLv(target, ATTR.MASOCHISM))
     const extraAdjust = techAdjust + masochismAdjust
     // 心理快感（extra = 受虐系数）
-    settleOneState(execCtx, target, id, '心理', 50, tc, null, null, isGroupSex, continuous, false, true, masochismAdjust, techLv)
+    settleOneState(execCtx, target, id, ATTR.MIND, 50, tc, null, null, isGroupSex, continuous, false, true, masochismAdjust, techLv)
     // 欲情（能力 = 目标.欲望 33）
-    settleOneState(execCtx, target, id, ATTR.AROUSAL, 50, tc, getAbilityLv(target, '欲望'), null, isGroupSex, continuous, false, true, extraAdjust)
+    settleOneState(execCtx, target, id, ATTR.AROUSAL, 50, tc, getAbilityLv(target, ATTR.LUST), null, isGroupSex, continuous, false, true, extraAdjust)
     // 苦痛（能力 = 目标.苦痛刻印 15）
-    settleOneState(execCtx, target, id, ATTR.PAIN, 50, tc, getAbilityLv(target, '苦痛刻印'), null, isGroupSex, continuous, false, true, extraAdjust)
+    settleOneState(execCtx, target, id, ATTR.PAIN, 50, tc, getAbilityLv(target, ATTR.MARK_PAIN), null, isGroupSex, continuous, false, true, extraAdjust)
   }
   return true
 }

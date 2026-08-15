@@ -23,6 +23,7 @@ import { getPlayerId, isInH, isTimeStopped, isBlockhead, exitHBlock, getStamina,
 import { runGroupSexAi } from './group-sex-ai'
 import { settleSleepH } from './sleep-h'
 import { runSexAssist } from './sex-assist'
+import { ATTR } from '../../core/entity-utils'
 
 // 注释：疲劳等级 ≥2 的疲劳度阈值（erArk get_tired_level：疲劳度/160，≤0.74→0，
 // ≤0.84→1，<1→2，≥1→3 → level≥2 ⟺ 疲劳度 > 134.4）——handle_npc_ai.py:57
@@ -143,7 +144,7 @@ export async function checkNpcFatigueExit(npcId: string): Promise<void> {
   if (isTimeStopped(npc)) return
   // 无意识 H（睡眠/醉酒/催眠/时停）→ 只查 HP（erArk :96-102：无意识不检测疲劳）
   const unconscious = (npc.sp_flag?.unconscious_h ?? 0) >= 1
-  const tired = !unconscious && (npc.base?.['疲劳度'] ?? 0) > TIRED_LEVEL_2_THRESHOLD
+  const tired = !unconscious && (npc.base?.[ATTR.FATIGUE] ?? 0) > TIRED_LEVEL_2_THRESHOLD
   if (getStamina(npc) > 1 && !tired) return
 
   const inGroup = await isGroupSexMode()

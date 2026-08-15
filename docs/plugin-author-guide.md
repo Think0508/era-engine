@@ -152,6 +152,7 @@ ctx.api.call('map', 'getLocation', locationId)                // → LocationDat
 ctx.api.call('map', 'hasTag', locationId, tag)                // → boolean
 ctx.api.call('map', 'findPath', fromId, toId)                 // → { path: string[], total_minutes } | null（NPC AI 寻路，dijkstra）
 ctx.api.call('map', 'moveTo', targetLocationId)               // → void（校验可达性后移动，触发生成 location:enter）
+ctx.api.call('map', 'getMapLayout', locationId?)               // → { layout: MapLayout, parentId } | null（取地点布局——MapView 渲染用，parent 链上找最近的带布局祖先）
 ```
 
 - `getReachable` 替代旧 `getExits`，综合 parent 链 + graph 边返回可达地点。`ReachableLocation` 包含 `{ target, name, time_cost, via }`，其中 `via` 为 `'parent' | 'child' | 'graph'`
@@ -422,6 +423,7 @@ ctx.api.call('h-ejaculation', 'addEja', charId, delta)        // → void（增�
                                                               //   h-core 结算经此写入，禁止其他插件直接改字段）
 ctx.api.call('h-ejaculation', 'getSemenOnBody', charId)       // → object（body_semen 分布：{partId: [ml, level]}）
 ctx.api.call('h-ejaculation', 'absorbSemen', charId)          // → void
+ctx.api.call('h-ejaculation', 'resetPenisDirty', )            // → void（清玩家 dirty.penis_dirty_dict——内射后重置标记）
 ```
 
 #### h-pregnancy — 妊娠
@@ -430,6 +432,7 @@ ctx.api.call('h-ejaculation', 'absorbSemen', charId)          // → void
 ctx.api.call('h-pregnancy', 'isPregnant', charId)             // → boolean
 ctx.api.call('h-pregnancy', 'getDays', charId)                // → number
 ctx.api.call('h-pregnancy', 'getPeriod', charId)              // → string
+ctx.api.call('h-pregnancy', 'getMilk', charId)                // → number（当前泌乳量）
 ```
 
 #### h-first-time — 第一次
@@ -585,6 +588,7 @@ ctx.api.call('h-time-stop', 'getXP', charId)                  // → number
 ctx.api.call('talk-common', 'replace', text, targetId)        // → string（替换 {var} 占位符）
 ctx.api.call('talk-common', 'getText', variable, targetId)    // → string | null
 ctx.api.call('talk-common', 'getVariables')                   // → string[]
+ctx.api.call('talk-common', 'getBehaviorText', behaviorKey, targetId, actorId?) // → string | null（行为地文三段组合）
 ```
 
 详见 `docs/talk-common-system.md`。

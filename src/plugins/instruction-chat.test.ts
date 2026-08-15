@@ -19,7 +19,7 @@ import { onLoad as timeStopOnLoad, onEnable as timeStopOnEnable } from './h-time
 import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable } from './dialogue-system/index'
 import { onEnable as talkCommonOnEnable } from './talk-common-system/index'
 import { onEnable as confinementOnEnable } from './confinement-system/index'
-import { validateInstructionData } from './instruction-loader'
+import { validateInstructionData } from '../core/instruction-loader'
 import { eventBus } from '../core/event-bus'
 import { clearBehaviorHistory } from '../core/command-executor'
 import { makeTestExecCtx, resetCharacterEntity, DEFAULT_NPC_BASE, DEFAULT_PLAYER_BASE } from '../utils/test-helpers'

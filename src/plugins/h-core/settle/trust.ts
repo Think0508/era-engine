@@ -7,6 +7,7 @@
 import { entitySystem } from '../../../core/entity-system'
 import { modLoader } from '../../../core/mod-loader'
 import { getFavorabilityTalentAdjust } from './talent-adjust'
+import { ATTR } from '../../../core/entity-utils'
 
 function getAbilityLevel(char: any, abilityId: string): number {
   return char?.abilities?.[abilityId]?.level ?? 0
@@ -15,7 +16,7 @@ function getAbilityLevel(char: any, abilityId: string): number {
 // 注释：刻印能力按名查（2026-08-08 审查修复：原 `mark_{id}` 数字键查按名存储的 abilities →
 // 恒 0，刻印升级对信赖修正静默失效；h-mark 现统一写按名键）
 const MARK_ABILITY: Record<number, string> = {
-  13: '快乐刻印', 14: '屈服刻印', 15: '苦痛刻印', 17: '恐怖刻印', 18: '反发刻印',
+  13: ATTR.MARK_PLEASURE, 14: ATTR.MARK_OBEDIENCE, 15: ATTR.MARK_PAIN, 17: ATTR.MARK_FEAR, 18: ATTR.MARK_REBEL,
 }
 
 function getMarkLevel(char: any, markId: number): number {
@@ -28,7 +29,7 @@ export function calcTrust(charId: string, durationMinutes: number): number {
   // 注释：erArk calculation_trust:764-805——全加法 fix（无状态修正，与好感不同）
   let fix = 1.0
   // 能力修正：亲密(32)/快乐刻印(13)/屈服刻印(14) +0.2/级，苦痛刻印(15)/恐怖刻印(17) -0.3/级，反发刻印(18) -1.0/级
-  fix += getAbilityLevel(char, '亲密') * 0.2
+  fix += getAbilityLevel(char, ATTR.INTIMACY) * 0.2
   for (const [id, mod] of Object.entries({ 13: 0.2, 14: 0.2, 15: -0.3, 17: -0.3, 18: -1.0 })) {
     const lv = getMarkLevel(char, Number(id))
     fix += mod * lv

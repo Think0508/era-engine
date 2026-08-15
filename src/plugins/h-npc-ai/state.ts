@@ -9,6 +9,7 @@
 import { entitySystem } from '../../core/entity-system'
 import { gameContext, gameTimeToTotalMinutes } from '../../core/game-context'
 import { eventBus } from '../../core/event-bus'
+import { ATTR } from '../../core/entity-utils'
 
 // 注释：H 冻结行为块（h_wait）——duration 取 12 小时，H 中不刷新（冻结块不被结算，
 // 也不会过期）；H 结束由 exitHBlock 覆盖
@@ -139,7 +140,7 @@ export function isBlockhead(char: any): boolean {
 
 // 注释：体力值（HP≤1 判断读 ch.base['体力']，premise-h.ts:74 先例）
 export function getStamina(char: any): number {
-  return char?.base?.['体力'] ?? 0
+  return char?.base?.[ATTR.HP] ?? 0
 }
 
 // 注释：玩家 ID（mod meta.player_character）

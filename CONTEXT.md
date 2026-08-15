@@ -13,7 +13,7 @@ A classification key for entities (e.g. `attribute_def`, `talent_def`, `characte
 _Avoid_: Category, namespace
 
 **Attribute definition**:
-Metadata describing a single game attribute, parsed from `definitions/attributes.toml`. Fields: type (number/string/boolean), default, category (grouping key), compute (optional script path), display (boolean, controls whether it appears in the generic character status viewer), display_group (category label in the viewer, used for clustering related attributes in Status/Parameter/Look sections), daily_reset (optional boolean, Parameter-specific — when true the attribute resets to its default value when the player wakes up via the `game:wake_up` event). Stored in the attribute-registry (not entity-system).
+Metadata describing a single game attribute, parsed from `definitions/attributes.toml`. Fields: type (number/string/boolean), default, category (grouping key), compute (optional script path), display (boolean, controls whether it appears in the generic character status viewer), display_group (category label in the viewer, used for clustering related attributes in Status/Parameter/Look sections), daily_reset (optional boolean, Parameter-specific — when true the attribute resets to its default value when the player wakes up via the `game:wake_up` event). Stored in the attribute-registry (not entity-system). The concrete attribute vocabulary used by mods (体力/气力/好感度/射精欲/宝珠 etc.) is the **era baseline** — a sanctioned part of the engine core shared by every era-like mod (ADR-0013); the engine's `entity-utils.ts` ATTR table is the single reference for plugin code to access them.
 _Avoid_: Property, field, entity-system storage, treating daily_reset as a plugin-only concept
 
 **Attribute binding**:

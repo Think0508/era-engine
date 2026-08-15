@@ -1,5 +1,6 @@
 import { entitySystem } from '../../../core/entity-system'
 import { gameContext } from '../../../core/game-context'
+import { ATTR } from '../../../core/entity-utils'
 
 function targetId(ctx: any): string | null {
   return ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId ?? null
@@ -38,8 +39,8 @@ export function registerInstructPremises(registry: any): void {
     }
   }
 
-  registry.registerPremise('TARGET_TECHNIQUE_GE_3', abilityLevelGe('技巧', 3))
-  registry.registerPremise('TARGET_TECHNIQUE_GE_5', abilityLevelGe('技巧', 5))
+  registry.registerPremise('TARGET_TECHNIQUE_GE_3', abilityLevelGe(ATTR.TECHNIQUE, 3))
+  registry.registerPremise('TARGET_TECHNIQUE_GE_5', abilityLevelGe(ATTR.TECHNIQUE, 5))
   registry.registerPremise('FINGER_TECHNIQUE_GE_3', abilityLevelGe('指技', 3))
   registry.registerPremise('FINGER_TECHNIQUE_GE_5', abilityLevelGe('指技', 5))
   registry.registerPremise('WAIST_TECHNIQUE_GE_3', abilityLevelGe('腰技', 3))
@@ -201,7 +202,7 @@ export function registerInstructPremises(registry: any): void {
   registry.registerPremise('T_CHILD_OR_LOLI_1', (ctx: any) => {
     const ch = getTarget(ctx)
     if (!ch) return false
-    const age = ch?.base?.age ?? ch?.base?.年龄 ?? 99
+    const age = ch?.base?.age ?? ch?.base?.['年龄'] ?? 99
     return age <= 14
   })
   registry.registerPremise('T_MILK_GE_30', (ctx: any) => {
@@ -326,18 +327,18 @@ export function registerInstructPremises(registry: any): void {
   }
   const plSemenTotal = (): number => {
     const p = getPlayerChar()
-    return (p?.base?.['精液量'] ?? 0) + (p?.base?.['额外精液量'] ?? 0)
+    return (p?.base?.[ATTR.SEMEN] ?? 0) + (p?.base?.[ATTR.EXTRA_SEMEN] ?? 0)
   }
   registry.registerPremise('PL_EJA_POINT_LOW_OR_MIDDLE', () => {
     const p = getPlayerChar()
-    return (p?.base?.['射精欲'] ?? 0) <= 600
+    return (p?.base?.[ATTR.EJA_GAUGE] ?? 0) <= 600
   })
   registry.registerPremise('PL_EJA_POINT_HIGH_OR_EXTREME', () => {
     const p = getPlayerChar()
     // 注释：>600 是"高或极"的意图语义（低中=≤600 的互补分区）。
     // erArk 字面实现有 bug：HIGH 只查上界 ≤900（覆盖全区间）→ HIGH_OR_EXTREME 恒 true；
     // 我们取意图语义（对齐项目修复 erArk 死代码的既有先例），数值 600 可追溯 MIDDLE 阈值
-    return (p?.base?.['射精欲'] ?? 0) > 600
+    return (p?.base?.[ATTR.EJA_GAUGE] ?? 0) > 600
   })
   registry.registerPremise('PL_SEMEN_LE_2', () => plSemenTotal() <= 2)
   registry.registerPremise('PL_SEMEN_G_2', () => plSemenTotal() > 2)

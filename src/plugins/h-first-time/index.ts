@@ -9,6 +9,7 @@ import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
+import { ATTR } from '../../core/entity-utils'
 
 const VIRGIN_KEYS = ['virgin_V', 'virgin_A', 'virgin_U', 'virgin_W', 'virgin_M', 'virgin_OTHER', 'virgin_KISS']
 
@@ -59,7 +60,7 @@ export function onLoad(_ctx: PluginContext): void {
       // 注释：首次剧痛
       if (params.painValue) {
         if (!char.base) char.base = {}
-        char.base['苦痛'] = Math.min(99999, (char.base['苦痛'] ?? 0) + (params.painValue as number))
+        char.base[ATTR.PAIN] = Math.min(99999, (char.base[ATTR.PAIN] ?? 0) + (params.painValue as number))
       }
 
       // 注释：V 破处 → 移除性无知 + 处女血

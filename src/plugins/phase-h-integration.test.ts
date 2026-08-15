@@ -2,6 +2,26 @@ import { conditionEngine } from '../core/condition-engine'
 import { describe, it, expect } from 'vitest'
 import { getLevel } from '../core/entity-utils'
 import { entitySystem } from '../core/entity-system'
+import { apiSystem } from '../core/api'
+
+// 注释：注册 h-ejaculation 最小 API stub——单测环境不启动插件，但射精欲读写已走
+// h-ejaculation API（C5：唯一写入口），stub 让 orgasm/sleep 的 API 链路可测
+let ejaculationStubRegistered = false
+function registerEjaculationApiStub(): void {
+  if (ejaculationStubRegistered) return
+  ejaculationStubRegistered = true
+  apiSystem.register('h-ejaculation', {
+    getEja: (charId: string) => Promise.resolve((entitySystem.get('character', charId) as any)?.base?.['射精欲'] ?? 0),
+    setEja: async (charId: string, val: number) => {
+      const char = entitySystem.get('character', charId) as any
+      if (char?.base) char.base['射精欲'] = Math.max(0, val)
+    },
+    addEja: async (charId: string, delta: number) => {
+      const char = entitySystem.get('character', charId) as any
+      if (char?.base) char.base['射精欲'] = Math.max(0, (char.base['射精欲'] ?? 0) + (delta ?? 0))
+    },
+  })
+}
 
 // 注释：Phase H 集成测试——核心公式 + h-state 生命周期
 // 完整的端到端 H 流程测试需要 browser 环境，这里测可独立验证的部分
@@ -118,6 +138,7 @@ describe('Phase H 集成测试', () => {
   it('orgasm 二段结算——玩家射精欲满触发 shouldEjaculate 标记', async () => {
     const { orgasmJudge } = await import('../plugins/h-core/settle/orgasm')
     const { entitySystem } = await import('../core/entity-system')
+    registerEjaculationApiStub()
     entitySystem.register('character', '0', {
       id: '0', name: '玩家',
       base: { 射精欲: 1500, 射精欲上限: 1000, 精液量: 100 },
@@ -132,6 +153,7 @@ describe('Phase H 集成测试', () => {
   it('orgasm 二段结算——射精欲满但精液量≤2 → 无精液高潮（不射精，射精欲归零）', async () => {
     const { orgasmJudge } = await import('../plugins/h-core/settle/orgasm')
     const { entitySystem } = await import('../core/entity-system')
+    registerEjaculationApiStub()
     entitySystem.register('character', '0', {
       id: '0', name: '玩家',
       base: { 射精欲: 1500, 射精欲上限: 1000, 精液量: 0, 额外精液量: 2 },
@@ -232,6 +254,7 @@ describe('Phase H 集成测试', () => {
     const { updateSleepAll } = await import('../plugins/sleep-system/update-sleep')
     const { entitySystem } = await import('../core/entity-system')
     const { gameContext } = await import('../core/game-context')
+    registerEjaculationApiStub()
     entitySystem.register('character', 'semen_test_1', {
       id: 'semen_test_1', name: '玩家',
       base: { 精液量: 80, 精液量上限: 100, 额外精液量: 0, 射精欲: 50 },
@@ -395,8 +418,8 @@ describe('Phase H 集成测试', () => {
     const { modLoader } = await import('../core/mod-loader')
     const { entitySystem } = await import('../core/entity-system')
     const { commandRegistry } = await import('../core/command-registry')
-    const { loadInstructions } = await import('../plugins/instruction-loader')
-    const { injectJudgeCheck } = await import('../plugins/instruction-loader')
+    const { loadInstructions } = await import('../core/instruction-loader')
+    const { injectJudgeCheck } = await import('../core/instruction-loader')
     entitySystem.clear()
     await modLoader.loadMod('test-mod')
     commandRegistry.clear()
@@ -441,7 +464,7 @@ describe('Phase H 集成测试', () => {
     const { entitySystem } = await import('../core/entity-system')
     const { commandRegistry } = await import('../core/command-registry')
     const { errorReporter } = await import('../core/error-reporter')
-    const { loadInstructions, validateInstructionData } = await import('../plugins/instruction-loader')
+    const { loadInstructions, validateInstructionData } = await import('../core/instruction-loader')
     const { conditionRegistry } = await import('../core/condition-registry')
     entitySystem.clear()
     await modLoader.loadMod('test-mod')
@@ -489,7 +512,7 @@ describe('Phase H 集成测试', () => {
     const { entitySystem } = await import('../core/entity-system')
     const { commandRegistry } = await import('../core/command-registry')
     const { errorReporter } = await import('../core/error-reporter')
-    const { loadInstructions } = await import('../plugins/instruction-loader')
+    const { loadInstructions } = await import('../core/instruction-loader')
     entitySystem.clear()
     await modLoader.loadMod('test-mod')
     errorReporter.clear()

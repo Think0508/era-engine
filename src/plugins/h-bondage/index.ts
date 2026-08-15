@@ -14,6 +14,7 @@ import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
+import { ATTR } from '../../core/entity-utils'
 
 export interface BondageType {
   id: number
@@ -111,8 +112,8 @@ export function onLoad(_ctx: PluginContext): void {
       narrativeLog.write(`${ch.name ?? id} 被捆成了${name}`, 'system', 'h-bondage')
       // 注释：屈服(15) + 羞耻(16)
       if (!ch.base) ch.base = {}
-      ch.base['屈服'] = Math.min(99999, (ch.base['屈服'] ?? 0) + Math.floor(addTime * 1.5))
-      ch.base['羞耻'] = Math.min(99999, (ch.base['羞耻'] ?? 0) + Math.floor(addTime * 1.5))
+      ch.base[ATTR.OBEDIENCE] = Math.min(99999, (ch.base[ATTR.OBEDIENCE] ?? 0) + Math.floor(addTime * 1.5))
+      ch.base[ATTR.SHAME] = Math.min(99999, (ch.base[ATTR.SHAME] ?? 0) + Math.floor(addTime * 1.5))
       // 注释：经验——SM/被虐
       if (!ch.experience) ch.experience = {}
       ch.experience['sm'] = (ch.experience['sm'] ?? 0) + 1
@@ -132,8 +133,8 @@ export function onLoad(_ctx: PluginContext): void {
       ch.h_state.bondage = 0
       narrativeLog.write(`${ch.name ?? id} 的绳子被解开了`, 'system', 'h-bondage')
       if (!ch.base) ch.base = {}
-      ch.base['屈服'] = Math.min(99999, (ch.base['屈服'] ?? 0) + Math.floor(addTime * 1.5))
-      ch.base['羞耻'] = Math.min(99999, (ch.base['羞耻'] ?? 0) + Math.floor(addTime * 1.5))
+      ch.base[ATTR.OBEDIENCE] = Math.min(99999, (ch.base[ATTR.OBEDIENCE] ?? 0) + Math.floor(addTime * 1.5))
+      ch.base[ATTR.SHAME] = Math.min(99999, (ch.base[ATTR.SHAME] ?? 0) + Math.floor(addTime * 1.5))
       if (!ch.experience) ch.experience = {}
       ch.experience['sm'] = (ch.experience['sm'] ?? 0) + 1
       eventBus.emit('character:changed', { id })
@@ -166,17 +167,17 @@ export function onLoad(_ctx: PluginContext): void {
       if (!ch.base) ch.base = {}
       // 注释：欲情(12) = standard adjust(ability[33]) + adjust
       // 2026-08-12（audit-b I2）：读错键 '欲情'（ABL 无此能力，恒 0）→ 改 '欲望'（ability[33]，文件注释 :142 自证）
-      const lustAb = ch.abilities?.['欲望']?.level ?? 0
+      const lustAb = ch.abilities?.[ATTR.LUST]?.level ?? 0
       const lustAdj = getAbilityAdjust(lustAb) + adjust
-      ch.base['欲情'] = Math.min(99999, (ch.base['欲情'] ?? 0) + Math.floor(timeBase * lustAdj))
+      ch.base[ATTR.AROUSAL] = Math.min(99999, (ch.base[ATTR.AROUSAL] ?? 0) + Math.floor(timeBase * lustAdj))
       // 注释：羞耻(16) = standard adjust(ability[34]) + adjust
-      const shameAb = ch.abilities?.['露出']?.level ?? 0
+      const shameAb = ch.abilities?.[ATTR.EXPOSURE]?.level ?? 0
       const shameAdj = getAbilityAdjust(shameAb) + adjust
-      ch.base['羞耻'] = Math.min(99999, (ch.base['羞耻'] ?? 0) + Math.floor(timeBase * shameAdj))
+      ch.base[ATTR.SHAME] = Math.min(99999, (ch.base[ATTR.SHAME] ?? 0) + Math.floor(timeBase * shameAdj))
       // 注释：苦痛(17) = mark_debuff_adjust(ability[15]) + adjust
-      const painAb = ch.abilities?.['苦痛刻印']?.level ?? 0
+      const painAb = ch.abilities?.[ATTR.MARK_PAIN]?.level ?? 0
       const painAdj = getMarkAdjust(painAb) + adjust
-      ch.base['苦痛'] = Math.min(99999, (ch.base['苦痛'] ?? 0) + Math.floor(timeBase * painAdj))
+      ch.base[ATTR.PAIN] = Math.min(99999, (ch.base[ATTR.PAIN] ?? 0) + Math.floor(timeBase * painAdj))
     }
     return true
   })

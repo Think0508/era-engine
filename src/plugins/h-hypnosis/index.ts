@@ -1,9 +1,11 @@
+import { parse as parseTOML } from '@iarna/toml'
 import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { narrativeLog } from '../../core/narrative-log'
 import { errorReporter } from '../../core/error-reporter'
+import { ATTR } from '../../core/entity-utils'
 
 interface HypnosisData {
   hypnosis_degree: number
@@ -63,58 +65,46 @@ interface RoleplayDef {
   id: number; name: string; type: string; subType: string; info: string
 }
 
-const ROLEPLAY_DATA: RoleplayDef[] = [
-  { id: 0,  name: '无',        type: '无',   subType: '无',   info: '不进行角色扮演。' },
-  { id: 1,  name: '妻子',      type: '家庭', subType: '无',   info: '对方是自己的妻子，和自己感情十分深厚。' },
-  { id: 2,  name: '姐姐',      type: '家庭', subType: '无',   info: '对方是自己的亲姐姐，对自己这个弟弟十分照顾。' },
-  { id: 3,  name: '妹妹',      type: '家庭', subType: '无',   info: '对方是自己的亲妹妹，很依赖自己这个哥哥。' },
-  { id: 4,  name: '女儿',      type: '家庭', subType: '无',   info: '对方是自己的亲生女儿，天真可爱，非常依赖自己。' },
-  { id: 5,  name: '妈妈',      type: '家庭', subType: '无',   info: '对方是自己的妈妈，对自己有强烈的保护欲和溺爱。' },
-  { id: 11, name: '小学生',    type: '职业', subType: '校园', info: '对方是正在上小学的学生，天真无邪，充满好奇心。' },
-  { id: 12, name: '初中生',    type: '职业', subType: '校园', info: '对方是正在上初中的学生，正值叛逆期。' },
-  { id: 13, name: '高中生',    type: '职业', subType: '校园', info: '对方是正在上高中的学生，青春活泼。' },
-  { id: 14, name: '大学生',    type: '职业', subType: '校园', info: '对方是正在上大学的学生，追求梦想。' },
-  { id: 15, name: '教师',      type: '职业', subType: '校园', info: '对方是学校的教师，关心学生的成长与学习。' },
-  { id: 21, name: '护士',      type: '职业', subType: '护士', info: '对方是照顾病人的护士，温柔体贴。' },
-  { id: 22, name: '警察',      type: '职业', subType: '无',   info: '对方是维护社会秩序的警察。' },
-  { id: 23, name: '白领',      type: '职业', subType: '无',   info: '对方是公司职员，工作繁忙压力大。' },
-  { id: 24, name: '偶像',      type: '职业', subType: '偶像', info: '对方是国民级的美少女偶像。' },
-  { id: 25, name: '家庭女仆',  type: '职业', subType: '家庭女仆', info: '对方是自己家雇佣的女仆。' },
-  { id: 26, name: '咖啡厅女仆',type: '职业', subType: '咖啡厅女仆', info: '对方是在女仆咖啡厅工作的女仆。' },
-  { id: 27, name: '巫女',      type: '职业', subType: '巫女', info: '对方是神社的巫女。' },
-  { id: 31, name: '陌生人',    type: '关系', subType: '非家庭', info: '自己和对方之间没有任何关系。' },
-  { id: 32, name: '师生',      type: '关系', subType: '校园', info: '对方和自己是教导的师生关系。' },
-  { id: 33, name: '同学',      type: '关系', subType: '校园', info: '对方是自己的同班同学。' },
-  { id: 34, name: '同事',      type: '关系', subType: '非家庭', info: '对方是自己的同事，工作上互相支持。' },
-  { id: 35, name: '邻居',      type: '关系', subType: '非家庭', info: '对方是住在自己隔壁的邻居。' },
-  { id: 51, name: '宠物猫',    type: '人外', subType: '特殊', info: '对方以为自己是一只猫，拥有猫的所有特征和习性。' },
-  { id: 52, name: '宠物狗',    type: '人外', subType: '特殊', info: '对方以为自己是一只狗，拥有狗的所有特征和习性。' },
-  { id: 53, name: '魅魔',      type: '人外', subType: '无',   info: '对方以为自己是魅魔，以吸取精气为生。' },
-  { id: 101,name: '电车痴汉',  type: '场景', subType: '通用', info: '在拥挤的电车上进行痴汉行为。' },
-  { id: 102,name: '户外当众',  type: '场景', subType: '通用', info: '在公共场所进行亲密行为。' },
-  { id: 103,name: '公共厕所（主动）', type: '场景', subType: '通用', info: '对方把自己捆在公共厕所隔间里。' },
-  { id: 104,name: '公共厕所（被动）', type: '场景', subType: '通用', info: '对方被自己捆在公共厕所隔间里。' },
-  { id: 105,name: '俘虏拷问',  type: '场景', subType: '特殊', info: '对方是被俘虏的敌人，自己是审讯官。' },
-  { id: 106,name: '榨精护士',  type: '场景', subType: '护士', info: '对方是医院的护士，负责精液采集。' },
-  { id: 107,name: '战败魔法少女', type: '场景', subType: '特殊', info: '对方是魔法少女，被自己打败后沦为自己的玩物。' },
-  { id: 108,name: 'VTuber直播中', type: '场景', subType: '家庭', info: '对方是正在直播的VTuber。' },
-  { id: 109,name: '向神灵祭祀', type: '场景', subType: '巫女', info: '在神像面前进行交合。' },
-  { id: 110,name: '向自己祭祀', type: '场景', subType: '巫女', info: '对方是巫女，自己化身神灵。' },
-  { id: 111,name: '女仆惩罚调教', type: '场景', subType: '家庭女仆', info: '对方做了错事，必须接受主人的惩罚。' },
-  { id: 112,name: '女仆咖啡厅里菜单', type: '场景', subType: '咖啡厅女仆', info: '点了特殊的菜单，女仆必须满足要求。' },
-  { id: 121,name: '偶像台前准备室', type: '场景', subType: '偶像', info: '在准备室里对偶像进行特殊的准备。' },
-  { id: 122,name: '偶像单人LIVE', type: '场景', subType: '偶像', info: '对方为自己开了一场私人演出。' },
-  { id: 123,name: '偶像演出后粉丝答谢', type: '场景', subType: '偶像', info: '演出结束后进行特殊的粉丝答谢。' },
-  { id: 124,name: '偶像枕营业', type: '场景', subType: '特殊', info: '为了上台表演必须与自己发生关系。' },
-  { id: 131,name: '放学后教室H', type: '场景', subType: '校园', info: '在空无一人的教室里偷偷进行性行为。' },
-  { id: 132,name: '体育仓库H',  type: '场景', subType: '校园', info: '在体育器材仓库中偷偷进行性行为。' },
-  { id: 133,name: '天台H',     type: '场景', subType: '校园', info: '在学校的天台上进行性行为。' },
-  { id: 134,name: '学校厕所H', type: '场景', subType: '校园', info: '在学校的厕所里进行性行为。' },
-  { id: 135,name: '保健室H',   type: '场景', subType: '校园', info: '藏在保健室的同一张床上进行性行为。' },
-]
+// 注释：加载角色扮演数据（插件默认层 roleplay.toml，2026-08-15 从 ROLEPLAY_DATA 常量迁出；
+// 数据本体在 data/default/roleplay.toml，结构镜像原对象——[[roleplay]] 数组同键同型）
+// 2026-08-10：as:'raw' 已废弃（rolldown 把 TOML 当 JS 解析导致 build 失败）→ import 'default' + eager
+const roleplayModules = import.meta.glob(
+  '/src/plugins/h-hypnosis/data/default/roleplay.toml',
+  { import: 'default', eager: true }
+)
+
+// 注释：模块级数据容器——onLoad 填充（插件 onLoad 先于 mod 数据加载与任何运行时消费方；
+// 消费方 getRoleplayName 为同步调用，故用 eager glob + 同步解析，无异步时序窗口）
+let roleplayData: RoleplayDef[] = []
+
+function loadRoleplayData(): void {
+  const raw = Object.values(roleplayModules)[0]
+  if (raw == null) {
+    errorReporter.report({
+      source: 'h-hypnosis',
+      severity: 'warning',
+      message: 'roleplay.toml 未找到（角色扮演数据未加载，getRoleplayName 回落未知）',
+      suggestion: '检查 src/plugins/h-hypnosis/data/default/roleplay.toml 是否存在',
+    })
+    return
+  }
+  try {
+    const parsed = parseTOML(raw as string) as any
+    roleplayData = Array.isArray(parsed.roleplay) ? parsed.roleplay as RoleplayDef[] : []
+  } catch (err) {
+    // 注释：解析失败上报（2026-08-15——原硬编码常量无失败路径；静默空数组会让
+    // getRoleplayName 全部回落 `未知(id)` 且无痕迹）
+    errorReporter.report({
+      source: 'h-hypnosis',
+      severity: 'warning',
+      message: `roleplay.toml 解析失败：${err instanceof Error ? err.message : String(err)}（角色扮演数据未加载，getRoleplayName 回落未知）`,
+      suggestion: '检查 src/plugins/h-hypnosis/data/default/roleplay.toml 的语法/结构（[[roleplay]] 数组 + id/name/type/subType/info 必填）',
+    })
+  }
+}
 
 function getRoleplayName(id: number): string {
-  return ROLEPLAY_DATA.find(r => r.id === id)?.name ?? `未知(${id})`
+  return roleplayData.find(r => r.id === id)?.name ?? `未知(${id})`
 }
 
 void addHypnosisXp
@@ -154,7 +144,7 @@ function calculateHypnosisDegree(charId: string): number {
   const baseCoeff = getHypnosisCoefficient()
   // TODO: 调香加成（aromatherapy == 6 → +5）
   // 注释：erArk hypnosis_panel.py:74-75 — 无觉刻印 ability[19] 系数
-  const markLv = target?.abilities?.['无觉刻印']?.level ?? 0
+  const markLv = target?.abilities?.[ATTR.MARK_VOID]?.level ?? 0
   const abilityAdj = getAbilityAdjust(markLv)
   // 注释：erArk hypnosis_panel.py:77-78 — random(0.5, 1.5)
   const adjust = baseCoeff * abilityAdj
@@ -268,6 +258,8 @@ function registerBoolEffect(type: string, field: string, value: boolean): void {
 }
 
 export function onLoad(_ctx: PluginContext): void {
+  loadRoleplayData()
+
   // 注释：audit-k 修复（2026-08-12）——lastHypnosisType 此前恒 1（无任何赋值点），
   // 空气/体控/心控催眠（类型 2/3/4）永远不可达。提供 effect 入口供指令/数据设置类型
   effectTypeRegistry.register('hypnosis_set_type', (_p: any, _execCtx: any) => {
@@ -479,7 +471,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
 
 export type { HypnosisData }
 export {
-  DEFAULT_HYPNOSIS, HYPNOSIS_TYPE_NAMES, ROLEPLAY_DATA, getRoleplayName, getSelfId, getTargetId, getHypnosis, getUnconsciousH, setUnconsciousH,
+  DEFAULT_HYPNOSIS, HYPNOSIS_TYPE_NAMES, roleplayData as ROLEPLAY_DATA, getRoleplayName, getSelfId, getTargetId, getHypnosis, getUnconsciousH, setUnconsciousH,
   getAbilityAdjust, calculateHypnosisDegree, calculateSanityCost, getHypnosisDegreeLimit, checkHypnosisCompletion,
   applySensitivityBonus, applyPainAsPleasure, applyAirHypnosisTrustMod, applyHypnosisSexExp,
 }

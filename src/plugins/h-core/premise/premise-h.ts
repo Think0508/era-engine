@@ -3,6 +3,7 @@
 
 import { gameContext } from '../../../core/game-context'
 import { entitySystem } from '../../../core/entity-system'
+import { ATTR } from '../../../core/entity-utils'
 
 function getTargetChar(ctx: any): any {
   const charId = ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId
@@ -43,7 +44,7 @@ export function registerHPremises(registry: any): void {
   registry.registerPremise('TIRED_LE_84', (_ctx: any) => {
     const player = getPlayerChar()
     if (!player) return false
-    const tired = player?.base?.疲劳度 ?? 0
+    const tired = player?.base?.[ATTR.FATIGUE] ?? 0
     return tired <= 134
   })
 
@@ -53,7 +54,7 @@ export function registerHPremises(registry: any): void {
   registry.registerPremise('TIRED_LE_74', (_ctx: any) => {
     const player = getPlayerChar()
     if (!player) return false
-    const tired = player?.base?.疲劳度 ?? 0
+    const tired = player?.base?.[ATTR.FATIGUE] ?? 0
     return tired <= 118
   })
 
@@ -74,7 +75,7 @@ export function registerHPremises(registry: any): void {
   registry.registerPremise('HP_G_1', (_ctx: any) => {
     const player = getPlayerChar()
     if (!player) return false
-    const 体力 = player?.base?.体力 ?? 0
+    const 体力 = player?.base?.[ATTR.HP] ?? 0
     return 体力 > 1
   })
 
@@ -88,8 +89,8 @@ export function registerHPremises(registry: any): void {
   registry.registerPremise('NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1', (ctx: any) => {
     const target = getTargetChar(ctx)
     if (!target) return true
-    if ((target?.base?.体力 ?? 0) <= 1) return false
-    if ((target?.base?.疲劳度 ?? 0) > 134) return false
+    if ((target?.base?.[ATTR.HP] ?? 0) <= 1) return false
+    if ((target?.base?.[ATTR.FATIGUE] ?? 0) > 134) return false
     if (target?.sp_flag?.unconscious_h === 3) return false
     return true
   })
@@ -128,7 +129,7 @@ export function registerHPremises(registry: any): void {
   registry.registerPremise('TECHNIQUE_GE_3', (_ctx: any) => {
     const player = getPlayerChar()
     if (!player) return false
-    return (player?.abilities?.['技巧']?.level ?? 0) >= 3
+    return (player?.abilities?.[ATTR.TECHNIQUE]?.level ?? 0) >= 3
   })
 
   // ═══ 权重前提 — high_1 ~ high_10、high_999 ═══

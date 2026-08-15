@@ -1,7 +1,7 @@
 // 实时结算——每次指令执行后自动触发
 // 对齐 erark Script/Settle/realtime_settle.py
 
-import { getEntityAttr, setEntityAttr, ATTR } from './entity-utils'
+import { getEntityAttr, setEntityAttr, ATTR, ATTR_CAPS, clampAttrValue } from './entity-utils'
 import { gameContext, gameTimeToTotalMinutes } from './game-context'
 import { modLoader } from './mod-loader'
 
@@ -21,9 +21,10 @@ export function settleTired(entity: any, minutes: number, opts: SettleOptions = 
   if (opts.isRest || opts.isSleep) return
   const tired = getEntityAttr(entity, '疲劳度')
   if (typeof tired !== 'number') return
-  if (tired >= 160) return
+  const tiredCap = ATTR_CAPS[ATTR.FATIGUE]?.cap ?? 160
+  if (tired >= tiredCap) return
   const add = Math.max(1, Math.floor(minutes / 6))
-  setEntityAttr(entity, '疲劳度', Math.min(160, tired + add))
+  setEntityAttr(entity, '疲劳度', clampAttrValue(entity, '疲劳度', tired + add))
 }
 // ── 睡眠快感清零（G4 决策 2026-08-09）──
 // erArk sleep_settle.py:124-128：睡眠结算时清零快感（type=0 部位，性别过滤）；
@@ -51,13 +52,13 @@ function sleepRecovery(entity: any, minutes: number): void {
   const hp = getEntityAttr(entity, ATTR.HP)
   if (typeof hpMax === 'number' && hpMax > 0 && typeof hp === 'number' && hp < hpMax) {
     const hpBase = hpMax * 0.0025 + 3
-    setEntityAttr(entity, ATTR.HP, Math.min(hpMax, hp + Math.floor(hpBase * minutes)))
+    setEntityAttr(entity, ATTR.HP, clampAttrValue(entity, ATTR.HP, hp + Math.floor(hpBase * minutes)))
   }
   const mpMax = getEntityAttr(entity, ATTR.MP_MAX)
   const mp = getEntityAttr(entity, ATTR.MP)
   if (typeof mpMax === 'number' && mpMax > 0 && typeof mp === 'number' && mp < mpMax) {
     const mpBase = mpMax * 0.005 + 6
-    setEntityAttr(entity, ATTR.MP, Math.min(mpMax, mp + Math.floor(mpBase * minutes)))
+    setEntityAttr(entity, ATTR.MP, clampAttrValue(entity, ATTR.MP, mp + Math.floor(mpBase * minutes)))
   }
 }
 
@@ -102,7 +103,8 @@ function settleRestRecovery(entity: any, minutes: number, opts: SettleOptions): 
 export function settleHunger(entity: any, minutes: number): void {
   const hunger = getEntityAttr(entity, '饥饿值')
   if (typeof hunger !== 'number') return
-  if (hunger >= 240) return
+  const hungerCap = ATTR_CAPS[ATTR.HUNGER]?.cap ?? 240
+  if (hunger >= hungerCap) return
   const hp = getEntityAttr(entity, '体力')
   const hpMax = getEntityAttr(entity, '体力上限')
   const mp = getEntityAttr(entity, '气力')
@@ -112,7 +114,7 @@ export function settleHunger(entity: any, minutes: number): void {
   const variance = 0.8 + Math.random() * 0.4
   const add = Math.floor(minutes * variance * hpCoeff * mpCoeff)
   if (add <= 0) return
-  setEntityAttr(entity, '饥饿值', Math.min(240, hunger + add))
+  setEntityAttr(entity, '饥饿值', clampAttrValue(entity, '饥饿值', hunger + add))
 }
 
 // ── 尿意 ──
@@ -121,10 +123,11 @@ export function settleHunger(entity: any, minutes: number): void {
 export function settleUrine(entity: any, minutes: number): void {
   const urine = getEntityAttr(entity, '尿意')
   if (typeof urine !== 'number') return
-  if (urine >= 300) return
+  const urineCap = ATTR_CAPS[ATTR.URINE]?.cap ?? 300
+  if (urine >= urineCap) return
   const variance = 0.8 + Math.random() * 0.4
   const add = Math.max(1, Math.floor(minutes * variance))
-  setEntityAttr(entity, '尿意', Math.min(300, urine + add))
+  setEntityAttr(entity, '尿意', clampAttrValue(entity, '尿意', urine + add))
 }
 
 // ── 精液量恢复 ──
@@ -134,7 +137,7 @@ function settleSemen(entity: any, minutes: number): void {
   if (typeof semen !== 'number' || typeof max !== 'number') return
   if (semen >= max) return
   const add = Math.max(1, Math.floor(minutes / 20))
-  setEntityAttr(entity, '精液量', Math.min(max, semen + add))
+  setEntityAttr(entity, '精液量', clampAttrValue(entity, '精液量', semen + add))
 }
 
 // ── 体力/气力钳位 ──
@@ -142,12 +145,12 @@ export function clampHpMp(entity: any): void {
   const hp = getEntityAttr(entity, '体力')
   const hpMax = getEntityAttr(entity, '体力上限')
   if (typeof hp === 'number' && typeof hpMax === 'number' && hp > hpMax) {
-    setEntityAttr(entity, '体力', hpMax)
+    setEntityAttr(entity, '体力', clampAttrValue(entity, '体力', hp))
   }
   const mp = getEntityAttr(entity, '气力')
   const mpMax = getEntityAttr(entity, '气力上限')
   if (typeof mp === 'number' && typeof mpMax === 'number' && mp > mpMax) {
-    setEntityAttr(entity, '气力', mpMax)
+    setEntityAttr(entity, '气力', clampAttrValue(entity, '气力', mp))
   }
 }
 
@@ -166,7 +169,7 @@ function settleEjaDecay(entity: any, minutes: number): void {
   if (now - last <= 30) return
   const eja = getEntityAttr(entity, '射精欲')
   if (typeof eja !== 'number' || eja <= 0) return
-  setEntityAttr(entity, '射精欲', Math.max(0, eja - minutes * 10))
+  setEntityAttr(entity, '射精欲', clampAttrValue(entity, '射精欲', eja - minutes * 10))
 }
 
 // ── 入口 ──

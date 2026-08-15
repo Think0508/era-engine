@@ -21,8 +21,8 @@ import { BAD_STATES, MENTAL_STATES } from './state'
 
 // 部位状态ID → 属性名（attributes.toml 的 parameter 命名；erArk 22=兽部 未实现已移除）
 export const ORGASM_PART_ATTR: Record<number, string> = {
-  0: '皮肤', 1: '胸部', 2: '阴蒂', 3: '阴茎', 4: '阴道', 5: '后穴',
-  6: '尿道', 7: '子宫', 21: '口喉', 23: '心理',
+  0: ATTR.SKIN, 1: ATTR.BREAST, 2: ATTR.CLITORIS, 3: ATTR.PENIS, 4: ATTR.VAGINA, 5: ATTR.ANUS,
+  6: ATTR.URETHRA, 7: ATTR.WOMB, 21: ATTR.THROAT, 23: ATTR.MIND,
 }
 
 // 属性名 → 部位状态ID（反向映射，供 settle_state/tech_adjust 累积快感变化用）
@@ -44,9 +44,9 @@ export function accumulateOrgasmFeel(char: any, partId: number, delta: number): 
 // 部位属性名 → 感度能力名（tech_adjust 查目标感度等级用）
 // erArk：feel_ability_id = state_id（0=皮肤感度…23=心理感度102）
 export const PART_ABILITY: Record<string, string> = {
-  '皮肤': '皮肤感度', '胸部': '胸部感度', '阴蒂': '阴蒂感度', '阴道': '阴道感度',
-  '后穴': '后穴感度', '尿道': '尿道感度', '子宫': '子宫感度', '口喉': '口喉感度',
-  '心理': '心理感度', '阴茎': '阴茎感度',
+  [ATTR.SKIN]: '皮肤感度', [ATTR.BREAST]: '胸部感度', [ATTR.CLITORIS]: '阴蒂感度', [ATTR.VAGINA]: '阴道感度',
+  [ATTR.ANUS]: '后穴感度', [ATTR.URETHRA]: '尿道感度', [ATTR.WOMB]: '子宫感度', [ATTR.THROAT]: '口喉感度',
+  [ATTR.MIND]: '心理感度', [ATTR.PENIS]: '阴茎感度',
 }
 
 // 快感状态附加修正（erArk chara_feel_state_adjust，common_default.py:300-347）
@@ -58,14 +58,14 @@ export function getFeelExtraAdjust(ch: any, state: string, tbl: number[], isGrou
   let extra = 0
   if (ch?.body_items?.['6']) extra += 0.2
   if ((ch?.sp_flag?.unconscious_h ?? 0) >= 1) {
-    const markLv = ch?.abilities?.['无觉刻印']?.level ?? 0
+    const markLv = ch?.abilities?.[ATTR.MARK_VOID]?.level ?? 0
     extra += ((tbl[Math.min(markLv, 10)] ?? 4.0) - 1) * 2
   }
   if (isGroupSex && ch?.h_state?.is_h) {
     const others = Math.max(0, entitySystem.getAll('character').filter((c: any) => c.id !== ch.id && c.current_location === ch.current_location).length - 1)
     extra += Math.min(10, others) * 0.02
   }
-  if (state === '阴道' || state === '子宫') {
+  if (state === ATTR.VAGINA || state === ATTR.WOMB) {
     if (ch?.h_state?.inflation) extra += 1
     if (ch?.h_state?.enema) extra += (ch?.h_state?.enema_capacity ?? 0) * 0.2
   }
@@ -74,7 +74,7 @@ export function getFeelExtraAdjust(ch: any, state: string, tbl: number[], isGrou
   // 角色体位——但其体位字段"仅博士有的数据"（game_type.py:463-464），NPC 恒 -1 → 修正实际恒 0。
   // 引擎体位由指令 set_field 写在被结算角色 h_state（转换 TOML 行为），故门控+系数统一取被结算
   // 角色自身体位（= erArk 设计意图：性交体位中的部位快感加成）
-  if ((state === '阴道' || state === '后穴' || state === '尿道' || state === '子宫')) {
+  if ((state === ATTR.VAGINA || state === ATTR.ANUS || state === ATTR.URETHRA || state === ATTR.WOMB)) {
     const pos = ch?.h_state?.current_sex_position
     if (typeof pos === 'number' && pos !== -1) {
       const hc = (modLoader.getMod()?.hConfig as any) ?? {}
@@ -86,7 +86,7 @@ export function getFeelExtraAdjust(ch: any, state: string, tbl: number[], isGrou
     // 子宫奸 +2（erArk :323-325——读玩家 h_state.current_womb_sex_position == 2）
     const playerId = gameContext.getContext().player?.id ?? null
     const player = playerId ? entitySystem.get('character', playerId) as any : null
-    if (state === '子宫' && player?.h_state?.current_womb_sex_position === 2) extra += 2
+    if (state === ATTR.WOMB && player?.h_state?.current_womb_sex_position === 2) extra += 2
   }
   return extra
 }
@@ -119,7 +119,7 @@ function getMarkDebuffAdjust(lv: number): number {
 
 // 额外快感（erArk extra_feel_settle:484-515）——恭顺/先导/羞耻/苦痛 对应能力≥5 时
 // 心理快感 max(10, final/20)×内层系数 + 心理经验(155)
-const EXTRA_FEEL_ABILITY: Record<string, string> = { '恭顺': ATTR.SUBMISSION, '先导': ATTR.SADISM, '羞耻': ATTR.EXPOSURE, '苦痛': ATTR.MASOCHISM }
+const EXTRA_FEEL_ABILITY: Record<string, string> = { [ATTR.DEFERENCE]: ATTR.SUBMISSION, [ATTR.ANTICIPATION]: ATTR.SADISM, [ATTR.SHAME]: ATTR.EXPOSURE, [ATTR.PAIN]: ATTR.MASOCHISM }
 
 // 内层心理快感结算（erArk 对 state 23 心理的完整 base_chara_state_common_settle 调用）
 // 系数 = sqrt(ability表[心理感度] × ability表[给定能力]) + 催眠敏感 + feel 附加修正（chara_feel_state_adjust）
@@ -133,7 +133,7 @@ function settleInnerMind(
   const mindLv = ch?.abilities?.['心理感度']?.level ?? 0
   const innerAdjust = Math.sqrt((tbl[Math.min(mindLv, 10)] ?? 4.0) * (tbl[Math.min(abLv, 10)] ?? 4.0))
     + (ch?.hypnosis?.increase_body_sensitivity ? 2 : 0)
-    + getFeelExtraAdjust(ch, '心理', tbl, isGroupSex)
+    + getFeelExtraAdjust(ch, ATTR.MIND, tbl, isGroupSex)
   const innerContinuous = id !== ctx.sourceId ? continuous : 1
   const converted = Math.floor(Math.max(0, innerAdjust) * innerBase * innerContinuous)
   if (converted > 0) {
@@ -186,7 +186,7 @@ export function settleOneState(
   const isFeelState = ORGASM_ATTR_TO_PART[state] !== undefined
   // 死亡 → 不结算（erArk common_default.py:180-181）
   if (ch?.dead) return
-  if (ch?.sp_flag?.unconscious_h === 3 && (isMental || state === '心理')) return
+  if (ch?.sp_flag?.unconscious_h === 3 && (isMental || state === ATTR.MIND)) return
   // 能力等级——显式覆盖优先（501 传发起者.话术技能），否则按 abilityKey 查目标自身
   const al = abilityLevel !== null
     ? abilityLevel

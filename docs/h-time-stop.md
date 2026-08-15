@@ -33,7 +33,18 @@
 | npc-ai-system | 跳过集（unconscious 冻结，不结算）；时停中不生成路人（spawn 守卫） |
 | random-event-system | 时停中不触发玩家随机事件（守卫） |
 | follow-system | 冻结角色不跟随；搬运目标随玩家移动 |
-| dialogue-system | 无意识屏蔽（时停目标只出 unconscious 口上） |
+| dialogue-system | 无意识屏蔽（时停目标只出 unconscious 口上）；时停中 enter/greet 口上静默 |
+| combat-base | 时停中拒战（冻结敌人不可战） |
+| status/hunger | hour_changed tick/进食时停守卫（冻结世界不被污染） |
+| h-ejaculation/h-pregnancy | 精液吸收/涨奶时停守卫（realtime 家族冻结） |
+| realtimeSettle | core 冻结规则（插件谓词注册）——时停中疲劳/饥饿/尿意等不结算（erArk realtime_settle.py:306） |
+
+## 已知缺口（半成品标注）
+
+- **spawn pending 路径**（2026-08-15 复查轮 3 登记）：`command-executor.processPendingSpawns`（任务/脚本生成的待生成角色）无时停守卫——时停中 spawn_condition 满足时会生成清醒角色。当前无 mod 数据触发该路径；触发需 mod 自定义 spawn_condition。
+- **时停中结束 H 丢绝顶累计**：endHScene 清 h_state 整包（master-todo 已登记，修复方向=endHScene 时停守卫转存）。
+- **时停中射精不冻结**（既有登记）：eja_climax 实时结算。
+- **群交 applyGroupSexRealtimeTick 无守卫**（2026-08-15 登记）：需群交模式在时停中开启才可达（群交模式当前仅脚本可开），直写羞耻/心理绕过心理门控。
 
 ## 前提速查（mod 作者）
 

@@ -446,10 +446,20 @@ ctx.api.call('h-first-time', 'setFirstTime', charId, key)     // → void
 #### h-exposure — 露出
 
 ```typescript
-ctx.api.call('h-exposure', 'getLevel', charId)                // → number
-ctx.api.call('h-exposure', 'setLevel', charId, level)         // → void
-ctx.api.call('h-exposure', 'getModeName', charId)             // → string
+ctx.api.call('h-exposure', 'getLevel', charId)                // → number（露出模式 0-4）
+ctx.api.call('h-exposure', 'setLevel', charId, level)         // → void（直接设模式 0-4）
+ctx.api.call('h-exposure', 'getModeName', charId)             // → string（无/室内露出/室外露出/人前露出/无意识露出）
+ctx.api.call('h-exposure', 'updateMode', charId)              // → number（动态模式切换：按场景重评估并写入，返回新模式）
+ctx.api.call('h-exposure', 'checkAchievements', charId)       // → number[]（达成成就 ID 列表：931/932/933）
 ```
+
+效果类型（`effect-type-registry` 注册）：
+- `exposure_set_level`：`params.level` 显式（0-4）或缺省=按场景自动计算初始模式（邀请露出用）；设置 mode≥1 时初始化成就记录 rec[1]/rec[2]
+- `exposure_discovered`：被发现占位（半成品——面板系统未实装，仅叙事日志）
+
+前提（erArk 原名）：`EXHIBITIONISM_SEX_MODE_0/GE_1/1~4`（自己）、`TARGET_EXHIBITIONISM_SEX_MODE_GE_1/1~4`、`TARGET_NOT_IN_EXHIBITIONISM_SEX_MODE`（目标）、`PLAYER_NOT_IN_EXHIBITIONISM_SEX_MODE`（玩家）。
+
+指令：`ask_exhibitionism_sex`（邀请露出）、`exhibitionism_sex_end`（结束露出）。详见 `docs/h-exposure.md`。
 
 #### h-mark — 刻印
 

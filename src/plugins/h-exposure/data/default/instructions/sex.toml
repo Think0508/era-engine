@@ -1,0 +1,27 @@
+# 露出结束指令（h-exposure 插件默认层；mod 可覆盖）
+# 来源：erArk InstructConfig.csv 6007（08-指令集-H内.md + 12-露出系统.md）
+# 效果链映射（12-露出系统.md §指令，END_H 链 526/753/528/404/631）：
+#   526 ORGASM_EDGE_RELEASE → endHScene 覆盖（退出 H 前释放寸止累计）
+#   753 DOOR_CLOSE_RESET    → 已砍（门概念删除，ADR-0014；erArk 语义=结束露出时关门重置）
+#   528 END_H_ADD_HPMP_MAX  → endHScene 覆盖（H 结束上限成长）
+#   404 BOTH_H_STATE_RESET  → endHScene 覆盖 + h-exposure h:end 监听清 exhibitionism_sex_mode
+#   631 T_CLOTH_BACK        → endHScene 覆盖（equipment_off → equipment 穿回）
+
+[[instructions]]
+id = "exhibitionism_sex_end"
+label = "结束露出"
+erark_id = "6007"
+erark_behavior = "END_H"
+erark_h_mode_show_type = 2
+category = "sex"
+sub_category = "exposure"
+time_cost = 5
+priority = 50
+# 前提 = CSV premise_set 原样（HAVE_TARGET|T_NPC_NOT_ACTIVE_H|TARGET_NOT_IN_HIDDEN_SEX_MODE|
+#   TARGET_EXHIBITIONISM_SEX_MODE_GE_1|GROUP_SEX_MODE_OFF|IS_H）+ h_mode_show_type=2 展开（TARGET_IS_H）
+premises = ["HAVE_TARGET", "TARGET_IS_H", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_IN_HIDDEN_SEX_MODE", "TARGET_EXHIBITIONISM_SEX_MODE_GE_1", "GROUP_SEX_MODE_OFF", "IS_H"]
+effects = [
+  # 结束 H（526/528/404/631 引擎封装；露出模式清除由 h:end 监听统一处理）
+  { type = "h_end_h", params = {} },
+  { type = "trigger_dialogue", params = { scene = "exhibitionism_sex_end" } },
+]

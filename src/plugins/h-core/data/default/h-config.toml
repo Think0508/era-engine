@@ -80,7 +80,9 @@ premises = ["hidden_sex_mode_1", "hidden_sex_mode_2", "hidden_sex_mode_3", "hidd
 multiplier = 5
 
 [[talk.situations]]
-premises = ["exposure_sex_mode_1", "exposure_sex_mode_2", "exposure_sex_mode_3", "exposure_sex_mode_4", "self_exposure_mode_ge_1", "target_exposure_mode_ge_1"]
+# 2026-08-15 改名对齐：旧自造名 exposure_sex_mode_*/self_*/target_* 已废弃，
+# 改 erArk 原名（h-exposure premises.ts 注册；大小写不敏感）
+premises = ["exhibitionism_sex_mode_1", "exhibitionism_sex_mode_2", "exhibitionism_sex_mode_3", "exhibitionism_sex_mode_4", "exhibitionism_sex_mode_ge_1", "target_exhibitionism_sex_mode_ge_1"]
 multiplier = 5
 
 [[talk.situations]]

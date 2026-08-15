@@ -377,15 +377,16 @@ export function registerInstructPremises(registry: any): void {
 
   // ── 依赖未实装系统 → 恒 false（情境不存在，地文不可达）──
   // TODO 各系统落地时补语义（校验测试会盯防新未注册前提）：
-  //   子宫体位（B3）/ 露出 / 隐奸 / 群交 / 逆推 / 催眠逆推·木头人 / 精液·射精（h-ejaculation 对接）
+  //   子宫体位（B3）/ 隐奸 / 群交 / 逆推 / 催眠逆推·木头人 / 精液·射精（h-ejaculation 对接）
   //   今日首次（h-first-time）/ 时停解放 / 助手 / 监狱 / 女儿 / 访客 / 睡眠装睡（L1.7）
   // ★1 修复（confinement 落地 2026-08-14）：T_IMPRISONMENT_1 **已从 placeholder 列表移除**——
   //   真语义由 confinement-system 在 onLoad 注册（语义所有者），本列表在 onEnable 注册会
   //   最后覆盖它（生命周期：全部 onLoad 先行、全部 onEnable 后行）——与
   //   TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP 同款处理（第七轮修复）
+  // 2026-08-15：EXHIBITIONISM_SEX_MODE_1~4 已从列表移除——露出系统落地，
+  //   真语义由 h-exposure 注册（语义所有者；同 T_IMPRISONMENT_1 先例）
   const pendingFalse = [
     'DR_WOMB_POSITION_INSERT', 'DR_WOMB_POSITION_SEX',
-    'EXHIBITIONISM_SEX_MODE_1', 'EXHIBITIONISM_SEX_MODE_2', 'EXHIBITIONISM_SEX_MODE_3', 'EXHIBITIONISM_SEX_MODE_4',
     'GROUP_SEX_MODE_ON',
     'HIDDEN_SEX_MODE_1', 'HIDDEN_SEX_MODE_2', 'HIDDEN_SEX_MODE_3', 'HIDDEN_SEX_MODE_4',
     'T_HIDDEN_SEX_MODE_1_OR_3', 'T_HIDDEN_SEX_MODE_2_OR_4',

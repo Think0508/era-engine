@@ -28,7 +28,8 @@ id = "集市"
 name = "集市"
 parent = "山村"                 # 集市属于山村
 type = "town"
-tags = ["has_shop", "has_tavern"]
+# has_indoor：室内地点 tag（h-exposure 露出模式 1 判定——缺省=室外；带屋顶的棚市集算室内）
+tags = ["has_shop", "has_tavern", "has_indoor"]
 exits = [
   { target = "山村", name = "回到山村", time_cost = 30 }
 ]

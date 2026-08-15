@@ -1,0 +1,38 @@
+# 露出系指令（h-exposure 插件默认层；mod 可覆盖）
+# 来源：erArk InstructConfig.csv 5054（07-指令集-猥亵期.md + 12-露出系统.md）
+# 效果链映射（12-露出系统.md §指令 + 21-效果ID速查表）：
+#   405 UPDATE_ORGASM_LEVEL  → h_start_h 覆盖（createHState 初始化 orgasm_level）
+#   462/464 H_FLAG_TO_1      → h_start_h 覆盖（startHScene 双方进 H）
+#   603/605 BRA_SEE/PAN_SEE  → h_start_h autoClothOff 覆盖（H 开始自动脱胸罩/内裤）
+#   704 RECORD_CONSCIOUS_H_TIME → 半成品 TODO（h_state 无 last_conscious_h_time 字段，无意识H系统消费）
+#   1409 CONDOM_INFO_SHOW_FLAG_ON → 半成品 TODO（UI 显示标记）
+#   CVE_A1/A2_E|34_G_1      → h_experience（expId=34 露出经验，self/selected）
+# ⚠️ 邀请模式选择面板（erArk exhibitionism_sex_panel）未实现——exposure_set_level
+#   的 level 缺省 = 按场景自动计算初始模式（场景=2人→室内tag?1:2、>2人→3/4）
+
+[[instructions]]
+id = "ask_exhibitionism_sex"
+label = "邀请露出"
+erark_id = "5054"
+erark_behavior = "ASK_EXHIBITIONISM_SEX"
+erark_h_mode_show_type = 1
+category = "obscenity"
+sub_category = "exposure"
+time_cost = 5
+priority = 50
+# 前提 = CSV premise_set 原样（HAVE_TARGET|NOT_H|EXHIBITIONISM_SEX_MODE_0|
+#   NO_TARGET_OR_TARGET_CAN_COOPERATE|TIRED_LE_74）+ h_mode_show_type=1 展开
+#   （NOT_SHOW_NON_H_IN_HIDDEN_SEX；NOT_H 已在原前提）
+# 露出判定 500（InstructJudge.csv）由被发现面板使用，不由本指令调用（migration-workflow §判定四列）
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "EXHIBITIONISM_SEX_MODE_0", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TIRED_LE_74"]
+effects = [
+  # 双方进入露出模式（level 缺省 = 按场景自动计算初始模式）
+  { type = "exposure_set_level", params = {}, target = "selected" },
+  { type = "exposure_set_level", params = {}, target = "self" },
+  # H 开始（462/464/405/603/605 引擎封装）
+  { type = "h_start_h", params = {} },
+  # CVE_A1_E|34_G_1 / CVE_A2_E|34_G_1：双方 露出经验(34) +1
+  { type = "h_experience", params = { expId = "34", value = 1 }, target = "self" },
+  { type = "h_experience", params = { expId = "34", value = 1 }, target = "selected" },
+  { type = "trigger_dialogue", params = { scene = "ask_exhibitionism_sex" } },
+]

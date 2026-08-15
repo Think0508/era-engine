@@ -9,7 +9,8 @@ id = "tavern"
 name = "酒馆"
 parent = "town_square"
 type = "building"
-tags = ["has_drink", "rest", "has_bedroom"]
+# has_indoor：室内地点（h-exposure 露出模式 1 判定——缺省=室外）
+tags = ["has_drink", "rest", "has_bedroom", "has_indoor"]
 
 # ── 微型关押区（confinement-system 测试用——牢房 tag=prison，调教室 tag=humiliation_room）──
 [[locations]]

@@ -174,22 +174,21 @@ async function settleDiscovered(charId: string): Promise<void> {
 //   final_value = time_base_value × final_adjust
 //   extra_adjust 是加法（不是乘法），tenths_add=false
 // TODO: 缺少 ability[16](羞耻感觉) 和 ability[102](心理感觉) 字段，暂用 ability[34] 简化
-// 注释：隐奸/露出持续快感 tick（对齐 erArk realtime_settle.py:566-613 的隐奸块 + 露出块）
+// 注释：隐奸持续快感 tick（对齐 erArk realtime_settle.py:566-613 的隐奸块）
 // 2026-08-08 重构：
 //   - 原实现只覆盖隐奸块（缺外层条件/素质/fall/连续减值；'心理快感' 死键（正确键为 '心理'）静默失效；
 //     sqrt(ability[16]) 注释为误解——state 16 羞耻走 base 分支（无 sqrt，ability_level=露出34））
-//   - 改经 h-core API settleState 统一管线（跨插件禁止直接 import）；补露出块与条件
+//   - 改经 h-core API settleState 统一管线（跨插件禁止直接 import）
+// 2026-08-15 拆分：露出块（realtime_settle.py:610-613）已迁至 h-exposure/scene.ts
+// applyExposureTick——露出逻辑归 h-exposure 插件，本函数只处理隐奸
 // erArk 公式：
 //   隐奸中（场景人数>2 且 周围有清醒未睡他人）：
 //     羞耻/心理快感 += time×5 × (ability_lv_adjust[露出] + 素质/fall 等 + (4-mode) + 他人×0.1)，tenths=False
-//   露出模式（exhibitionism_sex_mode≥1）：
-//     羞耻/心理快感 += time×3 × (ability_lv_adjust[露出] + ... + min(他人×0.1, 2))，tenths=False
 async function applyHiddenSexTick(charId: string, addTime: number): Promise<void> {
   const ch = entitySystem.get('character', charId) as any
   if (!ch) return
   const mode = ch?.sp_flag?.hidden_sex_mode ?? 0
-  const exhibitionMode = ch?.sp_flag?.exhibitionism_sex_mode ?? 0
-  if (mode < 1 && exhibitionMode < 1) return
+  if (mode < 1) return
 
   // 场景人数（同地点）与"其他人"计数（减去自己和玩家）
   const locId = ch.current_location
@@ -209,12 +208,6 @@ async function applyHiddenSexTick(charId: string, addTime: number): Promise<void
     const extraAdd = (4 - mode) + othersCount * 0.1
     await apiSystem.call('h-core', 'settleState', charId, ATTR.SHAME, 0, addTime * 5, { ...opts, extraAdjust: extraAdd })
     await apiSystem.call('h-core', 'settleState', charId, ATTR.MIND, 0, addTime * 5, { ...opts, extraAdjust: extraAdd })
-  }
-  // 露出块：露出模式中（erArk realtime_settle.py:610-613，系数=min(他人×0.1,2)）
-  if (exhibitionMode >= 1) {
-    const othersAdj = Math.min(othersCount * 0.1, 2)
-    await apiSystem.call('h-core', 'settleState', charId, ATTR.SHAME, 0, addTime * 3, { ...opts, extraAdjust: othersAdj })
-    await apiSystem.call('h-core', 'settleState', charId, ATTR.MIND, 0, addTime * 3, { ...opts, extraAdjust: othersAdj })
   }
 }
 
@@ -269,10 +262,9 @@ export function registerHiddenSexSceneLogic(ctx: PluginContext): void {
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
       const mode = c?.sp_flag?.hidden_sex_mode ?? 0
-      // 注释：露出模式角色也要走到持续快感 tick（2026-08-08 修复：原门槛跳过露出角色，
-      // applyHiddenSexTick 的露出块永不触发——静默失效）
-      const exhibitionMode = c?.sp_flag?.exhibitionism_sex_mode ?? 0
-      if (mode < 1 && exhibitionMode < 1) continue
+      // 2026-08-15 拆分：露出模式角色由 h-exposure 的 execution_end 监听处理
+      // （tick/经验/动态切换）——此处只处理隐奸角色
+      if (mode < 1) continue
 
       const behaviorId = c?.behavior?.behavior_id
       const behaviorTags = c?.behavior?.tags ?? []

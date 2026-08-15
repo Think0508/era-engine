@@ -1,10 +1,11 @@
-// 注释：隐奸/露出持续快感 + 他人存在判定修正测试（2026-08-08）
+// 注释：隐奸持续快感 + 他人存在判定修正测试（2026-08-08）
 // 覆盖：
 //   1. 隐奸持续快感（erArk realtime_settle.py:602-607）：time×5 × (露出系数 + 4-mode + 他人×0.1)
-//   2. 露出持续快感（:610-613）：time×3 × (露出系数 + min(他人×0.1, 2))
-//   3. 外层条件：场景人数 ≤2 / 无清醒他人 → 不结算
-//   4. 他人存在判定修正（instuct_judege.py:247-260）：S 类 40+40n / 群交隐奸 60+60n / D 类 25+25n，
+//   2. 外层条件：场景人数 ≤2 / 无清醒他人 → 不结算
+//   3. 他人存在判定修正（instuct_judege.py:247-260）：S 类 40+40n / 群交隐奸 60+60n / D 类 25+25n，
 //      露出调整 int(× (ability_lv_adjust[露出] - 1.6))
+// 注：露出持续快感测试（realtime_settle.py:610-613）已于 2026-08-15 迁至
+// exposure-system.test.ts（露出逻辑归 h-exposure 插件，本文件不加载 h-exposure）
 
 import { describe, it, expect, beforeAll, afterEach } from 'vitest'
 import { modLoader } from '../core/mod-loader'
@@ -113,19 +114,6 @@ describe('隐奸/露出持续快感 + 他人存在判定修正（erArk realtime_
       await tick(10)
       expect(n.base['羞耻']).toBe(0)
       entitySystem.get('character', 'passerby')!.current_location = 'town_square'
-    })
-  })
-
-  describe('露出持续快感（realtime_settle.py:610-613）', () => {
-    it('露出模式 → 羞耻/心理 += 30 × (1.0 + min(1×0.1,2)) = 33', async () => {
-      const n = npc()
-      n.sp_flag = { exhibitionism_sex_mode: 1 }
-      n.base['羞耻'] = 0
-      n.base['心理'] = 0
-      await tick(10)
-      // time×3 = 30；coeff = 1.0 + min(0.1, 2) = 1.1 → 33
-      expect(n.base['羞耻']).toBe(33)
-      expect(n.base['心理']).toBe(33)
     })
   })
 

@@ -2,7 +2,7 @@
 id = "h-exposure"
 name = "露出系统"
 version = "1.0.0"
-description = "4级露出模式/被发现处理"
+description = "4级露出模式/动态切换/持续快感/露出经验/成就（erArk 完整复刻）"
 
 [data_dependencies]
 provides = ["exposure:ready"]

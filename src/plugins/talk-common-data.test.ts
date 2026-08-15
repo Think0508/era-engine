@@ -24,6 +24,9 @@ import { registerSleepPremises } from './sleep-system/premise/sleep'
 // confinement-system onEnable 注册（h-core placeholder 已移除——onLoad 注册会被 sleep-system
 // 等后注册覆盖，见 premises.ts 注释）——镜像注册
 import { registerConfinementPremises } from './confinement-system/premises'
+// ★ 修复（2026-08-15 露出落地）：数据引用 exhibitionism_sex_mode_1~4（露出情境地文），
+// 真语义在 h-exposure 注册（h-core pendingFalse 占位已移除）——镜像注册
+import { registerExposurePremises } from './h-exposure/premises'
 
 // 注释：与 talk-common index.ts loadTomlDir 相同的数据收集逻辑（避免跨插件耦合）
 const defaultModules = import.meta.glob<string>(
@@ -71,6 +74,7 @@ describe('T2 talk-common 全量数据校验', () => {
     registerInstructPremises(conditionEngine)
     registerSleepPremises(conditionEngine)
     registerConfinementPremises(conditionEngine)
+    registerExposurePremises()
   })
 
   it('数据文件可解析（完整 TOML 解析——description 损坏即失败）', () => {
@@ -183,6 +187,7 @@ describe('T2 talk-common 全量数据校验', () => {
       registerInstructPremises(conditionEngine)
       registerSleepPremises(conditionEngine)
       registerConfinementPremises(conditionEngine)
+      registerExposurePremises()
     }
 
     conditionEngine.reorderEnabled = false

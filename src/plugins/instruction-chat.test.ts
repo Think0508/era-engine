@@ -19,6 +19,13 @@ import { onLoad as timeStopOnLoad, onEnable as timeStopOnEnable } from './h-time
 import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable } from './dialogue-system/index'
 import { onEnable as talkCommonOnEnable } from './talk-common-system/index'
 import { onEnable as confinementOnEnable } from './confinement-system/index'
+// 2026-08-15：h-exposure 落地——mod.instructions 含 ask_exhibitionism_sex/exhibitionism_sex_end
+// （插件默认层并入），其前提由 h-exposure/follow-system/h-hidden 注册（NO_TARGET_OR_TARGET_CAN_COOPERATE
+// 属 follow-system、TARGET_NOT_IN_HIDDEN_SEX_MODE 属 h-hidden）；不加载则校验报 error 并注销指令
+import { onLoad as exposureOnLoad, onEnable as exposureOnEnable } from './h-exposure/index'
+import { onLoad as followOnLoad, onEnable as followOnEnable } from './follow-system/index'
+import { onLoad as hiddenOnLoad, onEnable as hiddenOnEnable } from './h-hidden/index'
+import { onLoad as groupSexOnLoad, onEnable as groupSexOnEnable } from './h-group-sex/index'
 import { validateInstructionData } from '../core/instruction-loader'
 import { eventBus } from '../core/event-bus'
 import { clearBehaviorHistory } from '../core/command-executor'
@@ -74,6 +81,18 @@ describe('chat（1004）复刻', () => {
     await talkCommonOnEnable(stubCtx)
     // 注释：confinement onEnable 前提注册（test-mod 含监禁指令，前提未注册会 error+注销）
     await confinementOnEnable(stubCtx)
+    // 注释：h-exposure onLoad/onEnable——露出指令前提注册（同 confinement 理由）
+    exposureOnLoad(stubCtx)
+    await exposureOnEnable(stubCtx)
+    // 注释：follow-system/h-hidden/h-group-sex——露出指令引用其前提
+    // （NO_TARGET_OR_TARGET_CAN_COOPERATE/TARGET_NOT_IN_HIDDEN_SEX_MODE/GROUP_SEX_MODE_OFF），
+    // 不加载则校验 error+注销
+    followOnLoad(stubCtx)
+    await followOnEnable(stubCtx)
+    hiddenOnLoad(stubCtx)
+    hiddenOnEnable(stubCtx)
+    groupSexOnLoad(stubCtx)
+    await groupSexOnEnable(stubCtx)
 
     const p = entitySystem.get('character', 'player') as any
     p.current_location = 'town_square'
@@ -365,7 +384,6 @@ describe('chat（1004）复刻', () => {
 
   it('整批执行后无 error 级错误', () => {
     const errors = errorReporter.getErrors()
-    console.log('[dbg-prem]', conditionEngine.getRegisteredPremiseIds().filter((id: string) => id.includes('dorm') || id.includes('tired') || id.includes('sleep')))
     expect(errors.some(e => e.severity === 'error')).toBe(false)
   })
 })

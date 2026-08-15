@@ -1,106 +1,40 @@
-// 注释：h-exposure 插件——露出系统，对齐 erArk
-// 5 级露出模式（0=无 1=室内 2=室外 3=人前 4=无意识人前）
-// 前提：EXPOSURE_SEX_MODE_0~4 / TARGET_* / SELF_*
-// ⚠️ TODO（audit-k 标注，2026-08-12）：露出模式**动态切换缺失**——erArk 有
-// update_exhibitionism_sex_mode 等价逻辑（行动后按露出度自动调整模式），引擎只有
-// exposure_set_level 手动设置；自动切换待行为结算链路补充
+// 注释：h-exposure 插件——露出系统，对齐 erArk（2026-08-15 完整复刻）
+// 5 级露出模式（0=无 1=室内露出 2=室外露出 3=人前露出 4=无意识人前）
+// 动态模式切换 + 露出持续快感 tick + 露出经验 + 成就 + h:end 清理 + 前提全集
+//
+// 接线层（W 拆分，对齐 h-hidden 结构）：
+//   效果注册在 effects.ts；前提注册在 premises.ts；公共 API 在 api.ts；
+//   场景生命周期/动态切换/持续快感/经验/成就/UI 标签在 scene.ts
+//
+// 参考 erArk 源文件：
+//   exhibitionism_sex_panel.py       — 动态模式切换（12-露出系统.md §3）
+//   realtime_settle.py:610-613       — 露出中羞耻/心理快感
+//   settle_behavior.py:670-672       — 露出经验 +1
+//   default.py:4191 + h:end           — 露出模式清零（404 语义）
+//   handle_premise_sp_flag.py        — 露出前提（constant_promise.py:1664-1689）
+//   game_type.py:762-763/933-934     — 数据结构
+//   InstructConfig.csv:5054/6007     — 指令配置（数据在 data/default/instructions/）
+//
+// ⚠️ 设计决策（详见 ADR-0014）：
+//   - 门未锁条件砍掉（门概念限定世界观，通用 mod 无门模型）；室内外用 location tag
+//     `has_indoor` 判定（缺省=室外）
+//   - 被发现处理（Sex_Be_Discovered_Panel）未实现——面板级 UI 推迟，TODO 占位
+//   - 邀请模式选择面板未实现——exposure_set_level level 缺省=按场景自动计算
 
 import type { PluginContext } from '../../core/types'
-import { effectTypeRegistry } from '../../core/effect-type-registry'
-import { entitySystem } from '../../core/entity-system'
-import { narrativeLog } from '../../core/narrative-log'
-import { errorReporter } from '../../core/error-reporter'
-
-const MODE_NAMES = ['无', '室内露出', '室外露出', '人前露出', '无意识露出']
+import { registerExposureEffects } from './effects'
+import { registerExposurePremises } from './premises'
+import { registerExposureApi } from './api'
+import { registerExposureSceneLogic, checkIndoorTagCoverage } from './scene'
 
 export function onLoad(_ctx: PluginContext): void {
-  effectTypeRegistry.register('exposure_set_level', (params: any, ctx: any) => {
-    const targetIds = ctx._targetIds as string[]
-    for (const id of targetIds) {
-      const char = entitySystem.get('character', id) as any
-      if (!char) continue
-      if (!char.exposure) char.exposure = {}
-      char.exposure.level = Math.max(0, Math.min(4, params.level ?? 0))
-    }
-    return true
-  })
-
-  effectTypeRegistry.register('exposure_discovered', (_params: any, ctx: any) => {
-    const targetIds = ctx._targetIds as string[]
-    for (const id of targetIds) {
-      const char = entitySystem.get('character', id) as any
-      narrativeLog.write(`${char?.name ?? id} 暴露了！`, 'system', 'h-exposure')
-      // TODO: 触发 NPC 反应/羞耻增长/逃跑等（需 NPC AI 系统）
-    }
-    return true
-  })
+  registerExposureEffects()
 }
 
 export async function onEnable(ctx: PluginContext): Promise<void> {
-  ctx.api.register('h-exposure', {
-    getLevel: (charId: string) => {
-      const char = entitySystem.get('character', charId) as any
-      return char?.exposure?.level ?? 0
-    },
-    setLevel: (charId: string, level: number) => {
-      const char = entitySystem.get('character', charId) as any
-      if (!char) return
-      if (!char.exposure) char.exposure = {}
-      char.exposure.level = Math.max(0, Math.min(4, level))
-    },
-    getModeName: (charId: string): string => {
-      const char = entitySystem.get('character', charId) as any
-      return MODE_NAMES[char?.exposure?.level ?? 0] ?? '无'
-    },
-  })
-
-  // 注释：注册所有露出前提——对齐 erArk 9 个
-  let premiseRegWarned = false
-  const reg = async (id: string, fn: (c: any) => boolean) => {
-    try { await ctx.api.call('engine', 'premises.register', id, fn) } catch (err) {
-      if (!premiseRegWarned) {
-        premiseRegWarned = true
-        errorReporter.report({
-          source: 'h-exposure',
-          severity: 'warning',
-          message: "前提注册失败（h-core 未就绪？）：" + (err instanceof Error ? err.message : String(err)),
-          suggestion: 'h-core plugin may not be loaded (registerPremise API) - this plugin premises will be unavailable',
-        })
-      }
-    }
-  }
-
-  function getTargetId(ctx2: any): string | null {
-    return ctx2.selectedCharacterId ?? ctx2.uiStore?.selectedCharacterId ?? null
-  }
-
-  function getSelfId(ctx2: any): string | null {
-    return ctx2.gameStore?.player?.id ?? ctx2.sourceId ?? null
-  }
-
-  // 注释：目标露出模式检查 0-4
-  for (let i = 0; i <= 4; i++) {
-    const lvl = i
-    reg(`EXPOSURE_SEX_MODE_${lvl}`, (ctx2: any) => {
-      const charId = getTargetId(ctx2)
-      if (!charId) return false
-      const char = entitySystem.get('character', charId) as any
-      return (char?.exposure?.level ?? 0) === lvl
-    })
-  }
-
-  // 注释：自己露出模式 >=1
-  reg('SELF_EXPOSURE_MODE_GE_1', (ctx2: any) => {
-    const charId = getSelfId(ctx2)
-    if (!charId) return false
-    const char = entitySystem.get('character', charId) as any
-    return (char?.exposure?.level ?? 0) >= 1
-  })
-
-  reg('TARGET_EXPOSURE_MODE_GE_1', (ctx2: any) => {
-    const charId = getTargetId(ctx2)
-    if (!charId) return false
-    const char = entitySystem.get('character', charId) as any
-    return (char?.exposure?.level ?? 0) >= 1
-  })
+  registerExposurePremises()
+  registerExposureApi(ctx)
+  registerExposureSceneLogic(ctx)
+  // 注释：加载期卫生检查——无任何 has_indoor 地点 → warning（露出模式 1 不可达）
+  checkIndoorTagCoverage()
 }

@@ -83,8 +83,6 @@ describe('parseModData', () => {
       attack: 15,
       defense: 5,
       speed: 5,
-      TSP: 200,
-      tsp_max: 200,
       "体力": 1200,
       "气力": 800,
       "体力上限": 2500,

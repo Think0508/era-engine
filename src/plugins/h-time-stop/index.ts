@@ -1,5 +1,5 @@
 // 注释：h-time-stop 插件——时停系统，完全对齐 erArk
-// 全局时停模式 + TSP 消耗（按行动时长）+ 隐藏经验线性增长 TSP 上限
+// 全局时停模式 + 精力消耗（consume_sanity 通道，按行动时长扣费）+ 归零自动中断 + 时停总时长统计
 // 所有功能直接开放，无等级门槛
 
 import { conditionEngine } from '../../core/condition-engine'
@@ -8,13 +8,14 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
-import { commandRegistry } from '../../core/command-registry'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
 import { registerGameStateProvider } from '../../core/save-system'
+import { bindingResolver } from '../../core/binding-resolver'
+import { getEntityAttr, ATTR } from '../../core/entity-utils'
 
 let timeStopActive = false
-let lastActionTimeCost = 10  // 注释：缺省 10 分钟
+let timeStopDuration = 0  // 注释：时停总时长（分钟，erArk achievement.time_stop_duration）
 let frozenTime: { minute: number; hour: number; day: number; month: number; year: number } | null = null
 
 // 注释：时停前无意识快照（★3 修复（第六轮））——time_stop_on 全图覆写 unconscious_h=3，
@@ -38,10 +39,30 @@ function getUnconsciousH(charId: string): number {
   return ch?.sp_flag?.unconscious_h ?? 0
 }
 
+// 注释：时停精力读取（TSP → 精力统一，2026-08-15）——走 bindings
+// （bindings.toml [bindings.h-time-stop].sanity → mod 实际属性，如 精力）
+function getStamina(charId: string): number | null {
+  const v = bindingResolver.getForPlugin('h-time-stop', charId, 'sanity')
+  return typeof v === 'number' ? v : null
+}
+
+// 注释：时停精力成本公式（erArk realtime_settle.py:412-415）：
+// cost = min(max(true_add_time × 2, 1), currentStamina)
+function calcTimeStopCost(timeCost: number, cur: number): number {
+  return Math.min(Math.max(timeCost * 2, 1), cur)
+}
+
 export function onLoad(_ctx: PluginContext): void {
   // 注释：时停前提（erArk TIME_STOP_ON/OFF——读模块级状态，睡眠等指令的 TIME_STOP_OFF 前提依赖）
   conditionEngine.registerPremise('TIME_STOP_ON', () => timeStopActive)
   conditionEngine.registerPremise('TIME_STOP_OFF', () => !timeStopActive)
+
+  // 注释：时停精力前提（erArk SANITY_POINT_G_0——玩家精力 > 0，时停内行动可行性判定）
+  conditionEngine.registerPremise('SANITY_POINT_G_0', (ctx: GameContext) => {
+    const playerId = ctx.player?.id ?? gameContext.getContext().player?.id
+    if (!playerId) return false
+    return (getStamina(playerId) ?? 0) > 0
+  })
 
   // 注释：时停解放前提（2026-08-13 审计补真语义——h-config talk.situations 情境加权引用；
   // h-core pendingFalse 的 TARGET_TIME_STOP_ORGASM_RELASE 恒 false 占位被本注册覆盖（后注册覆盖））
@@ -62,7 +83,7 @@ export function onLoad(_ctx: PluginContext): void {
   // 且 settleSleepH 因 !==1 永久早退）——off 时恢复时停前的值
   // 2026-08-14 审查：快照本体已提升为模块级（随存档 provider 序列化，防时停中存档读档后永久冻结）
   // 注释：time_stop_on——开启时停（对齐 erArk 效果 1241）
-  effectTypeRegistry.register('time_stop_on', (_p: any, _execCtx: any) => {
+  effectTypeRegistry.register('time_stop_on', (params: any, _execCtx: any) => {
     if (timeStopActive) return true
     timeStopActive = true
     frozenTime = { ...gameContext.getContext().time }
@@ -77,13 +98,13 @@ export function onLoad(_ctx: PluginContext): void {
         c.h_state.time_stop_release = false
       }
     }
-    narrativeLog.write('时间停止了！', 'system', 'h-time-stop')
+    if (!params?.quiet) narrativeLog.write('时间停止了！', 'system', 'h-time-stop')
     return true
   })
 
   // 注释：time_stop_off——关闭时停（对齐 erArk 1242 + 527）
   // erArk 链：1244(清搬运) → 1246(清自由) → 536 → 1242(关时停) → 527(释放绝顶)
-  effectTypeRegistry.register('time_stop_off', async (_p: any, _execCtx: any) => {
+  effectTypeRegistry.register('time_stop_off', async (params: any, _execCtx: any) => {
     if (!timeStopActive) return true
     timeStopActive = false
     frozenTime = null
@@ -122,7 +143,7 @@ export function onLoad(_ctx: PluginContext): void {
     }
     // 注释：死代码清理（第七轮）——frozenTime 在 :68 已置 null，此判断恒假；
     // 时停恢复时刻的回拨语义由 time_stop_off 的调用方（指令链）处理，此处不恢复
-    narrativeLog.write('时间重新流动', 'system', 'h-time-stop')
+    if (!params?.quiet) narrativeLog.write('时间重新流动', 'system', 'h-time-stop')
     return true
   })
 
@@ -160,14 +181,18 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  effectTypeRegistry.register('time_stop_free', (_p: any, execCtx: any) => {
+  effectTypeRegistry.register('time_stop_free', async (_p: any, execCtx: any) => {
     const ids = execCtx._targetIds as string[]
     if (ids.length > 0) {
       const src = entitySystem.get('character', execCtx.sourceId) as any
       if (src) {
         if (!src.time_stop_data) src.time_stop_data = {}
         src.time_stop_data.freeTargetId = ids[0]
-        if (src.base) src.base['TSP'] = Math.max(0, (src.base['TSP'] ?? 0) - 50)
+        // 注释：自由活动解锁扣 50 精力（erArk 固定 50 理智）——TSP 删除后走 consume_sanity
+        // 通道（sleep-system 注册：clamp 到当前值 + 累计 today_sanity_point_cost；跨插件禁直接 import）
+        await apiSystem.call('effect-system', 'execute', [
+          { type: 'consume_sanity', target: 'self', params: { amount: 50 } },
+        ], { sourceId: execCtx.sourceId, _targetIds: [execCtx.sourceId] })
         narrativeLog.write(`${(entitySystem.get('character', ids[0]) as any)?.name ?? ids[0]} 可在时停中自由活动`, 'system', 'h-time-stop')
       }
     }
@@ -307,20 +332,14 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     }
   })
 
-  // 注释：每次行动前记录时间成本
-  ctx.events.on('game:execution_start', (payload: any) => {
-    const cmd = commandRegistry.getById(payload?.commandId)
-    lastActionTimeCost = (cmd as any)?.timeCost ?? 10
-  })
-
-  // 注释：每次行动后——扣玩家 TSP + 时间冻结 + 隐藏经验涨上限
-  // TSP 成本公式（erArk realtime_settle.py:412）：
-  //   cost = min(max(true_add_time × 2, 1), currentTSP)
-  //   true_add_time = 本次行动的 timeCost（分钟）
-  ctx.events.on('game:execution_end', () => {
+  // 注释：每次行动后——扣玩家精力 + 时间冻结 + 时长统计（erArk realtime_settle.py:412-434）
+  // 精力成本公式：cost = min(max(true_add_time × 2, 1), currentStamina)
+  // true_add_time = 本次行动的 timeCost（分钟，execution_end payload 直读——
+  // 不再走 execution_start 记录 lastActionTimeCost，避免拦截/嵌套执行的误报耗时）
+  // 归零自动中断（:417-434）：扣后精力 ≤ 0 → 自动执行 TIME_STOP_OFF 全链
+  ctx.events.on('game:execution_end', async (payload: any) => {
     if (!timeStopActive) return
-    // 注释：audit-i 修复——原硬编码 'player'/'0' 扫描（与 :272 的 gameContext 解析不一致，
-    // 玩家 id 非 'player' 时找不到并**静默关停时停**）。统一用 gameContext 解析。
+    // 注释：audit-i 修复——统一用 gameContext 解析玩家（id 非 'player' 时也正确）
     const playerId = gameContext.getContext().player?.id ?? null
     if (!playerId) {
       timeStopActive = false; frozenTime = null
@@ -331,52 +350,58 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       })
       return
     }
-    const player = entitySystem.get('character', playerId) as any
-    if (player?.base) {
-      const cur = player.base['TSP'] ?? 0
-      const cost = Math.min(Math.max(lastActionTimeCost * 2, 1), cur)
-      // 注释：隐藏经验 —— 每扣 1 TSP = 1 XP
-      if (!player.experience) player.experience = {}
-      player.experience['time_stop_xp'] = (player.experience['time_stop_xp'] ?? 0) + cost
-      // 注释：线性换算 TSP 上限 = 200 + floor(XP / 5)
-      const newMax = 200 + Math.floor((player.experience['time_stop_xp'] ?? 0) / 5)
-      if (newMax > (player.base['tsp_max'] ?? 0)) {
-        player.base['tsp_max'] = newMax
-        // 注释：升级时补满 TSP
-        player.base['TSP'] = newMax
+    const timeCost = Number(payload?.timeCost ?? 0)
+    if (timeCost > 0) {
+      // 注释：时停总时长统计（erArk character_behavior.py:59-62 achievement.time_stop_duration += pl_duration）
+      timeStopDuration += timeCost
+      const cost = calcTimeStopCost(timeCost, getStamina(playerId) ?? 0)
+      if (cost > 0) {
+        try {
+          // 注释：经 effect 通道走 consume_sanity（sleep-system 注册：clamp + 累计
+          // today_sanity_point_cost；跨插件禁止直接 import sleep-system 源码）
+          await apiSystem.call('effect-system', 'execute', [
+            { type: 'consume_sanity', target: 'self', params: { amount: cost } },
+          ], { sourceId: playerId, _targetIds: [playerId] })
+        } catch (err) {
+          errorReporter.report({
+            source: 'h-time-stop',
+            severity: 'error',
+            message: `时停精力扣费失败：${err instanceof Error ? err.message : String(err)}`,
+          })
+        }
+      }
+      // 注释：归零自动中断（erArk realtime_settle.py:417-434）——扣后精力 ≤ 0 →
+      // 自动执行 TIME_STOP_OFF 全链（quiet 避免重复叙事——此处已输出解除原因）
+      if ((getStamina(playerId) ?? 0) <= 0) {
+        narrativeLog.write('精力值不足，时停自动解除', 'system', 'h-time-stop')
+        await apiSystem.call('effect-system', 'execute', [
+          { type: 'time_stop_off', params: { quiet: true } },
+        ], { sourceId: playerId, _targetIds: [playerId] })
       }
     }
     if (frozenTime) gameContext.setTime(frozenTime)
   })
 
-  // 注释：每日恢复 TSP（上限按隐藏经验增长）
-  ctx.events.on('game:new_day', () => {
-    for (const ch of entitySystem.getAll('character')) {
-      const c = ch as any
-      if (c.base) {
-        const xp = c.experience?.time_stop_xp ?? 0
-        c.base['tsp_max'] = 200 + Math.floor(xp / 5)
-        c.base['TSP'] = c.base['tsp_max']
-      }
-    }
-  })
-
   ctx.api.register('h-time-stop', {
     isActive: () => timeStopActive,
-    getTSP: (charId: string) => { const ch = entitySystem.get('character', charId) as any; return ch?.base?.['TSP'] ?? 0 },
-    getTSPMax: (charId: string) => {
+    // 注释：TSP → 精力统一（2026-08-15）：getTSP/getTSPMax/getXP 删除，精力走 bindings
+    getStamina: (charId: string) => getStamina(charId) ?? 0,
+    getStaminaMax: (charId: string) => {
       const ch = entitySystem.get('character', charId) as any
-      return ch?.base?.['tsp_max'] ?? 200
+      if (!ch) return 100
+      const max = getEntityAttr(ch, ATTR.STAMINA_MAX)
+      return typeof max === 'number' && max > 0 ? max : 100
     },
+    getDuration: () => timeStopDuration,
     getOrgasmCount: (charId: string, partId?: number) => {
       const ch = entitySystem.get('character', charId) as any
       const oc = ch?.h_state?.time_stop_orgasm_count ?? {}
       return partId != null ? oc[partId] ?? 0 : oc
     },
-    getXP: (charId: string) => {
-      const ch = entitySystem.get('character', charId) as any
-      return ch?.experience?.time_stop_xp ?? 0
-    },
+    // 注释：时停内移动占位（Task 3 实现）
+    moveStart: async () => ({ mode: 'normal', cost: 0 }),
+    getAutoMove: () => false,
+    setAutoMove: () => {},
   })
 
   // 注释：存档 provider（2026-08-14 存档复刻）——时停开关/冻结时刻/无意识快照随存档，
@@ -388,12 +413,13 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       timeStopActive,
       frozenTime: frozenTime ? { ...frozenTime } : null,
       prevUnconscious: Object.fromEntries(prevUnconscious),
+      timeStopDuration,
     }),
     restore: (data) => {
       timeStopActive = !!data?.timeStopActive
       frozenTime = data?.frozenTime ? { ...data.frozenTime } : null
       prevUnconscious = new Map(Object.entries(data?.prevUnconscious ?? {}))
-      lastActionTimeCost = 10
+      timeStopDuration = Number(data?.timeStopDuration ?? 0)
     },
   })
 

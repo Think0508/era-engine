@@ -3,7 +3,7 @@
 id = "player"
 template = "test-hero"
 name = "玩家"
-base = { hp = 200, mp = 80, "体力" = 1200, "气力" = 800, "体力上限" = 2500, "气力上限" = 2000, "精力" = 100, TSP = 200, tsp_max = 200, "性别" = 1 }
+base = { hp = 200, mp = 80, "体力" = 1200, "气力" = 800, "体力上限" = 2500, "气力上限" = 2000, "精力" = 100, "性别" = 1 }
 equipment = { upper = "布衣", lower = "长裤" }
 assets = { portrait = "assets/char/player.png" }
 abilities = { "华山剑法" = 3, "混元功" = 2, "基础攻击" = 1 }

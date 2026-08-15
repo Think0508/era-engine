@@ -1,12 +1,19 @@
 [meta]
 id = "h-time-stop"
 name = "时停系统"
-version = "1.0.0"
-description = "时间停止系统，H 中时姦、探索时搬运"
+version = "1.1.0"
+description = "时间停止系统：H 中时姦、探索时搬运（时停精力经 bindings 绑定到 mod 属性，行动按耗时扣费、归零自动中断、统计总时长）"
 
 dependencies = [
   { plugin = "h-core", version = "^1.0.0" },
-  { plugin = "effect-system", version = "^1.0.0" }
+  { plugin = "effect-system", version = "^1.0.0" },
+  { plugin = "sleep-system", version = "^1.0.0" }
 ]
+
+# 可选绑定：时停精力（erArk sanity_point 统一语义——行动扣费/自由活动 50 走 consume_sanity 通道，
+# sleep-system 注册；未绑定 → 扣费跳过 + 归零判据按 0 → 时停不可持续（warning 不阻止加载））
+[optional_attributes]
+sanity = { type = "number", description = "时停精力（绑定到 mod 属性如 精力）" }
+
 [data_dependencies]
 depends_on = ["h:ready"]

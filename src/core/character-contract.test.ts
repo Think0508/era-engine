@@ -366,7 +366,6 @@ describe('character-contract（测试基座一致性）', () => {
     const defined = mergeAttrs([
       'src/plugins/h-core/data/default/attributes.toml',
       'src/plugins/combat-wuxia/data/default/attributes.toml',
-      'src/plugins/h-time-stop/data/default/attributes.toml',
       'mods/test-mod/definitions/attributes.toml',
     ])
     for (const k of Object.keys(DEFAULT_NPC_BASE)) {

@@ -580,15 +580,21 @@ ctx.api.call('h-bondage', 'getBondageName', charId)           // → string
 ctx.api.call('h-bondage', 'getBondageTypes')                  // → BondageType[]（捆绑类型配置列表）
 ```
 
-#### h-time-stop — 时停
+#### h-time-stop — 时停（2026-08-15：TSP 统一为精力）
 
 ```typescript
-ctx.api.call('h-time-stop', 'isActive')                       // → boolean
-ctx.api.call('h-time-stop', 'getTSP', charId)                 // → number
-ctx.api.call('h-time-stop', 'getTSPMax', charId)              // → number
-ctx.api.call('h-time-stop', 'getOrgasmCount', charId, partId?)// → number
-ctx.api.call('h-time-stop', 'getXP', charId)                  // → number
+ctx.api.call('h-time-stop', 'isActive')                        // → boolean
+ctx.api.call('h-time-stop', 'getStamina', charId)              // → number（当前时停精力，走 bindings [bindings.h-time-stop].sanity）
+ctx.api.call('h-time-stop', 'getStaminaMax', charId)           // → number（精力上限属性，缺省 100）
+ctx.api.call('h-time-stop', 'getDuration')                     // → number（时停总时长（分钟），erArk achievement.time_stop_duration）
+ctx.api.call('h-time-stop', 'getOrgasmCount', charId, partId?) // → number
+ctx.api.call('h-time-stop', 'moveStart', timeCost)             // → Promise<{mode, cost}>（占位，Task 3 实现）
+ctx.api.call('h-time-stop', 'getAutoMove')                     // → boolean（占位）
+ctx.api.call('h-time-stop', 'setAutoMove', on)                 // → void（占位）
 ```
+
+资源：时停内行动按耗时扣精力（`consume_sanity` 通道，公式 `min(max(耗时×2, 1), 当前精力)`），
+归零自动中断（自动执行 TIME_STOP_OFF 全链）。旧 `getTSP/getTSPMax/getXP`（TSP/tsp_max 属性）已删除。
 
 ### 辅助系统
 

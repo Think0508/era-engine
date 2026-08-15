@@ -1,9 +1,0 @@
-# h-time-stop 插件默认属性定义（插件默认层 Layer 1）
-# TSP = 时停点数（erArk realtime_settle.py:412 语义：按行动时长扣 TSP，隐藏经验线性增长上限）
-# 契约补键（2026-08-09）：h-time-stop 引用 base['TSP']/base['tsp_max'] 但无 attributes.toml 定义
-# → 角色裸字段。默认：TSP 0（由 mod 给玩家起始值，如 test-mod 给 200）、上限 200 = 公式基数
-# （上限 = 200 + floor(隐藏经验/5)）
-
-[attributes]
-"TSP" = { type = "number", default = 0, category = "base", display = true, display_group = "h", description = "时停点数（h-time-stop，行动按时长消耗）" }
-"tsp_max" = { type = "number", default = 200, category = "base", display = true, display_group = "h", description = "时停点数上限（= 200 + 隐藏经验/5）" }

@@ -241,4 +241,30 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
     expect(gameContext.getContext().location?.id).toBe('tavern')
     expect(player().current_location).toBe('tavern')
   })
+
+  // ═══ Task 4：时停 5 指令数据落地（data/default/instructions）+ 场景口上 ═══
+  it('时停指令已加载且前提可用', async () => {
+    const cmd = commandRegistry.getById('time_stop_on')
+    expect(cmd).toBeDefined()
+    expect(cmd!.premises).toContain('TIME_STOP_OFF')
+    expect(cmd!.premises).toContain('SANITY_POINT_G_0')
+    expect(commandRegistry.getById('time_stop_off')).toBeDefined()
+    expect(commandRegistry.getById('time_stop_off_in_h')).toBeDefined()
+    expect(commandRegistry.getById('carry_target')).toBeDefined()
+    expect(commandRegistry.getById('stop_carry_target')).toBeDefined()
+  })
+
+  it('time_stop_on 指令执行：全场冻结', async () => {
+    // 玩家精力 100（beforeEach 重置）——所有前提满足（PRIMARY_TIME_STOP/TIME_STOP_OFF/
+    // SANITY_POINT_G_0/TIRED_LE_84），指令应完整执行：time_stop_on 效果 + 场景口上
+    await commandExecutor.execute('time_stop_on', execCtx())
+    expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(true)
+    // 场景口上输出（time_stop_on 场景行存在——scene-dialogue.toml 追加）
+    expect(narrativeLog.getEntries().some((e: any) => String(e.text).includes('世界凝固在眼前'))).toBe(true)
+    // 完成后清理：执行 time_stop_off effect 恢复（时停状态是模块级，避免污染后续测试）
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_off', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
+  })
 })

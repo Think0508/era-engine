@@ -17,6 +17,8 @@ import { getEntityAttr, ATTR } from '../../core/entity-utils'
 let timeStopActive = false
 let timeStopDuration = 0  // 注释：时停总时长（分钟，erArk achievement.time_stop_duration）
 let frozenTime: { minute: number; hour: number; day: number; month: number; year: number } | null = null
+// 注释：自动时停移动开关（Task 3）——开：未时停的普通移动自动执行 时停on→瞬移→时停off 循环（完全静默）
+let autoTimeStopMove = false
 
 // 注释：时停前无意识快照（★3 修复（第六轮））——time_stop_on 全图覆写 unconscious_h=3，
 // 原 time_stop_off 全清 0 会把睡奸标记(1)/催眠(4-7)静默抹掉（催眠需重新催眠、睡奸标记丢失
@@ -382,6 +384,13 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     if (frozenTime) gameContext.setTime(frozenTime)
   })
 
+  // 注释：时停开启/关闭（静默版）——自动时停移动的开关循环用（quiet 避免重复叙事）
+  const quietTimeStop = async (on: boolean, sourceId: string): Promise<void> => {
+    await apiSystem.call('effect-system', 'execute', [
+      { type: on ? 'time_stop_on' : 'time_stop_off', params: { quiet: true } },
+    ], { sourceId, _targetIds: [sourceId] })
+  }
+
   ctx.api.register('h-time-stop', {
     isActive: () => timeStopActive,
     // 注释：TSP → 精力统一（2026-08-15）：getTSP/getTSPMax/getXP 删除，精力走 bindings
@@ -398,10 +407,64 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       const oc = ch?.h_state?.time_stop_orgasm_count ?? {}
       return partId != null ? oc[partId] ?? 0 : oc
     },
-    // 注释：时停内移动占位（Task 3 实现）
-    moveStart: async () => ({ mode: 'normal', cost: 0 }),
-    getAutoMove: () => false,
-    setAutoMove: () => {},
+    // 注释：自动时停移动开关（未时停时的便利功能）
+    getAutoMove: () => autoTimeStopMove,
+    setAutoMove: (on: boolean) => { autoTimeStopMove = !!on },
+    // 注释：移动启动（Task 3）——时停中 = 瞬移（不推进时间）+ 精力扣费；未时停但开关开
+    // 且前置满足（精力>0 + TIRED_LE_84 + NOT_H）→ 自动 on→瞬移→off 完整循环（完全静默）；
+    // 其余 → normal（map-system 走普通移动路径）
+    moveStart: async (timeCost: number) => {
+      const playerId = gameContext.getContext().player?.id ?? null
+      if (!playerId) return null
+      const timeCostNum = Number(timeCost ?? 0)
+      if (timeStopActive) {
+        const cost = calcTimeStopCost(timeCostNum, getStamina(playerId) ?? 0)
+        if (cost > 0) {
+          await apiSystem.call('effect-system', 'execute', [
+            { type: 'consume_sanity', target: 'self', params: { amount: cost } },
+          ], { sourceId: playerId, _targetIds: [playerId] })
+        }
+        // 注释：归零自动解除（与 execution_end 监听器同语义）
+        if ((getStamina(playerId) ?? 0) <= 0) {
+          narrativeLog.write('精力值不足，时停自动解除', 'system', 'h-time-stop')
+          await quietTimeStop(false, playerId)
+        }
+        return { mode: 'teleport', cost }
+      }
+      if (autoTimeStopMove) {
+        const ctx = gameContext.getContext() as any
+        const sanityOk = (getStamina(playerId) ?? 0) > 0
+        const tiredOk = conditionEngine.getPremiseValue('TIRED_LE_84', ctx)
+        const notH = conditionEngine.getPremiseValue('NOT_H', ctx)
+        if (sanityOk && tiredOk && notH) {
+          await quietTimeStop(true, playerId)
+          const cost = calcTimeStopCost(timeCostNum, getStamina(playerId) ?? 0)
+          if (cost > 0) {
+            await apiSystem.call('effect-system', 'execute', [
+              { type: 'consume_sanity', target: 'self', params: { amount: cost } },
+            ], { sourceId: playerId, _targetIds: [playerId] })
+          }
+          await quietTimeStop(false, playerId)
+          return { mode: 'teleport', cost }
+        }
+      }
+      return { mode: 'normal', cost: 0 }
+    },
+  })
+
+  // 注释：搬运跟随（Task 3，erArk handle_npc_ai_in_h.py:74-80 语义）——时停中玩家行动后
+  // 搬运目标同步位置（玩家瞬移/移动 → 被搬运者跟随到同地点）
+  ctx.events.on('location:enter', (payload: any) => {
+    const to = payload?.to, from = payload?.from
+    if (!to || to === from) return
+    if (!timeStopActive) return
+    const playerId = gameContext.getContext().player?.id
+    if (!playerId) return
+    const player = entitySystem.get('character', playerId) as any
+    const carryId = player?.time_stop_data?.carryTargetId
+    if (!carryId) return
+    const carried = entitySystem.get('character', carryId) as any
+    if (carried) carried.current_location = to
   })
 
   // 注释：存档 provider（2026-08-14 存档复刻）——时停开关/冻结时刻/无意识快照随存档，

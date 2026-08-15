@@ -18,6 +18,7 @@ import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable } from '../dialo
 import { onEnable as talkCommonOnEnable } from '../talk-common-system/index'
 import { onLoad as sleepOnLoad } from '../sleep-system/index'
 import { onLoad as timeStopOnLoad, onEnable as timeStopOnEnable } from './index'
+import { onEnable as mapOnEnable } from '../map-system/index'
 import { eventBus } from '../../core/event-bus'
 import { makeTestExecCtx } from '../../utils/test-helpers'
 
@@ -60,6 +61,8 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
     sleepOnLoad(stubCtx)
     timeStopOnLoad(stubCtx)
     await timeStopOnEnable(stubCtx)
+    // 注释：map-system 注册 'map' API（Task 3 移动集成测试用——moveTo 改道 + 搬运跟随）
+    await mapOnEnable(stubCtx)
 
     // 玩家（test-mod roster 已注册）——NPC 手动注册
     player().current_location = 'town_square'
@@ -142,5 +145,100 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
     expect(player().base['TSP']).toBeUndefined()
     expect(player().base['tsp_max']).toBeUndefined()
     expect(player().experience?.['time_stop_xp']).toBeUndefined()
+  })
+
+  // ═══ Task 3：自动时停移动（moveStart + map-system 改道 + 搬运跟随）═══
+  it('开关关：未时停移动 → normal', async () => {
+    await apiSystem.call('h-time-stop', 'setAutoMove', false)
+    const r = await apiSystem.call('h-time-stop', 'moveStart', 10)
+    expect(r).toEqual({ mode: 'normal', cost: 0 })
+  })
+
+  it('开关开：未时停移动 → 自动 on + 瞬移扣费 + autoOff（完全静默）', async () => {
+    await apiSystem.call('h-time-stop', 'setAutoMove', true)
+    const before = player().base['精力']
+    const logBefore = narrativeLog.getEntries().length
+    const r = await apiSystem.call('h-time-stop', 'moveStart', 10)
+    expect(r!.mode).toBe('teleport')
+    expect(r!.cost).toBe(20)
+    expect(player().base['精力']).toBe(before - 20)
+    // autoOff 已执行（quiet——无"时间重新流动"叙事）
+    expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
+    // 完全静默：无任何含"时间"的叙事（时间停止了！/时间重新流动/赶路叙事均无）
+    const newEntries = narrativeLog.getEntries().slice(logBefore)
+    expect(newEntries.every((e: any) => !String(e.text).includes('时间'))).toBe(true)
+  })
+
+  it('开关开但精力 0：自动 on 前置检查失败 → normal（不进时停）', async () => {
+    player().base['精力'] = 0
+    const r = await apiSystem.call('h-time-stop', 'moveStart', 10)
+    expect(r!.mode).toBe('normal')
+    expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
+  })
+
+  it('时停激活中移动：teleport 且时间不前进', async () => {
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(true)
+    const before = gameContext.getContext().time
+    const beforeStamina = player().base['精力']
+    const r = await apiSystem.call('h-time-stop', 'moveStart', 10)
+    const after = gameContext.getContext().time
+    expect(r!.mode).toBe('teleport')
+    expect(r!.cost).toBe(20)
+    expect(player().base['精力']).toBe(beforeStamina - 20)
+    // 时停大前提：时间完全不动（分钟级）
+    expect(after).toEqual(before)
+  })
+
+  it('时停中精力归零：移动后自动 off', async () => {
+    player().base['精力'] = 5
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    const r = await apiSystem.call('h-time-stop', 'moveStart', 10)
+    expect(r!.mode).toBe('teleport')
+    expect(r!.cost).toBe(5) // min(max(10×2,1),5)
+    expect(player().base['精力']).toBe(0)
+    expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
+  })
+
+  it('搬运跟随：时停中玩家 moveTo → 搬运目标 current_location 同步', async () => {
+    const carried = entitySystem.get('character', 'npc_1') as any
+    player().current_location = 'town_square'
+    carried.current_location = 'town_square'
+    gameContext.setLocation(entitySystem.get('location', 'town_square') as any)
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_carry' },
+    ], { sourceId: 'player', _targetIds: ['npc_1'] })
+    // 时停中移动 = 瞬移（map-system moveTo 改道 → teleport 分支）
+    await apiSystem.call('map', 'moveTo', 'tavern')
+    expect(carried.current_location).toBe('tavern')
+  })
+
+  it('自动时停移动完整循环（map-system 集成）：时间不前进 + 扣费 + 静默', async () => {
+    await apiSystem.call('h-time-stop', 'setAutoMove', true)
+    player().base['精力'] = 100
+    player().current_location = 'town_square'
+    gameContext.setLocation(entitySystem.get('location', 'town_square') as any)
+    const before = gameContext.getContext().time
+    narrativeLog.clear()
+    await apiSystem.call('map', 'moveTo', 'tavern')
+    const after = gameContext.getContext().time
+    // 自动瞬移循环：时间不前进
+    expect(after).toEqual(before)
+    // 精力扣费：edge time_cost=5 → cost = min(max(5×2,1),100) = 10
+    expect(player().base['精力']).toBe(90)
+    expect(player().action_info.today_sanity_point_cost).toBe(10)
+    // 完全静默：无"时间停止了！"叙事
+    expect(narrativeLog.getEntries().some((e: any) => String(e.text).includes('时间停止了'))).toBe(false)
+    expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
+    // 位置同步（gameContext + 玩家实体）
+    expect(gameContext.getContext().location?.id).toBe('tavern')
+    expect(player().current_location).toBe('tavern')
   })
 })

@@ -152,6 +152,14 @@ ctx.api.call('map', 'hasTag', locationId, tag)  → boolean
 ctx.api.call('map', 'moveTo', targetLocationId) → void（触发 location:enter）
 ```
 
+## 时停集成（2026-08-15）
+
+`moveTo` 在可达性校验后调用 `h-time-stop.moveStart(time_cost)`（可选集成，try/catch 降级）：
+
+- 时停激活中 → `{mode:'teleport'}` → 零耗时瞬移（`gameContext.moveTo(id, 0)`，时间不推进）+ 精力扣费；时停中玩家移动时搬运目标（`time_stop_carry`）`current_location` 跟随同步
+- 未时停但自动时停移动开关开（`h-time-stop.setAutoMove(true)`）且前置满足 → 自动 时停on→瞬移→off 静默循环
+- 其余情况 → 普通移动（花时间），与未集成前行为完全一致；h-time-stop 未启用/出错 → 自动走普通移动
+
 ## Override 规则
 
 - 地点 TOML：`mods/[mod]/maps/locations/`，无插件默认层

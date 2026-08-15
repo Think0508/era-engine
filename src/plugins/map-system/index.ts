@@ -11,6 +11,7 @@ import { commandRegistry } from '../../core/command-registry'
 import type { CommandDef } from '../../core/command-registry'
 import { modLoader } from '../../core/mod-loader'
 import { conditionEngine } from '../../core/condition-engine'
+import { apiSystem } from '../../core/api'
 
 interface ReachableLocation {
   target: string
@@ -230,6 +231,24 @@ export function onEnable(ctx: PluginContext): void {
       const r = reachable.find(r => r.target === targetLocationId)
       if (!r) {
         throw new Error(`moveTo 失败：从 '${loc.id}' 无法到达 '${targetLocationId}'`)
+      }
+
+      // 注释：时停集成（可选——h-time-stop 未启用/出错 → 普通移动；h-core judge_check 同款模式）
+      // 时停中/自动时停移动开关开 → 瞬移（不推进时间）；返回 teleport 时本函数直接完成移动
+      let tsMode: { mode: 'teleport' | 'normal'; cost: number } | null = null
+      try {
+        tsMode = await apiSystem.call('h-time-stop', 'moveStart', r.time_cost)
+      } catch {
+        tsMode = null
+      }
+      if (tsMode?.mode === 'teleport') {
+        await gameContext.moveTo(targetLocationId, 0)
+        const playerId = gameContext.getContext().player?.id
+        if (playerId) {
+          const player = entitySystem.get('character', playerId) as any
+          if (player) player.current_location = targetLocationId
+        }
+        return
       }
 
       const target = entitySystem.get('location', targetLocationId) as any as LocationData

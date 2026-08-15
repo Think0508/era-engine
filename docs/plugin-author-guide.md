@@ -157,6 +157,7 @@ ctx.api.call('map', 'getMapLayout', locationId?)               // → { layout: 
 
 - `getReachable` 替代旧 `getExits`，综合 parent 链 + graph 边返回可达地点。`ReachableLocation` 包含 `{ target, name, time_cost, via }`，其中 `via` 为 `'parent' | 'child' | 'graph'`
 - `moveTo` 内部调用 `getReachable` 获取耗时，不可达则抛错。移动逻辑委托给 `gameContext.moveTo(targetId, timeCost)`
+- 时停集成（2026-08-15）：`moveTo` 在可达性校验后调 `h-time-stop.moveStart(timeCost)`——返回 `teleport` 时以零耗时瞬移（不推进时间，玩家 `current_location` 同步），否则走普通移动；h-time-stop 未启用/出错 → try/catch 降级普通移动，普通路径零变化
 - `findPath`（2026-08-10，npc-ai-system 消费）：dijkstra 最短路径（parent 链 + graph 边，边权 = time_cost），`total_minutes` = 总耗时；不可达返回 `null`。图条件边按当前游戏上下文求值
 - 移动耗时可在 `definitions/move.toml` 中自定义（详见 `docs/map-system.md`）
 
@@ -588,13 +589,20 @@ ctx.api.call('h-time-stop', 'getStamina', charId)              // → number（�
 ctx.api.call('h-time-stop', 'getStaminaMax', charId)           // → number（精力上限属性，缺省 100）
 ctx.api.call('h-time-stop', 'getDuration')                     // → number（时停总时长（分钟），erArk achievement.time_stop_duration）
 ctx.api.call('h-time-stop', 'getOrgasmCount', charId, partId?) // → number
-ctx.api.call('h-time-stop', 'moveStart', timeCost)             // → Promise<{mode, cost}>（占位，Task 3 实现）
-ctx.api.call('h-time-stop', 'getAutoMove')                     // → boolean（占位）
-ctx.api.call('h-time-stop', 'setAutoMove', on)                 // → void（占位）
+ctx.api.call('h-time-stop', 'moveStart', timeCost)             // → Promise<{mode, cost}>（时停中=瞬移扣费；开关开且前置满足=自动 on→瞬移→off 静默循环；否则 {mode:'normal', cost:0}）
+ctx.api.call('h-time-stop', 'getAutoMove')                     // → boolean（自动时停移动开关）
+ctx.api.call('h-time-stop', 'setAutoMove', on)                 // → void（设置自动时停移动开关）
 ```
 
 资源：时停内行动按耗时扣精力（`consume_sanity` 通道，公式 `min(max(耗时×2, 1), 当前精力)`），
 归零自动中断（自动执行 TIME_STOP_OFF 全链）。旧 `getTSP/getTSPMax/getXP`（TSP/tsp_max 属性）已删除。
+
+移动集成（2026-08-15，Task 3）：`moveStart` 由 map-system 的 `moveTo` 在可达性校验后调用——
+时停中返回 `{mode:'teleport', cost}`（扣 `cost` 精力，归零自动解除），map-system 以零耗时
+`gameContext.moveTo(id, 0)` 瞬移；未时停但 `setAutoMove(true)` 且前置满足（精力>0、
+TIRED_LE_84、NOT_H）→ 自动 时停on→瞬移→时停off 完整循环（完全静默，无叙事输出）；
+前置不满足或开关关 → `{mode:'normal', cost:0}`，走普通移动。时停中玩家移动时，
+搬运目标（`time_stop_carry` 设的 `carryTargetId`）`current_location` 跟随同步。
 
 ### 辅助系统
 

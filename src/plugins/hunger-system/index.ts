@@ -127,6 +127,12 @@ export function onEnable(ctx: PluginContext): void {
   // 小时级 tick 与行动级重叠 = 双倍增长；增长统一走 core realtimeSettle.settleHunger
   // （含 erArk HP/MP 比例系数），此处只保留不重叠的消化/NPC 进食）
   ctx.events.on('game:hour_changed', async () => {
+    // 2026-08-15 复查 I-3：时停守卫——时停中行动跨小时（回拨在 execution_end）时，
+    // 消化递减与冻结 NPC 自动进食会永久篡改冻结世界（食物消耗不可回滚）。
+    // 时停中时间冻结 → 消化/进食不结算（对齐 status-system 同守卫）。
+    let tsActive = false
+    try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+    if (tsActive) return
     const cfg = getHungerConfig()
     const allChars = entitySystem.getAll('character')
     for (const ch of allChars) {

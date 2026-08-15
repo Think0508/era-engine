@@ -58,7 +58,15 @@ export function onEnable(ctx: PluginContext): void {
   })
 
   // 注释：监听 game:hour_changed → tick + duration 扣减
+  // 2026-08-15 复查 I-3：时停守卫——时停中行动仍会真实推进到跨小时（回拨只发生在
+  // execution_end），若在此 tick：冻结 NPC 的中毒等 tick_effects 照跑（扣血）、duration
+  // 照减（时停中到期消失）——时钟回拨后副作用保留（世界被永久篡改）；且 last_tick_game_time
+  // 超前会致跨小时行动重复 tick。时停中时间冻结 → 状态不结算（对齐 h-core settle_hp_mp
+  // 的 isTimeStop 早退模式）。
   ctx.events.on('game:hour_changed', () => {
+    let tsActive = false
+    try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+    if (tsActive) return
     handleTick()
   })
 }

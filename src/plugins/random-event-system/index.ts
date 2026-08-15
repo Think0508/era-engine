@@ -96,7 +96,10 @@ export function onEnable(ctx: PluginContext): void {
   })
 
   // 注释：4. NPC 事件挂钩——新行为开始时（npc:behavior_started 同点）
+  // 2026-08-15 复查 M-3：时停守卫——正常路径冻结 NPC 不结算不发事件（settle-pass 跳过），
+  // 但程序化 setBehavior（mod 脚本）可对冻结 NPC 强发 → 时停中不触发（世界冻结）
   ctx.events.on('npc:behavior_started', async (payload: any) => {
+    if (timeStopActive()) return
     const charId = payload?.character as string | undefined
     const behaviorId = payload?.behavior_id as string | undefined
     if (!charId || !behaviorId) return

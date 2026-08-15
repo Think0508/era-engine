@@ -97,10 +97,10 @@ export function onLoad(_ctx: PluginContext): void {
     // SANITY_POINT_G_0 恒 false（指令不可用）+ 行动误报"精力值不足自动解除"，此处
     // 一次性指明修复路径。放使用点：插件全局加载，不用时停的 mod 零加载期噪音。
     if (!sanityBindWarned) {
-      sanityBindWarned = true
       const playerId = gameContext.getContext().player?.id
-      const anyBound = playerId ? getStamina(playerId) !== null : false
-      if (!anyBound) {
+      if (!playerId) return true  // 注释：无玩家环境（测试/前奏）不置位不报——等真实游戏环境再查
+      sanityBindWarned = true
+      if (getStamina(playerId) === null) {
         errorReporter.report({
           source: 'h-time-stop',
           severity: 'warning',

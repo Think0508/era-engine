@@ -19,6 +19,7 @@ import { onEnable as talkCommonOnEnable } from '../talk-common-system/index'
 import { onLoad as sleepOnLoad } from '../sleep-system/index'
 import { onLoad as timeStopOnLoad, onEnable as timeStopOnEnable } from './index'
 import { onEnable as mapOnEnable } from '../map-system/index'
+import { onLoad as combatBaseOnLoad } from '../combat-base/index'
 import { eventBus } from '../../core/event-bus'
 import { makeTestExecCtx } from '../../utils/test-helpers'
 
@@ -61,6 +62,8 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
     sleepOnLoad(stubCtx)
     timeStopOnLoad(stubCtx)
     await timeStopOnEnable(stubCtx)
+    // 注释：combat-base 注册 start_combat effect（复查 I-1 时停拒战测试用）
+    combatBaseOnLoad(stubCtx)
     // 注释：map-system 注册 'map' API（Task 3 移动集成测试用——moveTo 改道 + 搬运跟随）
     await mapOnEnable(stubCtx)
 
@@ -299,5 +302,19 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
       ch.sp_flag = {}
       ch.h_state = undefined
     }
+  })
+
+  it('时停中 start_combat 被拒绝（复查 I-1：冻结敌人不可战）', async () => {
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    const logBefore = narrativeLog.getEntries().length
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'start_combat', params: { enemies: ['npc_1'] } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    expect(narrativeLog.getEntries().slice(logBefore).some((e: any) => String(e.text).includes('时停中无法开始战斗'))).toBe(true)
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_off', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
   })
 })

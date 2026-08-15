@@ -151,7 +151,14 @@ export function onEnable(ctx: PluginContext): void {
   ctx.commands.register(talkCmd)
 
   // 注释：监听 location:enter → 触发 enter/greet 口上
+  // 2026-08-15 复查 I-2：时停中瞬移（含自动时停移动循环）跳过 enter/greet 口上——
+  // ① 自动移动的"完全静默"承诺（enter 场景 charId=null 不受 T5 无意识屏蔽，会泄漏文本）
+  // ② 时停中世界冻结，进入地点的场景描述与冻结角色的 greet 均无意义。
+  // 同事件上 random-event/npc-ai 已守卫，此处对齐（可选集成：插件缺失 → 正常触发）。
   ctx.events.on('location:enter', async (payload: any) => {
+    let tsActive = false
+    try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+    if (tsActive) return
     const locationId = payload?.to
     if (!locationId) return
     // 注释：场景通用口上（scene="enter" 或 scene=locationId）

@@ -9,6 +9,7 @@ import { modLoader } from '../../core/mod-loader'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { gameContext } from '../../core/game-context'
 import { errorReporter } from '../../core/error-reporter'
+import { apiSystem } from '../../core/api'
 import type { Quest } from '../../core/mod-loader'
 import { validateSceneSteps } from '../../core/mod-loader'
 import { registerGameStateProvider } from '../../core/save-system'
@@ -194,7 +195,13 @@ export function onEnable(ctx: PluginContext): void {
     },
   })
 
+  // 注释：2026-08-15 复查 M-2——时停中瞬移触发 location:enter：reach_location 达成与
+  // auto_start 启动统一推迟到时停解除后（世界冻结，任务不推进；与 spawn/随机事件/口上
+  // 的时停守卫一致）。custom objective 监听 h:orgasm 天然安全（时停门控角色不发事件）。
   ctx.events.on('location:enter', async (payload: any) => {
+    let tsActive = false
+    try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+    if (tsActive) return
     await checkObjectives('reach_location', { target: payload?.to })
     await checkAutoStart()
   })

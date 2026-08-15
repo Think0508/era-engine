@@ -11,6 +11,7 @@ import { narrativeLog } from '../../core/narrative-log'
 import { bindingResolver } from '../../core/binding-resolver'
 import { errorReporter } from '../../core/error-reporter'
 import { registerSkipRule } from '../../core/skip-registry'
+import { apiSystem } from '../../core/api'
 import type { CommandDef } from '../../core/command-registry'
 
 // 注释：战斗运行时状态
@@ -151,7 +152,16 @@ export function onEnable(ctx: PluginContext): void {
 
 // 注释：开始战斗（audit-i 修复，2026-08-12——加进行中守卫：重复 start 曾覆盖 runtime +
 // enterMode 双 push 模式栈残留 + 旧战斗不发 combat:end。进行中再次请求 → 先正常结束旧战斗）
+// 2026-08-15 复查 I-1：时停守卫——时停中开战：冻结敌人（unconscious_h=3）照常反击
+// （npcAutoAction 不读无意识），且战斗指令不推进时间 → 零精力成本。时停 = 世界冻结，
+// 战斗（敌我交互）被拒绝（对齐 h-group-sex 的 TIME_STOP_OFF 前提范式；可选集成）。
 async function startCombat(enemies: string[], allies: string[], _sourceId: string): Promise<void> {
+  let tsActive = false
+  try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
+  if (tsActive) {
+    narrativeLog.write('时停中无法开始战斗——时间尚未流动', 'system', 'combat-base')
+    return
+  }
   if (currentCombat) {
     await endCombat('', 'interrupted')
   }

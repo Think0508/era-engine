@@ -402,6 +402,7 @@ ctx.api.call('h-core', 'getLevel', charId, levelType)          // → number
 ctx.api.call('h-core', 'calcFavorability', charId)             // → number
 ctx.api.call('h-core', 'calcTrust', charId)                    // → number
 ctx.api.call('h-core', 'calcJudge', judgeBase, favorability, trust, charId?, judgeClass?) // → JudgeResult
+ctx.api.call('h-core', 'getFallLevel', charId)                              // → number（陷落等级 0/1-4/-1--4，erArk get_character_fall_level，2026-08-16 新增——h-npc-ai 恢复判定用）
 ctx.api.call('h-core', 'getFavorabilityLevel', charId)         // → number
 ctx.api.call('h-core', 'getTrustLevel', charId)                // → number
 // 通用状态结算（统一管线：能力系数/素质/fall/连续减值/tenths/max(0) 钳制等）
@@ -515,7 +516,7 @@ ctx.api.call('h-npc-ai', 'isActiveH', charId)                 // → boolean（N
 ctx.api.call('h-npc-ai', 'setActiveH', charId, on)            // → void（手动开关逆推）
 ctx.api.call('h-npc-ai', 'triggerActiveH', npcId)             // → Promise<boolean>（触发一次逆推执行器：NPC 选行为赋给玩家执行）
 ctx.api.call('h-npc-ai', 'tryActiveH', npcId, judgeBase?)     // → Promise<boolean>（尝试夺回主动权，默认 base=150——M20 修正，与代码一致）
-ctx.api.call('h-npc-ai', 'recoverFromUnconsciousH', actorId, infoText?)  // → Promise<void>（从无意识H中恢复：erArk recover_from_unconscious_h，2026-08-11 无意识组）
+ctx.api.call('h-npc-ai', 'recoverFromUnconsciousH', actorId, infoText?, opts?)  // → Promise<void>（从无意识H中恢复：erArk recover_from_unconscious_h，2026-08-11 无意识组；opts.mode='sleep'（缺省）| 'time_stop'——时停模式由 h-time-stop 的 time_stop_off 链调用，2026-08-16）
 ctx.api.call('h-npc-ai', 'registerSexAssistSource', source)   // → void（注册调教助手行为源——confinement-system 调用：
                                                                //   source(wardenId) → 指令id | null；per-tick 消费执行）
 ctx.api.call('h-npc-ai', 'enterHBlock', charId)               // → void（置 h_wait 冻结块——助手拉入 H 的监狱长补日常 AI 冻结）

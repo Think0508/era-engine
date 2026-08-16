@@ -15,7 +15,6 @@ import { entitySystem } from '../../core/entity-system'
 import { ATTR } from '../../core/entity-utils'
 import { eventBus } from '../../core/event-bus'
 import { narrativeLog } from '../../core/narrative-log'
-import { apiSystem } from '../../core/api'
 import { gameContext, gameTimeToTotalMinutes, isPlayerChar } from '../../core/game-context'
 import { modLoader } from '../../core/mod-loader'
 import { BODY_PART_CID } from './body-parts'
@@ -147,6 +146,9 @@ export function onLoad(_ctx: PluginContext): void {
       } else {
         // 注释：精液记到被射者身上（erArk update_semen_dirty(target_character_id, ...)）
         trackSemen(targetChar ?? char, params.positionId ?? 6, semenResult.amount)
+        // 注释：无意识期间射精部位记录（erArk ejaculation_panel.py:263-273）——
+        // 目标无意识（睡奸/时停等）时记入 body_semen_in_unconscious，醒来触发专属口上
+        recordUnconsciousSemen(targetChar ?? char, params.positionId ?? 6)
         // 注释：设置被射者的射精部位（erArk update_semen_dirty: shoot_position_body = part_cid）
         if (targetChar?.h_state) {
           targetChar.h_state.shoot_position_body = params.positionId ?? 6
@@ -200,6 +202,7 @@ export function onLoad(_ctx: PluginContext): void {
       const targetId = char.h_state?.target_character_id ?? id
       const targetChar = entitySystem.get('character', targetId) as any
       trackSemen(targetChar ?? char, params.positionId ?? 6, result.amount)
+      recordUnconsciousSemen(targetChar ?? char, params.positionId ?? 6)
       if (targetChar?.h_state) targetChar.h_state.shoot_position_body = params.positionId ?? 6
       if (isPlayerChar(id)) setPenisSemenDirty(char, true)
       narrativeLog.write(`射精 ${result.amount}ml`, 'system', 'h-ejaculation')
@@ -306,12 +309,7 @@ export function onEnable(ctx: PluginContext): void {
   // 与之重复导致双重衰减（2026-08-15 审查 C1 修复，erArk realtime_settle.py:102-108 语义）
 
   // 注释：H 每次行动后 → 精液吸收（erArk realtime_settle.py:130-139）
-  // 2026-08-15 复查轮 3 I-2：时停守卫——时停中 H 行动推进的时间在 execution_end 回拨，
-  // 精液吸收副作用不回滚（冻结世界内精液被吸收，偏离 erArk realtime_settle 时停冻结语义）
   ctx.events.on('game:execution_end', (payload: any) => {
-    let tsActive = false
-    try { tsActive = !!apiSystem.callSync('h-time-stop', 'isActive') } catch { /* 插件缺失 */ }
-    if (tsActive) return
     const mode = gameContext.getCurrentMode()
     if (mode !== 'h_scene') return
     const addTime = payload?.timeCost ?? 10
@@ -461,6 +459,21 @@ function deductSemen(char: any, amount: number): void {
   remaining -= extraSemen
   char.base[ATTR.EXTRA_SEMEN] = 0
   char.base[ATTR.SEMEN] = Math.max(0, (char.base[ATTR.SEMEN] ?? 0) - remaining)
+}
+
+// 注释：无意识期间射精部位记录（erArk ejaculation_panel.py:263-273——目标无意识
+// （unconscious_h>=1，含睡奸1/时停3/醉酒2/催眠4-7）时，射精部位追加进
+// dirty.body_semen_in_unconscious，醒来由 h-npc-ai settle_unconscious_semen_and_cloth
+// 触发专属口上（in_unconscious_cum_on_body_*）后清空。部位编号 = 引擎 BODY_PART_CID 体系
+function recordUnconsciousSemen(targetChar: any, positionId: number): void {
+  if (!targetChar) return
+  if ((targetChar.sp_flag?.unconscious_h ?? 0) < 1) return
+  if (!targetChar.dirty) targetChar.dirty = {}
+  if (!Array.isArray(targetChar.dirty.body_semen_in_unconscious)) {
+    targetChar.dirty.body_semen_in_unconscious = []
+  }
+  const list = targetChar.dirty.body_semen_in_unconscious as number[]
+  if (!list.includes(positionId)) list.push(positionId)
 }
 
 // 注释：精液追踪——对齐 erArk 索引：[0]=未使用, [1]=当前量, [2]=等级, [3]=总量

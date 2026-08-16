@@ -1,6 +1,19 @@
 // 注释：h-time-stop 插件——时停系统，完全对齐 erArk
-// 全局时停模式 + 精力消耗（consume_sanity 通道，按行动时长扣费）+ 归零自动中断 + 时停总时长统计
-// 所有功能直接开放，无等级门槛
+// 全局时停模式 + 精力消耗（consume_sanity 通道，按行动时长扣费）+ 归零自动中断 +
+// 时停总时长统计 + 等级门槛（窄域/广域时停素质，经验解锁）+ 移动门控 + 时停奸
+//
+// 版本沿革：
+// - HEAD（2026-08-15 复查 3 轮）：TSP→精力统一、自动时停移动、搬运跟随、realtimeSettle
+//   冻结谓词、各插件时停守卫、时长统计、全场 release 置位、绝顶门控（h-core settleOrgasm 承担）
+// - 2026-08-16 grill 复刻增量：① 等级门槛（窄域/广域时停素质经验解锁，修正 ADR-0015 的
+//   "无门槛"决策——gain.needs 机制解决了 erArk 无获得途径问题）② 移动门控（move 指令补
+//   TIME_STOP_JUDGE_FOR_MOVE 前提，窄域时停中不可移动）③ 536 恢复链（关闭时 H 中目标
+//   醒来判定，经 h-npc-ai recoverFromUnconsciousH mode='time_stop'）④ 时停奸指令
+//   （5214 语义，叙事与睡奸区分）⑤ 无意识精液记录+醒来口上（h-ejaculation +
+//   talk-common 默认层数据）⑥ unnormal bit6 深度无意识位维护
+//
+// ⚠️ 关键正确性（2026-08-15 审计）：不监听 h:orgasm 累积——时停门控角色不发 h:orgasm
+// （h-core settleOrgasm 门控承担累积），监听会把正常结算的绝顶再累计一次 → 解除时双结算
 
 import { conditionEngine } from '../../core/condition-engine'
 import type { PluginContext, GameContext } from '../../core/types'
@@ -8,10 +21,11 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
+import { commandRegistry } from '../../core/command-registry'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
-import { registerGameStateProvider } from '../../core/save-system'
 import { bindingResolver } from '../../core/binding-resolver'
+import { registerGameStateProvider } from '../../core/save-system'
 import { getEntityAttr, ATTR } from '../../core/entity-utils'
 import { registerBodySettleFreezeRule } from '../../core/realtime-settle'
 
@@ -31,6 +45,8 @@ let sanityBindWarned = false
 // off 无快照 → 角色永久冻结。提升模块级 + 随存档 provider 序列化。
 let prevUnconscious = new Map<string, number>()
 
+// ── 共享读取 ──
+
 function getTargetId(ctx: any): string | null {
   return ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId ?? null
 }
@@ -39,14 +55,14 @@ function getSelfId(ctx: any): string | null {
   return ctx.gameStore?.player?.id ?? ctx.sourceId ?? null
 }
 
-// 注释：获取角色的时停标记
-function getUnconsciousH(charId: string): number {
-  const ch = entitySystem.get('character', charId) as any
-  return ch?.sp_flag?.unconscious_h ?? 0
+function getPlayerId(): string | null {
+  return gameContext.getContext().player?.id ?? null
 }
 
 // 注释：时停精力读取（TSP → 精力统一，2026-08-15）——走 bindings
-// （bindings.toml [bindings.h-time-stop].sanity → mod 实际属性，如 精力）
+// （bindings.toml [bindings.h-time-stop].sanity → mod 实际属性，如 精力；
+// 扣费通道走 [bindings.sleep-system].sanity（consume_sanity 效果）——双绑定键，
+// 通常同值，见 docs/h-time-stop.md）
 function getStamina(charId: string): number | null {
   const v = bindingResolver.getForPlugin('h-time-stop', charId, 'sanity')
   return typeof v === 'number' ? v : null
@@ -58,6 +74,121 @@ function calcTimeStopCost(timeCost: number, cur: number): number {
   return Math.min(Math.max(timeCost * 2, 1), cur)
 }
 
+function getTalentOf(charId: string | null | undefined, talentId: string): number {
+  if (!charId) return 0
+  const ch = entitySystem.get('character', charId) as any
+  return ch?.talents?.[talentId] ?? 0
+}
+
+// 注释：获取角色的时停标记
+function getUnconsciousH(charId: string): number {
+  const ch = entitySystem.get('character', charId) as any
+  return ch?.sp_flag?.unconscious_h ?? 0
+}
+
+// 注释：unnormal_flag bit6 = 深度无意识（含时停，erArk NORMAL_6 :1051）；bit5 = 睡眠。
+// time_stop_on 全员置 bit6（erArk 1241 → settle_chara_unnormal_flag(6)）；
+// off 按快照恢复后重算：恢复 1（睡奸）→ bit5|6；恢复 0（清醒）→ 清 bit5|6；
+// 其他值（醉酒2/催眠4-7）→ 各自系统管理，不触碰
+const UNNORMAL_BIT5_SLEEP = 0x10
+const UNNORMAL_BIT6_DEEP = 0x20
+
+function setUnnormalDeep(ch: any): void {
+  if (!ch?.sp_flag) return
+  ch.sp_flag.unnormal_flag = (ch.sp_flag.unnormal_flag ?? 0) | UNNORMAL_BIT6_DEEP
+}
+
+function recalcUnnormalAfterRestore(ch: any, unconsciousH: number): void {
+  if (!ch?.sp_flag) return
+  const cur = ch.sp_flag.unnormal_flag ?? 0
+  if (unconsciousH === 1) {
+    ch.sp_flag.unnormal_flag = cur | UNNORMAL_BIT5_SLEEP | UNNORMAL_BIT6_DEEP
+  } else if (unconsciousH === 0) {
+    ch.sp_flag.unnormal_flag = cur & ~(UNNORMAL_BIT5_SLEEP | UNNORMAL_BIT6_DEEP)
+  }
+  // 2/4-7 不触碰（醉酒/催眠系统管理）
+}
+
+// 注释：关闭时停完整链（1244清搬运→1246清自由→536恢复H目标→1242恢复标记→527绝顶解放）——
+// 效果注册与精力归零强制中断共用（erArk realtime_settle.py:513-517 强制中断走完整 TIME_STOP_OFF 链）
+async function doTimeStopOff(quiet = false): Promise<void> {
+  if (!timeStopActive) return
+  timeStopActive = false
+  frozenTime = null
+  // 注释：清搬运 + 清自由（对齐 1244 + 1246）
+  for (const ch of entitySystem.getAll('character')) {
+    const c = ch as any
+    if (c.time_stop_data) { c.time_stop_data = {} }
+  }
+
+  // 注释：536——恢复玩家 H 中的目标（对齐 erArk default.py:7166-7186 RECOVER_FROM_UNCONSCIOUS_ADD_ADJUST，
+  // 必须在 1242 清标记之前执行——目标仍 unconscious_h==3，h-npc-ai recover 内部做醒来结算
+  // （行为终止/semen+cloth 二段/继续H判定/时间+5））
+  const playerId = getPlayerId()
+  const player = playerId ? entitySystem.get('character', playerId) as any : null
+  const targetId = player?.h_state?.target_character_id ?? null
+  if (playerId && targetId && player?.h_state?.is_h && getUnconsciousH(targetId) === 3) {
+    try {
+      await apiSystem.call('h-npc-ai', 'recoverFromUnconsciousH', playerId, undefined, { mode: 'time_stop' })
+      // recover 已将目标 unconscious_h 清 0（handleNpcInstructCondition 复位）——
+      // 从快照剔除，防止下面快照恢复把时停前旧值写回
+      prevUnconscious.delete(targetId)
+    } catch (err) {
+      errorReporter.report({
+        source: 'h-time-stop',
+        severity: 'warning',
+        message: `时停关闭恢复 H 目标失败：${err instanceof Error ? err.message : String(err)}`,
+        suggestion: '检查 h-npc-ai 插件是否已加载（recoverFromUnconsciousH API）',
+      })
+    }
+  }
+
+  // 注释：恢复时停前无意识值（★3 修复——原全清 0 抹掉睡奸/催眠标记）。
+  // ★3 边缘修复（第七轮）：只恢复快照内角色——时停中 spawn 的新角色不在快照，
+  // 不触碰其标记（原 `?? 0` 会把新角色带的无意识标记抹成 0）
+  for (const ch of entitySystem.getAll('character')) {
+    const c = ch as any
+    if (c.sp_flag && prevUnconscious.has(c.id)) {
+      c.sp_flag.unconscious_h = prevUnconscious.get(c.id) ?? 0
+      // 注释：unnormal bit5/6 按恢复值重算（对齐 erArk 1242 → settle_chara_unnormal_flag(6)；
+      // 恢复 1=睡奸 保持 bit5|6，恢复 0=清醒 清位）
+      recalcUnnormalAfterRestore(c, c.sp_flag.unconscious_h)
+    }
+  }
+
+  // 注释：绝顶释放（对齐 527 / erArk TIME_STOP_ORGASM_RELEASE，default.py:6764-6800）
+  for (const ch of entitySystem.getAll('character')) {
+    const c = ch as any
+    // 注释：时停解放标记全场置位（最终审查 I-2——erArk default.py:6678
+    // TIME_STOP_ORGASM_RELEASE 对全场无条件 time_stop_release=True；
+    // 原实现只有带累积的角色经 release_time_stop_orgasm 置位）
+    if (c.h_state) c.h_state.time_stop_release = true
+    // 2026-08-08 修复：原只输出日志无数值——时停累计的绝顶被静默丢弃。
+    // 经 effect 通道调 h-core 的 release_time_stop_orgasm（跨插件禁止直接 import），
+    // 把 time_stop_orgasm_count 转成真实高潮结算（数值+事件+日志）
+    if (c.h_state?.time_stop_orgasm_count && Object.keys(c.h_state.time_stop_orgasm_count).length > 0) {
+      try {
+        await apiSystem.call('effect-system', 'execute', [{ type: 'release_time_stop_orgasm' }], {
+          sourceId: c.id,
+          _targetIds: [c.id],
+        })
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        // 注释：只静默"未注册"（插件缺失降级）；其余错误如实上报（2026-08-15 审计收紧——
+        // 原按消息含 'release_time_stop_orgasm' 过滤会把 handler 内部异常一并吞掉）
+        if (!msg.includes('未注册')) {
+          errorReporter.report({
+            source: 'h-time-stop',
+            severity: 'error',
+            message: `时停解放结算失败：${msg}`,
+          })
+        }
+      }
+    }
+  }
+  if (!quiet) narrativeLog.write('时间重新流动', 'system', 'h-time-stop')
+}
+
 export function onLoad(_ctx: PluginContext): void {
   // 注释：时停前提（erArk TIME_STOP_ON/OFF——读模块级状态，睡眠等指令的 TIME_STOP_OFF 前提依赖）
   conditionEngine.registerPremise('TIME_STOP_ON', () => timeStopActive)
@@ -65,7 +196,7 @@ export function onLoad(_ctx: PluginContext): void {
 
   // 注释：时停精力前提（erArk SANITY_POINT_G_0——玩家精力 > 0，时停内行动可行性判定）
   conditionEngine.registerPremise('SANITY_POINT_G_0', (ctx: GameContext) => {
-    const playerId = ctx.player?.id ?? gameContext.getContext().player?.id
+    const playerId = ctx.player?.id ?? getPlayerId()
     if (!playerId) return false
     return (getStamina(playerId) ?? 0) > 0
   })
@@ -87,10 +218,6 @@ export function onLoad(_ctx: PluginContext): void {
     return releaseOf(ctx.selectedCharacterId)
   })
 
-  // 注释：时停前无意识快照（★3 修复（第六轮））——time_stop_on 全图覆写 unconscious_h=3，
-  // 原 time_stop_off 全清 0 会把睡奸标记(1)/催眠(4-7)静默抹掉（催眠需重新催眠、睡奸标记丢失
-  // 且 settleSleepH 因 !==1 永久早退）——off 时恢复时停前的值
-  // 2026-08-14 审查：快照本体已提升为模块级（随存档 provider 序列化，防时停中存档读档后永久冻结）
   // 注释：time_stop_on——开启时停（对齐 erArk 效果 1241）
   effectTypeRegistry.register('time_stop_on', (params: any, _execCtx: any) => {
     if (timeStopActive) return true
@@ -98,7 +225,7 @@ export function onLoad(_ctx: PluginContext): void {
     // SANITY_POINT_G_0 恒 false（指令不可用）+ 行动误报"精力值不足自动解除"，此处
     // 一次性指明修复路径。放使用点：插件全局加载，不用时停的 mod 零加载期噪音。
     if (!sanityBindWarned) {
-      const playerId = gameContext.getContext().player?.id
+      const playerId = getPlayerId()
       if (!playerId) return true  // 注释：无玩家环境（测试/前奏）不置位不报——等真实游戏环境再查
       sanityBindWarned = true
       if (getStamina(playerId) === null) {
@@ -118,6 +245,8 @@ export function onLoad(_ctx: PluginContext): void {
       if (!c.sp_flag) c.sp_flag = {}
       prevUnconscious.set(c.id, c.sp_flag.unconscious_h ?? 0)
       c.sp_flag.unconscious_h = 3
+      // 注释：unnormal bit6 深度无意识（对齐 erArk 1241 → settle_chara_unnormal_flag(6)）
+      setUnnormalDeep(c)
       if (c.h_state) {
         c.h_state.time_stop_orgasm_count = {}
         c.h_state.time_stop_release = false
@@ -127,54 +256,9 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
-  // 注释：time_stop_off——关闭时停（对齐 erArk 1242 + 527）
-  // erArk 链：1244(清搬运) → 1246(清自由) → 536 → 1242(关时停) → 527(释放绝顶)
+  // 注释：time_stop_off——关闭时停（对齐 erArk 1244→1246→536→1242→527）
   effectTypeRegistry.register('time_stop_off', async (params: any, _execCtx: any) => {
-    if (!timeStopActive) return true
-    timeStopActive = false
-    frozenTime = null
-    // 注释：清搬运 + 清自由 + 清除时停状态 + 释放绝顶
-    for (const ch of entitySystem.getAll('character')) {
-      const c = ch as any
-      // 注释：清除搬运/自由数据（对齐 1244 + 1246）
-      if (c.time_stop_data) { c.time_stop_data = {} }
-      // 注释：恢复时停前无意识值（★3 修复——原全清 0 抹掉睡奸/催眠标记）。
-      // ★3 边缘修复（第七轮）：只恢复快照内角色——时停中 spawn 的新角色不在快照，
-      // 不触碰其标记（原 `?? 0` 会把新角色带的无意识标记抹成 0）
-      if (c.sp_flag && prevUnconscious.has(c.id)) {
-        c.sp_flag.unconscious_h = prevUnconscious.get(c.id) ?? 0
-      }
-      // 注释：时停解放标记全场置位（最终审查 I-2——erArk default.py:6678
-      // TIME_STOP_ORGASM_RELEASE 对全场无条件 time_stop_release=True；
-      // 原实现只有带累积的角色经 release_time_stop_orgasm 置位）
-      if (c.h_state) c.h_state.time_stop_release = true
-      // 注释：绝顶释放（对齐 527 / erArk TIME_STOP_ORGASM_RELEASE，default.py:6764-6800）
-      // 2026-08-08 修复：原只输出日志无数值——时停累计的绝顶被静默丢弃。
-      // 经 effect 通道调 h-core 的 release_time_stop_orgasm（跨插件禁止直接 import），
-      // 把 time_stop_orgasm_count 转成真实高潮结算（数值+事件+日志）
-      if (c.h_state?.time_stop_orgasm_count && Object.keys(c.h_state.time_stop_orgasm_count).length > 0) {
-        try {
-          await apiSystem.call('effect-system', 'execute', [{ type: 'release_time_stop_orgasm' }], {
-            sourceId: c.id,
-            _targetIds: [c.id],
-          })
-        } catch (err) {
-          const msg = err instanceof Error ? err.message : String(err)
-          // 注释：只静默"未注册"（插件缺失降级）；其余错误如实上报（2026-08-15 审计收紧——
-          // 原按消息含 'release_time_stop_orgasm' 过滤会把 handler 内部异常一并吞掉）
-          if (!msg.includes('未注册')) {
-            errorReporter.report({
-              source: 'h-time-stop',
-              severity: 'error',
-              message: `时停解放结算失败：${msg}`,
-            })
-          }
-        }
-      }
-    }
-    // 注释：死代码清理（第七轮）——frozenTime 在 :68 已置 null，此判断恒假；
-    // 时停恢复时刻的回拨语义由 time_stop_off 的调用方（指令链）处理，此处不恢复
-    if (!params?.quiet) narrativeLog.write('时间重新流动', 'system', 'h-time-stop')
+    await doTimeStopOff(!!params?.quiet)
     return true
   })
 
@@ -185,6 +269,7 @@ export function onLoad(_ctx: PluginContext): void {
       if (!ch) continue
       if (!ch.sp_flag) ch.sp_flag = {}
       ch.sp_flag.unconscious_h = 3
+      setUnnormalDeep(ch)
     }
     return true
   })
@@ -272,11 +357,34 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     const charId = getTargetId(ctx2); return charId ? getUnconsciousH(charId) === 3 : false
   })
 
-  // 能力等级前提——全部开放，无门槛
-  reg('PRIMARY_TIME_STOP', () => true)
-  reg('INTERMEDIATE_TIME_STOP', () => true)
-  reg('ADVANCED_TIME_STOP', () => true)
-  reg('TIME_STOP_JUDGE_FOR_MOVE', () => true)
+  // 注释：能力等级前提（2026-08-16 修订——HEAD 版恒 true 全开放（ADR-0015"无门槛"）→
+  // 改读素质门槛，grill Q2 定案；gain.needs 经验解锁解决了 erArk 无获得途径问题，见 ADR-0015
+  // 演进记录）：PRIMARY = 窄域时停（可开关，不可移动）；INTERMEDIATE = 广域时停（可移动+搬运）；
+  // ADVANCED = 精确时停（erArk 318 未实装 → 恒 false，无指令引用）
+  reg('PRIMARY_TIME_STOP', (ctx2: any) => {
+    const id = getSelfId(ctx2); return id ? getTalentOf(id, '窄域时停') > 0 : false
+  })
+  reg('INTERMEDIATE_TIME_STOP', (ctx2: any) => {
+    const id = getSelfId(ctx2); return id ? getTalentOf(id, '广域时停') > 0 : false
+  })
+  reg('ADVANCED_TIME_STOP', () => false)
+  // 注释：时停中移动判定（erArk TIME_STOP_JUDGE_FOR_MOVE）——时停关闭恒可移动；
+  // 时停中需广域时停（erArk handle_premise_arts.py:1001-1015）
+  reg('TIME_STOP_JUDGE_FOR_MOVE', (ctx2: any) => {
+    if (!timeStopActive) return true
+    const id = getSelfId(ctx2); return id ? getTalentOf(id, '广域时停') > 0 : false
+  })
+
+  // 注释：搬运与装袋互斥前提（erArk carry_target 前提 PL_NOT_BAGGING_CHARA）——
+  // 本插件自注册（语义与 confinement-system/premises.ts:112-117 完全一致：玩家未在
+  // 装袋搬运任何人，读玩家实体 sp_flag.bagging_chara_id 为空；无 ctx 依赖），
+  // 避免指令数据依赖 confinement 插件注册的前提（插件未启用 → 指令被严格校验注销）；
+  // 后注册覆盖（boot 全家桶）时行为不变
+  reg('PL_NOT_BAGGING_CHARA', () => {
+    const playerId = getPlayerId()
+    if (!playerId) return true
+    return !((entitySystem.get('character', playerId) as any)?.sp_flag?.bagging_chara_id)
+  })
 
   // 搬运前提
   reg('NOT_CARRY_ANYBODY_IN_TIME_STOP', (ctx2: any) => {
@@ -351,9 +459,11 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   // 能力升级表按 erArk 数字 ID 读（erark-attr-ledger：时姦=124、被时姦=125），
   // 字符串键无消费方 → 经验永不能驱动升级。时停中玩家为施为方（得 124），
   // 被冻结的 H 角色为受害方（得 125，11-睡眠与无意识H.md §5.2）
+  // 2026-08-16 审查修复：125 循环排除玩家自己——时停中玩家也带 unconscious_h=3，
+  // 原实现会把玩家自己也计入"被时姦经验"（语义错误：玩家是施为方）
   ctx.events.on('game:execution_end', () => {
     if (!timeStopActive) return
-    const playerId = gameContext.getContext().player?.id
+    const playerId = getPlayerId()
     const player = playerId ? entitySystem.get('character', playerId) as any : null
     if (player) {
       if (!player.experience) player.experience = {}
@@ -361,6 +471,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     }
     for (const ch of entitySystem.getAll('character')) {
       const c = ch as any
+      if (!c?.id || c.id === playerId) continue
       if (!c.h_state?.is_h || !c.sp_flag?.unconscious_h) continue
       if (!c.experience) c.experience = {}
       // 注释：被时姦经验 125（erArk 数字 ID）
@@ -376,7 +487,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   ctx.events.on('game:execution_end', async (payload: any) => {
     if (!timeStopActive) return
     // 注释：audit-i 修复——统一用 gameContext 解析玩家（id 非 'player' 时也正确）
-    const playerId = gameContext.getContext().player?.id ?? null
+    const playerId = getPlayerId()
     if (!playerId) {
       timeStopActive = false; frozenTime = null
       errorReporter.report({
@@ -410,13 +521,31 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       // 自动执行 TIME_STOP_OFF 全链（quiet 避免重复叙事——此处已输出解除原因）
       if ((getStamina(playerId) ?? 0) <= 0) {
         narrativeLog.write('精力值不足，时停自动解除', 'system', 'h-time-stop')
-        await apiSystem.call('effect-system', 'execute', [
-          { type: 'time_stop_off', params: { quiet: true } },
-        ], { sourceId: playerId, _targetIds: [playerId] })
+        await doTimeStopOff(true)
       }
     }
     if (frozenTime) gameContext.setTime(frozenTime)
   })
+
+  // 注释：移动门控补丁（grill Q4 定案）——move 指令（map-system 注册，无前提）
+  // 补 TIME_STOP_JUDGE_FOR_MOVE 前提：窄域时停中不可移动（指令不可执行，对齐 erArk §3.2）。
+  // 时停知识全部留在本插件，map-system 保持通用；加载顺序依赖 map-system 先 onEnable
+  // （字母序成立），缺失时降级 warning
+  const moveCmd = commandRegistry.getById('move')
+  if (moveCmd) {
+    commandRegistry.unregister('move')
+    commandRegistry.register({
+      ...moveCmd,
+      premises: [...(moveCmd.premises ?? []), 'TIME_STOP_JUDGE_FOR_MOVE'],
+    })
+  } else {
+    errorReporter.report({
+      source: 'h-time-stop',
+      severity: 'warning',
+      message: '找不到 move 指令，时停移动门控未挂载',
+      suggestion: 'map-system 插件需在 h-time-stop 之前 onEnable（或 move 指令已被移除）',
+    })
+  }
 
   // 注释：时停开启/关闭（静默版）——自动时停移动的开关循环用（quiet 避免重复叙事）
   const quietTimeStop = async (on: boolean, sourceId: string): Promise<void> => {
@@ -441,14 +570,14 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       const oc = ch?.h_state?.time_stop_orgasm_count ?? {}
       return partId != null ? oc[partId] ?? 0 : oc
     },
-    // 注释：自动时停移动开关（未时停时的便利功能）
+    // 注释：自动时停移动开关（未时停时的便利功能；需广域时停素质，门槛兼容）
     getAutoMove: () => autoTimeStopMove,
     setAutoMove: (on: boolean) => { autoTimeStopMove = !!on },
     // 注释：移动启动（Task 3）——时停中 = 瞬移（不推进时间）+ 精力扣费；未时停但开关开
-    // 且前置满足（精力>0 + TIRED_LE_84 + NOT_H）→ 自动 on→瞬移→off 完整循环（完全静默）；
+    // 且前置满足（广域时停 + 精力>0 + TIRED_LE_84 + NOT_H）→ 自动 on→瞬移→off 完整循环（完全静默）；
     // 其余 → normal（map-system 走普通移动路径）
     moveStart: async (timeCost: number) => {
-      const playerId = gameContext.getContext().player?.id ?? null
+      const playerId = getPlayerId()
       if (!playerId) return null
       const timeCostNum = Number(timeCost ?? 0)
       if (timeStopActive) {
@@ -468,11 +597,16 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
         return { mode: 'teleport', cost }
       }
       if (autoTimeStopMove) {
-        const ctx = gameContext.getContext() as any
-        const sanityOk = (getStamina(playerId) ?? 0) > 0
+        // 注释：前置求值全部走条件引擎前提（2026-08-16 审查修正：原精力检查手写
+        // getStamina——与 SANITY_POINT_G_0 前提重复实现，改为前提求值保持一致）。
+        // ctx 注入 sourceId=玩家（门槛前提 getSelfId 读 sourceId——gameContext.getContext()
+        // 无此字段，缺省 → 无 talent → 自动移动永不触发）
+        const ctx = { ...gameContext.getContext(), sourceId: playerId } as any
+        const gateOk = conditionEngine.getPremiseValue('INTERMEDIATE_TIME_STOP', ctx)
+        const sanityOk = conditionEngine.getPremiseValue('SANITY_POINT_G_0', ctx)
         const tiredOk = conditionEngine.getPremiseValue('TIRED_LE_84', ctx)
         const notH = conditionEngine.getPremiseValue('NOT_H', ctx)
-        if (sanityOk && tiredOk && notH) {
+        if (gateOk && sanityOk && tiredOk && notH) {
           await quietTimeStop(true, playerId)
           timeStopDuration += timeCostNum
           const cost = calcTimeStopCost(timeCostNum, getStamina(playerId) ?? 0)
@@ -495,7 +629,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     const to = payload?.to, from = payload?.from
     if (!to || to === from) return
     if (!timeStopActive) return
-    const playerId = gameContext.getContext().player?.id
+    const playerId = getPlayerId()
     if (!playerId) return
     const player = entitySystem.get('character', playerId) as any
     const carryId = player?.time_stop_data?.carryTargetId
@@ -532,6 +666,7 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       const c = ch as any
       if (c?.sp_flag?.unconscious_h === 3) {
         c.sp_flag.unconscious_h = 0
+        recalcUnnormalAfterRestore(c, 0)
         frozenCount++
       }
     }

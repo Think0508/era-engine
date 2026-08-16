@@ -12,6 +12,7 @@ import { eventBus } from '../../core/event-bus'
 import { narrativeLog } from '../../core/narrative-log'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
+import { conditionEngine } from '../../core/condition-engine'
 import { behaviorHistory } from '../../core/command-executor'
 import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
 import { modLoader } from '../../core/mod-loader'
@@ -154,15 +155,23 @@ export async function judgeWeakUpInSleepH(actorId: string): Promise<boolean> {
 }
 
 // ③ 从无意识H中恢复（erArk handle_npc_ai_in_h.py:155-256 recover_from_unconscious_h）
-export async function recoverFromUnconsciousH(actorId: string, infoText?: string): Promise<void> {
+// mode 参数化（2026-08-16 时停复刻）：
+//   'sleep'（缺省）——睡眠无意识（unconscious_h==1），睡眠专属分支（sleep_h_awake/装睡）
+//   'time_stop'——时停无意识（unconscious_h==3），由 h-time-stop 的 time_stop_off 链调用
+//     （erArk 536 RECOVER_FROM_UNCONSCIOUS_ADD_ADJUST 在 1242 清标记之前执行——目标仍无意识；
+//     恢复后目标清醒配合 H 或结束 H，不装睡）
+export type RecoverUnconsciousMode = 'sleep' | 'time_stop'
+export async function recoverFromUnconsciousH(actorId: string, infoText?: string, opts?: { mode?: RecoverUnconsciousMode }): Promise<void> {
+  const mode = opts?.mode ?? 'sleep'
   const actor = entitySystem.get('character', actorId) as any
   const target = getHPartner(actor)
   if (!target) return
   // 如果角色不在无意识H状态，则直接返回（:168）
   if ((target.sp_flag?.unconscious_h ?? 0) === 0) return
-  // B2 修复（第三轮）：只处理睡眠无意识(===1)——醉酒(2)/催眠(4-7)的目标走各自系统流程
-  // （recover 会把催眠等级覆写为 1，静默错乱）；时停(===3)由 h-time-stop 管理（M19）
-  if ((target.sp_flag?.unconscious_h ?? 0) !== 1) return
+  // B2 修复（第三轮）：只处理本模式对应的无意识等级——睡眠(1)走本流程；醉酒(2)/催眠(4-7)
+  // 的目标走各自系统流程（recover 会把催眠等级覆写为 1，静默错乱）；时停(3)走 time_stop 模式
+  const expectLevel = mode === 'time_stop' ? 3 : 1
+  if ((target.sp_flag?.unconscious_h ?? 0) !== expectLevel) return
 
   narrativeLog.write(
     infoText ?? `${target?.name ?? target?.id}从无意识状态中恢复过来`,
@@ -170,7 +179,7 @@ export async function recoverFromUnconsciousH(actorId: string, infoText?: string
   )
 
   // M2 修复：erArk :190-191 仅在目标睡眠中时设 sleep_h_awake（醉酒/时停等无意识醒来不打标记）
-  const wasSleeping = isSleepingChar(target)
+  const wasSleeping = mode === 'sleep' && isSleepingChar(target)
   // 终止对方的行动（:188）——清睡眠标记 + 行为块过期（npc-ai 下个 pass 重新决策）
   clearSleepFlags(target)
   // 睡眠中，则对方获得睡奸醒来状态（:190-191）
@@ -180,15 +189,23 @@ export async function recoverFromUnconsciousH(actorId: string, infoText?: string
   }
   // 玩家的行动时间设为 5 分钟（:195）+ 时间推进 5 分钟（:256 update.game_update_flow(5)）
   // 二段结算（:198 settle_unconscious_semen_and_cloth）
-  settleUnconsciousSemenAndCloth(target)
+  await settleUnconsciousSemenAndCloth(target)
   // 群交处理（:201-222）——TODO(h-npc-ai)：群交中恢复（清模板/关群交模式）随群交大改
   // 继续H判定（:225 handle_npc_instruct_condition）
-  const continueH = handleNpcInstructCondition(actorId)
+  const continueH = await handleNpcInstructCondition(actorId, mode)
 
   if (continueH) {
     // 对方的行为时间改为 10 分钟（:237——行为块由 npc-ai 冻结期外管理，此处只标记）
     // 睡眠中，则对方获得装睡状态，仍继续无意识H（:238-243）
-    setPretendSleep(target)
+    if (mode === 'sleep') {
+      setPretendSleep(target)
+    } else {
+      // 时停模式：目标清醒配合 H（erArk :250 handle_h_flag_to_1——is_h=True，不装睡；
+      // unconscious_h 已被 handleNpcInstructCondition 复位 0）
+      if (!target.h_state) target.h_state = {}
+      target.h_state.is_h = true
+      eventBus.emit('character:changed', { id: target.id })
+    }
   } else {
     // 结束（:249-253）：双方 H 状态重置（endHScene——h-core API）+ 地点开门（关门机制未实装）
     await endHScene(actorId)
@@ -202,11 +219,19 @@ export async function recoverFromUnconsciousH(actorId: string, infoText?: string
 }
 
 // 继续H判定（erArk handle_npc_instruct_condition :258-325）——
-// 监禁 → 继续；高级性骚扰实行判定 → 陷落≥3 继续 / >0 轻度性骚扰 / <0 愤怒+100 / =0 高级性骚扰；
-// 不满足 → DO_H_FAIL。陷落系统（get_character_fall_level）未实装：
-// 本引擎简化——睡眠目标恒继续（装睡），退出由玩家主动结束无意识奸（unconscious_h_end 6005 指令）
-// TODO(h-npc-ai)：陷落等级/实行判定接入后按 erArk 三分支（LOW_OBSCENITY_ANUS/HIGH_OBSCENITY_ANUS/DO_H_FAIL）
-export function handleNpcInstructCondition(actorId: string): boolean {
+// 1. 监禁 → 继续；
+// 2. handle_instruct_judge_high_obscenity（严重骚扰实行判定，InstructJudge.csv cid=22：
+//    S 类 需求值 600）→ 判定失败 → DO_H_FAIL（不继续）；
+// 3. 判定通过 → 按陷落等级三分支（get_character_fall_level，minus_flag=True）：
+//    ≥3 继续 / >0 轻度性骚扰（不继续）/ <0 愤怒+100+angry_with_player（不继续）/
+//    =0 高级性骚扰（不继续）。
+// 注意（2026-08-16 复核）：erArk :301-305 先复位 unconscious_h=0 再判定（:312）——
+// 时停/睡眠的 +9999 修正此时已不生效，判定为目标清醒状态下的正常实行判定。
+// 引擎落点：判定经 h-core calcJudge API（严重骚扰 600 阈值）；陷落等级经 h-core
+// getFallLevel API（跨插件禁止直接 import）。LOW/HIGH_OBSCENITY_ANUS/DO_H_FAIL 是
+// erArk 行为状态机中间态（最终被 NO_CONSCIOUS_H_END 覆盖统一结束 H）——引擎无行为
+// 状态机，落点收敛两分支（继续/不继续），中间态用叙事日志表达（grill Q6 定案）
+export async function handleNpcInstructCondition(actorId: string, _mode?: RecoverUnconsciousMode): Promise<boolean> {
   const actor = entitySystem.get('character', actorId) as any
   const target = getHPartner(actor)
   if (!target) return false
@@ -219,29 +244,123 @@ export function handleNpcInstructCondition(actorId: string): boolean {
     target.h_state.is_h = false
   }
   clearSleepFlags(target)
-  // 注释：监禁修正（erArk handle_npc_ai_in_h.py:308——交互对象被监禁 → 直接满足继续H条件；
-  // confinement-system 的 sp_flag.imprisonment 直查，不依赖插件注册）
-  // TODO(h-npc-ai)：陷落判定（get_character_fall_level 未实装）——恒继续
-  if (target.sp_flag?.imprisonment) return true
-  return true
+  // 注释：监禁修正（erArk handle_npc_ai_in_h.py:308——交互对象被监禁 → 直接满足继续H条件）。
+  // 经条件引擎 T_IMPRISONMENT_1 前提求值（confinement-system 注册，2026-08-16 审查修正：
+  // 原直查 sp_flag.imprisonment——语义条件应走前提注册表；插件未启用（前提未注册）→
+  // 降级走正常判定，不报错）
+  try {
+    const impCtx = { ...gameContext.getContext(), selectedCharacterId: target.id } as any
+    if (conditionEngine.getPremiseValue('T_IMPRISONMENT_1', impCtx)) return true
+  } catch {
+    // confinement 未启用 → T_IMPRISONMENT_1 未注册 → 走正常判定
+  }
+
+  // 严重骚扰实行判定（erArk handle_instruct_judge_high_obscenity：S 类 600）——
+  // 经 h-core calcJudge API（公式同 instuct_judege.py：好感/信赖/状态/能力/刻印/心情/
+  // 陷落/天赋个性/他人存在/判定族修正；judge_class='严重骚扰' 已在 S_TYPE_JUDGE_CLASSES）
+  let judgeSuccess = true
+  try {
+    const fav = getEntityAttr(target, ATTR.FAVORABILITY) ?? 0
+    const trust = getEntityAttr(target, ATTR.TRUST) ?? 0
+    const result = await apiSystem.call('h-core', 'calcJudge', 600, Number(fav), Number(trust), target.id, '严重骚扰')
+    judgeSuccess = !!result?.success
+  } catch (err) {
+    // h-core 未加载/API 缺失 → 降级：判定通过（不阻断恢复流程）+ 去重上报
+    errorReporter.report({
+      source: 'h-npc-ai',
+      severity: 'warning',
+      message: `严重骚扰实行判定调用失败，按通过处理：${err instanceof Error ? err.message : String(err)}`,
+      suggestion: '检查 h-core 插件是否已加载（calcJudge API）',
+    })
+  }
+  if (!judgeSuccess) {
+    narrativeLog.write(`${target?.name ?? target?.id}醒来后激烈反抗，H 无法继续`, 'dialogue', 'h-npc-ai')
+    return false
+  }
+
+  // 陷落三分支（erArk :314-329，get_character_fall_level minus_flag=True）
+  let fallLevel = 0
+  try {
+    fallLevel = Number(await apiSystem.call('h-core', 'getFallLevel', target.id)) || 0
+  } catch (err) {
+    errorReporter.report({
+      source: 'h-npc-ai',
+      severity: 'warning',
+      message: `陷落等级查询失败，按 0（高级性骚扰）处理：${err instanceof Error ? err.message : String(err)}`,
+      suggestion: '检查 h-core 插件是否已加载（getFallLevel API）',
+    })
+  }
+  if (fallLevel >= 3) return true
+  if (fallLevel > 0) {
+    // 轻度性骚扰（erArk LOW_OBSCENITY_ANUS——醒来后顺从，允许继续轻度接触，H 不延续）
+    narrativeLog.write(`${target?.name ?? target?.id}微微发抖，却没有真正抗拒`, 'dialogue', 'h-npc-ai')
+    return false
+  }
+  if (fallLevel < 0) {
+    // 愤怒分支（erArk :323-325：angry_point += 100 + angry_with_player）——
+    // 引擎"愤怒"属性 = base[ATTR.ANGER]（判定心情修正读它；angry_point 是 erArk 字段名，
+    // 本引擎无此独立字段——2026-08-16 审查修复：原写 target.angry_point 为死字段，
+    // 判定系统感知不到愤怒增长）
+    const cur = getEntityAttr(target, ATTR.ANGER) ?? 0
+    setEntityAttr(target, ATTR.ANGER, Number(cur) + 100)
+    if (!target.sp_flag) target.sp_flag = {}
+    target.sp_flag.angry_with_player = true
+    narrativeLog.write(`${target?.name ?? target?.id}愤怒地推开你！`, 'dialogue', 'h-npc-ai')
+    return false
+  }
+  // 陷落 0 = 高级性骚扰（erArk HIGH_OBSCENITY_ANUS——醒后抗拒但未至愤怒）
+  narrativeLog.write(`${target?.name ?? target?.id}惊恐地抗拒着，H 无法继续`, 'dialogue', 'h-npc-ai')
+  return false
 }
 
 // 无意识期间的部位精液与服装偷窃二段结算（erArk :352-387 settle_unconscious_semen_and_cloth）
-// 二段行为（second_behavior）机制未实装：数据去重后清零，不假装结算
-// TODO(h-npc-ai)：in_unconscious_cum_on_body_*/cloth_*/stolen_panty/socks 二段行为随 second-behavior 落地
-function settleUnconsciousSemenAndCloth(c: any): void {
-  if (!c?.dirty) return
-  if (Array.isArray(c.dirty.body_semen_in_unconscious)) {
-    c.dirty.body_semen_in_unconscious = [...new Set(c.dirty.body_semen_in_unconscious)]
+// 二段行为机制（second_behavior）引擎未实装——erArk 的"触发二段行为"落点 = 逐部位触发
+// talk-common 长文本口上（in_unconscious_cum_on_body_{引擎部位编号}，醒来发现精液的旁白，
+// 数据在 talk-common-system 默认层，mod 可覆盖）：getText 条件选文 → {Name} 替换 → 叙事输出。
+// TODO(h-npc-ai)：in_unconscious_cum_on_cloth_*/stolen_panty/socks（服装精液/失窃）依赖
+// 服装精液槽与偷窃系统（未实装），保持字段清零不假装结算
+async function settleUnconsciousSemenAndCloth(c: any): Promise<void> {
+  if (c?.dirty && Array.isArray(c.dirty.body_semen_in_unconscious)) {
+    for (const partId of [...new Set(c.dirty.body_semen_in_unconscious)]) {
+      const text = await getUnconsciousSemenTalk(c, String(partId))
+      if (text) narrativeLog.write(text, 'dialogue', 'h-npc-ai')
+    }
+    // 数据清零（erArk :404）
+    c.dirty.body_semen_in_unconscious = []
   }
-  if (Array.isArray(c.dirty.cloth_semen_in_unconscious)) {
-    c.dirty.cloth_semen_in_unconscious = [...new Set(c.dirty.cloth_semen_in_unconscious)]
+  if (c?.dirty && Array.isArray(c.dirty.cloth_semen_in_unconscious)) {
+    c.dirty.cloth_semen_in_unconscious = []
   }
-  c.dirty.body_semen_in_unconscious = []
-  c.dirty.cloth_semen_in_unconscious = []
-  if (c.cloth) {
+  if (c?.cloth) {
     c.cloth.stolen_panties_in_unconscious = false
     c.cloth.stolen_socks_in_unconscious = false
+  }
+}
+
+// 无意识精液口上查询（talk-common 默认层数据；缺失/插件未加载 → null，数据内容缺省不报错）
+let unconsciousTalkApiWarned = false
+async function getUnconsciousSemenTalk(c: any, enginePartId: string): Promise<string | null> {
+  const variable = `in_unconscious_cum_on_body_${enginePartId}`
+  try {
+    const text = await apiSystem.call('talk-common', 'getText', variable, c?.id ?? null)
+    if (typeof text !== 'string' || text.length === 0) return null
+    // 注释：先经 talk-common replace 做 {variable} 插值（mod 覆盖数据可用 talk-common 变量），
+    // 再替换 {Name} 占位（talk-common index 无此变量，原样保留）
+    const interpolated = await apiSystem.call('talk-common', 'replace', text, c?.id ?? null)
+    const finalText = typeof interpolated === 'string' ? interpolated : text
+    return finalText.replace(/\{Name\}/g, c?.name ?? c?.id ?? '她')
+  } catch (err) {
+    // talk-common 插件未加载（可选内容源）——去重上报一次，不阻断恢复流程
+    if (!unconsciousTalkApiWarned) {
+      unconsciousTalkApiWarned = true
+      errorReporter.report({
+        source: 'h-npc-ai',
+        severity: 'warning',
+        message: `无意识精液口上查询失败（talk-common 未加载？）：${err instanceof Error ? err.message : String(err)}`,
+        suggestion: '启用 talk-common-system 插件以支持无意识醒来精液口上',
+      })
+    }
+    return null
   }
 }
 

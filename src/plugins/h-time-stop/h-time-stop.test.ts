@@ -19,6 +19,7 @@ import { onEnable as talkCommonOnEnable } from '../talk-common-system/index'
 import { onLoad as sleepOnLoad } from '../sleep-system/index'
 import { onLoad as timeStopOnLoad, onEnable as timeStopOnEnable } from './index'
 import { onEnable as mapOnEnable } from '../map-system/index'
+import { onLoad as npcAiOnLoad, onEnable as npcAiOnEnable } from '../h-npc-ai/index'
 import { onLoad as combatBaseOnLoad } from '../combat-base/index'
 import { eventBus } from '../../core/event-bus'
 import { makeTestExecCtx } from '../../utils/test-helpers'
@@ -60,12 +61,17 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
     await talkCommonOnEnable(stubCtx)
     // 注释：sleep-system 注册 consume_sanity（扣费通道）；h-time-stop 依赖其 effect
     sleepOnLoad(stubCtx)
+    // 注释：map-system 先于 h-time-stop onEnable——move 指令门控补丁依赖其已注册
+    // （字母序依赖；测试显式保证）
+    await mapOnEnable(stubCtx)
     timeStopOnLoad(stubCtx)
     await timeStopOnEnable(stubCtx)
     // 注释：combat-base 注册 start_combat effect（复查 I-1 时停拒战测试用）
     combatBaseOnLoad(stubCtx)
-    // 注释：map-system 注册 'map' API（Task 3 移动集成测试用——moveTo 改道 + 搬运跟随）
-    await mapOnEnable(stubCtx)
+    // 注释：h-npc-ai 注册 recoverFromUnconsciousH API（536 恢复链测试用——
+    // time_stop_off 时停中 H 目标醒来判定，mode='time_stop'）
+    npcAiOnLoad(stubCtx)
+    await npcAiOnEnable(stubCtx)
 
     // 玩家（test-mod roster 已注册）——NPC 手动注册
     player().current_location = 'town_square'
@@ -80,6 +86,9 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
   beforeEach(async () => {
     // 注释：重置玩家（base-human 模板含 精力 字段）——精力 100/上限 100
     player().base = { 体力: 100, 体力上限: 100, 气力: 100, 气力上限: 100, 精力: 100, 精力上限: 100 }
+    // 注释：门槛素质（2026-08-16 grill 定案——PRIMARY=窄域时停 / INTERMEDIATE=广域时停；
+    // 测试默认持有两档，指令/自动移动测试才能走通；门槛本身有专门断言）
+    player().talents = { '窄域时停': 1, '广域时停': 1 }
     player().experience = {}
     player().action_info = {}
     narrativeLog.clear()
@@ -334,5 +343,219 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
     player().base['疲劳度'] = 50
     await commandExecutor.execute('wait', execCtx())
     expect(player().base['疲劳度']).toBe(55)
+  })
+})
+
+// 注释：2026-08-16 grill 复刻增量测试——等级门槛 / 536 恢复链 / 时停奸 / 移动门控 / 精液口上
+// ⚠️ 本 describe 无独立 beforeAll——依赖上方 describe 的 beforeAll 副作用（插件 onLoad/onEnable
+// 只能执行一次：effectTypeRegistry 重复注册抛错）。全量运行正常；`vitest -t` 单独过滤本组
+// 测试时 beforeAll 不会执行（实体未注册 → 报 null），属测试结构已知限制
+describe('h-time-stop 门槛与恢复链（2026-08-16）', () => {
+  // 注释：门槛前提默认持有两档素质（beforeEach 设置）；本组测试显式移除/设置验证门槛语义
+  it('门槛前提：PRIMARY=窄域 / INTERMEDIATE+移动判定=广域 / ADVANCED 恒 false', () => {
+    const ctx = () => ({ ...gameContext.getContext(), sourceId: 'player' }) as any
+    // 无素质 → 全部 false
+    player().talents = {}
+    expect(conditionEngine.getPremiseValue('PRIMARY_TIME_STOP', ctx())).toBe(false)
+    expect(conditionEngine.getPremiseValue('INTERMEDIATE_TIME_STOP', ctx())).toBe(false)
+    expect(conditionEngine.getPremiseValue('ADVANCED_TIME_STOP', ctx())).toBe(false)
+    // 未时停 → 移动判定恒 true（时停外移动不受限）
+    expect(conditionEngine.getPremiseValue('TIME_STOP_JUDGE_FOR_MOVE', ctx())).toBe(true)
+    // 仅窄域 → PRIMARY true / INTERMEDIATE false；时停中移动判定 false
+    player().talents = { '窄域时停': 1 }
+    expect(conditionEngine.getPremiseValue('PRIMARY_TIME_STOP', ctx())).toBe(true)
+    expect(conditionEngine.getPremiseValue('INTERMEDIATE_TIME_STOP', ctx())).toBe(false)
+    expect(conditionEngine.getPremiseValue('TIME_STOP_JUDGE_FOR_MOVE', ctx())).toBe(true)  // 未时停
+    // 广域 → INTERMEDIATE true
+    player().talents = { '窄域时停': 1, '广域时停': 1 }
+    expect(conditionEngine.getPremiseValue('INTERMEDIATE_TIME_STOP', ctx())).toBe(true)
+  })
+
+  it('门槛：无窄域时停 → time_stop_on 指令不可执行（前提不满足）', async () => {
+    player().talents = {}
+    await commandExecutor.execute('time_stop_on', execCtx())
+    expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
+    // 有窄域 → 指令可执行
+    player().talents = { '窄域时停': 1 }
+    await commandExecutor.execute('time_stop_on', execCtx())
+    expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(true)
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_off', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+  })
+
+  it('移动门控补丁：move 指令带 TIME_STOP_JUDGE_FOR_MOVE 前提；窄域时停中点击被拒', async () => {
+    const moveCmd = commandRegistry.getById('move')
+    expect(moveCmd).toBeDefined()
+    expect(moveCmd!.premises).toContain('TIME_STOP_JUDGE_FOR_MOVE')
+    // 窄域（无广域）时停中 → 移动判定 false（command-executor 前提拦截 → 时间不推进/不瞬移）
+    player().talents = { '窄域时停': 1 }
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    const before = gameContext.getContext().time
+    await commandExecutor.execute('move', {
+      ...execCtx(),
+      evaluatePremises: (premises: string[]) => conditionEngine.evaluatePremises(premises, { ...gameContext.getContext(), sourceId: 'player' }),
+    })
+    const after = gameContext.getContext().time
+    expect(after.hour * 60 + after.minute).toBe(before.hour * 60 + before.minute)  // 时间未推进
+    expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(true)  // 时停未被破坏
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_off', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+  })
+
+  it('536 恢复链：时停中 H 目标在 time_stop_off 时醒来（判定通过+陷落≥3 → 清醒配合继续 H）', async () => {
+    // 构造：玩家 H 中 + 目标时停冻结；目标高好感/信赖度 + 恋人（严重骚扰判定 750≥600 通过，
+    // 陷落=恋人 → 3 ≥ 3 → 继续 → 清醒配合 H 不装睡）
+    const girl = entitySystem.get('character', 'npc_1') as any
+    girl.base['好感度'] = 10000
+    girl.base['信赖度'] = 300
+    girl.base['愤怒'] = 0
+    girl.base['体力'] = 100  // 防 per-tick 疲劳/体力退出（checkNpcFatigueExit：体力>1 才不退出）
+    girl.talents = girl.talents ?? {}
+    girl.talents['恋人'] = 1
+    player().h_state = { is_h: true, target_character_id: 'npc_1' }
+    girl.h_state = { is_h: true, target_character_id: 'player' }
+    girl.sp_flag = { unconscious_h: 3 }
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    // 关闭时停 → 536 恢复：目标醒来（unconscious_h 清 0）+ 继续 H（is_h=true，不装睡）
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_off', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    expect(girl.sp_flag.unconscious_h).toBe(0)
+    expect(girl.h_state?.is_h).toBe(true)
+    expect(girl.h_state?.pretend_sleep ?? false).toBe(false)  // 时停模式不装睡
+    // 清理 H
+    player().h_state = undefined
+    girl.h_state = undefined
+    girl.sp_flag = {}
+  })
+
+  it('536 恢复链：判定不通过（低好感/无陷落）→ 醒来后 H 结束', async () => {
+    const girl = entitySystem.get('character', 'npc_1') as any
+    girl.base['好感度'] = 0
+    girl.base['信赖度'] = 0
+    girl.base['愤怒'] = 88
+    girl.talents = {}
+    player().h_state = { is_h: true, target_character_id: 'npc_1' }
+    girl.h_state = { is_h: true, target_character_id: 'player' }
+    girl.sp_flag = { unconscious_h: 3 }
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_off', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    // 醒来 → 严重骚扰判定失败（DO_H_FAIL 语义）→ endHScene → 双方 H 清空
+    expect(girl.sp_flag.unconscious_h).toBe(0)
+    expect(girl.h_state?.is_h ?? false).toBe(false)
+    expect(player().h_state?.is_h ?? false).toBe(false)
+    player().h_state = undefined
+    girl.h_state = undefined
+    girl.sp_flag = {}
+  })
+
+  it('门槛解锁：时姦经验 124 达标 → checkTalentGain 自动获得窄域/广域时停（gain.needs 端到端）', async () => {
+    // 背景（2026-08-16 审查补测）：门槛前提读 talent，但"经验 → talent 自动获得"的
+    // gain.needs 链路（command-executor finally 调 checkTalentGain gainType=0）此前无测试——
+    // 若 h-core 默认层 talentDefs 未并入 modLoader，解锁将静默失效
+    const { checkTalentGain } = await import('../../core/talent-utils')
+    player().talents = {}
+    player().experience = { '124': 50 }
+    checkTalentGain('player')
+    expect(player().talents['窄域时停']).toBe(1)  // 124≥50 → 窄域
+    expect(player().talents['广域时停'] ?? 0).toBe(0)  // 124<200 → 广域未解锁
+    player().experience['124'] = 200
+    checkTalentGain('player')
+    expect(player().talents['广域时停']).toBe(1)  // 124≥200 → 广域
+  })
+
+  it('时停奸指令：time_stop_h 对时停目标发起 H（叙事与睡奸区分）', async () => {
+    const girl = entitySystem.get('character', 'npc_1') as any
+    girl.sp_flag = { unconscious_h: 3 }
+    girl.h_state = undefined
+    player().h_state = undefined
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    await commandExecutor.execute('time_stop_h', execCtx())
+    expect(girl.h_state?.is_h).toBe(true)
+    expect(player().h_state?.is_h).toBe(true)
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_off', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    player().h_state = undefined
+    girl.h_state = undefined
+    girl.sp_flag = {}
+  })
+
+  it('精液记录：eja_climax 对无意识目标射精 → body_semen_in_unconscious 记录 + 醒来触发口上', async () => {
+    const { onLoad: ejaOnLoad } = await import('../h-ejaculation/index')
+    ejaOnLoad(stubCtx)
+    const girl = entitySystem.get('character', 'npc_1') as any
+    girl.base['好感度'] = 0
+    girl.base['信赖度'] = 0
+    girl.base['愤怒'] = 88
+    girl.talents = {}
+    girl.sp_flag = { unconscious_h: 3 }
+    player().base['精液量'] = 80
+    player().base['精液量上限'] = 100
+    player().h_state = { is_h: true, target_character_id: 'npc_1' }
+    girl.h_state = { is_h: true, target_character_id: 'player' }
+    // 射精（eja_shoot——直接射精，无 eja_climax 的忍耐判定；eja_climax 在耐力 0 时
+    // 100% 忍住是既有公式语义，本测试只验证无意识记录链路）
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'eja_shoot', params: { positionId: 6 } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    expect(girl.dirty?.body_semen_in_unconscious ?? []).toContain(6)
+    // 关闭时停 → 536 醒来 → settle_unconscious_semen_and_cloth 触发口上（talk-common 数据）
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_off', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    // 列表清空 + 醒来口上输出（in_unconscious_cum_on_body_6 = 阴道，talk-common 默认层）
+    expect(girl.dirty?.body_semen_in_unconscious ?? []).toEqual([])
+    expect(narrativeLog.getEntries().some((e: any) => String(e.text).includes('感到下体'))).toBe(true)
+    player().h_state = undefined
+    girl.h_state = undefined
+    girl.sp_flag = {}
+    girl.dirty = {}
+  })
+
+  it('精液口上档位：精液量分级条件正确选文（100ml → 阴道 50-100/100-200 档，非最小档）', async () => {
+    // 背景（2026-08-16 审查补测）：口上条件用 selected.body_semen.{部位}.1（数组索引路径），
+    // 原测试只覆盖 <10 最小档；本测试钉死中高档位选文（避免"条件引擎不支持数组索引 →
+    // 恒命中最小档"的静默退化）
+    const girl = entitySystem.get('character', 'npc_1') as any
+    girl.base['好感度'] = 0
+    girl.base['信赖度'] = 0
+    girl.base['愤怒'] = 88
+    girl.talents = {}
+    girl.sp_flag = { unconscious_h: 3 }
+    girl.dirty = { body_semen_in_unconscious: [6] }
+    girl.body_semen = { 6: [0, 100, 0, 100] }
+    girl.body_semen['阴道'] = girl.body_semen[6]  // 模拟 trackSemen 的中文别名注册（条件表达式用别名路径）
+    player().h_state = { is_h: true, target_character_id: 'npc_1' }
+    girl.h_state = { is_h: true, target_character_id: 'player' }
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_on', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'time_stop_off', params: { quiet: true } },
+    ], { sourceId: 'player', _targetIds: ['player'] })
+    // 100ml 命中 "GE_100 & L_200" 档（"失控的消防栓"级文本），而非 <10 最小档
+    expect(narrativeLog.getEntries().some((e: any) => String(e.text).includes('消防栓'))).toBe(true)
+    expect(narrativeLog.getEntries().some((e: any) => String(e.text).includes('感到下体有一丝微妙的湿润'))).toBe(false)
+    player().h_state = undefined
+    girl.h_state = undefined
+    girl.sp_flag = {}
+    girl.dirty = {}
+    girl.body_semen = {}
   })
 })

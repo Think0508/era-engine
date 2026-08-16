@@ -395,11 +395,20 @@ describe('sleep-system 集成', () => {
 
     it('半梦半醒目标 + 吵醒成功 → 醒来流程（疲劳/熟睡清零 + 装睡继续 H + 时间推进）', async () => {
       startSleepH(20)
+      const girl = getChar(GIRL)
+      // 2026-08-16 时停复刻：handleNpcInstructCondition 从"恒继续"改为 erArk 真实判定——
+      // 严重骚扰实行判定（600 阈值）+ 陷落三分支（≥3 继续）。本测试目标需满足继续条件：
+      // 好感 10000（等级 6 → +150）+ 信赖 300（等级 8 → +500）+ 恋人（陷落修正 +80）+
+      // 愤怒 0（+20）= 750 ≥ 600 判定通过；陷落=恋人 → 3 ≥ 3 → 继续 → 装睡
+      girl.base['好感度'] = 10000
+      girl.base['信赖度'] = 300
+      girl.base['愤怒'] = 0
+      girl.talents = girl.talents ?? {}
+      girl.talents['恋人'] = 1
       // weak_rate = 60-20 + (30-20) = 50；randint(1,100)=1 → 50 ≥ 1 → 醒
       vi.spyOn(Math, 'random').mockReturnValue(0)
       const before = gameContext.getContext().time
       await settleSleepH(10)
-      const girl = getChar(GIRL)
       // 吵醒判定清零疲劳（judgeWeakUp :343-344）→ 但装睡继续 H 后 advanceTime(5) 触发
       // per-tick 窗口结算（H 中 NPC 疲劳积累，erArk WAIT 行为同构）→ 5 分钟 +1
       expect(girl.base['疲劳度']).toBe(1)

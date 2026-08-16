@@ -53,6 +53,8 @@ export interface H_STATE {
   orgasm_edge_count?: Record<number, number>
   // 各部位时停中绝顶计数
   time_stop_orgasm_count?: Record<number, number>
+  // 时停解放状态（时停关闭绝顶解放结算后置 true，下次行动开始重置——erArk time_stop_release）
+  time_stop_release?: boolean
   // 多重绝顶部位集合（本次同时绝顶的部位）
   plural_orgasm_set?: number[]
   // 射精位置（体内部位 body_part cid，用于饮精绝顶判定 2=口 15=胃）
@@ -83,6 +85,7 @@ export function createHState(): H_STATE {
     extra_orgasm_count: 0,
     orgasm_edge_count: {},
     time_stop_orgasm_count: {},
+    time_stop_release: false,
     plural_orgasm_set: [],
     shoot_position_body: -1,
     pending_orgasm_feel: {},

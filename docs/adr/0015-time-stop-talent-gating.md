@@ -32,3 +32,30 @@ erArk 定义三级时停素质（Talent.csv）：
 
 - 玩家初始即拥有全部时停能力（开/关/移动/搬运/自由）
 - erArk 的"窄域时停不可移动"成长梯度无法表达
+
+---
+
+## 演进记录（2026-08-16）：经验解锁门槛
+
+### 背景
+
+时停系统完整复刻（grill 定案）重审 ADR-0015。原决策的**核心前提**是"erArk 无获得途径 → 照搬 = 不可玩"。但本引擎的素质获得机制（`gain.needs` + `checkTalentGain`，talent-utils）可以**自建获得途径**——把 erArk 的隐藏经验阈值（时姦经验 exp[124] / 无意识绝顶经验 exp[78]，erArk 中本用于 316/317 的技艺面板解锁门槛）映射为 `gain.needs`，经验积累自动解锁素质，不存在"永远无法获得"问题。
+
+### 新决策（修正 ADR-0015）
+
+实装门槛，聚合语义简化为玩家自身经验（erArk 的"全干员经验总和"聚合在武侠世界观无对应，简化）：
+
+| 素质 | 解锁需求（gain.needs，指令执行后自动检查） | 权限 |
+|------|------|------|
+| 窄域时停 | 玩家时姦经验 `experience['124'] ≥ 50` | `PRIMARY_TIME_STOP`——可开关时停，**时停中不可移动** |
+| 广域时停 | `experience['124'] ≥ 200`（审查修正：原含 `experience['78'] ≥ 10`——78 只写給目标/NPC（h-core orgasm.ts:435 跳过玩家），玩家恒 0 → 死门槛，删） | `INTERMEDIATE_TIME_STOP` / `TIME_STOP_JUDGE_FOR_MOVE`——可移动+搬运 |
+| 精确时停 | （318 erArk 未实装） | `ADVANCED_TIME_STOP` 恒 false，talent 保留定义无获得途径 |
+
+移动门控：`move` 指令补 `TIME_STOP_JUDGE_FOR_MOVE` 前提（h-time-stop onEnable 补丁，前提走条件引擎）。
+
+### 变化
+
+- `PRIMARY_TIME_STOP` / `INTERMEDIATE_TIME_STOP` / `TIME_STOP_JUDGE_FOR_MOVE` 从恒 true 改为读素质
+- 自动时停移动（UI 开关）前置增加广域时停检查
+- 门槛实现于插件默认层（h-core talents.toml 的 gain.needs），mod 可覆盖/关闭（删除 gain 即回退无门槛）
+- 原"mod 可自行用条件限制指令"的兜底仍保留（premises 机制不变）

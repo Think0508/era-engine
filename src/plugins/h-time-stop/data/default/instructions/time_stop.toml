@@ -1,0 +1,108 @@
+# 时停系指令（h-time-stop 插件默认层；mod 可覆盖）
+# 来源：erArk InstructConfig.csv 4005/4006/4113/4114/4115 + 5214（复刻攻略-09-时停系统.md）
+# 行为：TIME_STOP_ON/OFF/CARRY_TARGET/STOP_CARRY_TARGET/时停奸（无意识奸的时停特化——
+#   erArk 5214 前提 T_UNCONSCIOUS_FLAG_3，叙事与睡奸区分）
+# 门槛：PRIMARY_TIME_STOP=窄域时停 / INTERMEDIATE_TIME_STOP=广域时停（h-time-stop 注册，
+#   素质经验解锁）；SANITY_POINT_G_0=精力>0；PL_NOT_BAGGING_CHARA=confinement 注册
+# 关闭链（time_stop_off）：1244清搬运→1246清自由→536恢复H目标→1242恢复标记→527绝顶解放，
+#   均在 time_stop_off 效果内部完成（指令 effects 只触发）。
+#   ⚠️ 无 set_field time_stop_release——527 环节已全场置位（2026-08-16 审查：原指令数据
+#   里的 set_field 会误标 selected 非 H 角色为解放状态，且与 doTimeStopOff 全场置位重复）
+
+[[instructions]]
+id = "time_stop_on"
+label = "时间停止流动"
+category = "arts"
+sub_category = "time_stop"
+time_cost = 1
+priority = 50
+tags = ["system:time_stop"]
+# erArk behavior: TIME_STOP_ON（InstructConfig 4113：PRIMARY_TIME_STOP|TIME_STOP_OFF|SANITY_POINT_G_0|TIRED_LE_84）
+premises = ["PRIMARY_TIME_STOP", "TIME_STOP_OFF", "SANITY_POINT_G_0", "TIRED_LE_84"]
+effects = [
+  { type = "time_stop_on" },
+  { type = "trigger_dialogue", params = { scene = "time_stop_on" } },
+]
+
+[[instructions]]
+id = "time_stop_off"
+label = "时间重新流动"
+category = "arts"
+sub_category = "time_stop"
+time_cost = 1
+priority = 50
+tags = ["system:time_stop"]
+# erArk behavior: TIME_STOP_OFF（InstructConfig 4114：PRIMARY_TIME_STOP|NOT_H|TIME_STOP_ON|TIRED_LE_84）
+premises = ["PRIMARY_TIME_STOP", "NOT_H", "TIME_STOP_ON", "TIRED_LE_84"]
+effects = [
+  { type = "time_stop_carry_stop" },
+  { type = "time_stop_free_stop" },
+  { type = "time_stop_off" },
+  { type = "trigger_dialogue", params = { scene = "time_stop_off" } },
+]
+
+[[instructions]]
+id = "time_stop_off_in_h"
+label = "在H中取消时停"
+category = "arts"
+sub_category = "time_stop"
+modes = ["h_scene"]
+time_cost = 1
+priority = 50
+tags = ["system:time_stop"]
+# erArk behavior: TIME_STOP_OFF（InstructConfig 4115：PRIMARY_TIME_STOP|IS_H|TIME_STOP_ON|TIRED_LE_84）
+premises = ["PRIMARY_TIME_STOP", "IS_H", "TIME_STOP_ON", "TIRED_LE_84"]
+effects = [
+  { type = "time_stop_carry_stop" },
+  { type = "time_stop_free_stop" },
+  { type = "time_stop_off" },
+  { type = "trigger_dialogue", params = { scene = "time_stop_off_in_h" } },
+]
+
+[[instructions]]
+id = "carry_target"
+label = "搬运对方"
+category = "arts"
+sub_category = "time_stop"
+time_cost = 1
+priority = 50
+tags = ["system:time_stop"]
+# erArk behavior: CARRY_TARGET（InstructConfig 4005：INTERMEDIATE_TIME_STOP|NOT_H|TIME_STOP_ON|
+#   NOT_CARRY_ANYBODY_IN_TIME_STOP|PL_NOT_BAGGING_CHARA|HAVE_TARGET|TIRED_LE_84）
+premises = ["INTERMEDIATE_TIME_STOP", "NOT_H", "TIME_STOP_ON", "NOT_CARRY_ANYBODY_IN_TIME_STOP", "PL_NOT_BAGGING_CHARA", "HAVE_TARGET", "TIRED_LE_84"]
+effects = [
+  { type = "time_stop_carry", target = "selected" },
+  { type = "trigger_dialogue", params = { scene = "carry_target" } },
+]
+
+[[instructions]]
+id = "stop_carry_target"
+label = "停止搬运对方"
+category = "arts"
+sub_category = "time_stop"
+time_cost = 1
+priority = 50
+tags = ["system:time_stop"]
+# erArk behavior: STOP_CARRY_TARGET（InstructConfig 4006：INTERMEDIATE_TIME_STOP|NOT_H|TIME_STOP_ON|
+#   TARGET_IS_CARRIED_IN_TIME_STOP|TIRED_LE_84）
+premises = ["INTERMEDIATE_TIME_STOP", "NOT_H", "TIME_STOP_ON", "TARGET_IS_CARRIED_IN_TIME_STOP", "TIRED_LE_84"]
+effects = [
+  { type = "time_stop_carry_stop" },
+  { type = "trigger_dialogue", params = { scene = "stop_carry_target" } },
+]
+
+[[instructions]]
+id = "time_stop_h"
+label = "时停奸"
+category = "obscenity"
+sub_category = "time_stop"
+time_cost = 10
+priority = 50
+tags = ["system:time_stop"]
+# erArk behavior: UNCONSCIOUS_H（InstructConfig 5214 时停奸：HAVE_TARGET|T_UNCONSCIOUS_FLAG_3）——
+# 目标处于时停（unconscious_h==3）时发起的无意识 H，叙事与睡奸（unconscious_h）区分
+premises = ["HAVE_TARGET", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "T_UNCONSCIOUS_FLAG_3", "TIRED_LE_74"]
+effects = [
+  { type = "h_start_h", params = {} },
+  { type = "trigger_dialogue", params = { scene = "time_stop_h" } },
+]

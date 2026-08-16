@@ -1,0 +1,4 @@
+# h-time-stop 插件默认属性定义（插件默认层 Layer 1）
+# 2026-08-16 修订：TSP/tsp_max 已删除（erArk 无此概念，grill 定案）——
+# 时停消耗走精力（sanity 绑定，sleep-system 声明 [bindings.sleep-system].sanity），
+# 本插件不再定义任何属性（空文件保留占位，防止目录缺失）

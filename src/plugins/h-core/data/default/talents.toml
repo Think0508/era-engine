@@ -980,19 +980,28 @@ tags = ["技术素质"]
 [talents."窄域时停"]
 name = "窄域时停"
 max = 1
-description = ""
+description = "初级时停（erArk 素质 316）：可开启/关闭时停，但时停中不可移动"
 tags = ["技术素质"]
+# 解锁（grill 定案 2026-08-16）：玩家自身时姦经验（exp[124]）≥50，指令执行后自动检查
+# （gain_type 0，command-executor finally 调 checkTalentGain；erArk 为技艺面板条件满足
+# 按钮 + 源石付费，引擎无源石经济 → 经验自动解锁）
+gain = { needs = [{ type = "experience", id = 124, value = 50 }] }
 
 [talents."广域时停"]
 name = "广域时停"
 max = 1
-description = ""
+description = "中级时停（erArk 素质 317）：时停中可移动、可搬运目标（需先获得窄域时停）"
 tags = ["技术素质"]
+# 解锁（grill 定案 2026-08-16 + 审查修正）：玩家时姦经验（exp[124]）≥200。
+# ⚠️ 审查修正（2026-08-16）：原版含"无意识绝顶经验（exp[78]）≥10"——但 78 只写給
+# 目标/NPC（h-core orgasm.ts:435 明确跳过玩家，erArk 语义：无意识绝顶是受害方经验），
+# 玩家 78 恒 0 → 广域永不可解锁（死门槛）。聚合语义简化后删 78 条件，纯时姦经验梯度
+gain = { needs = [{ type = "experience", id = 124, value = 200 }] }
 
 [talents."精确时停"]
 name = "精确时停"
 max = 1
-description = ""
+description = "高级时停（erArk 素质 318）：未实装（erArk 侧 todo=1，自由活动指令挂 TO_DO）"
 tags = ["技术素质"]
 
 [talents."猥亵催眠"]

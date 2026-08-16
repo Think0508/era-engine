@@ -45,6 +45,13 @@ function getConfinementTag(char: any): { text: string; cls: string } | null {
   if (sp.be_bagged) return { text: '袋', cls: 'bagged-tag' }
   return null
 }
+
+// 注释：时停状态标记（复刻攻略-09 §6——时停中全场角色标签变「时停」；erArk <停>
+// 浅天蓝标记，character_info_head.py:270-279。unconscious_h==3 = 时停冻结
+// （h-time-stop 全图覆写），读实体字段直判，不依赖插件 API）
+function getTimeStopTag(char: any): boolean {
+  return (char?.sp_flag?.unconscious_h ?? 0) === 3
+}
 </script>
 
 <template>
@@ -57,6 +64,7 @@ function getConfinementTag(char: any): { text: string; cls: string } | null {
       @click="uiStore.selectCharacter(char.id)"
     >
       {{ getCharacterName(char) }}
+      <span v-if="getTimeStopTag(char)" class="timestop-tag">时停</span>
       <span v-if="isFollowing(char)" class="follow-tag">同行</span>
       <span v-if="getConfinementTag(char)" :class="getConfinementTag(char)!.cls">{{ getConfinementTag(char)!.text }}</span>
     </span>
@@ -100,6 +108,16 @@ function getConfinementTag(char: any): { text: string; cls: string } | null {
   padding: 0 4px;
   border-radius: var(--radius-button);
   background-color: var(--color-success);
+  color: var(--color-surface);
+  font-size: 0.6rem;
+  line-height: 1.4;
+}
+
+.timestop-tag {
+  margin-left: 4px;
+  padding: 0 4px;
+  border-radius: var(--radius-button);
+  background-color: var(--color-secondary);
   color: var(--color-surface);
   font-size: 0.6rem;
   line-height: 1.4;

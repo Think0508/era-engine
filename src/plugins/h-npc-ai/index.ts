@@ -124,9 +124,10 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     // 注释：尝试夺回主动权（复用实行判定，默认 base=150——100 时恒成功，见 active-h.ts）
     tryActiveH: (npcId: string, judgeBase?: number): Promise<boolean> =>
       tryPlActiveH(npcId, judgeBase ?? 150),
-    // 注释：从无意识H中恢复（sleep-system 吵醒判定后调用——erArk recover_from_unconscious_h）
-    recoverFromUnconsciousH: (actorId: string, infoText?: string): Promise<void> =>
-      recoverFromUnconsciousH(actorId, infoText),
+    // 注释：从无意识H中恢复（sleep-system 吵醒判定后调用——erArk recover_from_unconscious_h；
+    // mode='sleep'（缺省）睡眠恢复 / 'time_stop' 时停恢复（h-time-stop 的 time_stop_off 链调用））
+    recoverFromUnconsciousH: (actorId: string, infoText?: string, opts?: { mode?: 'sleep' | 'time_stop' }): Promise<void> =>
+      recoverFromUnconsciousH(actorId, infoText, opts),
     // 注释：注册调教助手行为源（confinement-system 调用——助手判定+选行为在监禁模块，
     // 本插件只负责每时间片消费行为执行；erArk 同款职责切分，见 sex-assist.ts）
     registerSexAssistSource: (source: (wardenId: string) => string | null | Promise<string | null>): void => {

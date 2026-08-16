@@ -108,12 +108,20 @@ const isFollowing = computed(() => {
   const ch = character.value as any
   return (ch?.sp_flag?.is_follow ?? 0) !== 0
 })
+
+// 注释：时停标记（复刻攻略-09 §6——时停中全场角色标签变「时停」；
+// unconscious_h==3 = 时停冻结，h-time-stop 全图覆写，读实体字段直判）
+const isTimeStopped = computed(() => {
+  const ch = character.value as any
+  return (ch?.sp_flag?.unconscious_h ?? 0) === 3
+})
 </script>
 
 <template>
   <div class="character-panel">
     <h3 class="panel-character-name">
       {{ character?.name ?? '未知角色' }}
+      <span v-if="isTimeStopped" class="timestop-tag">时停</span>
       <span v-if="isFollowing" class="follow-tag">同行中</span>
     </h3>
     <div class="tab-bar">
@@ -208,15 +216,17 @@ const isFollowing = computed(() => {
 <style scoped>
 .character-panel { display: flex; flex-direction: column; gap: var(--gap-small); }
 .panel-character-name { font-family: var(--font-title); color: var(--color-primary); text-align: center; }
+.timestop-tag,
 .follow-tag {
   margin-left: 6px;
   padding: 0 6px;
   border-radius: var(--radius-button);
-  background-color: var(--color-success);
   color: var(--color-surface);
   font-size: 0.7rem;
   vertical-align: middle;
 }
+.timestop-tag { background-color: var(--color-secondary); }
+.follow-tag { background-color: var(--color-success); }
 .tab-bar { display: flex; gap: 2px; flex-wrap: wrap; border-bottom: 1px solid var(--color-border); }
 .tab-button { padding: var(--gap-small); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-button) var(--radius-button) 0 0; color: var(--color-text); cursor: pointer; font-size: 0.75rem; min-height: 44px; }
 .tab-button.active { background: var(--color-primary); color: var(--color-surface); }

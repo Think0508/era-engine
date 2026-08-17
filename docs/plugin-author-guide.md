@@ -369,6 +369,25 @@ ctx.api.call('quest', 'setVar', sceneId, key, value)          // → void（写�
 // 条件路径：quest.{sceneId}.var.{name}（如 quest.切磋任务.var.won_duel == 'yes'）；quest.{sceneId}.status 同域
 ```
 
+#### gain-rule-system — 条件获得规则（2026-08-16）
+
+```typescript
+// 统一「满足条件后获得xx」管线——自动/事件/手动触发；天赋/物品/成就统一调度
+ctx.api.call('gain-rule-system', 'checkAuto', charId, context)
+//   → Promise<void>（检查单角色 auto 规则；context: 'execution'|'npc-settle'|'sleep'）
+ctx.api.call('gain-rule-system', 'checkAll', context)         // → Promise<void>（全量检查；缺省 'sleep'）
+ctx.api.call('gain-rule-system', 'queryManualCandidates', charId)
+//   → CompiledRule[]（手动候选——UI 待设计时接线）
+ctx.api.call('gain-rule-system', 'confirmManual', charId, ruleId)
+//   → Promise<boolean>（手动确认，跳过条件直接执行）
+ctx.api.call('gain-rule-system', 'listRules')                 // → CompiledRule[]（调试/校验）
+ctx.api.call('gain-rule-system', 'isAchievementUnlocked', achId, targetId?)
+//   → boolean（成就达成查询；targetId 缺省按成就 scope 解析）
+ctx.api.call('gain-rule-system', 'getGlobalAchievements')     // → Record<string, boolean>（全局成就表）
+```
+效果类型（可在任何指令/任务 effects 使用）：`grant_talent`（params.talent，含 replace 升级链）、
+`remove_talent`（params.talent）、`record_achievement`（params.id）。详见 `docs/gain-rule-system.md`。
+
 ##### script 步骤（C3，2026-08-14）——脚本执行上下文（非 ctx.api.call，脚本内直接可用的变量/函数）
 
 ```typescript

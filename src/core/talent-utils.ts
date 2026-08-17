@@ -1,11 +1,13 @@
+// 天赋工具（talent-utils）——天赋等级查询 + modifier 公式点计算
+// 2026-08-16：天赋获得/自动习得逻辑已迁移至 gain-rule-system 插件（checkTalentGain/
+// gainTalentManual/grantTalent 移除——统一调度点：game:execution_end 事件 + checkAuto API）
+// 本文件保留：getTalentLevel / sumTalentModifiers / multiplyTalentModifiers（公式点接线用）
+
 import { entitySystem } from './entity-system'
 import { modLoader } from './mod-loader'
-import type { TalentDef, TalentModifier } from './mod-loader'
+import type { TalentModifier } from './mod-loader'
 import { conditionEngine } from './condition-engine'
 import { gameContext } from './game-context'
-import { narrativeLog } from './narrative-log'
-import { errorReporter } from './error-reporter'
-import { evaluateUpgradeNeeds } from './upgrade-needs'
 
 export interface TalentModifierContext {
   tag?: string
@@ -13,92 +15,11 @@ export interface TalentModifierContext {
   ability?: string
 }
 
-// 注释：gain.condition 求值失败去重上报（2026-08-13 审计——原 catch 静默）
-const reportedGainConditionErrors = new Set<string>()
-
 /** 角色某天赋的等级（0=无） */
 export function getTalentLevel(charId: string, talentId: string): number {
   const char = entitySystem.get('character', charId) as any
   if (!char?.talents) return 0
   return char.talents[talentId] ?? 0
-}
-
-/** 天赋获得核心逻辑（checkTalentGain / gainTalentManual 共用）——赋予 + 日志 + 替换 */
-function grantTalent(char: any, _charId: string, talentId: string, def: TalentDef): boolean {
-  if (char.talents[talentId]) return false
-  const newLevel = (char.talents[talentId] ?? 0) + 1
-  char.talents[talentId] = newLevel
-  narrativeLog.write(`习得天赋：${def.name ?? talentId}（Lv.${newLevel}）`, 'system', 'talent-utils')
-
-  // 替换类天赋（升级）：移除旧天赋
-  const replace = def.gain?.replace
-  if (replace) {
-    delete char.talents[replace]
-    const oldDef = modLoader.getMod()?.talentDefs?.[replace]
-    narrativeLog.write(`天赋 ${oldDef?.name ?? replace} 已被替换`, 'system', 'talent-utils')
-  }
-  return true
-}
-
-/** 按 gain_type 过滤的自动习得检查（erArk gain_talent）：
- *  gain_type 0=随时自动（指令执行后）/ 3=睡觉自动；缺省 0（向后兼容现有 gain.condition 数据）
- *  条件：gain.condition 表达式满足 或 gain.needs 语义化需求满足（erArk gain_need 是 AND 全满足）
- */
-export function checkTalentGain(charId: string, gainType = 0): void {
-  const mod = modLoader.getMod()
-  if (!mod?.talentDefs) return
-
-  const char = entitySystem.get('character', charId) as any
-  if (!char) return
-  if (!char.talents) char.talents = {}
-
-  const gc = gameContext.getContext()
-
-  for (const [talentId, def] of Object.entries(mod.talentDefs)) {
-    if (!def.gain) continue
-    // 获得时机过滤（erArk gain_type；缺省 0 随时）
-    if ((def.gain.gain_type ?? 0) !== gainType) continue
-    // 已有该天赋，不重复获得
-    if (char.talents[talentId]) continue
-
-    try {
-      let satisfied = false
-      if (def.gain.condition) {
-        satisfied = conditionEngine.evaluate(def.gain.condition, gc)
-      }
-      if (!satisfied && def.gain.needs) {
-        satisfied = evaluateUpgradeNeeds(char, def.gain.needs).satisfied
-      }
-      if (satisfied) {
-        grantTalent(char, charId, talentId, def)
-      }
-    } catch (err) {
-      // 注释：条件求值错误去重上报（2026-08-13 审计——原静默：天赋永不获得且无痕迹）
-      if (!reportedGainConditionErrors.has(talentId)) {
-        reportedGainConditionErrors.add(talentId)
-        errorReporter.report({
-          source: 'talent-utils',
-          severity: 'warning',
-          message: `天赋 '${talentId}' 的 gain.condition 求值失败：${err instanceof Error ? err.message : String(err)}`,
-          suggestion: '检查天赋 gain.condition 表达式（字段路径/前提拼写）',
-        })
-      }
-    }
-  }
-}
-
-/**
- * 手动获得天赋（erArk gain_talent now_gain_type=1）——面板确认后调用，跳过条件直接获得
- * （面板层负责前置检查：共通前提/路线前提/needs 显示）。重复获得静默跳过。
- */
-export function gainTalentManual(charId: string, talentId: string): boolean {
-  const mod = modLoader.getMod()
-  const def = mod?.talentDefs?.[talentId]
-  if (!def) return false
-  const char = entitySystem.get('character', charId) as any
-  if (!char) return false
-  if (!char.talents) char.talents = {}
-  return grantTalent(char, charId, talentId, def)
 }
 
 /** 对指定公式点的所有天赋 plus 值求和 */

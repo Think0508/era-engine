@@ -12,7 +12,6 @@ import { gameContext } from './game-context'
 import { entitySystem } from './entity-system'
 import { realtimeSettle } from './realtime-settle'
 import { processPendingSpawns } from './spawn-system'
-import { checkTalentGain } from './talent-utils'
 
 // 注释：玩家指令执行历史（连续重复指令减值用，对齐 erArk cache.pl_pre_behavior_instruce）
 // erArk 上限 10 条（character_behavior.py:127-129）；系数在第 5 次触底 0.4
@@ -277,19 +276,8 @@ export class CommandExecutor {
       if (engine?.emit) {
         await engine.emit('game:execution_end', { commandId: id, timeCost: settleTimeCost })
       }
-      // 注释：检查天赋自动习得（finally 内防护——异常不得逃逸 execute()）
-      try {
-        const player = entitySystem.get('character', gameContext.getContext().player?.id ?? '')
-        if (player) {
-          checkTalentGain((player as any).id)
-        }
-      } catch (err) {
-        errorReporter.report({
-          source: 'command-executor',
-          severity: 'warning',
-          message: `指令 '${id}' 的天赋习得检查抛错：${err instanceof Error ? err.message : String(err)}`,
-        })
-      }
+      // 注释：天赋自动习得/规则检查迁移（2026-08-16）——原 checkTalentGain 调用移除：
+      // gain-rule-system 插件监听 game:execution_end 检查 player + selected（增量模型，统一调度）
     }
   }
 }

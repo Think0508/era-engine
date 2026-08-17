@@ -1,0 +1,47 @@
+# test-mod 规则示例——gain-rule-system 管线测试数据
+# 通用「满足条件后获得xx」规则（成就/奖励管线雏形）
+
+[[rules]]
+id = "初入江湖成就"
+scope = "player"
+when = "auto"
+condition = "player.气血 >= 80"
+once = true
+effects = [
+  { type = "narrative_output", params = { text = "初入江湖：气血达到80！" } }
+]
+
+[[rules]]
+id = "npc_亲密达标"
+scope = "all"
+when = "auto"
+condition = "{self}.亲密 >= 2"
+once = true
+effects = [
+  { type = "grant_talent", params = { talent = "肛交擅长" } }
+]
+
+[[rules]]
+id = "绝顶事件奖励"
+scope = "player"
+when = "event:h:orgasm"
+condition = "event.partId == 2 && event.count >= 3"
+role_mapping = { source = "event.character" }
+once = true
+effects = [
+  { type = "set_field", params = { path = "base.技巧", value = 99 } }
+]
+
+[[rules]]
+id = "酒量天赋"
+scope = "player"
+when = "auto"
+condition = "player.experience.94 >= 30"
+lose_condition = "player.experience.94 < 30"
+once = false
+effects = [
+  { type = "grant_talent", params = { talent = "酒量好" } }
+]
+lose_effects = [
+  { type = "remove_talent", params = { talent = "酒量好" } }
+]

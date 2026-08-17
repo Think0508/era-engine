@@ -87,7 +87,8 @@ src/
 │   ├── effect-system/       # 统一效果执行器
 │   ├── sleep-system/        # 睡眠系统（睡觉指令跨天/睡眠结算对全员/睡眠等级/无意识H基础，docs/sleep-system.md）
 │   ├── h-npc-ai/            # H 内 NPC AI（每时间片判定/逆推/群交/无意识H，docs/h-npc-ai.md）
-│   └── random-event-system/ # 行为期随机事件（行为挂钩/加权候选/子事件选项/触发记录）
+│   ├── random-event-system/ # 行为期随机事件（行为挂钩/加权候选/子事件选项/触发记录）
+│   └── gain-rule-system/    # 条件获得规则（「满足条件后获得xx」统一管线：天赋gain/事件奖励/成就，docs/gain-rule-system.md）
 ├── ui/                      # UI层
 │   ├── layout/              # 响应式整体布局（PC左右分栏、手机上下堆叠）
 │   ├── components/          # 全定制游戏组件（属性条、头像、日志、按钮）

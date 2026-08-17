@@ -187,6 +187,41 @@ export interface TalentGain {
   needs?: UpgradeNeed[]
 }
 
+// 注释：条件→获得 规则（gain-rule-system 消费）——通用「满足条件后获得xx」管线数据格式
+// scope：作用实体——player（玩家）/ all（逐角色扫描，条件用 {self} 占位符代入）/
+//        固定角色 ID（直接作用于该角色）/ manual（UI 候选，selected 为作用对象）
+// when：触发时机——auto（行为结算后增量检查 / 睡觉全量）/ event:{事件名}（事件触发）/
+//        manual（手动确认面板候选）
+// once：达成后不再检查（默认 true；false = 条件保持满足会反复执行，多用于持续效果）
+export interface GainRuleDef {
+  id: string
+  scope?: string         // player | all | manual | 固定角色 ID；缺省 player
+  when?: string          // auto | event:xxx | manual；缺省 auto
+  condition?: string     // 条件表达式（scope=all 时 {self} 在求值前替换为当前角色 ID）
+  needs?: UpgradeNeed[]  // 语义化需求（同天赋 gain.needs，与 condition 二选一或并用）
+  lose_condition?: string // 可选：满足即失去（作用对象已有该天赋/效果时移除）
+  lose_effects?: Effect[]  // 可选：失去条件满足时执行的效果（如 remove_talent）
+  once?: boolean         // 缺省 true
+  effects?: Effect[]     // 满足时执行的效果（复用 effect-system）
+  role_mapping?: Record<string, string>  // 事件触发时：payload 字段 → selected/self 等执行上下文角色
+}
+
+// 注释：成就定义（gain-rule-system 消费）——成就是带元数据的规则（编译为 GainRule）
+export interface AchievementDef {
+  id: string
+  name: string
+  description?: string
+  difficulty?: number    // 难度分级 1-6（仅显示元数据）
+  hidden?: boolean       // 隐藏成就：达成前不显示（不参与全量重算）
+  pre_id?: string        // 前置成就（面板显示链用；条件本身表达真正的前置校验）
+  scope?: string         // player | character（固定角色ID）| global；缺省 player
+  when?: string
+  condition?: string
+  needs?: UpgradeNeed[]
+  effects?: Effect[]     // 可选：达成时附带奖励
+  role_mapping?: Record<string, string>  // 事件触发时：payload 字段 → selected/self（与规则同义）
+}
+
 // 注释：天赋定义
 export interface TalentDef {
   name: string
@@ -593,6 +628,10 @@ export interface LoadedMod {  id: string
   scripts: Map<string, string>
   // 注释：天赋定义
   talentDefs: Record<string, TalentDef>
+  // 注释：条件→获得 规则（gain-rule-system 消费）——插件默认层 + mod 定义层，按 id 去重（mod 胜出）
+  gainRules: Record<string, GainRuleDef>
+  // 注释：成就定义（gain-rule-system 消费）——插件默认层 + mod 定义层，按 id 去重（mod 胜出）
+  achievements: Record<string, AchievementDef>
   // 注释：命名样式——[styles] 注册表
   styles: Record<string, Record<string, any>>
   // 注释：关系类型定义（关系系统 v2）

@@ -1,0 +1,47 @@
+# test-mod 成就示例——gain-rule-system 管线测试数据
+# 成就是带元数据的规则（编译为规则 + record_achievement 效果）
+
+[[achievements]]
+id = "初入江湖"
+name = "初入江湖"
+description = "气血达到80"
+difficulty = 1
+scope = "player"
+when = "auto"
+condition = "player.气血 >= 80"
+
+[[achievements]]
+id = "初入江湖进阶"
+name = "初入江湖进阶"
+description = "前置：初入江湖达成 + 技巧>=20"
+difficulty = 2
+pre_id = "初入江湖"
+scope = "player"
+when = "auto"
+condition = "player.achievements.初入江湖 == true && player.技巧 >= 20"
+
+[[achievements]]
+id = "全村最强"
+name = "全村最强"
+description = "全局成就：任意角色亲密>=3"
+scope = "global"
+when = "event:gain-rule-test"
+condition = "event.亲密 >= 3"
+role_mapping = { source = "event.character" }
+
+[[achievements]]
+id = "全民大师"
+name = "全民大师"
+description = "全局成就（auto）：任何角色技巧>=10"
+scope = "global"
+when = "auto"
+condition = "{self}.技巧 >= 10"
+
+[[achievements]]
+id = "亲密度测试"
+name = "亲密度测试"
+description = "玩家成就（事件）：event.character 映射的选中角色亲密>=2（验证 role_mapping 透传）"
+scope = "player"
+when = "event:gain-rule-test"
+condition = "selected.abilities.亲密.level >= 2"
+role_mapping = { target = "event.character" }

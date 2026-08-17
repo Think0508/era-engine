@@ -37,6 +37,10 @@ export const ENGINE_OWNED_TOP_KEYS: ReadonlySet<string> = new Set([
   'equipment_off', 'equipment_visible', 'equipment_blood',
   // 注释：npc-ai-system 运行时字段——行为块本体 + 条件镜像（state/current_behavior）
   'ai_behavior', 'state', 'current_behavior',
+  // 注释：gain-rule-system 规则达成状态（once 规则；存档持久）
+  'rule_state',
+  // 注释：gain-rule-system 成就记录（player/character scope 达成表；存档持久）
+  'achievements',
 ])
 
 /** 引擎结构命名空间（非 attributes 定义，但合法存在的顶层键） */

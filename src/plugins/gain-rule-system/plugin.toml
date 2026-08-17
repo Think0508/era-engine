@@ -1,0 +1,12 @@
+[meta]
+id = "gain-rule-system"
+name = "条件获得规则系统"
+version = "1.0.0"
+description = "通用「满足条件后获得xx」规则管线——条件+效果+触发时机统一调度（天赋 gain / 物品 / 成就等）"
+dependencies = [
+  { plugin = "effect-system", version = "^1.0.0" }
+]
+
+[data_dependencies]
+provides = ["gain-rules:ready"]
+depends_on = ["effects:ready"]

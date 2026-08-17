@@ -70,8 +70,32 @@ const abilityDefs = loadTomlKeys([...pluginDefs('abilities.toml'), ...modDefs('a
 const talentDefs = loadTomlKeys(pluginDefs('talents.toml'), 'talents')
 const statusDefs = loadTomlKeys(pluginDefs('status-effects.toml'), 'status-effects')
 const relationDefs = loadTomlKeys(pluginDefs('relations.toml'), 'types')
+// 注释：规则/成就 id（gain-rule-system，2026-08-16）——[[rules]]/[[achievements]] 数组条目的
+// id 字段（mod 自定义标识，非属性名；代码里 mod.gainRules['中文'] 等索引引用不查 attributes 定义集）
+const ruleIdDefs = loadArrayItemField([...pluginDefs('gain-rules.toml'), ...modDefs('gain-rules.toml')], 'rules', 'id')
+const achIdDefs = loadArrayItemField([...pluginDefs('achievements.toml'), ...modDefs('achievements.toml')], 'achievements', 'id')
 
-const defined = new Set([...attrDefs, ...abilityDefs, ...talentDefs, ...statusDefs, ...relationDefs])
+function loadArrayItemField(relPaths, sectionKey, field) {
+  const keys = new Set()
+  for (const rel of relPaths) {
+    const abs = path.join(ROOT, rel)
+    if (!fs.existsSync(abs)) continue
+    try {
+      const data = TOML.parse(fs.readFileSync(abs, 'utf8'))
+      const list = data[sectionKey]
+      if (Array.isArray(list)) {
+        for (const item of list) {
+          if (item && typeof item === 'object' && typeof item[field] === 'string') keys.add(item[field])
+        }
+      }
+    } catch (e) {
+      console.error(`[scan-attr-refs] TOML 解析失败: ${rel} — ${e.message}`)
+    }
+  }
+  return keys
+}
+
+const defined = new Set([...attrDefs, ...abilityDefs, ...talentDefs, ...statusDefs, ...relationDefs, ...ruleIdDefs, ...achIdDefs])
 
 // ========== 结构字段白名单（已人工确认的非属性中文实体键 / 测试专用）==========
 const STRUCTURAL_WHITELIST = new Set([
@@ -107,6 +131,9 @@ const STRUCTURAL_NS = new Set([
   'modItems',
   // mod 数据访问（2026-08-15 全量套件修复）——mod.items['中文'] 是物品定义查询，非属性引用
   'items',
+  // mod 数据访问（2026-08-16 gain-rule-system）——mod.gainRules['中文'] /
+  // mod.achievements['中文'] 是规则/成就 id 查询（id 是 mod 自定义标识，非属性名）
+  'gainRules', 'achievements',
 ])
 
 // 形如 ns['a'] / ns['a']['b'] 的索引链（最后一段可未闭合）→ 返回链首命名空间

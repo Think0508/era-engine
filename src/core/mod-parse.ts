@@ -12,7 +12,7 @@ import type {
   MigrationStep, AITargetDef, AIBehaviorSpec, AIWorkTypeDef, AIEntertainmentTypeDef,
   SleepConfig, RandomEventDef, AbilityDef, TalentDef, EquipmentSlot, CalendarConfig,
   NpcSpawn, ReactiveLine, ConversationNode, ItemDef, SetDef, StatusEffectDef, JuelDef,
-  AttributeDefinition, ModDependency, PendingSpawn,
+  AttributeDefinition, ModDependency, PendingSpawn, GainRuleDef, AchievementDef,
 } from './mod-types'
 import {
   validateCharacterContract,
@@ -260,6 +260,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     // 注释：C3：mod 自定义脚本（parseModData 只给空 Map——脚本 glob 加载在 loadMod 副作用区）
     scripts: new Map(),
     talentDefs: {},
+    gainRules: {},
+    achievements: {},
     styles: {},
     relationTypes: {},
     relationPairs: {},
@@ -722,6 +724,64 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       if (patch.gain.replace !== undefined && target.gain.replace === undefined) target.gain.replace = patch.gain.replace
     }
   }
+
+  // 注释：加载 gain-rules.toml（条件→获得 规则；gain-rule-system 消费）——
+  // 按 id 去重合并（插件默认层 + mod 定义层；mod 同名 id 覆盖插件默认）
+  // 数组语义：[[rules]] 平铺；同文件内重复 id → 加载期 error（数据错误）
+  function loadGainRules(): Record<string, GainRuleDef> {
+    const result: Record<string, GainRuleDef> = {}
+    const paths = Object.keys(rawTomlMap).filter(p =>
+      p.endsWith('/gain-rules.toml') || p === `/mods/${modName}/definitions/gain-rules.toml`)
+    const seen = new Map<string, string>() // id → 首次定义文件（同文件内重复 id 报错）
+    for (const path of paths) {
+      const data = parseFile(path, rawTomlMap[path])
+      const rules = data.rules
+      // 注释：2026-08-16 三轮审查——结构错误显式报错（原 as any[] 对对象结构
+      // for...of 抛无文件名的 TypeError，违反"文件名+行号"铁律）
+      if (rules !== undefined && !Array.isArray(rules)) {
+        throw new Error(`${path}: [[rules]] 必须是数组（TOML 用 [[rules]] 声明规则列表）`)
+      }
+      for (const rule of (rules as any[]) ?? []) {
+        if (!rule || typeof rule !== 'object' || !rule.id) {
+          throw new Error(`${path}: gain-rules.toml 的 [[rules]] 条目缺少 id 字段`)
+        }
+        if (seen.has(rule.id) && seen.get(rule.id) === path) {
+          throw new Error(`${path}: 规则 '${rule.id}' 重复定义（同文件内 id 必须唯一）`)
+        }
+        seen.set(rule.id, path)
+        result[rule.id] = rule as GainRuleDef
+      }
+    }
+    return result
+  }
+  mod.gainRules = loadGainRules()
+
+  // 注释：加载 achievements.toml（成就定义；gain-rule-system 消费）——同上按 id 去重合并
+  function loadAchievements(): Record<string, AchievementDef> {
+    const result: Record<string, AchievementDef> = {}
+    const paths = Object.keys(rawTomlMap).filter(p =>
+      p.endsWith('/achievements.toml') || p === `/mods/${modName}/definitions/achievements.toml`)
+    const seen = new Map<string, string>()
+    for (const path of paths) {
+      const data = parseFile(path, rawTomlMap[path])
+      const list = data.achievements
+      if (list !== undefined && !Array.isArray(list)) {
+        throw new Error(`${path}: [[achievements]] 必须是数组（TOML 用 [[achievements]] 声明成就列表）`)
+      }
+      for (const a of (list as any[]) ?? []) {
+        if (!a || typeof a !== 'object' || !a.id) {
+          throw new Error(`${path}: achievements.toml 的 [[achievements]] 条目缺少 id 字段`)
+        }
+        if (seen.has(a.id) && seen.get(a.id) === path) {
+          throw new Error(`${path}: 成就 '${a.id}' 重复定义（同文件内 id 必须唯一）`)
+        }
+        seen.set(a.id, path)
+        result[a.id] = a as AchievementDef
+      }
+    }
+    return result
+  }
+  mod.achievements = loadAchievements()
 
   // 注释：升级路径校验（须在 talents 加载之后——needs 引用 talent 名需要 talentDefs 就绪）
   validateAbilityUpgrades(mod, modName)

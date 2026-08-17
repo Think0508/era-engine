@@ -289,6 +289,45 @@ describe('conditionEngine.evaluate', () => {
     expect(conditionEngine.evaluate('inventory.回气丹.count >= 5', invCtx)).toBe(false)
     expect(conditionEngine.evaluate('inventory.不存在.count == 0', invCtx)).toBe(true)
   })
+
+  it('count(path)——数组长度 / 对象键数 / 缺失返回 0', () => {
+    const countCtx: GameContext = {
+      ...ctx,
+      player: {
+        id: 'player',
+        inventory: [
+          { itemId: '回气丹', count: 3 },
+          { itemId: '酒', count: 1 },
+          { itemId: '剑', count: 1 },
+        ],
+        records: { h_partners: ['npc1', 'npc2', 'npc3'] },
+        relations: { npc1: { 好感度: 60 }, npc2: { 好感度: 30 } },
+      },
+    }
+    expect(conditionEngine.evaluate('count(player.inventory) >= 3', countCtx)).toBe(true)
+    expect(conditionEngine.evaluate('count(player.inventory) == 3', countCtx)).toBe(true)
+    expect(conditionEngine.evaluate('count(player.inventory) > 3', countCtx)).toBe(false)
+    expect(conditionEngine.evaluate('count(player.records.h_partners) >= 3', countCtx)).toBe(true)
+    expect(conditionEngine.evaluate('count(player.records.h_partners) >= 4', countCtx)).toBe(false)
+    // 对象键数
+    expect(conditionEngine.evaluate('count(player.relations) == 2', countCtx)).toBe(true)
+    // 缺失路径 → 0
+    expect(conditionEngine.evaluate('count(player.records.nonexistent) == 0', countCtx)).toBe(true)
+    expect(conditionEngine.evaluate('count(player.nonexistent) >= 1', countCtx)).toBe(false)
+  })
+
+  it('count(path)——与逻辑运算组合', () => {
+    const countCtx: GameContext = {
+      ...ctx,
+      player: {
+        id: 'player',
+        records: { h_partners: ['npc1', 'npc2', 'npc3', 'npc4'] },
+      },
+    }
+    expect(conditionEngine.evaluate('count(player.records.h_partners) >= 3 && player.hp < 100', countCtx)).toBe(true)
+    expect(conditionEngine.evaluate('count(player.records.h_partners) >= 5 || player.hp > 100', countCtx)).toBe(false)
+    expect(conditionEngine.evaluate('!(count(player.records.h_partners) < 3)', countCtx)).toBe(true)
+  })
 })
 
 describe('conditionEngine 前提注册表', () => {

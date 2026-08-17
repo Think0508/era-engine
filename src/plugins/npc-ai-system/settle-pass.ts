@@ -232,6 +232,21 @@ async function settleOne(char: any, now: number, playerId: string): Promise<void
   if (isSkipped(char.id, char)) return
   initBehaviorBlock(char)
 
+  // 注释：条件→获得 规则检查（gain-rule-system：对齐 erArk character_behavior gain_talent type=0——
+  // 每个 NPC 每次行为结算后检查 auto 规则；增量模型，未结算角色不检查）。
+  // apiSystem.has 守卫——gain-rule-system 未启用（未注册 API）时静默跳过
+  if (apiSystem.has('gain-rule-system', 'checkAuto')) {
+    try {
+      await apiSystem.call('gain-rule-system', 'checkAuto', char.id, 'npc-settle')
+    } catch (e) {
+      errorReporter.report({
+        source: 'npc-ai-system',
+        severity: 'warning',
+        message: `NPC '${char.id}' 规则检查失败：${e instanceof Error ? e.message : String(e)}`,
+      })
+    }
+  }
+
   let chain = 0
   while (chain < MAX_CHAIN) {
     // pin（wait_flag 语义）：玩家正在交互该角色 → 本轮完全不结算（含窗口/钳正——

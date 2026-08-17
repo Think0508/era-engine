@@ -21,6 +21,7 @@ import { onLoad as timeStopOnLoad, onEnable as timeStopOnEnable } from './index'
 import { onEnable as mapOnEnable } from '../map-system/index'
 import { onLoad as npcAiOnLoad, onEnable as npcAiOnEnable } from '../h-npc-ai/index'
 import { onLoad as combatBaseOnLoad } from '../combat-base/index'
+import { onLoad as gainRuleOnLoad, onEnable as gainRuleOnEnable } from '../gain-rule-system/index'
 import { eventBus } from '../../core/event-bus'
 import { makeTestExecCtx } from '../../utils/test-helpers'
 
@@ -72,6 +73,9 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
     // time_stop_off 时停中 H 目标醒来判定，mode='time_stop'）
     npcAiOnLoad(stubCtx)
     await npcAiOnEnable(stubCtx)
+    // 注释：gain-rule-system 接管天赋自动获得（checkTalentGain 迁移后的统一调度点）
+    gainRuleOnLoad(stubCtx)
+    await gainRuleOnEnable(stubCtx)
 
     // 玩家（test-mod roster 已注册）——NPC 手动注册
     player().current_location = 'town_square'
@@ -459,18 +463,18 @@ describe('h-time-stop 门槛与恢复链（2026-08-16）', () => {
     girl.sp_flag = {}
   })
 
-  it('门槛解锁：时姦经验 124 达标 → checkTalentGain 自动获得窄域/广域时停（gain.needs 端到端）', async () => {
+  it('门槛解锁：时姦经验 124 达标 → checkAuto 自动获得窄域/广域时停（gain.needs 端到端）', async () => {
     // 背景（2026-08-16 审查补测）：门槛前提读 talent，但"经验 → talent 自动获得"的
-    // gain.needs 链路（command-executor finally 调 checkTalentGain gainType=0）此前无测试——
+    // gain.needs 链路（gain-rule-system checkAuto——原 command-executor finally 调
+    // checkTalentGain gainType=0，2026-08-16 迁移）此前无测试——
     // 若 h-core 默认层 talentDefs 未并入 modLoader，解锁将静默失效
-    const { checkTalentGain } = await import('../../core/talent-utils')
     player().talents = {}
     player().experience = { '124': 50 }
-    checkTalentGain('player')
+    await apiSystem.call('gain-rule-system', 'checkAuto', 'player', 'execution')
     expect(player().talents['窄域时停']).toBe(1)  // 124≥50 → 窄域
     expect(player().talents['广域时停'] ?? 0).toBe(0)  // 124<200 → 广域未解锁
     player().experience['124'] = 200
-    checkTalentGain('player')
+    await apiSystem.call('gain-rule-system', 'checkAuto', 'player', 'execution')
     expect(player().talents['广域时停']).toBe(1)  // 124≥200 → 广域
   })
 

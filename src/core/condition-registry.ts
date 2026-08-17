@@ -53,11 +53,21 @@ class ConditionRegistry {
     { path: 'character.{id}.relations.{other}.any_positive({list})', type: 'boolean', description: 'Any relation of listed types is positive', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.relations.{other}.any_negative({list})', type: 'boolean', description: 'Any relation of listed types is negative', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.experience.{exp}', type: 'number', description: 'Character experience counter', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'player.experience.{exp}', type: 'number', description: 'Player experience counter', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.first_times.{key}', type: 'boolean', description: 'Character first-time flag', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.first_records.{key}', type: 'object', description: 'Character first-time record', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.body_parts.{part}', type: 'boolean', description: 'Character body part presence', operators: '== !=', source: 'engine' },
     { path: 'character.{id}.body_semen.{part}.{index}', type: 'number', description: 'Character body semen count (精液污染追踪)', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'inventory.{item}.count', type: 'number', description: 'Inventory item count', operators: '> < >= <= == !=', source: 'engine' },
+    // 注释：成就达成状态（gain-rule-system，2026-08-16）——player/character scope 达成表
+    { path: 'player.achievements.{id}', type: 'boolean', description: 'Player achievement unlocked', operators: '== !=', source: 'engine' },
+    { path: 'character.{id}.achievements.{ach}', type: 'boolean', description: 'Character achievement unlocked', operators: '== !=', source: 'engine' },
+    // 注释：规则达成状态（gain-rule-system，2026-08-16）——once 规则达成表
+    { path: 'player.rule_state.{id}', type: 'boolean', description: 'Player rule reached (once)', operators: '== !=', source: 'engine' },
+    { path: 'character.{id}.rule_state.{id}', type: 'boolean', description: 'Character rule reached (once)', operators: '== !=', source: 'engine' },
+    // 注释：事件 payload 根域（gain-rule-system 事件触发规则，2026-08-16）——
+    // payload 结构由发出事件方定义，字段动态不静态校验（{key} 通配任意字段）
+    { path: 'event.{key}', type: 'any', description: 'Event payload field (dynamic, event-specific)', operators: '== !=', source: 'engine' },
   ]
 
   registerFromAttributes(attributes: Record<string, any>): void {
@@ -204,6 +214,10 @@ const TOKEN_SPLIT_RE = /&&|\|\||[()!<>=&]+|\s+/
 // 聚合路径段（关系系统 v2）：any(恩人,有恩) / any_positive(group:亲属)——括号与参数需保护，
 // 否则被 TOKEN_SPLIT_RE 的括号切分切碎
 const AGG_SEG_RE = /(any|any_positive|any_negative)\([^)]*\)/g
+// count(path) 聚合计数段——参数是完整根路径（player.records.h_partners 等），
+// 整体保护避免括号切分；参数路径单独提取进字段校验（count 参数必须先于 AGG_SEG_RE 保护，
+// 避免参数内残留结构被二次处理）
+const COUNT_RE = /count\(([^)]*)\)/g
 
 /** 提取聚合路径段的参数列表（如 any(恩人,有恩) → ['恩人','有恩']）；非聚合段 → null */
 function extractAggregateArgs(path: string): { args: string[] } | null {
@@ -216,9 +230,17 @@ function extractAggregateArgs(path: string): { args: string[] } | null {
 
 function extractFieldPaths(expr: string): string[] {
   const stripped = expr.replace(STRING_RE, '')
-  // 保护聚合参数段（any(恩人,有恩)）——占位符避免括号切分
   const placeholders: string[] = []
-  const protectedStr = stripped.replace(AGG_SEG_RE, (m) => {
+  const countPaths: string[] = []
+  // count() 段先保护（参数原样入占位符）——整体避免括号切分
+  let protectedStr = stripped.replace(COUNT_RE, (m, arg: string) => {
+    const p = arg.trim()
+    if (p && p.includes('.')) countPaths.push(p)
+    placeholders.push(m)
+    return `\u0001${placeholders.length - 1}\u0001`
+  })
+  // 再保护聚合参数段（any(恩人,有恩)）
+  protectedStr = protectedStr.replace(AGG_SEG_RE, (m) => {
     placeholders.push(m)
     return `\u0001${placeholders.length - 1}\u0001`
   })
@@ -230,6 +252,10 @@ function extractFieldPaths(expr: string): string[] {
     if (!/[A-Za-z]/.test(token[0])) continue
     const restored = token.replace(/\u0001(\d+)\u0001/g, (_m, i) => placeholders[Number(i)] ?? '')
     if (!paths.includes(restored)) paths.push(restored)
+  }
+  // count() 参数是完整路径，须参与字段校验（如 count(player.records.h_partners) → player.records.h_partners）
+  for (const cp of countPaths) {
+    if (!paths.includes(cp)) paths.push(cp)
   }
   return paths
 }

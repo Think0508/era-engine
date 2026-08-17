@@ -21,6 +21,7 @@ type Token =
   | { type: 'lparen'; pos: number }
   | { type: 'rparen'; pos: number }
   | { type: 'premise'; id: string; pos: number }
+  | { type: 'count'; path: string; pos: number }
   | { type: 'agg'; value: string; pos: number }
 
 const MULTI_OPS = ['&&', '||', '==', '!=', '>=', '<=']
@@ -28,10 +29,10 @@ const SINGLE_OPS = ['>', '<']
 const COMPARE_OPS = ['==', '!=', '>=', '<=', '>', '<']
 const ARITH = new Set(['+', '-', '*', '/', '%'])
 
-// 前置保护：premise(...)/any(...) 括号参数不被当作逻辑括号 tokenize
+// 前置保护：premise(...)/count(...)/any(...) 括号参数不被当作逻辑括号 tokenize
 function protectFunctions(src: string): { text: string; map: { name: string; args: string }[] } {
   const map: { name: string; args: string }[] = []
-  const text = src.replace(/(premise|any|any_positive|any_negative)\(([^)]*)\)/g, (_m, name: string, args: string) => {
+  const text = src.replace(/(premise|count|any|any_positive|any_negative)\(([^)]*)\)/g, (_m, name: string, args: string) => {
     const idx = map.length
     map.push({ name, args })
     return `\u0001${idx}\u0001`
@@ -58,6 +59,8 @@ function tokenize(src: string): Token[] {
       if (!entry) throwAt('bad placeholder index', i)
       if (entry.name === 'premise') {
         tokens.push({ type: 'premise', id: entry.args.trim(), pos: i })
+      } else if (entry.name === 'count') {
+        tokens.push({ type: 'count', path: entry.args.trim(), pos: i })
       } else {
         tokens.push({ type: 'agg', value: `${entry.name}(${entry.args})`, pos: i })
       }
@@ -132,14 +135,15 @@ function tokenize(src: string): Token[] {
 interface PathNode { kind: 'path'; segments: string[]; isRoot: boolean }
 interface LitNode { kind: 'lit'; value: any }
 interface PremiseNode { kind: 'premise'; id: string }
+interface CountNode { kind: 'count'; path: PathNode }
 interface CmpNode { kind: 'cmp'; left: ExprNode; right: OperandNode; op: string }
 interface BoolNode { kind: 'bool'; op: '&&' | '||'; left: ExprNode; right: ExprNode }
 interface NotNode { kind: 'not'; child: ExprNode }
 
-type OperandNode = PathNode | LitNode | PremiseNode
+type OperandNode = PathNode | LitNode | PremiseNode | CountNode
 type ExprNode = OperandNode | CmpNode | BoolNode | NotNode
 
-const ROOT_RE = /^(player|selected|target|character|location|game|inventory|quest)(\.|$)/
+const ROOT_RE = /^(player|selected|target|character|location|game|inventory|quest|event)(\.|$)/
 
 class Parser {
   private tokens: Token[]
@@ -235,6 +239,16 @@ class Parser {
       case 'bool': return { kind: 'lit', value: tok.value }
       case 'lit': return { kind: 'lit', value: tok.value }
       case 'premise': return { kind: 'premise', id: tok.id }
+      case 'count': {
+        // count(path)：聚合计数 operand——参数必须是完整根路径（player/character.{id} 等），
+        // 求值返回集合长度（数组 length / 对象键数；缺失 → 0）
+        const node: CountNode = { kind: 'count', path: { kind: 'path', segments: tok.path.split('.'), isRoot: ROOT_RE.test(tok.path) } }
+        const next = this.peek()
+        if (next?.type === 'agg') {
+          throw new Error('Condition expression is invalid: count() cannot be followed by an aggregate segment')
+        }
+        return node
+      }
       case 'path': {
         const node: PathNode = { kind: 'path', segments: tok.value.split('.'), isRoot: ROOT_RE.test(tok.value) }
         // 聚合段合并：紧随 agg token（如 relations.y 后跟 any(group:血亲)）
@@ -262,7 +276,8 @@ class Parser {
 
 function containsPath(node: ExprNode): boolean {
   switch (node.kind) {
-    case 'path': return true
+    case 'path':
+    case 'count': return true
     case 'lit':
     case 'premise': return false
     case 'not': return containsPath(node.child)
@@ -270,7 +285,6 @@ function containsPath(node: ExprNode): boolean {
     case 'bool': return containsPath(node.left) || containsPath(node.right)
   }
 }
-
 function reorderBoolOperands(node: ExprNode): ExprNode {
   switch (node.kind) {
     case 'not':
@@ -311,6 +325,13 @@ function resolvePath(node: PathNode, ctx: GameContext): any {
       if (part === 'location') { current = ctx.location; continue }
       if (part === 'game') { current = { time: ctx.time, mode: ctx.mode }; continue }
       if (part === 'inventory') { current = (ctx.player as any)?.inventory ?? []; continue }
+      // 注释：event 根域（gain-rule-system 事件触发规则用）——事件 payload 快照，
+      // 条件可直接引用 event.character/event.partId 等；无 payload 时缺失返回默认值
+      if (part === 'event') {
+        current = (ctx as any).eventPayload
+        if (current === null || current === undefined) return undefined
+        continue
+      }
       if (part === 'character') {
         const charId = parts[i + 1]
         current = ctx.getEntity('character', charId)
@@ -618,6 +639,13 @@ class ConditionEngine {
       case 'not': return !truthy(this.evaluateNode(node.child, ctx))
       case 'lit': return node.value
       case 'premise': return this.getPremiseValue(node.id, ctx)
+      case 'count': {
+        const val = resolvePath(node.path, ctx)
+        if (val === null || val === undefined) return 0
+        if (Array.isArray(val)) return val.length
+        if (typeof val === 'object') return Object.keys(val).length
+        return 0
+      }
       case 'path': return resolvePath(node, ctx)
       case 'cmp': {
         const left = this.evaluateNode(node.left, ctx)

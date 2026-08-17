@@ -140,4 +140,24 @@ describe('condition-registry', () => {
     expect(conditionRegistry.validateExpression('player.气血 >= 30 && player.气血 <= 100').ok).toBe(true)
     expect(conditionRegistry.validateExpression('location.tags.has_bedroom != true').ok).toBe(true)
   })
+
+  it('validateExpression——count() 参数路径参与字段校验', () => {
+    conditionRegistry.registerFromAttributes({
+      气血: { type: 'number', default: 100 }
+    })
+    conditionRegistry.registerFromPlugin('gain-rule-system', {
+      'player.records.h_partners': { type: 'array', description: 'H 过的角色记录' }
+    })
+    // 注册的路径 → 通过
+    expect(conditionRegistry.validateExpression('count(player.records.h_partners) >= 3').ok).toBe(true)
+    // 未注册的参数路径 → unknown
+    const r = conditionRegistry.validateExpression('count(player.records.ghosts) >= 3 && player.气血 > 10')
+    expect(r.ok).toBe(false)
+    expect(r.unknown).toContain('player.records.ghosts')
+    expect(r.unknown).not.toContain('player.气血')
+    // count 与普通路径/聚合共存
+    expect(conditionRegistry.validateExpression(
+      'count(player.records.h_partners) >= 3 && character.令狐冲.relations.岳灵珊.好感度 > 60'
+    ).ok).toBe(true)
+  })
 })

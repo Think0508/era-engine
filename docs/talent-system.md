@@ -66,6 +66,11 @@ gain = { condition = "player.talents.剑术精通 >= 5", replace = "剑术精通
 
 ## 三、自动习得（gain）
 
+> ⚠️ 2026-08-16 迁移：天赋自动获得逻辑已迁移至 **gain-rule-system 插件**（`docs/gain-rule-system.md`）。
+> `talents.toml` 内嵌 `gain` 字段保留为语法糖，加载期编译为规则；统一调度点 =
+> `game:execution_end` 事件（指令后查 player+selected）+ npc-ai 结算（每 NPC）+ 睡觉全量。
+> core 的 `checkTalentGain` 已移除（原调用点 command-executor/sleep-system 已改接插件 API）。
+
 每次指令执行后（`game:execution_end`），引擎检查玩家角色是否满足未拥有的天赋的 `gain.condition`。
 
 ```toml
@@ -150,3 +155,11 @@ max = 3
 formula = "judge"
 plus = 5
 ```
+
+## 八、手动获得 / 失去天赋
+
+- **手动获得**：`grant_talent` effect（gain-rule-system 注册）——可在指令/任务 effects 中直接使用；
+  手动候选 UI 走 `gain-rule-system.queryManualCandidates/confirmManual`（UI 待设计）
+- **失去**：`remove_talent` effect；条件驱动失去（精液膨腹等可失去素质）用规则的
+  `lose_condition + lose_effects`（见 `docs/gain-rule-system.md` §2.2）
+- 原 `gainTalentManual`（core talent-utils）已随迁移移除

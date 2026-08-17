@@ -32,6 +32,7 @@
 | 存档系统 | `docs/save-system.md` | src/core/save-system.ts + src/ui/components/SavePanel.vue |
 | 属性系统 | `docs/attributes-system.md` / `docs/bindings.md` / `docs/character-schema.md` / `docs/entity-namespaces.md` | src/core/entity-utils.ts + binding-resolver.ts |
 | 天赋系统 | `docs/talent-system.md` | core talent-utils + mod 数据 |
+| 条件获得规则 | `docs/gain-rule-system.md` | src/plugins/gain-rule-system/ |
 | 场景/口上触发 | `docs/scene-system.md` | src/plugins/dialogue-system/ |
 | 前提 | `docs/premises.md` | src/core/condition-engine.ts |
 | 指令复刻检查清单 | `docs/skills/replicating-an-instruction.md` | scripts/ 复刻流程 |

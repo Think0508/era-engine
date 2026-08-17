@@ -89,6 +89,8 @@ export interface GameContext {
   fieldAliases?: Record<string, string>
   // 注释：关系组（关系系统 v2）——组名 → 展开后的类型名列表（mod 加载后注入）
   relationGroups?: Record<string, string[]>
+  // 注释：事件 payload 快照（event 根域条件路径取值源）——gain-rule-system 事件触发规则注入
+  eventPayload?: any
 }
 
 export interface UISlotItem {

@@ -20,7 +20,6 @@ import { errorReporter } from '../../core/error-reporter'
 import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
 import { settleDailyReset } from '../../core/realtime-settle'
 import { settleJuelConversion } from '../../core/juel-settle'
-import { checkTalentGain } from '../../core/talent-utils'
 import { narrativeLog } from '../../core/narrative-log'
 import { apiSystem } from '../../core/api'
 import { modLoader } from '../../core/mod-loader'
@@ -143,16 +142,21 @@ export async function updateSleepAll(minutes: number): Promise<void> {
       }
       // TODO(sleep-system)：妊娠检查（pregnancy.check_all_pregnancy——h-pregnancy 无 check_all 对等 API，
       // 现有 isPregnant/getDays 为查询用；受精检查随 h-pregnancy 扩展接入）
-      // 素质获得（:90 gain_talent now_gain_type=3——checkTalentGain 按 gain_type=3 + needs/condition）
+      // 素质获得（:90 gain_talent now_gain_type=3——gain-rule-system checkAuto 按 gain_type=3 + needs/condition）
       try {
-        checkTalentGain(c.id, 3)
+        await apiSystem.call('gain-rule-system', 'checkAuto', c.id, 'sleep')
       } catch (err) {
         // G 修复（第四轮）：错误处理铁律——禁止静默 catch
-        errorReporter.report({
-          source: 'sleep-system',
-          severity: 'warning',
-          message: `睡眠结算素质获得失败（${c.id}）：${err instanceof Error ? err.message : String(err)}`,
-        })
+        const msg = err instanceof Error ? err.message : String(err)
+        const apiMissing = msg.includes('gain-rule-system') || msg.includes('未注册') || msg.includes('does not exist')
+        if (!apiMissing) {
+          errorReporter.report({
+            source: 'sleep-system',
+            severity: 'warning',
+            message: `睡眠结算素质获得失败（${c.id}）：${msg}`,
+            suggestion: '检查 gain-rule-system 插件是否已加载',
+          })
+        }
       }
       // 能力升级检测（:92；mod 开关 upgrade_on_npc_sleep）
       if (settings.npc_sleep) {

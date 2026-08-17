@@ -29,6 +29,7 @@
 | calendar.toml | 文化月份/星期名 |
 | scene-dialogue.toml | 场景通用口上（旁白） |
 | character-dialogue.toml | 角色通用口上（500 人 fallback） |
+| talk-common/ | **默认口上/地文覆盖**：`talk-common/*.toml` 覆盖插件默认层词条（variable 同名即替换，路径任意）。chat/rest 等**原生指令的默认口上**（插件默认层 `behavior/` 目录）也在此覆盖，如 `talk-common/chat.toml`（variable = "chat"） |
 | sets.toml | 套装（布衣+长裤 组合加成） |
 | talk/styles.toml | 口上样式 |
 | instructions/*.toml | 自定义指令（打坐：属性/状态/时间/叙事闭环） |

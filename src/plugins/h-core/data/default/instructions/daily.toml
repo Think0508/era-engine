@@ -50,6 +50,7 @@ tags = ["kind:play", "system:h-core"]
 effects = [
   # erArk handle_chat（handle_instruct.py:455-465）：talk_count > 发起者话术技能+1 → 失败链，否则成功链
   # talk_count 时间衰减与 +1 由 chat_settle 内部处理（复刻 settle_behavior.py:560-581）
-  { type = "chat_settle", params = { fail_effects = "chat_fail_chain", success_effects = "chat_success_chain" } },
-  { type = "trigger_dialogue", params = { scene = "chat" } },
+  # 成败口上（2026-08-17）：success_scene/fail_scene = erArk CHAT/CHAT_FAILED 双 behavior 口上
+  # （chat → chat.toml 原生通用口上，mod 可覆盖；chat_failed 同理），失败链缺省不出失败口上
+  { type = "chat_settle", params = { fail_effects = "chat_fail_chain", success_effects = "chat_success_chain", success_scene = "chat", fail_scene = "chat_failed" } },
 ]

@@ -140,12 +140,16 @@ describe('chat（1004）复刻', () => {
     expect(n.action_info.talk_count).toBe(1)
     // 501 记录谈话时间
     expect(n.action_info.talk_time?.day).toBe(after.day)
-    // 口上触发（scene-dialogue.toml chat 行）
-    expect(narrativeLog.getEntries().some((e: any) => String(e.text).includes('聊了起来'))).toBe(true)
+    // 口上触发（scene='chat' 的成功口上：test-mod 场景行 weight=100 主导，
+    // 但补位默认口上（角色轨，weight 1）仍以 ~1% 概率中签——两态皆 scene='chat' 成功口上，
+    // 语义断言覆盖二者（防随机竞争误报）
+    const logs = narrativeLog.getEntries().map((e: any) => String(e.text))
+    expect(logs.some((t) => t.includes('聊了起来') || t.startsWith('测试NPC：'))).toBe(true)
   })
 
   it('失败链：talk_count > 话术技能+1 → 仅 12 气力扣减，其余不结算', async () => {
     resetChars(0)
+    narrativeLog.clear() // 注释：日志跨用例累积（beforeEach 只清行为历史）——失败链断言独立
     const n = npc()
     const now = gameContext.getContext().time
     // 话术0 → 门槛 1；talk_count=2 > 1 → CHAT_FAILED（102 链仅 [12]）
@@ -163,6 +167,12 @@ describe('chat（1004）复刻', () => {
     expect(n.experience['80'] ?? 0).toBe(0)
     // talk_count 仍 +1（成败都加）
     expect(n.action_info.talk_count).toBe(3)
+    // 失败链口上（chat_settle fail_scene='chat_failed' → 原生默认词条兜底，
+    // 角色轨输出带前缀；非成功口上"聊了起来"）。28 条失败词条文字各异，语义验证：
+    // 触发失败口上且非成功口上（不依赖具体特征词）
+    const logs = narrativeLog.getEntries().map((e: any) => String(e.text))
+    expect(logs.some((t) => t.startsWith('测试NPC：') && !t.includes('聊了起来'))).toBe(true)
+    expect(logs.some((t) => t.includes('聊了起来'))).toBe(false)
   })
 
   it('时间衰减：同日小时前进 → talk_count 减小时差', async () => {

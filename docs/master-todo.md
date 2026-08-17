@@ -37,6 +37,15 @@
 | 前提 | `docs/premises.md` | src/core/condition-engine.ts |
 | 指令复刻检查清单 | `docs/skills/replicating-an-instruction.md` | scripts/ 复刻流程 |
 
+### 已完成（2026-08-17）——chat 默认通用口上（原生指令口上的插件默认层）
+
+- **机制**：dialogue-system `triggerScene` 角色通用轨补位——mod 未写某 scene 的角色通用口上时，用 talk-common 默认词条兜底（= characterDialogue 的 Layer 1 默认，专属×10 同池竞争；mod 写了则 mod 胜出）；删除兜底链 getText 死分支（只留 H 行为地文 getBehaviorText）
+- **h-core**：`chat_settle` 新增 `success_scene`/`fail_scene`（对应 erArk CHAT/CHAT_FAILED 双 behavior 口上，fail_scene 缺省 = 失败不出失败口上）；chat 指令 TOML 迁移（删独立 trigger_dialogue）
+- **数据**：talk-common-system 默认层新增 `data/default/talk-common/behavior/daily/chat.toml`（erArk chat.csv 去世界观 + 10 条占位待手写）+ `chat_failed.toml`（erArk chat_failed.csv 直搬）；`behavior/` 目录按指令类别分、一行为一文件，glob 递归自动加载——后续批次（rest 等）同模式扩展
+- **测试**：`talk-common-default-talk.test.ts` 6 例（词条检索/子目录/兜底/前缀/mod 胜出/专属竞争/无意识淘汰）+ instruction-chat 失败链口上断言；全量 79 文件 1040 测试通过
+- **文档**：mod-author-guide（chat_settle 参数）、mod-file-guide（definitions/talk-common/）、mod-workflow（第 1 步默认口上说明）、dialogue-format（§七原生通用口上）
+- **待办**：chat.toml 10 条占位句待手写替换；rest 等后续指令批次按同模式补默认口上
+
 ## 会话交接摘要（2026-07-14）
 
 > 新会话开始时先读此节。

@@ -369,6 +369,9 @@ export function registerSettleEffects(): void {
   // talk_count 时间衰减由 game:execution_start 监听负责（erArk 挂整个行动循环，character_behavior.py:413）
   // fail_effects/success_effects 可为 TOML effect_blocks 块名（字符串）或内联 Effect 数组；
   // 嵌套执行用副本 ctx（executeEffects 会 Object.assign 覆盖 _targetIds/settlement）
+  // 口上场景（2026-08-17）：success_scene/fail_scene 可选参数——对应 erArk CHAT/CHAT_FAILED
+  // 双 behavior 各自的口上文件；fail_scene 缺省 = 无（失败不触发失败口上场景，大多数指令默认成功）；
+  // 二者均缺省 = 不触发（向后兼容外部 trigger_dialogue 用法）
   effectTypeRegistry.register('chat_settle', async (_p: any, execCtx: any) => {
     const targetIds = execCtx._targetIds as string[]
     const targetId = targetIds[0]
@@ -394,6 +397,24 @@ export function registerSettleEffects(): void {
 
     // 2. 计数器 +1（成败都加，erArk handle_chat:464）
     target.action_info.talk_count = (target.action_info.talk_count ?? 0) + 1
+
+    // 3. 成败口上场景（可选；成功 → success_scene，失败 → fail_scene）
+    const scene = failed ? _p.fail_scene : _p.success_scene
+    if (scene) {
+      try {
+        await apiSystem.call('dialogue', 'triggerScene', scene, targetId)
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        if (!msg.includes('dialogue') && !msg.includes('未注册')) {
+          errorReporter.report({
+            source: 'h-core',
+            severity: 'warning',
+            message: `chat_settle 触发口上场景 '${scene}' 失败：${msg}`,
+            suggestion: '检查 dialogue-system 插件是否启用、scene 数据是否存在',
+          })
+        }
+      }
+    }
     return true
   })
 

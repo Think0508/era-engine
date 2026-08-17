@@ -191,4 +191,5 @@ chat 无 IN_* 前提 → **不写 condition**（默认全地点可用）。无�
 - [ ] 用户筛选其余 23 条 → 逐条按 SOP 复刻（每条约 30 分钟分析+实现）
 - [ ] sleep 特殊耗时（跨天跳转，需 handler）→ L1.7 一并处理
 - [ ] 批末验收：`npm run typecheck && npm run test` + dev 实测 chat（指令栏出现/点击执行/数值变化/口上触发）
+  - 口上触发 ✅ 已接入（2026-08-17）：chat_settle success_scene="chat"/fail_scene="chat_failed" + 插件默认层原生通用口上（talk-common behavior/ 目录），测试覆盖；dev 实测仍待做
 - [ ] 全部完成后再批量删除 erark_id/erark_behavior 迁移字段

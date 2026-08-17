@@ -281,9 +281,19 @@ text = "{target.name}不太想理你。"
 effects = []
 ```
 
-## 七、兜底地文
+## 七、原生通用口上 + 兜底地文
 
-当没有对口上时，dialogue-system 自动使用 talk-common-system 生成描述：
+**原生通用口上（2026-08-17）**：chat 等引擎原生指令带插件默认层口上——
+talk-common 词条 `behavior/` 目录（一行为一文件，`variable` = 行为 id，如 `chat`/`chat_failed`）。
+它是**角色通用口上（character-dialogue.toml）轨的 Layer 1 默认**：
+
+- mod 未写该 scene 的角色通用口上 → 用默认词条（与角色专属口上同池竞争，专属 ×10 优先）
+- mod 写了 → mod 胜出；想覆盖默认 → `definitions/talk-common/chat.toml`（variable 同名整体替换）
+- 输出走角色轨格式（`角色名：文本`）；词条可带 `premise(high_1)` 等条件做加权
+- 边界约束：`behavior/` 目录只放**非 H 行为**；H 行为默认文本仍走行为地文（见下）
+
+**兜底地文**：当无对口上（含原生默认）时，dialogue-system 自动使用 talk-common-system 的
+行为地文（getBehaviorText，H 行为 A+B+C 组合）生成描述：
 
 ```
 {character.name} 和 {target.name} {action_talk_polite}。

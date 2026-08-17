@@ -7,6 +7,8 @@
 # 触发方按同名匹配，见 named 角色的 dialogue.toml 头注释字段字典）。
 # 字段：scene / condition（可选）/ text；插值变量 {character.name} 等。
 # 这就是"500 个角色先共用一套口上"的核心文件（见 docs/mod-workflow.md 第 1 步）。
+# 注（2026-08-17）：chat 等原生指令已带插件默认层原生通用口上（talk-common behavior/ 目录，
+# 本文件 scene 缺省时自动兜底），此处无需重复写；个性化覆盖 → definitions/talk-common/chat.toml。
 # ═══════════════════════════════════════════════════════════════════
 
 [[character_lines]]

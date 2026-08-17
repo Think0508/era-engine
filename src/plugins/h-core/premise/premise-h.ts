@@ -4,6 +4,7 @@
 import { gameContext } from '../../../core/game-context'
 import { entitySystem } from '../../../core/entity-system'
 import { ATTR } from '../../../core/entity-utils'
+import { getFavorabilityLevel } from '../settle/favorability'
 
 function getTargetChar(ctx: any): any {
   const charId = ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId
@@ -141,6 +142,22 @@ export function registerHPremises(registry: any): void {
   }
 
   registry.registerPremise('high_999', () => true)
+
+  // 注释：favorability_ge_3——指令双方中 NPC 对玩家的好感等级 ≥3
+  // （erArk handle_premise_other.py handle_favorability_ge_3：发起者是玩家 → 查目标 NPC 对
+  // 玩家好感；目标是玩家 → 查发起者 NPC 对玩家好感；好感等级 ≥3（阈值 1000）通过。
+  // 由 chat_failed 高好感词条（1021-1028）使用——高好感时聊崩的委婉口上）
+  registry.registerPremise('favorability_ge_3', (ctx: any) => {
+    const playerId = gameContext.getContext().player?.id
+    const sourceId = ctx.sourceId ?? playerId
+    const targetId = ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId
+    const npcId = sourceId === playerId ? targetId : (targetId === playerId ? sourceId : targetId)
+    if (!npcId) return false
+    const npc = entitySystem.get('character', npcId) as any
+    if (!npc) return false
+    const fav = npc.base?.[ATTR.FAVORABILITY] ?? 0
+    return getFavorabilityLevel(fav).level >= 3
+  })
 
   // ═══ 系统状态前提 ═══
   registry.registerPremise('sys_0', () => true)  // 普通状态

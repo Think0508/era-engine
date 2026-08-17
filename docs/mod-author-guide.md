@@ -484,6 +484,7 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 | 效果 type | 参数 | 语义 |
 |-----------|------|------|
 | `chat_settle` | `fail_effects` / `success_effects` | 分支链（effect_blocks 块名或内联数组）；`talk_count > 发起者.话术技能+1` → fail，否则 success；无论如何 talk_count +1（衰减由引擎在每次行动开始自动处理） |
+| | `success_scene` / `fail_scene` | **可选（2026-08-17）**：成败口上场景（对应 erArk CHAT/CHAT_FAILED 双 behavior 口上）。成功链执行后触发 `triggerScene(success_scene, 目标)`；失败链后触发 `fail_scene`。`fail_scene` 缺省 = 无（失败不出失败口上，大多数指令默认成功）；两者均缺省 = 不触发（兼容外部 trigger_dialogue 用法） |
 | `talk_add_adjust` | — | 复刻 erArk 501（default.py:5875）：结算条件 = 有目标且任一方为玩家（NPC→NPC 跳过）；好感 = int(calcFavorability × 话术adjust)，>0 再乘连续减值；好意/快乐 = 完整 base_chara_state_common_settle 管线（tenths/素质/攻略/连续减值，ability_level = 发起者话术技能，快乐用 mark_debuff_adjust）；记录 talk_time |
 
 ### 体技效果

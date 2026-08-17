@@ -274,14 +274,38 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
   for (const l of mod.sceneDialogue) {
     if (l.scene === scene && keepConscious(l)) pool.push({ line: l, source: 'scene', multiplier: 1 })
   }
+  const playerId = gameContext.getContext().player?.id
   if (charId) {
     const keepVersion = (line: ReactiveLine): boolean => (line.version ?? 1) === charTextVersion
     const specificLines = mod.characterSpecificDialogue.get(charId) ?? []
     for (const l of specificLines) {
       if (l.scene === scene && keepVersion(l) && keepConscious(l)) pool.push({ line: l, source: 'character', multiplier: 10 })
     }
-    for (const l of mod.characterDialogue) {
-      if (l.scene === scene && keepVersion(l) && keepConscious(l)) pool.push({ line: l, source: 'character', multiplier: 1 })
+    const genericLines = mod.characterDialogue.filter(l => l.scene === scene && keepVersion(l) && keepConscious(l))
+    if (genericLines.length > 0) {
+      for (const l of genericLines) pool.push({ line: l, source: 'character', multiplier: 1 })
+    } else {
+      // 注释：原生通用口上（2026-08-17）——角色通用口上（characterDialogue）的插件默认层：
+      // mod 未写该 scene 的角色通用口上时，用 talk-common 默认词条（Layer 1）兜底，mod 可经
+      // definitions/talk-common/ 覆盖。词条内部已完成加权随机（high_N 等前提），作为单条
+      // 普通权重候选参与同池竞争（= erArk 通用口上 + 角色专属口上合并候选池语义，专属×10
+      // 优先；不设 weight 字段 = 前提权重 1，与 mod 角色通用口上行同级）。
+      // 混合率：低权重行可被替换为行为地文——chat 等无行为地文数据时替换空转无害
+      // （getBehaviorText 返回 null 不替换），与 erArk 低权重口上参与混合率语义一致。
+      // 无意识时 keepConscious 自然淘汰（补入行无 condition，与无条件场景口上同语义）——
+      // 故无意识时直接跳过补位（getText 对非 action_ 词条 unconsciousPass=true 会返回文本，
+      // 但 pool 的 keepConscious 不覆盖补入行，需在此拦截）。
+      // charTextVersion=0（不启用角色口上，erArk character_text_version）→ 补位同步禁用
+      if (!isUnconscious && charTextVersion > 0) {
+        try {
+          const defaultTalk = await apiSystem.call('talk-common', 'getText', scene, charId, playerId)
+          if (defaultTalk) {
+            pool.push({ line: { scene, text: defaultTalk }, source: 'character', multiplier: 1 })
+          }
+        } catch {
+          // 注释：talk-common 未就绪或无此场景词条 → 无原生默认口上（保持既有行为）
+        }
+      }
     }
   }
   const matched = pickWeightedLine(pool, charId)
@@ -291,7 +315,6 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
     // 随机替换为行为地文（erArk talk.py:244-254：not unusual_talk_flag or talk_weight < 100）
     const hc = (modLoader.getMod()?.hConfig as any) ?? {}
     const mixRate = hc?.talk?.common_mix_rate ?? 30
-    const playerId = gameContext.getContext().player?.id
     let outputText: string | null = null
     let outputIsChar = entry?.source === 'character'
     if (charId && matched.weight < 100 && mixRate > 0) {
@@ -322,12 +345,13 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
     hasOutput = true
   }
 
-  // 注释：3. 纸娃娃兜底——无对口上时用行为地文（T3），再退 talk-common 变量兜底
+  // 注释：3. 行为地文兜底——无对口上时用行为地文（T3，H 行为专用 A+B+C 组合），
+  // 再退 talk-common 变量兜底。行为级默认口上（原生通用口上）由上方角色通用轨补位负责
+  // （getText），此处不再重复查询（2026-08-17 收敛——原 getText 分支为死代码）
   if (!hasOutput) {
     try {
       const playerId = gameContext.getContext().player?.id
       const fallback = await apiSystem.call('talk-common', 'getBehaviorText', scene, charId ?? null, playerId)
-        ?? await apiSystem.call('talk-common', 'getText', scene, charId ?? null, playerId)
       if (fallback) {
         const interpolated = await interpolateLine(fallback, charId)
         if (charId) {

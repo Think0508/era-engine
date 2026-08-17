@@ -103,6 +103,11 @@ character-dialogue.toml（角色通用 fallback）
 characters/dialogue/{角色ID}/dialogue.toml（角色专属）
 ```
 
+> **原生默认层（2026-08-17）**：角色通用 fallback 之后还有一层插件默认口上——
+> chat 等原生指令的通用口上存放在 talk-common 词条（`behavior/` 目录），mod 未写某 scene 的
+> character-dialogue 行时自动兜底（= characterDialogue 的 Layer 1 默认，与专属同池竞争）；
+> mod 写了则 mod 胜出，覆盖见 `definitions/talk-common/`。详见 `docs/dialogue-format.md` §七。
+
 **怎么决定把文本写在哪个文件？**
 
 | 文本性质 | 写在哪 | 例子 |

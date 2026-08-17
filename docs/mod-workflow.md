@@ -76,6 +76,13 @@ text = "{character.name}闷哼一声。"
 
 第 1 步做完：500 个角色都有基本的武侠口上了。
 
+> **原生指令的默认口上（2026-08-17）**：`chat` 等引擎原生指令已带插件默认层口上
+> （talk-common 词条 `behavior/` 目录，角色通用口上轨的 Layer 1 兜底——mod 未写该 scene 的
+> `character-dialogue.toml` 行时自动使用，写了则 mod 胜出）。故本步的 `character-dialogue.toml`
+> 可先只写世界观特有场景（greet/hurt/rest…），chat 等已有默认的 scene 可跳过；
+> 想个性化默认口上 → `definitions/talk-common/chat.toml`（variable = "chat" 整体替换，格式见
+> `docs/talk-common-system.md`）。
+
 ---
 
 ## 第 2 步：挑选角色，做专属口上

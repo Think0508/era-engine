@@ -6,6 +6,9 @@ text = "你坐下来调息。"
 
 [[scene_lines]]
 scene = "chat"
+# 高权重（100）= 确定性口上：保证 instruction-chat 端到端测试输出稳定，
+# 不被插件默认层原生通用口上（角色轨补位）竞争覆盖
+weight = 100
 text = "你和{character.name}聊了起来。"
 
 [[scene_lines]]

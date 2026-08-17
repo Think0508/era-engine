@@ -234,6 +234,7 @@ ctx.api.call('dialogue', 'registerSceneCharFilter', scene, (charId) => boolean) 
 ```
 
 - `triggerScene` 自动匹配三层口上：场景通用 → 角色专属 → 角色通用 fallback
+- 原生默认口上（2026-08-17）：角色通用 fallback 之后，mod 未写某 scene 的 character-dialogue 行时自动用 talk-common 默认词条（`behavior/` 目录，= characterDialogue 的 Layer 1 默认，与专属同池竞争；mod 写了则 mod 胜出）
 - `triggerScene` 无 charId 时只查场景通用口上
 - `startConversation` 需显式传 ref（ConversationRef 或简写字符串）；「交谈」指令自动选取选中角色第一个对话
 - `registerSceneCharFilter`：通用抑制机制——follow-system 注册 `greet` 过滤器实现"跟随者到达不打招呼"；未来送别/移动口上场景建立后同样注册

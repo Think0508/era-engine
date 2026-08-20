@@ -11,6 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "validate": "vitest run src/core/mod-validate.test.ts",
+    "gen:catalog": "node scripts/gen-native-catalog.cjs",
+    "check:catalog": "node scripts/gen-native-catalog.cjs --check",
     "scan:attrs": "node scripts/scan-attr-refs.cjs",
     "scan:erark": "node scripts/scan-erark-defs.cjs",
     "tauri": "tauri"

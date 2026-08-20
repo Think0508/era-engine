@@ -54,6 +54,8 @@ mods/     内容模组——TOML数据，一次只启用一个
 | error-reporter | core/error-reporter.ts | 统一错误上报 |
 | data-dependencies | core/data-dependencies.ts | 插件数据依赖topo-sort |
 
+> 📋 **原生词条速查**：引擎原生默认数据（天赋/关系/能力/属性/状态/物品/束缚/实绩/装备槽/天赋获得规则）的完整清单、数量与"新增词条"模板见 `docs/native-entries-catalog.md`（`npm run gen:catalog` 自动生成 + `npm run check:catalog` 校验查重/悬空引用）。
+
 ## 已实现插件速查
 
 | 插件 | provides | API namespace | 职责 |

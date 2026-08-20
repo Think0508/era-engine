@@ -188,7 +188,9 @@ export function onLoad(_ctx: PluginContext): void {
   })
 
   // 注释：射精量计算（直接 effect 版）+ 玩家阴茎污浊追踪
-  effectTypeRegistry.register('eja_shoot', (params: any, ctx: any) => {
+  // async handler：内部 await emit('h:shoot')——保证射精事件在 effect 返回前已完整派发
+  // （counter-system/h-pregnancy 等监听方可靠收到；eja_climax 的 emit 未 await 是既有行为）
+  effectTypeRegistry.register('eja_shoot', async (params: any, ctx: any) => {
     const targetIds = ctx._targetIds as string[]
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any
@@ -202,6 +204,10 @@ export function onLoad(_ctx: PluginContext): void {
       const targetId = char.h_state?.target_character_id ?? id
       const targetChar = entitySystem.get('character', targetId) as any
       trackSemen(targetChar ?? char, params.positionId ?? 6, result.amount)
+      // 注释：emit h:shoot（与 eja_climax 对齐，2026-08-17 counter-system 审计发现）——
+      // 原 eja_shoot 缺 emit → 走本路径的射精（TOML 手动触发）不被计数器/h-pregnancy 等
+      // h:shoot 监听方记录（漏计）。payload 与 eja_climax 一致（eja_shoot 无套套分支，恒 false）
+      await eventBus.emit('h:shoot', { character: id, target: targetId, amount: result.amount, position: params.positionId ?? 6, condom: false })
       recordUnconsciousSemen(targetChar ?? char, params.positionId ?? 6)
       if (targetChar?.h_state) targetChar.h_state.shoot_position_body = params.positionId ?? 6
       if (isPlayerChar(id)) setPenisSemenDirty(char, true)

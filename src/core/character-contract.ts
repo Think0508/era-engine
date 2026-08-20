@@ -41,6 +41,8 @@ export const ENGINE_OWNED_TOP_KEYS: ReadonlySet<string> = new Set([
   'rule_state',
   // 注释：gain-rule-system 成就记录（player/character scope 达成表；存档持久）
   'achievements',
+  // 注释：counter-system 计数器（惰性创建；唯一写入方 store.ts，存档随实体序列化）
+  'counters',
 ])
 
 /** 引擎结构命名空间（非 attributes 定义，但合法存在的顶层键） */

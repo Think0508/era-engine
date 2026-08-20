@@ -38,6 +38,21 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "性别" = { type = "number", default = 0, category = "base", display = false }
 
 # ════════════════════════════════════════
+# 计数器初始值（counter-system 可选字段，缺失=0/空——角色背景设定用）
+# ════════════════════════════════════════
+"初始H过男人数" = { type = "number", default = 0, category = "base", display = false }
+"初始H过男人" = { type = "array", default = [], category = "base", display = false }
+"初始被插入男人数" = { type = "number", default = 0, category = "base", display = false }
+"初始被插入男人" = { type = "array", default = [], category = "base", display = false }
+"初始体内精液量" = { type = "number", default = 0, category = "base", display = false }
+"初始射精次数" = { type = "number", default = 0, category = "base", display = false }
+
+# ════════════════════════════════════════
+# mod 独有内容示例（counter-system 引用测试：原生无"武功"，mod 引入后计数器可引用）
+# ════════════════════════════════════════
+"武功" = { type = "number", default = 0, category = "base", display = false }
+
+# ════════════════════════════════════════
 # PARAMETER — 行动参数（erark status_data[0..23] 等价物）
 # 每日重置，10 级制 (level_thresholds 对齐 erark)
 # 体感快感（9 部位，去尿道/兽部）

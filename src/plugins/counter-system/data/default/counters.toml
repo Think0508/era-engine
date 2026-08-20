@@ -1,0 +1,95 @@
+# 计数器默认声明（counter-system 消费）——插件默认层，mod 可 override/新增
+# 文档：docs/counter-system.md（声明语法/初始值规则/半成品机制）
+#
+# 条件路径（counters 代理域）：
+#   counters.{角色id}.{计数器或视图}.{维度...}      —— 总数（含初始）
+#   counters.{角色id}.{计数器或视图}.real.{维度...} —— 真实值（减初始，具名去重）
+# 实体直读（不经代理）同样可用：character.{id}.counters.male_stats.6.玩家id.semen
+#
+# ⚠️ 角色 id 作为路径段：约定 id 不含 '.'（与场景 id 同约束）
+
+# ============ 玩家计数器（scope=player，挂玩家实体）============
+
+# 玩家 H 过的女角色数（h:start 的 target 加入玩家名单；只记女性——filter_gender 内置判定）
+[[counters]]
+id = "h_partners"
+label = "H 过的女角色"
+scope = "player"
+type = "list"
+event = "h:start"
+add = "payload.target"            # 名单项 = 被 H 者
+filter_gender = "female"
+
+# ============ 角色计数器（scope=character，惰性挂各角色实体）============
+
+# 女角色 H 过的男人数（h:start 的 ally 加入其名单；filter_gender 防御未来非男性发起路径）
+# 初始值（可选，角色模板字段，缺失=0）：数字起点 + 具名名单（真实个体，去重）
+[[counters]]
+id = "h_partners"
+label = "H 过的男人"
+scope = "character"
+type = "list"
+event = "h:start"
+add = "payload.ally"              # 名单项 = 发起者
+filter_gender = "male"            # 只记男性（现状 ally 恒玩家；防御群交/女性 NPC 主动 H）
+initial_from = "base.初始H过男人数"
+initial_named_from = "base.初始H过男人"   # 数组：具名初始（真实个体，游戏内再 H 不重复计）
+
+# 精液/射精统计分组表（dims=[部位, 男角色]，条目 = 射精者——玩家与其他男角色同表）
+# 一条 h:shoot 同时累计 semen（payload.amount）与 shoots（+1）
+# 初始值（角色模板字段，缺失=0）：数字/具名男人 + 各字段初始（field_init）
+[[counters]]
+id = "male_stats"
+label = "精液与射精统计"
+scope = "character"
+type = "group_table"
+initial_from = "base.初始被插入男人数"
+initial_named_from = "base.初始被插入男人"
+initial_fields = { semen = "base.初始体内精液量", shoots = "base.初始射精次数" }
+dims = [
+  { id = "part", from = "payload.position" },       # 被射部位（body part cid：口2/穴6/子宫7/肛8…）
+  { id = "character", from = "payload.character" }, # 射精者 id
+]
+fields = [
+  { id = "semen",  label = "精液量",   unit = "ml", event = "h:shoot", add = "payload.amount" },
+  { id = "shoots", label = "射精次数", unit = "次", event = "h:shoot", add = 1 },
+  # ⚠️ 半成品示例（插入系统 B2+ 实现后启用——去掉 pending 即激活，条件路径自动注册）：
+  # { id = "inserts", label = "插入次数", unit = "次", event = "h:insert", add = 1, pending = true },
+]
+
+# ============ 视图（只读，不双写）============
+
+# 部位精液总量（该部位所有男角色精子求和；real 段 = 游戏内新增，减 field_init 初始）
+[[views]]
+id = "semen_total"
+label = "部位精液总量"
+unit = "ml"
+aggregate = { counter = "male_stats", field = "semen", keep_dims = ["part"], op = "sum" }
+
+# 部位男人数（条目数 + 初始规则：初始数字+具名去重；real 段 = 游戏内新增）
+[[views]]
+id = "male_count"
+label = "部位男人数"
+aggregate = { counter = "male_stats", keep_dims = ["part"], op = "count" }
+
+# 部位绝顶次数（只读映射 experience 绝顶经验——orgasm.ts 已写入；
+# map 表：body part cid → experience 绝顶 id（0皮肤10/3胸11/4阴蒂12/6阴道14/8肛15/
+# 10尿道16/7子宫17/2口喉156——阴茎 3 无绝顶经验）
+[[views]]
+id = "orgasm_count"
+label = "部位绝顶次数"
+unit = "次"
+map = { path = "experience", table = { "0" = "10", "3" = "11", "4" = "12", "6" = "14", "8" = "15", "10" = "16", "7" = "17", "2" = "156" } }
+
+# 总绝顶次数（experience.20，orgasm.ts 已写入）
+[[views]]
+id = "orgasm_total"
+label = "总绝顶次数"
+unit = "次"
+source = { path = "experience.20" }
+
+# 关系类视图（恋人/妻子/奴隶等）由 mod 在自身 definitions/counters.toml 声明：
+#   [[views]]
+#   id = "lovers"
+#   label = "恋人"
+#   relation = { type = "恋人" }     # 条件：counters.{角色id}.lovers > 0；名单走 API relationList

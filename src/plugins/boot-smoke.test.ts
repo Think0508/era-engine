@@ -55,8 +55,10 @@ describe('引擎 boot 冒烟测试（全插件加载）', () => {
   })
 
   it('无插件被禁用（onLoad/onEnable 无抛错）', () => {
-    // 注释：contract_demo 的 params 是分层教学展示（ADR-0007 L2 警告，预期内）——排除后应为 0
-    const unexpected = errorReporter.getErrors().filter(e => !e.message.includes('daily_reset'))
+    // 注释：daily_reset 为既有预期 warning；counter-system 的 test_pending 半成品 warning
+    // （test-mod 故意放的 pending 测试用例，ADR-0016 半成品机制）——均排除后应为 0
+    const unexpected = errorReporter.getErrors().filter(e =>
+      !e.message.includes('daily_reset') && !e.message.includes('test_pending'))
     expect(unexpected.length).toBe(0)
   })
 

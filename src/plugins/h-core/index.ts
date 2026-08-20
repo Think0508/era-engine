@@ -68,6 +68,9 @@ export async function handleOrgasmResults(id: string, ch: any, result: SecondSet
     const cur = partMaxDegree.get(ev.partId)
     if (cur === undefined || ev.degree > cur) partMaxDegree.set(ev.partId, ev.degree)
     await eventBus.emit('h:orgasm', { character: id, partId: ev.partId, level: ev.degree, count: ev.count, extra: ev.extra })
+    // TODO(counter-system)（ADR-0016）：h:orgasm payload 缺"施动者"——counter-system 按男角色
+    // 分条的绝顶统计需要 sourceId（谁让她绝顶）。与指令复刻批次对照后补（h:shoot 已有
+    // character/target/position/amount，h:orgasm 对齐加 sourceId）
   }
   for (const [, degree] of partMaxDegree) {
     const degreeName = ['小', '普通', '强', '超强'][degree] ?? '普通'
@@ -317,6 +320,8 @@ export async function startHScene(allyId: string, targetId: string): Promise<voi
   }
   await gameContext.enterMode('h_scene')
   await eventBus.emit('h:start', { ally: allyId, target: targetId })
+  // TODO(counter-system)（ADR-0016）：h:start 只有单对双方；群交/多参与者 H 的参与者列表
+  // 缺失——counter-system 的一男多女/一女多男/群交人数计数需扩展 payload（群交整体重写时对照）
   narrativeLog.write('开始 H', 'dialogue', 'h-core')
 }
 
@@ -381,6 +386,8 @@ export async function endHScene(allyId: string): Promise<void> {
     if (mode === 'h_scene') break
   }
   await eventBus.emit('h:end', { ally: allyId })
+  // TODO(counter-system)（ADR-0016）：h:end 只有发起者，无参与者列表——群交/被轮/一男多女
+  // 一次多加一的计数需要 participants；群交整体重写时扩展
   narrativeLog.write('结束 H', 'dialogue', 'h-core')
 }
 

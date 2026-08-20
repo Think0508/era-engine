@@ -69,6 +69,21 @@ UI 求值路径 = `createCommandEvaluators`（command-eval.ts）→ conditionEng
 ### 5.6 时间语义
 advanceTime 先于 effects 执行；行动开始时刻 = execution_start 时的 gameContext.time（未推进）；衰减/计数读开始时刻。
 
+### 5.7 计数器对照（counter-system 接线点）
+复刻每条指令时，检查其结算链是否触发**需要计数的事件**、payload 是否够——这是 counter-system
+（ADR-0016）事件扩展与指令复刻批次的对照点：
+
+1. **结算链 → 事件**：这条指令的 effects 是否走 `eja_climax`/`orgasmJudge`（→ `h:shoot`/`h:orgasm`）、
+   H 会话管理（→ `h:start`/`h:end`）？走则事件自动发出，counter-system 自动累计，**无需写计数 effect**。
+2. **payload 核对**：事件 payload 是否含 counter-system 需要的字段（`character`/`target`/`position`/
+   `amount`……）？缺 → 在 h-core emit 点补字段并更新其 `// TODO(counter-system)` 标记（当前缺口：
+   `h:orgasm` 缺 `sourceId`、`h:end` 缺参与者列表、插入动作未实现 `h:insert`）。
+3. **半成品激活**：补好事件后，把 `data/default/counters.toml` 里对应字段的 `pending = true`
+   去掉（如插入系统的 `inserts` 字段）——条件路径自动注册，无需改代码。
+4. **语义对照**：erArk 指令的效果链（如 ADD_SMALL_P_FEEL/二段绝顶）是否产生"应被计数"
+   的语义（射精/插入/绝顶/露出场景人数……）——对照 `experience`/`body_semen` 既有累计与
+   counter-system 视图，避免重复计数（同一语义只在一处累计：机制内的散装 + 新统计走 counter）。
+
 ## 常见静默错误速查
 
 | 症状 | 根因 | 排查 |

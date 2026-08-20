@@ -1,0 +1,11 @@
+[meta]
+id = "counter-system"
+name = "计数器系统"
+version = "1.0.0"
+description = "统一计数器：number/list/group_table + 声明式视图，事件驱动累计"
+
+[data_dependencies]
+provides = ["counter:ready"]
+# 计数事件（h:shoot/h:start）由 h-core/h-ejaculation 发出——事件总线松耦合，
+# 无需硬依赖；depends_on 仅保证 H 插件先 onEnable（监听注册顺序无实际影响，语义清晰）
+depends_on = ["h:ready"]

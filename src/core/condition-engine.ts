@@ -312,6 +312,16 @@ function reorderBoolOperands(node: ExprNode): ExprNode {
 
 // ============ 值解析（resolveValue 语义移植，行为逐条对齐旧引擎）============
 
+// 注释：代理域注册表（2026-08-17 counter-system）——插件注册的条件根域：解析时整段转发
+// 给插件 API（quest 域"core 特判 + apiSystem 转发"先例的通用化）。core 不认知域内具体
+// 内容，只做路由；转发失败/未注册 → undefined（走默认值机制，不阻断求值）。
+// 注册方：counter-system onEnable → registerProxyDomain('counters', 'counter-system', 'resolvePath')
+const proxyDomains = new Map<string, { namespace: string; method: string }>()
+
+export function registerProxyDomain(domain: string, namespace: string, method: string): void {
+  proxyDomains.set(domain, { namespace, method })
+}
+
 function resolvePath(node: PathNode, ctx: GameContext): any {
   const parts = node.segments
   let current: any = ctx
@@ -321,6 +331,15 @@ function resolvePath(node: PathNode, ctx: GameContext): any {
     if (current === null || current === undefined) return 0
 
     if (i === 0) {
+      // 注释：代理域转发（counter-system 的 counters 根域等）——整段剩余路径交给插件求值
+      const proxy = proxyDomains.get(part)
+      if (proxy) {
+        try {
+          return apiSystem.callSync(proxy.namespace, proxy.method, parts.slice(i + 1), ctx)
+        } catch {
+          return undefined
+        }
+      }
       if (part === 'player') { current = ctx.player; continue }
       if (part === 'location') { current = ctx.location; continue }
       if (part === 'game') { current = { time: ctx.time, mode: ctx.mode }; continue }

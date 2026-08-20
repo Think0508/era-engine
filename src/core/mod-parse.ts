@@ -13,6 +13,7 @@ import type {
   SleepConfig, RandomEventDef, AbilityDef, TalentDef, EquipmentSlot, CalendarConfig,
   NpcSpawn, ReactiveLine, ConversationNode, ItemDef, SetDef, StatusEffectDef, JuelDef,
   AttributeDefinition, ModDependency, PendingSpawn, GainRuleDef, AchievementDef,
+  CounterDef, CounterViewDef,
 } from './mod-types'
 import {
   validateCharacterContract,
@@ -219,6 +220,9 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     title: (metaSection.title as string) ?? undefined,
     description: (metaSection.description as string) ?? undefined,
     titleImage: (metaSection.title_image as string) ?? undefined,
+    // 注释：counter-system 消费（counters.toml；插件默认层 + mod 层按 id 合并）
+    counterDefs: {},
+    counterViews: {},
     loadingImage: (metaSection.loading_image as string) ?? undefined,
     loadingVideo: (metaSection.loading_video as string) ?? undefined,
     // 注释：升级结算开关（erArk base_setting[1]/[2] 语义）——缺省全开
@@ -782,6 +786,59 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     return result
   }
   mod.achievements = loadAchievements()
+
+  // 注释：加载 counters.toml（计数器+视图定义；counter-system 消费）——同上按 id 去重合并。
+  // 文件含 [[counters]]（计数器声明）与 [[views]]（只读视图声明）两个数组段
+  function loadCounters(): { defs: Record<string, CounterDef>; views: Record<string, CounterViewDef> } {
+    const defs: Record<string, CounterDef> = {}
+    const views: Record<string, CounterViewDef> = {}
+    const paths = Object.keys(rawTomlMap).filter(p =>
+      p.endsWith('/counters.toml') || p === `/mods/${modName}/definitions/counters.toml`)
+    const seenD = new Map<string, string>()
+    const seenV = new Map<string, string>()
+    for (const path of paths) {
+      const data = parseFile(path, rawTomlMap[path])
+      const counters = data.counters
+      if (counters !== undefined && !Array.isArray(counters)) {
+        throw new Error(`${path}: [[counters]] 必须是数组（TOML 用 [[counters]] 声明计数器列表）`)
+      }
+      for (const c of (counters as any[]) ?? []) {
+        if (!c || typeof c !== 'object' || !c.id) {
+          throw new Error(`${path}: counters.toml 的 [[counters]] 条目缺少 id 字段`)
+        }
+        const scope = (c.scope as string) || 'character'
+        if (!['player', 'character', 'global'].includes(scope)) {
+          throw new Error(`${path}: 计数器 '${c.id}' 的 scope '${scope}' 非法（player/character/global）`)
+        }
+        // 去重键 = scope:id——同一 id 可分别声明 player/character 两个 scope（不同实体方向），
+        // 同 scope 同 id 才冲突
+        const dedupKey = `${scope}:${c.id}`
+        if (seenD.has(dedupKey) && seenD.get(dedupKey) === path) {
+          throw new Error(`${path}: 计数器 '${c.id}'（scope=${scope}）重复定义（同文件内同 scope 下 id 必须唯一）`)
+        }
+        seenD.set(dedupKey, path)
+        defs[dedupKey] = c as CounterDef
+      }
+      const viewList = data.views
+      if (viewList !== undefined && !Array.isArray(viewList)) {
+        throw new Error(`${path}: [[views]] 必须是数组（TOML 用 [[views]] 声明视图列表）`)
+      }
+      for (const v of (viewList as any[]) ?? []) {
+        if (!v || typeof v !== 'object' || !v.id) {
+          throw new Error(`${path}: counters.toml 的 [[views]] 条目缺少 id 字段`)
+        }
+        if (seenV.has(v.id) && seenV.get(v.id) === path) {
+          throw new Error(`${path}: 视图 '${v.id}' 重复定义（同文件内 id 必须唯一）`)
+        }
+        seenV.set(v.id, path)
+        views[v.id] = v as CounterViewDef
+      }
+    }
+    return { defs, views }
+  }
+  const loadedCounters = loadCounters()
+  mod.counterDefs = loadedCounters.defs
+  mod.counterViews = loadedCounters.views
 
   // 注释：升级路径校验（须在 talents 加载之后——needs 引用 talent 名需要 talentDefs 就绪）
   validateAbilityUpgrades(mod, modName)

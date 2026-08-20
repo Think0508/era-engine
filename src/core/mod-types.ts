@@ -222,6 +222,60 @@ export interface AchievementDef {
   role_mapping?: Record<string, string>  // 事件触发时：payload 字段 → selected/self（与规则同义）
 }
 
+// 注释：计数器定义（counter-system 消费）——声明式计数器，三种类型：
+// number（数值）/ list（去重名单+初始数字）/ group_table（嵌套分组表：dim1 → dim2 → 字段）
+export interface CounterDimDef {
+  id: string                // 维度 id（如 part / character）
+  from: string              // 事件 payload 字段路径（如 payload.position）
+}
+
+export interface CounterFieldDef {
+  id: string                // 字段 id（如 semen）
+  label: string
+  unit?: string
+  event: string             // 驱动事件名（如 h:shoot）
+  add: string | number      // 增量：数字常量 或 payload 字段路径（如 payload.amount）
+  pending?: boolean         // 半成品：依赖未实现事件 → 加载 warning + 条件路径不注册 + 监听跳过
+}
+
+export interface CounterDef {
+  id: string
+  label: string
+  scope: 'player' | 'character' | 'global'
+  type: 'number' | 'list' | 'group_table'
+  unit?: string
+  // number/list 通用：
+  event?: string            // 驱动事件名
+  add?: string | number     // number：增量；list：加入名单的 payload 字段路径
+  target_from?: string      // 计数目标角色：payload 字段路径（默认 payload.target）
+  filter_gender?: 'male' | 'female'  // list 专用：加入名单前查目标角色 base.性别（1=男 2=女）
+  // 初始值（创建时快照自角色实体字段；快照后与角色字段脱钩）：
+  initial_from?: string     // 数字初始：实体字段路径（如 base.初始H过男人数）
+  initial_named_from?: string // 具名初始：实体字段路径（数组，如 base.初始H过男人）
+  initial_fields?: Record<string, string> // 分组表字段初始：field → 实体字段路径
+  // group_table 专用：
+  dims?: CounterDimDef[]
+  fields?: CounterFieldDef[]
+}
+
+// 注释：计数器视图定义（counter-system 消费）——只读：映射实体字段 / 聚合分组表 / 查询关系
+export interface CounterViewDef {
+  id: string
+  label: string
+  unit?: string
+  source?: { path: string; initial_from?: string }  // 只读映射（相对角色实体；可减初始）
+  map?: { path: string; table: Record<string, string> } // 枚举映射：维度值 → 实体字段段
+                                         // （如 orgasm_count：部位 cid → experience 绝顶 id）
+  aggregate?: {           // 派生聚合：分组表/名单 求和或计数
+    counter: string       // 目标计数器 id
+    field?: string        // sum 的字段；缺省 = 条目计数（count）
+    keep_dims?: string[]  // 元数据：保留维度语义说明（UI 渲染/文档用）。
+                          // 当前求值按声明 dims 顺序 + 条件路径 rest（如下钻部位）确定维度，未消费此字段
+    op: 'sum' | 'count'
+  }
+  relation?: { type: string }  // 关系查询视图：读角色关系系统，返回 type 匹配且正面的对象数量
+}
+
 // 注释：天赋定义
 export interface TalentDef {
   name: string
@@ -632,6 +686,9 @@ export interface LoadedMod {  id: string
   gainRules: Record<string, GainRuleDef>
   // 注释：成就定义（gain-rule-system 消费）——插件默认层 + mod 定义层，按 id 去重（mod 胜出）
   achievements: Record<string, AchievementDef>
+  // 注释：计数器定义（counter-system 消费）——插件默认层 + mod 定义层，按 id 去重（mod 胜出）
+  counterDefs: Record<string, CounterDef>
+  counterViews: Record<string, CounterViewDef>
   // 注释：命名样式——[styles] 注册表
   styles: Record<string, Record<string, any>>
   // 注释：关系类型定义（关系系统 v2）

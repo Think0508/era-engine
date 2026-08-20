@@ -1,0 +1,22 @@
+# test-mod 计数器声明（counter-system 测试）——插件默认层之外追加 mod 层定义
+# 注意：loadMod 时与插件默认层（counter-system/data/default/counters.toml）按 id 合并，mod 胜出
+
+# 关系视图：恋人数量（relation 视图——读实体 relations 字段，无需关系类型声明即可加载）
+[[views]]
+id = "lovers"
+label = "恋人"
+relation = { type = "恋人" }
+
+# 半成品测试计数器：字段 pending=true（依赖未实现事件 h:future）→ 监听跳过 + warning
+[[counters]]
+id = "test_pending"
+label = "半成品测试"
+scope = "character"
+type = "group_table"
+dims = [
+  { id = "part", from = "payload.position" },
+  { id = "character", from = "payload.character" },
+]
+fields = [
+  { id = "x", label = "X", event = "h:future", add = 1, pending = true },
+]

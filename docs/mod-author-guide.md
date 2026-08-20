@@ -478,6 +478,7 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 | `h_experience` | `expId` | 经验 ID（如 `"80"` = 对话经验，Experience.csv） |
 | | `value` | 增量（erArk CVE 效果的最后一个数字） |
 | `judge_check` | — | **loader 自动注入**（有 judge_base 时），不要手写；target 默认 = 指令目标 |
+| `accumulate_degrees` | `degrees` | 五度属性统一累加通道（2026-08-21，`docs/five-degrees-attributes.md`）：一次性对目标累加多个「度」`{ 屈服度 = 10, 软弱度 = 5 }`。**单调不降**：负值入参 → warning + 丢弃；度名未在 attributes.toml（category=social）定义 → warning + 跳过；换算/性格系数留 TODO（恒 1） |
 
 ### chat 专用效果
 

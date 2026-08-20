@@ -77,6 +77,14 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 "好感度" = { type = "number", default = 30, category = "social", display = true, display_group = "social" }
 "信赖度" = { type = "number", default = 0, category = "social", display = true, display_group = "social" }
 
+# ═══ 五度属性——机制通电小步（2026-08-21，docs/five-degrees-attributes.md）═══
+# 屈服度/软弱度/欲望度：per-NPC 全局、单调不降、永久累计的"度"（像好感度）。
+# 本轮只通电机制（条件路径即注册）；数值规律/换算系数/内容层挂 TODO（等"角色性格系数"）。
+# display=false：不上属性面板，避免半成品占 UI。
+"屈服度" = { type = "number", default = 0, category = "social", display = false }
+"软弱度" = { type = "number", default = 0, category = "social", display = false }
+"欲望度" = { type = "number", default = 0, category = "social", display = false }
+
 # ═══ 契约补键（2026-08-09）═══
 # 隐蔽：erArk ability 90（性技类），h-hidden 隐奸/露出相关系数读取；
 #   与 abilities.toml "隐蔽" 条目配套（attribute 注册条件字典 + 落 abilities 命名空间）

@@ -44,6 +44,8 @@ import { registerOrgasmEffects } from './effects/orgasm-effects'
 import { registerClothEffects } from './effects/cloth-effects'
 import { registerBodyItemEffects } from './effects/body-item-effects'
 import { registerGiftEffects } from './effects/gift-effects'
+import { registerDegreeEffects } from './effects/degree-effects'
+import { accumulateDegree } from './settle/degree'
 
 // 注释：game:plugins_loaded 监听器只注册一次（onEnable 重复执行时不重复监听）
 let hCorePluginsLoadedListener = false
@@ -111,6 +113,8 @@ export function onLoad(_ctx: PluginContext): void {
 
   registerBodyItemEffects()
   registerGiftEffects()
+  // 注释：五度属性 effect（2026-08-21，机制通电小步）——accumulate_degrees
+  registerDegreeEffects()
 }
 
 // 注释：execution_end 二段结算处理（对齐 erArk check_second_effect）
@@ -206,6 +210,12 @@ export function onEnable(ctx: PluginContext): void {
   ctx.api.register('h-core', {
     startHScene, endHScene, getLevel, calcFavorability, calcTrust, calcJudge,
     getFavorabilityLevel, getTrustLevel,
+    // 注释：五度属性统一累加通道（桥契约，docs/five-degrees-attributes.md §六）——
+    // 跨插件/未来挂钩（settle 镜像/combat:end/性格系数）经此唯一入口累加"度"（单调不降）
+    accumulateDegree: (charId: string, degree: string, amount: number): void => {
+      const ch = entitySystem.get('character', charId) as any
+      if (ch) accumulateDegree(ch, degree, amount)
+    },
     // 注释：陷落等级查询（0=未陷落；爱情系 1-4；隶属系 -1~-4——erArk get_character_fall_level，
     // attr_calculation.py:891-921）。h-npc-ai 无意识恢复的继续H判定（handle_npc_instruct_condition
     // 三分支）经此 API 取真实陷落等级（跨插件禁止直接 import）

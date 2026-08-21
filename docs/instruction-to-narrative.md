@@ -385,6 +385,12 @@ effects = [
 ]
 ```
 
+> ⚠️ **审计修复（2026-08，ADR-0017 D8）——场景口上（scene-dialogue 层）的 effects 可信了**：
+> 该路径曾因 `executeLineEffects` 被 `outputIsChar` 门控而**静默从不执行**（场景行 `start_conversation`/
+> `start_quest` 等钩子实际是死功能）。现已修复——任何来源的命中行，只要未被行为地文替换且带 effects
+> 都会执行；带 effects 的角色行也会明确排除出行为地文混合池（防 effects 被静默吞掉）。回归覆盖：
+> `chain-flow.test.ts`（真实 effect-system 端到端）+ `talk-common-behavior.test.ts`。
+
 详见 `docs/scene-system.md`。
 
 ## 相关文档

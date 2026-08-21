@@ -235,6 +235,41 @@ function resolveLineDisplay(line: ReactiveLine): Record<string, any> | undefined
   return resolved
 }
 
+// 注释：纸娃娃地文配置解析（ADR 0017）——防静默越界/类型错误：
+//   common_mix_rate      应为 0-100 数值（越界/非数值 → 去重 warning + 钳制回 [0,100]/默认 30，不崩口上）
+//   behavior_text_enabled 应为布尔（TOML 写字符串 "false" 属常见脚枪 → warning + 按 true 处理）
+// 返回钳制后的值供 triggerScene 使用；配置错误只报一次（reportDedup 按 key 去重）。
+function readTalkBehaviorConfig(): { mixRate: number; behaviorTextEnabled: boolean } {
+  const talk = (modLoader.getMod()?.hConfig as any)?.talk ?? {}
+  let mixRate: unknown = talk.common_mix_rate
+  if (mixRate === undefined) mixRate = 30
+  if (typeof mixRate !== 'number' || !Number.isFinite(mixRate) || (mixRate as number) < 0 || (mixRate as number) > 100) {
+    const clamped = typeof mixRate === 'number' && Number.isFinite(mixRate) ? Math.max(0, Math.min(100, mixRate as number)) : 30
+    errorReporter.reportDedup('talk.common_mix_rate', {
+        source: 'dialogue-system',
+        severity: 'warning',
+        message: `hConfig talk.common_mix_rate 非法（${String(mixRate)}）——应为 0-100 数值，已钳制回 ${clamped}`,
+        suggestion: '检查 mod h-config 中 [talk] common_mix_rate 配置',
+      })
+    mixRate = clamped
+  }
+  let behaviorTextEnabled = true
+  const raw: unknown = talk.behavior_text_enabled
+  if (raw !== undefined) {
+    if (typeof raw === 'boolean') {
+      behaviorTextEnabled = raw
+    } else {
+      errorReporter.reportDedup('talk.behavior_text_enabled', {
+          source: 'dialogue-system',
+          severity: 'warning',
+          message: `hConfig talk.behavior_text_enabled 非法（${String(raw)}）——应为布尔值，已按 true 处理`,
+          suggestion: '检查 mod h-config 中 [talk] behavior_text_enabled 配置（TOML 布尔不要加引号）',
+        })
+    }
+  }
+  return { mixRate: mixRate as number, behaviorTextEnabled }
+}
+
 // 注释：triggerScene 内部实现——三层口上匹配 + 纸娃娃兜底
 async function triggerSceneInternal(scene: string, charId?: string): Promise<void> {
   const mod = modLoader.getMod()
@@ -275,6 +310,11 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
     if (l.scene === scene && keepConscious(l)) pool.push({ line: l, source: 'scene', multiplier: 1 })
   }
   const playerId = gameContext.getContext().player?.id
+  // 注释：纸娃娃地文配置（ADR 0017，T3 扩展）——hConfig [talk]：
+  //   common_mix_rate：混合率（默认 30；0 = 只关混合、留兜底）
+  //   behavior_text_enabled：总开关（默认 true；false = 混合 + 空池兜底全关）
+  //   非法值由 readTalkBehaviorConfig 钳制/告警（防静默越界）
+  const { mixRate, behaviorTextEnabled } = readTalkBehaviorConfig()
   if (charId) {
     const keepVersion = (line: ReactiveLine): boolean => (line.version ?? 1) === charTextVersion
     const specificLines = mod.characterSpecificDialogue.get(charId) ?? []
@@ -311,13 +351,22 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
   const matched = pickWeightedLine(pool, charId)
   if (matched) {
     const entry = pool.find(p => p.line === matched.line)
-    // 注释：T3 混合率——权重<100 的口上按 hConfig talk.common_mix_rate（默认30，对齐 erArk draw_setting[13]×10）
-    // 随机替换为行为地文（erArk talk.py:244-254：not unusual_talk_flag or talk_weight < 100）
-    const hc = (modLoader.getMod()?.hConfig as any) ?? {}
-    const mixRate = hc?.talk?.common_mix_rate ?? 30
+    // 注释：T3 混合率——权重<100 的角色口上按 hConfig talk.common_mix_rate（默认30，对齐
+    // erArk draw_setting[13]×10）随机替换为行为地文（erArk talk.py:244-254：not unusual_talk_flag
+    // or talk_weight < 100）。范围守卫（2026-08 定稿，ADR 0017）：
+    //   · entry.source==='character'——场景旁白层不参与混合替换（旁白是环境叙述，换成角色
+    //     身体地文语义断裂；erArk 池中无旁白层，本层为我们自有决策）
+    //   · behaviorTextEnabled（talk.behavior_text_enabled，默认 true）——总开关：false 时混合
+    //     与空池兜底两条纸娃娃路径全关（对齐 erArk draw_setting[2]=0 的纸娃娃一侧）
+    //   · matched.weight < 100——任意来源（场景/通用/专属）权重≥100 一律保护（有意的偏离：
+    //     erArk 只保角色专属高权重；我们通用层是 mod 世界观内容层，与专属同权保护）
     let outputText: string | null = null
     let outputIsChar = entry?.source === 'character'
-    if (charId && matched.weight < 100 && mixRate > 0) {
+    // 注释：行为地文替换标记（审计修复 2026-08）——被替换的行 ≈ "没被说出"，其 effects 不执行
+    // （与 erArk 置空 talk_id 语义一致）；且带 effects 的角色行明确排除出混合池（下方守卫），
+    // 杜绝"作者写了 effects 却没触发"的静默丢失
+    let replacedByBehavior = false
+    if (charId && entry?.source === 'character' && !matched.line.effects?.length && matched.weight < 100 && mixRate > 0 && behaviorTextEnabled) {
       try {
         const behaviorText = await apiSystem.call('talk-common', 'getBehaviorText', scene, charId, playerId)
         if (behaviorText && Math.random() * 100 < mixRate) {
@@ -325,6 +374,7 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
           // （漏插值会原样显示——2026-08-08 审查发现）
           outputText = await interpolateLine(behaviorText, charId)
           outputIsChar = false // 地文为叙述视角（erArk common_talk_flag）
+          replacedByBehavior = true
         }
       } catch { /* talk-common 未就绪，走口上 */ }
     }
@@ -339,7 +389,11 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
     } else {
       narrativeLog.write(outputText, 'dialogue', 'dialogue-system', undefined, undefined, display as any)
     }
-    if (outputIsChar) {
+    // 注释：口上 effects 执行（审计修复 2026-08）——原按 outputIsChar 门控：场景旁白行
+    // （source==='scene'）outputIsChar=false → 场景口上 effects 静默从不执行（文档承诺的
+    // start_conversation/start_quest 等全失效）。改为：任何来源的命中行，只要未被行为地文
+    // 替换且带 effects，都执行（替换后 = 该行没被说出 → 不跑）
+    if (!replacedByBehavior && matched.line.effects?.length) {
       await executeLineEffects(matched.line, charId)
     }
     hasOutput = true
@@ -347,8 +401,9 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
 
   // 注释：3. 行为地文兜底——无对口上时用行为地文（T3，H 行为专用 A+B+C 组合），
   // 再退 talk-common 变量兜底。行为级默认口上（原生通用口上）由上方角色通用轨补位负责
-  // （getText），此处不再重复查询（2026-08-17 收敛——原 getText 分支为死代码）
-  if (!hasOutput) {
+  // （getText），此处不再重复查询（2026-08-17 收敛——原 getText 分支为死代码）。
+  // 总开关（talk.behavior_text_enabled=false）时兜底一并关闭 → 池空即静默（ADR 0017）
+  if (!hasOutput && behaviorTextEnabled) {
     try {
       const playerId = gameContext.getContext().player?.id
       const fallback = await apiSystem.call('talk-common', 'getBehaviorText', scene, charId ?? null, playerId)

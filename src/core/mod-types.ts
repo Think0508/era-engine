@@ -66,10 +66,22 @@ export interface HInstruction {
 }
 
 // 注释：H 系数配置
+// 注释：hConfig [talk] 段（口上/地文配置，ADR 0017）——mod 作者用
+export interface HConfigTalk {
+  /** 混合率（0-100；0 = 只关混合、留兜底；默认 30，对齐 erArk draw_setting[13]×10） */
+  common_mix_rate?: number
+  /** 纸娃娃地文总开关：false = 混合 + 空池兜底全关（默认 true，对齐 erArk draw_setting[2] 的纸娃娃一侧） */
+  behavior_text_enabled?: boolean
+  /** 特殊情境加权（T6，erArk handle_special_talk_weight 数据化） */
+  situations?: { premises?: string[]; multiplier?: number }[]
+  [key: string]: any
+}
+
 export interface HConfig {
   ability_lv_adjust?: number[]
   status_level_thresholds?: number[]
   favorability_thresholds?: number[]
+  talk?: HConfigTalk
   [key: string]: any
 }
 

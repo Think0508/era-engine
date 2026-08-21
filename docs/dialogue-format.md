@@ -13,8 +13,8 @@
   → 条件筛选（condition / premise( 前提集）
   → 权重计算（前提权重 high_N 累加 + 满足前提数；静态 weight 字段优先；情境加权×5）
   → 权重区间随机选一
-  → 混合率（weight<100 时按概率替换为行为地文）
-  → 无候选 → 行为地文 → 纸娃娃变量兜底
+  → 混合率（仅角色行、weight<100 时按概率替换为行为地文；场景旁白不参与；受总开关控制）
+  → 无候选 → 行为地文兜底（受总开关控制）→ 纸娃娃变量兜底
 ```
 
 | 机制 | 字段/配置 | 说明 |
@@ -25,7 +25,8 @@
 | 情境加权 | hConfig `[[talk.situations]]` | 前提集命中 → ×multiplier（默认 9 类 ×5） |
 | 版本化 | `version = N` | 行版本；角色实体 `character_text_version` 选版（0=不启用） |
 | 无意识屏蔽 | — | 目标无意识（时停）时，无 unconscious 前提的口上淘汰 |
-| 混合率 | hConfig `talk.common_mix_rate`（默认 30） | weight<100 的口上按概率替换为行为地文（{penis_in_vagina} 等） |
+| 混合率 | hConfig `talk.common_mix_rate`（默认 30） | **角色行**且 weight<100 时按概率替换为行为地文（{penis_in_vagina} 等）；场景旁白不参与；`0`=只关混合、留兜底 |
+| 总开关 | hConfig `talk.behavior_text_enabled`（默认 true） | `false` = 混合 + 空池兜底两条纸娃娃路径全关（纯口上；池空静默） |
 
 ### 四个层级的关系
 
@@ -292,8 +293,35 @@ talk-common 词条 `behavior/` 目录（一行为一文件，`variable` = 行为
 - 输出走角色轨格式（`角色名：文本`）；词条可带 `premise(high_1)` 等条件做加权
 - 边界约束：`behavior/` 目录只放**非 H 行为**；H 行为默认文本仍走行为地文（见下）
 
-**兜底地文**：当无对口上（含原生默认）时，dialogue-system 自动使用 talk-common-system 的
-行为地文（getBehaviorText，H 行为 A+B+C 组合）生成描述：
+**兜底地文（双轨定位，2026-08 定稿，ADR 0017）**：行为地文 ≠ 独立的第四层口上，而是与口上
+同槽位的两种角色——**低权重角色口上的概率共存替代（混合率）** + **无任何口上时的最后兜底**：
+
+- **混合率**：角色通用/专属口上（含原生默认词条）以 `weight<100` 中选后，按
+  `talk.common_mix_rate`（默认 30%）概率替换为行为地文（`getBehaviorText`，H 行为 A+B+C 组合）。
+  **场景旁白（scene-dialogue 层）不参与混合替换**——旁白是环境叙述，换成角色身体地文语义断裂。
+- **兜底**：候选池空（无对口上，含原生默认）时，dialogue-system 自动使用行为地文生成描述；
+  `charId` 存在时带说话者前缀（`角色名：文本`）。
+- **保护**：任何来源（场景/通用/专属）`weight ≥ 100` 的口上一律不参与混合替换（有意偏离 erArk——
+  erArk 只保角色专属高权重；我们通用层是 mod 世界观内容层，与专属同权保护）。
+- **总开关 `talk.behavior_text_enabled`**（默认 true）：`false` 时混合与兜底**全关**（对齐 erArk
+  `draw_setting[2]=0` 的纸娃娃一侧），有口上出口上、池空静默。
+
+四态矩阵：
+
+| behavior_text_enabled | common_mix_rate | 效果 | 对应 erArk |
+|---|---|---|---|
+| true | 30（默认） | 混合 + 兜底（双轨默认） | draw_setting[2]=1, [13]=3 |
+| true | 0 | 只关混合、留兜底（作者优先+填空） | [13]=0 |
+| false | 任意 | 全关纸娃娃（纯口上；池空静默） | [2]=0 |
+
+```toml
+# mods/武侠/h-config.toml（示例）
+[talk]
+common_mix_rate = 30        # 0 = 只关混合、留兜底；越界/非数值 → 钳制回 [0,100] + 告警
+behavior_text_enabled = true # false = 全关纸娃娃；非布尔（如字符串 "false"）→ 按 true + 告警（源：ADR 0017）
+```
+
+行为地文示例（`getBehaviorText`，H 行为 A+B+C 组合）：
 
 ```
 {character.name} 和 {target.name} {action_talk_polite}。

@@ -323,6 +323,11 @@ interface InterpolationContext {
 
 ## 给 Mod 作者的指南
 
+> **行为地文的开关（hConfig `[talk]`）**：行为地文的**混合率替换**（低权重角色口上按概率被
+> 行为地文取代）与**空池兜底**由 `talk.common_mix_rate`（默认 30；0 = 只关混合、留兜底）和
+> `talk.behavior_text_enabled`（默认 true；false = 混合 + 兜底全关）两个旋钮控制；场景旁白不参与
+> 混合替换。完整语义见 `docs/dialogue-format.md` §七 + `docs/adr/0017-talk-behavior-text-dual-role.md`。
+
 ### 覆盖默认数据
 
 在模组的 `definitions/talk-common/` 下创建同名同路径 TOML 文件即可覆盖默认值：

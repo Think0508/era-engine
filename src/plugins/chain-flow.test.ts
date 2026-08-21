@@ -153,6 +153,25 @@ describe('指令执行链路冒烟', () => {
     expect(texts2.some(t => t.includes('你是何人'))).toBe(true)
   })
 
+  it('端到端——场景旁白带 narrative_output effects 真实执行（审计修复：原被 outputIsChar 门控吞掉）', async () => {
+    // 注释：走真实 effect-system 链路（非 mock）——场景行带真实效果类型 narrative_output
+    //（写入叙事日志）。修复前 executeLineEffects 被 outputIsChar 门控，场景旁白行 effects 从不执行；
+    // 修复后任何来源命中行未被行为地文替换且带 effects 都执行（ADR-0017 D8）。
+    const mod = modLoader.getMod()!
+    mod.sceneDialogue.push({
+      scene: 'audit_scene_effects',
+      text: '审计-旁白原文',
+      effects: [{ type: 'narrative_output', params: { text: '审计-旁白副效果' } }],
+    })
+    narrativeLog.clear()
+    await apiSystem.call('dialogue', 'triggerScene', 'audit_scene_effects', 'npc_1')
+    const texts = narrativeLog.getEntries().map((e: any) => String(e.text))
+    // 场景旁白行本身输出
+    expect(texts.some(t => t.includes('审计-旁白原文'))).toBe(true)
+    // 其 effects 经真实 effect-system 执行（修复前此处恒 false）
+    expect(texts.some(t => t.includes('审计-旁白副效果'))).toBe(true)
+  })
+
   it('整批执行后 errorReporter 无 error 级错误', () => {
     const errors = errorReporter.getErrors()
     expect(errors.some(e => e.severity === 'error')).toBe(false)

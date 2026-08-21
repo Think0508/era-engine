@@ -47,6 +47,16 @@
 - **文档**：mod-author-guide（chat_settle 参数）、mod-file-guide（definitions/talk-common/）、mod-workflow（第 1 步默认口上说明）、dialogue-format（§七原生通用口上）
 - **待办**：chat.toml 10 条占位句待手写替换；rest 等后续指令批次按同模式补默认口上
 
+### 已完成（2026-08）——口上行为地文双轨定稿（ADR-0017：混合共存 + 空池兜底）
+
+- **机制**：行为地文 ≠ 独立第四层，而是同一输出槽位双角色——①低权重**角色**口上按 `talk.common_mix_rate`（默认 30）概率替换为 `getBehaviorText` 地文；②候选池空时兜底出地文
+- **新旋钮**：`talk.behavior_text_enabled`（默认 true；false = 混合 + 空池兜底全关，池空静默，对齐 erArk draw_setting[2]=0 纸娃娃一侧）；`common_mix_rate=0` = 只关混合、留兜底（erArk [13]=0 档，不新增第 3 开关）；`HConfigTalk` 补类型（mod-types.ts）
+- **旁白排除**：场景旁白（source='scene'）**不参与混合替换**（环境叙述 ≠ 角色身体地文，语义断裂）；保护规则不变——任意来源（场景/通用/专属）weight≥100 全保护（**有意偏离** erArk 只保专属高权重，理由：我们通用层是 mod 世界观内容层）
+- **落地**：dialogue-system `triggerSceneInternal`（总开关守卫 + `entry.source==='character'` 旁白守卫）
+- **测试**：`talk-common-behavior.test.ts` 新增 8 例（总开关 false 禁混合 / 总开关 false 禁兜底空输出 / rate=0 只关混合留兜底 / 旁白不被替换 / 越界钳制告警 / 字符串"false"告警 / 场景旁白 effects 执行修复 / 带 effects 角色行不参与混合）；既有 T3 混合三例改为角色来源行（旁白已排除）；本文件 15 通过
+- **审计修复（第二轮）**：①`common_mix_rate` 越界/非数值 → 钳制 + 去重告警；②`behavior_text_enabled` 非布尔 → 按 true + 告警（ADR D7）；③场景旁白带 effects 原被 `outputIsChar` 门控静默吞掉（start_conversation/start_quest 死功能）→ 修复为任何来源命中行未被替换即执行；④带 effects 的角色行排除出混合池，防 effects 静默丢失（ADR D8）；⑤显式示例：instruction-to-narrative 补"场景口上 effects 可信"说明 + chain-flow 真实 effect-system（narrative_output）端到端回归
+- **文档**：dialogue-format（§七 四态矩阵 + 旋钮 + 旁白/保护语义）、talk-common-system（给 Mod 作者指南引用）、ADR-0017（三处有意偏离显式化：保护范围 / 旁白 / 总开关作用域）
+
 ## 会话交接摘要（2026-07-14）
 
 > 新会话开始时先读此节。

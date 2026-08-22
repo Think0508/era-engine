@@ -306,6 +306,26 @@ export interface TalentDef {
   favorite_position?: number
 }
 
+// 注释：身材系统（body-shape-system 消费）——body-shape.toml 档位表
+// 维度（胸/臀）内多个连续档位，天赋名 = 人际可读的标签（须与现有胸/臀天赋名逐一对应）；
+// 数值为唯一真相：数值落档 → 重算天赋；只有档没数值 → 落该档最小值；两者皆无 → 默认档。
+export interface BodyShapeTierDef {
+  min: number        // 闭区间下界
+  max: number        // 开区间上界（min ≤ value < max；越界收边）
+}
+export interface BodyShapeDimDef {
+  default: string    // 默认档天赋名（无数值无天赋时使用）
+  tiers: Record<string, BodyShapeTierDef>
+  sex?: 'female' | 'male'   // 维度级性别闸（缺省 = body_shape.sex_to_apply；胸/臀/身高=女，阴茎=男）
+}
+export interface BodyShapeDef {
+  sex_to_apply?: 'female' | 'male'   // 性别闸（缺省 female）；本引擎 性别 1=男 2=女
+  chest?: BodyShapeDimDef
+  hip?: BodyShapeDimDef
+  height?: BodyShapeDimDef   // 身高：纯派生档（不写天赋，与胸/臀语义不同）
+  penis?: BodyShapeDimDef    // 阴茎长度：男用、纯派生档；base.阴茎大小(0-3) 降级为派生镜像
+}
+
 // 注释：套装定义
 export interface SetBonus {
   required_count: number
@@ -723,6 +743,9 @@ export interface LoadedMod {  id: string
 
     // 注释：睡眠配置（sleep-system 消费）——plan_to_wake_time/plan_to_sleep_time/睡眠等级
     sleepConfig: SleepConfig
+
+    // 注释：身材档位表（body-shape-system 消费）——插件默认层 + mod 定义层，按 维度+档 合并
+    bodyShape?: BodyShapeDef
 
   // 注释：指令（插件默认层 + mod 定义层，按 id 去重，mod 胜出）
   instructions: HInstruction[]

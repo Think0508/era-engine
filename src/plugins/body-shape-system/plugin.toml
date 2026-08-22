@@ -1,0 +1,15 @@
+[meta]
+id = "body-shape-system"
+name = "身材系统"
+version = "1.0.0"
+description = "女角色胸围/臀围/身高(cm) ↔ 身材档 双向一致化：懒物化、数值权威、档位互斥、性别闸、条件代理域"
+
+# 注释：条件字典（手工册/加载期校验）——代理域 body_shape.* 路径，读时先 reconcile（懒物化正确）。
+# 写法：body_shape.selected.胸围 / body_shape.{charId}.臀围 / body_shape.{charId}.身高 /
+#       body_shape.{charId}.阴茎长度（阴茎=男用维度）
+# ⚠️ 不要写 selected.body_shape.胸围：那走实体直读、不触发 reconcile（未消费的档读成 0）。
+[condition_fields]
+"body_shape.{id}.胸围" = { type = "number", description = "角色胸围(cm)，Proxy 域懒物化" }
+"body_shape.{id}.臀围" = { type = "number", description = "角色臀围(cm)，Proxy 域懒物化" }
+"body_shape.{id}.身高" = { type = "number", description = "角色身高(cm)，Proxy 域懒物化" }
+"body_shape.{id}.阴茎长度" = { type = "number", description = "角色阴茎长度(cm)（男用），Proxy 域懒物化" }

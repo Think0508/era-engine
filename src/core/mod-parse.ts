@@ -13,7 +13,7 @@ import type {
   SleepConfig, RandomEventDef, AbilityDef, TalentDef, EquipmentSlot, CalendarConfig,
   NpcSpawn, ReactiveLine, ConversationNode, ItemDef, SetDef, StatusEffectDef, JuelDef,
   AttributeDefinition, ModDependency, PendingSpawn, GainRuleDef, AchievementDef,
-  CounterDef, CounterViewDef,
+  CounterDef, CounterViewDef, BodyShapeDef, BodyShapeDimDef,
 } from './mod-types'
 import {
   validateCharacterContract,
@@ -839,6 +839,90 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   const loadedCounters = loadCounters()
   mod.counterDefs = loadedCounters.defs
   mod.counterViews = loadedCounters.views
+
+  // 注释：加载 body-shape.toml（身材档位表；body-shape-system 消费）——
+  // 插件默认层（data/default/） + mod definitions 层，按 维度(chest/hip)→档位名 deepMerge
+  // （mod 可覆盖默认层的 min/max/default）。结构错误（非数组/缺字段）→ error（文件名+行号）；
+  // 档位表本身不单调/缺默认档 → warning（运行时按 min 排序收边兜底）。
+  function loadBodyShape(): BodyShapeDef {
+    const result: BodyShapeDef = {}
+    const paths = Object.keys(rawTomlMap).filter(p =>
+      p.endsWith('/body-shape.toml') || p === `/mods/${modName}/definitions/body-shape.toml`)
+    for (const path of paths) {
+      const data = parseFile(path, rawTomlMap[path])
+      const raw = data.body_shape
+      if (raw === undefined) continue
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+        throw new Error(`${path}: body-shape.toml 缺少 [body_shape] 段（或不是表）`)
+      }
+      for (const dim of ['chest', 'hip', 'height', 'penis'] as const) {
+        const dimRaw = raw[dim]
+        if (dimRaw === undefined) continue
+        if (!dimRaw || typeof dimRaw !== 'object' || Array.isArray(dimRaw)) {
+          throw new Error(`${path}: [body_shape.${dim}] 必须是表`)
+        }
+        if (!dimRaw.tiers || typeof dimRaw.tiers !== 'object' || Array.isArray(dimRaw.tiers)) {
+          throw new Error(`${path}: [body_shape.${dim}.tiers] 必须是表（档位名 → {min,max}）`)
+        }
+        if (dimRaw.sex !== undefined && dimRaw.sex !== 'female' && dimRaw.sex !== 'male') {
+          throw new Error(`${path}: [body_shape.${dim}] 的 sex 仅支持 female/male`)
+        }
+        const dimDef: BodyShapeDimDef = { default: dimRaw.default ?? '', tiers: {} }
+        for (const [tierName, tierRaw] of Object.entries(dimRaw.tiers as Record<string, any>)) {
+          if (!tierRaw || typeof tierRaw !== 'object' || Array.isArray(tierRaw) ||
+              typeof tierRaw.min !== 'number' || typeof tierRaw.max !== 'number' ||
+              !(tierRaw.min < tierRaw.max)) {
+            throw new Error(`${path}: [body_shape.${dim}.tiers] 档 '${tierName}' 需含数字 min<max`)
+          }
+          const prev = result[dim]?.tiers?.[tierName]
+          dimDef.tiers[tierName] = {
+            ...(prev ?? {}),
+            min: tierRaw.min,
+            max: tierRaw.max,
+          }
+        }
+        result[dim] = {
+          ...(result[dim] ?? {}),
+          default: dimRaw.default !== undefined ? dimRaw.default : (result[dim]?.default ?? ''),
+          sex: dimRaw.sex !== undefined ? dimRaw.sex : (result[dim]?.sex),
+          tiers: { ...(result[dim]?.tiers ?? {}), ...dimDef.tiers },
+        }
+      }
+    }
+    for (const dim of ['chest', 'hip'] as const) {
+      const dimDef = result[dim]
+      if (!dimDef) continue
+      const sorted = Object.entries(dimDef.tiers).sort((a, b) => a[1].min - b[1].min)
+      // 默认档校验：缺失 → warning + 取最小下界档兜底
+      if (!dimDef.default || !dimDef.tiers[dimDef.default]) {
+        dimDef.default = sorted[0]?.[0] ?? ''
+      }
+      // 单调性校验：乱序 → warning（运行时仍按 min 排序，行为确定）
+      for (let i = 1; i < sorted.length; i++) {
+        if (!(sorted[i - 1][1].min < sorted[i][1].min)) {
+          errorReporter.report({
+            source: 'mod-loader',
+            severity: 'warning',
+            message: `body-shape.toml [body_shape.${dim}] 档位区间非严格递增（${sorted[i - 1][0]}→${sorted[i][0]}），已按 min 排序处理`,
+          })
+          break
+        }
+      }
+      // 连续性校验：相邻档区间出现空隙（上一档 max < 下一档 min）→ warning。
+      // 空隙内的数值没有档归属，tierOf 会静默收边到末档——作者应保持区间连续。
+      for (let i = 1; i < sorted.length; i++) {
+        if (sorted[i - 1][1].max < sorted[i][1].min) {
+          errorReporter.report({
+            source: 'mod-loader',
+            severity: 'warning',
+            message: `body-shape.toml [body_shape.${dim}] 档位区间存在空隙（${sorted[i - 1][0]} max=${sorted[i - 1][1].max} < ${sorted[i][0]} min=${sorted[i][1].min}），空隙内数值将静默收边到末档，建议区间连续`,
+          })
+        }
+      }
+    }
+    return result
+  }
+  mod.bodyShape = loadBodyShape()
 
   // 注释：升级路径校验（须在 talents 加载之后——needs 引用 talent 名需要 talentDefs 就绪）
   validateAbilityUpgrades(mod, modName)

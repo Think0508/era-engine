@@ -9,7 +9,7 @@
 // - penis_dirty_dict: 玩家阴茎精液污浊追踪
 
 import { conditionEngine } from '../../core/condition-engine'
-import type { PluginContext, GameContext, EntityData } from '../../core/types'
+import type { PluginContext, GameContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { ATTR } from '../../core/entity-utils'
@@ -276,7 +276,9 @@ export function onEnable(ctx: PluginContext): void {
     return !pctx.player?.dirty?.penis_dirty_dict?.semen
   })
 
-  // 注释：阴茎大小前提（jj_0~3）——查 actor（行为发起者）的阴茎大小
+  // 注释：阴茎大小前提（jj_0~3）——查 actor（行为发起者）的 base.阴茎大小。
+  // base.阴茎大小 自 2026-08（body-shape-system 引入）起是【派生镜像】：真理 = body_shape.阴茎长度(cm)，
+  // 由 body-shape-system 在 reconcile/set 时同步为档 rank（0-3）；本前提读取语义不变。
   // erArk handle_premise_other.py:1912-1966
   // actor = 行为发起者：handler ctx 的 sourceId（talk-common 传 actorId 映射；默认玩家）
   for (let size = 0; size <= 3; size++) {
@@ -288,27 +290,12 @@ export function onEnable(ctx: PluginContext): void {
     })
   }
 
-  // 注释：阴茎大小写入方（jj_0~3 前提修复，2026-08-13）——角色注册时幂等初始化。
-  // 此前全库无写入方（attributes.toml default=1）→ 恒 1 档 → jj_0 地文（1418 条）不可达、
-  // jj_1 错误常显（h-ejaculation/index.ts 原半成品标记）。erArk 无权威分布数据可查
-  // （宝珠成长系统已砍），采用保守分布假设（文档记录）：0 档 5% / 1 档 55% / 2 档 30% / 3 档 10%。
-  // 已有值（存档恢复/其他写入方）跳过，幂等。
-  const initPenisSize = (payload: { characters: { id: string; data: EntityData }[] }): void => {
-    for (const { data } of payload.characters ?? []) {
-      const ch = data as any
-      if (!ch || typeof ch !== 'object') continue
-      if (ch.base && typeof ch.base[ATTR.PENIS_SIZE] === 'number') continue
-      const roll = Math.random()
-      const size = roll < 0.05 ? 0 : roll < 0.6 ? 1 : roll < 0.9 ? 2 : 3
-      if (!ch.base || typeof ch.base !== 'object') ch.base = {}
-      ch.base[ATTR.PENIS_SIZE] = size
-    }
-  }
-  ctx.events.on('character:registered', initPenisSize)
-  // 注释：onEnable 时已注册角色补初始化（幂等）
-  for (const ch of entitySystem.getAll('character')) {
-    initPenisSize({ characters: [{ id: (ch as any).id, data: ch }] })
-  }
+  // 注释：base.阴茎大小 的唯一权威写者 = body-shape-system（2026-08 架构复盘，删除旧写者）。
+  // 此前本插件曾在 character:registered 按分布掷档初始化，但 attributes.toml default=1 的
+  // 预填使其在真实加载中恒被跳过（惰性死链），且单测环境叠加 body-shape 首触掷档产生
+  // 分布偏斜（双写者）。现收敛为单写者：body-shape-system reconcile/set 按
+  // body_shape.阴茎长度 推导档位并同步本字段（派生镜像）；未消费角色保持 default=1（普通）。
+  // 本插件只读镜像：上方 jj_0~3 前提 + h-core pain-adjust 结算。
 
   // 注：射精欲自然消退只有一条路径——core realtime-settle.settleEjaDecay（行动级，
   // 仅玩家、非 H、距上次射精 >30 分钟、-10/分钟）。曾经的 game:hour_changed 监听

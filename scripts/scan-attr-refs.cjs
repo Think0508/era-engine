@@ -125,6 +125,9 @@ const STRUCTURAL_NS = new Set([
   'pregnancy', 'dirty', 'body_items', 'h_state', 'sp_flag', 'achievement',
   'action_info', 'hypnosis', 'cloth', 'dialogue', 'conversations', 'quests',
   'scenes', 'styles', 'sets', 'schedules',
+  // L3 引擎独占承载（body-shape-system，2026-08）：胸围/臀围 cm 数值存 body_shape 负载，
+  // 随存档持久、非属性名（放 base 会被 attributes.toml 自动默认值覆盖手写天赋）
+  'body_shape',
   // mod 数据访问（关系系统 v2，2026-08-10）——mod.xxx['中文'] 是定义数据不是属性
   'relationGroups', 'relationTypes', 'relationPairs',
   // mod 数据访问（2026-08-12 hunger 测试注入）——modItems['中文'] 是物品定义注入，非属性引用

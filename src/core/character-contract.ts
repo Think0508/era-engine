@@ -43,6 +43,10 @@ export const ENGINE_OWNED_TOP_KEYS: ReadonlySet<string> = new Set([
   'achievements',
   // 注释：counter-system 计数器（惰性创建；唯一写入方 store.ts，存档随实体序列化）
   'counters',
+  // 注释：body-shape-system 身材负载（胸围/臀围/身高/阴茎长度 cm）——唯一写入方 =
+  // body-shape-system 的 reconcile/set/adjust（懒物化 + 数值权威）；作者写 TOML 字段无效
+  // （会被下次读取按数值重算覆盖），故登记为引擎独占，给精确 warning 而非"未知顶层键"
+  'body_shape',
 ])
 
 /** 引擎结构命名空间（非 attributes 定义，但合法存在的顶层键） */

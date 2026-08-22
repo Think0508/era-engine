@@ -1,0 +1,58 @@
+# ═══════════════════════════════════════════════════════════════
+# body-shape-system 默认档位表 —— 身材天赋 ↔ cm 数值 的双向映射
+# body-shape-system 插件消费 mod.bodyShape。mod 可用 definitions/body-shape.toml
+# 覆盖（按 维度(chest/hip) → 档名 min/max 字段级合并，mod 胜出）。
+#
+# 语义（本插件约定）：
+#   - min 闭 / max 开：min ≤ value < max 落入该档；低于首档收边为首档，高于末档收边为末档。
+#   - 档名必须与现有「胸/臀」天赋名逐一对应（天赋仍是唯一"可见标签"，不动档位集合）。
+#   - default = 无数值无天赋时采用的默认档（懒物化时落该档 min 并互斥置位该档天赋）。
+#   - sex_to_apply：性别闸（缺省 female）。本引擎 base.性别 1=男 2=女；非目标性别一律跳过。
+#
+# ⚠️ 边界数字为占位调参值（用户 grill 待定）——改这里/或 mod 覆盖即可，代码零改动。
+# ═══════════════════════════════════════════════════════════════
+
+[body_shape]
+sex_to_apply = "female"
+
+[body_shape.chest]
+default = "普乳"
+
+[body_shape.chest.tiers]
+"绝壁" = { min = 70, max = 75 }
+"贫乳" = { min = 75, max = 80 }
+"普乳" = { min = 80, max = 90 }
+"巨乳" = { min = 90, max = 100 }
+"爆乳" = { min = 100, max = 999 }
+
+[body_shape.hip]
+default = "普臀"
+
+[body_shape.hip.tiers]
+"小臀" = { min = 70, max = 80 }
+"普臀" = { min = 80, max = 90 }
+"巨臀" = { min = 90, max = 999 }
+
+[body_shape.height]
+default = "标准"
+
+# ⚠️ 「小车/标准/大车」是身高档的【标签】（0-160/160-175/175-999，min闭max开），
+# 与天赋「小车」（汽车迷因，摸小车指令用）完全无关；身高档只作派生标签、不写天赋。
+[body_shape.height.tiers]
+"小车" = { min = 0,  max = 160 }
+"标准" = { min = 160, max = 175 }
+"大车" = { min = 175, max = 999 }
+
+[body_shape.penis]
+sex = "male"
+default = "普通"
+
+# 阴茎长度：男用纯派生档（不写天赋），边界 min闭max开：8→普通 / 12→粗大 / 16→巨根。
+# base.阴茎大小(0-3) 由系统保持为派生镜像（jj_0~3 前提/pain-adjust/属性面板零改动兼容）。
+# 首触无数据 → 按分布 5%/55%/30%/10% 掷档（修复 attributes 默认值 1 导致的"真实加载全员普通"潜伏 BUG），
+# 显式写 阴茎大小=0/2/3 的角色按该档内随机落 cm（=1 与默认值不可区分，仍走掷档）。
+[body_shape.penis.tiers]
+"短小" = { min = 0,  max = 8 }
+"普通" = { min = 8,  max = 12 }
+"粗大" = { min = 12, max = 16 }
+"巨根" = { min = 16, max = 999 }

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>通用口上编辑器</title>
+  </head>
+  <body>
+    <script>
+      // @iarna/toml 依赖 Node 风格裸 global（parse-string.js 第 8 行）
+      // Tauri WebView / 浏览器无此全局变量 → 垫片
+      window.global = window.global || window
+    </script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

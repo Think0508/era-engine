@@ -1,0 +1,31 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicegui/nicegui/main/nicegui/static/tauri/tauri.conf.json",
+  "productName": "talk-common-editor",
+  "version": "0.1.0",
+  "identifier": "com.era-engine.talk-common-editor",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1421",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "通用口上编辑器",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 1000,
+        "minHeight": 650
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": false,
+    "targets": "all",
+    "icon": []
+  }
+}

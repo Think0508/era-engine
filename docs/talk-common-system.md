@@ -40,8 +40,7 @@ talk-common-system 是从 erark `talk_common` 系统精确复刻的条件文本�
 
 | 插件 | 依赖类型 | 说明 |
 |------|---------|------|
-| `h-core` | 编译时 import | premise 判定——评估 `high_1`、`CVP_A2_T\|102_E_1` 等条件 |
-| `dialogue-system` | 被依赖 | 在 `interpolateText` 前调用 `replaceCommonTexts` |
+| `dialogue-system` | 被依赖 | 在 `interpolateText` 前调用本插件的 `replace`（2026-08-13 起前提判定归 core 条件引擎，不再依赖 h-core） |
 
 ### 数据加载链
 
@@ -59,7 +58,7 @@ talk-common-system 是从 erark `talk_common` 系统精确复刻的条件文本�
   └── body_part/vagina_s.toml   ← 覆盖默认
 ```
 
-加载时以默认数据为基础，用模组目录下的同路径文件逐层覆盖（深合并）。模组只写要改的文件，其余继承默认。
+加载时以默认数据为基础，用 mod 目录的同路径文件覆盖（**variable 同名整体替换，不是逐条深合并**——2026-08-23 校准）。mod 只写要改的文件，其余继承默认。
 
 ## TOML 数据格式
 
@@ -88,8 +87,33 @@ conditions = "premise(high_1)"
 | `[[entries]]` | array | 是 | 所有可选的文本条目 |
 | `[[entries]].context` | string | 是 | 输出的文本片断。可嵌套其他 talk_common 变量（如 `{vagina_s}`） |
 | `[[entries]].conditions` | string | 否 | 条件表达式。前提用 `premise(X)` 内联引用（见下文） |
+| `[[entries]].style` | string | 否 | 整体修饰：`[styles]` 注册表命名样式名（ADR 0018，见下文） |
+| `[[entries]].trigger` | string | 否 | 整体修饰：`"auto"`（自动）\| `"click"`（整条点击继续） |
+| `[[entries]].display` | string | 否 | 整体修饰：`"instant"`（一下全出）\| `"typewriter"`（逐字） |
+| `[[entries]].speed` | number | 否 | 整体修饰：逐字速度（毫秒/字），仅 `display="typewriter"` 生效 |
+| `[[entries]].pause` | number | 否 | 整体修饰：本条显示完后**自动暂停的毫秒数**（`trigger="auto"` 时生效；全屏流中生效，等待期间点击可跳过；2026-08-23 恢复原始设计） |
+| `[[entries]].color` / `size` / `font` | string | 否 | 整体修饰：整条颜色（支持 `#AARRGGBB` 半透明）/字号 / 字体 |
 
 运行时从所有 `conditions` 满足的 entries 中随机选一条。
+
+#### 整体修饰字段（ADR 0018）
+
+行为词条条目可携带**整体口上修饰**（整条的外观与展示节奏），与行结构
+（scene_lines / conversation 的 `lines`）的 display 语义完全对齐；被选中条目的这些字段随文本
+输出为叙事日志的 `LogDisplay`（逐字/点击/颜色/字体由 NarrativeLog 渲染）：
+
+```toml
+[[entries]]
+style = "narrator"              # 查活动 mod 的 [styles] 注册表（mods/{mod}/definitions/talk/styles.toml）
+display = "typewriter"
+speed = 40
+context = "整条逐字慢出，行内还能叠加 {{color:#80FF0000 半透明}}。"
+```
+
+- **优先级**：行内 BBCode > 词条自身字段 > `[styles]` 注册表（词条字段覆盖样式表字段）> 默认外观；
+- **style 名作用域**：渲染配置属于 mod——默认基座查插件默认层（约定只由 dialogue-system 的 `data/default/talk/styles.toml` 提供），再查**当前活跃 mod** 的 `[styles]`（`mods/{mod}/definitions/talk/styles.toml`，同名键整体覆盖默认层）；默认层词条引用 style 名时同样按活跃 mod 解析；
+- **组合词条限制**：`parts` 组合词条（body/body_part/action 分段拼接）的 display 只取被选中的 **A 段**条目的字段，其余段忽略；行为地文（`getBehaviorText`）保持纯文本，不带 display；
+- 字段类型/枚举错误时：talk-common 词条解析不报错（白名单透传），渲染层按缺省处理；编辑器工具会给出 warning/hint。
 
 #### conditions 格式
 
@@ -191,7 +215,7 @@ conditions = "premise(CVP_A2_T|102_E_1)"
 
 ```toml
 # definitions/talk-common/action_A/penis_in_vagina.toml
-variable = "action_penis_in_vagina_A"
+variable = "action_A_penis_in_vagina"          # ← 实际命名（action_{A段}_{key}，与 getBehaviorText 组合名一致）
 description = "正常位·阴茎插入阴道——A段动作描述"
 
 [[entries]]
@@ -219,14 +243,20 @@ erark CSV 目录 → 本系统 TOML 路径 → 变量名：
 | `body_part/vagina_s.csv` | `body_part/vagina_s.toml` | `{vagina_s}` | 多段 A+B |
 | `body_part/penis_s.csv` | `body_part/penis_s.toml` | `{penis_s}` | 多段 A+B |
 | `body_part/common_s_A.csv` | `body_part/common_s.toml` | 多段 A 共用形容词池 |
-| `action_A/penis_in_body/penis_in_vagina_A.csv` | `action_A/penis_in_vagina.toml` | `{action_penis_in_vagina_A}` | 单段 |
-| `action_A/orgasm/v_orgasm_small_A.csv` | `action_A/v_orgasm_small.toml` | `{action_v_orgasm_small_A}` | 单段 |
+| `action_A/penis_in_body/penis_in_vagina_A.csv` | `action_A/penis_in_vagina.toml` | `{action_A_penis_in_vagina}`（A 段） | 行为地文组合 |
+| `action_B1/penis_in_body/penis_in_vagina_B1.csv` | `action_B1/penis_in_vagina.toml` | `{action_B1_penis_in_vagina}`（B 段） | 行为地文组合 |
 
 完整对照表见 talk-common-system 默认数据目录（`src/plugins/talk-common-system/data/default/talk-common/`，按 `action_A/`、`body/`、`body_part/` 等子目录组织——无 `_index.toml`，以目录 + `variable` 字段为准）。
 
 ### `str.format()` 变量（由 dialogue-system 插值器处理）
 
 这些变量不在 talk_common 中，由 `dialogue-system.interpolateText()` 负责替换：
+
+> ⚠️ 2026-08-23 校准：以下映射中只有 name / nickname / targetName / location.name / time.* 在
+> `interpolateLine` 上下文中**已实现**；`wearUpper/wearLower/wearPanties/wearSkirt/wearSocks/wearBra`、
+> `randomCharaName`、`targetLocation.name`、`sourceLocation.name`、`FoodName`、`BookName`、
+> `MakeFoodTime` **均未实现**（写了保留原样）——按需到 `dialogue-system/index.ts` 的
+> `interpolateLine` 补 context 后再用。
 
 | erark 变量 | 本系统变量 | 说明 |
 |-----------|-----------|------|
@@ -255,26 +285,38 @@ erark CSV 目录 → 本系统 TOML 路径 → 变量名：
 
 ## API 参考
 
-### `replaceCommonTexts(text: string, targetId: string): string`
+### `getText(variable, targetId, actorId?): string | null`
+
+按条件/权重随机选中一条并返回**纯文本**（兼容视图；REPL 与 sleep-system 等内部使用）。
+富查询见 `getTextEntry`。
+
+### `getTextEntry(variable, targetId, actorId?): { text, display? } | null`（ADR 0018）
+
+与 `getText` 同一次加权随机，额外返回被选中条目的**整体修饰字段**
+（`style/trigger/display/speed/pause/color/size/font`，见「整体修饰字段」节——组合词条只取 A 段）：
+
+```typescript
+const { text, display } = await api.call('talk-common', 'getTextEntry', 'chat', npcId, playerId)
+// display = { style: 'narrator', display: 'typewriter', speed: 40, ... } | undefined
+```
+
+dialogue-system 的角色级/场景级默认口上补位即用本查询，展示字段展开到输出 `LogDisplay`。
+
+### `replace(text: string, targetId: string, actorId?): string`（api 注册名；内部实现 `replaceAll`）
 
 扫描文本中的 `{variableName}` 模式，对 talk_common 注册的变量执行替换。
 
 ```typescript
-import { replaceCommonTexts } from '../talk-common-system'
-
-// 输入含 talk_common 变量
-const raw = "{Name}的{penis}插入{TargetName}的{vagina}"
-// 先过 talk_common
-const step1 = replaceCommonTexts(raw, targetNpcId)
+// 通过插件 API 调用（talk-common 注册的公共方法）
+const step1 = await apiSystem.call('talk-common', 'replace', raw, targetNpcId)
 // → "{Name}的粗大火热的肉棒插入{TargetName}的粉嫩紧致的{vagina_s}"
 // 再过 dialogue-system 插值
 const step2 = interpolateText(step1, { player, character, target, location, time })
-// → "博士的粗大火热的肉棒插入铃兰的粉嫩紧致的{vagina_s}"
 ```
 
-注意：talk_common 的替换结果中可能仍包含未被替换的嵌套变量（如 `{vagina}` → 结果中还有 `{vagina_s}`），因为这些嵌套变量不是 talk_common 当前遍历到的 key，会在后续的 `interpolateText` 保持原样。如果需要多轮替换，调用方应循环调用 `replaceCommonTexts` 直到文本不再变化。
+注意：talk_common 的替换结果中可能仍包含未被替换的嵌套变量（如 `{vagina}` → 结果中还有 `{vagina_s}`），因为这些嵌套变量不是 talk_common 当前遍历到的 key，会在后续的 `interpolateText` 保持原样。如果需要多轮替换，调用方应循环调用 `replace` 直到文本不再变化。
 
-### `getAvailableVariables(): string[]`
+### `getVariables(): string[]`（api 注册名）
 
 返回当前已加载的所有 talk_common 变量名列表，用于条件手册生成和校验。
 
@@ -332,7 +374,7 @@ interface InterpolationContext {
 
 在模组的 `definitions/talk-common/` 下创建同名同路径 TOML 文件即可覆盖默认值：
 
-> **数据加载与重载（2026-08-15）**：插件 `onEnable` 时加载默认层（168 文件 / 73MB，解析结果
+> **数据加载与重载（2026-08-15）**：插件 `onEnable` 时加载默认层（2026-08-23 实测 184 文件 / ≈73MB，解析结果
 > 缓存——重复启用不重解析）并合并当前 mod 的 `definitions/talk-common/` 覆盖。运行期再次
 > `loadMod`（`game:mod_loaded` 事件，本插件监听）会重载当前 mod 的口上数据；dev 下改 mod
 > 口上 TOML 后重新 loadMod 即可生效。切换模组仍走页面刷新（ModSelect → reload），无需依赖该机制。
@@ -371,7 +413,7 @@ context = "粉嫩紧致湿润温暖，触感细腻敏感的{vagina_s}"
 
 ### 从 erark CSV 迁移
 
-转换脚本 `scripts/convert-erark-talk-common.cjs`（待实现）将 `data/talk_common/` 下的 CSV 批量转换为 TOML 格式：
+转换脚本 `scripts/convert-erark-talk-common.cjs`（已实现）将 `data/talk_common/` 下的 CSV 批量转换为 TOML 格式：
 
 - `body_part/vagina_s_A.csv` + `body_part/vagina_s_B.csv` → `body_part/vagina_s.toml`（合并 A+B）
 - `body/vagina.csv` → `body/vagina.toml`

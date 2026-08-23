@@ -6,8 +6,9 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { EntityData, LocationData, GameTimeData } from '../../core/types'
+import type { LogDisplay } from '../../core/narrative-log'
 
-// 注释：LogEntry 与 core narrative-log 的 LogEntry 对应
+// 注释：LogEntry 与 core narrative-log 的 LogEntry 对应（_display 复用 core LogDisplay，2026-08-23 收敛）
 export interface LogEntry {
   id: string
   text: string
@@ -17,15 +18,7 @@ export interface LogEntry {
   interactive?: boolean
   consumed?: boolean
   payload?: any
-  _display?: {
-    trigger?: 'auto' | 'click'
-    display?: 'instant' | 'typewriter'
-    speed?: number
-    pause?: number
-    color?: string
-    size?: string
-    font?: string
-  }
+  _display?: LogDisplay
 }
 
 // 注释：天气数据——Phase 5 占位，未来天气插件写入

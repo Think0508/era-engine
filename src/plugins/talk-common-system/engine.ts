@@ -4,22 +4,37 @@ import { entitySystem } from '../../core/entity-system'
 import { errorReporter } from '../../core/error-reporter'
 import { weightedRandom } from '../../utils/weighted-random'
 import type { GameContext } from '../../core/types'
-import type { CommonTextIndex, CommonTextEntry } from './types'
+import type { CommonTextIndex, CommonTextEntry, TalkDisplayFields } from './types'
 
 export type VariableData = Record<string, {
   parts: string[]
   description: string
-  entries: Array<{ context: string; conditions?: string | string[]; part?: string }>
+  entries: Array<{ context: string; conditions?: string | string[]; part?: string } & TalkDisplayFields>
 }>
 
 // 注释：地文条件求值失败去重上报（2026-08-13 审计——原 catch 静默淘汰条目）
 const reportedCondErrors = new Set<string>()
+
+/** 展示字段白名单透传（新增键必须在此登记，未知键不进入运行态） */
+const DISPLAY_FIELDS: (keyof TalkDisplayFields)[] = [
+  'style', 'trigger', 'display', 'speed', 'pause', 'color', 'size', 'font',
+]
+
+export function pickDisplayFields(e: object): TalkDisplayFields {
+  const out: TalkDisplayFields = {}
+  for (const k of DISPLAY_FIELDS) {
+    const v = (e as Record<string, unknown>)[k]
+    if (v !== undefined) (out as Record<string, unknown>)[k] = v
+  }
+  return out
+}
 
 // 注释：条目归一化（幂等，B3 修复 2026-08-15）——入口已归一化（conditions 为数组 +
 // premiseRefs 已预计算）时直接复用对象（解析缓存命中路径，避免 203k 条目重复拷贝与
 // 正则重算）；原始数据（string conditions）在此归一化 + 预计算静态元数据
 // （premiseRefs / hasUnconsciousRef——A1，加载期一次）。index.ts parseFile 也走本函数，
 // 使缓存的默认层/新解析的 mod 层在 loadFromData 时全部命中幂等短路。
+// ADR 0018：展示字段（style/trigger/display/…）随归一化白名单透传。
 export function normalizeCommonTextEntry(e: VariableData[string]['entries'][number]): CommonTextEntry {
   if (Array.isArray(e.conditions) && Array.isArray((e as CommonTextEntry).premiseRefs)) {
     return e as CommonTextEntry
@@ -28,7 +43,7 @@ export function normalizeCommonTextEntry(e: VariableData[string]['entries'][numb
   const premiseRefs: string[] = []
   for (const c of conds) premiseRefs.push(...extractPremiseRefs(c))
   const hasUnconsciousRef = conds.some(c => /unconscious/i.test(c))
-  return { context: e.context, conditions: conds, part: e.part, premiseRefs, hasUnconsciousRef }
+  return { context: e.context, conditions: conds, part: e.part, premiseRefs, hasUnconsciousRef, ...pickDisplayFields(e) }
 }
 
 export class CommonTextsEngine {
@@ -68,10 +83,15 @@ export class CommonTextsEngine {
     this.loaded = true
   }
 
-  private pickEntry(entries: CommonTextEntry[], targetId: string | null, actorId?: string, unconsciousPass = false): string | null {
+  /** 加权随机选中一条（含其展示字段——ADR 0018）；条件筛选失败返回 null */
+  private pickEntryMeta(entries: CommonTextEntry[], targetId: string | null, actorId?: string, unconsciousPass = false): CommonTextEntry | null {
     const candidates = this.weightedCandidates(entries, targetId, actorId, unconsciousPass)
     if (candidates.length === 0) return null
-    return weightedRandom(candidates.map(c => ({ item: c.text, weight: c.weight })))
+    return weightedRandom(candidates.map(c => ({ item: c.entry, weight: c.weight })))
+  }
+
+  private pickEntry(entries: CommonTextEntry[], targetId: string | null, actorId?: string, unconsciousPass = false): string | null {
+    return this.pickEntryMeta(entries, targetId, actorId, unconsciousPass)?.context ?? null
   }
 
   // 注释：候选加权（T7 审查修复——erArk get_weight_from_premise_dict 权重语义）
@@ -85,9 +105,9 @@ export class CommonTextsEngine {
     }
   }
 
-  private weightedCandidates(entries: CommonTextEntry[], targetId: string | null, actorId?: string, unconsciousPass = false): { text: string; weight: number }[] {
+  private weightedCandidates(entries: CommonTextEntry[], targetId: string | null, actorId?: string, unconsciousPass = false): { entry: CommonTextEntry; weight: number }[] {
     const premiseCtx = this.buildPremiseCtx(targetId, actorId)
-    const out: { text: string; weight: number }[] = []
+    const out: { entry: CommonTextEntry; weight: number }[] = []
     for (const e of this.filterEntries(entries, targetId, actorId, { unconsciousPass })) {
       let weight = 1
       // 注释：前提权重 = weightAllToOne 语义；premiseRefs 为加载期预计算（A1），免运行时正则
@@ -96,7 +116,7 @@ export class CommonTextsEngine {
         if (w <= 0) continue
         weight = w
       }
-      out.push({ text: e.context, weight })
+      out.push({ entry: e, weight })
     }
     return out
   }
@@ -147,6 +167,7 @@ export class CommonTextsEngine {
   //   B 组：action_B1_xxx ∪ action_B2_xxx 合并池（随机一条，erArk part_id 同为 "B"）
   //   C 组：action_C1_xxx ∪ action_C2_xxx 合并池（随机一条）
   // 动作段间换行（erArk 'action' in type_id → + '\n'）
+  // 注：地文保持纯文本输出，不携带展示字段（ADR 0018——展示字段只面向叙事口上）。
   getBehaviorText(behaviorKey: string, targetId: string | null, actorId?: string): string | null {
     const segmentGroups = [
       [`action_A_${behaviorKey}`],
@@ -155,23 +176,34 @@ export class CommonTextsEngine {
     ]
     let out = ''
     for (const group of segmentGroups) {
-      const candidates: { text: string; weight: number }[] = []
+      const candidates: { entry: CommonTextEntry; weight: number }[] = []
       for (const variable of group) {
         const entry = this.index[variable]
         if (!entry) continue
         candidates.push(...this.weightedCandidates(entry.entries, targetId, actorId))
       }
       if (candidates.length === 0) continue
-      out += weightedRandom(candidates.map(c => ({ item: c.text, weight: c.weight }))) + '\n'
+      out += weightedRandom(candidates.map(c => ({ item: c.entry.context, weight: c.weight }))) + '\n'
     }
     if (out.length === 0) return null
     return out.trim()
   }
 
   getText(variable: string, targetId: string | null, actorId?: string): string | null {
+    return this.getTextEntry(variable, targetId, actorId)?.text ?? null
+  }
+
+  // 注释：ADR 0018——富文本查询：文本 + 被选中条目的展示字段（整体修饰）。
+  // parts 组合词条（body/body_part/action 分段拼接）只提供文本（display 取 A 段
+  // 被选条目的字段，其余段忽略——组合是身体描述，节奏参数没有分段语义）。
+  getTextEntry(
+    variable: string,
+    targetId: string | null,
+    actorId?: string,
+  ): { text: string; display?: TalkDisplayFields } | null {
     const entry = this.index[variable]
     if (!entry) return null
-    // 注释：动作类 vs 部位类——无意识过滤语义（erArk body_part_flag）
+    // 动作类 vs 部位类——无意识过滤语义（erArk body_part_flag）
     const isAction = variable.startsWith('action_')
     const unconsciousPass = !isAction
 
@@ -196,17 +228,26 @@ export class CommonTextsEngine {
       }
 
       const parts: string[] = []
+      let display: TalkDisplayFields | undefined
       for (const partId of entry.parts) {
         const candidates = groups.get(partId)
         if (!candidates) continue
-        const picked = this.pickEntry(candidates, targetId, actorId, unconsciousPass)
-        if (picked) parts.push(picked)
+        const picked = this.pickEntryMeta(candidates, targetId, actorId, unconsciousPass)
+        if (picked) {
+          parts.push(picked.context)
+          // 审计修复（2026-08-23）：display 取首个实际命中段（parts[0] 空池时不再丢后续段的修饰）
+          if (!display) display = pickDisplayFields(picked)
+        }
       }
       if (parts.length === 0) return null
-      return parts.join('')
+      return { text: parts.join(''), display }
     }
 
-    return this.pickEntry(entry.entries, targetId, actorId, unconsciousPass)
+    const picked = this.pickEntryMeta(entry.entries, targetId, actorId, unconsciousPass)
+    if (!picked) return null
+    // 只透传 8 个展示键（白名单）——整对象透传会把 conditions/context 等
+    // 运行态键污染到补位 line 上（静默脏数据），必须先净化
+    return { text: picked.context, display: pickDisplayFields(picked) }
   }
 
   replaceAll(text: string, targetId: string | null, actorId?: string): string {

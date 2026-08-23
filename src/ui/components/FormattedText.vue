@@ -3,6 +3,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { parseBBCode, type TextSegment } from '../utils/bbcode-parser'
+import { toCssColor } from '../utils/color'
 
 const props = defineProps<{
   text: string
@@ -27,7 +28,7 @@ const segments = computed<TextSegment[]>(() => parseBBCode(props.text))
         spoiler: seg.spoiler,
       }"
       :style="{
-        color: seg.color || props.color || undefined,
+        color: seg.color ? toCssColor(seg.color) : props.color ? toCssColor(props.color) : undefined,
         fontFamily: seg.font || props.font || undefined,
         fontSize: seg.size || props.size || undefined,
       }"

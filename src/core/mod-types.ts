@@ -1,6 +1,7 @@
 // 模组数据 schema 类型定义（2026-08-15 E1 拆分——mod-loader 类型段独立）
 import type { Edge, EntityData, LocationData, MapLayout, MigrationStep, MoveConfig } from './types'
 import type { Effect } from './effect-type-registry'
+import type { StyledTalkDisplay } from './talk-display'
 // 转导出（mod-parse/mod-validate/外部消费者统一从本文件或 mod-loader 导入）
 export type { Edge, EntityData, LocationData, MapLayout, MigrationStep, MoveConfig } from './types'
 export type { Effect } from './effect-type-registry'
@@ -101,8 +102,8 @@ export interface NpcSpawn {
   name_generator?: string
 }
 
-// 注释：反应式口上条目
-export interface ReactiveLine {
+// 注释：反应式口上条目（展示字段来自 core 唯一源 StyledTalkDisplay，2026-08-23 收敛）
+export interface ReactiveLine extends StyledTalkDisplay {
   scene: string
   condition?: string
   text: string
@@ -112,15 +113,6 @@ export interface ReactiveLine {
   weight?: number
   // 注释：口上版本（T4 版本化）——同一场景多版本时按角色 character_text_version 选择
   version?: number
-  // 注释：展示参数（[styles] 引用或行级覆盖）
-  style?: string
-  display?: string
-  trigger?: string
-  speed?: number
-  pause?: number
-  color?: string
-  size?: string
-  font?: string
 }
 
 // 注释：交互式对话

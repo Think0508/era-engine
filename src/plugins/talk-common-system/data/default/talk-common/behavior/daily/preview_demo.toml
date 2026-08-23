@@ -1,0 +1,63 @@
+# preview_demo 预览演示词条（口上编辑器渲染验证用，可随时删除）
+# ============================================================
+# 覆盖各种口上渲染格式：纯文本插值 / 行内标记 / 颜色字号字体 / 涂黑 / 嵌套 / 条件分组。
+# 无指令引用它 → 游戏内永远不出现在候选池，不影响任何玩法。
+
+variable = "preview_demo"
+description = "口上渲染格式演示（仅供编辑器的渲染预览验证）"
+
+# ── 无条件组 ──────────────────────────────────────────────
+[[entries]]
+context = "纯文本+变量插值：{player.name}和{character.name}在{location.name}里聊了一会天，{time.hour}点了。"
+
+[[entries]]
+context = "行内标记：**加粗重点**、*斜体呢喃*、~~被打断的话~~、凶手名字是||涂黑未知||，点一下展开。"
+
+[[entries]]
+context = "颜色与字号与字体：{{color:#FF0000 红色字}}、{{color:#80FF0000 半透明红字}}、{{size:large 大字号}}、{{font:楷体 楷体字}}。"
+
+[[entries]]
+context = "嵌套示例：{{color:#FF0000 他说：**{{font:楷体 绝对不行}}**}}，说完叹了一口气。"
+
+[[entries]]
+context = "{{size:small 小声}}混排{{size:large 大声}}大小混排。{{color:#8250DF 紫色}}结尾。"
+
+# ── 高好感加权组 ──────────────────────────────────────────
+[[entries]]
+conditions = "premise(high_1)"
+context = "高好感组（premise(high_1) 加权）：{{color:#1A7F37 很投缘呢，}}*声音放轻*，**下次再聊**。"
+
+[[entries]]
+conditions = "premise(high_2)"
+context = "更高加权（premise(high_2)）：{player.name}和{character.name}并肩走在{location.name}，||刚才那句||谁也没再提。"
+
+# ── 带位置条件组 ──────────────────────────────────────────
+# 条件必须是合法表达式（2026-08-23 修正：原 {{location.name}} != '' 是 BBCode 语法，
+# 表达式引擎解析失败——warm 加载期告警；无指令引用时条目永不求值，但写法错误应避免）
+[[entries]]
+conditions = "location.name != ''"
+context = "带条件字符串的条目（本组条件展示分组标题）：{location.name}的月色正好。"
+
+# ── 整体修饰示例（ADR 0018：style/trigger/display/speed/pause）──
+[[entries]]
+style = "narrator"
+display = "typewriter"
+speed = 40
+context = "整体修饰：style=narrator（dialogue-system 默认基座已注册 → 预览标「已注册」并应用灰楷体）+ 逐字 40ms 徽标；行内 {{color:#80FF0000 半透明红}} 应正常显示。"
+
+# ── pause 组合示例（原始语义：trigger=auto 时本条显示完后自动停顿 N 毫秒，点击可跳过）──
+# ⚠️ 无效组合：trigger="click" 条目上的 pause 不生效（click 已要求点击才继续，pause 只在 auto 时起作用）
+[[entries]]
+display = "typewriter"
+speed = 40
+pause = 500
+context = "组合①：display=typewriter + speed=40 + pause=500 —— 逐字播完自动停顿 500ms 再继续（点击可跳过）。"
+
+[[entries]]
+style = "announce"
+pause = 600
+context = "组合②：style=announce（金楷系统宣告）+ pause=600 —— 宣告完自动停顿 600ms（点击可跳过）。"
+
+[[entries]]
+pause = 800
+context = "组合③：仅 pause=800 —— instant 显示完停顿 800ms（点击可跳过）。"

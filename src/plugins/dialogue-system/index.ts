@@ -1,6 +1,6 @@
 // 注释：dialogue-system 插件——口上演出管线 + 交互式对话树
 // 口上 = 演出——几乎所有指令执行后触发对应口上
-// 三层口上：场景通用（scene-dialogue.toml）+ 角色通用（character-dialogue.toml，fallback）+ 角色专属（characters/dialogue/{charId}/dialogue.toml）
+// 三层口上：场景通用（scene-dialogue.toml）+ 角色通用（character-dialogue.toml，fallback）+ 角色专属（characters/named/{charId}/dialogue.toml）
 // 优先级：角色专属 > 角色通用，场景通用独立输出
 
 import { conditionEngine, weightAllToOne, extractPremiseRefs } from '../../core/condition-engine'
@@ -217,12 +217,34 @@ async function executeLineEffects(line: ReactiveLine | null, charId?: string | n
 }
 
 function resolveLineDisplay(line: ReactiveLine): Record<string, any> | undefined {
-  if (!line.style && !line.display && line.trigger === undefined) return undefined
+  // 审计修复（2026-08-23）：早退条件必须覆盖全部展示字段——原只查 style/display/trigger，
+  // 仅写 color/size/font/pause/speed 的行或行为词条修饰会被整体丢弃（预览与游戏不一致）
+  const hasAny =
+    !!line.style ||
+    !!line.display ||
+    line.trigger !== undefined ||
+    line.speed !== undefined ||
+    line.pause !== undefined ||
+    !!line.color ||
+    !!line.size ||
+    !!line.font
+  if (!hasAny) return undefined
   const mod = modLoader.getMod()
   const resolved: Record<string, any> = {}
-  // 注释：先查 [styles] 注册表
+  // 注释：先查 [styles] 注册表（白名单过滤——注册表可能含任意键，只摊渲染字段，
+  // 与 talk-common pickDisplayFields 同口径；speaker 子表对象也会被滤掉避免污染）
   if (line.style && mod?.styles?.[line.style]) {
-    Object.assign(resolved, mod.styles[line.style])
+    for (const [k, v] of Object.entries(mod.styles[line.style])) {
+      if (DISPLAY_KEYS.has(k) && v !== undefined) resolved[k] = v
+    }
+  } else if (line.style) {
+    // 诊断对齐工具 hint（2026-08-23）：未注册 style 去重 warning，不阻断渲染
+    errorReporter.reportDedup(`talk-style|${line.style}`, {
+      source: 'dialogue-system',
+      severity: 'warning',
+      message: `口上引用了未注册样式 style="${line.style}"（默认基座与当前 mod 均无此键），将按默认外观渲染`,
+      suggestion: '在 mods/{mod}/definitions/talk/styles.toml 注册该样式，或删除 style 字段',
+    })
   }
   // 注释：行级字段覆盖 style
   if (line.display) resolved.display = line.display
@@ -234,6 +256,9 @@ function resolveLineDisplay(line: ReactiveLine): Record<string, any> | undefined
   if (line.font) resolved.font = line.font
   return resolved
 }
+
+/** 展示字段白名单（styles 注册表摊入 LogDisplay 时过滤用） */
+const DISPLAY_KEYS = new Set(['trigger', 'display', 'speed', 'pause', 'color', 'size', 'font'])
 
 // 注释：纸娃娃地文配置解析（ADR 0017）——防静默越界/类型错误：
 //   common_mix_rate      应为 0-100 数值（越界/非数值 → 去重 warning + 钳制回 [0,100]/默认 30，不崩口上）
@@ -338,9 +363,12 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
       // charTextVersion=0（不启用角色口上，erArk character_text_version）→ 补位同步禁用
       if (!isUnconscious && charTextVersion > 0) {
         try {
-          const defaultTalk = await apiSystem.call('talk-common', 'getText', scene, charId, playerId)
-          if (defaultTalk) {
-            pool.push({ line: { scene, text: defaultTalk }, source: 'character', multiplier: 1 })
+          // 注释：ADR 0018——用 getTextEntry 取文本 + 整体修饰字段；词条 style/
+          // display/trigger/… 展开到 line 上，resolveLineDisplay 自然生效
+          // （[styles] 注册表查 active mod，行为轨整体修饰与行轨同语义）
+          const defaultTalk = await apiSystem.call('talk-common', 'getTextEntry', scene, charId, playerId) as { text: string; display?: Record<string, unknown> } | null
+          if (defaultTalk?.text) {
+            pool.push({ line: { scene, text: defaultTalk.text, ...defaultTalk.display }, source: 'character', multiplier: 1 })
           }
         } catch {
           // 注释：talk-common 未就绪或无此场景词条 → 无原生默认口上（保持既有行为）
@@ -354,9 +382,10 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
     const hasSceneLine = pool.some(p => p.source === 'scene')
     if (!hasSceneLine) {
       try {
-        const defaultTalk = await apiSystem.call('talk-common', 'getText', scene, null, playerId)
-        if (defaultTalk) {
-          pool.push({ line: { scene, text: defaultTalk }, source: 'scene', multiplier: 1 })
+        // 注释：ADR 0018——同角色级补位：getTextEntry 带整体修饰字段
+        const defaultTalk = await apiSystem.call('talk-common', 'getTextEntry', scene, null, playerId) as { text: string; display?: Record<string, unknown> } | null
+        if (defaultTalk?.text) {
+          pool.push({ line: { scene, text: defaultTalk.text, ...defaultTalk.display }, source: 'scene', multiplier: 1 })
         }
       } catch {
         // talk-common 未就绪或无此场景词条 → 无原生默认口上（保持既有行为）
@@ -396,7 +425,9 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
     if (outputText === null) {
       outputText = await interpolateLine(matched.line.text, charId)
     }
-    const display = resolveLineDisplay(matched.line)
+    // 审计修复（2026-08-23）：被行为地文替换的行 ≈ "没被说出"——展示参数不沿用旧行
+    // （地文为叙述视角纯文本，沿用原行 style/color 属边缘不一致）
+    const display = replacedByBehavior ? undefined : resolveLineDisplay(matched.line)
     if (outputIsChar && charId) {
       const char = entitySystem.get('character', charId) as any
       const speakerName = char?.name ?? charId

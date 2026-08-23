@@ -19,7 +19,7 @@ mods/武侠/
 │   ├── talents.toml          # 天赋
 │   ├── abilities.toml        # 技能（带 tags）
 │   ├── items.toml            # 物品（可拆为 items/ 目录按类别分文件）
-│   ├── factions.toml         # 势力/门派
+│   ├── factions.toml         # 势力/门派（⚠️ 暂未实现，写了不会被加载）
 │   ├── relations.toml        # 关系类型
 │   ├── status-effects.toml   # 状态效果
 │   ├── equipment.toml        # 装备槽部位
@@ -137,8 +137,10 @@ abilities = { "华山剑法" = { level = 3, xp = 45 }, "技巧" = { level = 2, x
 # templates/character/huashan_disciple.toml
 extends = "base-human"
 name = "华山弟子"
+# 简写（xp 自动为 0）：
 abilities = { "华山剑法" = 1, "技巧" = 1 }
-abilities = { "华山剑法" = { level = 1, xp = 0 }, "技巧" = { level = 1, xp = 0 } }
+# 完整写法（手动指定 xp）——二选一，不能同时写两个 abilities 键：
+# abilities = { "华山剑法" = { level = 1, xp = 0 }, "技巧" = { level = 1, xp = 0 } }
 ```
 
 引擎合并顺序：模板 → roster → named，后加载覆盖前加载。
@@ -171,9 +173,32 @@ attack = "攻击力"
 2. 角色通用（`character-dialogue.toml`）——无专属时的 fallback
 3. 角色专属（`characters/dialogue/{ID}/dialogue.toml`）——定制台词
 
-**文字格式**——口上/日志支持 Markdown 子集：
+**文字格式（BBCode 行内标记）**——作用于口上文本内部（可与样式名叠加）：
 - `**加粗**` `*斜体*` `~~删除线~~` `||spoiler（黑框点击展开）||`
 - `{{color:#FF0000 红色文字}}` `{{color:#80FF0000 半透明}}` `{{font:楷体 文字}}` `{{size:large 大字}}`
+
+**命名样式（styles）**——把"展示参数组合"抽成可复用的样式名，作用于整条口上：
+- **在哪写**：`mods/{mod}/definitions/talk/styles.toml`；底层默认基座约定的位置是
+  `src/plugins/dialogue-system/data/default/talk/styles.toml`（当前 dialogue-system 尚未提供任何默认样式，
+  基座为空——从 mod 层写起即可），mod 同名样式**整体覆盖**基座
+  （覆盖规则见 docs/mod-override.md）
+```toml
+# mods/武侠/definitions/talk/styles.toml
+[styles]
+narrator = { color = "#666666", font = "楷体" }
+slow = { display = "typewriter", speed = 40 }
+clicked = { trigger = "click" }
+whisper = { display = "typewriter", speed = 70, color = "#888888", size = "small" }
+```
+- **可选字段**：`trigger`（"auto"/"click"）、`display`（"instant"/"typewriter"）、`speed`（逐字毫秒/字）、
+  `pause`（显示完暂停毫秒）、`color`（支持 `#AARRGGBB` 半透明）、`size`（small/medium/normal/large）、`font`
+- **哪些口上能用 style**：
+  1. 行口上/对话行：`{ text = "…", style = "narrator" }`（scene_lines / conversation 的 lines）
+  2. 行为轨词条（talk-common 条目，ADR 0018）：`[[entries]]` 上写 `style = "narrator"`，
+     或直接内联同名字段（`display = "typewriter"`、`speed = 40`…）效果等价
+- **优先级**：行内 BBCode > 行/词条自身字段 > `[styles]` 样式表 > 默认外观
+- **查表作用域**：style 名解析「默认基座 + 当前 mod」——想让某个 mod 有专属表现就写进该 mod 的 styles.toml
+- 特殊命名空间：`[styles.speaker.角色名]` = 说话者名样式（见「说话者样式」）
 
 **{var} 插值**——口上文本中用变量：
 - `{player.name}` `{player.气血}` `{character.name}` `{location.name}` `{time.hour}`
@@ -204,7 +229,7 @@ id = "sword_practice"
 premises = ["NOT_H", "IN_SWORD_VALLEY", "HAVE_SWORD_ABILITY"]
 
 # 口上中使用
-condition = "premise(IN_SWORD_VALLEY"
+condition = "premise(IN_SWORD_VALLEY)"
 ```
 
 **机制**：
@@ -333,7 +358,7 @@ prerequisites = ["intro"]           # 可选：前置 scene
 # ... 步骤数组
 ```
 
-### 8 种步骤类型
+### 9 种步骤类型
 
 | 类型 | 做什么 | 关键字段 |
 |------|--------|---------|
@@ -344,7 +369,8 @@ prerequisites = ["intro"]           # 可选：前置 scene
 | `condition` | 条件分支 | `condition`, `next`, `else` |
 | `goto` | 跳转到另一步 | `target` |
 | `scene` | 嵌套子场景 | `scene_id` |
-| `spawn` | 生成（预留） | — |
+| `spawn` | 生成角色/物品 | `template`, `at_location`, `count` |
+| `script` | 步骤内 JS 瞬间逻辑（沙箱） | `script`, `params`, `next`, `else` |
 
 ### 对话步（dialogue step）
 
@@ -377,12 +403,12 @@ lines = ["一阵风吹过，树叶沙沙作响。"]
 
 | 简写 | 含义 | 对应文件 |
 |------|------|---------|
-| `character:令狐冲/teach_sword` | 角色专属对话 | `characters/令狐冲/conversations/teach_sword.toml` |
+| `character:令狐冲/teach_sword` | 角色专属对话 | `characters/named/令狐冲/conversations/teach_sword.toml`（旧结构 `characters/dialogue/{ID}/` 仍兼容） |
 | `global:common_victory` | 全局共享对话 | `conversations/common_victory.toml` |
 | `quest:第一章/intro` | 任务专属对话 | `quests/**/conversations/第一章/intro.toml` |
 | `event:酒馆/偶遇` | 事件专属对话 | `events/**/conversations/酒馆/偶遇.toml` |
 
-conversation 文件内容示例（`characters/令狐冲/conversations/teach_sword.toml`）：
+conversation 文件内容示例（`characters/named/令狐冲/conversations/teach_sword.toml`）：
 
 ```toml
 id = "teach_sword"
@@ -408,14 +434,17 @@ effects = [{ type = "start_scene", params = { scene = "find_master" } }]
 
 ### 说话者样式
 
-注册说话者的文字样式（颜色、速度等），自动生效：
+注册说话者的文字样式（颜色、速度等），自动生效。**只能定义在 styles.toml 中**
+（引擎只从 `mods/{mod}/definitions/talk/styles.toml` 加载，scene 文件内的 `[styles]` 不会生效）：
 
 ```toml
-# 在 styles.toml 或 scene 文件中
+# mods/武侠/definitions/talk/styles.toml
 [styles.speaker]
-令狐冲 = { color = "#FFD700", speed = 0.5 }
+令狐冲 = { color = "#FFD700" }
 岳灵珊 = { color = "#FF69B4" }
 ```
+
+字段与普通样式一致（trigger/display/speed/pause/color/size/font；`speed` 单位是毫秒/字，不要写 0.5）。
 
 ### 完整示例：一个包含对话→目标→战斗→奖励的 scene
 
@@ -465,7 +494,7 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 | 效果 type | 参数 | 语义 |
 |-----------|------|------|
 | `settle_hp_mp` | `hpValue` / `mpValue` | **-1 = 按程度扣减，1 = 按程度增加**，其他值 = 固定增减量（erArk common_default.py:42 同款协议） |
-| | `degree` | 程度档：**0=少**（体力1/分、气力3/分）、1=中（3/6）、2=大（5/10）——erArk dregree_dict |
+| | `degree` | 程度档：**0=少**（体力1/分、气力3/分）、1=中（3/6）、2=大（5/10）——erArk degree_dict |
 | | `addTime`（可选） | 覆盖 time_cost；缺省用指令的 time_cost |
 | `modify_attribute` / `set_attribute` | `attr` | **ability 类属性（技巧/刻印/感度/性技等）自动操作 `abilities[name].level`（保持 {level,xp} 结构）**；其他属性写 base（绑定优先）——2026-08-09 契约语义，写 TOML 时无需区分 |
 | | `value` | modify：增减量；set：设置值 |
@@ -622,3 +651,4 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 - 完整规范：`AGENTS.md`（39节）
 - 术语表：`CONTEXT.md`
 - 示例模组：`mods/test-mod/`
+- 口上/样式细节：`docs/dialogue-format.md`（BBCode、styles、行为轨整体修饰）· `docs/talk-common-system.md`（行为词条）· `docs/mod-override.md`（覆盖规则）

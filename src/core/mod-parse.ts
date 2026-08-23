@@ -6,6 +6,13 @@ import type { Effect } from './effect-type-registry'
 import { resolveTemplate, deepMerge } from './template'
 import { ATTR } from './entity-utils'
 import { errorReporter } from './error-reporter'
+import {
+  modNamedCharactersPrefix,
+  modSceneDialoguePath,
+  modCharacterDialoguePath,
+  modTalkStylesPath,
+  PLUGIN_DEFAULT_STYLES_RE,
+} from './data-paths'
 import { parseConversationRef, resolveConversation } from './mod-types'
 import type {
   LoadedMod, RawTomlMap, Quest, Conversation, ConversationRef, HConfig, HInstruction,
@@ -34,6 +41,27 @@ function parseFile(path: string, raw: string): Record<string, any> {
     const reason = err instanceof Error ? err.message : String(err)
     throw new Error(`TOML 解析失败：${path}\n${reason}`)
   }
+}
+
+/**
+ * 插件默认层 [styles] 收集（2026-08-23）：
+ * 各插件 data/default/talk/styles.toml（随 pluginDefaultModules glob 进入 rawTomlMap，
+ * Layer 1 优先级；mod 层同名键整体覆盖）。多插件同名键按 rawTomlMap 顺序后者覆盖前者。
+ * 路径形态：/src/plugins/{插件}/data/default/talk/styles.toml
+ */
+export function collectPluginDefaultStyles(rawTomlMap: RawTomlMap): Record<string, Record<string, any>> {
+  const defaultStyles: Record<string, Record<string, any>> = {}
+  for (const [path, raw] of Object.entries(rawTomlMap)) {
+    if (!PLUGIN_DEFAULT_STYLES_RE.test(path)) continue
+    const data = parseFile(path, raw)
+    const styles = data.styles as Record<string, Record<string, any>> | undefined
+    if (styles && typeof styles === 'object') {
+      for (const [name, fields] of Object.entries(styles)) {
+        if (fields && typeof fields === 'object') defaultStyles[name] = fields
+      }
+    }
+  }
+  return defaultStyles
 }
 
 // 注释：解析 meta.toml [ui_text] 段（key → 文本；空值视为未配置，回退引擎默认）
@@ -348,7 +376,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   }
   // 注释：加载 named 角色（characters/named/{charId}/base.toml）
   // 同名 ID 覆盖 roster 条目（升级路径：roster → named）
-  const namedPrefix = `/mods/${modName}/characters/named/`
+  const namedPrefix = modNamedCharactersPrefix(modName)
   const templates = mod.entities.get('__templates_character__')!
   for (const [path, raw] of Object.entries(rawTomlMap)) {
     const rest = path.startsWith(namedPrefix) ? path.slice(namedPrefix.length) : ''
@@ -442,14 +470,14 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   }
 
   // 注释：加载场景通用口上
-  const sceneDialoguePath = `/mods/${modName}/definitions/scene-dialogue.toml`
+  const sceneDialoguePath = modSceneDialoguePath(modName)
   if (sceneDialoguePath in rawTomlMap) {
     const data = parseFile(sceneDialoguePath, rawTomlMap[sceneDialoguePath])
     mod.sceneDialogue = (data.scene_lines as ReactiveLine[]) ?? []
   }
 
   // 注释：加载角色通用口上
-  const charDialoguePath = `/mods/${modName}/definitions/character-dialogue.toml`
+  const charDialoguePath = modCharacterDialoguePath(modName)
   if (charDialoguePath in rawTomlMap) {
     const data = parseFile(charDialoguePath, rawTomlMap[charDialoguePath])
     mod.characterDialogue = (data.character_lines as ReactiveLine[]) ?? []
@@ -470,8 +498,9 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
       }
     }
   }
-  loadDialogueForPrefix(`/mods/${modName}/characters/dialogue/`)
-  loadDialogueForPrefix(`/mods/${modName}/characters/named/`)
+  // 角色专属口上只扫规范化位置 characters/named/{charId}/（2026-08-23 移除旧结构 dialogue/ 兼容，
+  // 夹具已迁移，无真实 mod 使用旧结构）
+  loadDialogueForPrefix(modNamedCharactersPrefix(modName))
 
   // 注释：加载 conversation（4 种来源）
   function parseConversation(path: string, raw: string, name: string): Conversation {
@@ -483,8 +512,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     }
   }
 
-  // 注释：1. 角色 conversation（characters/{charId}/conversations/[{subdir}/]{name}.toml）
-  for (const prefix of [`/mods/${modName}/characters/dialogue/`, `/mods/${modName}/characters/named/`]) {
+  // 注释：1. 角色 conversation（characters/named/{charId}/conversations/[{subdir}/]{name}.toml）
+  for (const prefix of [modNamedCharactersPrefix(modName)]) {
     for (const [path, raw] of Object.entries(rawTomlMap)) {
       if (!path.startsWith(prefix) || !path.endsWith('.toml')) continue
       const rest = path.slice(prefix.length)
@@ -928,11 +957,14 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   validateAbilityUpgrades(mod, modName)
 
   // 注释：加载 styles.toml（命名样式注册表）
-  const stylesPath = `/mods/${modName}/definitions/talk/styles.toml`
-  if (stylesPath in rawTomlMap) {
-    const data = parseFile(stylesPath, rawTomlMap[stylesPath])
-    mod.styles = (data.styles as Record<string, Record<string, any>>) ?? {}
-  }
+  // 合并语义（2026-08-23 实现默认层）：插件默认层（各插件 data/default/talk/styles.toml，
+  // 同属 pluginDefaultModules glob，随 rawTomlMap Layer 1 进入）→ mod 层覆盖。
+  // 多插件同名样式键：按 rawTomlMap 顺序后者覆盖前者（glob 字典序 = 插件目录字母序）。
+  const stylesPath = modTalkStylesPath(modName)
+  const modStyles = stylesPath in rawTomlMap
+    ? ((parseFile(stylesPath, rawTomlMap[stylesPath]).styles as Record<string, Record<string, any>>) ?? {})
+    : {}
+  mod.styles = { ...collectPluginDefaultStyles(rawTomlMap), ...modStyles }
 
   // 注释：加载 scenes（quests/ + events/ 下所有 toml，子目录自动支持）
   // scene 是统一单位，type=main/side/event 只影响 UI 显示

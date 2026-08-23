@@ -15,12 +15,15 @@ import { entitySystem } from './entity-system'
 import { gameContext } from './game-context'
 import { resetPendingSpawns } from './spawn-system'
 import { eventBus } from './event-bus'
+import { SELF_LOADED_DATA_DIRS } from './data-paths'
 import type { LoadedMod, RawTomlMap } from './mod-types'
 
 export * from './mod-types'
 export * from './mod-validate'
 export * from './mod-parse'
 
+// Vite 要求 glob 字面量：以下两处与 data-paths 的契约一致
+// （PLUGIN_DEFAULT_GLOB / talkCommonDefaultRoot 仅作文档化常量，不能在 glob 处插值）
 const tomlModules = import.meta.glob('/mods/**/*.toml', {
   import: 'default',
   eager: false,
@@ -48,11 +51,10 @@ const scriptModules = import.meta.glob<string>('/mods/*/scripts/*.js', {
 // 注释：插件"自加载数据目录"登记表（B1，2026-08-15）——
 // parseModData 只消费特定文件名模式（attributes/items/abilities/h-config/instructions/
 // events/ai-targets/sleep 等，见 mod-parse.ts）；不匹配的插件默认数据不会被 core 消费。
-// 若插件选择自己加载自己的数据（如 talk-common-system 的 168 文件 / 73MB 口上层），
-// 必须在 loadMod 前把数据目录登记在此，否则其 raw 字符串会永久驻留 pluginDefaultCache
-// （73MB 级死内存 + 每次 loadMod 全量 fetch）。新增此类数据目录时必须同步登记，
-// 否则视为回归（见 mod-loader.test.ts B1 回归测试）。
-const SELF_LOADED_DATA_DIRS = ['/talk-common/']
+// 若插件选择自己加载自己的数据（如 talk-common-system 的 184 文件 / ≈73MB 口上层），
+// 必须在 loadMod 前把数据目录登记在此（常量见 data-paths.ts），否则其 raw 字符串会永久
+// 驻留 pluginDefaultCache（73MB 级死内存 + 每次 loadMod 全量 fetch）。新增此类数据目录时
+// 必须同步登记，否则视为回归（见 mod-loader.test.ts B1 回归测试）。
 
 export class ModLoader {
   private loadedMod: LoadedMod | null = null

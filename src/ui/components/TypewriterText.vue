@@ -1,9 +1,17 @@
-// 注释：TypewriterText — 逐字显示文本（支持 BBCode）
-// speed 单位 ms/字，默认 60
+// 注释：TypewriterText — 逐字显示文本（支持 BBCode，标记不露字、样式即时生效）
+// speed 单位 ms/字（可见字），默认 60
+// 实现：完整文本一次解析为样式化分段 → 按可见字符预算逐字揭示分段
+// （sliceSegmentsByVisible：样式段即时生效，标记字符不存在于分段文本中）
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { parseBBCode, type TextSegment } from '../utils/bbcode-parser'
+import {
+  parseBBCode,
+  sliceSegmentsByVisible,
+  totalVisibleLength,
+  type TextSegment,
+} from '../utils/bbcode-parser'
+import { toCssColor } from '../utils/color'
 
 const props = withDefaults(defineProps<{
   text: string
@@ -16,30 +24,30 @@ const emit = defineEmits<{
   (e: 'complete'): void
 }>()
 
-const revealedLen = ref(0)
+const revealedVisible = ref(0)
 let timer: ReturnType<typeof setInterval> | null = null
 
-const revealedText = computed(() => {
-  return props.text.slice(0, revealedLen.value)
-})
-
-const segments = computed<TextSegment[]>(() => parseBBCode(revealedText.value))
+const fullSegments = computed<TextSegment[]>(() => parseBBCode(props.text))
+const total = computed<number>(() => totalVisibleLength(fullSegments.value))
+const visibleSegments = computed<TextSegment[]>(() =>
+  sliceSegmentsByVisible(fullSegments.value, revealedVisible.value),
+)
 
 function skip() {
-  revealedLen.value = props.text.length
+  revealedVisible.value = total.value
   if (timer) { clearInterval(timer); timer = null }
   emit('complete')
 }
 
 onMounted(() => {
   if (props.speed <= 0) {
-    revealedLen.value = props.text.length
+    revealedVisible.value = total.value
     emit('complete')
     return
   }
   timer = setInterval(() => {
-    revealedLen.value++
-    if (revealedLen.value >= props.text.length) {
+    revealedVisible.value++
+    if (revealedVisible.value >= total.value) {
       if (timer) { clearInterval(timer); timer = null }
       emit('complete')
     }
@@ -54,7 +62,7 @@ onUnmounted(() => {
 <template>
   <span class="typewriter" @click="skip">
     <span
-      v-for="(seg, idx) in segments"
+      v-for="(seg, idx) in visibleSegments"
       :key="idx"
       class="seg"
       :class="{
@@ -64,12 +72,12 @@ onUnmounted(() => {
         spoiler: seg.spoiler,
       }"
       :style="{
-        color: seg.color || undefined,
+        color: seg.color ? toCssColor(seg.color) : undefined,
         fontFamily: seg.font || undefined,
         fontSize: seg.size || undefined,
       }"
     >{{ seg.text }}</span>
-    <span v-if="revealedLen < text.length" class="cursor">▌</span>
+    <span v-if="revealedVisible < total" class="cursor">▌</span>
   </span>
 </template>
 

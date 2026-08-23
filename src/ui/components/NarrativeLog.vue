@@ -13,6 +13,8 @@ import { useUIStore } from '../stores/ui-store'
 import FormattedText from './FormattedText.vue'
 import TypewriterText from './TypewriterText.vue'
 import MapView from './MapView.vue'
+import { toCssColor } from '../utils/color'
+import { displaySizeToCss } from '../utils/display-style'
 
 const gameStore = useGameStore()
 const uiStore = useUIStore()
@@ -34,8 +36,6 @@ watch(() => gameStore.executionState, (state) => {
 
 // 注释：新条目时自动滚动到底部（scroll 模式）
 watch(() => gameStore.narrativeLogEntries.length, async () => {
-  const last = gameStore.narrativeLogEntries[gameStore.narrativeLogEntries.length - 1]
-  if (last) console.log('NarrativeLog entry:', last.id, 'type:', last.type, '_display:', JSON.stringify(last._display), 'text:', last.text.slice(0, 30))
   if (uiStore.displayMode === 'scroll') {
     await nextTick()
     if (logContainer.value) {
@@ -135,7 +135,7 @@ function handleKeydown(e: KeyboardEvent) {
       <!-- 注释：普通文本条目 — BBCode 解析渲染（支持 typewriter/click） -->
       <template v-if="!isChoiceEntry(entry) && entry.type !== 'map'">
         <template v-if="entry._display?.display === 'typewriter'">
-          <span :style="{ color: entry._display?.color, fontFamily: entry._display?.font }">
+          <span :style="{ color: entry._display?.color ? toCssColor(entry._display.color) : undefined, fontFamily: entry._display?.font, fontSize: displaySizeToCss(entry._display?.size) }">
             <TypewriterText
               :text="entry.text"
               :speed="entry._display.speed ?? 60"
@@ -148,7 +148,7 @@ function handleKeydown(e: KeyboardEvent) {
             :text="entry.text"
             :color="entry._display?.color"
             :font="entry._display?.font"
-            :size="entry._display?.size === 'small' ? '0.85em' : entry._display?.size === 'large' ? '1.3em' : undefined"
+            :size="displaySizeToCss(entry._display?.size)"
           />
         </template>
         <span

@@ -4,16 +4,10 @@
 // core 不直接操作 Pinia，通过事件通知 UI 层
 
 import type { EventBus } from './event-bus'
+import type { TalkDisplayFields } from './talk-display'
 
-export interface LogDisplay {
-  trigger?: 'auto' | 'click'
-  display?: 'instant' | 'typewriter'
-  speed?: number
-  pause?: number
-  color?: string
-  size?: string
-  font?: string
-}
+/** 叙事日志条目的展示参数（渲染语义字段，来自 core 唯一源 TalkDisplayFields，2026-08-23 收敛） */
+export interface LogDisplay extends TalkDisplayFields {}
 
 export interface LogEntry {
   id: string

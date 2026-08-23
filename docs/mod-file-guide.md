@@ -29,10 +29,10 @@
 | calendar.toml | 文化月份/星期名 |
 | scene-dialogue.toml | 场景通用口上（旁白） |
 | character-dialogue.toml | 角色通用口上（500 人 fallback） |
-| talk-common/ | **默认口上/地文覆盖**：`talk-common/*.toml` 覆盖插件默认层词条（variable 同名即替换，路径任意）。chat/rest 等**原生指令的默认口上**（插件默认层 `behavior/` 目录）也在此覆盖，如 `talk-common/chat.toml`（variable = "chat"） |
+| talk-common/ | **默认口上/地文覆盖**：`talk-common/*.toml` 覆盖插件默认层词条（variable 同名即替换，路径任意）。chat/rest 等**原生指令的默认口上**（插件默认层 `behavior/` 目录）也在此覆盖——想覆盖 chat 就写 `talk-common/chat.toml`（`variable = "chat"`） |
 | sets.toml | 套装（布衣+长裤 组合加成） |
 | talk/styles.toml | 口上样式 |
-| instructions/*.toml | 自定义指令（打坐：属性/状态/时间/叙事闭环） |
+| instructions/*.toml | 自定义指令（打坐：属性/状态/时间/叙事闭环）；原生指令默认数据在各插件 `data/default/instructions/`，mod 同 id 覆盖胜出 |
 
 ---
 
@@ -290,7 +290,7 @@
 | `auto_start_condition` | — | 条件满足自动开始 |
 | `[[steps]]` | ✅ | 见下 |
 
-步骤类型（7 种）：`dialogue`（character/conversation 引用须存在）/ `combat`（enemies/on_win/on_lose）/ `objective`（objective 子格式，事件驱动）/ `reward`（effects）/ `spawn` / `condition`（condition + next/else）/ `goto`（target）。
+步骤类型（9 种，与 AGENTS §31 一致）：`dialogue`（character/conversation 引用须存在）/ `combat`（enemies/on_win/on_lose）/ `objective`（objective 子格式，事件驱动）/ `reward`（effects）/ `spawn`（template/at_location/count）/ `condition`（condition + next/else）/ `goto`（target）/ `scene`（scene_id 嵌套子场景）/ `script`（沙箱 JS 瞬间逻辑 + next/else）。
 objective 子格式：`{ type = reach_location|kill_count|collect_items|talk_to, target, count?, item? }`。
 
 ## 18. 其他（简表）
@@ -301,7 +301,7 @@ objective 子格式：`{ type = reach_location|kill_count|collect_items|talk_to,
 | `definitions/calendar.toml` | 日历显示 | example-mod 示例 |
 | `definitions/instructions/*.toml` | 指令定义（mod 自定义玩法指令——见 example-mod 的「打坐」示例；复刻 erArk 指令另见 erark-replication） | docs/skills/erark-replication.md |
 | `definitions/sets.toml` | 套装 | docs/set-system.md + example-mod 示例 |
-| `definitions/talk/styles.toml` | 口上样式 | docs/talk-common-system.md + example-mod 示例 |
+| `definitions/talk/styles.toml` | 口上命名样式——写法/可选字段/覆盖规则见 docs/mod-author-guide.md「命名样式（styles）」节 + docs/dialogue-format.md §二；同名键整体覆盖 dialogue-system 提供的插件默认基座 | example-mod 示例 |
 | `definitions/scene-dialogue.toml` / `character-dialogue.toml` | 场景旁白 / 角色通用口上 | docs/mod-workflow.md 第 1 步 + example-mod 示例 |
 | `definitions/bondage/types.toml` | 紧缚类型（⚠️ **整表替换**：写了须完整复制 `src/plugins/h-core/data/default/bondage/types.toml` 的 15 种再改） | docs/bondage-system.md |
 | `migrations/*.toml` | 存档版本迁移 | AGENTS.md §12 |

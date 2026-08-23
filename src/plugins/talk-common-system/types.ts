@@ -1,4 +1,14 @@
-export interface CommonTextRawEntry {
+import type { StyledTalkDisplay } from '../../core/talk-display'
+
+/**
+ * 口上展示参数（整体修饰，ADR 0018）——行为词条可选字段，语义与行结构
+ * （lines 的 trigger/display/speed/pause/color/size/font + [styles] 命名样式）
+ * 对齐：被选中词条的这些字段随文本输出为叙事日志的 LogDisplay。
+ * 类型来自 core 唯一源 StyledTalkDisplay（2026-08-23 收敛），此处别名保留名字避免连锁改名。
+ */
+export type TalkDisplayFields = StyledTalkDisplay
+
+export interface CommonTextRawEntry extends TalkDisplayFields {
   context: string
   conditions?: string
   part?: string
@@ -11,7 +21,7 @@ export interface CommonTextRawVariable {
   entries: CommonTextRawEntry[]
 }
 
-export interface CommonTextEntry {
+export interface CommonTextEntry extends TalkDisplayFields {
   context: string
   conditions: string[]
   part?: string

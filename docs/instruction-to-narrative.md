@@ -266,8 +266,8 @@ type = "reward"
 effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 } }]
 ```
 
-任务步骤类型：dialogue / combat / objective / reward / spawn / condition / goto。
-完整格式见 `docs/mod-author-guide.md`。
+任务步骤类型（9 种）：dialogue / combat / objective / reward / spawn / condition / goto / scene / script。
+完整格式见 `docs/mod-author-guide.md`（Scene 章节）与 `docs/quest-system.md`。
 
 ---
 

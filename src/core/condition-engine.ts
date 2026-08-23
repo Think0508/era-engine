@@ -7,6 +7,7 @@
 import type { GameContext } from './types'
 import { getEntityAttr } from './entity-utils'
 import { apiSystem } from './api'
+import { errorReporter } from './error-reporter'
 
 // ============ Tokenizer ============
 
@@ -637,13 +638,21 @@ class ConditionEngine {
   }
 
   // 注释：A4——加载期 AST 预热（talk-common loadFromData 后传全部去重条件，
-  // 把首句口上的解析成本摊到加载期；解析失败跳过——运行时求值会正常上报）
+  // 把首句口上的解析成本摊到加载期；解析失败加载期即上报（2026-08-23 审计——
+  // 原静默吞，非法条件要等到运行期求值才暴露；运行期去重上报保留）
   warm(exprs: Iterable<string>): void {
     for (const expr of exprs) {
       try {
         this.parseCached(expr)
       } catch {
-        // 非法表达式运行时求值时报错（talk-common 有去重上报）
+        if (typeof expr === 'string' && expr.length > 0) {
+          errorReporter.reportDedup(`warm-parse|${expr}`, {
+            source: 'condition-engine',
+            severity: 'warning',
+            message: `条件表达式解析失败（运行期该条件会淘汰对应条目）：${expr}`,
+            suggestion: '检查表达式语法/字段路径；加载期即可见，不必等运行期触发',
+          })
+        }
       }
     }
   }

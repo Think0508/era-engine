@@ -155,7 +155,7 @@ next = "find_clue"
 
 任务文件放 `quests/main/`（主线）、`quests/side/`（支线）或 `quests/events/`（事件型任务，`type = "event"`，无 UI 追踪入口，靠 triggers/指令启动）。
 
-**8 种步骤类型**：
+**9 种步骤类型**：
 
 | 类型 | 说明 | 特有字段 |
 |------|------|----------|
@@ -166,6 +166,7 @@ next = "find_clue"
 | `spawn` | 创建角色/物品 | template, at_location, count |
 | `condition` | 检查游戏状态分支 | condition, next(满足), else(不满足,可选) |
 | `goto` | 跳转到另一个步骤 | target |
+| `scene` | 嵌套子场景 | scene_id, next |
 | `script` | 步骤内 JS 瞬间逻辑（沙箱），返回值决定下一步 | script, params, next, else |
 
 所有步骤通用可选字段：`source`（`'player' | 'selected' | 角色ID`，默认 `'player'` 触发者，决定 effects/脚本的 `sourceId`）、`target`（`'player' | 'selected' | 角色ID`，默认 UI 选中，决定 `_targetIds`）。⚠️ `target` 字段双语义：`goto` 步骤里是"下一步 step id"；其他步骤里是"执行目标角色"——按 `step.type` 区分。

@@ -210,17 +210,19 @@ lines = [
 
 ### 说话者样式（speaker style）
 
-可以为每个说话者注册样式（颜色、字体、速度等），在 `[styles.speaker]` 下定义：
+可以为每个说话者注册样式（颜色、字体、速度等），在 `[styles.speaker]` 下定义。
+**只能定义在 styles.toml 中**（引擎只从 `mods/{mod}/definitions/talk/styles.toml` 加载 mod.styles，
+scene 文件内的 `[styles]` 不生效）：
 
 ```toml
-# 在 mod 的 styles.toml 或 scene 同文件中
+# 在 mod 的 styles.toml 中
 [styles]
 # 普通 style
-slow = { speed = 0.3 }
+slow = { display = "typewriter", speed = 40 }   # speed 单位 = 毫秒/字
 
 # speaker style——key 直接写角色名
 [styles.speaker]
-令狐冲 = { color = "#FFD700", speed = 0.5 }
+令狐冲 = { color = "#FFD700" }
 岳灵珊 = { color = "#FF69B4" }
 ```
 

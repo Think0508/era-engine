@@ -1,0 +1,21 @@
+# dialogue-system 默认样式基座（2026-08-23 定稿）
+# 归属约定：插件默认层 [styles] 只由 dialogue-system 提供（见 docs/dialogue-format.md §二）。
+# 所有 mod 自动获得本基座；同名字样在 mods/{mod}/definitions/talk/styles.toml 中整体覆盖。
+# 命名与 docs/dialogue-format.md §二 的示例一致（文档示例即刻可运行）。
+# speed 单位 = 毫秒/可见字；color 支持 #AARRGGBB 半透明。
+
+[styles]
+# ── 基础叙事 ──
+narrator = { color = "#666666", font = "楷体" }      # 灰色旁白
+thought = { color = "#999999", font = "楷体" }       # 更淡的心声
+# ── 节奏 ──
+slow = { display = "typewriter", speed = 100 }       # 很慢逐字（10 字/秒）
+fast = { display = "typewriter", speed = 30 }        # 快速逐字（33 字/秒）
+whisper = { display = "typewriter", speed = 70, color = "#888888", size = "small" }
+# ── 强调 / 交互 ──
+emphasis = { trigger = "click", display = "typewriter", speed = 30, color = "#CC4444" }
+click = { trigger = "click", display = "instant" }
+shout = { color = "#FF0000", size = "large" }
+# ── 系统宣告（2026-08-23 增补）──
+# 例：「你获得了 回气丹！」「力道 上升了！」「岳不群 成为了 岳灵珊 的父亲！」
+announce = { color = "#bdb76b", font = "楷体" }    # 暗金（DarkKhaki）楷体，比纯金柔和护眼

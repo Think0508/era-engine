@@ -11,7 +11,7 @@ H 系统的总控。提供 H 指令的结算公式（判断/好感/信赖/状态
 - **结算公式**：`calcJudge(judgeBase, favorability, trust, charId?, judgeClass?) → JudgeResult`——综合好感度、信赖、当前状态、绝顶值判定成功/失败程度；`judge_class` 查 hConfig `[judge.adjustments]` 表叠加修正
 - **H 状态（h_state）**：角色运行时字段，含 h_mode、体位（position）、绝顶值、体势（posture），由 h-core 统一管理
 - **effect 类型**：h-core 在 onLoad 注册全部 H 结算 effect（judge_check / settle_favorability / settle_trust / settle_state / settle_hp_mp / tech_adjust / pain_* / feel_by_sex / pl_p_adjust / h_start_h / h_end_h / h_orgasm_check / orgasm_edge_on/off / cloth_* / body_item_* / vibrator_* / apply_lubricant / apply_aphrodisiac / apply_instant_toy / give_gift / chat_settle / talk_add_adjust / h_experience / release_time_stop_orgasm 等）——注册集中在 `src/plugins/h-core/effects/` 各域模块（2026-08-15 E2 拆分）
-- **射精欲读写**：h-core 不直接碰 `base['射精欲']`，读写全部走 h-ejaculation 公共 API（`settle/eja.ts` 包装，未启用时静默降级）——见 `docs/h-ejaculation.md`
+- **射精欲读写**：h-core 不直接碰 `base['射精欲']`，读写全部走 h-ejaculation 公共 API（注册于其 `src/plugins/h-ejaculation/index.ts` 的 `getEja / setEja / addEja`，未启用时静默降级）——见 `docs/h-ejaculation.md`
 
 ## Mod 作者使用
 

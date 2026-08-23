@@ -10,6 +10,15 @@ interface TomlEntry {
   context?: string
   conditions?: string
   part?: string
+  // ADR 0018：整体修饰字段（与行结构 display 语义对齐；白名单透传）
+  style?: string
+  trigger?: string
+  display?: string
+  speed?: number
+  pause?: number
+  color?: string
+  size?: string
+  font?: string
 }
 
 interface TomlVariable {
@@ -23,6 +32,8 @@ interface TomlVariable {
 // dev 冷启动 ~3.8s + 生产 bundle 内联 71.6MB。改 eager:false 懒加载（本插件自己 loader()
 // 即取即用；B1 之后 core 的 pluginDefaultCache 不再驻留 talk-common raw 字符串——
 // 见 src/core/mod-loader.ts SELF_LOADED_DATA_DIRS，此处也不重复缓存 raw）
+// 注意：Vite glob 必须字面量（数据路径契约见 core/data-paths.ts：
+// talkCommonDefaultRoot / talkCommonModPrefix 为文档化常量，不能在此插值）
 const defaultModules = import.meta.glob<string>(
   '/src/plugins/talk-common-system/data/default/talk-common/**/*.toml',
   { import: 'default', eager: false }
@@ -90,6 +101,8 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
   ctx.api.register('talk-common', {
     replace: (text: string, targetId: string | null, actorId?: string) => commonTextsEngine.replaceAll(text, targetId, actorId),
     getText: (variable: string, targetId: string | null, actorId?: string) => commonTextsEngine.getText(variable, targetId, actorId),
+    // ADR 0018：富文本查询（文本 + 整体修饰字段）；getText 为其文本视图
+    getTextEntry: (variable: string, targetId: string | null, actorId?: string) => commonTextsEngine.getTextEntry(variable, targetId, actorId),
     getBehaviorText: (behaviorKey: string, targetId: string | null, actorId?: string) => commonTextsEngine.getBehaviorText(behaviorKey, targetId, actorId),
     getVariables: () => commonTextsEngine.variables,
   })
@@ -142,6 +155,14 @@ async function parseFile(loader: () => Promise<string>, path: string): Promise<V
           context: e.context ?? '',
           conditions: e.conditions,
           part: e.part,
+          style: e.style,
+          trigger: e.trigger,
+          display: e.display,
+          speed: e.speed,
+          pause: e.pause,
+          color: e.color,
+          size: e.size,
+          font: e.font,
         })),
       },
     }

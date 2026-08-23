@@ -50,10 +50,10 @@ Layer 2（`mods/[mod]/plugins/*/data/`）下的目录结构**镜像** Layer 1 �
 3. 匹配到 → 按合并规则覆盖；没匹配到 → 视为新增 ID
 
 ```
-Layer 1: src/plugins/talk-common-system/data/default/talk-common/body_part/breasts_s.toml
+Layer 1: src/plugins/talk-common-system/data/default/talk-common/body_part/breast_s.toml
                                                         └──────────┬──────────┘
                                                                    │ 相对路径
-Layer 2: mods/武侠/plugins/qinggong-system/data/talk-common/body_part/breasts_s.toml
+Layer 2: mods/武侠/plugins/qinggong-system/data/talk-common/body_part/breast_s.toml
                                               └──────────┬──────────┘
                                                          相同相对路径 → 覆盖
 ```
@@ -94,3 +94,5 @@ Mod 内容作者微调数据                  →   放在 mods/[mod]/definition
 覆盖插件注册的前提/效果/指令           →   在自己的 onEnable 里同名注册
 两个插件不小心写了同名的数据           →   引擎报错，检查冲突
 Mod 想改某特性的行为逻辑               →   写 mod 专属插件（extends 或独立）
+口上命名样式（styles）                 →   mods/[mod]/definitions/talk/styles.toml，同名键整体覆盖插件默认基座
+任务步骤类型（9 种）                   →   见 AGENTS.md §31（dialogue/combat/objective/reward/spawn/condition/goto/scene/script）

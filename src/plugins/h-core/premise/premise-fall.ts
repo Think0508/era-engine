@@ -17,6 +17,14 @@ export function registerFallPremises(registry: any): void {
       registerFallLevelVariant(registry, `FALL_LEVEL_${cmp}_${val}`)
     }
   }
+
+  // 注释：口上可读别名——TARGET_NOT_FALLEN = erArk not_fall（目标未陷落，陷落等级==0）
+  // 口上 TOML 优先用 TARGET_NOT_FALLEN；FALL_LEVEL_E_0 保留兼容。
+  registry.registerPremise('TARGET_NOT_FALLEN', (ctx: any) => {
+    const charId = ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId
+    if (!charId) return false
+    return getFallLevel(charId) === 0
+  })
 }
 
 // 注释：通用 FALL_LEVEL_{cmp}_{val} 解析与注册（T2）

@@ -430,7 +430,7 @@ describe('Phase H 集成测试', () => {
     expect(rest).toBeDefined()
     expect(rest!.id.startsWith('h_')).toBe(false)
     // premises 独立字段（数组简写，不再拼接旧前缀）
-    expect(rest!.premises).toEqual(['NOT_H', 'TIRED_LE_84'])
+    expect(rest!.premises).toEqual(['NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1', 'NOT_H', 'NOT_SHOW_NON_H_IN_HIDDEN_SEX', 'TIRED_LE_84', 'HP_G_1', 'DRUNK_LEVEL_NOT_3'])
     expect(rest!.condition).toBeUndefined()
     expect(rest!.category).toBe('daily')
     // effects 保持原样 + 无 judge 注入

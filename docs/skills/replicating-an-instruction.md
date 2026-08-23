@@ -8,6 +8,7 @@ description: Use when replicating an erArk instruction (TOML data + effects + pr
 > 沉淀自 chat(1004) 复刻全程（8 轮审查、20+ 静默问题）。chat 证明：**注册了 ≠ 语义对；执行了 ≠ 效果对**。
 > 配套：`docs/instruction-replication/migration-workflow.md`（SOP，逐条操作）+ `batch-01-daily.md`（批次清单格式）。
 
+> 批次工作流（筛选→逐条下令→完成表）与通用口上骨架规范见 `docs/skills/replicating-instruction-batches.md`；本文件专注单条指令的数值/静默错误检查。
 ## 核心原则
 
 1. **每个数值必须有 erArk 源码可追溯**（CSV 行/源码行号），禁止凭记忆/猜测/简化/合并

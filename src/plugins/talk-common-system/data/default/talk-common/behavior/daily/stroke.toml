@@ -1,0 +1,77 @@
+# stroke 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-xx）
+# - erArk data/talk/daily/stroke.csv 原 69 条中，大量同前提多条文本为 AI 自动生成，
+#   语义重复、观感差，故不照搬。本文件只保留「示例 + 占位符」骨架，等待人工手写替换。
+# - 分组规则：每个前提组最多保留少量条目——1 条示例 + 1 条占位符，
+#   占位符用于提醒编辑者可继续扩展多条，让随机/权重生效。
+# - 占位符统一格式：「身体接触指令通用口上 N」（N 连续编号）。
+# - 前提写法：口上 TOML 优先使用可读前提名（NPC_INITIATED / TARGET_IS_PLAYER /
+#   TARGET_NOT_FALLEN）；erArk 原名（sys_1/sys_4/not_fall/FALL_LEVEL_E_0）在注释中说明。
+# - 方舟世界观内容（源石/博士/罗德岛等）一律不保留、不占位（本文件已移除源石短句组）。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "stroke"
+description = "身体接触指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 无条件组 ──────────────────────────────────────────────
+# erArk 前提：sys_0（普通状态，恒真）→ 不写条件。
+# 原 8 条短句为简短通用句；这里保留 2 条示例 + 1 条占位符。
+[[entries]]
+context = "{player.name}检查了{character.name}的身体状况。"
+
+[[entries]]
+context = "{player.name}看见{character.name}手上拿着重物，赶紧上前帮忙托起，两人的手靠在了一起。"
+
+[[entries]]
+context = "身体接触指令通用口上 1"
+
+# ── 高好感组 ──────────────────────────────────────────────
+# erArk 前提：high_1（权重前提，恒通过、权重 1）→ 条件：premise(high_1)。
+# 原 7 条为高好感时的自然身体接触；保留 1 条示例 + 1 条占位符。
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}悄悄走到{character.name}身边，和{character.name}轻轻碰了一下手臂。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "身体接触指令通用口上 2"
+
+# ── 好感≥3 组 ─────────────────────────────────────────────
+# erArk 前提：favorability_ge_3（NPC 对玩家好感等级 ≥3）→ 条件：premise(favorability_ge_3)。
+# 原 9 条为双方关系较好时的身体接触；保留 1 条示例 + 1 条占位符。
+[[entries]]
+conditions = "premise(favorability_ge_3)"
+context = "{player.name}和{character.name}轻轻抱了一下，感受着对方的温暖。"
+
+[[entries]]
+conditions = "premise(favorability_ge_3)"
+context = "身体接触指令通用口上 3"
+
+# ── 未陷落组 ──────────────────────────────────────────────
+# erArk 前提：not_fall（交互对象无陷落素质）→ 等价条件：FALL_LEVEL_E_0（目标陷落等级==0）。
+# 口上使用可读名：premise(TARGET_NOT_FALLEN)。
+# 原 8 条博士长文本为 AI 生成，不保留；留 1 示例 + 1 占位符，
+# 编辑者可写“对方尚未陷落时的身体接触”口上。
+[[entries]]
+conditions = "premise(TARGET_NOT_FALLEN)"
+context = "{player.name}借着检查身体状况的理由，自然地碰了碰{character.name}的肩膀。"
+
+[[entries]]
+conditions = "premise(TARGET_NOT_FALLEN)"
+context = "身体接触指令通用口上 4"
+
+# ── NPC 主动组 ────────────────────────────────────────────
+# erArk 前提：sys_1 & sys_4（发起者非玩家 + 目标是玩家）→ 可读名：
+#   premise(NPC_INITIATED) && premise(TARGET_IS_PLAYER)
+# 含义：NPC 主动对玩家身体接触（好感/陷落较高时）。
+# 原另有 CVP_A2_G_E_n = 交互对象（玩家）陷落等级 == n，等价 FALL_LEVEL_E_n。
+# 原 11 条博士长文本为 AI 生成，不保留；留 0 档示例 + 4 档占位，
+# 中间档（1-3）由编辑者按需补充。
+[[entries]]
+conditions = "premise(NPC_INITIATED) && premise(TARGET_IS_PLAYER) && premise(TARGET_NOT_FALLEN)"
+context = "{character.name}趁着{player.name}不注意，轻轻碰了碰{player.name}的手背。"
+
+[[entries]]
+conditions = "premise(NPC_INITIATED) && premise(TARGET_IS_PLAYER) && premise(FALL_LEVEL_E_4)"
+context = "身体接触指令通用口上 5"

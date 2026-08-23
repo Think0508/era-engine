@@ -390,6 +390,10 @@ async function resolveTarget(target: string, ctx: any): Promise<string[]> {
         return []
       }
       return [selected]
+case 'selected_optional':
+      // 注释：可选目标——有选中角色就结算，没有就静默跳过（用于无目标也可执行的指令，
+      // 如 rest：无目标 = 仅玩家自己休息，不刷 warning）
+      return ctx.uiStore?.selectedCharacterId ? [ctx.uiStore.selectedCharacterId] : []
     case 'player':
       const player = gameContext.getContext().player
       return player ? [player.id] : []

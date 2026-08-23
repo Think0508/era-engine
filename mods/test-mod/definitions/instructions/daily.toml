@@ -1,27 +1,7 @@
 # 通用指令 — 日常
 # 每类指令一个文件，按 type 分
-
-[effect_blocks]
-recover_hp = { type = "recover_permil", target = "self", params = { attr = "体力", rate = 100 } }
-recover_mp = { type = "recover_permil", target = "self", params = { attr = "气力", rate = 200 } }
-recover_target_hp = { type = "recover_permil", target = "selected", params = { attr = "体力", rate = 100 } }
-recover_target_mp = { type = "recover_permil", target = "selected", params = { attr = "气力", rate = 200 } }
-
-[[instructions]]
-id = "rest"
-label = "休息"
-type = "daily"
-time_cost = 60
-settle_mode = "rest"
-priority = 50
-premises = ["NOT_H", "TIRED_LE_84"]
-effects = [
-  { type = "recover_permil", target = "self", params = { attr = "体力", rate = 100 } },
-  { type = "recover_permil", target = "self", params = { attr = "气力", rate = 200 } },
-  { type = "recover_permil", target = "selected", params = { attr = "体力", rate = 100 } },
-  { type = "recover_permil", target = "selected", params = { attr = "气力", rate = 200 } },
-  { type = "trigger_dialogue", params = { scene = "rest" } }
-]
+# rest 已迁移到 native-instructions/data/default/instructions/daily.toml（插件默认层）；
+# 本 mod 不再覆盖 rest，避免与默认层的有意差异冲突。
 
 [[instructions]]
 id = "wait"

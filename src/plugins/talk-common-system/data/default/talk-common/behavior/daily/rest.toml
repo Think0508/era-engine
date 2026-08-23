@@ -1,0 +1,44 @@
+# rest 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-xx，与 stroke/chat 对齐）
+# - 本文件只保留「示例 + 占位符」骨架，等待人工手写替换；不搬运 AI 生成/重复文本。
+# - 口上仅为叙事，不影响 rest 的 recover_permil 数值恢复。
+# - 占位符格式：「休息指令通用口上 N」（N 连续编号）。
+# - 分组：无条件组（erArk sys_0，恒真）不写条件；高好感组（erArk high_1）写 premise(high_1)；
+#   无目标组（单人休息）写 premise(NO_TARGET)。
+#   erArk 的 place_furniture_ge_1 / in_dor 组按用户确认移除（地点相关，非核心）。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "rest"
+description = "休息指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 无条件组 ──────────────────────────────────────────────
+# erArk 前提：sys_0（普通状态，恒真）→ 不写条件。
+# 原仅 1 条短句；保留为示例 + 1 占位符。
+[[entries]]
+context = "{player.name}休息了一会儿。"
+
+[[entries]]
+context = "休息指令通用口上 1"
+
+# ── 高好感组 ──────────────────────────────────────────────
+# erArk 前提：high_1（权重前提，恒通过、权重 1）→ 条件：premise(high_1)。
+# 原 20+ 条 AI 长文本（各种休息方式）；这里保留 1 条手写示例 + 1 占位符。
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}找了个安静的地方，坐下来好好休息了一会儿。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "休息指令通用口上 2"
+
+# ── 无目标组（单人休息）───────────────────────────────────
+# 我们引擎新增可读前提：NO_TARGET（无选中目标）→ 条件：premise(NO_TARGET)。
+# 用于无目标休息时的默认口上；对话系统在无 charId 且 mod 无场景口上时会走 talk-common 兜底。
+[[entries]]
+conditions = "premise(NO_TARGET)"
+context = "一个人休息了一会儿……"
+
+[[entries]]
+conditions = "premise(NO_TARGET)"
+context = "休息指令通用口上 3"

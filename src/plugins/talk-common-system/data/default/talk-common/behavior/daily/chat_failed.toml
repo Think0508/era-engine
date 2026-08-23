@@ -1,105 +1,35 @@
 # chat 指令失败链默认通用口上（插件默认层，Layer 1）
 # ============================================================
-# 语义：chat 指令失败链（talk_count > 话术技能+1）触发的口上场景 chat_failed；
-#   erArk 中 CHAT_FAILED 为独立 behavior（口上文件 chat_failed.csv）。
-# 来源: erArk data/talk/daily/chat_failed.csv 全量 28 条（1001-1028）
-#   1001-1020 前提列 high_1（恒命中且权重均等 → 等价无条件均匀随机，故不写条件）
-#   1021-1028 前提列 high_1&favorability_ge_3（NPC 对玩家好感等级 ≥3 才出）
-# 占位符: {Name}→{player.name}（发起者） {TargetName}→{character.name}
-# 约束：本目录（behavior/）只放非 H 行为默认口上；H 行为默认文本走行为地文（getBehaviorText）。
+# ⚠️ 骨架说明（2026-08-xx，与 stroke 对齐）
+# - 本文件只保留「示例 + 占位符」骨架，等待人工手写替换；不搬运 AI 生成/重复文本。
+# - 口上仅为叙事，不影响 chat 失败链的 effect 数值结算。
+# - 占位符格式：「聊天失败指令通用口上 N」（N 连续编号）。
+# - 前提写法：基础失败组（erArk high_1）写 premise(high_1)；
+#   高好感失败组写 premise(favorability_ge_3)。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
 
 variable = "chat_failed"
 description = "聊天指令失败链默认通用口上（mod 可覆盖）"
 
+# ── 基础失败组 ────────────────────────────────────────────
+# erArk 前提：high_1（权重前提，恒通过、权重 1）→ 条件：premise(high_1)。
+# 原 20 条尴尬失败句；这里保留 1 示例 + 1 占位符。
 [[entries]]
+conditions = "premise(high_1)"
 context = "{player.name}和{character.name}尝试聊天，但是由于彼此不熟悉，气氛很尴尬。"
 
 [[entries]]
-context = "{player.name}和{character.name}选的话题不太合适，导致两人聊得很尴尬。"
+conditions = "premise(high_1)"
+context = "聊天失败指令通用口上 1"
 
-[[entries]]
-context = "在两人聊天的过程中，{player.name}和{character.name}发现彼此之间没有共同语言，气氛有些尴尬。"
-
-[[entries]]
-context = "聊天的过程中，{player.name}和{character.name}尝试着让气氛轻松一些，但却徒劳无功。"
-
-[[entries]]
-context = "尽管{player.name}和{character.name}都努力地想找到共同点，但是聊天的气氛却一直不太理想。"
-
-[[entries]]
-context = "{player.name}和{character.name}的聊天很尴尬，两人都不知道该如何结束这场失败的交流。"
-
-[[entries]]
-context = "在尝试了几个话题之后，{player.name}和{character.name}发现彼此之间似乎没有什么可聊的了。"
-
-[[entries]]
-context = "聊天的过程中，{player.name}和{character.name}都试图改变气氛，但是结果并不如意。"
-
-[[entries]]
-context = "聊天的过程中，{player.name}和{character.name}的话题不断地被彼此打断，导致两人的交流十分困难。"
-
-[[entries]]
-context = "聊天的过程中，{player.name}和{character.name}尝试着找到话题，但却一直找不到适合的。"
-
-[[entries]]
-context = "尽管{player.name}和{character.name}都很努力地聊天，但气氛还是很尴尬，很难沟通。"
-
-[[entries]]
-context = "{player.name}和{character.name}的聊天有点不顺利，没能找到继续聊下去的话题。"
-
-[[entries]]
-context = "在聊天的过程中，{player.name}和{character.name}总是产生一些尴尬的沉默，让气氛变得很尴尬。"
-
-[[entries]]
-context = "聊天过程中，{player.name}和{character.name}的态度明显有些冷淡，让气氛非常尴尬。"
-
-[[entries]]
-context = "尽管{player.name}和{character.name}都很想尝试让聊天变得有趣，但是结果很失败，让气氛变得更尴尬。"
-
-[[entries]]
-context = "{player.name}和{character.name}的聊天没有进展，无法建立联系，气氛异常尴尬。"
-
-[[entries]]
-context = "在聊天过程中，{player.name}和{character.name}总是把话题扯远，导致两人之间的交流变得有些尴尬。"
-
-[[entries]]
-context = "聊天的过程中，{character.name}显得有些心不在焉，让气氛更加尴尬。"
-
-[[entries]]
-context = "{player.name}和{character.name}在聊天过程中产生了一些误解，导致彼此之间的交流变得非常尴尬。"
-
-[[entries]]
-context = "聊天的过程中，{player.name}和{character.name}总是互相抢话，无法建立良好的沟通，气氛十分失败。"
-
-# ── 高好感失败口上（NPC 对玩家好感等级 ≥3，erArk favorability_ge_3）──
+# ── 高好感失败组 ──────────────────────────────────────────
+# erArk 前提：high_1 & favorability_ge_3（NPC 对玩家好感等级 ≥3）→ 条件：premise(favorability_ge_3)
+#   （high_1 恒通过，不再重复写）。
+# 原 8 条高好感失败句；这里保留 1 示例 + 1 占位符。
 [[entries]]
 conditions = "premise(favorability_ge_3)"
 context = "{player.name}想要和{character.name}一起聊天，但气氛有些尴尬，像是没什么话说了。"
 
 [[entries]]
 conditions = "premise(favorability_ge_3)"
-context = "聊天开始挺顺利，但不知道为什么，现在{player.name}和{character.name}的话题都有些避重就轻。"
-
-[[entries]]
-conditions = "premise(favorability_ge_3)"
-context = "{player.name}和{character.name}有时候聊天没什么话题，就变得尴尬了。"
-
-[[entries]]
-conditions = "premise(favorability_ge_3)"
-context = "{player.name}和{character.name}曾经聊得很嗨，但现在似乎都不太想说话了。"
-
-[[entries]]
-conditions = "premise(favorability_ge_3)"
-context = "聊天一开始挺好，但现在{player.name}和{character.name}的话题似乎越来越凑不到一块去了。"
-
-[[entries]]
-conditions = "premise(favorability_ge_3)"
-context = "聊天本来很愉快，但后来似乎出了点差错，{player.name}和{character.name}的气氛变得有些尴尬了。"
-
-[[entries]]
-conditions = "premise(favorability_ge_3)"
-context = "{player.name}和{character.name}刚刚还一起笑得很开心，但现在却有些尴尬，好像没有什么好说的了。"
-
-[[entries]]
-conditions = "premise(favorability_ge_3)"
-context = "聊天开始时{player.name}和{character.name}的话题还不错，但现在两人都陷入了沉默。"
+context = "聊天失败指令通用口上 2"

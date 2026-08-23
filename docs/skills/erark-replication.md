@@ -167,7 +167,7 @@ erArk 效果ID: 21   12   CVE_A2  CVE_A1  53  55  501
 | 条件引擎（selected/target/别名/校验） | ✅ | condition-registry.validateExpression + fieldAliases + {id} 占位替换 |
 | 结算保真（tenths_add / 连续减值 / 无意识门控） | ✅ | settle_state/favorability/trust/hp_mp 全部对齐（common_default.py:196-240/551-589） |
 | 素质修正数据化 + 催眠敏感 | ✅ | state_adjusts/favorability_adjusts 天赋字段（talents.toml），全加法 fix 链；调香不做（香薰系统砍掉） |
-| B1 试点：chat（1004） | ✅ | 批次清单 `batch-01-daily.md` + TOML（插件默认层 daily.toml）+ 6 测试 |
-| B1 其余 23 条 | 📝 TODO | 用户筛选后逐条进行 |
+| B1：chat（1004）/ stroke（1005）/ rest（1012） | ✅ | chat：h-core daily.toml + 6 测试；stroke：native-instructions + 口上骨架 + 6 测试；rest：native-instructions（迁入 test-mod）+ 口上骨架 + 5 测试 |
+| B1 其余 21 条 | 📝 TODO | 用户筛选后逐条下令进行 |
 | B2-B6（obscenity/sex） | 📝 TODO | sex 延后至 H UI 就绪 |
 | 尿道/特殊特征/恋爱依赖项 | ⛔ 不做 | 尿道 19 条 / 特殊特征 8 条砍掉，告白延后 |

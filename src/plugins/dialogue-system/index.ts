@@ -348,6 +348,21 @@ async function triggerSceneInternal(scene: string, charId?: string): Promise<voi
       }
     }
   }
+// 注释：场景级默认口上兜底（2026-08-xx）——无 charId（无目标/单人行动）且 mod 未写该
+  // scene 的场景口上时，用 talk-common 默认词条兜底；与角色级兜底同语义，仅少一层角色轨。
+  if (!charId) {
+    const hasSceneLine = pool.some(p => p.source === 'scene')
+    if (!hasSceneLine) {
+      try {
+        const defaultTalk = await apiSystem.call('talk-common', 'getText', scene, null, playerId)
+        if (defaultTalk) {
+          pool.push({ line: { scene, text: defaultTalk }, source: 'scene', multiplier: 1 })
+        }
+      } catch {
+        // talk-common 未就绪或无此场景词条 → 无原生默认口上（保持既有行为）
+      }
+    }
+  }
   const matched = pickWeightedLine(pool, charId)
   if (matched) {
     const entry = pool.find(p => p.line === matched.line)

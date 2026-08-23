@@ -1,0 +1,135 @@
+# 插件默认层指令（Layer 1 权威副本）——通用日常指令（B1 批次）
+# 数据家：native-instructions（系统级原生指令唯一数据家，2026-08-10 建立）
+# mod 覆盖：mods/[模组名]/definitions/instructions/daily.toml（同 id 胜出）
+# 复刻依据：docs/instruction-replication/batch-01-daily.md + filter-quick-reference.md（erArk 行号可追溯）
+# system:* 为玩法系统标签（非数据文件归属）：chat/stroke/rest 属 h-core 通用日常体系。
+
+# ═══ chat 效果链（Behavior_Effect.csv 原链，逐条翻译，无合并省略）═══
+[effect_blocks]
+chat_fail_chain = [
+  # 102 chat_failed：[12] DOWN_BOTH_SMALL_MANA_POINT（双方 -3/分 气力）
+  { type = "settle_hp_mp", target = "self", params = { mpValue = -1, degree = 0 } },
+  { type = "settle_hp_mp", target = "selected", params = { mpValue = -1, degree = 0 } },
+]
+chat_success_chain = [
+  # 101 chat：21 - 12 - CVE_A2_E|80_G_1 - CVE_A1_E|80_G_1 - 53 - 55 - 501
+  # 21 ADD_INTERACTION_FAVORABILITY
+  { type = "settle_favorability" },
+  # 12 DOWN_BOTH_SMALL_MANA_POINT
+  { type = "settle_hp_mp", target = "self", params = { mpValue = -1, degree = 0 } },
+  { type = "settle_hp_mp", target = "selected", params = { mpValue = -1, degree = 0 } },
+  # CVE_A2_E|80_G_1：对方 对话经验(80) +1
+  { type = "h_experience", target = "selected", params = { expId = "80", value = 1 } },
+  # CVE_A1_E|80_G_1：自己 对话经验(80) +1
+  { type = "h_experience", target = "self", params = { expId = "80", value = 1 } },
+  # 53 TARGET_ADD_SMALL_FRIENDLY：好意 +（time+30）× 亲密修正
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  # 55 TARGET_ADD_SMALL_HAPPY：快乐 +（time+30）× 快乐刻印修正
+  { type = "settle_state", params = { state = "快乐", baseValue = 30 } },
+  # 501 TALK_ADD_ADJUST：好感 × 话术加成 + 好意/快乐 × 话术 + 记录谈话时间
+  { type = "talk_add_adjust" },
+]
+
+# ═══ chat（1004）═══════════════════════════════════════════════════
+[[instructions]]
+id = "chat"
+label = "聊天"
+erark_id = "1004"
+erark_behavior = "CHAT"
+erark_h_mode_show_type = 1
+erark_tired_type = 1
+category = "daily"
+sub_category = ""
+time_cost = 5
+priority = 50
+# 前提 = 新 CSV premise_set（HAVE_TARGET|NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1）
+#   + h_mode_show_type=1 自动注入（NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX）
+#   + tired_type=1 自动注入（TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3）
+#   （erArk handle_instruct.py:134-152；2026-08-08 更新对齐）
+premises = ["HAVE_TARGET", "NOT_H", "TIRED_LE_84", "HP_G_1", "NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "DRUNK_LEVEL_NOT_3"]
+tags = ["kind:play", "system:h-core"]
+# 无位置前提 → 全地点可用（SOP §7）
+effects = [
+  # erArk handle_chat（handle_instruct.py:455-465）：talk_count > 发起者话术技能+1 → 失败链，否则成功链
+  # talk_count 时间衰减与 +1 由 chat_settle 内部处理（复刻 settle_behavior.py:560-581）
+  # 成败口上（2026-08-17）：success_scene/fail_scene = erArk CHAT/CHAT_FAILED 双 behavior 口上
+  { type = "chat_settle", params = { fail_effects = "chat_fail_chain", success_effects = "chat_success_chain", success_scene = "chat", fail_scene = "chat_failed" } },
+]
+
+# ═══ stroke（1005）═══════════════════════════════════════════════════
+[[instructions]]
+id = "stroke"
+label = "身体接触"
+erark_id = "1005"
+erark_behavior = "STROKE"
+erark_h_mode_show_type = 1
+erark_tired_type = 2
+category = "daily"
+sub_category = ""
+time_cost = 10
+priority = 50
+# 前提 = CSV premise_set（HAVE_TARGET|T_NORMAL_56_OR_UNCONSCIOUS_FLAG）
+#   + h_mode_show_type=1 自动注入（NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX）
+#   + tired_type=2 自动注入（TIRED_LE_74 + HP_G_1 + DRUNK_LEVEL_NOT_3）
+#   （erArk handle_instruct.py:134-152；2026-08-08 更新对齐）
+premises = ["HAVE_TARGET", "T_NORMAL_56_OR_UNCONSCIOUS_FLAG", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TIRED_LE_74", "HP_G_1", "DRUNK_LEVEL_NOT_3"]
+tags = ["kind:play", "system:h-core"]
+# 无位置前提 → 全地点可用（SOP §7）
+effects = [
+  # 21 ADD_INTERACTION_FAVORABILITY：好感度 + time×fix（default.py:125-162）
+  { type = "settle_favorability" },
+  # 13 DOWN_BOTH_MEDIUM_HIT_POINT：双方 体力 -3/分（degree=1）（default.py:241-256）
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, degree = 1 } },
+  # 14 DOWN_BOTH_MEDIUM_MANA_POINT：双方 气力 -6/分（degree=1）（default.py:259-274）
+  { type = "settle_hp_mp", target = "self", params = { mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { mpValue = -1, degree = 1 } },
+  # 22 ADD_SMALL_TRUST：信赖 + time/60×fix（default.py:165-182）
+  { type = "settle_trust" },
+  # 54 TARGET_ADD_SMALL_DESIRE：欲情 +（time+30）× 欲望修正（default.py:3482-3503）
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  # 55 TARGET_ADD_SMALL_HAPPY：快乐 +（time+30）× 快乐刻印修正（default.py:3506-3527）
+  { type = "settle_state", params = { state = "快乐", baseValue = 30 } },
+  # 58 TARGET_ADD_SMALL_SHY：羞耻 +（time+30）× 露出修正（default.py:3578-3599）
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  # 62 TARGET_ADD_SMALL_DISGUST：反感 +（time+5）× 反发刻印修正（default.py:3674-3695）
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  # 口上触发：scene='stroke'（erArk talk/daily/stroke.csv → talk-common behavior/daily/stroke.toml）
+  { type = "trigger_dialogue", params = { scene = "stroke" } },
+]
+
+# ═══ rest（1012）═══════════════════════════════════════════════════
+# 注意：rest 机制/数值在我们引擎已有“有意区别”（用户确认保留）：
+#   - 不搬 erArk 效果链 21/325/1751（好感 / 清休息标记 / 设施损坏）；
+#   - 玩家休息恢复走 recover_permil（体力+10%、气力+20%，对自己与目标）；
+#   - NPC 休息恢复由 npc-ai-system 的 restRecovery 处理（erArk 公式去设施/天赋修正）。
+[[instructions]]
+id = "rest"
+label = "休息"
+erark_id = "1012"
+erark_behavior = "REST"
+erark_h_mode_show_type = 1
+erark_tired_type = 1
+category = "daily"
+sub_category = ""
+time_cost = 60
+settle_mode = "rest"
+priority = 50
+# 前提 = CSV premise_set（NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1）
+#   + h_mode_show_type=1 自动注入（NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX）
+#   + tired_type=1 自动注入（TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3）
+#   （erArk handle_instruct.py:134-152；2026-08-08 更新对齐；用户确认全量迁移）
+premises = ["NO_TARGET_OR_TARGET_CAN_COOPERATE_OR_IMPRISONMENT_1", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TIRED_LE_84", "HP_G_1", "DRUNK_LEVEL_NOT_3"]
+tags = ["kind:rest", "system:h-core"]
+# 无位置前提 → 全地点可用（SOP §7）
+effects = [
+  # 玩家/目标 体力上限 10% 恢复（recover_permil rate=100）
+  { type = "recover_permil", target = "self", params = { attr = "体力", rate = 100 } },
+  { type = "recover_permil", target = "selected_optional", params = { attr = "体力", rate = 100 } },
+  # 玩家/目标 气力上限 20% 恢复（recover_permil rate=200）
+  { type = "recover_permil", target = "self", params = { attr = "气力", rate = 200 } },
+  { type = "recover_permil", target = "selected_optional", params = { attr = "气力", rate = 200 } },
+  # 口上触发：scene='rest'（erArk talk/daily/rest.csv → talk-common behavior/daily/rest.toml）
+  # target=selected_optional：有选中角色时走角色轨口上，无目标时静默走场景通用口上
+  { type = "trigger_dialogue", target = "selected_optional", params = { scene = "rest" } },
+]

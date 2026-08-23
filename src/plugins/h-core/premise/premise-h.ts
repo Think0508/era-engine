@@ -24,6 +24,10 @@ export function registerHPremises(registry: any): void {
   registry.registerPremise('HAVE_TARGET', (ctx: any) => {
     return (ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId) != null
   })
+// 注释：NO_TARGET——无选中目标（单人行动/无目标指令口上用；口上 TOML 可读写法）
+  registry.registerPremise('NO_TARGET', (ctx: any) => {
+    return (ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId) == null
+  })
 
   // 注释：NOT_H——玩家或目标均不在 H（erArk handle_premise_other.py:1392）
   registry.registerPremise('NOT_H', (ctx: any) => {
@@ -39,6 +43,21 @@ export function registerHPremises(registry: any): void {
   // 各状态系统实装后按 erArk 语义补全（目标非睡眠/无意识/时停/监禁 且 状态正常）
   registry.registerPremise('T_NORMAL', (_ctx: any) => {
     return true
+  })
+// 注释：T_NORMAL_56_OR_UNCONSCIOUS_FLAG——交互对象56正常或无意识（erArk handle_premise/__init__.py:1456-1474）
+  // 语义：目标 unnormal 位 5/6（0x10=意识模糊/弱交互，0x20=完全意识不清醒/无交互）均未置位 = 正常，
+  // 或目标 sp_flag.unconscious_h != 0（睡奸/时停/无意识H）→ 通过（OR 关系）。
+  // 玩家作为目标时直接视为正常（erArk character_id==0 分支）。
+  // 实现：位运算直接读 sp_flag.unnormal_flag（sleep-system/h-time-stop 共同维护），
+  // 与 T_NORMAL_6 语义不同：本前提允许"目标无意识"作为可交互条件，T_NORMAL_6 则要求非深度无意识。
+  registry.registerPremise('T_NORMAL_56_OR_UNCONSCIOUS_FLAG', (ctx: any) => {
+    const target = getTargetChar(ctx)
+    if (!target) return false
+    const playerId = gameContext.getContext().player?.id
+    if (target.id === playerId) return true
+    if ((target?.sp_flag?.unconscious_h ?? 0) !== 0) return true
+    const unnormal = target?.sp_flag?.unnormal_flag ?? 0
+    return (unnormal & 0x30) === 0
   })
 
   // 注释：TIRED_LE_84——玩家疲劳≤84%（=≤134，erArk handle_premise_base_value.py:444 查自己）
@@ -161,9 +180,37 @@ export function registerHPremises(registry: any): void {
 
   // ═══ 系统状态前提 ═══
   registry.registerPremise('sys_0', () => true)  // 普通状态
-  registry.registerPremise('sys_1', () => false) // 占位：待实现
+  // 注释：sys_1（erArk NO_PLAYER）——发起者非玩家（NPC 主动口上）
+  // talk-common 上下文 sourceId = 口上发起者/actor；玩家指令路径 sourceId='player'，NPC 主动路径为 NPC id。
+  registry.registerPremise('sys_1', (ctx: any) => {
+    const playerId = gameContext.getContext().player?.id
+    if (!playerId) return false
+    const sourceId = ctx.sourceId ?? null
+    return sourceId != null && sourceId !== playerId
+  })
   registry.registerPremise('sys_2', () => false)
   registry.registerPremise('sys_3', () => false)
-  registry.registerPremise('sys_4', () => false)
+  // 注释：sys_4（erArk TARGET_IS_PLAYER）——交互对象/目标是玩家（NPC 对玩家口上）
+  registry.registerPremise('sys_4', (ctx: any) => {
+    const playerId = gameContext.getContext().player?.id
+    if (!playerId) return false
+    const targetId = ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId
+    return targetId === playerId
+  })
+// ═══ 口上可读别名（口上 TOML 优先用这些可读名，erArk 原名保留兼容）═══
+  // NPC_INITIATED = erArk sys_1（发起者非玩家）
+  registry.registerPremise('NPC_INITIATED', (ctx: any) => {
+    const playerId = gameContext.getContext().player?.id
+    if (!playerId) return false
+    const sourceId = ctx.sourceId ?? null
+    return sourceId != null && sourceId !== playerId
+  })
+  // TARGET_IS_PLAYER = erArk sys_4（目标是玩家）
+  registry.registerPremise('TARGET_IS_PLAYER', (ctx: any) => {
+    const playerId = gameContext.getContext().player?.id
+    if (!playerId) return false
+    const targetId = ctx.selectedCharacterId ?? ctx.uiStore?.selectedCharacterId
+    return targetId === playerId
+  })
   registry.registerPremise('sys_5', () => false)
 }

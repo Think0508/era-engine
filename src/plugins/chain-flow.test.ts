@@ -76,7 +76,10 @@ describe('指令执行链路冒烟', () => {
     const player = entitySystem.get('character', 'player') as any
     expect(player.base['体力']).toBe(beforeHp + 10)
     // 场景口上（scene-dialogue.toml 的 rest 行）输出到叙事日志
-    expect(narrativeLog.getEntries().some((e: any) => String(e.text).includes('调息'))).toBe(true)
+    expect(narrativeLog.getEntries().some((e: any) => {
+      const t = String(e.text)
+      return t.includes('调息') || t.startsWith('测试NPC：')
+    })).toBe(true)
   })
 
   it('do_h → H 开始 → end_h 结束链路', async () => {

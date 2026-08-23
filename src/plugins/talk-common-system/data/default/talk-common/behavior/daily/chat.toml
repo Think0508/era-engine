@@ -1,71 +1,31 @@
 # chat 指令默认通用口上（插件默认层，Layer 1）
 # ============================================================
-# 语义：原生通用口上 = 角色通用口上（character-dialogue.toml）的默认层。
-#   mod 未写 scene="chat" 的角色通用口上 → dialogue-system 用本词条兜底；
-#   mod 写了 → mod 内容胜出（mod 可整体覆盖：definitions/talk-common/ 下任意路径，
-#   variable 同名即替换，见 docs/mod-file-guide.md）。
-# 来源: erArk data/talk/daily/chat/chat.csv（行为级口上，adv_id=0 通用层）
-# 占位符: {Name}→{player.name}（发起者） {TargetName}→{character.name} {SceneName}→{location.name}
-# 去世界观处理（2026-08-17）：世界观内容句（龙门/罗德岛/整合运动/源石病/天灾等）
-#   → "聊天指令通用口上 N" 占位，待手写替换。
-# 约束：本目录（behavior/）只放非 H 行为默认口上；H 行为默认文本走行为地文（getBehaviorText）。
+# ⚠️ 骨架说明（2026-08-xx，与 stroke 对齐）
+# - 本文件只保留「示例 + 占位符」骨架，等待人工手写替换；不搬运 AI 生成/重复文本。
+# - 原 10 条世界观占位（龙门/罗德岛等）已移除：口上仅为叙事，不影响 chat 的 effect 数值结算。
+# - 占位符格式：「聊天指令通用口上 N」（N 连续编号）。
+# - 前提写法：无条件组（erArk sys_0，恒真）不写条件；高好感组使用 premise(high_1)。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
 
 variable = "chat"
 description = "聊天指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
 
+# ── 无条件组 ──────────────────────────────────────────────
+# erArk 前提：sys_0（普通状态，恒真）→ 不写条件。
+# 原多条通用短句；这里保留 1 示例 + 1 占位符。
 [[entries]]
 context = "{player.name}与{character.name}聊了一会儿天。"
 
 [[entries]]
-context = "{player.name}在{location.name}与{character.name}闲聊了一会儿。"
-
-[[entries]]
-context = "{player.name}对{character.name}分享了最近的见闻。"
-
-[[entries]]
-context = "{player.name}对{character.name}表示关心。"
-
-[[entries]]
-context = "{player.name}对{character.name}讲了个冷笑话，真的很冷。"
-
-[[entries]]
-context = "{player.name}与{character.name}闲聊了一会儿关于天气的话题。"
-
-[[entries]]
-context = "{player.name}与{character.name}闲聊了一会儿。"
-
-# ── 世界观句占位（erArk chat.csv 龙门/罗德岛/整合运动/源石病/天灾等，待手写替换）──
-[[entries]]
 context = "聊天指令通用口上 1"
 
-[[entries]]
-context = "聊天指令通用口上 2"
-
-[[entries]]
-context = "聊天指令通用口上 3"
-
-[[entries]]
-context = "聊天指令通用口上 4"
-
-[[entries]]
-context = "聊天指令通用口上 5"
-
-[[entries]]
-context = "聊天指令通用口上 6"
-
-[[entries]]
-context = "聊天指令通用口上 7"
-
-[[entries]]
-context = "聊天指令通用口上 8"
-
-[[entries]]
-context = "聊天指令通用口上 9"
-
-[[entries]]
-context = "聊天指令通用口上 10"
-
-# ── 高好感加权长句（erArk chat.csv high_1 行：权重+1 参与竞争）──
+# ── 高好感组 ──────────────────────────────────────────────
+# erArk 前提：high_1（权重前提，恒通过、权重 1）→ 条件：premise(high_1)。
+# 原 1 条加权长句；这里保留为示例 + 1 占位符。
 [[entries]]
 conditions = "premise(high_1)"
 context = "{player.name}和{character.name}在{location.name}里聊了一会儿天，两人似乎谈得很投缘。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "聊天指令通用口上 2"

@@ -148,3 +148,649 @@ effects = [
   { type = "stop_endurance_shoot", target = "self" },
   { type = "trigger_dialogue", target = "selected", params = { scene = "stop_endure" } },
 ]
+
+# ═══ philter（6102）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 454，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 62 - 942 - 1002）
+# 判定：handle_instruct.py:2736 显式 judge=_("药物") → judge_base=600；h-config [judge.adjustments] 无“药物” → 不写 judge_class
+# h_mode_show_type=2 → category=sex 自动 h_scene；显式前提已含 TARGET_IS_H，无 tired 注入
+[[instructions]]
+id = "philter"
+label = "媚药"
+erark_id = "6102"
+erark_behavior = "PHILTER"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "drug"
+time_cost = 10
+priority = 50
+judge_base = 600
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_PHILTER"]
+tags = ["system:h-core", "system:h-drug"]
+effects = [
+  # 21 ADD_INTERACTION_FAVORABILITY：目标好感
+  { type = "settle_favorability" },
+  # 13 DOWN_BOTH_MEDIUM_HIT_POINT：双方体力 -30（degree=1，10×3）
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  # 14 DOWN_BOTH_MEDIUM_MANA_POINT：双方气力 -60（degree=1，10×6）
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  # 62 TARGET_ADD_SMALL_DISGUST：目标反感 +（time+5）
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  # 942 USE_PHILTER：消耗玩家背包 1 个媚药
+  { type = "remove_item", target = "self", params = { itemId = "媚药", count = 1 } },
+  # 1002 TARGET_ADD_HUGE_DESIRE_AND_SUBMIT：目标欲情/屈服巨量增加，欲望值=100
+  { type = "apply_aphrodisiac", target = "selected" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "philter" } },
+]
+
+# ═══ clomid（6107）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 459，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 58 - 62 - 947 - 1008）
+# 判定：handle_instruct.py:2769 显式 judge=_("药物") → judge_base=600；h-config 无“药物” → 不写 judge_class
+# h_mode_show_type=2 → category=sex 自动 h_scene；显式前提已含 TARGET_IS_H，无 tired 注入
+[[instructions]]
+id = "clomid"
+label = "排卵促进药"
+erark_id = "6107"
+erark_behavior = "CLOMID"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "drug"
+time_cost = 10
+priority = 50
+judge_base = 600
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_CLOMID"]
+tags = ["system:h-core", "system:h-drug", "system:h-pregnancy"]
+effects = [
+  # 21 ADD_INTERACTION_FAVORABILITY：目标好感
+  { type = "settle_favorability" },
+  # 13 DOWN_BOTH_MEDIUM_HIT_POINT：双方体力 -30
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  # 14 DOWN_BOTH_MEDIUM_MANA_POINT：双方气力 -60
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  # 58 TARGET_ADD_SMALL_SHY：目标羞耻 +（time+30）
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  # 62 TARGET_ADD_SMALL_DISGUST：目标反感 +（time+5）
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  # 947 USE_OVULATION_PROMOTING_DRUGS：消耗玩家背包 1 个排卵促进药
+  { type = "remove_item", target = "self", params = { itemId = "排卵促进药", count = 1 } },
+  # 1008 TARGET_ADD_PREGNANCY_CHANCE：目标 body_item[10] = 排卵促进药状态
+  { type = "target_add_ovulation_promoting_drug", target = "selected" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "clomid" } },
+]
+
+# ═══ birth_control_pills_before（6108）═══════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 452，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 62 - 948 - 1009）
+# 判定：handle_instruct.py:2775 无 judge 参数 → 不写 judge_base/judge_class
+# h_mode_show_type=2 → category=sex 自动 h_scene；显式前提已含 TARGET_IS_H，无 tired 注入
+[[instructions]]
+id = "birth_control_pills_before"
+label = "事前避孕药"
+erark_id = "6108"
+erark_behavior = "BIRTH_CONTROL_PILLS_BEFORE"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "drug"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_BIRTH_CONTROL_PILLS_BEFORE"]
+tags = ["system:h-core", "system:h-drug", "system:h-pregnancy"]
+effects = [
+  # 21 ADD_INTERACTION_FAVORABILITY：目标好感
+  { type = "settle_favorability" },
+  # 13 DOWN_BOTH_MEDIUM_HIT_POINT：双方体力 -30
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  # 14 DOWN_BOTH_MEDIUM_MANA_POINT：双方气力 -60
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  # 62 TARGET_ADD_SMALL_DISGUST：目标反感 +（time+5）
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  # 948 USE_CONTRACEPTIVE_BEFORE：消耗玩家背包 1 个事前避孕药
+  { type = "remove_item", target = "self", params = { itemId = "事前避孕药", count = 1 } },
+  # 1009 TARGET_NO_PREGNANCY_NEXT_DAY：目标 body_item[11] = 事前避孕药状态（30 天）
+  { type = "target_add_contraceptive_before", target = "selected" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "birth_control_pills_before" } },
+]
+
+# ═══ birth_control_pills_after（6109）═══════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 453，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 58 - 62 - 949 - 1010）
+# 判定：handle_instruct.py:2781 无 judge 参数 → 不写 judge_base/judge_class
+# h_mode_show_type=2 → category=sex 自动 h_scene；显式前提已含 TARGET_IS_H，无 tired 注入
+[[instructions]]
+id = "birth_control_pills_after"
+label = "事后避孕药"
+erark_id = "6109"
+erark_behavior = "BIRTH_CONTROL_PILLS_AFTER"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "drug"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_BIRTH_CONTROL_PILLS_AFTER"]
+tags = ["system:h-core", "system:h-drug", "system:h-pregnancy"]
+effects = [
+  # 21 ADD_INTERACTION_FAVORABILITY：目标好感
+  { type = "settle_favorability" },
+  # 13 DOWN_BOTH_MEDIUM_HIT_POINT：双方体力 -30
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  # 14 DOWN_BOTH_MEDIUM_MANA_POINT：双方气力 -60
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  # 58 TARGET_ADD_SMALL_SHY：目标羞耻 +（time+30）
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  # 62 TARGET_ADD_SMALL_DISGUST：目标反感 +（time+5）
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  # 949 USE_CONTRACEPTIVE_AFTER：消耗玩家背包 1 个事后避孕药
+  { type = "remove_item", target = "self", params = { itemId = "事后避孕药", count = 1 } },
+  # 1010 TARGET_NO_PREGNANCY_FROM_LAST_H：目标 body_item[12] = 事后避孕药状态
+  { type = "target_add_contraceptive_after", target = "selected" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "birth_control_pills_after" } },
+]
+
+# ═══ making_out（6201）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 401，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 110 - CVE_A2_E|0_G_1 - CVE_A1_E|41_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "making_out"
+label = "身体爱抚"
+erark_id = "6201"
+erark_behavior = "MAKING_OUT"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "h_experience", target = "selected", params = { expId = "0", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "41", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "making_out" } },
+]
+
+# ═══ breast_caress（6203）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 403，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 111 - CVE_A2_E|1_G_1 - CVE_A1_E|41_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "breast_caress"
+label = "胸爱抚"
+erark_id = "6203"
+erark_behavior = "BREAST_CARESS"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "胸部" } },
+  { type = "h_experience", target = "selected", params = { expId = "1", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "41", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "breast_caress" } },
+]
+
+# ═══ twiddle_nipples（6204）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 404，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 111 - CVE_A2_E|1_G_1 - CVE_A1_E|41_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "twiddle_nipples"
+label = "玩弄乳头"
+erark_id = "6204"
+erark_behavior = "TWIDDLE_NIPPLES"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "胸部" } },
+  { type = "h_experience", target = "selected", params = { expId = "1", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "41", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "twiddle_nipples" } },
+]
+
+# ═══ breast_sucking（6205）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 405，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 111 - CVE_A2_E|1_G_1 - CVE_A1_E|42_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "breast_sucking"
+label = "舔吸乳头"
+erark_id = "6205"
+erark_behavior = "BREAST_SUCKING"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "胸部" } },
+  { type = "h_experience", target = "selected", params = { expId = "1", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "42", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "breast_sucking" } },
+]
+
+# ═══ clit_caress（6206）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 406，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 112 - CVE_A2_E|2_G_1 - CVE_A1_E|41_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "clit_caress"
+label = "阴蒂爱抚"
+erark_id = "6206"
+erark_behavior = "CLIT_CARESS"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "阴蒂" } },
+  { type = "h_experience", target = "selected", params = { expId = "2", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "41", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "clit_caress" } },
+]
+
+# ═══ open_labia（6207）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 407，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 112 - CVE_A2_E|2_G_1 - CVE_A1_E|41_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "open_labia"
+label = "掰开阴唇观察"
+erark_id = "6207"
+erark_behavior = "OPEN_LABIA"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "阴蒂" } },
+  { type = "h_experience", target = "selected", params = { expId = "2", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "41", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "open_labia" } },
+]
+
+# ═══ cunnilingus（6209）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 409，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 112 - 114 - CVE_A2_E|4_G_1 - CVE_A1_E|42_G_1 - CVE_A1_E|42_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "cunnilingus"
+label = "舔阴"
+erark_id = "6209"
+erark_behavior = "CUNNILINGUS"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "阴蒂" } },
+  { type = "tech_adjust", target = "selected", params = { part = "阴道" } },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "42", value = 1 } },
+  # erArk 源链重复 CVE_A1_E|42_G_1 → 按逐条不合并原则保留两条
+  { type = "h_experience", target = "self", params = { expId = "42", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "cunnilingus" } },
+]
+
+# ═══ finger_insertion（6211）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 411，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 55 - 58 - 62 - 114 - CVE_A2_E|4_G_1 - CVE_A2_E|65_G_1 - CVE_A1_E|41_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "finger_insertion"
+label = "手指插入(V)"
+erark_id = "6211"
+erark_behavior = "FINGER_INSERTION"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "快乐", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "tech_adjust", target = "selected", params = { part = "阴道" } },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "41", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "finger_insertion" } },
+]
+
+# ═══ external_womb_massage（6213）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 519，duration=5！）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 62 - 81 - 117 - CVE_A2_E|7_G_1 - CVE_A1_E|41_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "external_womb_massage"
+label = "体外子宫按摩"
+erark_id = "6213"
+erark_behavior = "EXTERNAL_WOMB_MASSAGE"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core", "system:h-pregnancy"]
+effects = [
+  { type = "settle_favorability" },
+  # 13/14：duration=5 → medium HP -15 / MP -30
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "子宫" } },
+  { type = "h_experience", target = "selected", params = { expId = "7", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "41", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "external_womb_massage" } },
+]
+
+# ═══ open_anus（6208）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 408，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 115 - CVE_A2_E|5_G_1 - CVE_A1_E|41_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "open_anus"
+label = "掰开肛门观察"
+erark_id = "6208"
+erark_behavior = "OPEN_ANUS"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "后穴" } },
+  { type = "h_experience", target = "selected", params = { expId = "5", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "41", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "open_anus" } },
+]
+
+# ═══ lick_anal（6210）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 410，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 115 - CVE_A2_E|5_G_1 - CVE_A1_E|42_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "lick_anal"
+label = "舔肛"
+erark_id = "6210"
+erark_behavior = "LICK_ANAL"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "后穴" } },
+  { type = "h_experience", target = "selected", params = { expId = "5", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "42", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "lick_anal" } },
+]
+
+# ═══ anal_caress（6212）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 412，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 49 - 58 - 60 - 62 - 115 - CVE_A2_E|5_G_1 - CVE_A2_E|66_G_1 - CVE_A1_E|41_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "anal_caress"
+label = "手指插入(A)"
+erark_id = "6212"
+erark_behavior = "ANAL_CARESS"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "恐怖", baseValue = 10 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "tech_adjust", target = "selected", params = { part = "后穴" } },
+  { type = "h_experience", target = "selected", params = { expId = "5", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "66", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "41", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "anal_caress" } },
+]
+
+# ═══ make_masturebate（6215）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 413，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 41 - 49 - 51 - 54 - 57 - 58 - 62 - CVE_A2_E|41_G_1 - CVE_A2_E|47_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "make_masturebate"
+label = "命令对方自慰"
+erark_id = "6215"
+erark_behavior = "MAKE_MASTUREBATE"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_BONDAGE", "T_NORMAL_5_6_OR_UNCONSCIOUS_FLAG_4_7", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "皮肤", baseValue = 30 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "h_experience", target = "selected", params = { expId = "41", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "47", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "make_masturebate" } },
+]
+
+# ═══ make_lick_anal（6216）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 414，duration=10）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 51 - 56 - 57 - 58 - 62 - 118 - 120 - CVE_A2_E|30_G_1 - CVE_A2_E|42_G_1）
+# 判定：handle_instruct.py 无 judge 参数 → 不写 judge_base/judge_class
+[[instructions]]
+id = "make_lick_anal"
+label = "命令对方舔自己肛门"
+erark_id = "6216"
+erark_behavior = "MAKE_LICK_ANAL"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_BONDAGE", "TARGET_NOT_GAG", "T_NORMAL_5_6_OR_UNCONSCIOUS_FLAG_4_7", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "tech_adjust", target = "selected", params = { part = "口喉" } },
+  { type = "pl_p_adjust", target = "self", params = {} },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "42", value = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "make_lick_anal" } },
+]
+
+# ═══ kiss_h（6202）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（behavior 402，duration=5）
+#   + Behavior_Effect.csv（21 - 13 - 14 - 22 - 1101 - 49 - 118 - CVE_A2_E|40_G_1 - CVE_A1_E|40_G_1 - CVE_A2_E|153_G_1 - CVE_A1_E|153_G_1 - 840）
+# 判定：handle_instruct.py 显式 judge=_("亲吻") → judge_base=250 + judge_class="亲吻"（h-config 修正表有）
+[[instructions]]
+id = "kiss_h"
+label = "接吻"
+erark_id = "6202"
+erark_behavior = "KISS_H"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "foreplay"
+time_cost = 5
+priority = 50
+judge_base = 250
+judge_class = "亲吻"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_GAG", "PENIS_NOT_IN_T_MOUSE", "TARGET_IS_H"]
+tags = ["system:h-core", "system:h-first-time"]
+effects = [
+  { type = "settle_favorability" },
+  # 13/14：duration=5 → medium HP -15 / MP -30
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "first_kiss_check", target = "selected" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "tech_adjust", target = "selected", params = { part = "口喉" } },
+  { type = "h_experience", target = "selected", params = { expId = "40", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "40", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "153", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "153", value = 1 } },
+  { type = "cancel_penis_in_face_or_mouth", target = "selected" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "kiss_h" } },
+]

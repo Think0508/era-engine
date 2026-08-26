@@ -100,6 +100,24 @@ export function registerSleepPremises(registry: any): void {
     return true
   })
 
+  // T_NORMAL_5_6：目标 unnormal bit5、bit6 均为正常（erArk _check_normal_combo）
+  // T_NORMAL_5_6_OR_UNCONSCIOUS_FLAG_4_7：56正常 或 平然/心控（unconscious_h=4/7）
+  // D 组命令系指令引用（make_masturebate / make_lick_anal）
+  registry.registerPremise('T_NORMAL_5_6', (ctx: any) => {
+    const ch = target(ctx)
+    if (!ch) return false
+    const un = ch.sp_flag?.unnormal_flag ?? 0
+    return (un & 0x30) === 0
+  })
+  registry.registerPremise('T_NORMAL_5_6_OR_UNCONSCIOUS_FLAG_4_7', (ctx: any) => {
+    const ch = target(ctx)
+    if (!ch) return false
+    const un = ch.sp_flag?.unnormal_flag ?? 0
+    const unconscious = ch.sp_flag?.unconscious_h ?? 0
+    return (un & 0x30) === 0 || unconscious === 4 || unconscious === 7
+  })
+
+
   // ── 无意识 flag 补全（h-core 已注册 T_UNCONSCIOUS_FLAG + _1.._6；此处补 _0 和 _7）──
   registry.registerPremise('T_UNCONSCIOUS_FLAG_0', (ctx: any) => {
     const ch = target(ctx)
@@ -171,12 +189,11 @@ export function registerSleepPremises(registry: any): void {
   registry.registerPremise('TARGET_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', tPretendSleep)
   registry.registerPremise('TARGET_NOT_SLEEP_H_AWAKE_BUT_PRETEND_SLEEP', tNotPretendSleep)
 
-  // ── 安眠药（body_item[9] 未实装 → 恒 false + TODO；安眠药指令（6106）随道具系统落地）──
-  registry.registerPremise('SLEEP_PILLS', () => false) // TODO(sleep-system)：body_item 道具未实装
+  // ── 安眠药（HAVE_SLEEPING_PILLS 由 h-core premise-instruct 注册真语义：查自己背包数组；
+  //    其余睡眠药标记暂无消费方，保留 TODO）──
   registry.registerPremise('NOT_SLEEP_PILLS', () => true)
   registry.registerPremise('T_SLEEP_PILLS', () => false) // TODO(sleep-system)：同上
   registry.registerPremise('T_NOT_SLEEP_PILLS', () => true)
-  registry.registerPremise('HAVE_SLEEPING_PILLS', () => false) // TODO(sleep-system)：身体管理道具[9] 未实装
   registry.registerPremise('SELF_SLEEP_PILLS', () => false) // TODO(sleep-system)：同上
   registry.registerPremise('T_SELF_SLEEP_PILLS', () => false) // TODO(sleep-system)：同上
 }

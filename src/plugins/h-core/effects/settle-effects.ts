@@ -517,4 +517,19 @@ export function registerSettleEffects(): void {
     }
     return true
   })
+
+  // cancel_penis_in_face_or_mouth——取消阴茎蹭脸/口交中（erArk 840）
+  effectTypeRegistry.register('cancel_penis_in_face_or_mouth', (_p: any, execCtx: any) => {
+    for (const id of execCtx._targetIds as string[]) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch?.h_state) continue
+      if (ch.h_state.insert_position === 1 || ch.h_state.insert_position === 2) {
+        ch.h_state.insert_position = -1
+      }
+      if (ch.h_state.insertion === 'mouth' || ch.h_state.insertion === 'face') {
+        ch.h_state.insertion = undefined
+      }
+    }
+    return true
+  })
 }

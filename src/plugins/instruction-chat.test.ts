@@ -14,6 +14,7 @@ import { narrativeLog } from '../core/narrative-log'
 import { errorReporter } from '../core/error-reporter'
 import { onLoad as effectOnLoad, onEnable as effectOnEnable } from './effect-system/index'
 import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from './h-core/index'
+import { onLoad as bondageOnLoad, onEnable as bondageOnEnable } from './h-bondage/index'
 import { onLoad as sleepOnLoad } from './sleep-system/index'
 import { onLoad as timeStopOnLoad, onEnable as timeStopOnEnable } from './h-time-stop/index'
 import { onLoad as dialogueOnLoad, onEnable as dialogueOnEnable } from './dialogue-system/index'
@@ -73,6 +74,8 @@ describe('chat（1004）复刻', () => {
     effectOnEnable(stubCtx)
     hCoreOnLoad(stubCtx)
     hCoreOnEnable(stubCtx)
+    bondageOnLoad(stubCtx)
+    await bondageOnEnable(stubCtx)
     sleepOnLoad(stubCtx)
     timeStopOnLoad(stubCtx)
     await timeStopOnEnable(stubCtx)

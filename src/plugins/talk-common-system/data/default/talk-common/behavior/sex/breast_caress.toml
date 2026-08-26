@@ -1,0 +1,17 @@
+# breast_caress 指令默认通用口上（插件默认层，Layer 1）
+# ⚠️ 骨架：不搬运 erArk 长文本；保留 1 条简短示例 + 1 条占位符。
+# erArk 原前提：high_1（权重前提，恒通过、权重 1）
+# 我们条件引擎写法：premise(high_1)
+variable = "breast_caress"
+description = "胸爱抚指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 高权重基础组 ──────────────────────────────────────────────
+# erArk 前提：high_1 → 条件：premise(high_1)
+# 原 5 条为简短胸爱抚短句；保留 1 示例 + 1 占位符。
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}爱抚着{character.name}的胸部，用不同的手法揉搓着双乳，让{character.name}感受不停的刺激。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "胸爱抚指令通用口上 1"

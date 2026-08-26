@@ -75,4 +75,21 @@ describe('premise-instruct 前提语义矩阵', () => {
     expect(conditionEngine.evaluatePremises(['TARGET_NOW_SEX_TOY_WEAK'], { ...gameContext.getContext(), selectedCharacterId: undefined })).toBe(false)
     expect(conditionEngine.evaluatePremises(['TARGET_NOW_SEX_TOY_ON'], { ...gameContext.getContext(), selectedCharacterId: undefined })).toBe(false)
   })
+
+  it('HAVE_PHILTER：查自己背包数组，非目标（erArk HAVE_PHILTER 无 T_ 前缀 = 自己）', () => {
+    const p = entitySystem.get('character', 'player') as any
+    const n = entitySystem.get('character', 'npc_1') as any
+    p.inventory = [{ itemId: '媚药', count: 1 }]
+    n.inventory = []
+    expect(conditionEngine.evaluatePremises(['HAVE_PHILTER'], { ...gameContext.getContext(), selectedCharacterId: 'npc_1' })).toBe(true)
+    // 目标有、自己没有 → false（防止查错对象）
+    p.inventory = []
+    n.inventory = [{ itemId: '媚药', count: 1 }]
+    expect(conditionEngine.evaluatePremises(['HAVE_PHILTER'], { ...gameContext.getContext(), selectedCharacterId: 'npc_1' })).toBe(false)
+    // 数量为 0 → false
+    p.inventory = [{ itemId: '媚药', count: 0 }]
+    expect(conditionEngine.evaluatePremises(['HAVE_PHILTER'], { ...gameContext.getContext(), selectedCharacterId: 'npc_1' })).toBe(false)
+    p.inventory = []
+    n.inventory = []
+  })
 })

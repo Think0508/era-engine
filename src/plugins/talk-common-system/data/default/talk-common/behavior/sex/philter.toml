@@ -1,0 +1,18 @@
+# philter 指令默认通用口上（插件默认层，Layer 1）
+# ⚠️ 骨架：不搬运 erArk 长文本；保留 1 条简短示例 + 1 条占位符。
+# erArk 原前提：high_1（权重前提，恒通过、权重 1）
+# 我们条件引擎写法：premise(high_1)
+# 方舟世界观内容（博士/源石等）一律不保留。
+variable = "philter"
+description = "媚药指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 高权重基础组 ──────────────────────────────────────────────
+# erArk 前提：high_1 → 条件：premise(high_1)
+# 原 1 条为简短通用句；保留 1 示例 + 1 占位符。
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}让{character.name}服下媚药，{character.name}的身体渐渐发热，眼神变得迷离。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "媚药指令通用口上 1"

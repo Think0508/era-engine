@@ -11,7 +11,7 @@
 | B1 | 11 | 0 | 13（延后 13） |
 | B2 | 5 | 0 | 12（催眠，延后待 grill） |
 | B3 | 11 | 1 | 25 |
-| B4-B7 | 13 | 0 | 129 |
+| B4-B7 | 33 | 0 | 109 |
 | 核对项（SYSTEM） | 0 | 0 | 8 |
 
 > 说明：B1 候选池原 24 条，chat / stroke / rest / take_shower / sleep / ask_target_sleep / follow / end_follow / listen_complaint / apologize / ask_target_rest 已确认；剩余 13 条全部为延后。
@@ -62,6 +62,26 @@
 | B4 | sex/base | 6014 | orgasm_edge_off | 绝顶解放 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/orgasm_edge_off.toml | instruction-sex-base-a.test.ts | orgasm_edge_off 效果 | ✅ 已确认 |
 | B4 | sex/base | 6019 | pull_out_penis | 拔出阴茎 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/pull_out_penis.toml | instruction-sex-base-b.test.ts | 简化清除插入部位 | ✅ 已确认 |
 | B4 | sex/base | 6020 | stop_endure | 停止忍耐 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/stop_endure.toml | instruction-sex-base-b.test.ts | eja_climax force | ✅ 已确认 |
+| B4-B7 | sex/drug | 6102 | philter | 媚药 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/philter.toml | instruction-philter.test.ts | judge_base=600；HAVE_PHILTER 修复为查自己背包数组 | ✅ 已确认 |
+| B4-B7 | sex/drug | 6106 | sleeping_pills | 安眠药 | 数据：sleep-system；口上：talk-common-system | 有：behavior/sex/sleeping_pills.toml | instruction-sleeping-pills.test.ts | 新增 target_add_tired_to_sleep；疲劳/熟睡/body_item[9]/入睡 | ✅ 已确认 |
+| B4-B7 | sex/drug | 6107 | clomid | 排卵促进药 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/clomid.toml | instruction-clomid.test.ts | 新增 target_add_ovulation_promoting_drug；HAVE_CLOMID 物品名修正 | ✅ 已确认 |
+| B4-B7 | sex/drug | 6108 | birth_control_pills_before | 事前避孕药 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/birth_control_pills_before.toml | instruction-birth-control-pills.test.ts | 无 judge；target_add_contraceptive_before | ✅ 已确认 |
+| B4-B7 | sex/drug | 6109 | birth_control_pills_after | 事后避孕药 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/birth_control_pills_after.toml | instruction-birth-control-pills.test.ts | 无 judge；target_add_contraceptive_after | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6201 | making_out | 身体爱抚 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/making_out.toml | instruction-foreplay-a.test.ts | 无 judge；tech_adjust 皮肤 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6203 | breast_caress | 胸爱抚 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/breast_caress.toml | instruction-foreplay-a.test.ts | 无 judge；tech_adjust 胸部 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6204 | twiddle_nipples | 玩弄乳头 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/twiddle_nipples.toml | instruction-foreplay-a.test.ts | 无 judge；tech_adjust 胸部 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6205 | breast_sucking | 舔吸乳头 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/breast_sucking.toml | instruction-foreplay-a.test.ts | 无 judge；tech_adjust 胸部；口经验 42 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6206 | clit_caress | 阴蒂爱抚 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/clit_caress.toml | instruction-foreplay-b.test.ts | 无 judge；tech_adjust 阴蒂 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6207 | open_labia | 掰开阴唇观察 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/open_labia.toml | instruction-foreplay-b.test.ts | 无 judge；tech_adjust 阴蒂 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6209 | cunnilingus | 舔阴 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/cunnilingus.toml | instruction-foreplay-b.test.ts | 无 judge；阴蒂+阴道；口经验 42 按源码重复 2 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6211 | finger_insertion | 手指插入(V) | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/finger_insertion.toml | instruction-foreplay-b.test.ts | 无 judge；快乐/羞耻/反感 + 阴道 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6213 | external_womb_massage | 体外子宫按摩 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/external_womb_massage.toml | instruction-foreplay-b.test.ts | 无 judge；duration=5；子宫快感 + 习得 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6208 | open_anus | 掰开肛门观察 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/open_anus.toml | instruction-foreplay-c.test.ts | 无 judge；后穴 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6210 | lick_anal | 舔肛 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/lick_anal.toml | instruction-foreplay-c.test.ts | 无 judge；后穴；口经验 42 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6212 | anal_caress | 手指插入(A) | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/anal_caress.toml | instruction-foreplay-c.test.ts | 无 judge；羞耻/恐怖/反感 + 后穴 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6215 | make_masturebate | 命令对方自慰 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/make_masturebate.toml | instruction-foreplay-d.test.ts | 无 judge；T_NORMAL_5_6 新增；自慰状态链 | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6216 | make_lick_anal | 命令对方舔自己肛门 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/make_lick_anal.toml | instruction-foreplay-d.test.ts | 无 judge；口喉 + pl_p_adjust；新增 TARGET_NOT_GAG / T_NORMAL_5_6_OR… | ✅ 已确认 |
+| B4-B7 | sex/foreplay | 6202 | kiss_h | 接吻 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/kiss_h.toml | instruction-kiss-h.test.ts | judge 亲吻 250；first_kiss_check；840 取消口/脸插入；经验 40/153 | ✅ 已确认 |
 
 ## 存量已实现（🟡，未走本流程 / 待补口上 / 待核对）
 

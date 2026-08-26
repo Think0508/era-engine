@@ -1,0 +1,14 @@
+# finger_insertion 指令默认通用口上（插件默认层，Layer 1）
+# ⚠️ 骨架：不搬运 erArk 长文本；保留 1 条简短示例 + 1 条占位符。
+# erArk 原前提：high_1 → 条件：premise(high_1)
+variable = "finger_insertion"
+description = "手指插入(V)指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 高权重基础组 ──────────────────────────────────────────────
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}的手指插入到{character.name}的阴道中，感受着温度和湿润度，来回的抽插让{character.name}感到一阵阵的刺激。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "手指插入指令通用口上 1"

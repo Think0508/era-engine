@@ -155,11 +155,16 @@ export function registerInstructPremises(registry: any): void {
   })
 
   // ── Item possession (inventory) ──────────────────────────────
+  // erArk HAVE_* 无 T_ 前缀 = 查自己（有 T_ 前缀才查目标）；背包是数组，不能按 itemId 属性读
+  function selfId(ctx: any): string | null {
+    return ctx?.player?.id ?? ctx?.gameStore?.player?.id ?? ctx?.playerId ?? null
+  }
   function hasItem(itemId: string) {
     return (ctx: any) => {
-      const ch = getTarget(ctx)
-      if (!ch) return false
-      return !!ch?.inventory?.[itemId]
+      const charId = selfId(ctx)
+      if (!charId) return false
+      const ch = entitySystem.get('character', charId) as any
+      return !!ch?.inventory?.some?.((i: any) => i.itemId === itemId && (i.count ?? 0) > 0)
     }
   }
 
@@ -184,7 +189,7 @@ export function registerInstructPremises(registry: any): void {
   registry.registerPremise('HAVE_SLEEPING_PILLS', hasItem('安眠药'))
   registry.registerPremise('HAVE_DIURETICS_ONCE', hasItem('利尿剂瞬间'))
   registry.registerPremise('HAVE_DIURETICS_PERSISTENT', hasItem('利尿剂持续'))
-  registry.registerPremise('HAVE_CLOMID', hasItem('克罗米芬'))
+  registry.registerPremise('HAVE_CLOMID', hasItem('排卵促进药'))
   registry.registerPremise('HAVE_BIRTH_CONTROL_PILLS_BEFORE', hasItem('事前避孕药'))
   registry.registerPremise('HAVE_BIRTH_CONTROL_PILLS_AFTER', hasItem('事后避孕药'))
 

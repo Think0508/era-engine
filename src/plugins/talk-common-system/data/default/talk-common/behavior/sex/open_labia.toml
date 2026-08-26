@@ -1,0 +1,14 @@
+# open_labia 指令默认通用口上（插件默认层，Layer 1）
+# ⚠️ 骨架：不搬运 erArk 长文本；保留 1 条简短示例 + 1 条占位符。
+# erArk 原前提：high_1 → 条件：premise(high_1)
+variable = "open_labia"
+description = "掰开阴唇观察指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 高权重基础组 ──────────────────────────────────────────────
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}掰开了{character.name}的阴唇，开始仔细观察。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "掰开阴唇观察指令通用口上 1"

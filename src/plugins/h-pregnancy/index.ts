@@ -9,6 +9,7 @@ import type { PluginContext } from '../../core/types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { eventBus } from '../../core/event-bus'
+import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { apiSystem } from '../../core/api'
 export function onLoad(_ctx: PluginContext): void {
@@ -25,8 +26,48 @@ export function onLoad(_ctx: PluginContext): void {
     }
     return true
   })
-}
+  // target_add_ovulation_promoting_drug——排卵促进药（erArk 1008：目标 body_item[10] 置为排卵促进药状态）
+  effectTypeRegistry.register('target_add_ovulation_promoting_drug', (_p: any, ctx: any) => {
+    const targetIds = ctx._targetIds as string[]
+    for (const id of targetIds) {
+      const char = entitySystem.get('character', id) as any
+      if (!char) continue
+      if (!char.body_items) char.body_items = {}
+      char.body_items['10'] = { itemId: '排卵促进药', active: true }
+      eventBus.emit('character:changed', { id })
+    }
+    return true
+  })
 
+  // target_add_contraceptive_before——事前避孕药（erArk 1009：目标 body_item[11] 置为事前避孕药状态，30 天）
+  effectTypeRegistry.register('target_add_contraceptive_before', (_p: any, ctx: any) => {
+    const targetIds = ctx._targetIds as string[]
+    const now = gameContext.getContext().time
+    const expiry = now.hour * 60 + now.minute + 43200
+    for (const id of targetIds) {
+      const char = entitySystem.get('character', id) as any
+      if (!char) continue
+      if (!char.body_items) char.body_items = {}
+      char.body_items['11'] = { itemId: '事前避孕药', active: true, expiry }
+      eventBus.emit('character:changed', { id })
+    }
+    return true
+  })
+
+  // target_add_contraceptive_after——事后避孕药（erArk 1010：目标 body_item[12] 置为事后避孕药状态）
+  effectTypeRegistry.register('target_add_contraceptive_after', (_p: any, ctx: any) => {
+    const targetIds = ctx._targetIds as string[]
+    for (const id of targetIds) {
+      const char = entitySystem.get('character', id) as any
+      if (!char) continue
+      if (!char.body_items) char.body_items = {}
+      char.body_items['12'] = { itemId: '事后避孕药', active: true }
+      eventBus.emit('character:changed', { id })
+    }
+    return true
+  })
+
+}
 export function onEnable(ctx: PluginContext): void {
   // 注释：监听 h:shoot → 自动触发受孕判定
   eventBus.on('h:shoot', (payload: any) => {

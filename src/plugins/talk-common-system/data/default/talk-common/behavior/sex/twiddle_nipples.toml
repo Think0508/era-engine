@@ -1,0 +1,14 @@
+# twiddle_nipples 指令默认通用口上（插件默认层，Layer 1）
+# ⚠️ 骨架：不搬运 erArk 长文本；保留 1 条简短示例 + 1 条占位符。
+# erArk 原前提：sys_0（普通状态，恒真）→ 不写条件。
+variable = "twiddle_nipples"
+description = "玩弄乳头指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 无条件组 ──────────────────────────────────────────────
+# erArk 前提：sys_0 → 不写条件。
+# 原 1 条为简短短句；保留 1 示例 + 1 占位符。
+[[entries]]
+context = "{player.name}玩弄着{character.name}的乳头，时不时画圈，时不时揪捏。"
+
+[[entries]]
+context = "玩弄乳头指令通用口上 1"

@@ -162,6 +162,26 @@ export function onLoad(_ctx: PluginContext): void {
     return true
   })
 
+  // target_add_tired_to_sleep——安眠药（erArk 1007：目标疲劳=160、熟睡=100、
+  // body_item[9] 8h、入睡状态 = sleeping + unnormal bit5,6）
+  effectTypeRegistry.register('target_add_tired_to_sleep', (_p: any, execCtx: any) => {
+    const ids = (execCtx._targetIds as string[]) ?? []
+    const now = gameContext.getContext().time
+    const expiry = now.hour * 60 + now.minute + 480
+    for (const id of ids) {
+      const char = entitySystem.get('character', id) as any
+      if (!char) continue
+      if (!char.base) char.base = {}
+      char.base[ATTR.FATIGUE] = 160
+      setEntityAttr(char, ATTR.SLEEP, 100)
+      if (!char.body_items) char.body_items = {}
+      char.body_items['9'] = { itemId: '安眠药', active: true, expiry }
+      setAsleep(char)
+      eventBus.emit('character:changed', { id })
+    }
+    return true
+  })
+
   // ask_sleep——让对方去睡觉（erArk 1022 语义：目标睡眠请求 → 入睡）
   // 经 npc-ai setBehavior 设 sleep 行为块（处理器默认睡到 wake_hour 6:00），
   // setBehavior 会发 npc:behavior_started(type='sleep') → 本插件 listener 自动 setAsleep

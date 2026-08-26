@@ -1,0 +1,14 @@
+# making_out 指令默认通用口上（插件默认层，Layer 1）
+# ⚠️ 骨架：不搬运 erArk 长文本；保留 1 条简短示例 + 1 条占位符。
+# erArk 原前提：sys_0（普通状态，恒真）→ 不写条件。
+variable = "making_out"
+description = "身体爱抚指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 无条件组 ──────────────────────────────────────────────
+# erArk 前提：sys_0 → 不写条件。
+# 原 10 条为基础爱抚短句；保留 1 示例 + 1 占位符。
+[[entries]]
+context = "{player.name}轻柔地抚摸着{character.name}的肌肤，指尖划过的每一寸都让{character.name}微微颤抖。"
+
+[[entries]]
+context = "身体爱抚指令通用口上 1"

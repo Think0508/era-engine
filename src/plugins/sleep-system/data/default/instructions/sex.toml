@@ -26,14 +26,28 @@ id = "sleeping_pills"
 label = "安眠药"
 type = "sex"
 sub_category = "drug"
-time_cost = 5
+time_cost = 10
 priority = 50
 # erArk behavior: SLEEPING_PILLS（6106，SEX/drug）
-# 效果 TARGET_ADD_TIRED_TO_SLEEP（1007：目标疲劳=160、熟睡=100、进入 8h 睡眠）依赖身体管理道具
-# （body_item[9]）——道具系统未实装：前提恒不满足（HAVE_SLEEPING_PILLS 未注册真语义 → 指令不可见）
-# TODO(sleep-system)：道具落地后接入（body_item[9] 佩戴判定 + 疲劳/熟睡设置 + 8h 睡眠行为）
-premises = ["HAVE_TARGET", "TARGET_IS_H", "HAVE_SLEEPING_PILLS", "TIRED_LE_74"]
+# InstructConfig.csv L242 + Behavior_Data.csv L237（duration=10）+ Behavior_Effect.csv L236
+#   （21 - 13 - 14 - 62 - 946 - 1007）
+# 判定：handle_instruct.py:2763 显式 judge=_("药物") → judge_base=600；h-config 无“药物” → 不写 judge_class
+# h_mode_show_type=2 → category/type=sex 自动 h_scene；前提显式含 TARGET_IS_H，无 tired 注入
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_SLEEPING_PILLS"]
 effects = [
-  { type = "nop", params = {} },
-  { type = "trigger_dialogue", params = { scene = "sleeping_pills" } },
+  # 21 ADD_INTERACTION_FAVORABILITY
+  { type = "settle_favorability" },
+  # 13 DOWN_BOTH_MEDIUM_HIT_POINT：双方体力 -30
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  # 14 DOWN_BOTH_MEDIUM_MANA_POINT：双方气力 -60
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  # 62 TARGET_ADD_SMALL_DISGUST
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  # 946 USE_SLEEPING_PILLS：消耗玩家背包 1 个安眠药
+  { type = "remove_item", target = "self", params = { itemId = "安眠药", count = 1 } },
+  # 1007 TARGET_ADD_TIRED_TO_SLEEP：目标疲劳=160、熟睡=100、body_item[9] 8h、入睡
+  { type = "target_add_tired_to_sleep", target = "selected" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "sleeping_pills" } },
 ]

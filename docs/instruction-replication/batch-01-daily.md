@@ -2,8 +2,10 @@
 
 > 依据 SOP §8 每批工作流第 1 步产出。B1 = DAILY 17 + WORK 2 + PLAY 5 = **24 条**。
 > 工作副本：`instruction-keep-list.md`；tag 总表：`location-tags.md`。
-> **当前进度（2026-08-08）**：按用户要求先试点 `chat`（1004）——单独完整复刻 + 最小化验证，
-> 其余 23 条状态 = `待筛选`（用户基于 master-list 确认后再逐条进行，不批量写 TOML）。
+> **当前进度**：`chat`（1004）/ `stroke`（1005）/ `rest`（1012）/ `take_shower`（1015）/
+> `sleep`（1014）/ `ask_target_sleep`（1022）已确认；
+> B1 保留指令全部确认（11 条）；剩余 13 条均为延后。
+> 仍遵循逐条下令、不批量写 TOML。
 
 ---
 
@@ -12,29 +14,29 @@
 | # | cid | id | 名称 | 来源类型 | 状态 |
 |---|-----|-----|------|---------|------|
 | 1 | 1004 | chat | 聊天 | DAILY | ✅ 已复刻（试点） |
-| 2 | 1005 | stroke | 身体接触 | DAILY | 待筛选 |
-| 3 | 1009 | make_food | 做饭 | DAILY | 待筛选（IN_KITCHEN_OR_IN_DR_ROOM_AND_DR_ROOM_LEVEL_GE_2 → tag，DR_ROOM_LEVEL 无法 tag 化） |
-| 4 | 1010 | eat | 进食 | DAILY | 待筛选（HAVE_FOOD） |
-| 5 | 1011 | put_selfmade_food_in | 放入自制食物 | DAILY | 待筛选（IN_TAKE_FOOD → has_canteen） |
-| 6 | 1012 | rest | 休息 | DAILY | ⚠️ test-mod 已有同名（恢复效果），B1 需对齐 erArk 值 |
-| 7 | 1014 | sleep | 睡觉 | DAILY | 待筛选（特殊耗时：跨天跳转，需 handler，L1.7 处理；IN_DORMITORY_OR_HOTEL → has_bedroom） |
-| 8 | 1015 | take_shower | 淋浴 | DAILY | 待筛选（IN_BATHROOM → has_bathroom） |
-| 9 | 1016 | buy_h_item | 购买成人用品 | DAILY | 待筛选（IN_H_SHOP → has_h_shop） |
-| 10 | 1017 | buy_food | 购买食物 | DAILY | 待筛选（IN_FOOD_SHOP → has_food_shop，**CSV 核对**） |
-| 11 | 1018 | all_npc_position | 角色位置一览 | DAILY | 待筛选（功能指令） |
-| 12 | 1019 | follow | 邀请同行 | DAILY | 跟随系统已做（2026-08-10），指令复刻延后——数据入 native-instructions 插件；效果走 `set_follow`（=erArk 363）；前提含 TARGET_NOT_FOLLOW/NO_TARGET_OR_TARGET_CAN_COOPERATE（已注册） |
-| 13 | 1020 | end_follow | 结束同行 | DAILY | 跟随系统已做（2026-08-10），指令复刻延后——同上；效果走 `set_follow`（=erArk 365）；前提 TARGET_IS_FOLLOW（已注册） |
-| 14 | 1021 | ask_target_rest | 让对方休息 | DAILY | 待筛选 |
-| 15 | 1022 | ask_target_sleep | 让对方去睡觉 | DAILY | 待筛选 |
-| 16 | 1023 | apologize | 道歉 | DAILY | 待筛选 |
-| 17 | 1024 | listen_complaint | 听牢骚 | DAILY | 待筛选 |
-| 18 | 2025 | plant_manage_crop | 种植与养护作物 | WORK | 待筛选（IN_HERB_GARDEN_OR_GREENHOUSE → has_herb_garden） |
-| 19 | 2036 | mixology | 调酒 | WORK | 待筛选（IN_BAR → has_bar） |
-| 20 | 3001 | singing | 唱歌 | PLAY | 待筛选 |
-| 21 | 3002 | play_instrument | 演奏乐器 | PLAY | 待筛选 |
-| 22 | 3005 | exercise | 锻炼身体 | PLAY | 待筛选（IN_GYM_ROOM → has_gym） |
-| 23 | 3007 | read_book | 读书 | PLAY | 待筛选（IN_LIBRARY → has_library，**CSV 核对** cid 3006/3007 出入） |
-| 24 | 3012 | play_chess | 下棋 | PLAY | 待筛选（IN_BOARD_GAMES_ROOM → has_board_games） |
+| 2 | 1005 | stroke | 身体接触 | DAILY | ✅ 已确认 |
+| 3 | 1009 | make_food | 做饭 | DAILY | 延后（用户） |
+| 4 | 1010 | eat | 进食 | DAILY | 延后（系统未实装） |
+| 5 | 1011 | put_selfmade_food_in | 放入自制食物 | DAILY | 延后（系统未实装） |
+| 6 | 1012 | rest | 休息 | DAILY | ✅ 已确认（有意区别：recover_permil 恢复） |
+| 7 | 1014 | sleep | 睡觉 | DAILY | ✅ 已确认 |
+| 8 | 1015 | take_shower | 淋浴 | DAILY | ✅ 已确认 |
+| 9 | 1016 | buy_h_item | 购买成人用品 | DAILY | 延后（系统未实装） |
+| 10 | 1017 | buy_food | 购买食物 | DAILY | 延后（系统未实装） |
+| 11 | 1018 | all_npc_position | 角色位置一览 | DAILY | 延后（系统未实装） |
+| 12 | 1019 | follow | 邀请同行 | DAILY | ✅ 已确认——数据入 native-instructions；效果走 `set_follow`（=erArk 363）；前提含 TARGET_NOT_FOLLOW/NO_TARGET_OR_TARGET_CAN_COOPERATE（已注册） |
+| 13 | 1020 | end_follow | 结束同行 | DAILY | ✅ 已确认——跟随系统已做，同上；效果走 `set_follow`（=erArk 365）；前提 TARGET_IS_FOLLOW（已注册） |
+| 14 | 1021 | ask_target_rest | 让对方休息 | DAILY | ✅ 已确认 |
+| 15 | 1022 | ask_target_sleep | 让对方去睡觉 | DAILY | ✅ 已确认 |
+| 16 | 1023 | apologize | 道歉 | DAILY | ✅ 已确认 |
+| 17 | 1024 | listen_complaint | 听牢骚 | DAILY | ✅ 已确认（前置 anger-system 完成） |
+| 18 | 2025 | plant_manage_crop | 种植与养护作物 | WORK | 延后（系统未实装） |
+| 19 | 2036 | mixology | 调酒 | WORK | 延后（系统未实装） |
+| 20 | 3001 | singing | 唱歌 | PLAY | 延后（用户） |
+| 21 | 3002 | play_instrument | 演奏乐器 | PLAY | 延后（用户） |
+| 22 | 3005 | exercise | 锻炼身体 | PLAY | 延后（用户） |
+| 23 | 3007 | read_book | 读书 | PLAY | 延后（用户） |
+| 24 | 3012 | play_chess | 下棋 | PLAY | 延后（用户） |
 
 ---
 
@@ -188,7 +190,8 @@ chat 无 IN_* 前提 → **不写 condition**（默认全地点可用）。无�
 
 ## 4. 待办
 
-- [ ] 用户筛选其余 20 条 → 逐条按 SOP 复刻（每条约 30 分钟分析+实现；take_shower 已完成待用户确认）
+- [x] take_shower（1015）已复刻并确认（2026-08-25）
+- [ ] 剩余保留待下令 5 条：1019/1020/1021/1023/1024 → 逐条按 SOP 复刻（每条约 30 分钟分析+实现）
 - [ ] sleep 特殊耗时（跨天跳转，需 handler）→ L1.7 已处理
 - [ ] 批末验收：`npm run typecheck && npm run test` + dev 实测（指令栏出现/点击执行/数值变化/口上触发）
   - 口上触发 ✅ 已接入（2026-08-17）：chat_settle success_scene="chat"/fail_scene="chat_failed" + 插件默认层原生通用口上（talk-common behavior/ 目录），测试覆盖；dev 实测仍待做

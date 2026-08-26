@@ -32,33 +32,27 @@ const rawActCommands = computed<CommandDef[]>(() => {
   ].sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0))
 })
 
-// 注释：按分类过滤——只显示 activeCategories 中为 true 的分类
-// 【最小版·2026-08-11】H 场景（h_scene）下追加前提实时过滤——指令满足 premises 才显示
+// 注释：按分类 + 实时可用性过滤——只显示 activeCategories 中为 true 且前提/条件满足的指令
 // （erArk see_instruct_panel 隐藏制：前提不满足 = 不可见，非置灰）。
-// 效果：逆推中（T_NPC_ACTIVE_H）普通 H 指令因 T_NPC_NOT_ACTIVE_H 失败而隐藏，
-// 只剩 keep_enjoy / try_pl_active_h 等逆推专属指令（erArk 同款自洽，08-指令集-H内.md）。
-// ⚠️ 此为临时最小实现——完整版（部位/子类分组渲染、逆推面板完整呈现等）由后续扩展
+// 对所有模式生效：location.condition（如 has_bathroom）、HAVE_TARGET、疲劳/心情/时间等前提
+// 不满足时指令直接隐藏；H 场景（h_scene）逆推中的普通 H 指令同样因前提失败而隐藏。
 const actCommands = computed<CommandDef[]>(() => {
-  const filtered = rawActCommands.value.filter(cmd => {
+  return rawActCommands.value.filter(cmd => {
     const cat = cmd.category ?? 'custom'
-    return uiStore.commandCategories[cat] !== false
-  })
-  if (gameStore.currentMode !== 'h_scene') return filtered
-  // 注释：h_scene 前提过滤——evaluators 在 setup 已创建（读取实时 selectedCharacterId）
-  return filtered.filter(cmd => {
-    if (!cmd.premises || cmd.premises.length === 0) return true
-    return evaluators.evaluatePremises(cmd.premises)
+    if (uiStore.commandCategories[cat] === false) return false
+    if (cmd.premises?.length && !evaluators.evaluatePremises(cmd.premises)) return false
+    if (cmd.condition && !evaluators.evaluateCondition(cmd.condition)) return false
+    return true
   })
 })
 
-// 注释：收藏夹——从所有 raw 指令中取收藏的，额外显示一份
-// h_scene 模式同样应用前提过滤（收藏的普通 H 指令在逆推中不显示——与 actCommands 一致）
+// 注释：收藏夹——从所有 raw 指令中取收藏的，额外显示一份（同样实时可用性过滤）
 const favoriteCommands = computed<CommandDef[]>(() => {
   if (!uiStore.commandCategories.favorite) return []
-  const isHScene = gameStore.currentMode === 'h_scene'
   return rawActCommands.value.filter(cmd => {
     if (!uiStore.favorites.includes(cmd.id)) return false
-    if (isHScene && cmd.premises?.length && !evaluators.evaluatePremises(cmd.premises)) return false
+    if (cmd.premises?.length && !evaluators.evaluatePremises(cmd.premises)) return false
+    if (cmd.condition && !evaluators.evaluateCondition(cmd.condition)) return false
     return true
   }).sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0))
 })

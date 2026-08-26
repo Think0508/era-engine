@@ -19,6 +19,12 @@ function getPlayerChar(): any {
   if (!player?.id) return null
   return entitySystem.get('character', player.id) as any
 }
+// 注释：自己（发起者）——优先 ctx.sourceId（未来 NPC 发起），缺省玩家
+function getSelfChar(ctx: any): any {
+  const charId = ctx.sourceId ?? ctx.player?.id ?? gameContext.getContext().player?.id
+  if (!charId) return null
+  return entitySystem.get('character', charId) as any
+}
 
 export function registerHPremises(registry: any): void {
   registry.registerPremise('HAVE_TARGET', (ctx: any) => {
@@ -213,4 +219,45 @@ export function registerHPremises(registry: any): void {
     return targetId === playerId
   })
   registry.registerPremise('sys_5', () => false)
+// ═══ 听牢骚前提（erArk handle_premise_other.py:674-723）═══
+  // TARGET_ABD_OR_ANGRY_MOOD——目标心情不好或愤怒：angry_point > 30
+  registry.registerPremise('TARGET_ABD_OR_ANGRY_MOOD', (ctx: any) => {
+    const target = getTargetChar(ctx)
+    return target ? Number(target?.base?.[ATTR.ANGER] ?? 0) > 30 : false
+  })
+  // TARGET_NOT_ANGRY_WITH_PLAYER——目标没有被玩家惹火：sp_flag.angry_with_player == false
+  registry.registerPremise('TARGET_NOT_ANGRY_WITH_PLAYER', (ctx: any) => {
+    const target = getTargetChar(ctx)
+    return target ? !target.sp_flag?.angry_with_player : false
+  })
+// ═══ 愤怒/心情前提全量（erArk handle_premise_other.py:517-583 / handle_premise_sp_flag.py）═══
+  const angryOf = (char: any): number => Number(char?.base?.[ATTR.ANGER] ?? 0)
+  const moodGood = (v: number) => v <= 5
+  const moodNormal = (v: number) => v > 5 && v <= 30
+  const moodBad = (v: number) => v > 30 && v <= 50
+  const moodAngry = (v: number) => v > 50
+  // 自己心情档
+  registry.registerPremise('GOOD_MOOD', (ctx: any) => moodGood(angryOf(getSelfChar(ctx))))
+  registry.registerPremise('NORMAL_MOOD', (ctx: any) => moodNormal(angryOf(getSelfChar(ctx))))
+  registry.registerPremise('BAD_MOOD', (ctx: any) => moodBad(angryOf(getSelfChar(ctx))))
+  registry.registerPremise('ANGRY_MOOD', (ctx: any) => moodAngry(angryOf(getSelfChar(ctx))))
+  // 目标心情档
+  registry.registerPremise('TARGET_GOOD_MOOD', (ctx: any) => moodGood(angryOf(getTargetChar(ctx))))
+  registry.registerPremise('TARGET_NORMAL_MOOD', (ctx: any) => moodNormal(angryOf(getTargetChar(ctx))))
+  registry.registerPremise('TARGET_BAD_MOOD', (ctx: any) => moodBad(angryOf(getTargetChar(ctx))))
+  registry.registerPremise('TARGET_ANGRY_MOOD', (ctx: any) => moodAngry(angryOf(getTargetChar(ctx))))
+  // 自己/目标 是否被玩家惹火
+  registry.registerPremise('SELF_ANGRY_WITH_PLAYER', (ctx: any) => !!getSelfChar(ctx)?.sp_flag?.angry_with_player)
+  registry.registerPremise('SELF_NOT_ANGRY_WITH_PLAYER', (ctx: any) => !getSelfChar(ctx)?.sp_flag?.angry_with_player)
+  registry.registerPremise('TARGET_ANGRY_WITH_PLAYER', (ctx: any) => !!getTargetChar(ctx)?.sp_flag?.angry_with_player)
+// TARGET_HP_OR_MP_LOW——目标体力或气力有一项低于 30%（erArk handle_premise_base_value.py:331-348）
+  registry.registerPremise('TARGET_HP_OR_MP_LOW', (ctx: any) => {
+    const target = getTargetChar(ctx)
+    if (!target) return false
+    const hpMax = Number(target.base?.[ATTR.HP_MAX] ?? 0)
+    const mpMax = Number(target.base?.[ATTR.MP_MAX] ?? 0)
+    const hp = Number(target.base?.[ATTR.HP] ?? 0)
+    const mp = Number(target.base?.[ATTR.MP] ?? 0)
+    return (hpMax > 0 && hp / hpMax < 0.3) || (mpMax > 0 && mp / mpMax < 0.3)
+  })
 }

@@ -1,0 +1,24 @@
+# listen_complaint 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-25）
+# - erArk data/talk/daily/listen_complaint.csv 原 high_1 组 12 条通用短句；其余
+#   CVP_A2_T|10x（目标体型/年龄）、t_is_assistant、target_is_player_daughter、
+#   target_visitor_flag_1 等关系/访客专用长文本（含“博士/罗德岛”世界观词）不保留。
+# - 本文件只放 high_1 通用组：1 条示例 + 1 条占位符，等待人工手写替换。
+# - 占位符格式：「听牢骚指令通用口上 N」（N 连续编号）。
+# - 口上仅为叙事，不影响 listen_complaint 的减怒/数值结算。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "listen_complaint"
+description = "听牢骚指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 高好感/权重组 ──────────────────────────────────────────
+# erArk 前提：high_1（权重前提，恒通过、权重 1）→ 条件：premise(high_1)。
+# 原 12 条为“耐心听对方倾诉/发牢骚”的通用短句；保留 1 条示例 + 1 条占位符。
+[[entries]]
+conditions = "premise(high_1)"
+context = "{character.name}向{player.name}倾诉了最近的烦心事，{player.name}耐心地听着。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "听牢骚指令通用口上 1"

@@ -18,6 +18,7 @@ description: Use when continuing erArk instruction replication across batches �
 3. **每个数值必须有 erArk 源码可追溯**（CSV 行或源码行号），禁止猜测/简化/合并。
 4. **条件必须改写为我们条件引擎的形式**，禁止照抄 erArk 前提串（`IN_*`、`CVP_*`、`sys_0&...` 等原语法不得直接进 TOML）。
 5. **通用口上不做“原文搬运”**：AI 生成的长文本/同前提多条重复文本不保留，改用「示例 + 占位符」骨架，并注释前提含义。
+6. **复刻前依赖检查（硬性门槛）**：动手写任何一条指令前，必须检查该指令在**当前引擎中是否真的能用**——前提是否已注册且真语义、效果/API/属性依赖是否已实装、正常游玩是否有触发路径（不是“能显示”的空壳）。任一缺失 → 停下来让用户确认是否先做前置，禁止用硬注册/恒 true/简化近似绕过。
 
 ## 2. 批次工作流
 
@@ -27,9 +28,10 @@ description: Use when continuing erArk instruction replication across batches �
   → ② 用户手动筛选（暂不想要/低优先级/非原生/派生子系统/依赖其他系统/不需要）
   → ③ 更新筛选速查表（保留/延后/剔除/已完成 + 原因）
   → ④ 用户逐条下令：只说“复刻 xxx”才动那条
-  → ⑤ 单条复刻，交付四件产物
-  → ⑥ 用户反复检查 → 确认后更新完成速查表
-  → ⑦ 用户下令下一条 → 批末验收后进入下一批候选池
+  → ⑤ 依赖检查（前提/效果/可玩性；前置缺失 → 停下问用户是否先做前置）
+  → ⑥ 单条复刻，交付四件产物
+  → ⑦ 用户反复检查 → 确认后更新完成速查表
+  → ⑧ 用户下令下一条 → 批末验收后进入下一批候选池
 ```
 
 **筛选口径（用户明确）**：
@@ -50,8 +52,9 @@ description: Use when continuing erArk instruction replication across batches �
 - 列：批次 | 分类/子类 | cid | id | 名称 | 所属系统 | 通用口上 | 测试 | 特殊处理 | 状态。
 - 表前统计看板随批次更新。
 
-## 4. 单条复刻四件产物
+## 4. 单条复刻产物（依赖检查 + 四件）
 
+0. **依赖检查结论表**：该指令要显示/可用的前提（premise/condition）是否已注册且真语义；效果/API/属性依赖是否已实装；正常游玩是否有触发路径。任一缺失 → 停下问用户是否先做前置，不进入后续产物。
 1. **数值取证表**：InstructConfig 原行（含 h_mode_show_type/tired_type）、Behavior_Data duration（-1 必须查 handle_instruct.py）、Behavior_Effect 全链逐 ID、judge 三问结论、default.py/constant_effect.py 公式行号。
 2. **条件迁移表**：原 premise_set → 我们引擎最终形式；每个前提的注册状态/语义来源/自己 or 目标维度；未实装子系统 TODO；自动注入展开（h_mode_show_type / tired_type）。
 3. **TOML + 通用口上**：指令落 `native-instructions/data/default/instructions/`（通用日常）或所属系统插件；口上落 `talk-common-system/data/default/talk-common/behavior/{daily|work|play}/{id}.toml`。
@@ -97,6 +100,7 @@ description: Use when continuing erArk instruction replication across batches �
 | 搬运 AI 长文本口上 | 骨架化：1 示例 + 1 占位 + 注释 |
 | 口上条件用 `sys_1` 这类原名 | 用可读别名，原名写注释 |
 | 世界观口上升级为占位符或保留 | 按用户对该批的决策（chat 占位 / stroke 移除） |
+| 前置缺失仍硬注册/恒 true/简化近似 | 停下问用户是否先做前置；完整前置系统实装后再复刻该指令 |
 | 忘了更新速查表 | 筛选后更新 filter 表，确认后更新 completed 表 |
 
 ## 9. 相关文档索引

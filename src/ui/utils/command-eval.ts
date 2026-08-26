@@ -33,7 +33,7 @@ export function createCommandEvaluators(sources: CommandEvalSources): CommandEva
   }
 
   const evalCondition = (expr: string) => {
-    const gc = gameContext.getContext()
+    const gc = { ...gameContext.getContext(), selectedCharacterId: selectedId() ?? undefined }
     try {
       return conditionEngine.evaluate(expr, gc)
     } catch {

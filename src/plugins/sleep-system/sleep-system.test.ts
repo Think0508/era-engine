@@ -16,6 +16,7 @@ import { commandExecutor, recordBehaviorHistory, clearBehaviorHistory } from '..
 import { bindingResolver } from '../../core/binding-resolver'
 import { conditionRegistry } from '../../core/condition-registry'
 import { errorReporter } from '../../core/error-reporter'
+import { narrativeLog } from '../../core/narrative-log'
 import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
 import { getSleepLevelInfo } from './sleep-state'
@@ -104,6 +105,7 @@ describe('sleep-system 集成', () => {
       player.sp_flag = {}
       player.h_state = undefined
       player.current_location = 'tavern'
+      player.ai_behavior = undefined
       player.sleeping = false
     }
     const girl = getChar(GIRL)
@@ -118,6 +120,7 @@ describe('sleep-system 集成', () => {
       girl.sp_flag = {}
       girl.h_state = undefined
       girl.sleeping = false
+      girl.ai_behavior = undefined
       girl.current_location = 'tavern'
     }
   })
@@ -359,6 +362,113 @@ describe('sleep-system 集成', () => {
       const t = gameContext.getContext().time
       expect(t.hour).toBe(10)
       expect(t.day).toBe(1)
+    })
+  })
+describe('指令级口上与 ask_target_sleep（1014/1022 补测）', () => {
+    async function exec(commandId: string, selectedId: string | null = null): Promise<void> {
+      gameContext.setSelectedCharacterId(selectedId)
+      const uiStore = {
+        selectedCharacterId: selectedId,
+        selectCharacter: () => {},
+        setActivePanel: () => {},
+        clearSelection: () => {},
+      }
+      const execCtx: any = {
+        uiStore,
+        gameStore: { player: { id: PLAYER } },
+        api: apiSystem,
+        engine: {
+          setExecutionState: (s: string) => gameContext.setExecutionState(s as any),
+          emit: async (event: string, payload: any) => { await eventBus.emit(event, payload) },
+        },
+        evalCtx: (): any => ({
+          ...gameContext.getContext(),
+          selectedCharacterId: execCtx.uiStore?.selectedCharacterId ?? undefined,
+          sourceId: PLAYER,
+        }),
+        evaluateCondition: (expr: string): boolean => conditionEngine.evaluate(expr, execCtx.evalCtx()),
+        evaluatePremises: (premises: string[]): boolean => conditionEngine.evaluatePremises(premises, execCtx.evalCtx()),
+        sourceId: PLAYER,
+      }
+      await commandExecutor.execute(commandId, execCtx)
+    }
+
+    it('sleep 指令触发默认通用口上且无世界观残留（talk-common behavior/daily/sleep.toml）', async () => {
+      const player = getChar(PLAYER)
+      setTime(23, 0)
+      player.base['疲劳度'] = 130
+      player.base['体力'] = 50
+      narrativeLog.clear()
+      const callSpy = vi.spyOn(apiSystem, 'call')
+
+      await exec('sleep')
+
+      // 口上触发路径：dialogue trigger_dialogue 必须查询 talk-common 的 sleep 词条
+      const sleepTextQueries = callSpy.mock.calls.filter(args => args[0] === 'talk-common' && args[1] === 'getTextEntry' && args[2] === 'sleep')
+      expect(sleepTextQueries.length).toBeGreaterThan(0)
+      // 若有日志输出，不得含世界观残留
+      const logs = narrativeLog.getEntries().map((e: any) => String(e.text))
+      expect(logs.some(t => t.includes('博士') || t.includes('源石') || t.includes('罗德岛'))).toBe(false)
+    })
+
+    it('sleep 默认口上变量：白天/夜晚/疲劳爆表组均可取到文本，且不含世界观', async () => {
+      const player = getChar(PLAYER)
+      // 夜晚组（22-5）
+      setTime(23, 0)
+      player.base['疲劳度'] = 0
+      const night = await apiSystem.call('talk-common', 'getText', 'sleep', PLAYER, PLAYER) as string | null
+      expect(night).toBeTruthy()
+      expect(night).not.toContain('博士')
+      expect(night).not.toContain('源石')
+
+      // 白天组（6-17）
+      setTime(10, 0)
+      const day = await apiSystem.call('talk-common', 'getText', 'sleep', PLAYER, PLAYER) as string | null
+      expect(day).toBeTruthy()
+      expect(day).not.toContain('博士')
+
+      // 疲劳爆表组（≥160）
+      setTime(10, 0)
+      player.base['疲劳度'] = 160
+      const tired = await apiSystem.call('talk-common', 'getText', 'sleep', PLAYER, PLAYER) as string | null
+      expect(tired).toBeTruthy()
+      expect(tired).not.toContain('源石')
+      player.base['疲劳度'] = 0
+    })
+
+    it('ask_target_sleep 全指令：目标入睡 + 时间 +10 + 无 error', async () => {
+      const girl = getChar(GIRL)
+      girl.current_location = 'tavern'
+      girl.base['疲劳度'] = 130
+      const before = gameContext.getContext().time
+
+      // 诊断：逐前提确认（保留为真实门控断言）
+      expect(conditionEngine.evaluatePremises(['HAVE_TARGET'], premiseCtx(GIRL))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['NOT_H'], premiseCtx(GIRL))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['TARGET_TIRED_GE_75'], premiseCtx(GIRL))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['T_NORMAL_1'], premiseCtx(GIRL))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['T_NORMAL_2'], premiseCtx(GIRL))).toBe(true)
+      expect(conditionEngine.evaluatePremises(['T_NORMAL_6'], premiseCtx(GIRL))).toBe(true)
+
+      await exec('ask_target_sleep', GIRL)
+
+      const after = gameContext.getContext().time
+      expect(after.hour * 60 + after.minute).toBe(before.hour * 60 + before.minute + 10)
+      expect(girl.ai_behavior?.type).toBe('sleep')
+      expect(girl.sp_flag.sleeping).toBe(true)
+      expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
+    })
+
+    it('ask_target_sleep 无通用口上文件（erArk 无 CSV，不编造）→ 执行不报错', async () => {
+      const girl = getChar(GIRL)
+      girl.current_location = 'tavern'
+      girl.base['疲劳度'] = 130
+      errorReporter.clear()
+
+      await exec('ask_target_sleep', GIRL)
+
+      expect(girl.sp_flag.sleeping).toBe(true)
+      expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
     })
   })
 

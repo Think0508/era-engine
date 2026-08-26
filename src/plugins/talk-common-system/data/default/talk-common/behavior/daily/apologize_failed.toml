@@ -1,0 +1,21 @@
+# apologize_failed 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-25）
+# - erArk data/talk/daily/apologize_failed.csv 原 sys_0 组 12 条通用短句（另有 high_1 1 条）；
+#   其余 CVP/关系/访客长文本不保留。
+# - 本文件只放 sys_0 通用组：1 条示例 + 1 条占位符。
+# - 占位符格式：「道歉失败指令通用口上 N」（N 连续编号）。
+# - 口上仅为叙事，不影响 apologize_settle 的链结算。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "apologize_failed"
+description = "道歉失败默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 无条件组 ──────────────────────────────────────────────
+# erArk 前提：sys_0（普通状态，恒真）→ 不写条件。
+# 原 12 条为“道歉未获接受”的短句；保留 1 条示例 + 1 条占位符。
+[[entries]]
+context = "{character.name}冷冷地避开了{player.name}的道歉，显然还没有消气。"
+
+[[entries]]
+context = "道歉失败指令通用口上 1"

@@ -8,13 +8,13 @@
 
 | 批次 | ✅ 已确认 | 🟡 存量已实现 | 📝 待完成 |
 |------|-----------|---------------|-----------|
-| B1 | 3 | 2 | 19（保留 6 + 延后 13） |
+| B1 | 11 | 0 | 13（延后 13） |
 | B2 | 0 | 5 | 12（催眠） |
 | B3 | 0 | 1 | 36 |
 | B4-B7 | 0 | 0 | 142 |
 | 核对项（SYSTEM） | 0 | 0 | 8 |
 
-> 说明：B1 候选池原 24 条，chat / stroke / rest 已确认；sleep / ask_target_sleep 为存量已实现（未走本流程）；剩余 19 条 = 保留待下令 6 + 延后 13。
+> 说明：B1 候选池原 24 条，chat / stroke / rest / take_shower / sleep / ask_target_sleep / follow / end_follow / listen_complaint / apologize / ask_target_rest 已确认；剩余 13 条全部为延后。
 
 ---
 
@@ -25,13 +25,20 @@
 | B1 | daily | 1004 | chat | 聊天 | 数据：native-instructions；口上：talk-common-system | 有：behavior/daily/chat.toml + chat_failed.toml（骨架：各 1 示例 + 1 占位） | instruction-chat.test.ts | 成败双链 chat_settle；世界观占位已移除；只影响口上叙事，不影响 effect 数值 | ✅ 已确认 |
 | B1 | daily | 1005 | stroke | 身体接触 | 数据：native-instructions；口上：talk-common-system | 有：behavior/daily/stroke.toml | instruction-stroke.test.ts | 口上骨架（示例+占位符 5 条）；AI 长文本/源石/博士全部移除；新前提 T_NORMAL_56_OR_UNCONSCIOUS_FLAG / NPC_INITIATED / TARGET_IS_PLAYER / TARGET_NOT_FALLEN | ✅ 已确认 |
 | B1 | daily | 1012 | rest | 休息 | 数据：native-instructions（从 test-mod 迁入并移除覆盖）；口上：talk-common-system | 有：behavior/daily/rest.toml（骨架 2 组） | instruction-rest.test.ts | 用户确认的有意区别：recover_permil 恢复，不搬 erArk 21/325/1751；前提全量迁移 | ✅ 已确认 |
+| B1 | daily | 1015 | take_shower | 淋浴 | 数据：native-instructions；口上：talk-common-system | 有：behavior/daily/take_shower.toml（1 示例 + 1 占位） | instruction-take-shower.test.ts | 位置 has_bathroom；新效果 dirty_reset_in_shower / record_shower_time；1751 设施损坏（方舟/基建）不搬 TODO；口上骨架无世界观残留 | ✅ 已确认 |
+| B1 | daily | 1014 | sleep | 睡觉 | 数据：sleep-system；口上：talk-common-system | 有：behavior/daily/sleep.toml（4 组骨架：high_1/夜晚/白天/疲劳爆表） | sleep-system.test.ts 指令级口上 + 全流程（31 passed） | 特殊耗时：跨天 advance_to_hour=6；口上骨架无世界观残留 | ✅ 已确认 |
+| B1 | daily | 1022 | ask_target_sleep | 让对方去睡觉 | 数据：sleep-system | 无（erArk 无口上 CSV，不编造） | sleep-system.test.ts ask_target_sleep 全指令（目标入睡/时间+10） | 效果走 NPC setBehavior；无口上不编造 | ✅ 已确认 |
+| B1 | daily | 1019 | follow | 邀请同行 | 数据：native-instructions；口上：talk-common-system | 有：behavior/daily/follow.toml（1 示例 + 1 占位） | instruction-follow.test.ts | 耗时 5；效果 set_follow mode=1（=erArk 363）；前提 TARGET_NOT_FOLLOW 互斥 | ✅ 已确认 |
+| B1 | daily | 1020 | end_follow | 结束同行 | 数据：native-instructions；口上：talk-common-system | 有：behavior/daily/end_follow.toml（1 示例 + 1 占位） | instruction-follow.test.ts | 耗时 5；效果 set_follow mode=0（=erArk 365）；前提 TARGET_IS_FOLLOW 互斥 | ✅ 已确认 |
+| B1 | daily | 1024 | listen_complaint | 听牢骚 | 数据：native-instructions；口上：talk-common-system | 有：behavior/daily/listen_complaint.toml（1 示例 + 1 占位） | instruction-listen-complaint.test.ts | 前置 anger-system 已完成；新前提 TARGET_ABD_OR_ANGRY_MOOD / TARGET_NOT_ANGRY_WITH_PLAYER；listen_complaint_settle 减怒 | ✅ 已确认 |
+| B1 | daily | 1023 | apologize | 道歉 | 数据：native-instructions；口上：talk-common-system | 有：behavior/daily/apologize.toml + apologize_failed.toml（各 1 示例 + 1 占位） | instruction-apologize.test.ts | 成败双链 apologize_settle；成功链含 341 清 angry_with_player；前置 anger-system 依赖完成 | ✅ 已确认 |
+| B1 | daily | 1021 | ask_target_rest | 让对方休息 | 数据：native-instructions；口上：无（erArk 无 CSV，不编造） | instruction-ask-target-rest.test.ts | 新增 TARGET_HP_OR_MP_LOW；ask_rest → npc-ai rest 行为块；耗时 1 | ✅ 已确认 |
 
 ## 存量已实现（🟡，未走本流程 / 待补口上 / 待核对）
 
 | 批次 | 分类/子类 | cid | id | 名称 | 所属系统 | 通用口上 | 测试 | 特殊处理 | 状态 |
 |------|-----------|-----|-----|------|----------|----------|------|----------|------|
-| B1 | daily | 1014 | sleep | 睡觉 | 数据：sleep-system；口上：talk-common-system | 无（待补：talk/daily/sleep.csv） | 待补指令级测试 | 特殊耗时：跨天 advance_to_hour=6 | 🟡 待补口上/核对 |
-| B1 | daily | 1022 | ask_target_sleep | 让对方去睡觉 | 数据：sleep-system | 无（erArk 无口上 CSV，不编造） | 待补指令级测试 | 效果走 NPC setBehavior | 🟡 待核对 |
+
 | B2 | arts/time_stop | 4113 | time_stop_on | 时间停止流动 | 数据：h-time-stop | 无（待补） | 待核对 | 已实装 | 🟡 待补口上/核对 |
 | B2 | arts/time_stop | 4114 | time_stop_off | 时间重新流动 | 数据：h-time-stop | 无（待补） | 待核对 | 已实装 | 🟡 待补口上/核对 |
 | B2 | arts/time_stop | 4115 | time_stop_off_in_h | 在H中取消时停 | 数据：h-time-stop | 无（待补） | 待核对 | 已实装 | 🟡 待补口上/核对 |

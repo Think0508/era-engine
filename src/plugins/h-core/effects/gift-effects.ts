@@ -43,6 +43,9 @@ export function registerGiftEffects(): void {
       if (mode === 'apology') {
         const angerAttr = (modLoader.getMod()?.hConfig as any)?.gift_anger_attr ?? ATTR.ANGER
         if (ch.base) ch.base[angerAttr] = 0
+        // 道歉礼物同时清除“被玩家惹火”标记（erArk 道歉效果 341 同语义）
+        if (!ch.sp_flag) ch.sp_flag = {}
+        ch.sp_flag.angry_with_player = false
         const favorAttr = (modLoader.getMod()?.hConfig as any)?.favorability_attr ?? ATTR.FAVORABILITY
         const kindnessAttr = (modLoader.getMod()?.hConfig as any)?.kindness_attr ?? ATTR.FONDNESS
         if (ch.base) {

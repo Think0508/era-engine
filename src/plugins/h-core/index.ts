@@ -48,6 +48,7 @@ import { registerOrgasmEffects } from './effects/orgasm-effects'
 import { registerClothEffects } from './effects/cloth-effects'
 import { registerBodyItemEffects } from './effects/body-item-effects'
 import { registerGiftEffects } from './effects/gift-effects'
+import { registerAngerEffects } from './effects/anger-effects'
 
 // 注释：game:plugins_loaded 监听器只注册一次（onEnable 重复执行时不重复监听）
 let hCorePluginsLoadedListener = false
@@ -106,6 +107,7 @@ export function onLoad(_ctx: PluginContext): void {
   // 注释：效果域注册（E2 拆分，2026-08-15）——各域模块调用点 = 原首个效果注册处，
   // 注册顺序与原内联注册一致（settle → orgasm → cloth → body_item → gift）
   registerSettleEffects()
+  registerAngerEffects()
   registerOrgasmEffects()
   registerClothEffects()
 

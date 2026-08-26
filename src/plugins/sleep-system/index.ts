@@ -185,6 +185,28 @@ export function onLoad(_ctx: PluginContext): void {
     return ok
   })
 
+  // ask_rest——让对方休息（erArk 1021 语义：目标 sp_flag.rest=True + WAIT 1 分钟；
+  // 本引擎经 npc-ai setBehavior('rest') 设休息行为块，npc-ai restHandler 固定 120 分钟）
+  effectTypeRegistry.register('ask_rest', async (_params: any, execCtx: any) => {
+    const ids = (execCtx._targetIds as string[]) ?? []
+    let ok = true
+    for (const id of ids) {
+      try {
+        const result = await apiSystem.call('npc-ai', 'setBehavior', id, 'rest') as boolean
+        if (result !== true) ok = false
+      } catch (err) {
+        ok = false
+        errorReporter.report({
+          source: 'sleep-system',
+          severity: 'warning',
+          message: `ask_rest：NPC '${id}' 休息失败：${err instanceof Error ? err.message : String(err)}`,
+          suggestion: '检查 npc-ai-system 是否已加载（setBehavior API）',
+        })
+      }
+    }
+    return ok
+  })
+
   registerSleepPremises(conditionEngine)
 }
 

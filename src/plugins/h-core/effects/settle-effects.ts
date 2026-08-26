@@ -430,6 +430,33 @@ export function registerSettleEffects(): void {
     }
     return true
   })
+// 注释：listen_complaint_settle——听牢骚专用结算（= erArk handle_listen_complaint，
+  // handle_instruct.py:977-989）。在通用效果链前先按话术技能减少目标愤怒：
+  //   adjust = ability_lv_adjust[发起者.话术技能.level]（Ability_Lv_Adjust.csv，同 chat/talk_add_adjust）
+  //   value = int(10 + adjust * 10)（Python int → JS Math.floor）
+  //   目标 angry_point -= value（经 settlement clamp 下限 0）
+  // 剩余通用链（21/1511/1512/53/CVE）由 TOML effects 顺序执行。
+  effectTypeRegistry.register('listen_complaint_settle', async (_p: any, execCtx: any) => {
+    const targetIds = execCtx._targetIds as string[]
+    const targetId = targetIds[0]
+    const target = targetId ? entitySystem.get('character', targetId) as any : null
+    if (!target) return true
+    const srcId = execCtx.sourceId
+    const src = srcId ? entitySystem.get('character', srcId) as any : null
+    const hc = (modLoader.getMod()?.hConfig as any) ?? {}
+    const tbl = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
+    const talkLv = src?.abilities?.['话术技能']?.level ?? 0
+    const adjust = tbl[Math.min(Math.max(0, talkLv), 10)] ?? 4.0
+    const value = Math.floor(10 + adjust * 10)
+    if (execCtx.settlement) {
+      execCtx.settlement.applyChange(targetId, ATTR.ANGER, -value)
+    } else {
+      const current = Number(getEntityAttr(target, ATTR.ANGER) ?? 0)
+      if (!target.base) target.base = {}
+      target.base[ATTR.ANGER] = Math.max(0, current - value)
+    }
+    return true
+  })
 
   // 注释：talk_add_adjust——聊天专用结算（erArk 效果 501 TALK_ADD_ADJUST，default.py:5875-5912）
   // 结算条件（erArk :5894-5900）：有目标 且（发起者或目标任一为玩家）→ NPC→NPC 跳过；

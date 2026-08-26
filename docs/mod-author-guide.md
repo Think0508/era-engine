@@ -547,6 +547,18 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 | | `success_scene` / `fail_scene` | **可选（2026-08-17）**：成败口上场景（对应 erArk CHAT/CHAT_FAILED 双 behavior 口上）。成功链执行后触发 `triggerScene(success_scene, 目标)`；失败链后触发 `fail_scene`。`fail_scene` 缺省 = 无（失败不出失败口上，大多数指令默认成功）；两者均缺省 = 不触发（兼容外部 trigger_dialogue 用法） |
 | `talk_add_adjust` | — | 复刻 erArk 501（default.py:5875）：结算条件 = 有目标且任一方为玩家（NPC→NPC 跳过）；好感 = int(calcFavorability × 话术adjust)，>0 再乘连续减值；好意/快乐 = 完整 base_chara_state_common_settle 管线（tenths/素质/攻略/连续减值，ability_level = 发起者话术技能，快乐用 mark_debuff_adjust）；记录 talk_time |
 
+### 愤怒/心情效果（h-core 注册，2026-08-25 完整前置）
+
+| 效果 type | 参数 | 语义 |
+|-----------|------|------|
+| `mood_to_good` / `mood_to_normal` / `mood_to_bad` / `mood_to_angry` | — | 自己愤怒值设置为 0 / 20 / 40 / 75（erArk MOOD_TO_* 1521-1524） |
+| `target_mood_to_good` / `target_mood_to_normal` / `target_mood_to_bad` / `target_mood_to_angry` | — | 目标愤怒值设置为 0 / 20 / 40 / 75（erArk TARGET_MOOD_TO_* 1525-1528） |
+| `target_angry_with_player_flag_to_0` | — | 清除目标 `sp_flag.angry_with_player`（erArk 341） |
+| `listen_complaint_settle` | — | 听牢骚专用减怒：`int(10 + 话术adjust×10)`，再走通用链（erArk handle_listen_complaint） |
+| `low_obscenity_failed_adjust` | — | 轻度性骚扰失败：反感 + 通用管线、愤怒 +50、`angry_with_player=true`、好感下降（erArk 151） |
+| `high_obscenity_failed_adjust` | — | 重度性骚扰失败：反感 + complex、愤怒 +100、`angry_with_player=true`、好感/信赖下降（erArk 152） |
+| `do_h_failed_adjust` | — | 邀请 H 失败：同上但幅度更高（erArk 153） |
+
 ### 体技效果
 
 | 效果 type | 参数 | 语义 |

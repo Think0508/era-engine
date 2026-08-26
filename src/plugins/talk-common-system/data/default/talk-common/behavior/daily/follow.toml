@@ -1,0 +1,22 @@
+# follow 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-25）
+# - erArk data/talk/daily/follow.csv 原条目含 sys_0 通用 + CVP_A2_T|10x（目标体型/年龄）+
+#   t_is_assistant / target_visitor_flag_1 等关系/访客专用长文本，默认层不照搬。
+# - 本文件只放 sys_0 通用组：1 条示例 + 1 条占位符，等待人工手写替换。
+# - 占位符格式：「邀请同行指令通用口上 N」（N 连续编号）。
+# - 口上仅为叙事，不影响 follow 的 set_follow 数值。
+# - 世界观内容（博士/罗德岛/源石等）不保留。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "follow"
+description = "邀请同行指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 无条件组 ──────────────────────────────────────────────
+# erArk 前提：sys_0（普通状态，恒真）→ 不写条件。
+# 原 10 条为“邀请对方一起行动”的短句；保留 1 条示例 + 1 条占位符。
+[[entries]]
+context = "{character.name}听了{player.name}的邀请，点了点头，决定跟着{player.name}一起行动。"
+
+[[entries]]
+context = "邀请同行指令通用口上 1"

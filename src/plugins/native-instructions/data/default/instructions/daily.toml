@@ -29,6 +29,31 @@ chat_success_chain = [
   # 501 TALK_ADD_ADJUST：好感 × 话术加成 + 好意/快乐 × 话术 + 记录谈话时间
   { type = "talk_add_adjust" },
 ]
+# ═══ apologize 效果链（Behavior_Effect.csv:25-26，逐条翻译）═══
+apologize_success_chain = [
+  # 1511 DOWN_SELF_SMALL_HIT_POINT：自己体力 -1/分
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0 } },
+  # 1512 DOWN_SELF_SMALL_MANA_POINT：自己气力 -3/分
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1 } },
+  # 62 TARGET_ADD_SMALL_DISGUST：目标 反感 +（time+5）× 反发刻印修正
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  # CVE_A1_E|80_G_1：自己 对话经验 +1
+  { type = "h_experience", target = "self", params = { expId = "80", value = 1 } },
+  # 341 TARGET_ANGRY_WITH_PLAYER_FLAG_TO_0：清除“被玩家惹火”标记
+  { type = "target_angry_with_player_flag_to_0", target = "selected" },
+]
+apologize_fail_chain = [
+  # 23 DOWN_INTERACTION_FAVORABILITY：目标 好感 -= calcFavorability(目标, time)
+  { type = "down_interaction_favorability", target = "selected" },
+  # 1511 DOWN_SELF_SMALL_HIT_POINT：自己体力 -1/分
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0 } },
+  # 1512 DOWN_SELF_SMALL_MANA_POINT：自己气力 -3/分
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1 } },
+  # 53 TARGET_ADD_SMALL_FRIENDLY：目标 好意 +（time+30）× 亲密修正
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  # CVE_A1_E|80_G_1：自己 对话经验 +1
+  { type = "h_experience", target = "self", params = { expId = "80", value = 1 } },
+]
 
 # ═══ chat（1004）═══════════════════════════════════════════════════
 [[instructions]]
@@ -177,4 +202,156 @@ effects = [
   # 1751 FACILITY_DAMAGE_CHECK（default.py:2753-2784）——TODO：设施损坏/方舟基建专属，不搬
   # 口上触发：scene='take_shower'（erArk data/talk/daily/take_shower.csv → talk-common behavior/daily/take_shower.toml）
   { type = "trigger_dialogue", target = "self", params = { scene = "take_shower" } },
+]
+# ═══ follow（1019）═══════════════════════════════════════════════
+# erArk InstructConfig.csv:42 + Behavior_Data.csv:24（behavior cid 115，duration=5）
+#   + Behavior_Effect.csv:23（363 - 9999）
+# 363 TARGET_INTELLIGENT_FOLLOW_ON（default.py:5025-5043）→ 目标 sp_flag.is_follow=1
+# 9999 NOTHING（无效果）
+# handler handle_instruct.py 无额外分支（chara_handle_instruct_common_settle 通用收尾）
+# 前提：HAVE_TARGET|NO_TARGET_OR_TARGET_CAN_COOPERATE|TARGET_NOT_FOLLOW
+#   + h_mode_show_type=1 自动注入（NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX）
+#   + tired_type=1 自动注入（TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3）
+[[instructions]]
+id = "follow"
+label = "邀请同行"
+erark_id = "1019"
+erark_behavior = "FOLLOW"
+erark_h_mode_show_type = 1
+erark_tired_type = 1
+category = "daily"
+sub_category = ""
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TARGET_NOT_FOLLOW", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TIRED_LE_84", "HP_G_1", "DRUNK_LEVEL_NOT_3"]
+tags = ["kind:social", "system:follow"]
+effects = [
+  # 363 TARGET_INTELLIGENT_FOLLOW_ON：目标 is_follow=1（智能跟随）
+  { type = "set_follow", target = "selected", params = { mode = 1 } },
+  # 口上触发：scene='follow'（erArk data/talk/daily/follow.csv → talk-common behavior/daily/follow.toml）
+  { type = "trigger_dialogue", target = "selected", params = { scene = "follow" } },
+]
+
+# ═══ end_follow（1020）═══════════════════════════════════════════════
+# erArk InstructConfig.csv:43 + Behavior_Data.csv:25（behavior cid 116，duration=5）
+#   + Behavior_Effect.csv:24（365 - 9999）
+# 365 TARGET_INTELLIGENT_FOLLOW_OFF（default.py:5068-5086）→ 目标 sp_flag.is_follow=0
+# 9999 NOTHING（无效果）
+# 前提：HAVE_TARGET|NO_TARGET_OR_TARGET_CAN_COOPERATE|TARGET_IS_FOLLOW
+#   + h_mode_show_type=1 自动注入（NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX）
+#   + tired_type=1 自动注入（TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3）
+[[instructions]]
+id = "end_follow"
+label = "结束同行"
+erark_id = "1020"
+erark_behavior = "END_FOLLOW"
+erark_h_mode_show_type = 1
+erark_tired_type = 1
+category = "daily"
+sub_category = ""
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "TARGET_IS_FOLLOW", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TIRED_LE_84", "HP_G_1", "DRUNK_LEVEL_NOT_3"]
+tags = ["kind:social", "system:follow"]
+effects = [
+  # 365 TARGET_INTELLIGENT_FOLLOW_OFF：目标 is_follow=0
+  { type = "set_follow", target = "selected", params = { mode = 0 } },
+  # 口上触发：scene='end_follow'（erArk data/talk/daily/end_follow.csv → talk-common behavior/daily/end_follow.toml）
+  { type = "trigger_dialogue", target = "selected", params = { scene = "end_follow" } },
+]
+# ═══ listen_complaint（1024）═══════════════════════════════════════════════
+# erArk InstructConfig.csv:47 + Behavior_Data.csv:28（behavior cid 119，duration=45）
+#   + Behavior_Effect.csv:27（21 - 1511 - 1512 - 53 - CVE_A2_E|80_G_1 - CVE_A1_E|80_G_1）
+# handler handle_instruct.py:977-989：先按话术技能减少目标愤怒（int(10 + adjust*10)），
+#   再走通用结算链——本引擎用 listen_complaint_settle 精确复刻减怒部分。
+# 效果 ID：
+#   21 = ADD_INTERACTION_FAVORABILITY（好感）
+#   1511 = DOWN_SELF_SMALL_HIT_POINT（自己体力 -1）
+#   1512 = DOWN_SELF_SMALL_MANA_POINT（自己气力 -1）
+#   53 = TARGET_ADD_SMALL_FRIENDLY（好意 +30 管线）
+#   CVE_A2_E|80_G_1 / CVE_A1_E|80_G_1 = 对方/自己 对话经验 +1
+# 前提：TARGET_ABD_OR_ANGRY_MOOD（目标愤怒>30） + TARGET_NOT_ANGRY_WITH_PLAYER（未被玩家惹火）
+#   + HAVE_TARGET|NO_TARGET_OR_TARGET_CAN_COOPERATE
+#   + h_mode_show_type=1 自动注入（NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX）
+#   + tired_type=1 自动注入（TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3）
+[[instructions]]
+id = "listen_complaint"
+label = "听牢骚"
+erark_id = "1024"
+erark_behavior = "LISTEN_COMPLAINT"
+erark_h_mode_show_type = 1
+erark_tired_type = 1
+category = "daily"
+sub_category = ""
+time_cost = 45
+priority = 50
+premises = ["HAVE_TARGET", "TARGET_ABD_OR_ANGRY_MOOD", "TARGET_NOT_ANGRY_WITH_PLAYER", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TIRED_LE_84", "HP_G_1", "DRUNK_LEVEL_NOT_3"]
+tags = ["kind:social", "system:h-core"]
+effects = [
+  # handle_listen_complaint 特殊减怒（话术技能 adjust，handle_instruct.py:984-988）
+  { type = "listen_complaint_settle", target = "selected" },
+  # 21 ADD_INTERACTION_FAVORABILITY（default.py:124）
+  { type = "settle_favorability" },
+  # 1511 DOWN_SELF_SMALL_HIT_POINT（default.py:313-328）
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0 } },
+  # 1512 DOWN_SELF_SMALL_MANA_POINT（default.py:331-346）
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1 } },
+  # 53 TARGET_ADD_SMALL_FRIENDLY（default.py:3402）
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  # CVE_A2_E|80_G_1：对方 对话经验 +1
+  { type = "h_experience", target = "selected", params = { expId = "80", value = 1 } },
+  # CVE_A1_E|80_G_1：自己 对话经验 +1
+  { type = "h_experience", target = "self", params = { expId = "80", value = 1 } },
+  # 口上触发：scene='listen_complaint'（erArk data/talk/daily/listen_complaint.csv → talk-common behavior/daily/listen_complaint.toml）
+  { type = "trigger_dialogue", target = "selected", params = { scene = "listen_complaint" } },
+]
+# ═══ apologize（1023）═══════════════════════════════════════════════
+# erArk InstructConfig.csv:46 + Behavior_Data.csv:26-27（behavior cid 117/118，duration=60）
+#   + Behavior_Effect.csv:25-26
+# handler handle_instruct.py:958-975：先按话术技能减目标愤怒（int(10+adjust*10)），
+#   目标愤怒 ≤30 → APOLOGIZE 成功链（含 341 清 angry_with_player），否则 APOLOGIZE_FAILED 链。
+# 本引擎用 apologize_settle 精确复刻分支 + 链执行。
+# 前提：HAVE_TARGET|TARGET_ANGRY_WITH_PLAYER|NO_TARGET_OR_TARGET_CAN_COOPERATE
+#   + h_mode_show_type=1 自动注入（NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX）
+#   + tired_type=1 自动注入（TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3）
+[[instructions]]
+id = "apologize"
+label = "道歉"
+erark_id = "1023"
+erark_behavior = "APOLOGIZE"
+erark_h_mode_show_type = 1
+erark_tired_type = 1
+category = "daily"
+sub_category = ""
+time_cost = 60
+priority = 50
+premises = ["HAVE_TARGET", "TARGET_ANGRY_WITH_PLAYER", "NO_TARGET_OR_TARGET_CAN_COOPERATE", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TIRED_LE_84", "HP_G_1", "DRUNK_LEVEL_NOT_3"]
+tags = ["kind:social", "system:h-core"]
+effects = [
+  # handle_apologize 特殊减怒 + 成败分支（handle_instruct.py:964-974）
+  { type = "apologize_settle", target = "selected", params = { success_effects = "apologize_success_chain", fail_effects = "apologize_fail_chain", success_scene = "apologize", fail_scene = "apologize_failed" } },
+]
+# ═══ ask_target_rest（1021）═══════════════════════════════════════════════
+# erArk InstructConfig.csv:44 + handle_instruct.py:939-946（无 Behavior_Effect 链；
+#   目标 sp_flag.rest=True + WAIT duration=1 → time_cost=1）
+# 本引擎用 ask_rest effect：经 npc-ai setBehavior('rest') 让目标进入休息行为块。
+# 前提：HAVE_TARGET|TARGET_HP_OR_MP_LOW|T_NORMAL_1|T_NORMAL_2|T_NORMAL_6
+#   + h_mode_show_type=1 自动注入（NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX）
+#   + tired_type=1 自动注入（TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3）
+[[instructions]]
+id = "ask_target_rest"
+label = "让对方休息"
+erark_id = "1021"
+erark_behavior = ""
+erark_h_mode_show_type = 1
+erark_tired_type = 1
+category = "daily"
+sub_category = ""
+time_cost = 1
+priority = 50
+premises = ["HAVE_TARGET", "TARGET_HP_OR_MP_LOW", "T_NORMAL_1", "T_NORMAL_2", "T_NORMAL_6", "NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TIRED_LE_84", "HP_G_1", "DRUNK_LEVEL_NOT_3"]
+tags = ["kind:social", "system:npc-ai"]
+effects = [
+  # erArk handle_ask_target_rest：目标进入休息（npc-ai rest 行为块，120 分钟）
+  { type = "ask_rest", target = "selected" },
 ]

@@ -1,0 +1,9 @@
+# hand_in_hand 指令默认通用口上（插件默认层，Layer 1）
+variable = "hand_in_hand"
+description = "牵手指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+# ⚠️ 骨架：不搬运 erArk 原文；1 示例 + 1 占位。
+[[entries]]
+context = "{player.name}轻轻牵起{character.name}的手。"
+
+[[entries]]
+context = "牵手指令通用口上 1"

@@ -1,0 +1,20 @@
+# touch_breast 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-25）
+# - erArk data/talk/obscenity/touch_breast.csv 原条目多按胸围/好感分支，不照搬。
+#   默认层保留 high_1 通用组：1 示例 + 1 占位。
+# - 占位符格式：「摸胸指令通用口上 N」（N 连续编号）。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "touch_breast"
+description = "摸胸指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 高权重组 ──────────────────────────────────────────────
+# erArk 前提：high_1（权重前提，恒通过、权重 1）→ 条件：premise(high_1)。
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}伸手覆上{character.name}的胸部，感受着掌下的柔软。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "摸胸指令通用口上 1"

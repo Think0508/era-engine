@@ -70,8 +70,52 @@
 | B2 | arts/time_stop | h-time-stop（已实装） | 4114 | time_stop_off | 时间重新流动 | 已完成 | 已实装 |
 | B2 | arts/time_stop | h-time-stop（已实装） | 4115 | time_stop_off_in_h | 在H中取消时停 | 已完成 | 已实装 |
 
+## B3 候选池（OBSCENITY 37）
+
+> 2026-08-25：进入 B3 筛选流程。统计：原 37 → 基础已完成待确认 11（5002-5016/5024-5026）→ 基础待做 0 → 延后 2（5017/5020）→ 剔除 1（5027）→ 待后续筛选 23（位置/睡眠/玩具/H/隐奸/群交）。
+> 筛选口径沿用 B1/B2：**只有方舟世界观专属才算剔除**；系统未实装/暂缓归延后；用户最终筛选。
+
+| 批次 | 分类 | 所属系统 | cid | id | 名称 | 筛选结论 | 延后/剔除原因 |
+|---|---|---|---|---|---|---|---|
+| B3 | obscenity | h-core | 5002 | touch_head | 摸头 | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5003 | touch_breast | 摸胸 | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5004 | touch_buttocks | 摸屁股 | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5012 | hand_in_hand | 牵手 | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5013 | embrace | 拥抱 | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5014 | kiss | 亲吻 | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5015 | lap_pillow | 膝枕 | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5016 | raise_skirt | 掀起裙子 | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5017 | ask_for_pan | 索要内裤 | 延后（用户） | 收藏系统可能加回，先延后 |
+| B3 | obscenity | h-core | 5019 | invite_to_bath | 一起洗澡 | 保留（待筛选/待下令） | 位置 has_bathroom |
+| B3 | obscenity | h-core | 5020 | steal_pan | 偷走内裤 | 延后（用户） | 同索要内裤，收藏系统相关 |
+| B3 | obscenity | h-core | 5022 | steal_scene_all_pan | 偷走所有人内裤 | 保留（待筛选/待下令） | 睡眠/无意识前提 |
+| B3 | obscenity | h-core | 5024 | touch_clitoris | 阴蒂爱抚 | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5025 | touch_vagina | 手指插入（V） | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5026 | touch_anus | 手指插入（A） | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5027 | milk | 挤奶 | 剔除（用户） | 用户明确不做 |
+| B3 | obscenity | h-toy/remote | 5028 | remote_toy_on | 遥控启动玩具 | 保留（待筛选/待下令） | 玩具系统 |
+| B3 | obscenity | h-toy/remote | 5029 | remote_toy_off | 遥控关闭玩具 | 保留（待筛选/待下令） | 玩具系统 |
+| B3 | obscenity | h-toy/remote | 5030 | remote_toy_level_up | 调高玩具档位 | 保留（待筛选/待下令） | 玩具系统 |
+| B3 | obscenity | h-toy/remote | 5031 | remote_toy_level_down | 降低玩具档位 | 保留（待筛选/待下令） | 玩具系统 |
+| B3 | obscenity | h-toy/remote | 5032 | remote_toy_all_off | 遥控关闭全员玩具 | 保留（待筛选/待下令） | 玩具系统 |
+| B3 | obscenity | h-toy/remote | 5033 | remote_all_set_sex_toy_weak | 全员玩具调到弱档 | 保留（待筛选/待下令） | 玩具系统 |
+| B3 | obscenity | h-toy/remote | 5034 | remote_all_set_sex_toy_medium | 全员玩具调到中档 | 保留（待筛选/待下令） | 玩具系统 |
+| B3 | obscenity | h-toy/remote | 5035 | remote_all_set_sex_toy_strong | 全员玩具调到强档 | 保留（待筛选/待下令） | 玩具系统 |
+| B3 | obscenity | sleep-system | 5045 | sleep_obscenity | 睡眠猥亵 | 保留（待筛选/待下令） | 睡眠系统已存在 |
+| B3 | obscenity | sleep-system | 5046 | stop_sleep_obscenity | 停止睡眠猥亵 | 保留（待筛选/待下令） | 同上 |
+| B3 | obscenity | h-core | 5047 | do_h | 邀请H | 保留（待筛选/待下令） | 核心 |
+| B3 | obscenity | h-core | 5049 | do_h_in_bathroom | 邀请在浴室H | 保留（待筛选/待下令） | 位置 has_bathroom |
+| B3 | obscenity | sleep-system | 5052 | unconscious_h | 无意识奸 | 保留（待筛选/待下令） | 睡眠/无意识状态 |
+| B3 | obscenity | h-hidden | 5053 | ask_hidden_sex | 邀请隐奸 | 保留（待筛选/待下令） | system:hidden |
+| B3 | obscenity | h-exposure | 5054 | ask_exhibitionism_sex | 邀请露出 | 保留（待筛选/待下令） | system:hidden（已实装 exposure） |
+| B3 | obscenity | h-group-sex | 5055 | ask_group_sex | 邀请群交 | 保留（待筛选/待下令） | system:group_sex |
+| B3 | obscenity | h-toy/remote | 5101 | remote_toy_level_down_in_h | 降低玩具档位 | 保留（待筛选/待下令） | 玩具系统（H 内版） |
+| B3 | obscenity | h-toy/remote | 5102 | remote_toy_all_off_in_h | 遥控关闭全员玩具 | 保留（待筛选/待下令） | 玩具系统（H 内版） |
+| B3 | obscenity | h-toy/remote | 5103 | remote_all_set_sex_toy_weak_in_h | 全员玩具调到弱档 | 保留（待筛选/待下令） | 玩具系统（H 内版） |
+| B3 | obscenity | h-toy/remote | 5104 | remote_all_set_sex_toy_medium_in_h | 全员玩具调到中档 | 保留（待筛选/待下令） | 玩具系统（H 内版） |
+| B3 | obscenity | h-toy/remote | 5105 | remote_all_set_sex_toy_strong_in_h | 全员玩具调到强档 | 保留（待筛选/待下令） | 玩具系统（H 内版） |
+
 ## 后续批次（占位，筛选后填充）
 
-- B3：OBSCENITY 37
 - B4-B7：SEX 142（base / drug / foreplay / insert / item / sm / wait_upon）
 - 核对项：SYSTEM 8（不按 TOML 复刻，逐项核对引擎等价能力）

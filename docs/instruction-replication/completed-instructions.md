@@ -10,7 +10,7 @@
 |------|-----------|---------------|-----------|
 | B1 | 11 | 0 | 13（延后 13） |
 | B2 | 5 | 0 | 12（催眠，延后待 grill） |
-| B3 | 0 | 1 | 36 |
+| B3 | 11 | 1 | 25 |
 | B4-B7 | 0 | 0 | 142 |
 | 核对项（SYSTEM） | 0 | 0 | 8 |
 
@@ -33,6 +33,22 @@
 | B1 | daily | 1024 | listen_complaint | 听牢骚 | 数据：native-instructions；口上：talk-common-system | 有：behavior/daily/listen_complaint.toml（1 示例 + 1 占位） | instruction-listen-complaint.test.ts | 前置 anger-system 已完成；新前提 TARGET_ABD_OR_ANGRY_MOOD / TARGET_NOT_ANGRY_WITH_PLAYER；listen_complaint_settle 减怒 | ✅ 已确认 |
 | B1 | daily | 1023 | apologize | 道歉 | 数据：native-instructions；口上：talk-common-system | 有：behavior/daily/apologize.toml + apologize_failed.toml（各 1 示例 + 1 占位） | instruction-apologize.test.ts | 成败双链 apologize_settle；成功链含 341 清 angry_with_player；前置 anger-system 依赖完成 | ✅ 已确认 |
 | B1 | daily | 1021 | ask_target_rest | 让对方休息 | 数据：native-instructions；口上：无（erArk 无 CSV，不编造） | instruction-ask-target-rest.test.ts | 新增 TARGET_HP_OR_MP_LOW；ask_rest → npc-ai rest 行为块；耗时 1 | ✅ 已确认 |
+| B2 | arts/time_stop | 4113 | time_stop_on | 时间停止流动 | 数据：h-time-stop；口上：talk-common-system | 有：behavior/arts/time_stop_on.toml | h-time-stop.test.ts 指令级补测 | 已实装；指令级口上/测试补齐 | ✅ 已确认 |
+| B2 | arts/time_stop | 4114 | time_stop_off | 时间重新流动 | 数据：h-time-stop；口上：talk-common-system | 有：behavior/arts/time_stop_off.toml | h-time-stop.test.ts 指令级补测 | 已实装；指令级口上/测试补齐 | ✅ 已确认 |
+| B2 | arts/time_stop | 4115 | time_stop_off_in_h | 在H中取消时停 | 数据：h-time-stop；口上：talk-common-system | 有：behavior/arts/time_stop_off_in_h.toml | h-time-stop.test.ts 指令级补测 | 已实装；指令级口上/测试补齐 | ✅ 已确认 |
+| B2 | arts/time_stop | 4005 | carry_target | 搬运对方 | 数据：h-time-stop；口上：talk-common-system | 有：behavior/arts/carry_target.toml | h-time-stop.test.ts 指令级补测 | 已实装；指令级口上/测试补齐 | ✅ 已确认 |
+| B2 | arts/time_stop | 4006 | stop_carry_target | 停止搬运对方 | 数据：h-time-stop；口上：talk-common-system | 有：behavior/arts/stop_carry_target.toml | h-time-stop.test.ts 指令级补测 | 已实装；指令级口上/测试补齐 | ✅ 已确认 |
+| B3 | obscenity/touch | 5002 | touch_head | 摸头 | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/touch_head.toml | instruction-touch-trio.test.ts | 基础触摸试点 | ✅ 已确认 |
+| B3 | obscenity/touch | 5003 | touch_breast | 摸胸 | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/touch_breast.toml | instruction-touch-trio.test.ts | 含 tech_adjust 胸部 | ✅ 已确认 |
+| B3 | obscenity/touch | 5004 | touch_buttocks | 摸屁股 | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/touch_buttocks.toml | instruction-touch-trio.test.ts | 含欲情/屈服/苦痛 | ✅ 已确认 |
+| B3 | obscenity/touch | 5012 | hand_in_hand | 牵手 | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/hand_in_hand.toml | instruction-touch-rest.test.ts | 基础链 | ✅ 已确认 |
+| B3 | obscenity/touch | 5013 | embrace | 拥抱 | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/embrace.toml | instruction-touch-rest.test.ts | 基础链 | ✅ 已确认 |
+| B3 | obscenity/touch | 5014 | kiss | 亲吻 | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/kiss.toml | instruction-touch-rest.test.ts | first_kiss_check + 口喉 | ✅ 已确认 |
+| B3 | obscenity/touch | 5015 | lap_pillow | 膝枕 | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/lap_pillow.toml | instruction-touch-rest.test.ts | 需家具 | ✅ 已确认 |
+| B3 | obscenity/touch | 5016 | raise_skirt | 掀起裙子 | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/raise_skirt.toml | instruction-touch-rest.test.ts | 需穿裙；cloth_set_visible | ✅ 已确认 |
+| B3 | obscenity/touch | 5024 | touch_clitoris | 阴蒂爱抚 | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/touch_clitoris.toml | instruction-touch-rest.test.ts | tech_adjust 阴蒂 | ✅ 已确认 |
+| B3 | obscenity/touch | 5025 | touch_vagina | 手指插入（V） | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/touch_vagina.toml | instruction-touch-rest.test.ts | tech_adjust 阴道 | ✅ 已确认 |
+| B3 | obscenity/touch | 5026 | touch_anus | 手指插入（A） | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/touch_anus.toml | instruction-touch-rest.test.ts | tech_adjust 后穴 | ✅ 已确认 |
 
 ## 存量已实现（🟡，未走本流程 / 待补口上 / 待核对）
 

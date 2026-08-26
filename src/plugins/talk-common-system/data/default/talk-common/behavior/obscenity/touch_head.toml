@@ -1,0 +1,18 @@
+# touch_head 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-25）
+# - erArk data/talk/obscenity/touch_head.csv 原系统组 sys_0 2 条 + 好感/顺从/恋爱分支；
+#   默认层只保留 sys_0 通用组：1 示例 + 1 占位。
+# - 占位符格式：「摸头指令通用口上 N」（N 连续编号）。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "touch_head"
+description = "摸头指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 无条件组 ──────────────────────────────────────────────
+# erArk 前提：sys_0（普通状态，恒真）→ 不写条件。
+[[entries]]
+context = "{player.name}伸手摸了摸{character.name}的头。"
+
+[[entries]]
+context = "摸头指令通用口上 1"

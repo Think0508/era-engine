@@ -1,0 +1,11 @@
+# touch_vagina 指令默认通用口上（插件默认层，Layer 1）
+variable = "touch_vagina"
+description = "手指插入（V）指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+# ⚠️ 骨架：不搬运 erArk 原文；1 示例 + 1 占位。
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}的手指缓缓探入{character.name}的身体。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "手指插入（V）指令通用口上 1"

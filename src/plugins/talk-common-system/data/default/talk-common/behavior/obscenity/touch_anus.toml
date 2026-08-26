@@ -1,0 +1,11 @@
+# touch_anus 指令默认通用口上（插件默认层，Layer 1）
+variable = "touch_anus"
+description = "手指插入（A）指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+# ⚠️ 骨架：不搬运 erArk 原文；1 示例 + 1 占位。
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}的手指轻轻探向{character.name}的后穴。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "手指插入（A）指令通用口上 1"

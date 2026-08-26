@@ -1,0 +1,9 @@
+# lap_pillow 指令默认通用口上（插件默认层，Layer 1）
+variable = "lap_pillow"
+description = "膝枕指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+# ⚠️ 骨架：不搬运 erArk 原文；1 示例 + 1 占位。
+[[entries]]
+context = "{character.name}枕在{player.name}的膝上，放松地闭上了眼睛。"
+
+[[entries]]
+context = "膝枕指令通用口上 1"

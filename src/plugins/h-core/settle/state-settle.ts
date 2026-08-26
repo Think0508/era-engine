@@ -16,7 +16,10 @@ import { entitySystem } from '../../../core/entity-system'
 import { gameContext } from '../../../core/game-context'
 import { getEntityAttr, ATTR } from '../../../core/entity-utils'
 import { getTalentStateAdjust } from './talent-adjust'
-import { getFavoritePosition } from './position'
+import {
+  isFavoritePosition, isFavoritePart, favoritePartApplies,
+  resolvePartKey, actionPartKeyFromHState, getFavoriteConfig,
+} from './favorite'
 import { BAD_STATES, MENTAL_STATES } from './state'
 
 // 部位状态ID → 属性名（attributes.toml 的 parameter 命名；erArk 22=兽部 未实现已移除）
@@ -80,8 +83,18 @@ export function getFeelExtraAdjust(ch: any, state: string, tbl: number[], isGrou
       const hc = (modLoader.getMod()?.hConfig as any) ?? {}
       const posDef = (hc.sex_positions as Record<number, { pleasure_coefficient?: number }> | undefined)?.[pos]
       extra += posDef?.pleasure_coefficient ?? 0
-      // 喜欢体位 +0.5（erArk :319-322 settle_favorite_sex_position）
-      if (getFavoritePosition(ch, modLoader.getMod()) === pos) extra += 0.5
+      // 喜欢的体位：谁有该喜好，谁自己的快感结算 +0.5（grill 定稿）
+      if (isFavoritePosition(ch, pos)) {
+        extra += getFavoriteConfig(modLoader.getMod()).position_feel_bonus
+      }
+    }
+    // 喜欢的部位：命中“有该喜好的角色”自己的快感结算 +0.2
+    // 部位来源优先 h_state 插入位置（能覆盖“男角被女体部位服务”的场景），
+    // 其次当前结算状态本身（覆盖女角自己身体部位/心理）。
+    const statePartKey = resolvePartKey(state)
+    const actionPartKey = actionPartKeyFromHState(ch) ?? statePartKey
+    if (actionPartKey && isFavoritePart(ch, actionPartKey) && favoritePartApplies(ch, actionPartKey)) {
+      extra += getFavoriteConfig(modLoader.getMod()).part_feel_bonus
     }
     // 子宫奸 +2（erArk :323-325——读玩家 h_state.current_womb_sex_position == 2）
     const playerId = gameContext.getContext().player?.id ?? null

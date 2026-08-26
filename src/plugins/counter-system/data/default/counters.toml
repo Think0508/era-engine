@@ -53,8 +53,40 @@ dims = [
 fields = [
   { id = "semen",  label = "精液量",   unit = "ml", event = "h:shoot", add = "payload.amount" },
   { id = "shoots", label = "射精次数", unit = "次", event = "h:shoot", add = 1 },
+  # 部位使用次数（2026-08-25 喜欢的部位学习源；h:part_use 由 h-core 每次 H 行动发出）
+  { id = "count",  label = "部位使用次数", unit = "次", event = "h:part_use", add = 1 },
   # ⚠️ 半成品示例（插入系统 B2+ 实现后启用——去掉 pending 即激活，条件路径自动注册）：
   # { id = "inserts", label = "插入次数", unit = "次", event = "h:insert", add = 1, pending = true },
+]
+
+# 男角对女体部位使用统计（2026-08-25 新增；与女角 male_stats 对称）——用于男角“喜欢部位”学习
+# 事件 h:part_use 的 target=男角、partner=女角、part=女体部位
+[[counters]]
+id = "female_stats"
+label = "男角对女体部位使用统计"
+scope = "character"
+type = "group_table"
+dims = [
+  { id = "part", from = "payload.part" },       # 女体部位 cid
+  { id = "partner", from = "payload.partner" }, # 女角 id
+]
+fields = [
+  { id = "count", label = "部位使用次数", unit = "次", event = "h:part_use", add = 1 },
+]
+
+# 体位使用统计（2026-08-25 新增）——双方各自记录，用于“喜欢体位”学习
+# 事件 h:position_use 的 target=被记录角色、partner=对方、position=体位 ID
+[[counters]]
+id = "position_stats"
+label = "体位使用统计"
+scope = "character"
+type = "group_table"
+dims = [
+  { id = "position", from = "payload.position" },
+  { id = "partner", from = "payload.partner" },
+]
+fields = [
+  { id = "count", label = "体位使用次数", unit = "次", event = "h:position_use", add = 1 },
 ]
 
 # ============ 视图（只读，不双写）============

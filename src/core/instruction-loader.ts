@@ -49,6 +49,9 @@ export function injectJudgeCheck(raw: HInstruction, effects: Effect[]): Effect[]
   if (typeof judgeBase !== 'number' || !(judgeBase > 0)) return effects
   const params: Record<string, any> = { base: judgeBase }
   if (raw.judge_class) params.judge_class = raw.judge_class
+  // 部位标签（part:*）→ judge_check 的 part 参数，供“喜欢的部位”判定使用
+  const partTag = (raw.tags ?? []).find(t => t.startsWith('part:'))
+  if (partTag) params.part = partTag.slice('part:'.length)
   return [{ type: 'judge_check', params }, ...effects]
 }
 

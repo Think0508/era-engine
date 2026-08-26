@@ -1,6 +1,8 @@
 # Mod 作者指南
 
 > 给写模组的人。简洁，只讲你需要做什么、引擎给你什么。
+>
+> 新增自定义指令的完整流程（含实行判定链、喜欢的体位/部位接入）见：`docs/designing-new-instructions.md`。
 
 ## 你的职责
 
@@ -167,6 +169,35 @@ attack = "攻击力"
 "羞耻" = "露出"
 # ...可在你的 h-config.toml 中覆写或新增
 ```
+
+**喜欢的体位/部位（h-config.toml `[favorite]`）**——引擎默认女体锚定，mod 可全局覆盖：
+
+```toml
+[favorite]
+position_threshold = 100      # 体位分数阈值
+part_threshold = 1000         # 部位分数阈值
+position_feel_bonus = 0.5     # 有该喜好的角色自己的体位快感加成
+position_judge_bonus = 30     # 客体喜欢当前体位时判定加成
+part_feel_bonus = 0.2         # 有该喜好的角色自己的部位快感加成
+part_judge_bonus = 10         # 客体喜欢当前部位时判定加成
+body_side = "female"          # 喜欢的部位锚定身体侧：own/partner/female/male
+```
+
+角色可预设 `favorite`：`{ positions = { "1" = 100 }, parts = { "6" = 1000 } }`；分数由 h-core 在每次 H 行动自动 +1。
+
+**判定链文本（2026-08-25）**：
+- 每次实行判定都会在叙事日志输出完整计算链（erArk `calculation_text` 风格），成功也显示。
+- 格式示例（erArk 原样，含换行）：
+  ```
+  需要性爱实行值至少为500
+  当前值为：好感修正(0)+信赖修正(0)+…+喜欢背后位(30)+喜欢小穴(10) = 320
+  ```
+- `[judge.adjustments]` 条目可写 `label` 自定义显示名（如 `label = "处女"`）；正数显示 `+处女(250)`，负数显示 `-处女(250)`。
+- 喜欢的体位/部位显示名：体位取 `hConfig.sex_positions[name]`；部位口语名映射（小穴/胸部/后穴…）可在 `favorite.ts` 的 `PART_DISPLAY_NAMES` 调整。
+
+**面板列表文本**：
+- `getFavoriteList` 每条返回 `{ id, name, score }`；
+- `describeFavorites(charId)` 返回 `喜欢的体位：背后位、正常位；喜欢的部位：小穴、胸部、后穴`。
 
 **口上 = 演出**——几乎所有指令执行后触发口上。三层优先级：
 1. 场景通用（`scene-dialogue.toml`）——地点/环境描述
@@ -507,7 +538,6 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 | `h_experience` | `expId` | 经验 ID（如 `"80"` = 对话经验，Experience.csv） |
 | | `value` | 增量（erArk CVE 效果的最后一个数字） |
 | `judge_check` | — | **loader 自动注入**（有 judge_base 时），不要手写；target 默认 = 指令目标 |
-| `accumulate_degrees` | `degrees` | 五度属性统一累加通道（2026-08-21，`docs/five-degrees-attributes.md`）：一次性对目标累加多个「度」`{ 屈服度 = 10, 软弱度 = 5 }`。**单调不降**：负值入参 → warning + 丢弃；度名未在 attributes.toml（category=social）定义 → warning + 跳过；换算/性格系数留 TODO（恒 1） |
 
 ### chat 专用效果
 
@@ -594,6 +624,21 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 - **error**：mod 文件间同 id 重复；`body_slot ≥ 0` 缺 `body_auto_remove`
 - **warning**：`use` 值未注册（useRegistry）；`consume` 非 boolean；`price`/`level`/`time_cost` 非 number
 - **不校验**：tags 内容、attack_bonus/defense_bonus、槽位冲突
+
+## 人设属性（坚强度/道德感/贞操观）
+
+角色固有属性（2026-08-25 裁决，`docs/persona-attributes.md`）：**纯静态人设数据**——写角色时定初始值，不接任何指令来源/挂钩/钳制/换算。
+
+- **三属性**：`坚强度`（抗威胁）/ `道德感`（抗哄骗·道义）/ `贞操观`（抗淫猥·性胁迫），h-core 默认层声明（category=social，default=50，display 分组「人设」）
+- **刻度约定**（作者约定，引擎不钳制）：`50` = 常人中性（**不写即 50**）；`0` = 完全无此特质；`100` = 极强；**负值** = 夸张反向人设（比"完全无"更夸张的软弱/无道德感/放荡，为特殊人设预留）
+- **写法**（与其他属性同表同机制）：named `characters/named/令狐冲/base.toml`、批量 `characters/roster.toml`、模板 `templates/character/*.toml`、路人 `npc.toml` overrides：
+  ```toml
+  base = { "坚强度" = 80, "道德感" = 90, "贞操观" = 85 }
+  ```
+- **条件引用**（声明即注册）：`character.令狐冲.坚强度 >= 70`、`character.某女.贞操观 < 30`、`character.某女.道德感 == -30`
+- ⚠️ 条件引擎**支持负数字面量**（`-` 后紧跟数字即负数，如 `道德感 >= -50`）；**二元算术仍禁**（`a - b` 报错，复杂逻辑走 condition_script/专用 effect）
+- ⚠️ 稀有事件若需改人设：用 `set_attribute`（不钳制、可写负）；`modify_attribute` 会把负值钳到 0
+- 边界：`talents.toml` 的「坚强/脆弱」天赋（结算系数微调）保留原样，不并入属性
 
 ## 角色字段速查（标准角色契约）
 

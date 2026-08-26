@@ -188,8 +188,67 @@ chat 无 IN_* 前提 → **不写 condition**（默认全地点可用）。无�
 
 ## 4. 待办
 
-- [ ] 用户筛选其余 23 条 → 逐条按 SOP 复刻（每条约 30 分钟分析+实现）
-- [ ] sleep 特殊耗时（跨天跳转，需 handler）→ L1.7 一并处理
-- [ ] 批末验收：`npm run typecheck && npm run test` + dev 实测 chat（指令栏出现/点击执行/数值变化/口上触发）
+- [ ] 用户筛选其余 20 条 → 逐条按 SOP 复刻（每条约 30 分钟分析+实现；take_shower 已完成待用户确认）
+- [ ] sleep 特殊耗时（跨天跳转，需 handler）→ L1.7 已处理
+- [ ] 批末验收：`npm run typecheck && npm run test` + dev 实测（指令栏出现/点击执行/数值变化/口上触发）
   - 口上触发 ✅ 已接入（2026-08-17）：chat_settle success_scene="chat"/fail_scene="chat_failed" + 插件默认层原生通用口上（talk-common behavior/ 目录），测试覆盖；dev 实测仍待做
 - [ ] 全部完成后再批量删除 erark_id/erark_behavior 迁移字段
+
+---
+
+## 5. take_shower（1015）——深度分析
+
+### 5.1 数据源（全部查证，行号可追溯）
+
+| 项 | 值 | 来源 |
+|----|----|------|
+| InstructConfig.csv | `1015,take_shower,淋浴,DAILY,0,1,1,IN_BATHROOM,TAKE_SHOWER,1,,hand,hand_daily,` | InstructConfig.csv:38 |
+| Behavior_Data.csv | duration = **30**（行为 cid 112，非 -1） | Behavior_Data.csv:21 |
+| Behavior_Effect.csv（成功链） | `12 - 304 - 525 - 702 - 1751` | Behavior_Effect.csv:20 |
+| handler | `handle_take_shower()` → `chara_handle_instruct_common_settle(Behavior.TAKE_SHOWER)`，无 judge 参数 | handle_instruct.py:837-840 |
+| 效果公式 | 12=default.py:223-238 / 304=default.py:4618-4637 / 525=default.py:6685-6733 / 702=default.py:9594-9612 / 1751=default.py:2753-2784 | Script/Settle/default.py |
+
+### 5.2 判定四列
+
+| Q1 handler 有显式 judge 参数？ | Q2 判定族在 adjustments 表？ | Q3 judge_base / judge_class |
+|---|---|---|
+| ❌ 无（无 judge 参数） | — | **不写**（SOP §6 Q1=否） |
+
+### 5.3 前提迁移
+
+| 原前提 | 处理 | 最终形式 |
+|--------|------|----------|
+| IN_BATHROOM | 位置 → condition（location-tags.md：has_bathroom） | `condition = "location.tags.has_bathroom == true"` |
+| h_mode_show_type=1 自动注入 | 显式展开 | `NOT_H` + `NOT_SHOW_NON_H_IN_HIDDEN_SEX` |
+| tired_type=1 自动注入 | 显式展开 | `TIRED_LE_84` + `HP_G_1` + `DRUNK_LEVEL_NOT_3` |
+
+→ premises = `["NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TIRED_LE_84", "HP_G_1", "DRUNK_LEVEL_NOT_3"]`，无 HAVE_TARGET（自洗指令）。
+
+### 5.4 耗时
+
+| 项 | 值 | 来源 |
+|----|----|------|
+| Behavior_Data duration | 30 | 非 -1，照抄 |
+| handler 特殊耗时 | 无 | handle_instruct.py:837-840 |
+
+→ `time_cost = 30`
+
+### 5.5 效果 ID 映射（逐条翻译，无合并省略）
+
+| erArk 效果 ID | 常量名 | 我们的 effect | 说明 |
+|---------------|--------|---------------|------|
+| 12 | DOWN_BOTH_SMALL_MANA_POINT | `settle_hp_mp` × 2：`target = "self"` + `target = "selected_optional"`（params 同 `{ mpValue = -1, degree = 0 }`） | 气力 -3/分；erArk `target_flag=True` 会连带当前选中目标，无目标时 `selected_optional` 为空 → 只扣自己（rest 同款 target 语义） |
+| 304 | SHOWER_FLAG_TO_3 | `{ type = "set_field", target = "self", params = { path = "sp_flag.shower_state", value = 3 } }` | erArk 另调 settle_chara_unnormal_flag(1) 重算 bit1；T_NORMAL_1 未注册/无消费方 → TODO 不同步 |
+| 525 | DIRTY_RESET_IN_SHOWER | `{ type = "dirty_reset_in_shower", target = "self" }` | 🔴 新效果：保留 6/7/8/15 比例（0.2/0.7/0.3/1），其余 body_semen/cloth_semen/penis_dirty_dict/a_clean/enema_capacity 清零；body_manage[21] 未实装 TODO |
+| 702 | RECORD_SHOWER_TIME | `{ type = "record_shower_time", target = "self" }` | 🔴 新效果：`action_info.last_shower_time = 当前时间` |
+| 1751 | FACILITY_DAMAGE_CHECK | **不搬 TODO** | 基建/方舟世界观专属，与 rest(1012)/sleep(1014) 一致；default.py:2753-2784 |
+
+### 5.6 通用口上
+
+- erArk `data/talk/daily/take_shower.csv`：全部 `high_1` 权重前提、~18 条 AI 生成长文本 → 不照搬。
+- 落 `talk-common-system/data/default/talk-common/behavior/daily/take_shower.toml`：1 示例 + 1 占位符（`淋浴指令通用口上 1`），条件 `premise(high_1)`，无世界观残留。
+
+### 5.7 测试
+
+- `src/plugins/instruction-take-shower.test.ts`（5 例）：成功链数值（时间/MP/HP/shower_state/body_semen 保留比例/dirty 清零/record_time）、无目标自洗、位置+前提门控、口上触发与无世界观、无 error。
+- 全量 `npm run typecheck` + `npm run test` 已绿（1229 passed）。

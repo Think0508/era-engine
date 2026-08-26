@@ -19,6 +19,9 @@ class ConditionRegistry {
     { path: 'location.type', type: 'string', description: 'Current location type', operators: '== !=', source: 'engine' },
     { path: 'location.tags', type: 'string[]', description: 'Current location tags', operators: '== !=', source: 'engine' },
     { path: 'location.parent', type: 'string|null', description: 'Parent location ID', operators: '== !=', source: 'engine' },
+    // 注释：location.name（2026-08-25 注册）——显示名；talk-common 已有 location.name != '' 用法。
+    // 运行时解析器本就通读 ctx.location 任意字段，此登记仅补校验白名单。改名敏感：稳定性判定优先 location.id
+    { path: 'location.name', type: 'string', description: 'Current location display name', operators: '== !=', source: 'engine' },
     { path: 'game.time.hour', type: 'number', description: 'Current hour (0-23)', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'game.time.day', type: 'number', description: 'Current day', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'game.time.month', type: 'number', description: 'Current month', operators: '> < >= <= == !=', source: 'engine' },

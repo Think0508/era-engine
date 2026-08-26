@@ -262,6 +262,7 @@ body_items: { 槽位string: { itemId: string, active: boolean, expiry?: number }
 | dirty.absorbed_total_semen | number | h-ejaculation（精液吸收） |
 | dirty.a_clean / enema_capacity / semen_flow | 灌肠相关 | h-core（B3 灌肠指令） |
 | pregnancy.fertilization_rate / reproduction_period / milk / milk_max / lactation_flag / … | 妊娠/涨奶 | h-pregnancy |
+| favorite | `{ positions: {体位ID: 分数}, parts: {部位键: 分数} }`；分数 ≥ 阈值即喜欢（体位阈值 100、部位阈值 1000，h-config 可改）。显示名：体位见 `hConfig.sex_positions[name]`；部位口语名（小穴/胸部/后穴/心理…）见 `favorite.ts PART_DISPLAY_NAMES` | h-core |
 | hypnosis.hypnosis_degree / increase_body_sensitivity / force_ovulation / blockhead / active_h / pain_as_pleasure / roleplay | 催眠 | h-hypnosis |
 | action_info.talk_count / talk_time | 聊天计数/时间 | h-core（decayTalkCount） |
 | action_info.today_sanity_point_cost | 今日精力消耗（consume_sanity 累计，睡眠精力成长依据，erArk pl_ability.today_sanity_point_cost） | sleep-system |

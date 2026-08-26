@@ -12,6 +12,7 @@
 //     erArk 在公式内懒授予，引擎移到清晰回调点；行为可观测一致——经验达标后下一次 H 指令授予）
 
 import { narrativeLog } from '../../../core/narrative-log'
+import { LEGACY_FAVORITE_POSITION_TALENTS } from './favorite'
 
 // 体位经验 ID 段：141-152 → 体位 1-12（erArk settle_favorite_sex_position:352-357）
 const POSITION_EXP_START = 141
@@ -19,17 +20,14 @@ const POSITION_EXP_COUNT = 12
 
 /**
  * 只读：角色当前喜欢体位（-1 = 无）
- * 天赋命中优先；否则按体位经验（≥100 取最高）推导，不写天赋
+ * 旧天赋命中优先（静态 legacy 映射）；否则按体位经验（≥100 取最高）推导，不写天赋。
+ * 注意：这是 legacy 兼容函数，新系统请使用 favorite.ts 的 favoritePositionIds。
  */
-export function getFavoritePosition(ch: any, mod: any): number {
+export function getFavoritePosition(ch: any, _mod: any): number {
   if (!ch) return -1
-  // 1. 天赋命中（talents.toml 定义带 favorite_position 字段）
-  const defs = (mod?.talentDefs as Record<string, any> | undefined) ?? {}
-  for (const [talentId, def] of Object.entries(defs) as [string, any][]) {
-    const fp = def?.favorite_position as number | undefined
-    if (typeof fp === 'number' && fp >= 1 && fp <= 12 && ch.talents?.[talentId]) {
-      return fp
-    }
+  // 1. 旧天赋命中（LEGACY_FAVORITE_POSITION_TALENTS 静态映射；不再依赖 talents.toml 字段）
+  for (const [talentId, posId] of Object.entries(LEGACY_FAVORITE_POSITION_TALENTS)) {
+    if (ch.talents?.[talentId]) return posId
   }
   // 2. 体位经验推导（最高 ≥100 者）
   const exp = ch.experience ?? {}
@@ -54,11 +52,9 @@ export function getFavoritePosition(ch: any, mod: any): number {
  */
 export function grantFavoritePositionIfDue(ch: any, mod: any): number | null {
   if (!ch) return null
-  const defs = (mod?.talentDefs as Record<string, any> | undefined) ?? {}
-  // 已有任意体位喜好天赋 → 不授予（防重复）
-  for (const [talentId, def] of Object.entries(defs) as [string, any][]) {
-    const fp = def?.favorite_position as number | undefined
-    if (typeof fp === 'number' && fp >= 1 && fp <= 12 && ch.talents?.[talentId]) return null
+  // 已有任意旧体位喜好天赋 → 不授予（防重复；静态 legacy 映射）
+  for (const talentId of Object.keys(LEGACY_FAVORITE_POSITION_TALENTS)) {
+    if (ch.talents?.[talentId]) return null
   }
   // 无 ≥100 经验 → 不授予
   const exp = ch.experience ?? {}
@@ -72,11 +68,12 @@ export function grantFavoritePositionIfDue(ch: any, mod: any): number | null {
     }
   }
   if (best === -1) return null
-  // 找到对应的喜好天赋定义（favorite_position === best）
-  const talentId = Object.entries(defs).find(([, def]) => (def as any)?.favorite_position === best)?.[0]
+  // 从静态 legacy 映射反查天赋 ID（favorite_position 字段已从默认数据清理）
+  const talentId = Object.entries(LEGACY_FAVORITE_POSITION_TALENTS).find(([, pos]) => pos === best)?.[0]
   if (!talentId) return null
   if (!ch.talents) ch.talents = {}
   ch.talents[talentId] = 1
+  const defs = (mod?.talentDefs as Record<string, any> | undefined) ?? {}
   const talentName = defs[talentId]?.name ?? talentId
   const posName = (mod?.hConfig as any)?.sex_positions?.[best]?.name ?? String(best)
   narrativeLog.write(`○${ch.name ?? ''}因为经常使用${posName}，获得了【${talentName}】`, 'dialogue', 'h-core')

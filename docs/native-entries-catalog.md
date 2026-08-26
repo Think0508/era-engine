@@ -492,11 +492,11 @@ needs = [{ type = "juel", id = 0, value = 125 }, { type = "experience", id = 0, 
 | 优越 | parameter | type=number · def=0 · 显示[行为参数] · 每日重置 | h-core/attributes.toml |
 | 欲情 | parameter | type=number · def=0 · 显示[行为参数] · 每日重置 | h-core/attributes.toml |
 | 子宫 | parameter | type=number · def=0 · 显示[身体快感] · 每日重置 | h-core/attributes.toml |
+| 道德感 | social | type=number · def=50 · 显示[人设] | h-core/attributes.toml |
 | 好感度 | social | type=number · def=30 · 显示[social] | h-core/attributes.toml |
-| 屈服度 | social | type=number · def=0 | h-core/attributes.toml |
-| 软弱度 | social | type=number · def=0 | h-core/attributes.toml |
+| 坚强度 | social | type=number · def=50 · 显示[人设] | h-core/attributes.toml |
 | 信赖度 | social | type=number · def=0 · 显示[social] | h-core/attributes.toml |
-| 欲望度 | social | type=number · def=0 | h-core/attributes.toml |
+| 贞操观 | social | type=number · def=50 · 显示[人设] | h-core/attributes.toml |
 
 ## 状态效果 status-effects
 

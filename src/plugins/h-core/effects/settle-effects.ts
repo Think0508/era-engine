@@ -25,6 +25,7 @@ import { getTalentStateAdjust } from '../settle/talent-adjust'
 import { runPainByLubrication, runPainByPart, runFeelBySex, runPainToH, getGroupSexActive } from '../settle/pain-adjust'
 import { addEja } from '../settle/eja'
 import { accumulateOrgasmFeel, ORGASM_ATTR_TO_PART } from '../settle/orgasm'
+import { resolvePartKey, recordPartUseAndScore } from '../settle/favorite'
 
 export function registerSettleEffects(): void {
   // 注释：judge_check——实行判定（公式#3），在效果前运行
@@ -76,7 +77,11 @@ export function registerSettleEffects(): void {
       // 经 getEntityAttr 跨命名空间读取（ATTR 常量引用，禁止硬编码字符串）
       const f = getEntityAttr(char, ATTR.FAVORABILITY) ?? 0
       const t = getEntityAttr(char, ATTR.TRUST) ?? 0
-      const r = calcJudge(judgeBase + bonus, f, t, id, judgeClass)
+      const r = calcJudge(judgeBase + bonus, f, t, id, judgeClass, _p.part)
+      // 判定链输出（2026-08-25）：每次判定都显示，成功也显示
+      if (r.reasonText) {
+        narrativeLog.write(`【${char?.name ?? id} 实行判定】${r.reasonText}`, 'system', 'h-core')
+      }
       merged = mergeJudgeResult(merged, r)
       if (r.retreated) {
         narrativeLog.write(`${char?.name ?? id} 退缩了`, 'dialogue', 'h-core')
@@ -285,6 +290,14 @@ export function registerSettleEffects(): void {
         const curLust = getEntityAttr(target, ATTR.AROUSAL)
         const lust = Math.floor(rawLust + (curLust > 0 ? Math.min(3 * rawLust, curLust / 10) : 0))
         target.base[ATTR.AROUSAL] = Math.min(99999, (target.base[ATTR.AROUSAL] ?? 0) + lust)
+      }
+      // 喜欢的部位学习：显式 part（如摸胸/摸阴蒂）→ 双方分数 +1 + h:part_use（mental 只计分数）
+      if (_p.part && execCtx.sourceId) {
+        const partKey = resolvePartKey(_p.part)
+        if (partKey) {
+          const partNum = /^\d+$/.test(partKey) ? Number(partKey) : null
+          await recordPartUseAndScore(execCtx.sourceId, id, partKey, partNum)
+        }
       }
     }
     return true

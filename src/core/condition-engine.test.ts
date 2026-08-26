@@ -96,6 +96,26 @@ describe('conditionEngine.evaluate', () => {
     expect(() => conditionEngine.evaluate('player.hp / 2 > 50', ctx)).toThrow()
   })
 
+  it('负数字面量：- 后紧跟数字 = 负数，可直接比较（2026-08-25）', () => {
+    expect(conditionEngine.evaluate('-5 < 0', ctx)).toBe(true)
+    expect(conditionEngine.evaluate('-5 >= 0', ctx)).toBe(false)
+    expect(conditionEngine.evaluate('-0.5 < 0', ctx)).toBe(true)
+    expect(conditionEngine.evaluate('5 > -100', ctx)).toBe(true)
+    expect(conditionEngine.evaluate('player.hp > -100', ctx)).toBe(true)
+  })
+
+  it('负数字面量不放开二元算术：- 后非数字仍拒绝', () => {
+    // 二元减（- 后跟空格再数字）→ 算术错误
+    expect(() => conditionEngine.evaluate('player.hp - 10 > 50', ctx)).toThrow()
+    // 路径后直接跟 -数字 → 无运算符的 parse 错误（同样拒绝）
+    expect(() => conditionEngine.evaluate('player.hp -10 > 50', ctx)).toThrow()
+    // 连续负号 → 算术错误
+    expect(() => conditionEngine.evaluate('--5 < 0', ctx)).toThrow()
+    // 其他算术仍全禁
+    expect(() => conditionEngine.evaluate('player.hp + 10 > 50', ctx)).toThrow()
+    expect(() => conditionEngine.evaluate('player.hp * 2 > 50', ctx)).toThrow()
+  })
+
   it('should handle complex nested expressions', () => {
     expect(conditionEngine.evaluate(
       '(player.hp < 100 && location.tags.rest == true) || game.time.hour >= 22',

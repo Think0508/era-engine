@@ -133,3 +133,48 @@ effects = [
   # target=selected_optional：有选中角色时走角色轨口上，无目标时静默走场景通用口上
   { type = "trigger_dialogue", target = "selected_optional", params = { scene = "rest" } },
 ]
+# ═══ take_shower（1015）═══════════════════════════════════════════════
+# erArk InstructConfig.csv:38 + Behavior_Data.csv:21（duration=30） + Behavior_Effect.csv:20
+# handler handle_instruct.py:837-840（chara_handle_instruct_common_settle，无 judge 参数）
+# 效果链：12 - 304 - 525 - 702 - 1751，逐条翻译（无合并省略）：
+#  12 DOWN_BOTH_SMALL_MANA_POINT：气力 -3/分（degree=0，default.py:223-238）；target_flag=True
+#     连带当前选中目标，无目标时 selected_optional 为空 → 只扣自己
+#  304 SHOWER_FLAG_TO_3：sp_flag.shower_state = 3（default.py:4618-4637；erArk 另调
+#      settle_chara_unnormal_flag(1) 重算 bit1，T_NORMAL_1 未注册/无消费方 → 暂不同步 TODO）
+#  525 DIRTY_RESET_IN_SHOWER：保留 6/7/8/15 比例，其余污浊清零（default.py:6685-6733）
+#  702 RECORD_SHOWER_TIME：action_info.last_shower_time = 当前时间（default.py:9594-9612）
+#  1751 FACILITY_DAMAGE_CHECK：设施损坏检查（default.py:2753-2784）——
+#      基建/方舟世界观专属，与 rest/sleep 一致不搬 TODO
+[[instructions]]
+id = "take_shower"
+label = "淋浴"
+erark_id = "1015"
+erark_behavior = "TAKE_SHOWER"
+erark_h_mode_show_type = 1
+erark_tired_type = 1
+category = "daily"
+sub_category = ""
+time_cost = 30
+priority = 50
+# 前提 = CSV premise_set（IN_BATHROOM）
+#   + h_mode_show_type=1 自动注入（NOT_H + NOT_SHOW_NON_H_IN_HIDDEN_SEX）
+#   + tired_type=1 自动注入（TIRED_LE_84 + HP_G_1 + DRUNK_LEVEL_NOT_3）
+# 位置前提 → condition（location-tags.md：has_bathroom）
+premises = ["NOT_H", "NOT_SHOW_NON_H_IN_HIDDEN_SEX", "TIRED_LE_84", "HP_G_1", "DRUNK_LEVEL_NOT_3"]
+condition = "location.tags.has_bathroom == true"
+tags = ["kind:self", "system:h-core", "system:h-ejaculation"]
+effects = [
+  # 12 DOWN_BOTH_SMALL_MANA_POINT（default.py:223-238）——erArk target_flag=True 会连带当前选中目标；
+  # 无目标时 selected_optional 为空 → 只扣自己（rest 同款 target 语义）
+  { type = "settle_hp_mp", target = "self", params = { mpValue = -1, degree = 0 } },
+  { type = "settle_hp_mp", target = "selected_optional", params = { mpValue = -1, degree = 0 } },
+  # 304 SHOWER_FLAG_TO_3（default.py:4618-4637）
+  { type = "set_field", target = "self", params = { path = "sp_flag.shower_state", value = 3 } },
+  # 525 DIRTY_RESET_IN_SHOWER（default.py:6685-6733）
+  { type = "dirty_reset_in_shower", target = "self" },
+  # 702 RECORD_SHOWER_TIME（default.py:9594-9612）
+  { type = "record_shower_time", target = "self" },
+  # 1751 FACILITY_DAMAGE_CHECK（default.py:2753-2784）——TODO：设施损坏/方舟基建专属，不搬
+  # 口上触发：scene='take_shower'（erArk data/talk/daily/take_shower.csv → talk-common behavior/daily/take_shower.toml）
+  { type = "trigger_dialogue", target = "self", params = { scene = "take_shower" } },
+]

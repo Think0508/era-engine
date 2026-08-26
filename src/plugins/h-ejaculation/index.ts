@@ -263,6 +263,66 @@ export function onLoad(_ctx: PluginContext): void {
     }
     return true
   })
+
+  // 注释：dirty_reset_in_shower——淋浴清洗（erArk 525 DIRTY_RESET_IN_SHOWER，default.py:6685-6733）
+  // - 保留比例：6 阴道=0.2 / 7 子宫=0.7 / 8 后穴=0.3 / 15 胃=1；
+  //   body_manage[21]（ask_not_wash_semen）未实装 → 默认不升比例（TODO）
+  // - 保留后 <5ml 归零；等级用 calcSemenLevel 重算
+  // - 其他 body_semen / cloth_semen / penis_dirty_dict / a_clean / enema_capacity 清零
+  effectTypeRegistry.register('dirty_reset_in_shower', (_p: any, execCtx: any) => {
+    const keepRate: Record<number, number> = { 6: 0.2, 7: 0.7, 8: 0.3, 15: 1 }
+    const seen = new Set<any>()
+    const resetBodySemen = (container: any): void => {
+      if (!container) return
+      for (const [key, arr] of Object.entries(container) as [string, any][]) {
+        if (!Array.isArray(arr) || seen.has(arr)) continue
+        seen.add(arr)
+        const numericKey = Number(key)
+        const partId = Number.isFinite(numericKey) ? numericKey : BODY_PART_CID[key]
+        const rate = partId !== undefined ? keepRate[partId] : undefined
+        if (rate !== undefined) {
+          const kept = (arr[1] ?? 0) * rate
+          arr[1] = kept < 5 ? 0 : kept
+          arr[2] = calcSemenLevel(arr[1], BODY_PART_MAX_VOLUME[partId] ?? 100)
+        } else {
+          arr[1] = 0
+          arr[2] = 0
+        }
+      }
+    }
+    for (const id of execCtx._targetIds as string[]) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch) continue
+      seen.clear()
+      resetBodySemen(ch.body_semen)
+      if (ch.dirty?.body_semen && ch.dirty.body_semen !== ch.body_semen) resetBodySemen(ch.dirty.body_semen)
+      if (ch.dirty?.cloth_semen) {
+        for (const arr of Object.values(ch.dirty.cloth_semen) as any[]) {
+          if (!Array.isArray(arr)) continue
+          arr[1] = 0
+          arr[2] = 0
+        }
+      }
+      if (ch.dirty?.penis_dirty_dict) {
+        for (const key of Object.keys(ch.dirty.penis_dirty_dict)) ch.dirty.penis_dirty_dict[key] = false
+      }
+      if (ch.dirty?.a_clean !== undefined) ch.dirty.a_clean = 0
+      if (ch.dirty?.enema_capacity !== undefined) ch.dirty.enema_capacity = 0
+    }
+    return true
+  })
+
+  // 注释：record_shower_time——记录当前淋浴时间（erArk 702 RECORD_SHOWER_TIME，default.py:9594-9612）
+  effectTypeRegistry.register('record_shower_time', (_p: any, execCtx: any) => {
+    const now = gameContext.getContext().time
+    for (const id of execCtx._targetIds as string[]) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch) continue
+      if (!ch.action_info) ch.action_info = {}
+      ch.action_info.last_shower_time = now
+    }
+    return true
+  })
 }
 
 export function onEnable(ctx: PluginContext): void {

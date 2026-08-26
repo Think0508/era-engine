@@ -293,9 +293,6 @@ export interface TalentDef {
   // favorability_adjusts：好感/信赖系数加法修正（erArk calculation_favorability），同 group 取最大
   state_adjusts?: { states: string[]; value: number }[]
   favorability_adjusts?: { group?: string; value: number }[]
-  // 注释：体位喜好标记（erArk talent 250-261 → 体位 1-12）——h-core settle/position.ts 消费：
-  // 角色拥有该天赋 = 喜欢对应体位（体位修正 +0.5，erArk handle_talent.py:336-368）
-  favorite_position?: number
 }
 
 // 注释：身材系统（body-shape-system 消费）——body-shape.toml 档位表

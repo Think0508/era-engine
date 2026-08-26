@@ -23,6 +23,8 @@ export const AUTHOR_WRITABLE_TOP_KEYS: ReadonlySet<string> = new Set([
   // 结构字段
   'first_times', 'status_effects', 'relations', 'inventory', 'equipment', 'assets',
   'behavior', 'current_location', 'dead', 'pregnancy',
+  // 喜欢的体位/部位（预设可写；动态学习由 h-core 维护分数）
+  'favorite',
 ])
 
 /** L2：非平凡字段（顶层键）——写了给提示，不阻止 */

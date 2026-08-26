@@ -845,7 +845,7 @@ ctx.api.call('engine', 'loadGame', slot)          // 读档
 3. **扫描 `bindings.toml`** → 每个绑定自动生成条件路径（`player.hp` 等价于 `player.气血`）
 
 4. **引擎内置基础字段**（固定存在）：
-   - `location.id`（string）、`location.type`（string）、`location.tags`（string[]）、`location.parent`（string|null）
+   - `location.id`（string）、`location.type`（string）、`location.tags`（string[]）、`location.parent`（string|null）、`location.name`（string 显示名，2026-08-25 注册；改名敏感，稳定性判定优先 `location.id`）
    - `game.time.hour`（number 0-23）、`game.time.day`（number）、`game.time.month`（number）
    - `quest.{任务ID}.status`（string：`not_started`/`active`/`completed`）
 
@@ -961,7 +961,7 @@ address 单方称呼（口上 `{relation_display}`：父亲/儿子…，按端+�
 
 **条件路径**：
 - 单类型：`character.{A}.relations.{B}.{类型}`（-1/0/1 或 sentiment 数值）——
-  注意条件引擎不支持负数字面量（`== -1` 会触发算术检查），负面档位用 `< 0`
+  条件引擎支持负数字面量（2026-08-25 起，`== -1` 直接合法；`< 0` 亦可用）
 - 聚合（括号参数，跨种类）：`...any(类型,类型或group:组)`（存在）/ `...any_positive(列表)` /
   `...any_negative(列表)`；无括号 = 全部类型；组合用 `&& || !`
 

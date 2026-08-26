@@ -524,6 +524,37 @@ describe('counter-system', () => {
     expect(warns.length).toBeGreaterThanOrEqual(3)   // 至少 名单缺item/分组缺dims/分组缺field/NaN
   })
 
+  // ============ 喜欢的体位/部位学习源（2026-08-25）============
+  it('声明加载——female_stats / position_stats / male_stats.count 就位', () => {
+    const mod = modLoader.getMod()!
+    expect(mod.counterDefs['character:female_stats']).toBeDefined()
+    expect(mod.counterDefs['character:position_stats']).toBeDefined()
+    expect(mod.counterDefs['character:male_stats'].fields?.map(f => f.id)).toContain('count')
+  })
+
+  it('h:part_use——女角 male_stats.count + 男角 female_stats.count 同步累计', async () => {
+    const girl = getChar('girl')
+    const guy = getChar('guy')
+    resetChars()
+    await eventBus.emit('h:part_use', { target: 'girl', character: 'guy', part: 6, position: 6 })
+    expect(girl.counters.male_stats['6']['guy'].count).toBe(1)
+    await eventBus.emit('h:part_use', { target: 'girl', character: 'guy', part: 6, position: 6 })
+    expect(girl.counters.male_stats['6']['guy'].count).toBe(2)
+
+    await eventBus.emit('h:part_use', { target: 'guy', partner: 'girl', part: 6, position: 6 })
+    expect(guy.counters.female_stats['6']['girl'].count).toBe(1)
+  })
+
+  it('h:position_use——双方 position_stats.count 各自累计', async () => {
+    const girl = getChar('girl')
+    const guy = getChar('guy')
+    resetChars()
+    await eventBus.emit('h:position_use', { target: 'girl', partner: 'guy', position: 1 })
+    await eventBus.emit('h:position_use', { target: 'guy', partner: 'girl', position: 1 })
+    expect(girl.counters.position_stats['1']['guy'].count).toBe(1)
+    expect(guy.counters.position_stats['1']['girl'].count).toBe(1)
+  })
+
   // ============ 工具 ============
   it('getByPath——实体字段导航', () => {
     const girl = getChar('girl')

@@ -332,6 +332,16 @@ mod 新字段卡死在原生校验里，正是你担心的反面）。兜底：�
 2. **测试必须走真实触发**（调真实 effect/startHScene，而非手动 `eventBus.emit`）——这是唯一能抓
    出"上游漏 emit"的手段；手动 emit 测试只能证明"收到事件后会记"，证明不了"事件会被发出"
 
+## 十·一、喜欢的体位/部位学习源（2026-08-25）
+
+- `male_stats` 新增 `count` 字段：女角被使用某女体部位的次数（事件 `h:part_use`）。
+- 新增 `female_stats`：男角对女体部位使用统计（dims `[part, partner]`，字段 `count`）。
+- 新增 `position_stats`：双方体位使用统计（dims `[position, partner]`，字段 `count`）。
+- 发射点：
+  - `h:part_use` → `h-core/index.ts handleExecutionEnd`（payload 含 `target/character/partner/part/position`）
+  - `h:position_use` → `h-core/index.ts handleExecutionEnd`（payload 含 `target/partner/position`）
+- 这些计数器是“喜欢的体位/部位”的**统计源/面板数据**；偏好本身存 `favorite` 命名空间（见 character-schema）。
+
 ## 十一、与指令复刻批次的对接
 
 指令复刻（docs/skills/replicating-an-instruction.md §5.7）对照本系统补事件：h:insert（插入）、

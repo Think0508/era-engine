@@ -1,0 +1,23 @@
+# take_shower 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-xx）
+# - erArk data/talk/daily/take_shower.csv 原 ~18 条全部为 high_1（权重前提恒通过）的 AI
+#   生成/重复长文本，不照搬；本文件保留「示例 + 占位符」骨架，等待人工手写替换。
+# - 占位符格式：「淋浴指令通用口上 N」（N 连续编号）。
+# - 口上仅为叙事，不影响 take_shower 的数值结算。
+# - 世界观内容（源石/博士/罗德岛等）不保留；本 CSV 原句无方舟词。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "take_shower"
+description = "淋浴指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 高好感/权重组 ──────────────────────────────────────────
+# erArk 前提：high_1（权重前提，恒通过、权重 1）→ 条件：premise(high_1)。
+# 原 18 条都是 shower 过程长文本；保留 1 条简短示例 + 1 条占位符。
+[[entries]]
+conditions = "premise(high_1)"
+context = "{character.name}打开淋浴头，调整好水温，把身体冲洗得干干净净。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "淋浴指令通用口上 1"

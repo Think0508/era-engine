@@ -26,6 +26,9 @@ dist-ssr
 # Superpowers workflow state
 .superpowers/
 
+# Agent workflow state
+.opencode/
+
 # graphify knowledge graph artifacts
 graphify-out/
 

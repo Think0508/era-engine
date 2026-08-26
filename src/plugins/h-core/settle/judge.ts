@@ -10,6 +10,9 @@
 //   5. 心情修正（愤怒值）
 //   6. 陷落修正（爱情/隶属链）
 //   7. 天赋个性（淫乱/性好奇/底线/把柄等）
+//
+// 判定链文本（2026-08-25）：calcJudge 同时生成 erArk 风格 calculation_text 的 reason 段，
+// 由 judge_check 输出到叙事日志；未实装修正项（醉酒/饮酒/爱情旅馆/助理/激素/H打断等）不生成段。
 
 import { getLevel, getEntityAttr, ATTR } from '../../../core/entity-utils'
 import { entitySystem } from '../../../core/entity-system'
@@ -17,6 +20,10 @@ import { modLoader } from '../../../core/mod-loader'
 import { gameContext } from '../../../core/game-context'
 import { conditionEngine } from '../../../core/condition-engine'
 import { errorReporter } from '../../../core/error-reporter'
+import {
+  isFavoritePosition, isFavoritePart, favoritePartApplies,
+  resolvePartKey, getFavoriteConfig, getPositionDisplayName, getPartDisplayName,
+} from './favorite'
 
 const FAV_THRESHOLDS = [0, 100, 500, 1000, 2500, 5000, 10000, 50000, 100000]
 const FAV_JUDGE_ADD = [0, 10, 25, 50, 75, 100, 150, 225, 300]
@@ -29,6 +36,22 @@ export interface JudgeResult {
   success: boolean
   partial: boolean
   retreated: boolean
+  /** 判定链段（erArk calculation_text 的每一段；用于 UI/日志展示） */
+  reason?: string[]
+  /** 拼接后的完整判定链文本（erArk 风格：段间无分隔、末尾 = 总值） */
+  reasonText?: string
+}
+
+/** 判定族特殊修正条目（带显示 label） */
+export interface JudgeAdjustmentEntry {
+  label: string
+  value: number
+}
+
+/** 判定链段格式化：正数 +名称(数值)，负数 -名称(数值)（2026-08-25 用户定稿） */
+function fmtSegment(label: string, value: number): string {
+  const sign = value >= 0 ? '+' : '-'
+  return `${sign}${label}(${Math.abs(value)})`
 }
 
 // 注释：多目标判定结果合并——最坏者胜出（retreated > partial > success）
@@ -39,8 +62,6 @@ export function mergeJudgeResult(current: JudgeResult, next: JudgeResult): Judge
 }
 
 // 注释：状态等级读取（audit-b C2）——原只读 char.params，但欲情/快乐主写路径直写 base
-// （tech_adjust index.ts:338、orgasm 附加 state-settle.ts:147-154、apply_aphrodisiac index.ts:696）
-// → 判定状态修正静默丢失。改经 getEntityAttr 跨命名空间读取（base/params 均可）。
 function getStatLevel(char: any, name: string): number {
   const v = (getEntityAttr(char, name) ?? 0) as number
   return getLevel(v, LEVEL_10)
@@ -55,23 +76,26 @@ function getTalent(char: any, name: string): number {
   return (char.talents?.[name] ?? 0) as number
 }
 
-// 注释：查 hConfig [judge.adjustments] 表，求 judge_class 对应的特殊修正总和
-// 条件表达式复用现有系统，ctx 中 selected = 被判定角色（target 根路径等价 selected）
-function calcAdjustments(judgeClass: string | undefined, charId: string): number {
-  if (!judgeClass) return 0
+// 注释：查 hConfig [judge.adjustments] 表，求 judge_class 对应的特殊修正（含显示 label）
+function calcAdjustments(judgeClass: string | undefined, charId: string): JudgeAdjustmentEntry[] {
+  if (!judgeClass) return []
   const hc = (modLoader.getMod()?.hConfig as any) ?? {}
-  const entries = hc?.judge?.adjustments?.[judgeClass] as { condition: string; value: number }[] | undefined
-  if (!entries || entries.length === 0) return 0
+  const entries = hc?.judge?.adjustments?.[judgeClass] as { condition: string; value: number; label?: string }[] | undefined
+  if (!entries || entries.length === 0) return []
   const char = entitySystem.get('character', charId) as any
-  if (!char) return 0
+  if (!char) return []
   const baseCtx = gameContext.getContext()
   const judgeCtx = { ...baseCtx, selectedCharacterId: charId }
-  let total = 0
+  const result: JudgeAdjustmentEntry[] = []
   for (const entry of entries) {
     try {
-      if (conditionEngine.evaluate(entry.condition, judgeCtx)) total += entry.value
+      if (conditionEngine.evaluate(entry.condition, judgeCtx)) {
+        result.push({
+          label: entry.label ?? `${judgeClass}修正`,
+          value: entry.value,
+        })
+      }
     } catch (err) {
-      // 注释：修正条件表达式解析失败 → 报告 + 跳过该条（不阻断判定）
       errorReporter.report({
         source: 'h-core/judge',
         severity: 'warning',
@@ -80,19 +104,19 @@ function calcAdjustments(judgeClass: string | undefined, charId: string): number
       })
     }
   }
-  return total
+  return result
 }
 
 // 注释：S 类判定族（erArk InstructJudge.csv need_type == "S"）——天赋个性修正只对 S 类生效
-// 亲吻(D) 等日常类不吃 淫乱/性好奇/性冷漠/性无知 修正（instuct_judege.py 162-178 行）
-// 2026-08-11：'掌握主动权' 加入（h-npc-ai try_pl_active_h 专用——夺回主导权吃天赋个性
-// 修正但不吃 [judge.adjustments] 处女惩罚：处女 -250 语义是"拒绝性交"，套在交还主导权
-// 上会错位——处女逆推反而不可夺回）
 const S_TYPE_JUDGE_CLASSES = new Set([
   '初级骚扰', '严重骚扰', '性交', 'A性交', 'W性交', 'U开发', 'U性交',
   '口交', '道具', '药物', 'SM', '群交', '隐奸', '露出',
   '掌握主动权',
 ])
+
+function isSexJudgeClass(judgeClass?: string): boolean {
+  return !!judgeClass && S_TYPE_JUDGE_CLASSES.has(judgeClass)
+}
 
 export function calcJudge(
   judgeBase: number,
@@ -100,30 +124,42 @@ export function calcJudge(
   trust: number,
   charId?: string,
   judgeClass?: string,
+  actionPart?: string,
 ): JudgeResult {
+  const reason: string[] = []
+  const needLabel = isSexJudgeClass(judgeClass) ? '需要性爱实行值至少为' : '需要基础实行值至少为'
+  reason.push(`${needLabel}${judgeBase}\n`)
+  reason.push('当前值为：')
+
   const favLevel = getLevel(favorability, FAV_THRESHOLDS)
   const favAdd = FAV_JUDGE_ADD[favLevel] ?? 0
   const trustLevel = getLevel(trust, TRUST_THRESHOLDS)
   const trustAdd = TRUST_JUDGE_ADD[trustLevel] ?? 0
 
   let total = judgeBase + favAdd + trustAdd
+  reason.push(`好感修正(${favAdd})`)
+  reason.push(`+信赖修正(${trustAdd})`)
 
   if (charId) {
     const char = entitySystem.get('character', charId) as any
     if (char) {
-      // 注释：2. 状态修正——欲情+快乐 ×5，恭顺+屈服 ×10，羞耻+抑郁 ×-5，苦痛+恐怖+反感 ×-10
+      // 2. 状态修正
       const addS = getStatLevel(char, ATTR.AROUSAL) + getStatLevel(char, ATTR.PLEASURE)
       const addL = getStatLevel(char, ATTR.DEFERENCE) + getStatLevel(char, ATTR.OBEDIENCE)
       const subS = getStatLevel(char, ATTR.SHAME) + getStatLevel(char, ATTR.DEPRESSION)
       const subL = getStatLevel(char, ATTR.PAIN) + getStatLevel(char, ATTR.FEAR) + getStatLevel(char, ATTR.RESENTMENT)
-      total += addS * 5 + addL * 10 - subS * 5 - subL * 10
+      const statusDelta = addS * 5 + addL * 10 - subS * 5 - subL * 10
+      total += statusDelta
+      if (statusDelta !== 0) reason.push(fmtSegment('状态修正', statusDelta))
 
-      // 注释：3. 能力修正——亲密×10 + 欲望×5
+      // 3. 能力修正
       const ablIntimacy = getAbilityLevel(char, ATTR.INTIMACY)
       const ablDesire = getAbilityLevel(char, ATTR.LUST)
-      total += ablIntimacy * 10 + ablDesire * 5
+      const abilityDelta = ablIntimacy * 10 + ablDesire * 5
+      total += abilityDelta
+      if (abilityDelta !== 0) reason.push(fmtSegment('能力修正', abilityDelta))
 
-      // 注释：4. 刻印修正——快乐/屈服×50，苦痛/无觉×25，反发×-100，恐怖-时姦>0时 ×-50
+      // 4. 刻印修正
       const markPleasure = getAbilityLevel(char, ATTR.MARK_PLEASURE)
       const markSubmit = getAbilityLevel(char, ATTR.MARK_OBEDIENCE)
       const markPain = getAbilityLevel(char, ATTR.MARK_PAIN)
@@ -131,65 +167,75 @@ export function calcJudge(
       const markFear = getAbilityLevel(char, ATTR.MARK_FEAR)
       const markTimestop = getAbilityLevel(char, ATTR.MARK_TIMESTOP)
       const markRebel = getAbilityLevel(char, ATTR.MARK_REBEL)
-      total += markPleasure * 50 + markSubmit * 50 + markPain * 10 + markVoid * 25
-      total -= Math.min(markFear - markTimestop, 0) * 50 + markRebel * 100
+      const markDelta = markPleasure * 50 + markSubmit * 50 + markPain * 10 + markVoid * 25
+        - (Math.min(markFear - markTimestop, 0) * 50 + markRebel * 100)
+      total += markDelta
+      if (markDelta !== 0) reason.push(fmtSegment('全刻印总修正', markDelta))
 
-      // 注释：5. 心情修正——erArk: get_angry_level(angry_point) * 20
-      // 愤怒≤5→Lv1(+20), 5<≤30→Lv0, 30<≤50→Lv-1(-20), >50→Lv-3(-60)
+      // 5. 心情修正
       const anger = (char.base?.[ATTR.ANGER] ?? 0) as number
       let angryLevel = 0
       if (anger <= 5) angryLevel = 1
       else if (anger <= 30) angryLevel = 0
       else if (anger <= 50) angryLevel = -1
       else angryLevel = -3
-      total += angryLevel * 20
+      const angryDelta = angryLevel * 20
+      total += angryDelta
+      if (angryDelta !== 0) reason.push(fmtSegment('心情修正', angryDelta))
 
-      // 注释：6. 陷落修正——erArk: 累加所有活跃层（非取最高）
-      // 思慕30+恋慕50+恋人80+爱侣100 + 屈从30+驯服50+宠物80+奴隶100
+      // 6. 陷落修正
       const chainMap: Record<string, number> = {
         '思慕': 30, '恋慕': 50, '恋人': 80, '爱侣': 100,
         '屈从': 30, '驯服': 50, '宠物': 80, '奴隶': 100,
       }
+      let fallDelta = 0
       for (const [talentId, value] of Object.entries(chainMap)) {
-        if (getTalent(char, talentId)) total += value
+        if (getTalent(char, talentId)) fallDelta += value
       }
+      total += fallDelta
+      if (fallDelta !== 0) reason.push(fmtSegment('陷落修正', fallDelta))
 
-      // 注释：7. 天赋个性修正——仅 S 类判定生效（erArk instuct_judege.py 162-178 行）
-      // judgeClass 未声明时（直接 API 调用）保持原行为：应用修正
+      // 7. 全判定通用天赋修正
+      const hateDelta = getTalent(char, '讨厌男性') * 30
+      total -= hateDelta
+      if (hateDelta !== 0) reason.push(fmtSegment('讨厌男性', -hateDelta))
+      const hardlineDelta = getTalent(char, '难以越过的底线') * 100
+      total -= hardlineDelta
+      if (hardlineDelta !== 0) reason.push(fmtSegment('难以越过的底线', -hardlineDelta))
+      const heldDelta = getTalent(char, '持有博士把柄') * 100
+      total += heldDelta
+      if (heldDelta !== 0) reason.push(fmtSegment('持有对方把柄', heldDelta))
+      const weaknessDelta = getTalent(char, '被博士持有把柄') * 100
+      total -= weaknessDelta
+      if (weaknessDelta !== 0) reason.push(fmtSegment('被对方持有把柄', -weaknessDelta))
+      const daughterDelta = getTalent(char, '女儿') * 100
+      total += daughterDelta
+      if (daughterDelta !== 0) reason.push(fmtSegment('女儿', daughterDelta))
+
+      // 7b. S 类天赋个性 / 催眠补正
       const isStype = !judgeClass || S_TYPE_JUDGE_CLASSES.has(judgeClass)
       if (isStype) {
-        if (getTalent(char, '淫乱')) total += 50
-        if (getTalent(char, '性好奇')) total += 30
-        if (getTalent(char, '性冷漠')) total -= 30
-        if (getTalent(char, '性无知')) total += 100
-        // 注释：audit-k 修复——催眠同意门绕过（erArk instuct_judege.py:318-356）：
-        // 目标被催眠（sp_flag.unconscious_h ∈ {4,5,6,7}）时按催眠深度直接加值：
-        // 完全催眠（已催眠·极）→ +9999 直接通过；深 1级=10；浅 1级=20（10-催眠系统.md §5.1）
+        if (getTalent(char, '淫乱')) { total += 50; reason.push(fmtSegment('淫乱', 50)) }
+        if (getTalent(char, '性好奇')) { total += 30; reason.push(fmtSegment('性好奇', 30)) }
+        if (getTalent(char, '性冷漠')) { total -= 30; reason.push(fmtSegment('性冷漠', -30)) }
+        if (getTalent(char, '性无知')) { total += 100; reason.push(fmtSegment('性无知', 100)) }
         const unconsciousH = char?.sp_flag?.unconscious_h ?? 0
         if (unconsciousH >= 4 && unconsciousH <= 7) {
           const deepLv = getTalent(char, '已催眠·深')
           const lightLv = getTalent(char, '已催眠·浅')
           const extremeLv = getTalent(char, '已催眠·极')
-          if (extremeLv > 0) total += 9999
-          else {
-            if (deepLv > 0) total += deepLv * 10
-            if (lightLv > 0) total += lightLv * 20
+          if (extremeLv > 0) {
+            total += 9999
+            reason.push(fmtSegment('完全催眠', 9999))
+          } else {
+            if (deepLv > 0) { total += deepLv * 10; reason.push(fmtSegment('催眠', deepLv * 10)) }
+            if (lightLv > 0) { total += lightLv * 20; reason.push(fmtSegment('催眠', lightLv * 20)) }
           }
         }
       }
-      // 注释：心情/底线类天赋修正对所有判定生效（erArk 136-159 行，S 判断之外）
-      if (getTalent(char, '讨厌男性')) total -= 30
-      if (getTalent(char, '难以越过的底线')) total -= 100
-      if (getTalent(char, '持有博士把柄')) total += 100
-      if (getTalent(char, '被博士持有把柄')) total -= 100
-      if (getTalent(char, '女儿')) total += 100
     }
 
-    // 注释：8. 他人存在修正（erArk instuct_judege.py:247-260）——
-    // 场景人数 > 2 且 目标意识正常（T_NORMAL_5_6 ≈ unconscious_h===0，睡眠/催眠未实装部分随 L1.7 细化）
-    // 群交/隐奸指令 60+60n；S 类判定 40+40n；其余（D 类如亲吻）25+25n；
-    // 露出调整 = int(基数 × (ability_lv_adjust[目标露出] - 1.6))（露出能力高 → 被看着不紧张）
-    // 注：erArk 外层条件 judge_data_type != "V"（V=访客类判定，访客系统已砍）——恒满足
+    // 8. 他人存在修正
     const hc = (modLoader.getMod()?.hConfig as any) ?? {}
     const adjTable = hc.ability_lv_adjust ?? [1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.1, 2.4, 2.8, 3.2, 4.0]
     const loc = gameContext.getContext().location
@@ -206,18 +252,43 @@ export function calcJudge(
         const exposeAdj = adjTable[Math.min(Math.max(0, exposeLv), 10)] ?? 4.0
         const otherPeople = Math.floor(otherBase * (exposeAdj - 1.6))
         total += otherPeople
+        if (otherPeople !== 0) reason.push(fmtSegment('有别人在时的露出修正', otherPeople))
       }
     }
 
-    // 注释：9. 判定族特殊修正（hConfig [judge.adjustments] 表，如处女惩罚）
-    total += calcAdjustments(judgeClass, charId)
+    // 8.5 喜欢的体位/部位（只看客体/被判定方）
+    const favCfg = getFavoriteConfig(modLoader.getMod())
+    const currentPos = char?.h_state?.current_sex_position
+    const POSITION_JUDGE_CLASSES = new Set(['性交', 'A性交', 'W性交'])
+    if (typeof currentPos === 'number' && currentPos !== -1 && judgeClass && POSITION_JUDGE_CLASSES.has(judgeClass) && isFavoritePosition(char, currentPos)) {
+      const bonus = favCfg.position_judge_bonus
+      total += bonus
+      reason.push(fmtSegment(`喜欢${getPositionDisplayName(currentPos, modLoader.getMod())}`, bonus))
+    }
+    if (actionPart) {
+      const partKey = resolvePartKey(actionPart)
+      if (partKey && isFavoritePart(char, partKey) && favoritePartApplies(char, partKey)) {
+        const bonus = favCfg.part_judge_bonus
+        total += bonus
+        reason.push(fmtSegment(`喜欢${getPartDisplayName(partKey)}`, bonus))
+      }
+    }
+
+    // 9. 判定族特殊修正
+    for (const adj of calcAdjustments(judgeClass, charId)) {
+      total += adj.value
+      reason.push(fmtSegment(adj.label, adj.value))
+    }
   }
 
+  reason.push(` = ${total}\n`)
+  const reasonText = reason.join('')
+
   if (total >= judgeBase) {
-    return { success: true, partial: false, retreated: false }
+    return { success: true, partial: false, retreated: false, reason, reasonText }
   }
   if (total >= judgeBase * 0.6) {
-    return { success: false, partial: true, retreated: false }
+    return { success: false, partial: true, retreated: false, reason, reasonText }
   }
-  return { success: false, partial: false, retreated: true }
+  return { success: false, partial: false, retreated: true, reason, reasonText }
 }

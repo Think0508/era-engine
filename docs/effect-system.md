@@ -20,7 +20,6 @@
 | `exit_mode` | pop 模式出栈 | ❌ |
 | `recover_permil` | 千分比恢复（如 rate=100 恢复 10%） | ❌ |
 | `nop` | 无操作占位符 | ❌ |
-| `accumulate_degrees` | 对目标一次累加多个「度」（屈服度/软弱度/欲望度，单调不降只增不减）——h-core 注册，见 `docs/five-degrees-attributes.md` | ❌ |
 
 ## Mod 作者使用
 

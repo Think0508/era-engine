@@ -96,6 +96,16 @@ function tokenize(src: string): Token[] {
       continue
     }
 
+    // 负数字面量（2026-08-25）：'-' 后紧跟数字 = 负数（一元符号），可直接作为比较值
+    // （如 character.{id}.道德感 == -30）。二元算术仍被 ARITH 整体禁止——本分支只放行符号+数字，
+    // 不改变任何既有合法表达式的语义。
+    if (ch === '-' && i + 1 < text.length && text[i + 1] >= '0' && text[i + 1] <= '9') {
+      const m = text.slice(i + 1).match(/^\d+(\.\d+)?/)
+      tokens.push({ type: 'number', value: -parseFloat(m![0]), pos: i })
+      i += 1 + m![0].length
+      continue
+    }
+
     if (ARITH.has(ch)) {
       throwAt('Arithmetic operators are not allowed in conditions; use condition_script for complex logic', i)
     }

@@ -90,10 +90,6 @@ export class CommonTextsEngine {
     return weightedRandom(candidates.map(c => ({ item: c.entry, weight: c.weight })))
   }
 
-  private pickEntry(entries: CommonTextEntry[], targetId: string | null, actorId?: string, unconsciousPass = false): string | null {
-    return this.pickEntryMeta(entries, targetId, actorId, unconsciousPass)?.context ?? null
-  }
-
   // 注释：候选加权（T7 审查修复——erArk get_weight_from_premise_dict 权重语义）
   // 地文条目的 high_N 前提贡献权重，其余满足前提 +1；原实现均匀随机（权重被忽略）
   // premiseCtx：完整 GameContext + sourceId=行为发起者（jj_ 等查"自己"维度）

@@ -567,20 +567,18 @@ describe('结算保真补全（tenths_add / 连续减值 / 无意识门控）', 
       expect(npc().base['阴道']).toBe(45)
     })
 
-    it('喜欢体位 +0.5（正常位喜好 + pos 1，系数 0.0）→ floor(35×1.5)=52', async () => {
-      npc().talents = { 正常位喜好: 1 }
+    it('喜欢的体位（score≥100 + pos 1，系数 0.0）→ floor(35×1.5)=52', async () => {
+      npc().favorite = { positions: { '1': 100 }, parts: {} }
       npc().h_state = { current_sex_position: 1 }
       await runState('阴道')
       expect(npc().base['阴道']).toBe(52)
     })
 
-    it('体位经验 ≥100 推导喜欢体位（experience 141=100 → pos 1）→ 52', async () => {
-      npc().experience = { '141': 100 }
+    it('喜欢的体位：score<100 不判定 → 不加成（pos 1 → 35）', async () => {
+      npc().favorite = { positions: { '1': 99 }, parts: {} }
       npc().h_state = { current_sex_position: 1 }
       await runState('阴道')
-      expect(npc().base['阴道']).toBe(52)
-      // 经验推导不写天赋（懒授予在 execution_end）
-      expect(npc().talents['正常位喜好'] ?? 0).toBe(0)
+      expect(npc().base['阴道']).toBe(35)
     })
 
     it('懒授予：经验 ≥100 且无天赋 → 授予喜好天赋 + 叙事（position.ts）', async () => {

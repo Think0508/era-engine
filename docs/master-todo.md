@@ -36,7 +36,7 @@
 | 场景/口上触发 | `docs/scene-system.md` | src/plugins/dialogue-system/ |
 | 前提 | `docs/premises.md` | src/core/condition-engine.ts |
 | 指令复刻检查清单 | `docs/skills/replicating-an-instruction.md` | scripts/ 复刻流程 |
-| 五度属性（设计裁定） | `docs/five-degrees-attributes.md` | —（设计研究，未实现；见 L3 推迟池） |
+| 人设三属性（坚强度/道德感/贞操观） | `docs/persona-attributes.md` | h-core 默认层已落，纯静态人设数据 |
 
 ### 已完成（2026-08-17）——chat 默认通用口上（原生指令口上的插件默认层）
 
@@ -1919,20 +1919,13 @@ L2.9 已统一 scene 管理、事件拦截、嵌套、持久化、ConversationRe
 - 地图层级文档自动生成
 - 深色模式算法反色优化
 
-### 五度属性（屈服/软弱/欲望 + 好感/信赖复用）
+### 人设三属性（坚强度 / 道德感 / 贞操观）
 
-- 状态：设计裁定已定稿（`docs/five-degrees-attributes.md`）；**机制层定死，数值规律 half-percent，暂不实施**。
-- ✅ **机制通电（2026-08-21 完成，`docs/superpowers/plans/2026-08-21-five-degrees-wiring.md`）**：3 新属性声明（social/默认0/display=false）+ `accumulate_degrees` 统一累加通道 + 条件路径即注册；typecheck 干净 / 全量 1082 测试通过。**数值规律与内容层仍 TODO**。
-- 前置依赖：**角色性格系数系统**（未做）——决定所有换算系数/权重。
-- 机制锚点：social 权威（relations 好感度仅作显示）/ 单调不降 / 独立平行 /
-  屈服刻印不动、度=发射流镜像总账 / 公式走专属 effect（不立项 effect 数值表达式 DSL）。
-- 未做 TODO（按拾起顺序编号，完成即勾）：
-  - [ ] **T1 角色性格系数系统**（主要前置，目前 0 设计）——决定全部换算系数/权重；需先出设计/grill（`docs/five-degrees-attributes.md` §八.1）
-  - [ ] **T2 各度换算系数 / 数值 / 阈值表**——依赖 T1；落地点：`src/plugins/h-core/settle/degree.ts` 的 `DEGREE_CONVERSIONS` 槽 + attributes.toml 可选 `level_thresholds`
-  - [ ] **T3 settle 镜像挂钩（屈服度 = 发射流镜像总账）**——依赖 T2；落地点：`src/plugins/h-core/settle/state-settle.ts` 发射点，或 `game:execution_end` 监听，`accumulateDegree` 为唯一累加入口
-  - [ ] **T4 `combat:end` 软弱度挂钩**——依赖 T2；打赢判定（`combat:end` winner=player）喂 软弱度
-  - [ ] **T5 内容层：威胁 / 绑架 / 哄骗 指令集**——依赖 T2；打赢后的 前提（各度门槛）/ 结算（`accumulate_degrees` 加 屈服/软弱、扣 好感/信赖 等）/ 后果 / 失败路径
-  - [x] T0 机制通电（2026-08-21 完成：3 属性声明 + `accumulate_degrees` 通道 + 条件路径即注册）
+- 状态：**设计裁决 + 落地完成（2026-08-25）**，文档 `docs/persona-attributes.md`。
+- 决策：撤销 2026-08-21 五度方案（屈服/软弱/欲望 + `accumulate_degrees` 通道，原 T0-T5 全数归档）——量级不可统一、镜像=换皮计数器、单调铁律自相矛盾；改为**纯静态角色固有属性**：角色卡写初始值即定人设，不接任何指令来源/挂钩/钳制。
+- 落地：3 属性声明（social / default=50 / display=true / 「人设」分组）+ 条件路径即注册 + 管线测试（`persona-attributes.test.ts`，4 条）；通道/文件/文档全量清场。
+- 边界：`talents.toml`「坚强/脆弱」天赋保留；稀有事件改人设走 `set_attribute`（`modify_attribute` 会把负值钳到 0——文档已警告）。
+- 后续（内容层，另行开工）：威胁/绑架/哄骗指令按三轴引用（`character.{id}.坚强度 >= N` 等）。
 
 ### UI 剩余�?
 

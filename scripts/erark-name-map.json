@@ -71,7 +71,19 @@
     "医术技能": "同上（L2.13：技能系列不迁移）",
     "农业技能": "同上（L2.13：技能系列不迁移）",
     "制造技能": "同上（L2.13：技能系列不迁移）",
-    "绘画技能": "同上（L2.13：技能系列不迁移）"
+    "绘画技能": "同上（L2.13：技能系列不迁移）",
+    "正常位喜好": "旧喜欢的体位天赋——已迁移到 favorite.positions（2026-08-25 废弃 favorite_position 字段/天赋）",
+    "背后位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）",
+    "对面骑乘位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）",
+    "背面骑乘位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）",
+    "对面座位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）",
+    "背面座位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）",
+    "对面立位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）",
+    "背面立位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）",
+    "对面抱位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）",
+    "背面抱位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）",
+    "对面卧位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）",
+    "背面卧位喜好": "同上（旧喜欢的体位天赋 → favorite.positions）"
   },
   "structuralSubstitutions": {
     "阴道处女": "first_times.virgin_V（h-first-time 命名空间，true=已破处；erArk talent[0] 存在=仍处，语义等价取反）",

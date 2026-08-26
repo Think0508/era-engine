@@ -27,7 +27,11 @@ import { calcFavorability, getFavorabilityLevel, getTrustLevel, clearTalentAdjus
 import { calcTrust } from './settle/trust'
 import { calcJudge } from './settle/judge'
 import { settleOneState } from './settle/state-settle'
-import { grantFavoritePositionIfDue } from './settle/position'
+import {
+  addFavoriteScore, INSERT_POSITION_TO_PART_KEY, migrateLegacyFavoritePosition, getFavoriteConfig,
+  recordPartUseAndScore, getPositionDisplayName, getPartDisplayName,
+  describeFavorites as describeFavoriteText,
+} from './settle/favorite'
 import { decayTalkCount } from './settle/talk'
 import { getContinuousAdjust } from '../../core/command-executor'
 import { getLevel, ATTR } from '../../core/entity-utils'
@@ -44,8 +48,6 @@ import { registerOrgasmEffects } from './effects/orgasm-effects'
 import { registerClothEffects } from './effects/cloth-effects'
 import { registerBodyItemEffects } from './effects/body-item-effects'
 import { registerGiftEffects } from './effects/gift-effects'
-import { registerDegreeEffects } from './effects/degree-effects'
-import { accumulateDegree } from './settle/degree'
 
 // 注释：game:plugins_loaded 监听器只注册一次（onEnable 重复执行时不重复监听）
 let hCorePluginsLoadedListener = false
@@ -56,6 +58,8 @@ let hCoreTalkDecayListener = false
 let hCoreExecutionEndListener = false
 // 注释：expiry 到期清理监听器只注册一次（同 talk_decay 模式）
 let hCoreExpiryListener = false
+// 注释：favorite 旧数据迁移监听器只注册一次（game:load 读档后补迁移）
+let hCoreFavoriteMigrationListener = false
 
 // 注释：处理二段结算结果——输出绝顶/多重绝顶日志与事件（execution_end 与 h_orgasm_check 共用）
 // 2026-08-08 对齐 erArk orgasm_settle_flag 去重（second_behavior.py:168-195）：
@@ -113,8 +117,6 @@ export function onLoad(_ctx: PluginContext): void {
 
   registerBodyItemEffects()
   registerGiftEffects()
-  // 注释：五度属性 effect（2026-08-21，机制通电小步）——accumulate_degrees
-  registerDegreeEffects()
 }
 
 // 注释：execution_end 二段结算处理（对齐 erArk check_second_effect）
@@ -129,6 +131,29 @@ async function handleExecutionEnd(): Promise<void> {
     if (c.h_state?.is_h) inH.push(c.id)
   }
   if (inH.length === 0) return
+  // 注释：0. 喜欢的体位/部位记录（2026-08-25）——每次 H 行动按双方 h_state 发事件 + 加分
+  // 只处理一次每对（id < partnerId 防重复）；双方都记录自己这一侧的分数
+  for (const id of inH) {
+    const ch = entitySystem.get('character', id) as any
+    if (!ch?.h_state) continue
+    const partnerId = ch.h_state.target_character_id
+    if (!partnerId || !inH.includes(partnerId) || id >= partnerId) continue
+    const partner = entitySystem.get('character', partnerId) as any
+    const pos = ch.h_state.current_sex_position
+    if (typeof pos === 'number' && pos !== -1) {
+      await eventBus.emit('h:position_use', { target: id, partner: partnerId, position: pos })
+      await eventBus.emit('h:position_use', { target: partnerId, partner: id, position: pos })
+      addFavoriteScore(ch, 'positions', String(pos))
+      addFavoriteScore(partner, 'positions', String(pos))
+    }
+    const partCode = ch.h_state.insert_position
+    if (typeof partCode === 'number' && INSERT_POSITION_TO_PART_KEY[partCode]) {
+      const partKey = INSERT_POSITION_TO_PART_KEY[partCode]
+      const partNum = Number(partKey)
+      // 统一走 recordPartUseAndScore：双方分数 +1 + h:part_use 事件（按性别取向记账）
+      await recordPartUseAndScore(id, partnerId, partKey, partNum)
+    }
+  }
   // 注释：1. 对每个 H 中角色应用 body_item_tick（道具持续效果）
   await apiSystem.call('effect-system', 'execute', [{ type: 'body_item_tick', params: { target: 'self' } }], {
     sourceId: inH[0],
@@ -158,13 +183,7 @@ async function handleExecutionEnd(): Promise<void> {
       }
     }
   }
-  // 注释：4. 喜欢体位懒授予（erArk settle_favorite_sex_position 在公式内懒授予 → 引擎统一
-  // 在此点：体位经验 ≥100 且无喜好天赋 → 授予 + 叙事，2026-08-08 grilling 决策）
-  for (const id of inH) {
-    const ch = entitySystem.get('character', id) as any
-    if (ch) grantFavoritePositionIfDue(ch, modLoader.getMod())
   }
-}
 
 export function onEnable(ctx: PluginContext): void {
   registerNoSaveMode('h_scene')
@@ -176,6 +195,11 @@ export function onEnable(ctx: PluginContext): void {
   registerClothingPremises(conditionEngine)
   registerBodyItemPremises(conditionEngine)
   registerInstructPremises(conditionEngine)
+
+  // 注释：旧 favorite_position 数据迁移（2026-08-25 定稿：废弃旧单一字段/天赋，全量迁到 favorite.positions）
+  for (const ch of entitySystem.getAll('character')) {
+    migrateLegacyFavoritePosition(ch as any, modLoader.getMod())
+  }
 
   // 注释：每次 H 行动后自动二段结算（对齐 erArk check_second_effect）
   // 流程：body_item_tick（道具 tick）→ orgasmJudge（高潮判定 + 射精欲积累）→ 玩家射精时调 eja_climax
@@ -207,19 +231,42 @@ export function onEnable(ctx: PluginContext): void {
     })
   }
 
+  // 注释：读档后补跑旧 favorite_position 迁移（幂等；只监听一次）
+  if (!hCoreFavoriteMigrationListener) {
+    hCoreFavoriteMigrationListener = true
+    ctx.events.on('game:load', () => {
+      for (const ch of entitySystem.getAll('character')) {
+        migrateLegacyFavoritePosition(ch as any, modLoader.getMod())
+      }
+    })
+  }
+
   ctx.api.register('h-core', {
     startHScene, endHScene, getLevel, calcFavorability, calcTrust, calcJudge,
     getFavorabilityLevel, getTrustLevel,
-    // 注释：五度属性统一累加通道（桥契约，docs/five-degrees-attributes.md §六）——
-    // 跨插件/未来挂钩（settle 镜像/combat:end/性格系数）经此唯一入口累加"度"（单调不降）
-    accumulateDegree: (charId: string, degree: string, amount: number): void => {
-      const ch = entitySystem.get('character', charId) as any
-      if (ch) accumulateDegree(ch, degree, amount)
-    },
     // 注释：陷落等级查询（0=未陷落；爱情系 1-4；隶属系 -1~-4——erArk get_character_fall_level，
     // attr_calculation.py:891-921）。h-npc-ai 无意识恢复的继续H判定（handle_npc_instruct_condition
     // 三分支）经此 API 取真实陷落等级（跨插件禁止直接 import）
     getFallLevel,
+    getFavoriteList: (charId: string, kind: 'positions' | 'parts'): { id: string; name: string; score: number }[] => {
+      const ch = entitySystem.get('character', charId) as any
+      if (!ch) return []
+      const cfg = getFavoriteConfig()
+      const map = kind === 'positions' ? ch.favorite?.positions ?? {} : ch.favorite?.parts ?? {}
+      const threshold = kind === 'positions' ? cfg.position_threshold : cfg.part_threshold
+      return Object.entries(map as Record<string, number>)
+        .filter(([, score]) => score >= threshold)
+        .sort((a, b) => b[1] - a[1])
+        .map(([id, score]) => ({
+          id,
+          name: kind === 'positions' ? getPositionDisplayName(Number(id)) : getPartDisplayName(id),
+          score,
+        }))
+    },
+    describeFavorites: (charId: string): string => {
+      const ch = entitySystem.get('character', charId) as any
+      return describeFavoriteText(ch)
+    },
     // 注释：通用状态结算（对外暴露——其他插件（如 h-hidden 隐奸/露出持续快感）经 API 调用，
     // 遵守"插件间禁止直接 import"铁律；参数同 settleOneState）
     // settleState(charId, state, baseValue, timeCost, opts?: {

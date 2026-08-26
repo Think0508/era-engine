@@ -108,7 +108,7 @@ multiplier = 5
 # TODO 未实装修正项（不写死，对应系统实装后补）：
 #   - 月经周期：性交/W性交 安全期-10 / 普通-50 / 危险-200 / 排卵-300（需 Reproduction_period 属性）
 #     （豁免：妊娠合意 / 戴套 / 避孕中出合意+事前药 / 性无知）
-#   - 体位喜欢 +30：性交/A性交/W性交 当前体位=喜好体位（需体位喜好天赋）
+#   - 体位喜欢 +30：性交/A性交/W性交 当前体位=喜好体位（已实现：见 [favorite]）
 #   - 爱情旅馆 +25/50/100（h_in_love_hotel + 房型等级）
 #   - 他人存在修正：25+25×n（S类 40+40×n，群交/隐奸 60+60×n）× 露出能力调整
 #   - 助理助攻 +50（assistant_services[8]）
@@ -117,14 +117,27 @@ multiplier = 5
 #   - 激素系修正 +25/50/100（talent 304/305/306，施加方）
 [judge.adjustments]
 "性交" = [
-  { condition = "target.first_times.virgin_V != true && target.talents.性无知 != 1", value = -250 },
+  { condition = "target.first_times.virgin_V != true && target.talents.性无知 != 1", value = -250, label = "处女" },
 ]
 "A性交" = [
-  { condition = "target.first_times.virgin_A != true && target.talents.性无知 != 1", value = -350 },
+  { condition = "target.first_times.virgin_A != true && target.talents.性无知 != 1", value = -350, label = "Ａ处女" },
 ]
 "W性交" = [
-  { condition = "target.first_times.virgin_W != true && target.talents.性无知 != 1", value = -400 },
+  { condition = "target.first_times.virgin_W != true && target.talents.性无知 != 1", value = -400, label = "Ｗ处女" },
 ]
 "亲吻" = [
-  { condition = "target.first_times.virgin_KISS != true && target.talents.性无知 != 1", value = -125 },
+  { condition = "target.first_times.virgin_KISS != true && target.talents.性无知 != 1", value = -125, label = "初吻" },
 ]
+# 喜欢的体位/部位偏好配置（2026-08-25 grill 定稿）
+# - 阈值：次数/分数达到后视为“喜欢”，可多个；
+# - 快感加成只作用于“有该喜好的角色”自己的快感结算；
+# - 判定加成只作用于“客体/被判定方”；
+# - body_side：喜欢的部位默认锚定女体；mod 可全局覆盖（own/partner/female/male）。
+[favorite]
+position_threshold = 100
+part_threshold = 1000
+position_feel_bonus = 0.5
+position_judge_bonus = 30
+part_feel_bonus = 0.2
+part_judge_bonus = 10
+body_side = "female"

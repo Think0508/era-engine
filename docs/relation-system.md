@@ -64,7 +64,7 @@ relations = {
 ### 条件路径（指令 condition / 口上 condition）
 
 ```toml
-# 单类型（数值 -1/0/1；负面用 < 0——条件引擎不支持负数字面量）
+# 单类型（数值 -1/0/1；负面可直接 == -1——条件引擎支持负数字面量，二元算术仍禁）
 condition = "character.胡斐.relations.程灵素.单恋 == 1"
 condition = "character.胡斐.relations.程灵素.父母子女（为大） < 0"
 

@@ -42,7 +42,7 @@ function onTypewriterDone(entry: LogEntry) {
     waitingForClick.value = true
   } else if ((entry._display?.pause ?? 0) > 0) {
     // 逐字播完 + auto → 计时暂停（原设计：显示完后自动停顿 pause 毫秒再继续）
-    startPauseWait(entry._display!.pause)
+    startPauseWait(entry._display?.pause ?? 0)
   } else {
     advance()
   }
@@ -73,8 +73,9 @@ function advance() {
     }
     // pause（2026-08-23 纠正回原设计）：本条显示完后自动暂停 N 毫秒再继续
     // （trigger=auto 时生效）；等待期间点击可跳过（era autopage 惯例）
-    if ((entry._display?.pause ?? 0) > 0) {
-      startPauseWait(entry._display!.pause)
+    const pause = entry._display?.pause ?? 0
+    if (pause > 0) {
+      startPauseWait(pause)
       return
     }
     i++

@@ -61,6 +61,7 @@ export function resetCharacterEntity(char: any, baseKeys: Record<string, number>
   char.experience = {}
   char.sp_flag = {}
   char.marks = {}
+  char.favorite = { positions: {}, parts: {} }
   char.dead = undefined
   char.hypnosis = undefined
   char.body_items = undefined

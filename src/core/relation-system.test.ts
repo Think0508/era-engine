@@ -102,7 +102,8 @@ name = "乙"
     const ctx = gameContext.getContext()
     // 单类型查询（类型名优先，不被聚合吞掉）
     expect(conditionEngine.evaluate('character.a.relations.b.any == 1', ctx)).toBe(true)
-    // 负面档位：条件引擎不支持负数字面量（== -1 触发算术检查）→ 用 < 0
+    // 负面档位：可直接 == -1（条件引擎支持负数字面量，2026-08-25 起；< 0 亦可用）
+    expect(conditionEngine.evaluate('character.a.relations.b.any_positive == -1', ctx)).toBe(true)
     expect(conditionEngine.evaluate('character.a.relations.b.any_positive < 0', ctx)).toBe(true)
     // 带括号聚合仍工作
     expect(conditionEngine.evaluate('character.a.relations.b.any(group:g1) == true', ctx)).toBe(true)

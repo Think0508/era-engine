@@ -14,6 +14,7 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { ATTR } from '../../core/entity-utils'
 import { eventBus } from '../../core/event-bus'
+import { apiSystem } from '../../core/api'
 import { narrativeLog } from '../../core/narrative-log'
 import { gameContext, gameTimeToTotalMinutes, isPlayerChar } from '../../core/game-context'
 import { modLoader } from '../../core/mod-loader'
@@ -114,7 +115,8 @@ export function onLoad(_ctx: PluginContext): void {
         endureRate = Math.max(0, endureRate)
       }
       // 忍住的结算（erArk：endure_not_shoot_count+1，eja_point=0，本次不射精）
-      if (Math.random() * 100 <= endureRate) {
+      // params.force=true（stop_endure）→ 跳过忍耐判定，直接射出
+      if (!params.force && Math.random() * 100 <= endureRate) {
         if (char.h_state) {
           char.h_state.endure_not_shoot_count = (char.h_state.endure_not_shoot_count ?? 0) + 1
         }
@@ -183,6 +185,17 @@ export function onLoad(_ctx: PluginContext): void {
         char.action_info.day_first_shoot_semen = false
         char.action_info.last_eaj_add_time = gameTimeToTotalMinutes(gameContext.getContext().time)
       }
+    }
+    return true
+  })
+// stop_endurance_shoot——停止忍耐，强制射精（erArk 1722：orgasm_judge skip_undure=true）
+  effectTypeRegistry.register('stop_endurance_shoot', async (_params: any, ctx: any) => {
+    const targetIds = ctx._targetIds as string[]
+    const sourceId = ctx.sourceId
+    for (const id of targetIds.length ? targetIds : (sourceId ? [sourceId] : [])) {
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'eja_climax', params: { force: true }, target: 'self' },
+      ], { sourceId: id, _targetIds: [id] })
     }
     return true
   })

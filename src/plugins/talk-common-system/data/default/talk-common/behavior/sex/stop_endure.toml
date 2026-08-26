@@ -1,0 +1,9 @@
+# stop_endure 指令默认通用口上（插件默认层，Layer 1）
+variable = "stop_endure"
+description = "停止忍耐指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+# ⚠️ 骨架：不搬运 erArk 原文；1 示例 + 1 占位。
+[[entries]]
+context = "{player.name}不再忍耐，让射精痛快地释放出来。"
+
+[[entries]]
+context = "停止忍耐指令通用口上 1"

@@ -261,6 +261,15 @@ export function registerHPremises(registry: any): void {
   })
   // TODO(daughter-system)：女儿关系未实装，TARGET_IS_PLAYER_DAUGHTER 恒 false → NOT 恒 true
   registry.registerPremise('TARGET_NOT_PLAYER_DAUGHTER', (_ctx: any) => true)
+// B4 SEX/base 剩余前提
+  registry.registerPremise('DR_HAVE_SEX_POSITION_OR_PENIS_IN_T_ANYPART', (ctx: any) => {
+    const target = getTargetChar(ctx)
+    return !!target?.h_state && (target.h_state.current_sex_position !== undefined || (target.h_state.insert_position ?? -1) >= 0)
+  })
+  registry.registerPremise('PL_ENDURE_ORGASM_COUNT_GE_1', (ctx: any) => {
+    const self = getSelfChar(ctx)
+    return (self?.h_state?.endure_not_shoot_count ?? 0) >= 1
+  })
 // TARGET_HP_OR_MP_LOW——目标体力或气力有一项低于 30%（erArk handle_premise_base_value.py:331-348）
   registry.registerPremise('TARGET_HP_OR_MP_LOW', (ctx: any) => {
     const target = getTargetChar(ctx)

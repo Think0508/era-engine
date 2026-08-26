@@ -9,6 +9,7 @@
 
 import { effectTypeRegistry } from '../../../core/effect-type-registry'
 import { entitySystem } from '../../../core/entity-system'
+import { gameContext } from '../../../core/game-context'
 import { modLoader } from '../../../core/mod-loader'
 import { apiSystem } from '../../../core/api'
 import { getContinuousAdjust } from '../../../core/command-executor'
@@ -32,6 +33,33 @@ export function registerOrgasmEffects(): void {
   effectTypeRegistry.register('h_end_h', async (_p: any, execCtx: any) => {
     const allyId = execCtx.sourceId
     if (allyId) await endHScene(allyId)
+    return true
+  })
+
+  // wait_5_min_in_h——H 内等待 5 分钟；若当前地点除自己外没有其他在 H 角色 → 转为结束 H
+  effectTypeRegistry.register('wait_5_min_in_h', async (_p: any, execCtx: any) => {
+    const selfId = execCtx.sourceId
+    const locId = gameContext.getContext().location?.id
+    const others = entitySystem.getAll('character').filter((c: any) =>
+      c.id !== selfId && c.current_location === locId && !!c.h_state?.is_h
+    )
+    if (others.length === 0 && selfId) {
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'h_end_h', target: 'self' },
+      ], { sourceId: selfId, _targetIds: [selfId] })
+    }
+    return true
+  })
+
+  // pull_out_penis——拔出阴茎：清除自己的插入部位与场合位置（erArk 800/850/866 简化）
+  effectTypeRegistry.register('pull_out_penis', (_p: any, execCtx: any) => {
+    const ids = new Set<string>([...(execCtx._targetIds as string[] ?? []), execCtx.sourceId].filter(Boolean))
+    for (const id of ids) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch?.h_state) continue
+      ch.h_state.insert_position = -1
+      if (ch.h_state.current_sex_position !== undefined) ch.h_state.current_sex_position = undefined
+    }
     return true
   })
 

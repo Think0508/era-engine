@@ -77,3 +77,74 @@ effects = [
   { type = "orgasm_edge_off", target = "selected" },
   { type = "trigger_dialogue", target = "selected", params = { scene = "orgasm_edge_off" } },
 ]
+# ═══ wait_5_min_in_h（6001）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + handle_instruct.py:1450-1464（无其他在 H 角色 → 转结束 H；否则等待 5 分钟）
+[[instructions]]
+id = "wait_5_min_in_h"
+label = "等待五分钟"
+erark_id = "6001"
+erark_behavior = "WAIT"
+category = "sex"
+sub_category = "base"
+time_cost = 5
+priority = 50
+premises = ["IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "wait_5_min_in_h", target = "self" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "wait_5_min_in_h" } },
+]
+
+# ═══ undress（6009）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Effect.csv（9999，原为脱衣面板；本引擎简化为 cloth_remove_all）
+[[instructions]]
+id = "undress"
+label = "脱衣服"
+erark_id = "6009"
+erark_behavior = "UNDRESS"
+category = "sex"
+sub_category = "base"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core", "system:clothing"]
+effects = [
+  { type = "cloth_remove_all", target = "selected" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "undress" } },
+]
+
+# ═══ pull_out_penis（6019）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Effect.csv（800-850-866，本引擎简化为清除插入部位）
+[[instructions]]
+id = "pull_out_penis"
+label = "拔出阴茎"
+erark_id = "6019"
+erark_behavior = "PULL_OUT_PENIS"
+category = "sex"
+sub_category = "base"
+time_cost = 1
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "DR_HAVE_SEX_POSITION_OR_PENIS_IN_T_ANYPART"]
+tags = ["system:h-core"]
+effects = [
+  { type = "pull_out_penis", target = "selected" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "pull_out_penis" } },
+]
+
+# ═══ stop_endure（6020）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Effect.csv（1722，强制射精跳过忍耐）
+[[instructions]]
+id = "stop_endure"
+label = "停止忍耐"
+erark_id = "6020"
+erark_behavior = "STOP_ENDURE"
+category = "sex"
+sub_category = "base"
+time_cost = 1
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "PL_ENDURE_ORGASM_COUNT_GE_1"]
+tags = ["system:h-core", "system:h-ejaculation"]
+effects = [
+  { type = "stop_endurance_shoot", target = "self" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "stop_endure" } },
+]

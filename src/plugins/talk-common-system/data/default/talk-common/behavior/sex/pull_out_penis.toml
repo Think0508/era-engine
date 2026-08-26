@@ -1,0 +1,9 @@
+# pull_out_penis 指令默认通用口上（插件默认层，Layer 1）
+variable = "pull_out_penis"
+description = "拔出阴茎指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+# ⚠️ 骨架：不搬运 erArk 原文；1 示例 + 1 占位。
+[[entries]]
+context = "{player.name}从{character.name}体内缓缓退了出来。"
+
+[[entries]]
+context = "拔出阴茎指令通用口上 1"

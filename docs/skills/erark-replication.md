@@ -170,6 +170,7 @@ erArk 效果ID: 21   12   CVE_A2  CVE_A1  53  55  501
 | B1：chat（1004）/ stroke（1005）/ rest（1012）/ take_shower（1015）/ sleep（1014）/ ask_target_sleep（1022）/ follow（1019）/ end_follow（1020）/ listen_complaint（1024）/ apologize（1023）/ ask_target_rest（1021） | ✅ | chat：h-core daily.toml + 6 测试；stroke：native-instructions + 口上骨架 + 6 测试；rest：native-instructions（迁入 test-mod）+ 口上骨架 + 5 测试；take_shower：native-instructions + dirty_reset_in_shower/record_shower_time + 口上骨架 + 5 测试；sleep：sleep-system + behavior/daily/sleep.toml + 指令级口上测试；ask_target_sleep：sleep-system + 全指令测试；follow/end_follow：native-instructions + behavior/daily/{follow,end_follow}.toml + instruction-follow.test.ts；listen_complaint：native-instructions + anger-system 前置 + listen_complaint_settle + instruction-listen-complaint.test.ts；apologize：native-instructions + apologize_settle + 双口上 + instruction-apologize.test.ts；ask_target_rest：native-instructions + TARGET_HP_OR_MP_LOW + ask_rest + instruction-ask-target-rest.test.ts |
 | B1 其余 13 条 | 📝 TODO | 全部为延后（系统未实装/用户暂缓），无保留待复刻 |
 | B2 ARTS：时停 5 条 | ✅ | h-time-stop 已实装 + 口上骨架 + 指令级补测（32 passed） |
-| B2 催眠 12 条 / B3 其余 26 条 / B4-B6（sex） | 📝 TODO | 催眠延后待用户 grill；B3 其余依赖位置/睡眠/玩具/H/隐奸/群交；sex 延后至 H UI 就绪 |
+| B2 催眠 12 条 / B3 其余 26 条 / B4-B6（sex 其余） | 📝 TODO | 催眠延后待用户 grill；B3 其余依赖位置/睡眠/玩具/H/隐奸/群交；sex 除 base 13 外其余延后至 H UI 就绪 |
+| B4 SEX/base 保留 13 条 | ✅ | native-instructions sex.toml + behavior/sex 口上 + instruction-sex-base-a/b.test.ts；群交 4 条延后 |
 | B3 基础触摸 11 条 | ✅ | native-instructions obscenity.toml + behavior/obscenity 口上 + instruction-touch-trio/rest.test.ts |
 | 尿道/特殊特征/恋爱依赖项 | ⛔ 不做 | 尿道 19 条 / 特殊特征 8 条砍掉，告白延后 |

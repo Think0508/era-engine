@@ -77,21 +77,21 @@
 
 | 批次 | 分类 | 所属系统 | cid | id | 名称 | 筛选结论 | 延后/剔除原因 |
 |---|---|---|---|---|---|---|---|
-| B3 | obscenity | h-core | 5002 | touch_head | 摸头 | 已完成（待确认） | — |
-| B3 | obscenity | h-core | 5003 | touch_breast | 摸胸 | 已完成（待确认） | — |
-| B3 | obscenity | h-core | 5004 | touch_buttocks | 摸屁股 | 已完成（待确认） | — |
-| B3 | obscenity | h-core | 5012 | hand_in_hand | 牵手 | 已完成（待确认） | — |
-| B3 | obscenity | h-core | 5013 | embrace | 拥抱 | 已完成（待确认） | — |
-| B3 | obscenity | h-core | 5014 | kiss | 亲吻 | 已完成（待确认） | — |
-| B3 | obscenity | h-core | 5015 | lap_pillow | 膝枕 | 已完成（待确认） | — |
-| B3 | obscenity | h-core | 5016 | raise_skirt | 掀起裙子 | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5002 | touch_head | 摸头 | 已完成 | — |
+| B3 | obscenity | h-core | 5003 | touch_breast | 摸胸 | 已完成 | — |
+| B3 | obscenity | h-core | 5004 | touch_buttocks | 摸屁股 | 已完成 | — |
+| B3 | obscenity | h-core | 5012 | hand_in_hand | 牵手 | 已完成 | — |
+| B3 | obscenity | h-core | 5013 | embrace | 拥抱 | 已完成 | — |
+| B3 | obscenity | h-core | 5014 | kiss | 亲吻 | 已完成 | — |
+| B3 | obscenity | h-core | 5015 | lap_pillow | 膝枕 | 已完成 | — |
+| B3 | obscenity | h-core | 5016 | raise_skirt | 掀起裙子 | 已完成 | — |
 | B3 | obscenity | h-core | 5017 | ask_for_pan | 索要内裤 | 延后（用户） | 收藏系统可能加回，先延后 |
 | B3 | obscenity | h-core | 5019 | invite_to_bath | 一起洗澡 | 延后（用户：暂缓，后续再看） | 位置 has_bathroom |
 | B3 | obscenity | h-core | 5020 | steal_pan | 偷走内裤 | 延后（用户） | 同索要内裤，收藏系统相关 |
 | B3 | obscenity | h-core | 5022 | steal_scene_all_pan | 偷走所有人内裤 | 延后（用户：暂缓，后续再看） | 睡眠/无意识前提 |
-| B3 | obscenity | h-core | 5024 | touch_clitoris | 阴蒂爱抚 | 已完成（待确认） | — |
-| B3 | obscenity | h-core | 5025 | touch_vagina | 手指插入（V） | 已完成（待确认） | — |
-| B3 | obscenity | h-core | 5026 | touch_anus | 手指插入（A） | 已完成（待确认） | — |
+| B3 | obscenity | h-core | 5024 | touch_clitoris | 阴蒂爱抚 | 已完成 | — |
+| B3 | obscenity | h-core | 5025 | touch_vagina | 手指插入（V） | 已完成 | — |
+| B3 | obscenity | h-core | 5026 | touch_anus | 手指插入（A） | 已完成 | — |
 | B3 | obscenity | h-core | 5027 | milk | 挤奶 | 剔除（用户） | 用户明确不做 |
 | B3 | obscenity | h-toy/remote | 5028 | remote_toy_on | 遥控启动玩具 | 延后（用户：暂缓，后续再看） | 玩具系统 |
 | B3 | obscenity | h-toy/remote | 5029 | remote_toy_off | 遥控关闭玩具 | 延后（用户：暂缓，后续再看） | 玩具系统 |
@@ -117,27 +117,27 @@
 
 ## B4-B7 SEX/base（17）
 
-> 2026-08-25：用户筛选。统计：原 17 → 保留 13（6001/6002/6005/6006/6007/6009/6010/6011/6012/6013/6014/6019/6020）→ 延后 4（6008/6015/6016/6017，群交未接好）→ 剔除 0。
+> 2026-08-25：用户筛选。统计：原 17 → 已完成 13（6001/6002/6005/6006/6007/6009/6010/6011/6012/6013/6014/6019/6020）→ 延后 4（6008/6015/6016/6017，群交未接好）→ 剔除 0。
 
 | 批次 | 分类 | 所属系统 | cid | id | 名称 | 筛选结论 | 延后/剔除原因 |
 |---|---|---|---|---|---|---|---|
-| B4 | sex/base | h-core | 6001 | wait_5_min_in_h | 等待五分钟 | 保留 | H 内等待 |
-| B4 | sex/base | h-core | 6002 | h_end | 结束H | 保留 | 核心 |
-| B4 | sex/base | sleep-system | 6005 | unconscious_h_end | 结束无意识奸 | 保留 | 睡眠/无意识系统 |
-| B4 | sex/base | h-hidden | 6006 | hidden_sex_end | 结束隐奸 | 保留 | h-hidden 系统在，补结束 TOML |
-| B4 | sex/base | h-exposure | 6007 | exhibitionism_sex_end | 结束露出 | 保留 | 已实装 |
+| B4 | sex/base | h-core | 6001 | wait_5_min_in_h | 等待五分钟 | 已完成 | H 内等待 |
+| B4 | sex/base | h-core | 6002 | h_end | 结束H | 已完成 | 核心 |
+| B4 | sex/base | sleep-system | 6005 | unconscious_h_end | 结束无意识奸 | 已完成 | 睡眠/无意识系统 |
+| B4 | sex/base | h-hidden | 6006 | hidden_sex_end | 结束隐奸 | 已完成 | h-hidden 系统在，补结束 TOML |
+| B4 | sex/base | h-exposure | 6007 | exhibitionism_sex_end | 结束露出 | 已完成 | 已实装 |
 | B4 | sex/base | h-group-sex | 6008 | group_sex_end | 结束群交 | 延后（用户） | group_sex_end TODO |
-| B4 | sex/base | h-core/cloth | 6009 | undress | 脱衣服 | 保留 | 服装系统 |
-| B4 | sex/base | h-npc-ai | 6010 | change_top_and_bottom | 交给对方 | 保留 | NPC 主导已接好 |
-| B4 | sex/base | h-npc-ai | 6011 | keep_enjoy | 继续享受 | 保留 | NPC 主导已接好 |
-| B4 | sex/base | h-npc-ai | 6012 | try_pl_active_h | 尝试掌握主动权 | 保留 | NPC 主导已接好 |
-| B4 | sex/base | h-core | 6013 | orgasm_edge_on | 绝顶寸止 | 保留 | 效果已实现 |
-| B4 | sex/base | h-core | 6014 | orgasm_edge_off | 绝顶解放 | 保留 | 效果已实现 |
+| B4 | sex/base | h-core/cloth | 6009 | undress | 脱衣服 | 已完成 | 服装系统 |
+| B4 | sex/base | h-npc-ai | 6010 | change_top_and_bottom | 交给对方 | 已完成 | NPC 主导已接好 |
+| B4 | sex/base | h-npc-ai | 6011 | keep_enjoy | 继续享受 | 已完成 | NPC 主导已接好 |
+| B4 | sex/base | h-npc-ai | 6012 | try_pl_active_h | 尝试掌握主动权 | 已完成 | NPC 主导已接好 |
+| B4 | sex/base | h-core | 6013 | orgasm_edge_on | 绝顶寸止 | 已完成 | 效果已实现 |
+| B4 | sex/base | h-core | 6014 | orgasm_edge_off | 绝顶解放 | 已完成 | 效果已实现 |
 | B4 | sex/base | h-group-sex | 6015 | run_group_sex_temple | 进行一次当前群交 | 延后（用户） | 群交未接好 |
 | B4 | sex/base | h-group-sex | 6016 | run_all_group_sex_temple | 进行一次轮流群交 | 延后（用户） | 群交未接好 |
 | B4 | sex/base | h-group-sex | 6017 | edit_group_sex_temple | 编辑群交行动 | 延后（用户） | 群交未接好 |
-| B4 | sex/base | h-core | 6019 | pull_out_penis | 拔出阴茎 | 保留 | 核心 |
-| B4 | sex/base | h-core | 6020 | stop_endure | 停止忍耐 | 保留 | 已实现 |
+| B4 | sex/base | h-core | 6019 | pull_out_penis | 拔出阴茎 | 已完成 | 核心 |
+| B4 | sex/base | h-core | 6020 | stop_endure | 停止忍耐 | 已完成 | 已实现 |
 
 ## 后续批次（占位，筛选后填充）
 

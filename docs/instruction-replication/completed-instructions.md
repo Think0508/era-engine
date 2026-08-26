@@ -11,7 +11,7 @@
 | B1 | 11 | 0 | 13（延后 13） |
 | B2 | 5 | 0 | 12（催眠，延后待 grill） |
 | B3 | 11 | 1 | 25 |
-| B4-B7 | 0 | 0 | 142 |
+| B4-B7 | 13 | 0 | 129 |
 | 核对项（SYSTEM） | 0 | 0 | 8 |
 
 > 说明：B1 候选池原 24 条，chat / stroke / rest / take_shower / sleep / ask_target_sleep / follow / end_follow / listen_complaint / apologize / ask_target_rest 已确认；剩余 13 条全部为延后。
@@ -49,6 +49,19 @@
 | B3 | obscenity/touch | 5024 | touch_clitoris | 阴蒂爱抚 | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/touch_clitoris.toml | instruction-touch-rest.test.ts | tech_adjust 阴蒂 | ✅ 已确认 |
 | B3 | obscenity/touch | 5025 | touch_vagina | 手指插入（V） | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/touch_vagina.toml | instruction-touch-rest.test.ts | tech_adjust 阴道 | ✅ 已确认 |
 | B3 | obscenity/touch | 5026 | touch_anus | 手指插入（A） | 数据：native-instructions；口上：talk-common-system | 有：behavior/obscenity/touch_anus.toml | instruction-touch-rest.test.ts | tech_adjust 后穴 | ✅ 已确认 |
+| B4 | sex/base | 6001 | wait_5_min_in_h | 等待五分钟 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/wait_5_min_in_h.toml | instruction-sex-base-b.test.ts | 无其他 H 角色自动结束 H | ✅ 已确认 |
+| B4 | sex/base | 6002 | h_end | 结束H | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/h_end.toml | instruction-sex-base-a.test.ts | h_end_h | ✅ 已确认 |
+| B4 | sex/base | 6005 | unconscious_h_end | 结束无意识奸 | 数据：sleep-system；口上：talk-common-system | 有：behavior/sex/unconscious_h_end?（sleep-system 自带） | sleep-system.test.ts | 存量已实装 | ✅ 已确认 |
+| B4 | sex/base | 6006 | hidden_sex_end | 结束隐奸 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/hidden_sex_end.toml | instruction-sex-base-a.test.ts | hidden_sex_clear + h_end_h | ✅ 已确认 |
+| B4 | sex/base | 6007 | exhibitionism_sex_end | 结束露出 | 数据：h-exposure；口上：talk-common-system | 有：behavior/sex/exhibitionism_sex_end.toml（已有） | exposure-system.test.ts | 存量已实装 | ✅ 已确认 |
+| B4 | sex/base | 6009 | undress | 脱衣服 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/undress.toml | instruction-sex-base-b.test.ts | 简化 cloth_remove_all | ✅ 已确认 |
+| B4 | sex/base | 6010 | change_top_and_bottom | 交给对方 | 数据：h-npc-ai；口上：无（已有） | 有：behavior/sex/change_top_and_bottom.toml（h-npc-ai 自带） | h-npc-ai.test.ts | 存量已实装 | ✅ 已确认 |
+| B4 | sex/base | 6011 | keep_enjoy | 继续享受 | 数据：h-npc-ai；口上：无（已有） | 有：behavior/sex/keep_enjoy.toml（h-npc-ai 自带） | h-npc-ai.test.ts | 存量已实装 | ✅ 已确认 |
+| B4 | sex/base | 6012 | try_pl_active_h | 尝试掌握主动权 | 数据：h-npc-ai；口上：无（已有） | 有：behavior/sex/try_pl_active_h.toml（h-npc-ai 自带） | h-npc-ai.test.ts | 存量已实装 | ✅ 已确认 |
+| B4 | sex/base | 6013 | orgasm_edge_on | 绝顶寸止 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/orgasm_edge_on.toml | instruction-sex-base-a.test.ts | orgasm_edge_on 效果 | ✅ 已确认 |
+| B4 | sex/base | 6014 | orgasm_edge_off | 绝顶解放 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/orgasm_edge_off.toml | instruction-sex-base-a.test.ts | orgasm_edge_off 效果 | ✅ 已确认 |
+| B4 | sex/base | 6019 | pull_out_penis | 拔出阴茎 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/pull_out_penis.toml | instruction-sex-base-b.test.ts | 简化清除插入部位 | ✅ 已确认 |
+| B4 | sex/base | 6020 | stop_endure | 停止忍耐 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/stop_endure.toml | instruction-sex-base-b.test.ts | eja_climax force | ✅ 已确认 |
 
 ## 存量已实现（🟡，未走本流程 / 待补口上 / 待核对）
 

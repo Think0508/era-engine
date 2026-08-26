@@ -1,0 +1,20 @@
+# stop_carry_target 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-25）
+# - erArk data/talk/arts/stop_carry_target.csv 原 2 条 high_1 文本，不照搬；
+#   保留「示例 + 占位符」骨架。
+# - 占位符格式：「停止搬运对方指令通用口上 N」（N 连续编号）。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "stop_carry_target"
+description = "停止搬运对方指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 高权重组 ──────────────────────────────────────────────
+# erArk 前提：high_1（权重前提，恒通过、权重 1）→ 条件：premise(high_1)。
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}把扛在肩上的{target.name}放了下来。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "停止搬运对方指令通用口上 1"

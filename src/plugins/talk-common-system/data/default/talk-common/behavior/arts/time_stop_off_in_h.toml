@@ -1,0 +1,20 @@
+# time_stop_off_in_h 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-25）
+# - erArk 无独立 time_stop_off_in_h.csv；语义与 time_stop_off 相同（H 中取消时停）。
+#   本文件提供通用默认兜底，不搬原文；保留「示例 + 占位符」骨架。
+# - 占位符格式：「在H中取消时停指令通用口上 N」（N 连续编号）。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "time_stop_off_in_h"
+description = "在H中取消时停指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 高权重组 ──────────────────────────────────────────────
+# 语义门控由指令前提保证（IS_H + TIME_STOP_ON），口上按 high_1 权重进入。
+[[entries]]
+conditions = "premise(high_1)"
+context = "在纠缠之中，时间重新开始流动——周围的一切又动了起来。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "在H中取消时停指令通用口上 1"

@@ -7,6 +7,7 @@ base = { hp = 200, mp = 80, "体力" = 1200, "气力" = 800, "体力上限" = 25
 equipment = { upper = "布衣", lower = "长裤" }
 assets = { portrait = "assets/char/player.png" }
 abilities = { "华山剑法" = 3, "混元功" = 2, "基础攻击" = 1 }
+talents = { "窄域时停" = 1, "广域时停" = 1 }
 
 [[roster]]
 id = "innkeeper"

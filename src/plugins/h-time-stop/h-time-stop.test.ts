@@ -3,7 +3,7 @@
 // boot 模式参照 chain-flow.test.ts：effectTypeRegistry 重复注册抛错 → onLoad 只能一次 → 全部放 beforeAll
 
 import { conditionEngine } from '../../core/condition-engine'
-import { describe, it, expect, beforeAll, beforeEach } from 'vitest'
+import { describe, it, expect, beforeAll, beforeEach, vi } from 'vitest'
 import { modLoader } from '../../core/mod-loader'
 import { gameContext } from '../../core/game-context'
 import { entitySystem } from '../../core/entity-system'
@@ -561,5 +561,76 @@ describe('h-time-stop 门槛与恢复链（2026-08-16）', () => {
     girl.sp_flag = {}
     girl.dirty = {}
     girl.body_semen = {}
+  })
+describe('时停 5 指令级补测（口上触发 + 生效断言）', () => {
+    async function enableTimeStop(): Promise<void> {
+      player().time_stop_data = {}
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'time_stop_on', params: { quiet: true } },
+      ], { sourceId: 'player', _targetIds: ['player'] })
+      expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(true)
+    }
+
+    async function disableTimeStop(): Promise<void> {
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'time_stop_off', params: { quiet: true } },
+      ], { sourceId: 'player', _targetIds: ['player'] })
+      expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
+      player().time_stop_data = {}
+      player().h_state = undefined
+    }
+
+    it('time_stop_off 指令：时停中执行 → 解除时停 + 口上 time_stop_off', async () => {
+      await enableTimeStop()
+      const callSpy = vi.spyOn(apiSystem, 'call')
+      await commandExecutor.execute('time_stop_off', execCtx())
+      expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
+      const queries = callSpy.mock.calls.filter(args => args[0] === 'talk-common' && args[1] === 'getTextEntry' && args[2] === 'time_stop_off')
+      expect(queries.length).toBeGreaterThan(0)
+      expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
+    })
+
+    it('time_stop_off_in_h 指令：H 中时停 → 解除 + 口上 time_stop_off_in_h', async () => {
+      await enableTimeStop()
+      player().h_state = { is_h: true }
+      const callSpy = vi.spyOn(apiSystem, 'call')
+      await commandExecutor.execute('time_stop_off_in_h', execCtx())
+      expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
+      const queries = callSpy.mock.calls.filter(args => args[0] === 'talk-common' && args[1] === 'getTextEntry' && args[2] === 'time_stop_off_in_h')
+      expect(queries.length).toBeGreaterThan(0)
+      expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
+      player().h_state = undefined
+    })
+
+    it('carry_target 指令：时停中搬运目标 → carryTargetId=目标 + 场景口上输出', async () => {
+      await enableTimeStop()
+      narrativeLog.clear()
+      await commandExecutor.execute('carry_target', execCtx())
+      expect(player().time_stop_data.carryTargetId).toBe('npc_1')
+      const logs = narrativeLog.getEntries().map((e: any) => String(e.text))
+      expect(logs.some(t => t.includes('扛') || t.includes('搬'))).toBe(true)
+      expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
+      await disableTimeStop()
+    })
+
+    it('stop_carry_target 指令：已搬运时停止 → carryTargetId 清除 + 场景口上输出', async () => {
+      await enableTimeStop()
+      player().time_stop_data = { carryTargetId: 'npc_1' }
+      narrativeLog.clear()
+      await commandExecutor.execute('stop_carry_target', execCtx())
+      expect(player().time_stop_data.carryTargetId).toBeUndefined()
+      const logs = narrativeLog.getEntries().map((e: any) => String(e.text))
+      expect(logs.some(t => t.includes('放下') || t.includes('放'))).toBe(true)
+      expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
+      await disableTimeStop()
+    })
+it('talk-common 默认口上文件存在：time_stop_on/off/off_in_h/carry/stop_carry 均可取到文本', async () => {
+      for (const scene of ['time_stop_on', 'time_stop_off', 'time_stop_off_in_h', 'carry_target', 'stop_carry_target']) {
+        const text = await apiSystem.call('talk-common', 'getText', scene, 'player', 'player') as string | null
+        expect(text, scene).toBeTruthy()
+        expect(text).not.toContain('博士')
+        expect(text).not.toContain('源石')
+      }
+    })
   })
 })

@@ -26,14 +26,23 @@ export function createCommandEvaluators(sources: CommandEvalSources): CommandEva
   const evalPremises = (premises: string[]) => {
     if (!premises || premises.length === 0) return true
     try {
-      return conditionEngine.evaluatePremises(premises, { ...gameContext.getContext(), selectedCharacterId: selectedId() ?? undefined })
+      const ctx: any = {
+        ...gameContext.getContext(),
+        selectedCharacterId: selectedId() ?? undefined,
+        gameStore: sources.gameStore,
+      }
+      return conditionEngine.evaluatePremises(premises, ctx)
     } catch {
       return false
     }
   }
 
   const evalCondition = (expr: string) => {
-    const gc = { ...gameContext.getContext(), selectedCharacterId: selectedId() ?? undefined }
+    const gc: any = {
+      ...gameContext.getContext(),
+      selectedCharacterId: selectedId() ?? undefined,
+      gameStore: sources.gameStore,
+    }
     try {
       return conditionEngine.evaluate(expr, gc)
     } catch {

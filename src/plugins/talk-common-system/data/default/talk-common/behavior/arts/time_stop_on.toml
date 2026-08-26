@@ -1,0 +1,21 @@
+# time_stop_on 指令默认通用口上（插件默认层，Layer 1）
+# ============================================================
+# ⚠️ 骨架说明（2026-08-25）
+# - erArk data/talk/arts/time_stop_on.csv 原仅 1 条 high_1 文本，不照搬；
+#   保留「示例 + 占位符」骨架。
+# - 占位符格式：「时间停止流动指令通用口上 N」（N 连续编号）。
+# - 世界观残留（博士等）无。
+# - mod 可覆盖：mods/[模组名]/definitions/talk-common/ 下同路径文件覆盖本默认层。
+
+variable = "time_stop_on"
+description = "时间停止流动指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 高权重组 ──────────────────────────────────────────────
+# erArk 前提：high_1（权重前提，恒通过、权重 1）→ 条件：premise(high_1)。
+[[entries]]
+conditions = "premise(high_1)"
+context = "时间啊，停下来吧——周围的一切都凝固在了这一刻。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "时间停止流动指令通用口上 1"

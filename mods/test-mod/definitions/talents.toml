@@ -31,3 +31,13 @@ name = "初出茅庐"
 description = "自动获得"
 max = 1
 gain = { condition = "player.技巧 >= 10" }
+
+[talents."窄域时停"]
+name = "窄域时停"
+description = "时停门槛（窄域）——测试/dev 用"
+max = 1
+
+[talents."广域时停"]
+name = "广域时停"
+description = "时停门槛（广域）——测试/dev 用"
+max = 1

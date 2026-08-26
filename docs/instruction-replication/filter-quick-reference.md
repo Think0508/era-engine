@@ -45,9 +45,33 @@
 
 ---
 
+## B2 候选池（ARTS 17）
+
+> 2026-08-25：进入 B2 筛选流程。统计：原 17 → 已完成 5（时停）→ 时停 5（已完成）→ 催眠 12（延后，用户：后续 grill）→ 剔除 0。
+> 筛选口径沿用 B1：**只有方舟世界观专属才算剔除**；系统未实装/暂缓归延后；用户最终筛选。
+
+| 批次 | 分类 | 所属系统 | cid | id | 名称 | 筛选结论 | 延后/剔除原因 |
+|---|---|---|---|---|---|---|---|
+| B2 | arts/hypnosis | h-hypnosis | 4001 | hypnosis_one | 单人催眠 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/hypnosis | h-hypnosis | 4002 | deepening_hypnosis | 加深催眠 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/hypnosis | h-hypnosis | 4003 | hypnosis_all | 集体催眠 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/hypnosis | h-hypnosis | 4004 | hypnosis_cancel | 解除催眠 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/time_stop | h-time-stop（已实装） | 4005 | carry_target | 搬运对方 | 已完成 | 已实装 |
+| B2 | arts/time_stop | h-time-stop（已实装） | 4006 | stop_carry_target | 停止搬运对方 | 已完成 | 已实装 |
+| B2 | arts/hypnosis | h-hypnosis | 4101 | change_hypnosis_mode | 切换催眠模式 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/hypnosis | h-hypnosis | 4102 | hypnosis_increase_body_sensitivity | 体控-敏感度提升 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/hypnosis | h-hypnosis | 4103 | hypnosis_force_climax | 体控-强制高潮 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/hypnosis | h-hypnosis | 4104 | hypnosis_force_ovulation | 体控-强制排卵 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/hypnosis | h-hypnosis | 4105 | hypnosis_blockhead | 体控-木头人 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/hypnosis | h-hypnosis | 4106 | hypnosis_active_h | 体控-逆推 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/hypnosis | h-hypnosis | 4107 | hypnosis_roleplay | 心控-角色扮演 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/hypnosis | h-hypnosis | 4108 | hypnosis_pain_as_pleasure | 心控-苦痛快感化 | 延后（用户：后续 grill） | 催眠系统需后续细 grill |
+| B2 | arts/time_stop | h-time-stop（已实装） | 4113 | time_stop_on | 时间停止流动 | 已完成 | 已实装 |
+| B2 | arts/time_stop | h-time-stop（已实装） | 4114 | time_stop_off | 时间重新流动 | 已完成 | 已实装 |
+| B2 | arts/time_stop | h-time-stop（已实装） | 4115 | time_stop_off_in_h | 在H中取消时停 | 已完成 | 已实装 |
+
 ## 后续批次（占位，筛选后填充）
 
-- B2：ARTS 17（时停 5 已实装；催眠 12 无指令 TOML）
 - B3：OBSCENITY 37
 - B4-B7：SEX 142（base / drug / foreplay / insert / item / sm / wait_upon）
 - 核对项：SYSTEM 8（不按 TOML 复刻，逐项核对引擎等价能力）

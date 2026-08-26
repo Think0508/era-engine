@@ -250,6 +250,17 @@ export function registerHPremises(registry: any): void {
   registry.registerPremise('SELF_ANGRY_WITH_PLAYER', (ctx: any) => !!getSelfChar(ctx)?.sp_flag?.angry_with_player)
   registry.registerPremise('SELF_NOT_ANGRY_WITH_PLAYER', (ctx: any) => !getSelfChar(ctx)?.sp_flag?.angry_with_player)
   registry.registerPremise('TARGET_ANGRY_WITH_PLAYER', (ctx: any) => !!getTargetChar(ctx)?.sp_flag?.angry_with_player)
+// ── H 寸止/女儿关系前提（B4 SEX/base 用）──
+  registry.registerPremise('TARGET_ORGASM_EDGE', (ctx: any) => {
+    const target = getTargetChar(ctx)
+    return !!target?.h_state && (target.h_state.orgasm_edge ?? 0) !== 0
+  })
+  registry.registerPremise('TARGET_NOT_ORGASM_EDGE', (ctx: any) => {
+    const target = getTargetChar(ctx)
+    return !!target?.h_state ? (target.h_state.orgasm_edge ?? 0) === 0 : false
+  })
+  // TODO(daughter-system)：女儿关系未实装，TARGET_IS_PLAYER_DAUGHTER 恒 false → NOT 恒 true
+  registry.registerPremise('TARGET_NOT_PLAYER_DAUGHTER', (_ctx: any) => true)
 // TARGET_HP_OR_MP_LOW——目标体力或气力有一项低于 30%（erArk handle_premise_base_value.py:331-348）
   registry.registerPremise('TARGET_HP_OR_MP_LOW', (ctx: any) => {
     const target = getTargetChar(ctx)

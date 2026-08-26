@@ -1,0 +1,79 @@
+# 插件默认层指令（Layer 1 权威副本）——SEX/base 组（B4 批次）
+# 数据家：native-instructions
+# 本文件先放“已有现成效果/API”的 4 条：h_end / hidden_sex_end / orgasm_edge_on / orgasm_edge_off
+# 其余 wait_5_min_in_h / undress / pull_out_penis / stop_endure 需新效果，下一步补
+
+# ═══ h_end（6002）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（cid 362，duration=5）
+# Behavior_Effect.csv（526-753-528-404-631）由 h_end_h 内部覆盖（endHScene）
+[[instructions]]
+id = "h_end"
+label = "结束H"
+erark_id = "6002"
+erark_behavior = "END_H"
+category = "sex"
+sub_category = "base"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_PLAYER_DAUGHTER", "T_IMPRISONMENT_0", "T_UNCONSCIOUS_FLAG_0", "TARGET_NOT_IN_HIDDEN_SEX_MODE", "TARGET_NOT_IN_EXHIBITIONISM_SEX_MODE", "GROUP_SEX_MODE_OFF", "IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "h_end_h", target = "self" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "h_end" } },
+]
+
+# ═══ hidden_sex_end（6006）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（END_H，duration=5）
+# 结束隐奸 = 清隐奸模式 + 结束 H（h-hidden 提供 hidden_sex_clear，h-core 提供 h_end_h）
+[[instructions]]
+id = "hidden_sex_end"
+label = "结束隐奸"
+erark_id = "6006"
+erark_behavior = "END_H"
+category = "sex"
+sub_category = "base"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_HIDDEN_SEX_MODE_GE_1", "TARGET_NOT_IN_EXHIBITIONISM_SEX_MODE", "GROUP_SEX_MODE_OFF", "IS_H"]
+tags = ["system:h-hidden", "system:h-core"]
+effects = [
+  { type = "hidden_sex_clear", params = { target = "target" } },
+  { type = "h_end_h", target = "self" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "hidden_sex_end" } },
+]
+
+# ═══ orgasm_edge_on（6013）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（cid 751，duration=1）+ Behavior_Effect.csv（1413）
+[[instructions]]
+id = "orgasm_edge_on"
+label = "绝顶寸止"
+erark_id = "6013"
+erark_behavior = "ORGASM_EDGE_ON"
+category = "sex"
+sub_category = "base"
+time_cost = 1
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "TIME_STOP_OFF", "TARGET_NOT_ORGASM_EDGE"]
+tags = ["system:h-core"]
+effects = [
+  { type = "orgasm_edge_on", target = "selected" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "orgasm_edge_on" } },
+]
+
+# ═══ orgasm_edge_off（6014）═══════════════════════════════════════════════
+# erArk InstructConfig.csv + Behavior_Data.csv（cid 752，duration=1）+ Behavior_Effect.csv（526）
+[[instructions]]
+id = "orgasm_edge_off"
+label = "绝顶解放"
+erark_id = "6014"
+erark_behavior = "ORGASM_EDGE_OFF"
+category = "sex"
+sub_category = "base"
+time_cost = 1
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "TIME_STOP_OFF", "TARGET_ORGASM_EDGE"]
+tags = ["system:h-core"]
+effects = [
+  { type = "orgasm_edge_off", target = "selected" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "orgasm_edge_off" } },
+]

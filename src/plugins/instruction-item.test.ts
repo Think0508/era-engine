@@ -182,9 +182,9 @@ describe('B4-B7 SEX/item（6401-6428 保留 19 条）', () => {
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 
-  it('nipple_clamp_on/off：装卸乳头夹 + 档位', async () => {
+  it('nipple_clamp_on/off：装卸乳头夹 + 档位（装备不消耗）', async () => {
     resetChars()
-    setInventory([['乳头夹', 2]]) // off 前提有 HAVE_NIPPLE_CLAMP，需留 1 个在手
+    setInventory([['乳头夹', 1]]) // 装备类玩具不消耗，取下无需备件
     npc().h_state.nipple_clamp = false
     await commandExecutor.execute('nipple_clamp_on', execCtx())
     expect(npc().h_state.nipple_clamp).toBe(true)
@@ -195,13 +195,13 @@ describe('B4-B7 SEX/item（6401-6428 保留 19 条）', () => {
     await commandExecutor.execute('nipple_clamp_off', execCtx())
     expect(npc().h_state.nipple_clamp).toBe(false)
     expect(npc().body_items?.['0']).toBeUndefined()
-    expect((player().inventory.find((i: any) => i.itemId === '乳头夹')?.count ?? 0)).toBe(2)
+    expect((player().inventory.find((i: any) => i.itemId === '乳头夹')?.count ?? 0)).toBe(1)
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 
-  it('clit_clamp_on/off：装卸阴蒂夹', async () => {
+  it('clit_clamp_on/off：装卸阴蒂夹（装备不消耗）', async () => {
     resetChars()
-    setInventory([['阴蒂夹', 2]])
+    setInventory([['阴蒂夹', 1]])
     await commandExecutor.execute('clit_clamp_on', execCtx())
     expect(npc().h_state.clit_clamp).toBe(true)
     expect(npc().h_state.sex_toy_level).toBe(1)
@@ -211,13 +211,13 @@ describe('B4-B7 SEX/item（6401-6428 保留 19 条）', () => {
     await commandExecutor.execute('clit_clamp_off', execCtx())
     expect(npc().h_state.clit_clamp).toBe(false)
     expect(npc().body_items?.['1']).toBeUndefined()
-    expect((player().inventory.find((i: any) => i.itemId === '阴蒂夹')?.count ?? 0)).toBe(2)
+    expect((player().inventory.find((i: any) => i.itemId === '阴蒂夹')?.count ?? 0)).toBe(1)
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 
-  it('vibrator_insertion / off：V 震动棒装卸', async () => {
+  it('vibrator_insertion / off：V 震动棒装卸（装备不消耗）', async () => {
     resetChars()
-    setInventory([['V震动棒', 2]]) // off 前提有 HAVE_VIBRATOR
+    setInventory([['V震动棒', 1]])
     npc().h_state.insert_position = -1
     await commandExecutor.execute('vibrator_insertion', execCtx())
     expect(npc().h_state.vibrator_insertion).toBe(true)
@@ -229,13 +229,13 @@ describe('B4-B7 SEX/item（6401-6428 保留 19 条）', () => {
     expect(npc().h_state.vibrator_insertion).toBe(false)
     expect(npc().h_state.sex_toy_level).toBe(0)
     expect(npc().body_items?.['2']).toBeUndefined()
-    expect((player().inventory.find((i: any) => i.itemId === 'V震动棒')?.count ?? 0)).toBe(2)
+    expect((player().inventory.find((i: any) => i.itemId === 'V震动棒')?.count ?? 0)).toBe(1)
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 
-  it('vibrator_insertion_anal / off：A 震动棒装卸', async () => {
+  it('vibrator_insertion_anal / off：A 震动棒装卸（装备不消耗）', async () => {
     resetChars()
-    setInventory([['A震动棒', 2]])
+    setInventory([['A震动棒', 1]])
     await commandExecutor.execute('vibrator_insertion_anal', execCtx())
     expect(npc().h_state.vibrator_insertion_anal).toBe(true)
     expect(npc().h_state.sex_toy_level).toBe(1)
@@ -246,13 +246,13 @@ describe('B4-B7 SEX/item（6401-6428 保留 19 条）', () => {
     expect(npc().h_state.vibrator_insertion_anal).toBe(false)
     expect(npc().h_state.sex_toy_level).toBe(0)
     expect(npc().body_items?.['3']).toBeUndefined()
-    expect((player().inventory.find((i: any) => i.itemId === 'A震动棒')?.count ?? 0)).toBe(2)
+    expect((player().inventory.find((i: any) => i.itemId === 'A震动棒')?.count ?? 0)).toBe(1)
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 
-  it('anal_beads / off：肛门拉珠装卸', async () => {
+  it('anal_beads / off：肛门拉珠装卸（装备不消耗）', async () => {
     resetChars()
-    setInventory([['肛门拉珠', 2]]) // off 前提有 HAVE_ANAL_BEADS
+    setInventory([['肛门拉珠', 1]])
     await commandExecutor.execute('anal_beads', execCtx())
     expect(npc().h_state.anal_beads).toBe(true)
     expect(npc().body_items['7'].itemId).toBe('肛门拉珠')
@@ -261,7 +261,7 @@ describe('B4-B7 SEX/item（6401-6428 保留 19 条）', () => {
     await commandExecutor.execute('anal_beads_off', execCtx())
     expect(npc().h_state.anal_beads).toBe(false)
     expect(npc().body_items?.['7']).toBeUndefined()
-    expect((player().inventory.find((i: any) => i.itemId === '肛门拉珠')?.count ?? 0)).toBe(2)
+    expect((player().inventory.find((i: any) => i.itemId === '肛门拉珠')?.count ?? 0)).toBe(1)
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 

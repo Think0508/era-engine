@@ -76,18 +76,35 @@ export function registerBodyItemEffects(): void {
     const slot = (_p.slot as number) ?? -1
     if (slot < 0) return true
     const itemId = _p.itemId ?? execCtx._itemId ?? execCtx.sourceItemId
-    // 注释：扣 source 背包
+    // 注释：扣 source 背包——只扣 consume=true 的物品；装备类玩具（erArk H_Machine/SM）不消耗，
+    // 物品保留在背包，body_item 只记穿戴状态（2026-08-26 修正：原先一律扣，导致“取下需备件”的假象）
     const srcId = execCtx.sourceId
+    const itemDef = itemId ? (modLoader.getMod()?.items as any)?.[itemId] as any : null
+    const shouldConsume = itemDef?.consume !== false
     if (srcId && itemId) {
-      // 注释：消费扣减——removeItem 返回 boolean（从不 throw），失败（背包数量不足/不存在）→ 装备中止
-      const removed = await apiSystem.call('inventory', 'removeItem', srcId, itemId, 1) as unknown as boolean
-      if (!removed) {
-        errorReporter.report({
-          source: 'h-core',
-          severity: 'warning',
-          message: `body_item_equip 从背包移除 '${itemId}' 失败（数量不足或不存在）——装备中止`,
-        })
-        return true
+      if (shouldConsume) {
+        // 消费型物品：扣 1，数量不足则中止
+        const removed = await apiSystem.call('inventory', 'removeItem', srcId, itemId, 1) as unknown as boolean
+        if (!removed) {
+          errorReporter.report({
+            source: 'h-core',
+            severity: 'warning',
+            message: `body_item_equip 从背包移除 '${itemId}' 失败（数量不足或不存在）——装备中止`,
+          })
+          return true
+        }
+      } else {
+        // 装备类玩具不消耗，但必须确实拥有该物品
+        const src = entitySystem.get('character', srcId) as any
+        const has = (src?.inventory ?? []).some((i: any) => i.itemId === itemId && (i.count ?? 0) > 0)
+        if (!has) {
+          errorReporter.report({
+            source: 'h-core',
+            severity: 'warning',
+            message: `body_item_equip 背包没有 '${itemId}'——装备中止（装备类不消耗）`,
+          })
+          return true
+        }
       }
     }
     // 注释：设 target 的 body_items[slot]
@@ -95,15 +112,15 @@ export function registerBodyItemEffects(): void {
       const ch = entitySystem.get('character', id) as any
       if (!ch) continue
       if (!ch.body_items) ch.body_items = {}
-      const itemDef = (modLoader.getMod()?.items as any)?.[itemId ?? ''] as any
+      const slotDef = (modLoader.getMod()?.items as any)?.[itemId ?? ''] as any
       const slotData: BodyItemSlot = {
         itemId: itemId ?? '',
         active: true,
       }
-      if (itemDef?.duration) {
+      if (slotDef?.duration) {
         const ct = gameContext.getContext().time
         // expiry 到期清槽由 onEnable 的 game:hour_changed 监听处理（erArk realtime_settle.py:270-283）
-        slotData.expiry = ct.hour * 60 + ct.minute + itemDef.duration
+        slotData.expiry = ct.hour * 60 + ct.minute + slotDef.duration
       }
       ch.body_items[String(slot)] = slotData
       eventBus.emit('character:changed', { id })
@@ -120,7 +137,10 @@ export function registerBodyItemEffects(): void {
       if (!ch?.body_items) continue
       const slotData = ch.body_items[String(slot)] as BodyItemSlot | undefined
       delete ch.body_items[String(slot)]
-      if (slotData?.itemId) {
+      // 装备类玩具不消耗，卸下时物品本就在背包，不需归还；只有 consume=true 的物品才 +1
+      const slotDef = slotData?.itemId ? (modLoader.getMod()?.items as any)?.[slotData.itemId] as any : null
+      const wasConsumed = slotDef?.consume !== false
+      if (slotData?.itemId && wasConsumed) {
         await apiSystem.call('inventory', 'addItem', id, slotData.itemId, 1)
       }
       eventBus.emit('character:changed', { id })
@@ -173,22 +193,37 @@ export function registerBodyItemEffects(): void {
   // item 批：玩具装卸 + 避孕套（2026-08-26）
   // ═══════════════════════════════════════════════════════════
 
-  // toy_equip：从发起者背包扣 itemId，装到目标 body_items[slot]，并置 h_state flag（可带档位）
+  // toy_equip：从发起者背包扣 itemId（仅 consume=true），装到目标 body_items[slot]，并置 h_state flag（可带档位）
   effectTypeRegistry.register('toy_equip', async (_p: any, execCtx: any) => {
     const slot = (_p.slot as number) ?? -1
     const itemId = (_p.itemId as string) ?? ''
     const flag = (_p.flag as string) ?? ''
     if (slot < 0 || !itemId) return true
     const srcId = execCtx.sourceId
+    const itemDef = (modLoader.getMod()?.items as any)?.[itemId] as any
+    const shouldConsume = itemDef?.consume !== false
     if (srcId) {
-      const removed = await apiSystem.call('inventory', 'removeItem', srcId, itemId, 1) as unknown as boolean
-      if (!removed) {
-        errorReporter.report({
-          source: 'h-core',
-          severity: 'warning',
-          message: `toy_equip 从背包移除 '${itemId}' 失败（数量不足或不存在）——装备中止`,
-        })
-        return true
+      if (shouldConsume) {
+        const removed = await apiSystem.call('inventory', 'removeItem', srcId, itemId, 1) as unknown as boolean
+        if (!removed) {
+          errorReporter.report({
+            source: 'h-core',
+            severity: 'warning',
+            message: `toy_equip 从背包移除 '${itemId}' 失败（数量不足或不存在）——装备中止`,
+          })
+          return true
+        }
+      } else {
+        const src = entitySystem.get('character', srcId) as any
+        const has = (src?.inventory ?? []).some((i: any) => i.itemId === itemId && (i.count ?? 0) > 0)
+        if (!has) {
+          errorReporter.report({
+            source: 'h-core',
+            severity: 'warning',
+            message: `toy_equip 背包没有 '${itemId}'——装备中止（装备类不消耗）`,
+          })
+          return true
+        }
       }
     }
     for (const id of execCtx._targetIds as string[]) {
@@ -214,7 +249,10 @@ export function registerBodyItemEffects(): void {
       if (!ch?.body_items) continue
       const slotData = ch.body_items[String(slot)] as BodyItemSlot | undefined
       delete ch.body_items[String(slot)]
-      if (slotData?.itemId && srcId) {
+      // 装备类玩具不消耗，卸下时物品本就在背包，不重复归还；只有 consume=true 才归还
+      const slotDef = slotData?.itemId ? (modLoader.getMod()?.items as any)?.[slotData.itemId] as any : null
+      const wasConsumed = slotDef?.consume !== false
+      if (slotData?.itemId && srcId && wasConsumed) {
         await apiSystem.call('inventory', 'addItem', srcId, slotData.itemId, 1)
       }
       if (flag && ch.h_state) ch.h_state[flag] = false

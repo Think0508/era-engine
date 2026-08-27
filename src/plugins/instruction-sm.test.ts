@@ -152,16 +152,16 @@ describe('B4-B7 SEX/sm 保留（6503/6506/6507）', () => {
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 
-  it('gag_on / gag_off：口球装卸', async () => {
+  it('gag_on / gag_off：口球装卸（装备不消耗）', async () => {
     resetChars()
-    setInventory([['口球', 2]]) // off 前提 HAVE_GAG，需留 1 个在手
+    setInventory([['口球', 1]]) // 装备类不消耗，取下无需备件
     await commandExecutor.execute('gag_on', execCtx())
     expect(npc().body_items['14'].itemId).toBe('口球')
     expect((player().inventory.find((i: any) => i.itemId === '口球')?.count ?? 0)).toBe(1)
 
     await commandExecutor.execute('gag_off', execCtx())
     expect(npc().body_items?.['14']).toBeUndefined()
-    expect((player().inventory.find((i: any) => i.itemId === '口球')?.count ?? 0)).toBe(2)
+    expect((player().inventory.find((i: any) => i.itemId === '口球')?.count ?? 0)).toBe(1)
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 

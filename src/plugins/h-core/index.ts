@@ -464,7 +464,9 @@ export async function endHScene(allyId: string): Promise<void> {
             const itemDef = (mod?.items as any)?.[sd.itemId] as any
             if (itemDef?.body_auto_remove === 'h_end') {
               delete c.body_items[slotKey]
-              if (sd.itemId) {
+              // 装备类玩具不消耗（物品本就在背包）；只有 consume=true 的物品才归还 +1
+              const wasConsumed = itemDef?.consume !== false
+              if (sd.itemId && wasConsumed) {
                 await apiSystem.call('inventory', 'addItem', c.id, sd.itemId, 1)
               }
             }

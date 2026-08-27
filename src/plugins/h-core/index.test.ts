@@ -49,13 +49,13 @@ describe('body_item 归还语义', () => {
     ch.body_items = {}
   }
 
-  it('装槽占用：body_item_equip 扣背包 1，物品进槽', async () => {
+  it('装槽占用：body_item_equip 装槽（装备类不消耗，背包数量不变）', async () => {
     charWithToy('toy1')
     await apiSystem.call('effect-system', 'execute', [
       { type: 'body_item_equip', params: { slot: 0 } },
     ], { sourceId: 'toy1', _itemId: '乳头夹', _targetIds: ['toy1'] })
     const ch = entitySystem.get('character', 'toy1') as any
-    expect(ch.inventory.find((i: any) => i.itemId === '乳头夹').count).toBe(1)
+    expect(ch.inventory.find((i: any) => i.itemId === '乳头夹').count).toBe(2)
     expect(ch.body_items['0'].itemId).toBe('乳头夹')
   })
 
@@ -82,7 +82,7 @@ describe('body_item 归还语义', () => {
     expect(ch.inventory.find((i: any) => i.itemId === '乳头夹').count).toBe(2)
   })
 
-  it('H 结束清理 h_end 玩具 → 回背包（挤奶器）', async () => {
+  it('H 结束清理 h_end 玩具 → 清槽（装备不消耗，不重复回背包）', async () => {
     const ch = entitySystem.get('character', 'toy3') as any
     if (!ch) return
     ch.inventory = [{ itemId: '挤奶器', count: 1 }]
@@ -93,7 +93,7 @@ describe('body_item 归还语义', () => {
     await apiSystem.call('h-core', 'endHScene', 'player')
     const after = entitySystem.get('character', 'toy3') as any
     expect(after.body_items['4']).toBeUndefined()
-    expect(after.inventory.find((i: any) => i.itemId === '挤奶器').count).toBe(2)
+    expect(after.inventory.find((i: any) => i.itemId === '挤奶器').count).toBe(1)
   })
 
   // 注释：礼物基础版（2026-08-12 Task 6，erArk 22-礼物与咖啡系统.md：1.2 礼物类别/1.3 好感礼物公式）

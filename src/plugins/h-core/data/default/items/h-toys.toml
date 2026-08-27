@@ -1,4 +1,5 @@
-# 注释：H 原生玩具（grill Q1/Q4：装槽=占用，manual/h_end 卸下归还背包）
+# 注释：H 原生玩具（grill Q1/Q4：装槽=占用，manual/h_end 清槽；装备类不消耗——
+# 2026-08-26 修正：erArk H_Machine/SM 装备佩戴后物品仍留在背包，取下无需备件）
 # 数值来源：复刻攻略-猥亵-H系统专用/03-道具系统.md（erArk Item ID 100-108 公式逐条核对）
 
 [items."乳头夹"]
@@ -7,7 +8,7 @@ type = "equipment"
 use = ["h_toy"]
 tags = ["toy", "h_toy"]
 stackable = false
-consume = true
+consume = false
 body_slot = 0
 body_auto_remove = "manual"
 tick_base = 20
@@ -20,7 +21,7 @@ type = "equipment"
 use = ["h_toy"]
 tags = ["toy", "h_toy"]
 stackable = false
-consume = true
+consume = false
 body_slot = 1
 body_auto_remove = "manual"
 tick_base = 20
@@ -33,7 +34,7 @@ type = "equipment"
 use = ["h_toy"]
 tags = ["toy", "h_toy"]
 stackable = false
-consume = true
+consume = false
 body_slot = 2
 body_auto_remove = "manual"
 tick_base = 20
@@ -46,7 +47,7 @@ type = "equipment"
 use = ["h_toy"]
 tags = ["toy", "h_toy"]
 stackable = false
-consume = true
+consume = false
 body_slot = 3
 body_auto_remove = "manual"
 tick_base = 20
@@ -59,7 +60,7 @@ type = "equipment"
 use = ["h_toy"]
 tags = ["toy", "h_toy"]
 stackable = false
-consume = true
+consume = false
 body_slot = 4
 body_auto_remove = "h_end"
 tick_base = 20
@@ -72,7 +73,7 @@ type = "equipment"
 use = ["h_toy"]
 tags = ["toy", "h_toy"]
 stackable = false
-consume = true
+consume = false
 body_slot = 6
 body_auto_remove = "h_end"
 effects = [{ type = "body_item_equip", params = { slot = 6 } }]
@@ -83,7 +84,7 @@ type = "equipment"
 use = ["h_toy"]
 tags = ["toy", "h_toy"]
 stackable = false
-consume = true
+consume = false
 body_slot = 7
 body_auto_remove = "h_end"
 effects = [{ type = "body_item_equip", params = { slot = 7 } }]
@@ -94,7 +95,8 @@ type = "equipment"
 use = ["h_toy"]
 tags = ["toy", "h_toy"]
 stackable = false
-consume = true
+consume = false
 body_slot = 14
 body_auto_remove = "h_end"
 effects = [{ type = "body_item_equip", params = { slot = 14 } }]
+

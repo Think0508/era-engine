@@ -129,21 +129,14 @@ export function registerBodyItemEffects(): void {
     return true
   })
 
-  // 注释：body_item_unequip——卸下身体物品（grill Q4：manual/h_end 卸下归还背包 +1）
+  // 注释：body_item_unequip——卸下身体物品（装备类不消耗，物品本就在背包；消耗类已消耗，均不归还）
   effectTypeRegistry.register('body_item_unequip', async (_p: any, execCtx: any) => {
     const slot = (_p.slot as number) ?? -1
     if (slot < 0) return true
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.body_items) continue
-      const slotData = ch.body_items[String(slot)] as BodyItemSlot | undefined
       delete ch.body_items[String(slot)]
-      // 装备类玩具不消耗，卸下时物品本就在背包，不需归还；只有 consume=true 的物品才 +1
-      const slotDef = slotData?.itemId ? (modLoader.getMod()?.items as any)?.[slotData.itemId] as any : null
-      const wasConsumed = slotDef?.consume !== false
-      if (slotData?.itemId && wasConsumed) {
-        await apiSystem.call('inventory', 'addItem', id, slotData.itemId, 1)
-      }
       eventBus.emit('character:changed', { id })
     }
     return true
@@ -239,23 +232,15 @@ export function registerBodyItemEffects(): void {
     return true
   })
 
-  // toy_unequip：从目标卸下 body_items[slot]，归还 itemId 到发起者背包，清 h_state flag
+  // toy_unequip：从目标卸下 body_items[slot]，清 h_state flag（装备不消耗，无需归还）
   effectTypeRegistry.register('toy_unequip', async (_p: any, execCtx: any) => {
     const slot = (_p.slot as number) ?? -1
     const flag = (_p.flag as string) ?? ''
     if (slot < 0) return true
-    const srcId = execCtx.sourceId
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.body_items) continue
-      const slotData = ch.body_items[String(slot)] as BodyItemSlot | undefined
       delete ch.body_items[String(slot)]
-      // 装备类玩具不消耗，卸下时物品本就在背包，不重复归还；只有 consume=true 才归还
-      const slotDef = slotData?.itemId ? (modLoader.getMod()?.items as any)?.[slotData.itemId] as any : null
-      const wasConsumed = slotDef?.consume !== false
-      if (slotData?.itemId && srcId && wasConsumed) {
-        await apiSystem.call('inventory', 'addItem', srcId, slotData.itemId, 1)
-      }
       if (flag && ch.h_state) ch.h_state[flag] = false
       // 拔出震动棒/跳蛋时档位清零
       if (ch.h_state && (flag === 'vibrator_insertion' || flag === 'vibrator_insertion_anal')) {

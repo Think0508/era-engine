@@ -284,6 +284,54 @@ describe('B4-B7 SEX/item（6401-6428 保留 19 条）', () => {
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 
+  it('道具/遥控指令实行判定：退缩时整链跳过（不落账）', async () => {
+    const cases: [string, [string, number][] | null][] = [
+      ['nipple_clamp_on', [['乳头夹', 1]]],
+      ['clit_clamp_on', [['阴蒂夹', 1]]],
+      ['vibrator_insertion', [['V震动棒', 1]]],
+      ['vibrator_insertion_anal', [['A震动棒', 1]]],
+      ['anal_beads', [['肛门拉珠', 1]]],
+      ['remote_toy_on_in_h', null],
+      ['remote_toy_level_up_in_h', null],
+    ]
+    for (const [id, inv] of cases) {
+      resetChars()
+      if (inv) setInventory(inv)
+      // 难以越过的底线 >= 5 → -500 以上，必然退缩（道具 400 / 严重骚扰 600）
+      npc().talents = { '难以越过的底线': 10 }
+      if (id === 'remote_toy_on_in_h' || id === 'remote_toy_level_up_in_h') {
+        npc().h_state.vibrator_insertion = true
+        npc().h_state.sex_toy_level = id === 'remote_toy_level_up_in_h' ? 1 : 0
+      }
+      await commandExecutor.execute(id, execCtx())
+      // 退缩：不得装备/写入档位/加好感
+      expect(npc().base['好感度']).toBe(0)
+      if (id === 'remote_toy_on_in_h') expect(npc().h_state.sex_toy_level).toBe(0)
+      if (id === 'remote_toy_level_up_in_h') expect(npc().h_state.sex_toy_level).toBe(1)
+      if (id === 'nipple_clamp_on' || id === 'clit_clamp_on' || id === 'vibrator_insertion' || id === 'vibrator_insertion_anal' || id === 'anal_beads') {
+        expect(Object.values(npc().body_items ?? {})).toHaveLength(0)
+      }
+      expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
+    }
+  })
+
+  it('tech_adjust flat：FEEL 直译只加部位快感、不加欲情（erArk 41-48）', async () => {
+    resetChars()
+    const ctx = { ...makeTestExecCtx(), sourceId: 'player', _targetIds: ['npc_1'], _timeCost: 10 }
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'tech_adjust', target: 'selected', params: { part: '胸部', baseValue: 50, flat: true } },
+    ], ctx)
+    expect(npc().base['胸部']).toBeGreaterThan(0)
+    expect(npc().base['欲情']).toBe(0)
+
+    resetChars()
+    await apiSystem.call('effect-system', 'execute', [
+      { type: 'tech_adjust', target: 'selected', params: { part: '胸部', baseValue: 50 } },
+    ], ctx)
+    expect(npc().base['胸部']).toBeGreaterThan(0)
+    expect(npc().base['欲情']).toBeGreaterThan(0)
+  })
+
   it('口上默认文件存在且无世界观残留', async () => {
     for (const scene of ITEM_IDS) {
       const text = await apiSystem.call('talk-common', 'getText', scene, 'npc_1', 'player') as string | null

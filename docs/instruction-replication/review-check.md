@@ -40,6 +40,39 @@
 4. **露出邀请 cid**：核对中修正为 erArk 实际 cid **5207**（原文档 5054 错误），且 tired_type=1 前提已修正。
 5. **能力提升/背包**：SYSTEM 核对见 `docs/instruction-replication/system-check.md`，与 95 条指令复核无关。
 
+## 复核补丁（2026-08-26 加审：代码/CSV/Python 级复核对账）
+
+> 本次加审以 erArk 权威源（`InstructConfig.csv` / `Behavior_Effect.csv` / `Behavior_Data.csv` /
+> `InstructJudge.csv` / `handle_instruct.py` / `constant_effect.py` / `default.py`）逐条比对，发现并修正：
+
+### 硬伤（静默错误）
+1. **womb_os_caress 漏 `pl_p_adjust`**（erArk 145 VAGINA_TECH_ADD_PL_P_ADJUST）→ 已补 `{ type="pl_p_adjust", target="self", params={ skill="膣技" } }`；补测试断言玩家射精欲。
+2. **7 条指令缺 judge_base**：`nipple_clamp_on` / `clit_clamp_on` / `vibrator_insertion` / `vibrator_insertion_anal` / `anal_beads`（道具 400）、`remote_toy_on_in_h` / `remote_toy_level_up_in_h`（严重骚扰 600）→ 已补 `judge_base`；并给 body-item/toy/first-time 效果补“退缩门控”，保证退缩时装备/档位/破处均不落账。
+3. **恐怖 baseValue 30 → 10**（erArk TARGET_ADD_SMALL_TERROR base=10）：`gag_on` / `gag_off` / `deep_throat` → 已改；测试断言 11/23/20。
+
+### 翻译偏差
+4. **FEEL 系列(41-48) 原被统一写成 `tech_adjust`**（多乘技巧且额外加欲情）。新增 `tech_adjust params.flat=true` 直译 erArk FEEL（只乘目标感度、不加欲情），13 条指令的 FEEL 位已改 `flat=true`；TECH_*_ADJUST(110-120) 仍用默认非 flat。
+5. **口交 -125 复核后移除**：曾按 SOP 备注增 `"口交" = [ 口处女 -125 ]`；对照 erArk `instuct_judege.py` 确认口交只有询问文案、无数值修正，已移除该 h-config 条目（严格按源码铁律）。当前口交族与道具/严重骚扰/药物/SM 一样：只有 `judge_base` + 通用判定公式，无额外族修正。
+
+### 较小记录
+6. `IN_HUMILIATION_ROOM_OR_DR_ROOM` 在 gag_on/off 以前提形式保留（handler 读 location.tags），功能可用；与“位置前提一律转 condition”的既定风格不一致，本次未改数据，仅记录。
+7. `keep-list` / `master-list` 的“已完成（待复核）”已同步为“✅ 已确认（复核补丁）”。
+
+## 复核补丁二（非 95 集剩余指令 + 95 集交叉发现）
+
+> 同一套 CSV/Python 级核验扩展到 B1-B4 其他已复刻指令（daily/obscenity/sex.toml 等 54 条非 95 集），
+> 并交叉发现 95 集一处死属性。已修复：
+
+1. **11 条指令补 judge_base**（obscenity.toml）：embrace / hand_in_hand / lap_pillow / touch_head /
+   touch_breast / touch_buttocks（初级骚扰 200）、raise_skirt / touch_anus / touch_clitoris /
+   touch_vagina（严重骚扰 600）、kiss（亲吻 250 + judge_class="亲吻"）。
+2. **stroke 移除多余 settle_trust**：erArk 链不含 22 ADD_SMALL_TRUST；同步更新测试。
+3. **external_womb_massage 习得改 target=self**：erArk 81 ADD_SMALL_LEARN 加给自己；测试改用 getEntityAttr 断言。
+4. **95 集 `尊重` → `恭顺` 死属性**：`尊重` 不在 attributes.toml，凭空写 base['尊重'] 永远不被引擎读取；
+   sex-insert-v/a/cervix/womb + sex-wait-upon 共 21 处状态值改为 `恭顺`，insert-a/b/c 测试同步。
+5. 交叉确认：make_masturebate 的 `settle_state 皮肤` 是 FEEL 正确直译；恐怖 baseValue 已全 10。
+6. **pull_out_penis 补 `TARGET_IS_H`**（erArk h_mode=2 自动注入前提缺失，之前可能脱离 H 场景显示）；并补 `erark_h_mode_show_type/tired_type` 元数据。
+
 ## 变更
 
 - `completed-instructions.md`：95 行 🟡 已实现（待复核）→ ✅ 已确认；B4-B7 看板 ✅ 128 / 🟡 0 / 📝 14。

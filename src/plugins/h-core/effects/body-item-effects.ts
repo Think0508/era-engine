@@ -14,6 +14,11 @@ import { apiSystem } from '../../../core/api'
 import { ATTR } from '../../../core/entity-utils'
 import type { BodyItemSlot } from '../types'
 
+// 注释：判定退缩门控（复核补丁）——与 settle_* 一致，退缩时 item/玩具效果整链跳过
+function canApply(ctx: any): boolean {
+  return !ctx?._judgeResult?.retreated
+}
+
 export function registerBodyItemEffects(): void {
   // ═══════════════════════════════════════════════════════════
   // H 药物效果——精准复刻 erArk 公式
@@ -22,6 +27,7 @@ export function registerBodyItemEffects(): void {
   // 注释：润滑液——TARGET_ADD_HUGE_LUBRICATION (效果1001)
   // 公式：润滑 += min(99999, 10000 - floor(当前 * 0.1))
   effectTypeRegistry.register('apply_lubricant', (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.base) continue
@@ -36,6 +42,7 @@ export function registerBodyItemEffects(): void {
   //       屈服 += min(99999, 10000 - floor(当前 * 0.016))
   //       desire_point = 100（满值）
   effectTypeRegistry.register('apply_aphrodisiac', (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.base) continue
@@ -55,6 +62,7 @@ export function registerBodyItemEffects(): void {
   // 注释：一次性玩具（跳蛋/按摩棒）——即时快感
   // params: part (部位), base (基础快感)
   effectTypeRegistry.register('apply_instant_toy', (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     const ids = execCtx._targetIds as string[]
     const part = (_p.part as string) ?? 'clit'
     const base = (_p.base as number) ?? 50
@@ -73,6 +81,7 @@ export function registerBodyItemEffects(): void {
   // 注释：body_item_equip——装备到身体物品槽
   // 从 sourceId 背包扣除，设 target 的 body_items[slot]
   effectTypeRegistry.register('body_item_equip', async (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     const slot = (_p.slot as number) ?? -1
     if (slot < 0) return true
     const itemId = _p.itemId ?? execCtx._itemId ?? execCtx.sourceItemId
@@ -131,6 +140,7 @@ export function registerBodyItemEffects(): void {
 
   // 注释：body_item_unequip——卸下身体物品（装备类不消耗，物品本就在背包；消耗类已消耗，均不归还）
   effectTypeRegistry.register('body_item_unequip', async (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     const slot = (_p.slot as number) ?? -1
     if (slot < 0) return true
     for (const id of execCtx._targetIds as string[]) {
@@ -144,6 +154,7 @@ export function registerBodyItemEffects(): void {
 
   // 注释：body_item_clear_all——清除所有 body_item（H 结束用）
   effectTypeRegistry.register('body_item_clear_all', (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
       if (!ch?.body_items) continue
@@ -159,6 +170,7 @@ export function registerBodyItemEffects(): void {
 
   // 注释：vibrator_set——设置震动棒档位 0-3
   effectTypeRegistry.register('vibrator_set', (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     const level = (_p.level as number) ?? 0
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
@@ -168,6 +180,7 @@ export function registerBodyItemEffects(): void {
   })
 
   effectTypeRegistry.register('vibrator_up', (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
       if (ch?.h_state && ch.h_state.sex_toy_level < 3) ch.h_state.sex_toy_level++
@@ -176,6 +189,7 @@ export function registerBodyItemEffects(): void {
   })
 
   effectTypeRegistry.register('vibrator_down', (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     for (const id of execCtx._targetIds as string[]) {
       const ch = entitySystem.get('character', id) as any
       if (ch?.h_state && ch.h_state.sex_toy_level > 0) ch.h_state.sex_toy_level--
@@ -189,6 +203,7 @@ export function registerBodyItemEffects(): void {
 
   // toy_equip：从发起者背包扣 itemId（仅 consume=true），装到目标 body_items[slot]，并置 h_state flag（可带档位）
   effectTypeRegistry.register('toy_equip', async (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     const slot = (_p.slot as number) ?? -1
     const itemId = (_p.itemId as string) ?? ''
     const flag = (_p.flag as string) ?? ''
@@ -234,6 +249,7 @@ export function registerBodyItemEffects(): void {
 
   // toy_unequip：从目标卸下 body_items[slot]，清 h_state flag（装备不消耗，无需归还）
   effectTypeRegistry.register('toy_unequip', async (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     const slot = (_p.slot as number) ?? -1
     const flag = (_p.flag as string) ?? ''
     if (slot < 0) return true
@@ -254,6 +270,7 @@ export function registerBodyItemEffects(): void {
   // 1011 WEAR_CONDOM / 1012 TAKE_CONDOM_OFF：统一 body_items[13] 表示（erArk body_item[13][1]；
   // h-ejaculation 射精判定用 body_items['13']，h_state.condom 仅作兼容镜像）
   effectTypeRegistry.register('wear_condom', (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     const self = execCtx.sourceId ? entitySystem.get('character', execCtx.sourceId) as any : null
     if (self?.h_state) self.h_state.condom = true
     if (self) {
@@ -263,6 +280,7 @@ export function registerBodyItemEffects(): void {
     return true
   })
   effectTypeRegistry.register('take_condom_off', (_p: any, execCtx: any) => {
+    if (!canApply(execCtx)) return true
     const self = execCtx.sourceId ? entitySystem.get('character', execCtx.sourceId) as any : null
     if (self?.h_state) self.h_state.condom = false
     if (self?.body_items) delete self.body_items['13']

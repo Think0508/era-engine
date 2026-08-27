@@ -115,6 +115,7 @@ category = "sex"
 sub_category = "item"
 time_cost = 10
 priority = 50
+judge_base = 400
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_NIPPLE_CLAMP", "TARGET_NOT_MILKING_MACHINE", "TARGET_NOT_NIPPLE_CLAMP"]
 tags = ["system:h-core", "system:h-toy"]
 effects = [
@@ -124,7 +125,7 @@ effects = [
   { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_trust" },
-  { type = "tech_adjust", target = "selected", params = { part = "胸部" } },
+  { type = "tech_adjust", target = "selected", params = { part = "胸部", flat = true } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
   { type = "settle_state", params = { state = "快乐", baseValue = 30 } },
@@ -197,6 +198,7 @@ category = "sex"
 sub_category = "item"
 time_cost = 10
 priority = 50
+judge_base = 400
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_CLIT_CLAMP", "TARGET_NOT_CLIT_CLAMP"]
 tags = ["system:h-core", "system:h-toy"]
 effects = [
@@ -206,7 +208,7 @@ effects = [
   { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_trust" },
-  { type = "tech_adjust", target = "selected", params = { part = "阴蒂" } },
+  { type = "tech_adjust", target = "selected", params = { part = "阴蒂", flat = true } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
   { type = "settle_state", params = { state = "快乐", baseValue = 30 } },
@@ -279,6 +281,7 @@ category = "sex"
 sub_category = "item"
 time_cost = 10
 priority = 50
+judge_base = 400
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_VIBRATOR", "TARGET_NOT_VIBRATOR_INSERTION", "PENIS_NOT_IN_TARGET_VAGINA_OR_WOMB"]
 tags = ["system:h-core", "system:h-toy"]
 effects = [
@@ -289,7 +292,7 @@ effects = [
   { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_trust" },
   { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
-  { type = "tech_adjust", target = "selected", params = { part = "阴道" } },
+  { type = "tech_adjust", target = "selected", params = { part = "阴道", flat = true } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
@@ -331,6 +334,7 @@ category = "sex"
 sub_category = "item"
 time_cost = 10
 priority = 50
+judge_base = 400
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_VIBRATOR", "TARGET_ANUS_EMPTY", "PENIS_NOT_IN_TARGET_ANAL"]
 tags = ["system:h-core", "system:h-toy"]
 effects = [
@@ -341,7 +345,7 @@ effects = [
   { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_trust" },
   { type = "first_time_check", target = "selected", params = { key = "virgin_A" } },
-  { type = "tech_adjust", target = "selected", params = { part = "后穴" } },
+  { type = "tech_adjust", target = "selected", params = { part = "后穴", flat = true } },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
@@ -383,6 +387,7 @@ category = "sex"
 sub_category = "item"
 time_cost = 10
 priority = 50
+judge_base = 400
 premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_ANAL_BEADS", "TARGET_ANUS_EMPTY", "PENIS_NOT_IN_TARGET_ANAL"]
 tags = ["system:h-core", "system:h-toy"]
 effects = [
@@ -392,7 +397,7 @@ effects = [
   { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_trust" },
-  { type = "tech_adjust", target = "selected", params = { part = "后穴" } },
+  { type = "tech_adjust", target = "selected", params = { part = "后穴", flat = true } },
   { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
   { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
   { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
@@ -434,6 +439,7 @@ category = "sex"
 sub_category = "item"
 time_cost = 1
 priority = 50
+judge_base = 600
 premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_OFF"]
 tags = ["system:h-core", "system:h-toy"]
 effects = [
@@ -472,6 +478,7 @@ category = "sex"
 sub_category = "item"
 time_cost = 1
 priority = 50
+judge_base = 600
 premises = ["HAVE_TARGET", "TARGET_IS_H", "TARGET_HAVE_SEX_TOY", "TARGET_NOW_SEX_TOY_ON", "TARGET_NOW_SEX_TOY_NOT_STRONG"]
 tags = ["system:h-core", "system:h-toy"]
 effects = [

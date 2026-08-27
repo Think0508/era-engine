@@ -120,11 +120,13 @@ id = "pull_out_penis"
 label = "拔出阴茎"
 erark_id = "6019"
 erark_behavior = "PULL_OUT_PENIS"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
 category = "sex"
 sub_category = "base"
 time_cost = 1
 priority = 50
-premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "DR_HAVE_SEX_POSITION_OR_PENIS_IN_T_ANYPART"]
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "DR_HAVE_SEX_POSITION_OR_PENIS_IN_T_ANYPART"]
 tags = ["system:h-core"]
 effects = [
   { type = "pull_out_penis", target = "selected" },
@@ -581,7 +583,7 @@ effects = [
   { type = "settle_trust" },
   { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
   { type = "settle_state", params = { state = "反感", baseValue = 5 } },
-  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", target = "self", params = { state = "习得", baseValue = 30 } },
   { type = "tech_adjust", target = "selected", params = { part = "子宫" } },
   { type = "h_experience", target = "selected", params = { expId = "7", value = 1 } },
   { type = "h_experience", target = "self", params = { expId = "41", value = 1 } },

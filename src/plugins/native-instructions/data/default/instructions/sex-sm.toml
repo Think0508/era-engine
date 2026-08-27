@@ -55,7 +55,7 @@ effects = [
   { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
+  { type = "settle_state", params = { state = "恐怖", baseValue = 10 } },
   { type = "h_experience", target = "selected", params = { expId = "51", value = 1 } },
   { type = "toy_equip", target = "selected", params = { slot = 14, itemId = "口球" } },
   { type = "trigger_dialogue", target = "selected", params = { scene = "gag_on" } },
@@ -82,7 +82,7 @@ effects = [
   { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
   { type = "settle_trust" },
-  { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
+  { type = "settle_state", params = { state = "恐怖", baseValue = 10 } },
   { type = "toy_unequip", target = "selected", params = { slot = 14 } },
   { type = "trigger_dialogue", target = "selected", params = { scene = "gag_off" } },
 ]

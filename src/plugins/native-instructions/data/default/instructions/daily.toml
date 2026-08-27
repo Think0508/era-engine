@@ -109,8 +109,6 @@ effects = [
   # 14 DOWN_BOTH_MEDIUM_MANA_POINT：双方 气力 -6/分（degree=1）（default.py:259-274）
   { type = "settle_hp_mp", target = "self", params = { mpValue = -1, degree = 1 } },
   { type = "settle_hp_mp", target = "selected", params = { mpValue = -1, degree = 1 } },
-  # 22 ADD_SMALL_TRUST：信赖 + time/60×fix（default.py:165-182）
-  { type = "settle_trust" },
   # 54 TARGET_ADD_SMALL_DESIRE：欲情 +（time+30）× 欲望修正（default.py:3482-3503）
   { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
   # 55 TARGET_ADD_SMALL_HAPPY：快乐 +（time+30）× 快乐刻印修正（default.py:3506-3527）

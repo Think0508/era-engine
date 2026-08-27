@@ -249,9 +249,6 @@ export function registerSettleEffects(): void {
       if (_p.part) {
         // 注释：无意识/时停——心理快感不结算（erArk common_default.py:198-199）
         if (_p.part === ATTR.MIND && target?.sp_flag?.unconscious_h === 3) continue
-        // 注释：发起者的技巧 ability[30]
-        const techLv = initiator?.abilities?.[ATTR.TECHNIQUE]?.level ?? 0
-        const techAdj = getAdj(techLv)
         // 注释：目标的部位感度 ability[part_id]（部位属性名 → 感度能力名，如 皮肤→皮肤感度）
         const feelAbility = PART_ABILITY[_p.part] ?? _p.part
         const feelLv = target?.abilities?.[feelAbility]?.level ?? 0
@@ -262,9 +259,21 @@ export function registerSettleEffects(): void {
         const hypnosisAdj = target?.hypnosis?.increase_body_sensitivity ? 2 : 0
         // 注释：快感附加修正（眼罩/无觉刻印/群交 0.02/怀孕灌肠，chara_feel_state_adjust:300-347）
         const feelExtraAdj = getFeelExtraAdjust(target, _p.part, tbl, isGroupSex)
-        // 注释：部位快感 = base × max(0, sqrt(techAdj × feelAdj) + 催眠敏感 + 附加修正)
-        // （erArk :299 sqrt + :353 max(0) 钳制）
-        const feelCoeff = Math.max(0, Math.sqrt(techAdj * feelAdj) + hypnosisAdj + feelExtraAdj)
+
+        // 注释：flat=true = erArk FEEL 系列(41-48) 直译——只乘目标部位感度，
+        // 不乘技巧、不加欲情（default.py:3206-3260 chara_feel_state_adjust ability_level=-1 分支）。
+        // 默认（flat=false）= erArk TECH_*_ADJUST(110-120) 直译——乘 √(技巧×感度) 并额外结算欲情。
+        let feelCoeff: number
+        if (_p.flat === true) {
+          feelCoeff = Math.max(0, feelAdj + hypnosisAdj + feelExtraAdj)
+        } else {
+          // 注释：发起者的技巧 ability[30]
+          const techLv = initiator?.abilities?.[ATTR.TECHNIQUE]?.level ?? 0
+          const techAdj = getAdj(techLv)
+          // 注释：部位快感 = base × max(0, sqrt(techAdj × feelAdj) + 催眠敏感 + 附加修正)
+          // （erArk :299 sqrt + :353 max(0) 钳制）
+          feelCoeff = Math.max(0, Math.sqrt(techAdj * feelAdj) + hypnosisAdj + feelExtraAdj)
+        }
         const rawFeel = base * feelCoeff * adjust
         const curFeel = getEntityAttr(target, _p.part)
         const feel = Math.floor(rawFeel + (curFeel > 0 ? Math.min(3 * rawFeel, curFeel / 10) : 0))
@@ -279,17 +288,19 @@ export function registerSettleEffects(): void {
         // 欲情 = base × max(0, ability表[目标.部位感度] + 催眠敏感 + 素质修正 + 攻略进度 + 群交0.05)
         // state 12 非快感分支（chara_base_state_adjust:358-454 + :455-458 fall + :479 max(0) 钳制，非 sqrt；
         // 欲情吃羞耻/开放天赋修正 + fall×0.05——2026-08-08 审查补：原手写公式漏攻略进度修正）
-        const lustTalentAdj = getTalentStateAdjust(modLoader.getMod(), target, ATTR.AROUSAL)
-        const lustFallAdj = getFallLevel(target) * 0.05
-        let lustExtraAdj = hypnosisAdj + lustTalentAdj + lustFallAdj
-        if (isGroupSex && target?.h_state?.is_h) {
-          const others = Math.max(0, entitySystem.getAll('character').filter((c: any) => c.id !== target.id && c.current_location === target.current_location).length - 1)
-          lustExtraAdj += Math.min(10, others) * 0.05
+        if (_p.flat !== true) {
+          const lustTalentAdj = getTalentStateAdjust(modLoader.getMod(), target, ATTR.AROUSAL)
+          const lustFallAdj = getFallLevel(target) * 0.05
+          let lustExtraAdj = hypnosisAdj + lustTalentAdj + lustFallAdj
+          if (isGroupSex && target?.h_state?.is_h) {
+            const others = Math.max(0, entitySystem.getAll('character').filter((c: any) => c.id !== target.id && c.current_location === target.current_location).length - 1)
+            lustExtraAdj += Math.min(10, others) * 0.05
+          }
+          const rawLust = base * Math.max(0, feelAdj + lustExtraAdj) * adjust
+          const curLust = getEntityAttr(target, ATTR.AROUSAL)
+          const lust = Math.floor(rawLust + (curLust > 0 ? Math.min(3 * rawLust, curLust / 10) : 0))
+          target.base[ATTR.AROUSAL] = Math.min(99999, (target.base[ATTR.AROUSAL] ?? 0) + lust)
         }
-        const rawLust = base * Math.max(0, feelAdj + lustExtraAdj) * adjust
-        const curLust = getEntityAttr(target, ATTR.AROUSAL)
-        const lust = Math.floor(rawLust + (curLust > 0 ? Math.min(3 * rawLust, curLust / 10) : 0))
-        target.base[ATTR.AROUSAL] = Math.min(99999, (target.base[ATTR.AROUSAL] ?? 0) + lust)
       }
       // 喜欢的部位学习：显式 part（如摸胸/摸阴蒂）→ 双方分数 +1 + h:part_use（mental 只计分数）
       if (_p.part && execCtx.sourceId) {

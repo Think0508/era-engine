@@ -193,7 +193,7 @@ describe('B4-B7 SEX/wait_upon（6601-6614/6616）', () => {
     await commandExecutor.execute('deep_throat', execCtx())
     const n = npc()
     expect(n.base['苦痛']).toBe(40)
-    expect(n.base['恐怖']).toBe(40)
+    expect(n.base['恐怖']).toBe(20) // erArk TARGET_ADD_SMALL_TERROR base=10（+time_cost=10 → 20）
     expect(n.base['口喉']).toBeGreaterThan(0)
     expect(n.experience?.['32']).toBe(1)
     expect(n.h_state.insert_position).toBe(12)

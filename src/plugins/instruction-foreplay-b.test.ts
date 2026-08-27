@@ -25,6 +25,7 @@ import { onLoad as ejaculationOnLoad } from './h-ejaculation/index'
 import { eventBus } from '../core/event-bus'
 import { clearBehaviorHistory } from '../core/command-executor'
 import { makeTestExecCtx, resetCharacterEntity, DEFAULT_NPC_BASE, DEFAULT_PLAYER_BASE } from '../utils/test-helpers'
+import { getEntityAttr } from '../core/entity-utils'
 
 const stubCtx: any = {
   api: apiSystem,
@@ -174,7 +175,8 @@ describe('B4-B7 SEX/foreplay B 组（6206/6207/6209/6211/6213）', () => {
     expect(n.base['气力']).toBe(270)
     expect(n.base['润滑']).toBe(35)
     expect(n.base['反感']).toBe(10)
-    expect(n.base['习得']).toBe(35)
+    expect(getEntityAttr(p, '习得')).toBe(35)
+    expect(getEntityAttr(n, '习得')).toBe(0)
     expect(n.base['子宫']).toBeGreaterThan(0)
     expect(n.experience?.['7']).toBe(1)
     expect(player().experience?.['41']).toBe(1)

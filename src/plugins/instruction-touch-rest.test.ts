@@ -191,6 +191,8 @@ describe('B3 基础触摸剩余 8 条（5012/5013/5014/5015/5016/5024/5025/5026�
   it('kiss：时间+5 + 初吻/习得/好意/羞耻/反感 + 口喉 + 经验', async () => {
     resetChars()
     const n = npc()
+    // kiss 现补 judge_base=250/judge_class=亲吻（初吻 -125）——给足信赖使判定成功
+    n.base['信赖度'] = 300
     await commandExecutor.execute('kiss', execCtx())
     expect(n.base['好感度']).toBe(5)
     expect(n.base['习得']).toBe(35)

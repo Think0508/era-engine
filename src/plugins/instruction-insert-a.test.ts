@@ -78,8 +78,8 @@ const POSITION_CASES: [string, number, number, number, number, number, string][]
   ['back_sex', 2, 50, 200, 50, 200, '屈服'],
   ['riding_sex', 3, 50, 200, 50, 200, '先导'],
   ['back_riding_sex', 4, 50, 200, 50, 200, '先导'],
-  ['face_seat_sex', 5, 70, 240, 70, 240, '尊重'],
-  ['back_seat_sex', 6, 70, 240, 70, 240, '尊重'],
+  ['face_seat_sex', 5, 70, 240, 70, 240, '恭顺'],
+  ['back_seat_sex', 6, 70, 240, 70, 240, '恭顺'],
   ['face_stand_sex', 7, 40, 140, 40, 140, '羞耻'],
   ['back_stand_sex', 8, 40, 140, 40, 140, '羞耻'],
   ['face_hug_sex', 9, 40, 140, 50, 200, '欲情'],
@@ -240,6 +240,8 @@ describe('B4-B7 SEX/insert V 链（6301-6316）', () => {
     expect(n.experience?.['65']).toBe(1)
     expect(n.experience?.['68']).toBe(1)
     expect(p.experience?.['60']).toBe(1)
+    // 复核补丁：erArk 145 VAGINA_TECH_ADD_PL_P_ADJUST 不再漏写 → 玩家射精欲上升
+    expect(player().base['射精欲']).toBeGreaterThan(0)
     expect(n.h_state.insert_position).toBe(0)
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })

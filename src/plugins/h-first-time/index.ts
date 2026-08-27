@@ -31,9 +31,15 @@ function removeVirginTalent(char: any, key: string): void {
   }
 }
 
+// 注释：判定退缩门控（复核补丁）——与 settle_* 一致，退缩时破处/初吻不落账
+function canApply(ctx: any): boolean {
+  return !ctx?._judgeResult?.retreated
+}
+
 export function onLoad(_ctx: PluginContext): void {
   // 注释：第一次检查——对齐 erArk default.py（first sex effects 1101-1109）
   effectTypeRegistry.register('first_time_check', (params: any, ctx: any) => {
+    if (!canApply(ctx)) return true
     const targetIds = ctx._targetIds as string[]
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any
@@ -88,6 +94,7 @@ export function onLoad(_ctx: PluginContext): void {
 
   // 注释：初吻检查
   effectTypeRegistry.register('first_kiss_check', (_params: any, ctx: any) => {
+    if (!canApply(ctx)) return true
     const targetIds = ctx._targetIds as string[]
     for (const id of targetIds) {
       const char = entitySystem.get('character', id) as any

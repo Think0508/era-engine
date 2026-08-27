@@ -123,8 +123,8 @@ describe('stroke（1005）复刻', () => {
     expect(player().base['气力']).toBe(0)
     expect(n.base['体力']).toBe(1)
     expect(n.base['气力']).toBe(0)
-    // 22 信赖 + 10/60（calcTrust = duration/60×fix）
-    expect(n.base['信赖度']).toBeCloseTo(10 / 60, 5)
+    // erArk 链不含 22 ADD_SMALL_TRUST（复核修正）：不再额外涨信赖
+    expect(n.base['信赖度']).toBe(0)
     // 54/55/58 欲情/快乐/羞耻 +（10+30）×1.0 = 40
     expect(n.base['欲情']).toBe(40)
     expect(n.base['快乐']).toBe(40)

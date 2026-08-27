@@ -14,7 +14,7 @@ export interface ImportResult {
   edges: MapEdge[]
 }
 
-const KNOWN_LOC_FIELDS = new Set(['id', 'name', 'type', 'parent', 'tags', 'visible', 'exits'])
+const KNOWN_LOC_FIELDS = new Set(['id', 'name', 'type', 'parent', 'tags', 'visible'])
 const KNOWN_EDGE_FIELDS = new Set(['from', 'to', 'time_cost', 'condition'])
 
 export async function parseLocationsToml(raw: string, _regionId: string): Promise<MapNode[]> {
@@ -51,56 +51,80 @@ export async function parseGraphToml(raw: string): Promise<RawEdge[]> {
   return (data.edges as RawEdge[]) ?? []
 }
 
+function edgeAttrs(e: RawEdge): Record<string, any> {
+  const attrs: Record<string, any> = {}
+  for (const key of Object.keys(e)) {
+    if (!KNOWN_EDGE_FIELDS.has(key)) attrs[key] = e[key]
+  }
+  return attrs
+}
+
+function sameEdgeProps(a: RawEdge, b: RawEdge): boolean {
+  return (a.time_cost ?? 10) === (b.time_cost ?? 10)
+    && (a.condition ?? null) === (b.condition ?? null)
+    && JSON.stringify(edgeAttrs(a)) === JSON.stringify(edgeAttrs(b))
+}
+
 export function edgesToMapEdges(raw: RawEdge[]): MapEdge[] {
-  return raw.map((e, i) => {
-    const attrs: Record<string, any> = {}
-    for (const key of Object.keys(e)) {
-      if (!KNOWN_EDGE_FIELDS.has(key)) attrs[key] = e[key]
-    }
-    return {
-      id: `edge_${i}`,
+  const used = new Set<number>()
+  const edges: MapEdge[] = []
+
+  for (let i = 0; i < raw.length; i++) {
+    if (used.has(i)) continue
+    const e = raw[i]
+    const reverseIdx = raw.findIndex((r, j) =>
+      j !== i && !used.has(j) && r.from === e.to && r.to === e.from && sameEdgeProps(e, r)
+    )
+
+    const attrs = edgeAttrs(e)
+    edges.push({
+      id: `edge_${edges.length}`,
       from: e.from,
       to: e.to,
       timeCost: e.time_cost ?? 10,
-      direction: 'bidirectional' as EdgeDirection,
+      direction: reverseIdx >= 0 ? 'bidirectional' as EdgeDirection : 'directed' as EdgeDirection,
       condition: e.condition,
       attrs: Object.keys(attrs).length > 0 ? attrs : undefined,
-    }
-  })
+    })
+    if (reverseIdx >= 0) used.add(reverseIdx)
+  }
+
+  return edges
 }
 
 export async function importFromDir(mapsDir: string): Promise<ImportResult> {
   const allNodes: MapNode[] = []
-  const allEdges: MapEdge[] = []
+  let allEdges: MapEdge[] = []
 
   async function readTomlFiles(dir: string): Promise<{ content: string }[]> {
     const { readDir, readTextFile } = await import('@tauri-apps/plugin-fs')
     const results: { content: string }[] = []
     const entries = await readDir(dir)
     for (const entry of entries) {
-      const fullPath = `${dir}/${entry.name}`
-      if (entry.isDirectory) {
-        results.push(...await readTomlFiles(fullPath))
-      } else if (entry.isFile && entry.name.endsWith('.toml')) {
-        results.push({ content: await readTextFile(fullPath) })
+      if (entry.isFile && entry.name.endsWith('.toml')) {
+        results.push({ content: await readTextFile(`${dir}/${entry.name}`) })
       }
     }
     return results
   }
 
-  try {
+  const { exists } = await import('@tauri-apps/plugin-fs')
+  if (await exists(`${mapsDir}/locations`)) {
     const locFiles = await readTomlFiles(`${mapsDir}/locations`)
     for (const { content } of locFiles) {
       allNodes.push(...await parseLocationsToml(content, 'imported'))
     }
-  } catch { /* no locations dir */ }
+  }
 
-  try {
+  if (await exists(`${mapsDir}/graph`)) {
     const graphFiles = await readTomlFiles(`${mapsDir}/graph`)
     for (const { content } of graphFiles) {
       allEdges.push(...edgesToMapEdges(await parseGraphToml(content)))
     }
-  } catch { /* no graph dir */ }
+  }
+
+  // 多文件 graph 拼接后全局重编号，避免不同文件里相同的 edge_0/edge_1 冲突
+  allEdges = allEdges.map((e, i) => ({ ...e, id: `edge_${i}` }))
 
   return { nodes: allNodes, edges: allEdges }
 }

@@ -1,7 +1,7 @@
 import type { MapNode } from '../types/node'
 import type { MapEdge } from '../types/edge'
 
-const KNOWN_LOC_FIELDS = new Set(['id', 'name', 'type', 'parent', 'tags', 'visible', 'exits', 'position', 'collapsed', 'attrs'])
+const KNOWN_LOC_FIELDS = new Set(['id', 'name', 'type', 'parent', 'tags', 'visible', 'position', 'collapsed', 'attrs'])
 const KNOWN_EDGE_FIELDS = new Set(['from', 'to', 'time_cost', 'condition', 'attrs'])
 
 export interface ExportResult {
@@ -32,18 +32,35 @@ export async function exportToToml(nodes: MapNode[], edges: MapEdge[]): Promise<
 
   const locationsToml = stringify({ locations: locEntries } as any)
 
-  const edgeEntries = edges.map(e => {
-    const safeAttrs = e.attrs ? Object.fromEntries(
-      Object.entries(e.attrs).filter(([k]) => !KNOWN_EDGE_FIELDS.has(k))
-    ) : {}
-    return {
-      from: e.from,
-      to: e.to,
+  const edgeEntries: any[] = []
+  const seenEdges = new Set<string>()
+
+  function pushEdge(from: string, to: string, e: MapEdge, safeAttrs: Record<string, any>) {
+    const key = `${from}\u0000${to}\u0000${e.timeCost}\u0000${e.condition ?? ''}\u0000${JSON.stringify(safeAttrs)}`
+    if (seenEdges.has(key)) return
+    seenEdges.add(key)
+    edgeEntries.push({
+      from,
+      to,
       time_cost: e.timeCost,
       ...(e.condition ? { condition: e.condition } : {}),
       ...safeAttrs,
+    })
+  }
+
+  for (const e of edges) {
+    const safeAttrs = e.attrs ? Object.fromEntries(
+      Object.entries(e.attrs).filter(([k]) => !KNOWN_EDGE_FIELDS.has(k))
+    ) : {}
+    if (e.direction === 'reverse') {
+      pushEdge(e.to, e.from, e, safeAttrs)
+    } else if (e.direction === 'bidirectional') {
+      pushEdge(e.from, e.to, e, safeAttrs)
+      pushEdge(e.to, e.from, e, safeAttrs)
+    } else {
+      pushEdge(e.from, e.to, e, safeAttrs)
     }
-  })
+  }
 
   const edgesToml = stringify({ edges: edgeEntries } as any)
 

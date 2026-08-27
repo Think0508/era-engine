@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { autoLayout } from './autoLayout'
+import { autoLayout, findParentCycle, wouldCreateParentCycle } from './autoLayout'
 import type { MapNode } from '../types/node'
 
 describe('autoLayout', () => {
@@ -43,5 +43,27 @@ describe('autoLayout', () => {
 
   it('handles empty input', () => {
     expect(autoLayout([])).toEqual([])
+  })
+
+  it('detects parent cycle', () => {
+    const nodes: MapNode[] = [
+      { id: 'a', name: 'A', type: 'r', parent: 'b', tags: [], visible: true, position: { x: 0, y: 0 }, collapsed: false },
+      { id: 'b', name: 'B', type: 'r', parent: 'a', tags: [], visible: true, position: { x: 0, y: 0 }, collapsed: false },
+    ]
+    expect(findParentCycle(nodes)).not.toBeNull()
+    expect(() => autoLayout(nodes)).toThrow(/环/)
+  })
+
+  it('wouldCreateParentCycle detects self/descendant assignment', () => {
+    const nodes: MapNode[] = [
+      { id: 'root', name: 'Root', type: 'r', parent: null, tags: [], visible: true, position: { x: 0, y: 0 }, collapsed: false },
+      { id: 'child', name: 'Child', type: 'r', parent: 'root', tags: [], visible: true, position: { x: 0, y: 0 }, collapsed: false },
+      { id: 'grand', name: 'Grand', type: 'r', parent: 'child', tags: [], visible: true, position: { x: 0, y: 0 }, collapsed: false },
+    ]
+    expect(wouldCreateParentCycle(nodes, 'root', 'root')).toBe(true)
+    expect(wouldCreateParentCycle(nodes, 'root', 'child')).toBe(true)
+    expect(wouldCreateParentCycle(nodes, 'root', 'grand')).toBe(true)
+    expect(wouldCreateParentCycle(nodes, 'grand', 'root')).toBe(false)
+    expect(wouldCreateParentCycle(nodes, 'root', null)).toBe(false)
   })
 })

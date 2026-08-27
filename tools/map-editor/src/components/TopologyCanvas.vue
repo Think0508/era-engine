@@ -1,87 +1,42 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, markRaw } from 'vue'
+import { ref, watch, nextTick, markRaw, onBeforeUnmount } from 'vue'
 import { VueFlow, type Node, type Edge, type Connection, type NodeChange, type NodeMouseEvent, type EdgeMouseEvent, MarkerType } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { useMapStore } from '../stores/mapStore'
 import { convertFileSrc } from '@tauri-apps/api/core'
 import { useUiStore } from '../stores/uiStore'
+import type { MapNode } from '../types/node'
 import LocationNode from './LocationNode.vue'
+import BackgroundImage from './BackgroundImage.vue'
 import ContextMenu from './ContextMenu.vue'
 
 const mapStore = useMapStore()
 const ui = useUiStore()
-const nodeTypes = { location: markRaw(LocationNode) }
+const nodeTypes = {
+  location: markRaw(LocationNode),
+}
 
-const flowNodes = computed<Node[]>(() => {
-  // Force re-compute on data mutations AND display toggle
-  mapStore.nodeVersionRef
-  ui.showIdOnNode
-  ui.levelColors
-  // Calculate hierarchy level for each node
-  const levelCache = new Map<string, number>()
-  function calcLevel(id: string): number {
-    const cached = levelCache.get(id)
-    if (cached !== undefined) return cached
-    const node = mapStore.nodes.find(n => n.id === id)
-    if (!node || !node.parent) return 1
-    const lv = calcLevel(node.parent) + 1
-    levelCache.set(id, lv)
-    return lv
-  }
-  for (const n of mapStore.nodes) calcLevel(n.id)
-
-  return mapStore.nodes.map(n => {
-    const plain = JSON.parse(JSON.stringify(n))
-    // Apply visibility style �?also bump version on every render to force re-render
-    const style: Record<string, any> = {}
-    if (!n.visible) { style.opacity = 0.35; style.borderStyle = 'dashed' }
-    return {
-      id: n.id,
-      type: 'location',
-      position: { x: n.position.x, y: n.position.y },
-      style,
-      data: {
-        ...plain,
-        level: levelCache.get(n.id) ?? 1,
-      },
-    }
-  })
-})
-
-const flowEdges = computed<Edge[]>(() =>
-  mapStore.edges.map(e => ({
-    id: e.id,
-    source: e.from,
-    target: e.to,
-    type: 'default',
-    data: JSON.parse(JSON.stringify(e)),
-    markerEnd: e.direction === 'directed' || e.direction === 'bidirectional'
-      ? { type: MarkerType.ArrowClosed } : undefined,
-    markerStart: e.direction === 'reverse' || e.direction === 'bidirectional'
-      ? { type: MarkerType.ArrowClosed } : undefined,
-    style: e.condition
-      ? { strokeDasharray: '5,5', stroke: '#eab308' }
-      : { stroke: '#666' },
-  }))
-)
-
+const renderNodes = ref<Node[]>([])
+const renderEdges = ref<Edge[]>([])
 const vueFlowStore = ref<any>(null)
 const contextMenu = ref<{ x: number; y: number; nodeId?: string; edgeId?: string } | null>(null)
-const displayKey = ref(0)
-watch(() => [ui.showIdOnNode, ui.levelColors], () => { displayKey.value++ })
-// Force VueFlow remount on node/edge data changes, preserving viewport
-watch(() => mapStore.nodeVersionRef, () => {
-  const vp = vueFlowStore.value?.getViewport()
-  displayKey.value++
-  if (vp) nextTick(() => vueFlowStore.value?.setViewport(vp))
-})
 const bgUrl = ref('')
-const bgImageSize = ref({ w: 0, h: 0 })
+const renameInput = ref<HTMLInputElement | null>(null)
+const renamePos = ref({ x: 0, y: 0 })
+let renameOrigin = ''
+const renaming = ref(false)
+
+let paneClickTimer: ReturnType<typeof setTimeout> | null = null
+let windowDrawMouseUpBound = false
+const SNAP_DISTANCE = 60
+
+const drawStartScreen = ref<{ x: number; y: number } | null>(null)
+const drawCurrentScreen = ref<{ x: number; y: number } | null>(null)
+const bgFileInput = ref<HTMLInputElement | null>(null)
 
 watch(() => mapStore.backgroundPath, (path) => {
   if (path) {
-    // If already a data/blob URL (from file input), use as-is
     if (path.startsWith('data:') || path.startsWith('blob:')) {
       bgUrl.value = path
     } else {
@@ -90,22 +45,216 @@ watch(() => mapStore.backgroundPath, (path) => {
   } else {
     bgUrl.value = ''
   }
-})
+}, { immediate: true })
 
 watch(bgUrl, (url) => {
-  if (!url) { bgImageSize.value = { w: 0, h: 0 }; return }
+  const mapId = ui.focusNodeId ?? ''
+  if (!url) {
+    mapStore.bgImageWidth = 0
+    mapStore.bgImageHeight = 0
+    const ctx = mapStore.visualMaps[mapId]
+    if (ctx) {
+      mapStore.visualMaps[mapId] = { ...ctx, bgImageWidth: 0, bgImageHeight: 0 }
+    }
+    return
+  }
   const img = new Image()
+  const loadedUrl = url
   img.onload = () => {
-    bgImageSize.value = { w: img.naturalWidth, h: img.naturalHeight }
-    mapStore.bgImageWidth = img.naturalWidth
-    mapStore.bgImageHeight = img.naturalHeight
+    // 只更新当前仍激活的全局尺寸；旧图异步完成时不再覆盖新图上下文
+    if (bgUrl.value === loadedUrl) {
+      mapStore.bgImageWidth = img.naturalWidth
+      mapStore.bgImageHeight = img.naturalHeight
+    }
+    const ctx = mapStore.visualMaps[mapId] ?? {}
+    mapStore.visualMaps[mapId] = { ...ctx, bgImageWidth: img.naturalWidth, bgImageHeight: img.naturalHeight }
+    syncRender()
+  }
+  img.onerror = () => {
+    alert('背景图加载失败')
   }
   img.src = url
 })
 
-let edgeCounter = 0
-let paneClickTimer: ReturnType<typeof setTimeout> | null = null
-const SNAP_DISTANCE = 60
+function calcLevel(id: string, cache: Map<string, number>, visiting = new Set<string>()): number {
+  const cached = cache.get(id)
+  if (cached !== undefined) return cached
+  if (visiting.has(id)) return 1
+  const node = mapStore.nodes.find(n => n.id === id)
+  if (!node || !node.parent) {
+    cache.set(id, 1)
+    return 1
+  }
+  visiting.add(id)
+  const lv = calcLevel(node.parent, cache, visiting) + 1
+  visiting.delete(id)
+  cache.set(id, lv)
+  return lv
+}
+
+function isInFocus(id: string): boolean {
+  const focus = ui.focusNodeId
+  if (!focus) return true
+  if (!mapStore.nodes.some(n => n.id === focus)) return true
+  let cur: string | null = id
+  const seen = new Set<string>()
+  while (cur) {
+    if (cur === focus) return true
+    if (seen.has(cur)) break
+    seen.add(cur)
+    cur = mapStore.nodes.find(n => n.id === cur)?.parent ?? null
+  }
+  return false
+}
+
+function isHiddenByCollapse(id: string): boolean {
+  const focus = ui.focusNodeId
+  let cur = mapStore.nodes.find(n => n.id === id)?.parent ?? null
+  const seen = new Set<string>()
+  while (cur) {
+    if (focus && cur === focus) break
+    if (seen.has(cur)) break
+    seen.add(cur)
+    const node = mapStore.nodes.find(n => n.id === cur)
+    if (node?.collapsed) return true
+    cur = node?.parent ?? null
+  }
+  return false
+}
+
+function isRenderable(n: MapNode): boolean {
+  if (mapStore.isModeB) {
+    return n.parent === (ui.focusNodeId ?? null)
+  }
+  return isInFocus(n.id) && !isHiddenByCollapse(n.id)
+}
+
+function plainNode(n: any): any {
+  return {
+    ...n,
+    attrs: n.attrs ? JSON.parse(JSON.stringify(n.attrs)) : undefined,
+  }
+}
+
+function plainEdge(e: any): any {
+  return {
+    ...e,
+    attrs: e.attrs ? JSON.parse(JSON.stringify(e.attrs)) : undefined,
+  }
+}
+
+function syncRender() {
+  if (ui.focusNodeId && !mapStore.nodes.some(n => n.id === ui.focusNodeId)) {
+    ui.setFocus(null)
+  }
+  const levelCache = new Map<string, number>()
+  for (const n of mapStore.nodes) calcLevel(n.id, levelCache)
+  const maxLevel = mapStore.isModeB || mapStore.viewport.zoom >= 1 ? Number.POSITIVE_INFINITY : mapStore.viewport.zoom >= 0.5 ? 3 : 2
+  const visible = mapStore.nodes.filter(n =>
+    (levelCache.get(n.id) ?? 1) <= maxLevel &&
+    isRenderable(n)
+  )
+
+  const visualMapId = ui.focusNodeId ?? ''
+  const visualPositions = mapStore.isModeB
+    ? (mapStore.getVisualMapContext(visualMapId).nodePositions ?? {})
+    : {}
+
+  const nodes: Node[] = visible.map(n => {
+    const plain = plainNode(n)
+    const style: Record<string, any> = {}
+    if (!n.visible) { style.opacity = 0.35; style.borderStyle = 'dashed' }
+    return {
+      id: n.id,
+      type: 'location',
+      position: (mapStore.isModeB && visualPositions[n.id] ? { ...visualPositions[n.id] } : { x: n.position.x, y: n.position.y }),
+      style,
+      data: {
+        ...plain,
+        level: levelCache.get(n.id) ?? 1,
+      },
+    }
+  })
+
+  renderNodes.value = nodes
+
+  const visibleIds = new Set(visible.map(n => n.id))
+  const edgeList: Edge[] = []
+  for (const e of mapStore.edges) {
+    if (!visibleIds.has(e.from) || !visibleIds.has(e.to)) continue
+    edgeList.push({
+      id: e.id,
+      source: e.from,
+      target: e.to,
+      type: 'default',
+      data: plainEdge(e),
+      markerEnd: e.direction === 'directed' || e.direction === 'bidirectional'
+        ? { type: MarkerType.ArrowClosed } : undefined,
+      markerStart: e.direction === 'reverse' || e.direction === 'bidirectional'
+        ? { type: MarkerType.ArrowClosed } : undefined,
+      style: e.condition
+        ? { strokeDasharray: '5,5', stroke: '#eab308' }
+        : { stroke: '#666' },
+    } as Edge)
+  }
+  renderEdges.value = edgeList
+}
+
+watch(
+  () => [
+    mapStore.nodeVersionRef,
+    ui.showIdOnNode,
+    ui.levelColors,
+    ui.focusNodeId,
+    mapStore.isModeB,
+    mapStore.viewport.zoom,
+    bgUrl.value,
+  ],
+  syncRender,
+  { immediate: true },
+)
+
+watch(() => mapStore.projectFilePath, () => {
+  const vp = mapStore.viewport
+  if (vueFlowStore.value && (vp.x !== 0 || vp.y !== 0 || vp.zoom !== 1)) {
+    nextTick(() => vueFlowStore.value?.setViewport(vp))
+  }
+  if (mapStore.isModeB) {
+    const mapId = ui.focusNodeId ?? ''
+    mapStore.activateVisualMap(mapId)
+        syncRender()
+  }
+})
+
+watch(() => ui.focusNodeId, (newFocus, oldFocus) => {
+  if (mapStore.isModeB) {
+    mapStore.stopDrawZone()
+    const oldMapId = oldFocus ?? ''
+    const newMapId = newFocus ?? ''
+    mapStore.saveVisualMapPositions(oldMapId)
+    mapStore.activateVisualMap(newMapId)
+        syncRender()
+  }
+})
+
+watch(() => mapStore.isModeB, (on) => {
+  const mapId = ui.focusNodeId ?? ''
+  if (on) {
+    mapStore.activateVisualMap(mapId)
+      } else {
+    mapStore.stopDrawZone()
+    mapStore.saveVisualMapPositions(mapId)
+  }
+  syncRender()
+})
+
+onBeforeUnmount(() => {
+  if (paneClickTimer) clearTimeout(paneClickTimer)
+  if (windowDrawMouseUpBound) {
+    window.removeEventListener('mouseup', onPaneMouseUp)
+    windowDrawMouseUpBound = false
+  }
+})
 
 function nextNodeId(prefix: string): string {
   let n = 0
@@ -113,10 +262,26 @@ function nextNodeId(prefix: string): string {
   return `${prefix}${n}`
 }
 
-function onNodeClick({ node }: { node: Node }) {
+function nextEdgeId(): string {
+  let n = 0
+  while (mapStore.edges.some(edge => edge.id === `edge_${n}`)) n++
+  return `edge_${n}`
+}
+
+function onNodeClick({ node, event }: NodeMouseEvent) {
   if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
   commitRename()
+  const me = event as MouseEvent
+  if (me.shiftKey || me.ctrlKey || me.metaKey) {
+    ui.toggleNodeSelected(node.id)
+  } else {
+    ui.selectNode(node.id)
+  }
+}
+
+function onNodeDoubleClick({ node }: { node: Node }) {
   ui.selectNode(node.id)
+  startRename()
 }
 
 function onEdgeClick({ edge }: { edge: Edge }) {
@@ -144,25 +309,23 @@ function createRootNode(event: MouseEvent) {
   if (!vueFlowStore.value) return
   const id = nextNodeId('location_')
   const flowPoint = vueFlowStore.value.screenToFlowCoordinate({ x: event.clientX, y: event.clientY })
+  const parent = mapStore.isModeB ? ui.focusNodeId : null
   mapStore.addNode({
     id,
     name: id,
     type: 'region',
-    parent: null,
+    parent,
     tags: [],
     visible: true,
     position: { x: flowPoint.x, y: flowPoint.y },
     collapsed: false,
   })
+  if (mapStore.isModeB) {
+    mapStore.saveVisualMapPositions(ui.focusNodeId ?? '')
+  }
   if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
   ui.selectNode(id)
 }
-
-// Inline rename �?floating input near the selected node
-const renameInput = ref<HTMLInputElement | null>(null)
-const renamePos = ref({ x: 0, y: 0 })
-let renameOrigin = ''
-const renaming = ref(false)
 
 function startRename() {
   if (!ui.selectedNodeId) return
@@ -170,7 +333,6 @@ function startRename() {
   if (!node) return
   renameOrigin = node.name
   renaming.value = true
-  // Position the input near the node on screen
   const el = document.querySelector(`[data-id="${ui.selectedNodeId}"]`) as HTMLElement | null
   if (el) {
     const rect = el.getBoundingClientRect()
@@ -189,7 +351,17 @@ function commitRename() {
   if (!renaming.value || !ui.selectedNodeId) return
   const val = renameInput.value?.value ?? ''
   if (val && val !== renameOrigin) {
-    mapStore.updateNode(ui.selectedNodeId, { name: val })
+    const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
+    if (node && ui.syncNameToId && val.trim() && val.trim() !== node.id) {
+      if (mapStore.renameNodeId(node.id, val.trim(), val)) {
+        if (ui.focusNodeId === node.id) ui.setFocus(val.trim())
+        ui.selectNode(val.trim())
+      } else {
+        mapStore.updateNode(node.id, { name: val })
+      }
+    } else {
+      mapStore.updateNode(ui.selectedNodeId, { name: val })
+    }
   }
   renaming.value = false
 }
@@ -200,8 +372,7 @@ function cancelRename() {
 }
 
 function onRenameBlur() {
-  // Blur = cancel (revert to original)
-  cancelRename()
+  commitRename()
 }
 
 function onRenameKeyDown(event: KeyboardEvent) {
@@ -209,22 +380,41 @@ function onRenameKeyDown(event: KeyboardEvent) {
   if (event.key === 'Escape') { event.preventDefault(); cancelRename(); return }
 }
 
-// No-op �?input value is read on commit only
 function onRenameInput(_event: Event) {}
 
-
 function onKeyDown(event: KeyboardEvent) {
-  // If renaming, redirect keyboard events to the hidden input
   if (renaming.value) {
     renameInput.value?.focus()
     return
   }
 
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') {
+    event.preventDefault()
+    if (event.shiftKey) mapStore.redo()
+    else mapStore.undo()
+    return
+  }
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'y') {
+    event.preventDefault()
+    mapStore.redo()
+    return
+  }
+
   if (event.key === 'Delete' || event.key === 'Backspace') {
+    if (ui.selectedNodeIds.length > 1) {
+      event.preventDefault()
+      if (confirm(`确定删除选中的 ${ui.selectedNodeIds.length} 个节点及其子树？此操作不可撤销。`)) {
+        mapStore.bulkRemoveNodes(ui.selectedNodeIds)
+        ui.clearSelection()
+      }
+      return
+    }
     if (ui.selectedNodeId) {
       event.preventDefault()
-      mapStore.removeNode(ui.selectedNodeId)
-      ui.clearSelection()
+      if (confirmDeleteNode(ui.selectedNodeId)) {
+        mapStore.removeNode(ui.selectedNodeId)
+        ui.clearSelection()
+      }
       return
     }
     if (ui.selectedEdgeId) {
@@ -235,7 +425,12 @@ function onKeyDown(event: KeyboardEvent) {
     }
   }
 
-  // Printable or function key on selected node �?start rename
+  if (event.key === 'F2' && ui.selectedNodeId) {
+    event.preventDefault()
+    startRename()
+    return
+  }
+
   if (event.key === ' ' && ui.selectedNodeId) {
     event.preventDefault()
     startRename()
@@ -244,32 +439,45 @@ function onKeyDown(event: KeyboardEvent) {
 
   if (event.key === 'Tab' && ui.selectedNodeId) {
     event.preventDefault()
-    const parent = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
-    if (!parent) return
-    const id = nextNodeId(`${parent.id}_child_`)
+    const selected = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
+    if (!selected) return
+    // Mode B: 新建当前视觉地图的直接子节点（否则会建到不可见的更深层）
+    const parent = mapStore.isModeB ? ui.focusNodeId : selected.id
+    const parentNode = parent ? mapStore.nodes.find(n => n.id === parent) : null
+    const base = parentNode ?? selected
+    const id = nextNodeId(`${parent ?? 'location'}_child_`)
     mapStore.addNode({
       id,
       name: id,
       type: 'area',
-      parent: parent.id,
+      parent,
       tags: [],
       visible: true,
-      position: { x: parent.position.x + 80, y: parent.position.y + 80 },
+      position: { x: base.position.x + 80, y: base.position.y + 80 },
       collapsed: false,
     })
-    mapStore.addEdge({
-      id: `edge_p_${id}`,
-      from: parent.id,
-      to: id,
-      timeCost: 5,
-      direction: 'bidirectional',
-    })
+    if (parent) {
+      mapStore.addEdge({
+        id: `edge_p_${id}`,
+        from: parent,
+        to: id,
+        timeCost: 5,
+        direction: 'bidirectional',
+      })
+    }
+    if (mapStore.isModeB) {
+      mapStore.saveVisualMapPositions(ui.focusNodeId ?? '')
+    }
     if (paneClickTimer) { clearTimeout(paneClickTimer); paneClickTimer = null }
     ui.selectNode(id)
   }
 }
 
-const bgFileInput = ref<HTMLInputElement | null>(null)
+function confirmDeleteNode(id: string): boolean {
+  const { nodeCount, edgeCount } = mapStore.getSubtreeStats(id)
+  const detail = nodeCount > 1 ? `（含 ${nodeCount} 个节点、${edgeCount} 条边）` : `（${edgeCount} 条边）`
+  return confirm(`确定删除节点 '${id}' ${detail}？此操作不可撤销。`)
+}
 
 function onCanvasDragOver(event: DragEvent) { event.preventDefault() }
 
@@ -278,32 +486,45 @@ function onCanvasDrop(event: DragEvent) {
   const file = event.dataTransfer?.files?.[0]
   if (file && file.type.startsWith('image/')) {
     const reader = new FileReader()
-    reader.onload = () => { bgUrl.value = reader.result as string }
+    reader.onload = () => {
+      const url = reader.result as string
+      mapStore.bgImageWidth = 0
+      mapStore.bgImageHeight = 0
+      mapStore.saveVisualMap(ui.focusNodeId ?? '', { backgroundPath: url, bgImageWidth: 0, bgImageHeight: 0 }, true)
+      bgUrl.value = url
+      mapStore.backgroundPath = url
+    }
+    reader.onerror = () => alert('图片读取失败，请重试')
     reader.readAsDataURL(file)
   }
 }
 
-// Background image: read file as base64 data URL
 function onBgFileSelected(e: Event) {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   if (!file) return
   const reader = new FileReader()
   reader.onload = () => {
-    bgUrl.value = reader.result as string
+    const url = reader.result as string
+    mapStore.bgImageWidth = 0
+    mapStore.bgImageHeight = 0
+    mapStore.saveVisualMap(ui.focusNodeId ?? '', { backgroundPath: url, bgImageWidth: 0, bgImageHeight: 0 }, true)
+    bgUrl.value = url
+    mapStore.backgroundPath = url
   }
+  reader.onerror = () => alert('图片读取失败，请重试')
   reader.readAsDataURL(file)
   input.value = ''
 }
-
-// Click zone drawing �?stores screen coords for preview, flow coords for saving
-const drawStartScreen = ref<{ x: number; y: number } | null>(null)
-const drawCurrentScreen = ref<{ x: number; y: number } | null>(null)
 
 function onPaneMouseDown(event: MouseEvent) {
   if (!mapStore.drawingZone || !mapStore.drawTargetNodeId || !vueFlowStore.value) return
   drawStartScreen.value = { x: event.clientX, y: event.clientY }
   drawCurrentScreen.value = { x: event.clientX, y: event.clientY }
+  if (!windowDrawMouseUpBound) {
+    window.addEventListener('mouseup', onPaneMouseUp)
+    windowDrawMouseUpBound = true
+  }
 }
 
 function onPaneMouseMove(event: MouseEvent) {
@@ -312,10 +533,13 @@ function onPaneMouseMove(event: MouseEvent) {
 }
 
 function onPaneMouseUp() {
+  if (windowDrawMouseUpBound) {
+    window.removeEventListener('mouseup', onPaneMouseUp)
+    windowDrawMouseUpBound = false
+  }
   if (!drawStartScreen.value || !drawCurrentScreen.value || !mapStore.drawTargetNodeId || !vueFlowStore.value) {
     drawStartScreen.value = null; drawCurrentScreen.value = null; return
   }
-  // Save using flow coordinates (for proportional conversion on export)
   const startFlow = vueFlowStore.value.screenToFlowCoordinate(drawStartScreen.value)
   const endFlow = vueFlowStore.value.screenToFlowCoordinate(drawCurrentScreen.value)
   const x = Math.min(startFlow.x, endFlow.x)
@@ -327,9 +551,10 @@ function onPaneMouseUp() {
     if (node) {
       const attrs = (node as any).attrs ?? {}
       const zones = [...(attrs.clickZones ?? [])]
-      const bg = bgImageSize.value
-      if (bg.w > 0 && bg.h > 0) {
-        zones.push({ x: x / bg.w, y: y / bg.h, w: w / bg.w, h: h / bg.h })
+      const bgW = mapStore.bgImageWidth
+      const bgH = mapStore.bgImageHeight
+      if (bgW > 0 && bgH > 0) {
+        zones.push({ x: x / bgW, y: y / bgH, w: w / bgW, h: h / bgH })
       } else {
         zones.push({ x, y, w, h })
       }
@@ -339,7 +564,6 @@ function onPaneMouseUp() {
   drawStartScreen.value = null
   drawCurrentScreen.value = null
   mapStore.stopDrawZone()
-  // Re-select the node after drawing
   if (mapStore.drawTargetNodeId) ui.selectNode(mapStore.drawTargetNodeId)
 }
 
@@ -354,11 +578,9 @@ function getDrawStyle() {
 
 function onConnect(connection: Connection) {
   if (!connection.source || !connection.target) return
-  // Prevent duplicate edges between same nodes
   if (mapStore.edges.some(e => e.from === connection.source && e.to === connection.target)) return
-  edgeCounter++
   mapStore.addEdge({
-    id: `edge_${edgeCounter}`,
+    id: nextEdgeId(),
     from: connection.source,
     to: connection.target,
     timeCost: 10,
@@ -380,6 +602,7 @@ function onEdgeDoubleClick(payload: EdgeMouseEvent) {
 
 function onNodeContextMenu(payload: NodeMouseEvent) {
   payload.event.preventDefault()
+  ui.selectNode(payload.node.id)
   const me = payload.event as MouseEvent
   contextMenu.value = { x: me.clientX, y: me.clientY, nodeId: payload.node.id }
 }
@@ -396,27 +619,29 @@ function closeContextMenu() {
 
 function onPaneReady(instance: any) {
   vueFlowStore.value = instance
+  const vp = mapStore.viewport
+  if (vp.x !== 0 || vp.y !== 0 || vp.zoom !== 1) {
+    nextTick(() => instance.setViewport(vp))
+  }
+}
+
+function onMove({ flowTransform }: { flowTransform: { x: number; y: number; zoom: number } }) {
+  mapStore.setViewport({ x: flowTransform.x, y: flowTransform.y, zoom: flowTransform.zoom })
 }
 
 function onNodesChange(changes: NodeChange[]) {
-  // Only handle 'remove' type �?positions are synced via @node-drag-stop
-  for (const change of changes) {
-    if (change.type === 'remove') {
-      // Node was removed via Vue Flow built-in (e.g., keyboard delete)
-    }
-  }
+  // v-model:nodes handles position changes; only store-level mutations need sync.
+  void changes
 }
 
 function onNodeDragStop({ node }: { node: Node }) {
   const draggedId = node.id
-  // Save final position from Vue Flow
   const vfNode = vueFlowStore.value?.getNode(draggedId)
   if (vfNode?.position) {
     mapStore.updateNode(draggedId, { position: { x: vfNode.position.x, y: vfNode.position.y } })
   }
   const pos = mapStore.nodes.find(n => n.id === draggedId)?.position
   if (!pos) return
-  // Check proximity to other nodes
   for (const other of mapStore.nodes) {
     if (other.id === draggedId) continue
     const dx = other.position.x - pos.x
@@ -425,9 +650,8 @@ function onNodeDragStop({ node }: { node: Node }) {
     if (dist < SNAP_DISTANCE) {
       mapStore.updateNode(draggedId, { position: { ...other.position } })
       if (!mapStore.edges.some(e => e.from === draggedId && e.to === other.id)) {
-        edgeCounter++
         mapStore.addEdge({
-          id: `edge_${edgeCounter}`,
+          id: nextEdgeId(),
           from: draggedId,
           to: other.id,
           timeCost: 10,
@@ -436,6 +660,9 @@ function onNodeDragStop({ node }: { node: Node }) {
       }
       break
     }
+  }
+  if (mapStore.isModeB) {
+    mapStore.saveVisualMapPositions(ui.focusNodeId ?? '')
   }
 }
 </script>
@@ -446,21 +673,17 @@ function onNodeDragStop({ node }: { node: Node }) {
     tabindex="0"
     @keydown="onKeyDown"
     @click="closeContextMenu"
-    :style="{}"
     @dragover.prevent="onCanvasDragOver"
     @drop.prevent="onCanvasDrop"
   >
-    <img v-if="mapStore.isModeB && bgUrl" :src="bgUrl" class="map-bg-img" />
-    <!-- 注释：绘制点击区域时的矩形预�?-->
     <div
       v-if="drawStartScreen && drawCurrentScreen && mapStore.drawingZone"
       class="draw-zone-preview"
       :style="getDrawStyle()"
     />
     <VueFlow
-      :key="displayKey"
-      :nodes="flowNodes"
-      :edges="flowEdges"
+      v-model:nodes="renderNodes"
+      v-model:edges="renderEdges"
       :node-types="nodeTypes"
       :default-viewport="{ x: 0, y: 0, zoom: 1 }"
       :min-zoom="0.1"
@@ -469,20 +692,28 @@ function onNodeDragStop({ node }: { node: Node }) {
       :pan-on-drag="!mapStore.drawingZone"
       @nodes-change="onNodesChange"
       @node-click="onNodeClick"
+      @node-double-click="onNodeDoubleClick"
       @edge-click="onEdgeClick"
       @node-drag-stop="onNodeDragStop"
       @connect="onConnect"
       @edge-double-click="onEdgeDoubleClick"
       @pane-click="onPaneClick"
       @pane-ready="onPaneReady"
+      @move="onMove"
       @node-context-menu="onNodeContextMenu"
       @edge-context-menu="onEdgeContextMenu"
       @mousedown="onPaneMouseDown"
       @mousemove="onPaneMouseMove"
-      @mouseup="onPaneMouseUp"
+      
       @dragover.prevent="onCanvasDragOver"
       @drop.prevent="onCanvasDrop"
     >
+      <BackgroundImage
+        v-if="mapStore.isModeB && bgUrl"
+        :url="bgUrl"
+        :width="mapStore.bgImageWidth"
+        :height="mapStore.bgImageHeight"
+      />
       <Background :variant="BackgroundVariant.Dots" :gap="20" />
       <Controls />
     </VueFlow>
@@ -515,7 +746,6 @@ function onNodeDragStop({ node }: { node: Node }) {
 
 <style scoped>
 .canvas-wrapper { height: 100%; width: 100%; outline: none; position: relative; }
-.map-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; z-index: 0; }
 .canvas-wrapper :deep(.vue-flow__node) { cursor: pointer; }
 .canvas-wrapper :deep(.vue-flow__pane) { z-index: 1; position: relative; }
 .rename-float {
@@ -530,4 +760,3 @@ function onNodeDragStop({ node }: { node: Node }) {
   background: rgba(59,130,246,0.15); pointer-events: none; z-index: 999;
 }
 </style>
-

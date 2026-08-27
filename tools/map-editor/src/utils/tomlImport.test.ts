@@ -40,5 +40,34 @@ describe('tomlImport', () => {
     expect(edges[0].from).toBe('town_square')
     expect(edges[0].to).toBe('tavern')
     expect(edges[0].timeCost).toBe(5)
+    expect(edges[0].direction).toBe('directed')
+  })
+
+  it('collapses symmetric reverse pair into one bidirectional edge', () => {
+    const edges = edgesToMapEdges([
+      { from: 'a', to: 'b', time_cost: 10 },
+      { from: 'b', to: 'a', time_cost: 10 },
+    ])
+    expect(edges).toHaveLength(1)
+    expect(edges[0].direction).toBe('bidirectional')
+    expect(edges[0].from).toBe('a')
+    expect(edges[0].to).toBe('b')
+  })
+
+  it('keeps asymmetric reverse pair as two directed edges', () => {
+    const edges = edgesToMapEdges([
+      { from: 'a', to: 'b', time_cost: 5 },
+      { from: 'b', to: 'a', time_cost: 30 },
+    ])
+    expect(edges).toHaveLength(2)
+    expect(edges.every(e => e.direction === 'directed')).toBe(true)
+    expect(edges[0].timeCost).toBe(5)
+    expect(edges[1].timeCost).toBe(30)
+  })
+
+  it('keeps single edge as directed', () => {
+    const edges = edgesToMapEdges([{ from: 'a', to: 'b', time_cost: 7 }])
+    expect(edges).toHaveLength(1)
+    expect(edges[0].direction).toBe('directed')
   })
 })

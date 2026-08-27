@@ -1,37 +1,66 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useMapStore } from '../stores/mapStore'
 import { useUiStore } from '../stores/uiStore'
+import { wouldCreateParentCycle } from '../utils/autoLayout'
 
 const mapStore = useMapStore()
 const ui = useUiStore()
 
 const node = computed(() => mapStore.nodes.find(n => n.id === ui.selectedNodeId) ?? null)
+const selectedNodes = computed(() =>
+  ui.selectedNodeIds
+    .map(id => mapStore.nodes.find(n => n.id === id))
+    .filter((n): n is NonNullable<typeof n> => !!n)
+)
+
+const bulkTagInput = ref('')
+const bulkTypeInput = ref('')
+const bulkVisible = ref(true)
 
 function update(field: string, value: any) {
   if (!node.value) return
+  if (field === 'id' && typeof value === 'string') {
+    const trimmed = value.trim()
+    const ok = mapStore.renameNodeId(node.value.id, trimmed)
+    if (!ok && trimmed && trimmed !== node.value.id && mapStore.nodes.some(n => n.id === trimmed)) {
+      alert(`ID '${trimmed}' 已存在`)
+    } else if (ok) {
+      if (ui.focusNodeId === node.value.id) ui.setFocus(trimmed)
+      ui.selectNode(trimmed)
+    }
+    return
+  }
+  if (field === 'parent' && typeof value === 'string') {
+    const newParent = value.trim() || null
+    if (newParent && wouldCreateParentCycle(mapStore.nodes, node.value.id, newParent)) {
+      alert('不能把父节点设为自身或自己的后代，否则会形成环')
+      return
+    }
+    mapStore.updateNode(node.value.id, { parent: newParent })
+    return
+  }
+
   if (field === 'name' && ui.syncNameToId && typeof value === 'string' && value.length > 0) {
     const oldId = node.value.id
-    const newId = value
+    const newId = value.trim()
     if (oldId === newId) { mapStore.updateNode(oldId, { name: value }); return }
-    if (mapStore.nodes.some(n => n.id === newId)) { mapStore.updateNode(oldId, { name: value }); return }
-    for (const edge of mapStore.edges) {
-      if (edge.from === oldId) mapStore.updateEdge(edge.id, { from: newId })
-      if (edge.to === oldId) mapStore.updateEdge(edge.id, { to: newId })
+    if (mapStore.renameNodeId(oldId, newId, value)) {
+      if (ui.focusNodeId === oldId) ui.setFocus(newId)
+      ui.selectNode(newId)
+    } else {
+      mapStore.updateNode(oldId, { name: value })
     }
-    for (const child of mapStore.nodes) {
-      if (child.parent === oldId) mapStore.updateNode(child.id, { parent: newId })
-    }
-    mapStore.updateNode(oldId, { id: newId, name: value })
-    ui.selectNode(newId)
-  } else {
-    mapStore.updateNode(node.value.id, { [field]: value })
+    return
   }
+  mapStore.updateNode(node.value.id, { [field]: value })
 }
+
 function removeTag(tag: string) {
   if (!node.value) return
   update('tags', node.value.tags.filter(t => t !== tag))
 }
+
 function addTag(e: Event) {
   if (!node.value) return
   const el = e.target as HTMLInputElement
@@ -71,10 +100,54 @@ function updateZoom(index: number, event: Event) {
   zoom[index] = val
   mapStore.updateNode(node.value.id, { attrs: { ...nodeAttrs.value, zoom } })
 }
+
+function applyBulkType() {
+  const value = bulkTypeInput.value.trim()
+  if (!value || selectedNodes.value.length === 0) return
+  mapStore.bulkUpdateNodes(selectedNodes.value.map(n => n.id), { type: value })
+  bulkTypeInput.value = ''
+}
+
+function applyBulkVisible() {
+  if (selectedNodes.value.length === 0) return
+  mapStore.bulkUpdateNodes(selectedNodes.value.map(n => n.id), { visible: bulkVisible.value })
+}
+
+function applyBulkTag() {
+  const tag = bulkTagInput.value.trim()
+  if (!tag || selectedNodes.value.length === 0) return
+  mapStore.bulkAddTagToNodes(selectedNodes.value.map(n => n.id), tag)
+  bulkTagInput.value = ''
+}
+
+function deleteSelected() {
+  if (selectedNodes.value.length === 0) return
+  if (confirm(`确定删除选中的 ${selectedNodes.value.length} 个节点及其子树？此操作不可撤销。`)) {
+    mapStore.bulkRemoveNodes(selectedNodes.value.map(n => n.id))
+    ui.clearSelection()
+  }
+}
 </script>
 
 <template>
-  <div v-if="node" class="panel">
+  <div v-if="selectedNodes.length > 1" class="panel">
+    <h3>批量编辑（{{ selectedNodes.length }} 个节点）</h3>
+    <label>类型
+      <input v-model="bulkTypeInput" placeholder="统一设置类型..." @keydown.enter="applyBulkType" />
+    </label>
+    <button class="bulk-btn" @click="applyBulkType">应用类型</button>
+    <label>
+      <input v-model="bulkVisible" type="checkbox" @change="applyBulkVisible" />
+      可见
+    </label>
+    <label>添加 Tag
+      <input v-model="bulkTagInput" placeholder="给所有选中节点加 tag..." @keydown.enter="applyBulkTag" />
+    </label>
+    <button class="bulk-btn" @click="applyBulkTag">应用 Tag</button>
+    <button class="bulk-btn danger" @click="deleteSelected">删除选中</button>
+  </div>
+
+  <div v-else-if="node" class="panel">
     <h3>节点属性</h3>
     <label>ID <input :value="node.id" @change="e => update('id', (e.target as HTMLInputElement).value)" /></label>
     <label>名称 <input :value="node.name" @change="e => update('name', (e.target as HTMLInputElement).value)" /></label>
@@ -95,7 +168,7 @@ function updateZoom(index: number, event: Event) {
     <div class="tag-section">
       <label>标签</label>
       <div class="tag-list">
-        <span v-for="tag in node.tags" :key="tag" class="tag">
+        <span v-for="tag in node.tags" :key="tag" class="tag" :style="{ background: ui.tagColors[tag] ?? '#e2e8f0' }">
           {{ tag }} <span class="tag-remove" @click="removeTag(tag)">×</span>
         </span>
       </div>
@@ -142,4 +215,6 @@ function updateZoom(index: number, event: Event) {
 .add-btn { margin-top: 4px; padding: 2px 8px; font-size: 12px; cursor: pointer; }
 .zoom-row { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; }
 .zoom-row input { width: 60px; padding: 4px 8px; }
+.bulk-btn { display: block; width: 100%; margin-bottom: 6px; padding: 4px 8px; cursor: pointer; }
+.bulk-btn.danger { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
 </style>

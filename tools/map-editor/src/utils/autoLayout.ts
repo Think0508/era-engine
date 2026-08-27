@@ -3,8 +3,60 @@ import type { MapNode } from '../types/node'
 const HORIZONTAL_GAP = 250
 const VERTICAL_GAP = 100
 
+export function findParentCycle(nodes: MapNode[]): string[] | null {
+  const childrenOf = new Map<string, MapNode[]>()
+  for (const n of nodes) {
+    const key = n.parent ?? '__null__'
+    if (!childrenOf.has(key)) childrenOf.set(key, [])
+    childrenOf.get(key)!.push(n)
+  }
+
+  const visiting = new Set<string>()
+  const visited = new Set<string>()
+  const stack: string[] = []
+
+  function dfs(id: string): string[] | null {
+    if (visiting.has(id)) {
+      const start = stack.indexOf(id)
+      return stack.slice(start).concat(id)
+    }
+    if (visited.has(id)) return null
+    visiting.add(id)
+    stack.push(id)
+    for (const child of childrenOf.get(id) ?? []) {
+      const cycle = dfs(child.id)
+      if (cycle) return cycle
+    }
+    stack.pop()
+    visiting.delete(id)
+    visited.add(id)
+    return null
+  }
+
+  for (const n of nodes) {
+    const cycle = dfs(n.id)
+    if (cycle) return cycle
+  }
+  return null
+}
+
+export function wouldCreateParentCycle(nodes: MapNode[], id: string, newParent: string | null): boolean {
+  if (!newParent || newParent === id) return newParent === id
+  const seen = new Set<string>()
+  let cur: string | null = newParent
+  while (cur) {
+    if (cur === id) return true
+    if (seen.has(cur)) break
+    seen.add(cur)
+    cur = nodes.find(n => n.id === cur)?.parent ?? null
+  }
+  return false
+}
+
 export function autoLayout(nodes: MapNode[]): MapNode[] {
   if (nodes.length === 0) return []
+  const cycle = findParentCycle(nodes)
+  if (cycle) throw new Error(`parent 环检测：${cycle.join(' -> ')}`)
   const result = nodes.map(n => ({ ...n }))
 
   // Build children map

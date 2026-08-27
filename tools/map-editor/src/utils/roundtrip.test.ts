@@ -3,7 +3,7 @@ import { parse } from '@iarna/toml'
 import { stringify } from '@iarna/toml'
 
 describe('TOML round-trip', () => {
-  const KNOWN = new Set(['id', 'name', 'type', 'parent', 'tags', 'visible', 'exits'])
+  const KNOWN = new Set(['id', 'name', 'type', 'parent', 'tags', 'visible'])
 
   it('preserves unknown fields through import/export', () => {
     const toml = `
@@ -92,7 +92,7 @@ tags = []
     expect(Object.keys(attrs).length).toBe(0)
   })
 
-  it('preserves exits suppression (exits is a known field, not attr)', () => {
+  it('preserves exits as unknown attrs through round-trip', () => {
     const toml = `
 [[locations]]
 id = "test"
@@ -106,7 +106,17 @@ exits = [{ target = "foo", name = "去foo" }]
     for (const key of Object.keys(loc)) {
       if (!KNOWN.has(key)) attrs[key] = loc[key]
     }
-    // exits should NOT be in attrs
-    expect(attrs.exits).toBeUndefined()
+    expect(attrs.exits).toEqual([{ target: 'foo', name: '去foo' }])
+
+    const exported = {
+      ...attrs,
+      id: loc.id,
+      name: loc.name,
+      type: loc.type,
+      tags: loc.tags,
+    }
+    const output = stringify({ locations: [exported] } as any)
+    const reparsed = parse(output) as any
+    expect(reparsed.locations[0].exits).toEqual([{ target: 'foo', name: '去foo' }])
   })
 })

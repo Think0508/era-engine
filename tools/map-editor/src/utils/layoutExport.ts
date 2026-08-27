@@ -7,13 +7,19 @@ export function exportLayout(
   edges: MapEdge[],
   bgWidth: number,
   bgHeight: number,
+  background?: string,
 ): LayoutProject {
   const toProp = (px: number, max: number) => (max > 0 ? px / max : 0)
+  const normalizeCoord = (value: number, max: number) =>
+    max > 0 && value > 1 ? value / max : value
 
   const layoutNodes = nodes.map(n => {
     const attrs = (n as any).attrs ?? {}
     const clickZones = (attrs.clickZones ?? []).map((z: any) => ({
-      x: z.x, y: z.y, w: z.w, h: z.h,
+      x: normalizeCoord(z.x ?? 0, bgWidth),
+      y: normalizeCoord(z.y ?? 0, bgHeight),
+      w: normalizeCoord(z.w ?? 0, bgWidth),
+      h: normalizeCoord(z.h ?? 0, bgHeight),
     }))
     const zoom: [number, number] = attrs.zoom ?? [1, 1]
     return {
@@ -40,5 +46,6 @@ export function exportLayout(
     edges: layoutEdges,
     subMaps: {},
     zoomLevels: 3,
+    ...(background ? { background } : {}),
   }
 }

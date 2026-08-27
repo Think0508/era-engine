@@ -8,6 +8,9 @@ const ui = useUiStore()
 const newTag = ref('')
 const allTags = ref<string[]>([])
 
+const PALETTE = ['#e2e8f0', '#fecaca', '#fed7aa', '#fef08a', '#bbf7d0', '#bfdbfe', '#ddd6fe', '#fbcfe8']
+let paletteIndex = 0
+
 function refreshTags() {
   const tagSet = new Set<string>()
   for (const node of mapStore.nodes) {
@@ -19,12 +22,20 @@ function refreshTags() {
 
 function addTag() {
   const t = newTag.value.trim()
-  if (t && !allTags.value.includes(t)) allTags.value.push(t)
+  if (t && !allTags.value.includes(t)) {
+    allTags.value.push(t)
+    if (!ui.tagColors[t]) {
+      ui.tagColors[t] = PALETTE[paletteIndex % PALETTE.length]
+      paletteIndex++
+    }
+  }
   newTag.value = ''
 }
 
 function removeTag(tag: string) {
+  if (!confirm(`从 Tag 池删除 '${tag}'？同时会从所有节点上移除该 tag。`)) return
   allTags.value = allTags.value.filter(t => t !== tag)
+  delete ui.tagColors[tag]
   for (const node of mapStore.nodes) {
     if (node.tags.includes(tag)) {
       mapStore.updateNode(node.id, { tags: node.tags.filter((t: string) => t !== tag) })
@@ -32,12 +43,21 @@ function removeTag(tag: string) {
   }
 }
 
+function selectedIds(): string[] {
+  if (ui.selectedNodeIds.length > 0) return ui.selectedNodeIds
+  return ui.selectedNodeId ? [ui.selectedNodeId] : []
+}
+
 function assignTag(tag: string) {
-  if (!ui.selectedNodeId) return
-  const node = mapStore.nodes.find(n => n.id === ui.selectedNodeId)
-  if (node && !node.tags.includes(tag)) {
-    mapStore.updateNode(node.id, { tags: [...node.tags, tag] })
+  const ids = selectedIds()
+  if (ids.length > 0) {
+    mapStore.bulkAddTagToNodes(ids, tag)
   }
+}
+
+function setTagColor(tag: string, event: Event) {
+  const val = (event.target as HTMLInputElement).value
+  ui.tagColors[tag] = val
 }
 
 watch(() => [mapStore.nodes.length, ...mapStore.nodes.map(n => n.tags.length)], refreshTags, { immediate: true })
@@ -48,13 +68,21 @@ watch(() => [mapStore.nodes.length, ...mapStore.nodes.map(n => n.tags.length)], 
     <h3>Tag 池</h3>
     <div class="tag-list">
       <div v-for="tag in allTags" :key="tag" class="tag-item" @click="assignTag(tag)">
-        {{ tag }} <span class="tag-remove" @click.stop="removeTag(tag)">×</span>
+        <input
+          type="color"
+          class="color-input"
+          :value="ui.tagColors[tag] ?? '#e2e8f0'"
+          @click.stop
+          @input="setTagColor(tag, $event)"
+        />
+        <span class="tag-label">{{ tag }}</span>
+        <span class="tag-remove" @click.stop="removeTag(tag)">×</span>
       </div>
     </div>
     <div class="tag-input">
       <input v-model="newTag" placeholder="新 Tag..." @keydown.enter="addTag" />
     </div>
-    <p v-if="ui.selectedNodeId" class="hint">点击 Tag 赋予选中节点</p>
+    <p v-if="selectedIds().length > 0" class="hint">点击 Tag 赋予选中节点（{{ selectedIds().length }} 个）</p>
   </div>
 </template>
 
@@ -62,10 +90,12 @@ watch(() => [mapStore.nodes.length, ...mapStore.nodes.map(n => n.tags.length)], 
 .tag-pool { padding: 12px; }
 .tag-pool h3 { font-size: 14px; margin: 0 0 8px; }
 .tag-list { display: flex; flex-direction: column; gap: 4px; }
-.tag-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; background: #e2e8f0; border-radius: 4px; font-size: 12px; cursor: pointer; }
-.tag-item:hover { background: #cbd5e1; }
-.tag-remove { cursor: pointer; color: #ef4444; margin-left: 4px; }
+.tag-item { display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: #f8fafc; border-radius: 4px; font-size: 12px; cursor: pointer; }
+.tag-item:hover { background: #e2e8f0; }
+.color-input { width: 22px; height: 18px; padding: 0; border: none; background: none; cursor: pointer; }
+.tag-label { flex: 1; }
+.tag-remove { cursor: pointer; color: #ef4444; }
 .tag-input { margin-top: 8px; }
 .tag-input input { width: 100%; box-sizing: border-box; padding: 4px 8px; }
-.hint { font-size: 11px; color: #94a3b8; margin-top: 8px; }
+.hint { font-size: 11px; color: #3b82f6; margin-top: 8px; }
 </style>

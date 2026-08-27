@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { Handle, Position, type NodeProps } from '@vue-flow/core'
 import type { MapNode } from '../types/node'
 import { useUiStore } from '../stores/uiStore'
+import { useMapStore } from '../stores/mapStore'
 
 const LEVEL_COLORS = [
   '#e0f2fe', // level 1: sky blue
@@ -24,20 +25,26 @@ interface LocationNodeData extends MapNode {
 }
 
 const props = defineProps<NodeProps<LocationNodeData>>()
-const node = props.data
+const node = computed(() => props.data as LocationNodeData)
 const ui = useUiStore()
+const mapStore = useMapStore()
 
 const bgColor = computed(() => {
   if (!ui.levelColors) return '#fff'
-  return LEVEL_COLORS[Math.min(node.level - 1, LEVEL_COLORS.length - 1)] ?? '#fff'
+  return LEVEL_COLORS[Math.min(node.value.level - 1, LEVEL_COLORS.length - 1)] ?? '#fff'
 })
 
 const borderColor = computed(() => {
   if (!ui.levelColors) return '#3b82f6'
-  return LEVEL_BORDER[Math.min(node.level - 1, LEVEL_BORDER.length - 1)] ?? '#3b82f6'
+  return LEVEL_BORDER[Math.min(node.value.level - 1, LEVEL_BORDER.length - 1)] ?? '#3b82f6'
 })
 
-const displayText = computed(() => ui.showIdOnNode ? node.id : node.name)
+const displayText = computed(() => ui.showIdOnNode ? node.value.id : node.value.name)
+const childCount = computed(() => node.value.collapsed ? mapStore.getChildren(node.value.id).length : 0)
+
+function tagStyle(tag: string) {
+  return { background: ui.tagColors[tag] ?? '#e2e8f0' }
+}
 </script>
 
 <template>
@@ -50,10 +57,11 @@ const displayText = computed(() => ui.showIdOnNode ? node.id : node.name)
     <div class="node-header">
       <span class="level-badge" :style="{ background: borderColor }">{{ node.level }}</span>
       <span class="node-name">{{ displayText }}</span>
+      <span v-if="childCount > 0" class="child-badge">+{{ childCount }}</span>
     </div>
     <div class="node-type">{{ node.type }}</div>
     <div v-if="node.tags.length > 0" class="node-tags">
-      <span v-for="tag in node.tags" :key="tag" class="tag">{{ tag }}</span>
+      <span v-for="tag in node.tags" :key="tag" class="tag" :style="tagStyle(tag)">{{ tag }}</span>
     </div>
     <Handle type="source" :position="Position.Bottom" />
   </div>
@@ -79,6 +87,10 @@ const displayText = computed(() => ui.showIdOnNode ? node.id : node.name)
   transition: background 0.2s;
 }
 .node-name { font-weight: bold; font-size: 14px; }
+.child-badge {
+  background: #94a3b8; color: #fff; border-radius: 8px;
+  font-size: 10px; padding: 1px 6px; line-height: 1.4;
+}
 .node-type { font-size: 11px; color: #64748b; margin-left: 24px; }
 .node-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; margin-left: 24px; }
 .tag { background: #e2e8f0; padding: 1px 6px; border-radius: 4px; font-size: 10px; }

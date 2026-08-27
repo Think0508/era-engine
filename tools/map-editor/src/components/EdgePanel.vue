@@ -52,7 +52,7 @@ function updateZoom(index: number, event: Event) {
     <h3>边属性</h3>
     <label>起点 <input :value="edge.from" disabled /></label>
     <label>终点 <input :value="edge.to" disabled /></label>
-    <label>耗时（分钟）<input type="number" :value="edge.timeCost" @change="e => update('timeCost', parseInt((e.target as HTMLInputElement).value, 10) || 0)" /></label>
+    <label>耗时（分钟）<input type="number" :value="edge.timeCost" @change="e => { const v = parseInt((e.target as HTMLInputElement).value, 10); update('timeCost', isNaN(v) ? 0 : Math.max(0, v)) }" /></label>
     <label>方向
       <select :value="edge.direction" @change="e => update('direction', (e.target as HTMLSelectElement).value)">
         <option value="bidirectional">双向</option>

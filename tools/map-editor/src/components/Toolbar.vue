@@ -17,8 +17,13 @@ function onBgSelected(e: Event) {
   if (!file) return
   const reader = new FileReader()
   reader.onload = () => {
-    mapStore.backgroundPath = reader.result as string
+    const url = reader.result as string
+    mapStore.bgImageWidth = 0
+    mapStore.bgImageHeight = 0
+    mapStore.saveVisualMap(ui.focusNodeId ?? '', { backgroundPath: url, bgImageWidth: 0, bgImageHeight: 0 }, true)
+    mapStore.backgroundPath = url
   }
+  reader.onerror = () => alert('图片读取失败，请重试')
   reader.readAsDataURL(file)
   input.value = ''
 }

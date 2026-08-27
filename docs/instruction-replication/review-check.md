@@ -27,7 +27,7 @@
 
 1. **bondage（6503）**：erArk 原为 BONDAGE 面板选择 15 种紧缚；当前实现默认 `bondageId=1（双手缚）`，面板 UI 未做，留 `TODO(panel)`——这是 UI 缺失，不是数据偏差。
 2. **wait_upon 侍奉位**：erArk 本身就用同一个 `insert_position` 表示阴茎位置（发/脸/口/胸/腋/手/腿/足/深喉等）。我们只是沿用了引擎已有的“0-4=性器位”的编号，为其补上 5-12 的映射（表示层不同，语义同 erArk）。`countable=false` 是**有意设计**：按你此前定的计数器口径，“插入次数”只统计性器进入（V/A/W），侍奉接触不计入，避免污染 `male_stats.inserts`；侍奉行动的“部位使用次数”由 `h:part_use`/`count` 统计。
-3. **item 卸载前提**：复核时发现此前的实现在“装备类玩具是否消耗”上不符合 erArk——erArk 的 `H_Machine/SM` 装备（乳头夹/阴蒂夹/震动棒/拉珠/口球等）**不消耗**，佩戴时物品仍留在背包，所以取下类指令的 `HAVE_*` 前提本来就能满足。已修正：`h-toys.toml` 全部装备类改 `consume=false`，`body_item_equip/toy_equip` 只对消耗品扣减、装备仅校验拥有；`body_item_unequip/toy_unequip/endHScene` 不再对未消耗装备重复归还。现在取下无需备件。
+3. **item 消耗模型修正**：复核后发现 erArk 中 **`H_Machine/SM` 装备与玩具都不消耗**（乳头夹/阴蒂夹/震动棒/拉珠/口球/跳蛋/电动按摩棒/绳子等），只有 `Consumables`（润滑液/媚药/避孕套等）和 H_Drug 消耗。已修正：`h-toys.toml` 全部装备类 `consume=false`，`h-drugs.toml` 的跳蛋/电动按摩棒 `consume=false`，`body_item_equip/toy_equip` 只对消耗品扣减、装备仅校验拥有；`body_item_unequip/toy_unequip/endHScene` 不再对未消耗装备重复归还；指令中不再 remove 跳蛋/按摩棒/绳子。
 4. **露出邀请 cid**：核对中修正为 erArk 实际 cid **5207**（原文档 5054 错误），且 tired_type=1 前提已修正。
 5. **能力提升/背包**：SYSTEM 核对见 `docs/instruction-replication/system-check.md`，与 95 条指令复核无关。
 

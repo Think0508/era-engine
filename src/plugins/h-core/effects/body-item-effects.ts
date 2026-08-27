@@ -81,7 +81,8 @@ export function registerBodyItemEffects(): void {
     const srcId = execCtx.sourceId
     const itemDef = itemId ? (modLoader.getMod()?.items as any)?.[itemId] as any : null
     const shouldConsume = itemDef?.consume !== false
-    if (srcId && itemId) {
+    // useItem 已按 consume 预扣，进入效果时不再扣/校验背包，避免双重扣减
+    if (!execCtx._fromUseItem && srcId && itemId) {
       if (shouldConsume) {
         // 消费型物品：扣 1，数量不足则中止
         const removed = await apiSystem.call('inventory', 'removeItem', srcId, itemId, 1) as unknown as boolean

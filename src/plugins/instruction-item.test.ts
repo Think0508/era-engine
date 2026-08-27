@@ -146,18 +146,19 @@ describe('B4-B7 SEX/item（6401-6428 保留 19 条）', () => {
     }
   })
 
-  it('消耗类：body_lubricant / nipples_love_egg / clit_love_egg / electric_message_stick', async () => {
-    const cases: [string, [string, number][], string][] = [
-      ['body_lubricant', [['润滑液', 1]], '润滑'],
-      ['nipples_love_egg', [['跳蛋', 1]], '胸部'],
-      ['clit_love_egg', [['跳蛋', 1]], '阴蒂'],
-      ['electric_message_stick', [['电动按摩棒', 1]], '阴蒂'],
+  it('消耗/复用类：body_lubricant 消耗，跳蛋/按摩棒复用不消耗', async () => {
+    const cases: [string, [string, number][], string, boolean][] = [
+      ['body_lubricant', [['润滑液', 1]], '润滑', true],
+      ['nipples_love_egg', [['跳蛋', 1]], '胸部', false],
+      ['clit_love_egg', [['跳蛋', 1]], '阴蒂', false],
+      ['electric_message_stick', [['电动按摩棒', 1]], '阴蒂', false],
     ]
-    for (const [id, inv, part] of cases) {
+    for (const [id, inv, part, consumed] of cases) {
       resetChars()
       setInventory(inv)
       await commandExecutor.execute(id, execCtx())
-      expect((player().inventory.find((i: any) => i.itemId === inv[0][0])?.count ?? 0)).toBe(0)
+      const left = player().inventory.find((i: any) => i.itemId === inv[0][0])?.count ?? 0
+      expect(left).toBe(consumed ? 0 : 1)
       expect(npc().base['体力']).toBe(70)
       expect(npc().base['气力']).toBe(240)
       expect(npc().base['好感度']).toBe(10)

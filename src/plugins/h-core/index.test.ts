@@ -69,7 +69,7 @@ describe('body_item 归还语义', () => {
     expect(ch.body_items['0']).toBeUndefined()
   })
 
-  it('手动卸下归还：body_item_unequip → 背包 +1，槽清空', async () => {
+  it('手动卸下：body_item_unequip 清槽（装备不消耗，不重复归还）', async () => {
     charWithToy('toy2')
     await apiSystem.call('effect-system', 'execute', [
       { type: 'body_item_equip', params: { slot: 0 } },

@@ -100,7 +100,6 @@ effects = [
   { type = "tech_adjust", target = "selected", params = { part = "胸部" } },
   { type = "h_experience", target = "selected", params = { expId = "1", value = 1 } },
   { type = "h_experience", target = "selected", params = { expId = "51", value = 1 } },
-  { type = "remove_item", target = "self", params = { itemId = "跳蛋", count = 1 } },
   { type = "trigger_dialogue", target = "selected", params = { scene = "nipples_love_egg" } },
 ]
 
@@ -183,7 +182,6 @@ effects = [
   { type = "tech_adjust", target = "selected", params = { part = "阴蒂" } },
   { type = "h_experience", target = "selected", params = { expId = "2", value = 1 } },
   { type = "h_experience", target = "selected", params = { expId = "51", value = 1 } },
-  { type = "remove_item", target = "self", params = { itemId = "跳蛋", count = 1 } },
   { type = "trigger_dialogue", target = "selected", params = { scene = "clit_love_egg" } },
 ]
 
@@ -266,7 +264,6 @@ effects = [
   { type = "tech_adjust", target = "selected", params = { part = "阴蒂" } },
   { type = "h_experience", target = "selected", params = { expId = "2", value = 1 } },
   { type = "h_experience", target = "selected", params = { expId = "51", value = 1 } },
-  { type = "remove_item", target = "self", params = { itemId = "电动按摩棒", count = 1 } },
   { type = "trigger_dialogue", target = "selected", params = { scene = "electric_message_stick" } },
 ]
 

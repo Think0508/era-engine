@@ -75,6 +75,9 @@ export function onEnable(ctx: PluginContext): void {
         await apiSystem.call('effect-system', 'execute', itemDef.effects, {
           sourceId: charId,
           _targetIds: [targetId ?? charId],
+          // 注释：标记来自 useItem——body_item_equip 等效果不得再扣减/校验背包
+          // （useItem 已按 consume 预扣；否则会双重扣减，见 h-toys/h-special）
+          _fromUseItem: true,
         })
       }
       eventBus.emit('item:used', { character: charId, itemId, targetId })

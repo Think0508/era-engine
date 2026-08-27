@@ -140,7 +140,7 @@ describe('B4-B7 SEX/sm 保留（6503/6506/6507）', () => {
     for (const id of SM_IDS) expect(commandRegistry.getById(id), id).toBeDefined()
   })
 
-  it('bondage：绳艺默认双手缚 + 消耗绳子', async () => {
+  it('bondage：绳艺默认双手缚 + 绳子不消耗', async () => {
     resetChars()
     setInventory([['绳子', 1]])
     await commandExecutor.execute('bondage', execCtx())
@@ -148,7 +148,8 @@ describe('B4-B7 SEX/sm 保留（6503/6506/6507）', () => {
     expect(npc().base['苦痛']).toBeGreaterThan(0)
     expect(player().base['习得']).toBeGreaterThan(0)
     expect(player().base['先导']).toBeGreaterThan(0)
-    expect((player().inventory.find((i: any) => i.itemId === '绳子')?.count ?? 0)).toBe(0)
+    // erArk 绳子为 SM 工具，不消耗（item_effect.py 无 item[131] 扣减）
+    expect((player().inventory.find((i: any) => i.itemId === '绳子')?.count ?? 0)).toBe(1)
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 

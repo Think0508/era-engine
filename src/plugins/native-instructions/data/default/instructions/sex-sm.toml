@@ -29,7 +29,6 @@ effects = [
   { type = "settle_state", target = "self", params = { state = "先导", baseValue = 30 } },
   { type = "h_experience", target = "self", params = { expId = "70", value = 1 } },
   { type = "h_experience", target = "selected", params = { expId = "52", value = 1 } },
-  { type = "remove_item", target = "self", params = { itemId = "绳子", count = 1 } },
   # TODO(panel)：BONDAGE 面板未实现，当前默认双手缚（id=1）
   { type = "bind", target = "selected", params = { bondageId = 1 } },
   { type = "trigger_dialogue", target = "selected", params = { scene = "bondage" } },

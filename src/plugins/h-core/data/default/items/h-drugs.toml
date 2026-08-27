@@ -30,7 +30,8 @@ type = "consumable"
 use = ["h_drug"]
 tags = ["toy", "h_drug"]
 stackable = true
-consume = true
+# erArk H_Machine：跳蛋不消耗（item_effect.py 无 item[121] 扣减）
+consume = false
 body_slot = -1
 effects = [{ type = "apply_instant_toy", params = { part = "clit", base = 50 } }]
 
@@ -40,7 +41,8 @@ type = "consumable"
 use = ["h_drug"]
 tags = ["toy", "h_drug"]
 stackable = true
-consume = true
+# erArk H_Machine：电动按摩棒不消耗（item_effect.py 无 item[124] 扣减）
+consume = false
 body_slot = -1
 effects = [{ type = "apply_instant_toy", params = { part = "clit", base = 50 } }]
 

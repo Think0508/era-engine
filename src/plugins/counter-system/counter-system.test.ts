@@ -19,6 +19,7 @@ import { registerConditionFields, buildRegistry } from './register'
 import { setBindings, registerEventListeners } from './events'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { onLoad as ejacOnLoad } from '../h-ejaculation/index'
+import { onLoad as hCoreOnLoad, onEnable as hCoreOnEnable } from '../h-core/index'
 import { compileRules, invalidateRules, getCompiledRules } from '../gain-rule-system/rule-engine'
 
 const stubCtx: any = {
@@ -63,6 +64,8 @@ describe('counter-system', () => {
     onLoad(stubCtx)
     await onEnable(stubCtx)
     ejacOnLoad(stubCtx)   // 注册 eja_shoot/eja_climax（真实链路测试用；effect 重复注册会抛错，只调一次）
+    hCoreOnLoad(stubCtx)  // 注册 sex_insert/sex_position_set 等插入效果（h:insert 发射点）
+    hCoreOnEnable(stubCtx) // 注册插体位前提；真实触发 sex_insert 需要 h-core 效果域
     entitySystem.register('character', 'girl', { id: 'girl', name: '测试女孩', base: { 性别: 2 } })
     entitySystem.register('character', 'guy', { id: 'guy', name: '测试男', base: { 性别: 1 } })
     entitySystem.register('character', 'guojing', { id: 'guojing', name: '郭靖', base: { 性别: 1 } })
@@ -475,6 +478,41 @@ describe('counter-system', () => {
     await endHScene('player')   // 还原模式栈 + 会话
     delete player.h_state
     delete girl.h_state
+  })
+
+  it('真实链路——sex_insert 执行 → emit h:insert → male_stats.inserts 累计（含射精重置后重插）', async () => {
+    const guy = getChar('guy')
+    const girl = getChar('girl')
+    guy.h_state = { target_character_id: 'girl', current_sex_position: 1, current_womb_sex_position: 0, is_h: true }
+    girl.h_state = { target_character_id: 'guy', insert_position: -1, is_h: true }
+
+    // 第一次进入（-1→V）：计数 1
+    const handler = effectTypeRegistry.getHandler('sex_insert')!
+    expect(handler).toBeDefined()
+    await handler({ part: 'vagina', position: 1 }, { sourceId: 'guy', _targetIds: ['girl'], _timeCost: 10 })
+    expect(girl.h_state.insert_position).toBe(0)
+    expect(guy.h_state.current_sex_position).toBe(1)
+    expect(resolvePath(['girl', 'male_stats', '6', 'guy', 'inserts'], null)).toBe(1)
+    expect(conditionEngine.evaluate('counters.girl.male_stats.6.guy.inserts > 0', gameContext.getContext())).toBe(true)
+
+    // 同一体位继续动作（已是 V）：不重复计
+    await handler({ part: 'vagina', position: 1 }, { sourceId: 'guy', _targetIds: ['girl'], _timeCost: 10 })
+    expect(girl.counters.male_stats['6']['guy'].inserts).toBe(1)
+
+    // 射精重置插入位后重插（-1→V）：再计 1
+    girl.h_state.insert_position = -1
+    await handler({ part: 'vagina', position: 1 }, { sourceId: 'guy', _targetIds: ['girl'], _timeCost: 10 })
+    expect(resolvePath(['girl', 'male_stats', '6', 'guy', 'inserts'], null)).toBe(2)
+
+    // 换体位（V→A 迁移属于“进入另一部位”，按“每次进入动作”也计 1）
+    girl.h_state.insert_position = 0
+    await handler({ part: 'anal', position: 2 }, { sourceId: 'guy', _targetIds: ['girl'], _timeCost: 10 })
+    expect(girl.h_state.insert_position).toBe(1)
+    expect(resolvePath(['girl', 'male_stats', '8', 'guy', 'inserts'], null)).toBe(1)
+
+    // 还原
+    delete girl.h_state
+    delete guy.h_state
   })
 
   // ============ counter_add effect（显式计数通道——事件表达不了时用）============

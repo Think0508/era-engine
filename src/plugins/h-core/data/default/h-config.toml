@@ -21,18 +21,18 @@
 # key = 体位 ID 1-12（与 h_state.current_sex_position 对应；-1=无体位 0.0，无需条目）
 # pleasure_coefficient: 该体位对 V/A/U/W 部位快感的加法系数
 [sex_positions]
-1 = { name = "正常位", pleasure_coefficient = 0.0 }
-2 = { name = "背后位", pleasure_coefficient = 0.1 }
-3 = { name = "对面骑乘位", pleasure_coefficient = 0.1 }
-4 = { name = "背面骑乘位", pleasure_coefficient = 0.2 }
-5 = { name = "对面座位", pleasure_coefficient = -0.1 }
-6 = { name = "背面座位", pleasure_coefficient = 0.0 }
-7 = { name = "对面立位", pleasure_coefficient = 0.3 }
-8 = { name = "背面立位", pleasure_coefficient = 0.4 }
-9 = { name = "对面抱位", pleasure_coefficient = 0.5 }
-10 = { name = "背面抱位", pleasure_coefficient = 0.6 }
-11 = { name = "对面卧位", pleasure_coefficient = -0.3 }
-12 = { name = "背面卧位", pleasure_coefficient = -0.2 }
+1 = { name = "正常位", furniture_req = 1, skill_req = 0, stamina_cost = 2, pleasure_coefficient = 0.0 }
+2 = { name = "背后位", furniture_req = 1, skill_req = 0, stamina_cost = 2, pleasure_coefficient = 0.1 }
+3 = { name = "对面骑乘位", furniture_req = 3, skill_req = 0, stamina_cost = 2, pleasure_coefficient = 0.1 }
+4 = { name = "背面骑乘位", furniture_req = 3, skill_req = 0, stamina_cost = 2, pleasure_coefficient = 0.2 }
+5 = { name = "对面座位", furniture_req = 1, skill_req = 0, stamina_cost = 1, pleasure_coefficient = -0.1 }
+6 = { name = "背面座位", furniture_req = 1, skill_req = 0, stamina_cost = 1, pleasure_coefficient = 0.0 }
+7 = { name = "对面立位", furniture_req = 0, skill_req = 3, stamina_cost = 3, pleasure_coefficient = 0.3 }
+8 = { name = "背面立位", furniture_req = 0, skill_req = 3, stamina_cost = 3, pleasure_coefficient = 0.4 }
+9 = { name = "对面抱位", furniture_req = 0, skill_req = 5, stamina_cost = 3, pleasure_coefficient = 0.5 }
+10 = { name = "背面抱位", furniture_req = 0, skill_req = 5, stamina_cost = 3, pleasure_coefficient = 0.6 }
+11 = { name = "对面卧位", furniture_req = 3, skill_req = 0, stamina_cost = 1, pleasure_coefficient = -0.3 }
+12 = { name = "背面卧位", furniture_req = 3, skill_req = 0, stamina_cost = 1, pleasure_coefficient = -0.2 }
 
 # 饥饿系统配置（由 hunger-system 插件读取）
 # G1 决策（2026-08-09）：饥饿值增长已收敛到引擎行动级结算（core realtimeSettle.settleHunger，

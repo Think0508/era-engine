@@ -1,0 +1,14 @@
+# face_stand_womb_sex 指令默认通用口上（插件默认层，Layer 1）
+# ⚠️ 骨架：不搬运 erArk 长文本；保留 1 条简短示例 + 1 条占位符。
+# erArk 原前提：insert/子宫链（high_1 示例）→ 条件：premise(high_1)
+variable = "face_stand_womb_sex"
+description = "对面立位子宫姦指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 基础组 ──────────────────────────────────────────────
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}托起{character.name}，深深顶入。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "face_stand_womb_sex指令通用口上 1"

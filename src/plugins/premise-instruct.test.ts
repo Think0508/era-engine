@@ -92,4 +92,147 @@ describe('premise-instruct 前提语义矩阵', () => {
     p.inventory = []
     n.inventory = []
   })
+
+  // ═══════════════ insert 批次：体位/插入/扩张/家具前提（2026-08-26）═══════════════
+  // 目标：锁定“可读名 + 真语义”矩阵，防止再出现注册≠语义对。
+  function evalP(premise: string, overrides: any = {}): boolean {
+    return conditionEngine.evaluatePremises([premise], { ...gameContext.getContext(), selectedCharacterId: 'npc_1', ...overrides })
+  }
+
+  it('体位前提矩阵：POSITION_* 查自己 current_sex_position（数字 1-12/-1），旧 DR_* 为兼容别名', () => {
+    const p = entitySystem.get('character', 'player') as any
+    p.h_state = { current_sex_position: -1 }
+    expect(evalP('POSITION_NONE')).toBe(true)
+    expect(evalP('DR_POSITION_NULL')).toBe(true)
+    expect(evalP('POSITION_NORMAL')).toBe(false)
+    expect(evalP('HAVE_SEX_POSITION')).toBe(false)
+    expect(evalP('DR_HAVE_SEX_POSITION')).toBe(false)
+
+    p.h_state = { current_sex_position: 1 }
+    expect(evalP('POSITION_NONE')).toBe(false)
+    expect(evalP('POSITION_NORMAL')).toBe(true)
+    expect(evalP('DR_POSITION_NORMAL')).toBe(true)
+    expect(evalP('POSITION_BACK')).toBe(false)
+    expect(evalP('HAVE_SEX_POSITION')).toBe(true)
+    expect(evalP('DR_HAVE_SEX_POSITION')).toBe(true)
+
+    p.h_state = { current_sex_position: 12 }
+    expect(evalP('POSITION_BACK_LIE')).toBe(true)
+
+    // 目标体位不影响自己体位前提
+    const n = entitySystem.get('character', 'npc_1') as any
+    n.h_state = { current_sex_position: 1 }
+    p.h_state = { current_sex_position: -1 }
+    expect(evalP('POSITION_NONE')).toBe(true)
+    expect(evalP('POSITION_NORMAL')).toBe(false)
+    p.h_state = undefined
+    n.h_state = undefined
+  })
+
+  it('PENIS_IN_TARGET_* 查目标 insert_position（0=V 1=A 3=W），旧别名等价', () => {
+    const n = entitySystem.get('character', 'npc_1') as any
+    const p = entitySystem.get('character', 'player') as any
+    p.h_state = { insert_position: 1 } // 玩家自己有插入不影响目标判定
+    n.h_state = { insert_position: 0 }
+    expect(evalP('PENIS_IN_TARGET_VAGINA_OR_WOMB')).toBe(true)
+    expect(evalP('PENIS_IN_TARGET_WOMB')).toBe(false)
+    expect(evalP('PENIS_IN_TARGET_ANAL')).toBe(false)
+    expect(evalP('PENIS_IN_T_VAGINA_OR_WOMB')).toBe(true)
+
+    n.h_state.insert_position = 3
+    expect(evalP('PENIS_IN_TARGET_WOMB')).toBe(true)
+    expect(evalP('PENIS_IN_TARGET_VAGINA_OR_WOMB')).toBe(true)
+    expect(evalP('PENIS_IN_T_WOMB')).toBe(true)
+
+    n.h_state.insert_position = 1
+    expect(evalP('PENIS_IN_TARGET_ANAL')).toBe(true)
+    expect(evalP('PENIS_IN_TARGET_VAGINA_OR_WOMB')).toBe(false)
+
+    n.h_state = undefined
+    expect(evalP('PENIS_IN_TARGET_ANAL')).toBe(false)
+    p.h_state = undefined
+  })
+
+  it('TARGET_ANUS_EMPTY：后穴无道具/非灌肠（不查 insert_position——换肛交体位需 PENIS_IN_TARGET_ANAL 同时成立）', () => {
+    const n = entitySystem.get('character', 'npc_1') as any
+    n.h_state = { insert_position: 1 }
+    n.body_items = {}
+    n.dirty = undefined
+    expect(evalP('TARGET_ANUS_EMPTY')).toBe(true)
+    expect(evalP('TARGET_A_EMPTY')).toBe(true)
+
+    n.h_state.vibrator_insertion_anal = true
+    expect(evalP('TARGET_ANUS_EMPTY')).toBe(false)
+    n.h_state.vibrator_insertion_anal = false
+
+    n.h_state.anal_beads = true
+    expect(evalP('TARGET_ANUS_EMPTY')).toBe(false)
+    n.h_state.anal_beads = false
+
+    n.dirty = { a_clean: 1 }
+    expect(evalP('TARGET_ANUS_EMPTY')).toBe(false)
+    n.dirty.a_clean = 0
+    expect(evalP('TARGET_ANUS_EMPTY')).toBe(true)
+
+    n.body_items = { toy: { itemId: '肛珠', active: true } }
+    expect(evalP('TARGET_ANUS_EMPTY')).toBe(false)
+    n.body_items = {}
+    n.dirty = undefined
+    n.h_state = undefined
+  })
+
+  it('TARGET_WOMB_DILATE_GE_3/5：查目标 abilities.子宫扩张 等级，旧 T_W_DILATE_* 别名等价', () => {
+    const n = entitySystem.get('character', 'npc_1') as any
+    n.abilities = { '子宫扩张': { level: 2, xp: 0 } }
+    expect(evalP('TARGET_WOMB_DILATE_GE_3')).toBe(false)
+    expect(evalP('T_W_DILATE_GE_3')).toBe(false)
+    n.abilities['子宫扩张'].level = 3
+    expect(evalP('TARGET_WOMB_DILATE_GE_3')).toBe(true)
+    expect(evalP('TARGET_WOMB_DILATE_GE_5')).toBe(false)
+    n.abilities['子宫扩张'].level = 5
+    expect(evalP('TARGET_WOMB_DILATE_GE_5')).toBe(true)
+    n.abilities = {}
+  })
+
+  it('LOCATION_FURNITURE_* / LOCATION_FURNITURE_3：家具等级语义（GE>= / 3==）', () => {
+    const loc = gameContext.getContext().location as any
+    const original = loc.furniture_count
+    loc.furniture_count = 2
+    expect(evalP('LOCATION_FURNITURE_GE_1')).toBe(true)
+    expect(evalP('LOCATION_FURNITURE_GE_2')).toBe(true)
+    expect(evalP('LOCATION_FURNITURE_GE_3')).toBe(false)
+    expect(evalP('LOCATION_FURNITURE_3')).toBe(false)
+    expect(evalP('PLACE_FURNITURE_GE_1')).toBe(true)
+
+    loc.furniture_count = 3
+    expect(evalP('LOCATION_FURNITURE_3')).toBe(true)
+    expect(evalP('LOCATION_FURNITURE_GE_3')).toBe(true)
+
+    loc.furniture_count = 0
+    expect(evalP('LOCATION_FURNITURE_GE_1')).toBe(false)
+    expect(evalP('LOCATION_FURNITURE_3')).toBe(false)
+    loc.furniture_count = original
+  })
+
+  it('WAIST/FINGER/TECHNIQUE 无前缀查自己（目标等级高不影响）', () => {
+    const p = entitySystem.get('character', 'player') as any
+    const n = entitySystem.get('character', 'npc_1') as any
+    p.abilities = p.abilities ?? {}
+    n.abilities = n.abilities ?? {}
+    p.abilities['腰技'] = { level: 3, xp: 0 }
+    n.abilities['腰技'] = { level: 7, xp: 0 }
+    expect(evalP('WAIST_TECHNIQUE_GE_3')).toBe(true)
+    expect(evalP('WAIST_TECHNIQUE_GE_5')).toBe(false)
+    expect(evalP('WAIST_TECHNIQUE_GE_7')).toBe(false)
+    expect(evalP('TARGET_TECHNIQUE_GE_3')).toBe(false) // 目标技巧，非腰技
+
+    p.abilities['腰技'].level = 7
+    expect(evalP('WAIST_TECHNIQUE_GE_7')).toBe(true)
+    p.abilities['指技'] = { level: 5, xp: 0 }
+    expect(evalP('FINGER_TECHNIQUE_GE_5')).toBe(true)
+    p.abilities['技巧'] = { level: 3, xp: 0 }
+    expect(evalP('TECHNIQUE_GE_3')).toBe(true)
+    p.abilities = {}
+    n.abilities = {}
+  })
 })

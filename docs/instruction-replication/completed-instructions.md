@@ -10,9 +10,9 @@
 |------|-----------|---------------|-----------|
 | B1 | 11 | 0 | 13（延后 13） |
 | B2 | 5 | 0 | 12（催眠，延后待 grill） |
-| B3 | 11 | 1 | 25 |
-| B4-B7 | 33 | 0 | 109 |
-| 核对项（SYSTEM） | 0 | 0 | 8 |
+| B3 | 12 | 0 | 25 |
+| B4-B7 | 33 | 95 | 14 |
+| 核对项（SYSTEM） | 5 | 0 | 2 |
 
 > 说明：B1 候选池原 24 条，chat / stroke / rest / take_shower / sleep / ask_target_sleep / follow / end_follow / listen_complaint / apologize / ask_target_rest 已确认；剩余 13 条全部为延后。
 
@@ -82,13 +82,111 @@
 | B4-B7 | sex/foreplay | 6215 | make_masturebate | 命令对方自慰 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/make_masturebate.toml | instruction-foreplay-d.test.ts | 无 judge；T_NORMAL_5_6 新增；自慰状态链 | ✅ 已确认 |
 | B4-B7 | sex/foreplay | 6216 | make_lick_anal | 命令对方舔自己肛门 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/make_lick_anal.toml | instruction-foreplay-d.test.ts | 无 judge；口喉 + pl_p_adjust；新增 TARGET_NOT_GAG / T_NORMAL_5_6_OR… | ✅ 已确认 |
 | B4-B7 | sex/foreplay | 6202 | kiss_h | 接吻 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/kiss_h.toml | instruction-kiss-h.test.ts | judge 亲吻 250；first_kiss_check；840 取消口/脸插入；经验 40/153 | ✅ 已确认 |
+| B3 | obscenity/exposure | 5207 | ask_exhibitionism_sex | 邀请露出 | 数据：h-exposure；口上：talk-common-system | 有：behavior/obscenity/ask_exhibitionism_sex.toml | exposure-system.test.ts | 已实装（exposure 系统）；tired_type=1 前提修正；口上补齐 | ✅ 已确认 |
 
 ## 存量已实现（🟡，未走本流程 / 待补口上 / 待核对）
 
 | 批次 | 分类/子类 | cid | id | 名称 | 所属系统 | 通用口上 | 测试 | 特殊处理 | 状态 |
 |------|-----------|-----|-----|------|----------|----------|------|----------|------|
 
-| B3 | obscenity/exposure | 5054 | ask_exhibitionism_sex | 邀请露出 | 数据：h-exposure | 无（待核对） | 待核对 | 已实装（exposure 系统） | 🟡 待补口上/核对 |
+| B4-B7 | sex/insert | 6301 | vaginal_sex | 阴道性交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/vaginal_sex.toml | instruction-insert-a.test.ts | 面板入口 sexType=1 | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6302 | change_vaginal_sex_position | 换阴道性交体位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/change_vaginal_sex_position.toml | instruction-insert-a.test.ts | 换体位面板 sexType=1 | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6303 | normal_sex | 正常位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/normal_sex.toml | instruction-insert-a.test.ts | 体位链（V） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6304 | back_sex | 背后位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_sex.toml | instruction-insert-a.test.ts | 体位链（V） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6305 | riding_sex | 对面骑乘位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/riding_sex.toml | instruction-insert-a.test.ts | 体位链（V·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6306 | back_riding_sex | 背面骑乘位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_riding_sex.toml | instruction-insert-a.test.ts | 体位链（V·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6307 | face_seat_sex | 对面座位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_seat_sex.toml | instruction-insert-a.test.ts | 体位链（V） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6308 | back_seat_sex | 背面座位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_seat_sex.toml | instruction-insert-a.test.ts | 体位链（V） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6309 | face_stand_sex | 对面立位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_stand_sex.toml | instruction-insert-a.test.ts | 体位链（V） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6310 | back_stand_sex | 背面立位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_stand_sex.toml | instruction-insert-a.test.ts | 体位链（V） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6311 | face_hug_sex | 对面抱位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_hug_sex.toml | instruction-insert-a.test.ts | 体位链（V） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6312 | back_hug_sex | 背面抱位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_hug_sex.toml | instruction-insert-a.test.ts | 体位链（V） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6313 | face_lay_sex | 对面卧位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_lay_sex.toml | instruction-insert-a.test.ts | 体位链（V·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6314 | back_lay_sex | 背面卧位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_lay_sex.toml | instruction-insert-a.test.ts | 体位链（V·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6315 | stimulate_g_point | 刺激G点 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/stimulate_g_point.toml | instruction-insert-a.test.ts | 深部（V·腰技≥3） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6316 | womb_os_caress | 玩弄子宫口 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/womb_os_caress.toml | instruction-insert-a.test.ts | 深部（V·腰技≥4） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6318 | change_cervix_sex_position | 换子宫姦口体位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/change_cervix_sex_position.toml | instruction-insert-c.test.ts | 换体位面板 sexType=2 | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6319 | normal_cervix_sex | 正常位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/normal_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6320 | back_cervix_sex | 后背位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6321 | riding_cervix_sex | 对面骑乘位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/riding_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6322 | back_riding_cervix_sex | 背面骑乘位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_riding_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6323 | face_seat_cervix_sex | 对面座位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_seat_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6324 | back_seat_cervix_sex | 背面座位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_seat_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6325 | face_stand_cervix_sex | 对面立位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_stand_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6326 | back_stand_cervix_sex | 背面立位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_stand_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6327 | face_hug_cervix_sex | 对面抱位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_hug_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6328 | back_hug_cervix_sex | 背面抱位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_hug_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6329 | face_lay_cervix_sex | 对面卧位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_lay_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6330 | back_lay_cervix_sex | 背面卧位子宫口姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_lay_cervix_sex.toml | instruction-insert-c.test.ts | 宫颈链（W·扩张≥3·腰技≥5·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6332 | change_womb_sex_position | 换子宫姦体位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/change_womb_sex_position.toml | instruction-insert-c.test.ts | 换体位面板 sexType=3 | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6333 | normal_womb_sex | 正常位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/normal_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6334 | back_womb_sex | 后背位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6335 | riding_womb_sex | 对面骑乘位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/riding_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6336 | back_riding_womb_sex | 背面骑乘位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_riding_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6337 | face_seat_womb_sex | 对面座位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_seat_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6338 | back_seat_womb_sex | 背面座位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_seat_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6339 | face_stand_womb_sex | 对面立位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_stand_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6340 | back_stand_womb_sex | 背面立位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_stand_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6341 | face_hug_womb_sex | 对面抱位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_hug_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6342 | back_hug_womb_sex | 背面抱位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_hug_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6343 | face_lay_womb_sex | 对面卧位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_lay_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6344 | back_lay_womb_sex | 背面卧位子宫姦 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_lay_womb_sex.toml | instruction-insert-c.test.ts | 子宫链（W·扩张≥5·腰技≥7·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6345 | anal_sex | 肛门性交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/anal_sex.toml | instruction-insert-b.test.ts | 面板入口 sexType=4 | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6346 | change_anal_sex_position | 换肛交体位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/change_anal_sex_position.toml | instruction-insert-b.test.ts | 换体位面板 sexType=4 | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6347 | normal_anal_sex | 正常位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/normal_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6348 | back_anal_sex | 后背位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6349 | riding_anal_sex | 对面骑乘位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/riding_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6350 | back_riding_anal_sex | 背面骑乘位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_riding_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6351 | face_seat_anal_sex | 对面座位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_seat_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6352 | back_seat_anal_sex | 背面座位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_seat_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6353 | face_stand_anal_sex | 对面立位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_stand_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6354 | back_stand_anal_sex | 背面立位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_stand_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6355 | face_hug_anal_sex | 对面抱位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_hug_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6356 | back_hug_anal_sex | 背面抱位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_hug_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6357 | face_lay_anal_sex | 对面卧位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_lay_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6358 | back_lay_anal_sex | 背面卧位肛交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/back_lay_anal_sex.toml | instruction-insert-b.test.ts | 体位链（A·床级） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6359 | stimulate_sigmoid_colon | 玩弄s状结肠 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/stimulate_sigmoid_colon.toml | instruction-insert-b.test.ts | 深部（A·技巧≥3） | 🟡 已实现（待复核） |
+| B4-B7 | sex/insert | 6360 | stimulate_vagina | 隔着刺激阴道 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/stimulate_vagina.toml | instruction-insert-b.test.ts | 深部（A·技巧≥3） | 🟡 已实现（待复核） |
+
+| B4-B7 | sex/wait_upon | 6601 | handjob | 手交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/handjob.toml | instruction-wait-upon.test.ts | 无 judge；指技P调整 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6602 | blowjob | 口交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/blowjob.toml | instruction-wait-upon.test.ts | 口交 450；舌技P；初口 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6603 | paizuri | 乳交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/paizuri.toml | instruction-wait-upon.test.ts | 无 judge；胸技P | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6604 | footjob | 足交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/footjob.toml | instruction-wait-upon.test.ts | 无 judge；足技P；目标技巧≥3 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6605 | hairjob | 发交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/hairjob.toml | instruction-wait-upon.test.ts | 无 judge；指技P；目标技巧≥3 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6606 | axillajob | 腋交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/axillajob.toml | instruction-wait-upon.test.ts | 无 judge；P调整无技；目标技巧≥5 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6607 | rub_buttock | 素股 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/rub_buttock.toml | instruction-wait-upon.test.ts | 无 judge；足技P；阴蒂/润滑 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6608 | hand_blowjob | 手交口交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/hand_blowjob.toml | instruction-wait-upon.test.ts | 口交 450；舌技P；需口或手位 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6609 | tits_blowjob | 乳交口交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/tits_blowjob.toml | instruction-wait-upon.test.ts | 口交 450；舌技P；需口或胸位 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6610 | focus_blowjob | 真空口交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/focus_blowjob.toml | instruction-wait-upon.test.ts | 口交 450；舌技P；需口或深喉位 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6611 | deep_throat | 深喉插入 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/deep_throat.toml | instruction-wait-upon.test.ts | SM 700；苦痛/恐怖；深喉位 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6612 | clean_blowjob | 清洁口交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/clean_blowjob.toml | instruction-wait-upon.test.ts | 口交 450；需精液污浊；清 just_shoot | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6613 | sixty_nine | 六九式 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/sixty_nine.toml | instruction-wait-upon.test.ts | 口交 450；双方口经验；需床/口位 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6614 | legjob | 腿交 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/legjob.toml | instruction-wait-upon.test.ts | 无 judge；足技P；腿位 | 🟡 已实现（待复核） |
+| B4-B7 | sex/wait_upon | 6616 | face_rub | 阴茎蹭脸 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/face_rub.toml | instruction-wait-upon.test.ts | 无 judge；P调整无技；脸位 | 🟡 已实现（待复核） |
+
+| B4-B7 | sex/item | 6401 | body_lubricant | 润滑液 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/body_lubricant.toml | instruction-item.test.ts | 消耗；apply_lubricant | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6402 | put_condom | 戴上避孕套 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/put_condom.toml | instruction-item.test.ts | 消耗；wear_condom | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6403 | take_condom_out | 摘掉避孕套 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/take_condom_out.toml | instruction-item.test.ts | take_condom_off | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6405 | nipples_love_egg | 乳头跳蛋 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/nipples_love_egg.toml | instruction-item.test.ts | 消耗跳蛋；胸部 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6406 | nipple_clamp_on | 戴上乳头夹 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/nipple_clamp_on.toml | instruction-item.test.ts | toy_equip slot0；weak | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6407 | nipple_clamp_off | 取下乳头夹 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/nipple_clamp_off.toml | instruction-item.test.ts | toy_unequip slot0 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6408 | clit_love_egg | 阴蒂跳蛋 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/clit_love_egg.toml | instruction-item.test.ts | 消耗跳蛋；阴蒂 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6409 | clit_clamp_on | 戴上阴蒂夹 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/clit_clamp_on.toml | instruction-item.test.ts | toy_equip slot1；weak | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6410 | clit_clamp_off | 取下阴蒂夹 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/clit_clamp_off.toml | instruction-item.test.ts | toy_unequip slot1 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6411 | electric_message_stick | 电动按摩棒 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/electric_message_stick.toml | instruction-item.test.ts | 消耗；阴蒂 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6412 | vibrator_insertion | 插入震动棒 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/vibrator_insertion.toml | instruction-item.test.ts | toy_equip slot2 V震动棒；weak | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6415 | vibrator_insertion_off | 拔出震动棒 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/vibrator_insertion_off.toml | instruction-item.test.ts | toy_unequip slot2 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6416 | vibrator_insertion_anal | 肛门插入震动棒 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/vibrator_insertion_anal.toml | instruction-item.test.ts | toy_equip slot3 A震动棒；weak | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6419 | vibrator_insertion_anal_off | 拔出肛门震动棒 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/vibrator_insertion_anal_off.toml | instruction-item.test.ts | toy_unequip slot3 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6420 | anal_beads | 塞入肛门拉珠 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/anal_beads.toml | instruction-item.test.ts | toy_equip slot7；屈服/羞耻/苦痛 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6421 | anal_beads_off | 拔出肛门拉珠 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/anal_beads_off.toml | instruction-item.test.ts | toy_unequip slot7 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6426 | remote_toy_on_in_h | 遥控启动玩具 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/remote_toy_on_in_h.toml | instruction-item.test.ts | vibrator_set level=1 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6427 | remote_toy_off_in_h | 遥控关闭玩具 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/remote_toy_off_in_h.toml | instruction-item.test.ts | vibrator_set level=0 | 🟡 已实现（待复核） |
+| B4-B7 | sex/item | 6428 | remote_toy_level_up_in_h | 调高玩具档位 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/remote_toy_level_up_in_h.toml | instruction-item.test.ts | vibrator_set level=3 | 🟡 已实现（待复核） |
+
+| B4-B7 | sex/sm | 6503 | bondage | 绳艺 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/bondage.toml | instruction-sm.test.ts | 默认双手缚（bondageId=1）；TODO 面板 | 🟡 已实现（待复核） |
+| B4-B7 | sex/sm | 6506 | gag_on | 戴上口球 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/gag_on.toml | instruction-sm.test.ts | toy_equip slot14；需凌辱室/博士房 | 🟡 已实现（待复核） |
+| B4-B7 | sex/sm | 6507 | gag_off | 摘下口球 | 数据：native-instructions；口上：talk-common-system | 有：behavior/sex/gag_off.toml | instruction-sm.test.ts | toy_unequip slot14；需凌辱室/博士房 | 🟡 已实现（待复核） |
 
 ---
 
@@ -97,3 +195,8 @@
 - 复刻完成 + 用户确认后：把该行从“待完成/待筛”心智移到本表，状态改为 ✅；同屏更新 `batch-01-daily.md` 状态列。
 - 筛选后：`filter-quick-reference.md` 的筛选结论列同步更新，被剔除条目原因留底。
 - 涉及口上世界观占位符时，登记占位符条数（如「XX 指令通用口上 1-5」），原文对照保存在批次清单。
+
+
+
+
+

@@ -11,11 +11,14 @@ export interface BodyItemSlot {
 export interface H_STATE {
   // H 交互对象（对方角色 ID，无对象=自己/自慰）——erArk target_character_id
   target_character_id?: string
-  // 插入位置 -1=未插入 0=V 1=A 2=U 3=W 4=M
+  // 插入位置 -1=未插入 0=V 1=A 2=U 3=W 4=M 5=发 6=脸 7=胸 8=腋 9=手 10=腿 11=足 12=深喉
+  // （5-12 为 wait_upon 侍奉位；erArk insert_position 0/1/2/3/4/5/10/11/15 的引擎映射）
   insert_position: number
   // 当前体位 ID -1=无体位 1-12（erArk "仅博士有的数据"——引擎按被结算角色 h_state 存；
   // 默认 -1 对齐 erArk game_type.py:463）
   current_sex_position: number
+  // 切换体位前的体位记录（erArk pre_sex_position；面板/口上展示用）
+  pre_sex_position?: number
   // 当前子宫性交位置 0=未插入 1=子宫口插入 2=子宫奸（仅发起者/玩家有，erArk game_type.py:467）
   current_womb_sex_position: number
   // 各部位绝顶计数 [partId]: [当前H内累计, 总累计]

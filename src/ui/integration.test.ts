@@ -28,6 +28,7 @@ describe('UI 集成测试', () => {
     expect(commandRegistry.getById('log_history')).toBeDefined()
     expect(commandRegistry.getById('save')).toBeDefined()
     expect(commandRegistry.getById('load')).toBeDefined()
+    expect(commandRegistry.getById('item')).toBeDefined()
     // 注释：move/talk 由插件注册，不在 native-commands 中
     expect(commandRegistry.getById('move')).toBeUndefined()
     expect(commandRegistry.getById('talk')).toBeUndefined()

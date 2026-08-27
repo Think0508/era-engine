@@ -1332,7 +1332,7 @@ erArk 新地文导入补漏（2026-08-08，T9）✅
   - 露出持续快感 tick 自 h-hidden 迁出（h-hidden 只留隐奸块）
   - 露出经验（experience[34]，无条件 +1/行为，对齐 settle_behavior.py:670-672）
   - 前提对齐 erArk 原名 11 个（EXHIBITIONISM_SEX_MODE_*/TARGET_*/PLAYER_*）；h-core pendingFalse 占位移除；旧自造名 EXPOSURE_SEX_MODE_* 删除；h-config talk.situations 前提名同步
-  - 指令：ask_exhibitionism_sex（5054）/ exhibitionism_sex_end（6007）——TOML + 效果链映射（h_start_h/h_end_h 封装覆盖 405/462/464/526/528/404/631/603/605；753 随门砍；704/1409 半成品注释）+ h:end 统一清模式
+  - 指令：ask_exhibitionism_sex（5207）/ exhibitionism_sex_end（6007）——TOML + 效果链映射（h_start_h/h_end_h 封装覆盖 405/462/464/526/528/404/631/603/605；753 随门砍；704/1409 半成品注释）+ h:end 统一清模式
   - 成就 931/932/933 + exhibitionism_sex_record（rec[1..4]）；934 依赖被发现系统留 TODO
   - 测试 exposure-system.test.ts 24 例（tick/切换矩阵/前提真值/经验/成就/指令/卫生检查/拦截）
   - 半成品标记：被发现面板（exposure_discovered 占位）、邀请模式选择面板、UI 标签 <露>

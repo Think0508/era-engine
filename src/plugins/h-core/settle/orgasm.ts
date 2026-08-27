@@ -45,6 +45,15 @@ export function insertPositionToBodyCid(insertPosition: number): number {
     2: 10, // U → 尿道
     3: 7,  // W → 子宫
     4: 2,  // M → 口
+    // wait_upon 侍奉位（BodyPart.csv cid）
+    5: 0,  // 发 → 头发
+    6: 1,  // 脸 → 脸部
+    7: 3,  // 胸 → 胸部
+    8: 4,  // 腋 → 腋部
+    9: 5,  // 手 → 手部
+    10: 10, // 腿 → 腿部
+    11: 11, // 足 → 脚部
+    12: 15, // 深喉 → 胃部（吞精结算位置）
   }
   return map[insertPosition] ?? 6
 }

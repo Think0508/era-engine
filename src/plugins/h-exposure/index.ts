@@ -13,7 +13,7 @@
 //   default.py:4191 + h:end           — 露出模式清零（404 语义）
 //   handle_premise_sp_flag.py        — 露出前提（constant_promise.py:1664-1689）
 //   game_type.py:762-763/933-934     — 数据结构
-//   InstructConfig.csv:5054/6007     — 指令配置（数据在 data/default/instructions/）
+//   InstructConfig.csv:5207/6007     — 指令配置（数据在 data/default/instructions/）
 //
 // ⚠️ 设计决策（详见 ADR-0014）：
 //   - 门未锁条件砍掉（门概念限定世界观，通用 mod 无门模型）；室内外用 location tag

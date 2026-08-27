@@ -22,7 +22,7 @@
 
 ## 启动与结束
 
-- **邀请露出**（`ask_exhibitionism_sex`，5054）：前提 `HAVE_TARGET | NOT_H | NOT_SHOW_NON_H_IN_HIDDEN_SEX | EXHIBITIONISM_SEX_MODE_0 | NO_TARGET_OR_TARGET_CAN_COOPERATE | TIRED_LE_74`。效果链：双方 `exposure_set_level`（level 缺省=按场景自动算初始模式）→ `h_start_h` → 双方露出经验 → 口上。
+- **邀请露出**（`ask_exhibitionism_sex`，5207）：前提 `HAVE_TARGET | NOT_H | NOT_SHOW_NON_H_IN_HIDDEN_SEX | EXHIBITIONISM_SEX_MODE_0 | NO_TARGET_OR_TARGET_CAN_COOPERATE | TIRED_LE_74`。效果链：双方 `exposure_set_level`（level 缺省=按场景自动算初始模式）→ `h_start_h` → 双方露出经验 → 口上。
 - **结束露出**（`exhibitionism_sex_end`，6007）：前提 `HAVE_TARGET | TARGET_IS_H | T_NPC_NOT_ACTIVE_H | TARGET_NOT_IN_HIDDEN_SEX_MODE | TARGET_EXHIBITIONISM_SEX_MODE_GE_1 | GROUP_SEX_MODE_OFF | IS_H`。效果链：`h_end_h` + 口上；露出模式清除由 `h:end` 事件统一处理（与 h-hidden 清隐奸模式对称）。
 - 邀请模式选择面板（erArk exhibitionism_sex_panel）**未实现**——`exposure_set_level` level 缺省自动计算，TODO。
 
@@ -99,3 +99,4 @@ ctx.api.call('h-exposure', 'checkAchievements', charId)   → number[]
 - 704 RECORD_CONSCIOUS_H_TIME（last_conscious_h_time 字段，无意识H系统消费）/ 1409 CONDOM_INFO_SHOW_FLAG_ON（UI 标记）——邀请露出效果链中注释标注
 - UI 标签 `<露>`——`ExposureTag` 组件 TODO（与 h-hidden HiddenSexTag 同批落地）
 - 成就 934（依赖被发现系统）
+

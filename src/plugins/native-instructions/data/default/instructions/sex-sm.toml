@@ -1,0 +1,89 @@
+# 插件默认层指令（Layer 1）——SEX/sm 保留 3 条（B4-B7 批次 2026-08-26）
+# 数据家：native-instructions
+# 6503 绳艺：erArk 打开 BONDAGE 面板；本引擎暂未实现面板，先按默认“双手缚”（bondageId=1）绑定，
+#   TODO(panel)：后续做紧缚选择面板时改回面板。
+# 6506/6507 口球：toy_equip/toy_unequip slot14（口球）。
+
+# ═══ bondage（6503）═══════════════════════════════════════════════
+[[instructions]]
+id = "bondage"
+label = "绳艺"
+erark_id = "6503"
+erark_behavior = "BIND"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "sm"
+time_cost = 5
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_BONDAGE"]
+tags = ["system:h-bondage", "system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "settle_state", target = "self", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", target = "self", params = { state = "先导", baseValue = 30 } },
+  { type = "h_experience", target = "self", params = { expId = "70", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "52", value = 1 } },
+  { type = "remove_item", target = "self", params = { itemId = "绳子", count = 1 } },
+  # TODO(panel)：BONDAGE 面板未实现，当前默认双手缚（id=1）
+  { type = "bind", target = "selected", params = { bondageId = 1 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "bondage" } },
+]
+
+# ═══ gag_on（6506）═════════════════════════════════════════════════
+[[instructions]]
+id = "gag_on"
+label = "戴上口球"
+erark_id = "6506"
+erark_behavior = "GAG_ON"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "sm"
+time_cost = 1
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "IN_HUMILIATION_ROOM_OR_DR_ROOM", "TARGET_NOT_GAG", "HAVE_GAG", "PENIS_NOT_IN_TARGET_MOUTH"]
+tags = ["system:h-bondage", "system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
+  { type = "h_experience", target = "selected", params = { expId = "51", value = 1 } },
+  { type = "toy_equip", target = "selected", params = { slot = 14, itemId = "口球" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "gag_on" } },
+]
+
+# ═══ gag_off（6507）═════════════════════════════════════════════════
+[[instructions]]
+id = "gag_off"
+label = "摘下口球"
+erark_id = "6507"
+erark_behavior = "GAG_OFF"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "sm"
+time_cost = 1
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "IN_HUMILIATION_ROOM_OR_DR_ROOM", "TARGET_NOW_GAG", "HAVE_GAG"]
+tags = ["system:h-bondage", "system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
+  { type = "toy_unequip", target = "selected", params = { slot = 14 } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "gag_off" } },
+]

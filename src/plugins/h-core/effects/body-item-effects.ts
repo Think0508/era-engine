@@ -75,7 +75,7 @@ export function registerBodyItemEffects(): void {
   effectTypeRegistry.register('body_item_equip', async (_p: any, execCtx: any) => {
     const slot = (_p.slot as number) ?? -1
     if (slot < 0) return true
-    const itemId = execCtx._itemId ?? execCtx.sourceItemId
+    const itemId = _p.itemId ?? execCtx._itemId ?? execCtx.sourceItemId
     // 注释：扣 source 背包
     const srcId = execCtx.sourceId
     if (srcId && itemId) {
@@ -166,6 +166,76 @@ export function registerBodyItemEffects(): void {
       const ch = entitySystem.get('character', id) as any
       if (ch?.h_state && ch.h_state.sex_toy_level > 0) ch.h_state.sex_toy_level--
     }
+    return true
+  })
+
+  // ═══════════════════════════════════════════════════════════
+  // item 批：玩具装卸 + 避孕套（2026-08-26）
+  // ═══════════════════════════════════════════════════════════
+
+  // toy_equip：从发起者背包扣 itemId，装到目标 body_items[slot]，并置 h_state flag（可带档位）
+  effectTypeRegistry.register('toy_equip', async (_p: any, execCtx: any) => {
+    const slot = (_p.slot as number) ?? -1
+    const itemId = (_p.itemId as string) ?? ''
+    const flag = (_p.flag as string) ?? ''
+    if (slot < 0 || !itemId) return true
+    const srcId = execCtx.sourceId
+    if (srcId) {
+      const removed = await apiSystem.call('inventory', 'removeItem', srcId, itemId, 1) as unknown as boolean
+      if (!removed) {
+        errorReporter.report({
+          source: 'h-core',
+          severity: 'warning',
+          message: `toy_equip 从背包移除 '${itemId}' 失败（数量不足或不存在）——装备中止`,
+        })
+        return true
+      }
+    }
+    for (const id of execCtx._targetIds as string[]) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch) continue
+      if (!ch.body_items) ch.body_items = {}
+      ch.body_items[String(slot)] = { itemId, active: true }
+      if (flag && ch.h_state) ch.h_state[flag] = true
+      if (typeof _p.level === 'number' && ch.h_state) ch.h_state.sex_toy_level = Math.max(0, Math.min(3, _p.level))
+      eventBus.emit('character:changed', { id })
+    }
+    return true
+  })
+
+  // toy_unequip：从目标卸下 body_items[slot]，归还 itemId 到发起者背包，清 h_state flag
+  effectTypeRegistry.register('toy_unequip', async (_p: any, execCtx: any) => {
+    const slot = (_p.slot as number) ?? -1
+    const flag = (_p.flag as string) ?? ''
+    if (slot < 0) return true
+    const srcId = execCtx.sourceId
+    for (const id of execCtx._targetIds as string[]) {
+      const ch = entitySystem.get('character', id) as any
+      if (!ch?.body_items) continue
+      const slotData = ch.body_items[String(slot)] as BodyItemSlot | undefined
+      delete ch.body_items[String(slot)]
+      if (slotData?.itemId && srcId) {
+        await apiSystem.call('inventory', 'addItem', srcId, slotData.itemId, 1)
+      }
+      if (flag && ch.h_state) ch.h_state[flag] = false
+      // 拔出震动棒/跳蛋时档位清零
+      if (ch.h_state && (flag === 'vibrator_insertion' || flag === 'vibrator_insertion_anal')) {
+        ch.h_state.sex_toy_level = 0
+      }
+      eventBus.emit('character:changed', { id })
+    }
+    return true
+  })
+
+  // 1011 WEAR_CONDOM / 1012 TAKE_CONDOM_OFF：h_state.condom 布尔
+  effectTypeRegistry.register('wear_condom', (_p: any, execCtx: any) => {
+    const self = execCtx.sourceId ? entitySystem.get('character', execCtx.sourceId) as any : null
+    if (self?.h_state) self.h_state.condom = true
+    return true
+  })
+  effectTypeRegistry.register('take_condom_off', (_p: any, execCtx: any) => {
+    const self = execCtx.sourceId ? entitySystem.get('character', execCtx.sourceId) as any : null
+    if (self?.h_state) self.h_state.condom = false
     return true
   })
 

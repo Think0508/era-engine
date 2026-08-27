@@ -4,7 +4,7 @@
 
 ## 背景
 
-`src/plugins/h-exposure/` 原为骨架（3 API + 2 effect + 9 个自造名前提），露出运行时逻辑散落：持续快感 tick 在 h-hidden/scene.ts、判定修正已在 h-core/settle/judge.ts（保持不动）。两条指令（邀请露出 5054 / 结束露出 6007）未复刻。
+`src/plugins/h-exposure/` 原为骨架（3 API + 2 effect + 9 个自造名前提），露出运行时逻辑散落：持续快感 tick 在 h-hidden/scene.ts、判定修正已在 h-core/settle/judge.ts（保持不动）。两条指令（邀请露出 5207 / 结束露出 6007）未复刻。
 
 ## 决策
 
@@ -42,7 +42,7 @@ erArk mode 1 条件含"门未锁"，但门是**运行时状态**（关门/锁门
 
 ### D6 指令效果链映射
 
-- 邀请露出（5054）：`exposure_set_level(params={} auto)×2(selected+self)` + `h_start_h` + `h_experience×2(expId=34)` + `trigger_dialogue`。405/462/464/603/605 由 h_start_h 引擎封装覆盖；704/1409 半成品注释（不建字段）
+- 邀请露出（5207）：`exposure_set_level(params={} auto)×2(selected+self)` + `h_start_h` + `h_experience×2(expId=34)` + `trigger_dialogue`。405/462/464/603/605 由 h_start_h 引擎封装覆盖；704/1409 半成品注释（不建字段）
 - 结束露出（6007）：`h_end_h` + `trigger_dialogue`；526/528/404/631 由 endHScene 覆盖；露出模式清除挂 `h:end` 事件统一遍历（与 h-hidden 对称）；753 随 D2 砍
 - `exposure_set_level` level 缺省 = 按场景自动计算初始模式（复用 computeModeByScene——邀请模式选择面板不做）
 
@@ -79,3 +79,4 @@ erArk mode 1 条件含"门未锁"，但门是**运行时状态**（关门/锁门
 - 测试：exposure-system.test.ts 23 例；hidden-sex-realtime.test.ts 露出块迁出；talk-common-data/instruction-chat 测试补注册露出相关前提
 - 数据：test-mod tavern、example-mod 集市打 has_indoor（演示新约定）
 - 文档：docs/h-exposure.md 重写为完整手册
+

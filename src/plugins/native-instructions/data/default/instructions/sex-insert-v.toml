@@ -1,0 +1,653 @@
+# 插件默认层指令（Layer 1）——SEX/insert V 链（B4-B7 批次 2026-08-26）
+# 数据家：native-instructions
+# 族：V 链（6301-6316）：入口/换体位走体位面板；12 体位为当前体位快捷动作；
+#     深部 6315/6316 为已插入状态下的追加动作。
+# 统一：duration=10 → time_cost=10；h_mode_show_type=2/tired_type=0 → category=sex 自动 h_scene。
+# 前提全部使用可读名；erArk 原名/效果 ID 见各条注释（迁移铁律）。
+# 效果 ID 对照（erArk Behavior_Effect + default.py）：
+#   21 好感 / 11 12 13 14 15 16 双方小/中/大体力气力 / 1511 1514 自己小体力/中气力 /
+#   22 信赖 / 1103 初V / 49 润滑 / 51 习得 / 52 尊重 / 53 好意 / 54 欲情 / 56 先导 /
+#   57 屈服 / 58 羞耻 / 62 反感 / 70 自己射精欲 / CVE 4 61 65 60 经验 /
+#   808 阴茎入V / 851-862 体位 / 122 V苦痛 / 131 V快感 / 145 膣技P调整
+
+# ═══ vaginal_sex（6301）═══════════════════════════════════════════════
+# erArk InstructConfig：DR_POSITION_NULL 入口 → Sex_Position_Panel(sex_type=1) 选体位后结算。
+# 本引擎等价：打开体位面板（UI 选择后执行对应体位指令）。
+[[instructions]]
+id = "vaginal_sex"
+label = "阴道性交"
+erark_id = "6301"
+erark_behavior = "NORMAL_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "POSITION_NONE", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "open_sex_position_panel", params = { sexType = 1 } },
+]
+
+# ═══ change_vaginal_sex_position（6302）═════════════════════════════════
+# erArk InstructConfig：DR_HAVE_SEX_POSITION + 已入 V/W → 换体位面板（change_position=True）
+[[instructions]]
+id = "change_vaginal_sex_position"
+label = "换阴道性交体位"
+erark_id = "6302"
+erark_behavior = "NORMAL_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "HAVE_SEX_POSITION", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "open_sex_position_panel", params = { sexType = 1, change = true } },
+]
+
+# ═══ normal_sex（6303）═══════════════════════════════════════════════
+# Behavior_Effect 501
+[[instructions]]
+id = "normal_sex"
+label = "正常位"
+erark_id = "6303"
+erark_behavior = "NORMAL_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "LOCATION_FURNITURE_GE_1", "POSITION_NORMAL", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  # 15/16 双方大体力/气力（degree=2）
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  # 808 入 V + 851 体位 1
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 1 } },
+  { type = "sex_position_set", target = "self", params = { position = 1 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "normal_sex" } },
+]
+
+# ═══ back_sex（6304）═══════════════════════════════════════════════
+# Behavior_Effect 502（状态差异：57 屈服；体位 852）
+[[instructions]]
+id = "back_sex"
+label = "背后位"
+erark_id = "6304"
+erark_behavior = "BACK_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "LOCATION_FURNITURE_GE_1", "POSITION_BACK", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 2 } },
+  { type = "sex_position_set", target = "self", params = { position = 2 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "back_sex" } },
+]
+
+# ═══ riding_sex（6305）═══════════════════════════════════════════════
+# Behavior_Effect 503（状态差异：56 先导；体位 853；床级家具）
+[[instructions]]
+id = "riding_sex"
+label = "对面骑乘位"
+erark_id = "6305"
+erark_behavior = "RIDING_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_BONDAGE", "TARGET_IS_H", "LOCATION_FURNITURE_3", "POSITION_FACE_RIDE", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 3 } },
+  { type = "sex_position_set", target = "self", params = { position = 3 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "riding_sex" } },
+]
+
+# ═══ back_riding_sex（6306）═══════════════════════════════════════════
+# Behavior_Effect 504（状态差异：56 先导；体位 854；床级家具）
+[[instructions]]
+id = "back_riding_sex"
+label = "背面骑乘位"
+erark_id = "6306"
+erark_behavior = "BACK_RIDING_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_BONDAGE", "TARGET_IS_H", "LOCATION_FURNITURE_3", "POSITION_BACK_RIDE", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 4 } },
+  { type = "sex_position_set", target = "self", params = { position = 4 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "back_riding_sex" } },
+]
+
+# ═══ face_seat_sex（6307）═════════════════════════════════════════════
+# Behavior_Effect 505（体力中 13/14；状态 52 尊重；体位 855）
+[[instructions]]
+id = "face_seat_sex"
+label = "对面座位"
+erark_id = "6307"
+erark_behavior = "FACE_SEAT_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "LOCATION_FURNITURE_GE_1", "POSITION_FACE_SEAT", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 5 } },
+  { type = "sex_position_set", target = "self", params = { position = 5 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "face_seat_sex" } },
+]
+
+# ═══ back_seat_sex（6308）═════════════════════════════════════════════
+# Behavior_Effect 506（体力中；状态 52 尊重；体位 856）
+[[instructions]]
+id = "back_seat_sex"
+label = "背面座位"
+erark_id = "6308"
+erark_behavior = "BACK_SEAT_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "LOCATION_FURNITURE_GE_1", "POSITION_BACK_SEAT", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 6 } },
+  { type = "sex_position_set", target = "self", params = { position = 6 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "back_seat_sex" } },
+]
+
+# ═══ face_stand_sex（6309）════════════════════════════════════════════
+# Behavior_Effect 507（体力：11 小HP + 14 中MP + 15/16 大HP/MP；状态 58 羞耻；体位 857）
+[[instructions]]
+id = "face_stand_sex"
+label = "对面立位"
+erark_id = "6309"
+erark_behavior = "FACE_STAND_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "POSITION_FACE_STAND", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 0 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 0 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 7 } },
+  { type = "sex_position_set", target = "self", params = { position = 7 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "face_stand_sex" } },
+]
+
+# ═══ back_stand_sex（6310）════════════════════════════════════════════
+# Behavior_Effect 508（同 507；体位 858）
+[[instructions]]
+id = "back_stand_sex"
+label = "背面立位"
+erark_id = "6310"
+erark_behavior = "BACK_STAND_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "POSITION_BACK_STAND", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 0 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 0 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 8 } },
+  { type = "sex_position_set", target = "self", params = { position = 8 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "back_stand_sex" } },
+]
+
+# ═══ face_hug_sex（6311）═════════════════════════════════════════════
+# Behavior_Effect 509（自 1511 小HP + 自 1514 中MP + 双方 15/16 大；状态 54 欲情；体位 859）
+[[instructions]]
+id = "face_hug_sex"
+label = "对面抱位"
+erark_id = "6311"
+erark_behavior = "FACE_HUG_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "POSITION_FACE_HUG", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  # 1511 自己小体力 / 1514 自己中气力
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 0 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  # 15/16 双方大体力/气力
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 9 } },
+  { type = "sex_position_set", target = "self", params = { position = 9 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "face_hug_sex" } },
+]
+
+# ═══ back_hug_sex（6312）═════════════════════════════════════════════
+# Behavior_Effect 510（同 509；体位 860）
+[[instructions]]
+id = "back_hug_sex"
+label = "背面抱位"
+erark_id = "6312"
+erark_behavior = "BACK_HUG_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "POSITION_BACK_HUG", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 0 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 10 } },
+  { type = "sex_position_set", target = "self", params = { position = 10 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "back_hug_sex" } },
+]
+
+# ═══ face_lay_sex（6313）═════════════════════════════════════════════
+# Behavior_Effect 511（体力中；状态 53 好意；体位 861；床级家具）
+[[instructions]]
+id = "face_lay_sex"
+label = "对面卧位"
+erark_id = "6313"
+erark_behavior = "FACE_LAY_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "LOCATION_FURNITURE_3", "POSITION_FACE_LIE", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 11 } },
+  { type = "sex_position_set", target = "self", params = { position = 11 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "face_lay_sex" } },
+]
+
+# ═══ back_lay_sex（6314）═════════════════════════════════════════════
+# Behavior_Effect 512（同 511；体位 862；床级家具）
+[[instructions]]
+id = "back_lay_sex"
+label = "背面卧位"
+erark_id = "6314"
+erark_behavior = "BACK_LAY_SEX"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "LOCATION_FURNITURE_3", "POSITION_BACK_LIE", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "好意", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina", position = 12 } },
+  { type = "sex_position_set", target = "self", params = { position = 12 } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "back_lay_sex" } },
+]
+
+# ═══ stimulate_g_point（6315）════════════════════════════════════════
+# Behavior_Effect 515（已入 V/W；深部动作；无体位切换）
+[[instructions]]
+id = "stimulate_g_point"
+label = "刺激G点"
+erark_id = "6315"
+erark_behavior = "STIMULATE_G_POINT"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION", "WAIST_TECHNIQUE_GE_3"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina" } },
+  { type = "pain_by_part", params = { part = "阴道" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "膣技" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "stimulate_g_point" } },
+]
+
+# ═══ womb_os_caress（6316）═══════════════════════════════════════════
+# Behavior_Effect 516（已入 V/W；深部动作；W 快感/苦痛 + V 快感；无体位切换）
+[[instructions]]
+id = "womb_os_caress"
+label = "玩弄子宫口"
+erark_id = "6316"
+erark_behavior = "WOMB_OS_CARESS"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "insert"
+time_cost = 10
+priority = 50
+judge_base = 500
+judge_class = "性交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "PENIS_IN_TARGET_VAGINA_OR_WOMB", "TARGET_NOT_VIBRATOR_INSERTION", "WAIST_TECHNIQUE_GE_4"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 2 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 2 } },
+  { type = "settle_trust" },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_V" } },
+  # 48 W 快感（base=50，子宫部位体技）；125 W 苦痛
+  { type = "tech_adjust", target = "selected", params = { part = "子宫", baseValue = 50 } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "pain_by_part", params = { part = "子宫" } },
+  { type = "feel_by_sex", params = { part = "阴道" } },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "7", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "61", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "65", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "68", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "60", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "vagina" } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "womb_os_caress" } },
+]

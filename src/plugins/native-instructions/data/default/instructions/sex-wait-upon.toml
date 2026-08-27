@@ -1,0 +1,588 @@
+# 插件默认层指令（Layer 1）——SEX/wait_upon（B4-B7 批次 2026-08-26）
+# 数据家：native-instructions
+# 侍奉位使用插桩：sex_insert countable=false（不进入“插入次数”计数器；h:part_use 由 tech_adjust 记）
+# 效果 ID 对照（Behavior_Effect + default.py）：
+#   21/13/14/22/41/42/43/49/51/52/54/56/57/58/59/60/62/70/110/111/114/118/120/141/142/143/144/
+#   802-807/812/813/817/1107/1406/CVE 1/4/30/32/41/42/43/44/45/46/153
+
+# ═══ handjob（6601）═══════════════════════════════════════════════
+[[instructions]]
+id = "handjob"
+label = "手交"
+erark_id = "6601"
+erark_behavior = "HANDJOB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_BONDAGE", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "指技" } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "41", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "hand", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "handjob" } },
+]
+
+# ═══ blowjob（6602）═══════════════════════════════════════════════
+[[instructions]]
+id = "blowjob"
+label = "口交"
+erark_id = "6602"
+erark_behavior = "BLOWJOB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+judge_base = 450
+judge_class = "口交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_GAG", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  # 41 S feel
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "口喉" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "舌技" } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "42", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "153", value = 1 } },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_M" } },
+  { type = "sex_insert", target = "selected", params = { part = "mouth", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "blowjob" } },
+]
+
+# ═══ paizuri（6603）═══════════════════════════════════════════════
+[[instructions]]
+id = "paizuri"
+label = "乳交"
+erark_id = "6603"
+erark_behavior = "PAIZURI"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_BONDAGE", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "tech_adjust", target = "selected", params = { part = "胸部" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "胸部" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "胸技" } },
+  { type = "h_experience", target = "selected", params = { expId = "1", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "43", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "breast", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "paizuri" } },
+]
+
+# ═══ footjob（6604）═══════════════════════════════════════════════
+[[instructions]]
+id = "footjob"
+label = "足交"
+erark_id = "6604"
+erark_behavior = "FOOTJOB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "TARGET_TECHNIQUE_GE_3"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "足技" } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "44", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "foot", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "footjob" } },
+]
+
+# ═══ hairjob（6605）═══════════════════════════════════════════════
+[[instructions]]
+id = "hairjob"
+label = "发交"
+erark_id = "6605"
+erark_behavior = "HAIRJOB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "TARGET_TECHNIQUE_GE_3"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "pl_p_adjust", target = "self", params = { skill = "指技" } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "45", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "hair", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "hairjob" } },
+]
+
+# ═══ axillajob（6606）═════════════════════════════════════════════
+[[instructions]]
+id = "axillajob"
+label = "腋交"
+erark_id = "6606"
+erark_behavior = "AXILLAJOB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H", "TARGET_NOT_BONDAGE", "TARGET_TECHNIQUE_GE_5"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "pl_p_adjust", target = "self", params = {} },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "46", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "axilla", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "axillajob" } },
+]
+
+# ═══ rub_buttock（6607）════════════════════════════════════════════
+[[instructions]]
+id = "rub_buttock"
+label = "素股"
+erark_id = "6607"
+erark_behavior = "RUB_BUTTOCK"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_BONDAGE", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "tech_adjust", target = "selected", params = { part = "阴蒂" } },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "足技" } },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "leg", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "rub_buttock" } },
+]
+
+# ═══ hand_blowjob（6608）═══════════════════════════════════════════
+[[instructions]]
+id = "hand_blowjob"
+label = "手交口交"
+erark_id = "6608"
+erark_behavior = "HAND_BLOWJOB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+judge_base = 450
+judge_class = "口交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_GAG", "TARGET_IS_H", "PENIS_IN_TARGET_MOUTH_OR_HAND", "TARGET_NOT_BONDAGE", "TARGET_TECHNIQUE_GE_3"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "口喉" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "舌技" } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "41", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "42", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "153", value = 1 } },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_M" } },
+  { type = "sex_insert", target = "selected", params = { part = "mouth", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "hand_blowjob" } },
+]
+
+# ═══ tits_blowjob（6609）═══════════════════════════════════════════
+[[instructions]]
+id = "tits_blowjob"
+label = "乳交口交"
+erark_id = "6609"
+erark_behavior = "TITS_BLOWJOB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+judge_base = 450
+judge_class = "口交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_GAG", "TARGET_IS_H", "PENIS_IN_TARGET_MOUTH_OR_BREAST", "TARGET_NOT_BONDAGE", "TARGET_TECHNIQUE_GE_3"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "tech_adjust", target = "selected", params = { part = "胸部" } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "口喉" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "舌技" } },
+  { type = "h_experience", target = "selected", params = { expId = "1", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "41", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "43", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "153", value = 1 } },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_M" } },
+  { type = "sex_insert", target = "selected", params = { part = "mouth", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "tits_blowjob" } },
+]
+
+# ═══ focus_blowjob（6610）══════════════════════════════════════════
+[[instructions]]
+id = "focus_blowjob"
+label = "真空口交"
+erark_id = "6610"
+erark_behavior = "FOCUS_BLOWJOB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+judge_base = 450
+judge_class = "口交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_GAG", "TARGET_IS_H", "PENIS_IN_TARGET_MOUTH_OR_DEEP_THROAT", "TARGET_TECHNIQUE_GE_5"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "口喉" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "舌技" } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "42", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "153", value = 1 } },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_M" } },
+  { type = "sex_insert", target = "selected", params = { part = "mouth", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "focus_blowjob" } },
+]
+
+# ═══ deep_throat（6611）════════════════════════════════════════════
+[[instructions]]
+id = "deep_throat"
+label = "深喉插入"
+erark_id = "6611"
+erark_behavior = "DEEP_THROAT"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+judge_base = 700
+judge_class = "SM"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_GAG", "TARGET_IS_H", "PENIS_IN_TARGET_MOUTH_OR_DEEP_THROAT", "TARGET_TECHNIQUE_GE_5_OR_UNCONSCIOUS"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "苦痛", baseValue = 30 } },
+  { type = "settle_state", params = { state = "恐怖", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "口喉" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "舌技" } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "32", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "42", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "153", value = 1 } },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_M" } },
+  { type = "sex_insert", target = "selected", params = { part = "deep_throat", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "deep_throat" } },
+]
+
+# ═══ clean_blowjob（6612）══════════════════════════════════════════
+[[instructions]]
+id = "clean_blowjob"
+label = "清洁口交"
+erark_id = "6612"
+erark_behavior = "CLEAN_BLOWJOB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+judge_base = 450
+judge_class = "口交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_GAG", "TARGET_IS_H", "PL_PENIS_SEMEN_DIRTY", "NOW_NOT_CONDOM"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "欲情", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "口喉" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "舌技" } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "42", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "153", value = 1 } },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_M" } },
+  { type = "sex_insert", target = "selected", params = { part = "mouth", countable = false } },
+  { type = "just_shoot_off", target = "self" },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "clean_blowjob" } },
+]
+
+# ═══ sixty_nine（6613）═════════════════════════════════════════════
+[[instructions]]
+id = "sixty_nine"
+label = "六九式"
+erark_id = "6613"
+erark_behavior = "SIXTY_NINE"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+judge_base = 450
+judge_class = "口交"
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_NOT_GAG", "TARGET_IS_H", "LOCATION_FURNITURE_3", "PENIS_IN_TARGET_MOUTH_OR_DEEP_THROAT", "TECHNIQUE_GE_3", "TARGET_NOT_BONDAGE", "TARGET_TECHNIQUE_GE_3"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "settle_state", params = { state = "润滑", baseValue = 30 } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "阴道" } },
+  { type = "tech_adjust", target = "selected", params = { part = "口喉" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "舌技" } },
+  { type = "h_experience", target = "selected", params = { expId = "4", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "42", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "42", value = 1 } },
+  { type = "h_experience", target = "selected", params = { expId = "153", value = 1 } },
+  { type = "h_experience", target = "self", params = { expId = "153", value = 1 } },
+  { type = "first_time_check", target = "selected", params = { key = "virgin_M" } },
+  { type = "sex_insert", target = "selected", params = { part = "mouth", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "sixty_nine" } },
+]
+
+# ═══ legjob（6614）═════════════════════════════════════════════════
+[[instructions]]
+id = "legjob"
+label = "腿交"
+erark_id = "6614"
+erark_behavior = "LEGJOB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "先导", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "pl_p_adjust", target = "self", params = { skill = "足技" } },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "leg", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "legjob" } },
+]
+
+# ═══ face_rub（6616）═══════════════════════════════════════════════
+[[instructions]]
+id = "face_rub"
+label = "阴茎蹭脸"
+erark_id = "6616"
+erark_behavior = "FACE_RUB"
+erark_h_mode_show_type = 2
+erark_tired_type = 0
+category = "sex"
+sub_category = "wait_upon"
+time_cost = 10
+priority = 50
+premises = ["HAVE_TARGET", "T_NPC_NOT_ACTIVE_H", "TARGET_IS_H"]
+tags = ["system:h-core"]
+effects = [
+  { type = "settle_favorability" },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = -1, mpValue = 0, degree = 1 } },
+  { type = "settle_hp_mp", target = "self", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_hp_mp", target = "selected", params = { hpValue = 0, mpValue = -1, degree = 1 } },
+  { type = "settle_trust" },
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "settle_state", params = { state = "习得", baseValue = 30 } },
+  { type = "settle_state", params = { state = "尊重", baseValue = 30 } },
+  { type = "settle_state", params = { state = "屈服", baseValue = 30 } },
+  { type = "settle_state", params = { state = "羞耻", baseValue = 30 } },
+  { type = "settle_state", params = { state = "反感", baseValue = 5 } },
+  { type = "eja_add" },
+  { type = "tech_adjust", target = "selected", params = { part = "皮肤" } },
+  { type = "pl_p_adjust", target = "self", params = {} },
+  { type = "h_experience", target = "selected", params = { expId = "30", value = 1 } },
+  { type = "sex_insert", target = "selected", params = { part = "face", countable = false } },
+  { type = "trigger_dialogue", target = "selected", params = { scene = "face_rub" } },
+]

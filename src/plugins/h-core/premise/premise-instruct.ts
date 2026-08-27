@@ -12,6 +12,18 @@ function getTarget(ctx: any): any | null {
   return entitySystem.get('character', charId) as any ?? null
 }
 
+// 注释：自己（发起者/玩家）——erArk 无 T_/TARGET_/DR_ 前缀的前提查自己；HAVE_* 背包同理。
+// sourceId 优先（NPC 主动指令也能用），回退玩家 id。
+function selfId(ctx: any): string | null {
+  return ctx?.sourceId ?? ctx?.player?.id ?? ctx?.gameStore?.player?.id ?? ctx?.playerId ?? null
+}
+
+function getSelf(ctx: any): any | null {
+  const charId = selfId(ctx)
+  if (!charId) return null
+  return entitySystem.get('character', charId) as any ?? null
+}
+
 export function registerInstructPremises(registry: any): void {
   // ── Body part checks ──────────────────────────────────────
   function haveBodyPart(partField: string) {
@@ -39,105 +51,214 @@ export function registerInstructPremises(registry: any): void {
     }
   }
 
-  registry.registerPremise('TARGET_TECHNIQUE_GE_3', abilityLevelGe(ATTR.TECHNIQUE, 3))
-  registry.registerPremise('TARGET_TECHNIQUE_GE_5', abilityLevelGe(ATTR.TECHNIQUE, 5))
-  registry.registerPremise('FINGER_TECHNIQUE_GE_3', abilityLevelGe('指技', 3))
-  registry.registerPremise('FINGER_TECHNIQUE_GE_5', abilityLevelGe('指技', 5))
-  registry.registerPremise('WAIST_TECHNIQUE_GE_3', abilityLevelGe('腰技', 3))
-  registry.registerPremise('WAIST_TECHNIQUE_GE_5', abilityLevelGe('腰技', 5))
-  registry.registerPremise('WAIST_TECHNIQUE_GE_7', abilityLevelGe('腰技', 7))
-
-  // ── Position / penis state ────────────────────────────────
-  function positionEquals(pos: string | null) {
+  function selfAbilityLevelGe(abilityId: string, minLevel: number) {
     return (ctx: any) => {
-      const ch = getTarget(ctx)
-      return ch?.h_state?.position === pos
+      const ch = getSelf(ctx)
+      if (!ch) return false
+      return (ch?.abilities?.[abilityId]?.level ?? 0) >= minLevel
     }
   }
 
-  registry.registerPremise('DR_POSITION_NULL', positionEquals(null))
-  registry.registerPremise('DR_POSITION_NORMAL', positionEquals('normal'))
-  registry.registerPremise('DR_POSITION_BACK', positionEquals('back'))
-  registry.registerPremise('DR_POSITION_FACE_RIDE', positionEquals('face_ride'))
-  registry.registerPremise('DR_POSITION_BACK_RIDE', positionEquals('back_ride'))
-  registry.registerPremise('DR_POSITION_FACE_SEAT', positionEquals('face_seat'))
-  registry.registerPremise('DR_POSITION_BACK_SEAT', positionEquals('back_seat'))
-  registry.registerPremise('DR_POSITION_FACE_STAND', positionEquals('face_stand'))
-  registry.registerPremise('DR_POSITION_BACK_STAND', positionEquals('back_stand'))
-  registry.registerPremise('DR_POSITION_FACE_HUG', positionEquals('face_hug'))
-  registry.registerPremise('DR_POSITION_BACK_HUG', positionEquals('back_hug'))
-  registry.registerPremise('DR_POSITION_FACE_LIE', positionEquals('face_lie'))
-  registry.registerPremise('DR_POSITION_BACK_LIE', positionEquals('back_lie'))
-
-  registry.registerPremise('DR_HAVE_SEX_POSITION', (ctx: any) => {
+  registry.registerPremise('TARGET_TECHNIQUE_GE_3', abilityLevelGe(ATTR.TECHNIQUE, 3))
+  registry.registerPremise('TARGET_TECHNIQUE_GE_5', abilityLevelGe(ATTR.TECHNIQUE, 5))
+  // wait_upon：TARGET_TECHNIQUE_GE_5_OR_IS_UNCONSCIOUS_H（深喉，erArk 原前提）
+  registry.registerPremise('TARGET_TECHNIQUE_GE_5_OR_UNCONSCIOUS', (ctx: any) => {
+    if (abilityLevelGe(ATTR.TECHNIQUE, 5)(ctx)) return true
     const ch = getTarget(ctx)
-    if (!ch) return false
-    return ch?.h_state?.position != null && ch?.h_state?.position !== ''
+    return !!ch?.sp_flag?.unconscious_h
   })
+  // 无前缀 = 查自己（erArk handle_premise_ability.py：指技 ability[70] / 腰技 ability[76]）
+  registry.registerPremise('FINGER_TECHNIQUE_GE_3', selfAbilityLevelGe('指技', 3))
+  registry.registerPremise('FINGER_TECHNIQUE_GE_5', selfAbilityLevelGe('指技', 5))
+  registry.registerPremise('WAIST_TECHNIQUE_GE_3', selfAbilityLevelGe('腰技', 3))
+  registry.registerPremise('WAIST_TECHNIQUE_GE_4', selfAbilityLevelGe('腰技', 4))
+  registry.registerPremise('WAIST_TECHNIQUE_GE_5', selfAbilityLevelGe('腰技', 5))
+  registry.registerPremise('WAIST_TECHNIQUE_GE_7', selfAbilityLevelGe('腰技', 7))
+
+  // ── Position / penis state ────────────────────────────────
+  // 体位码：h_state.current_sex_position，-1=无，1-12=Sex_Position.csv 体位
+  // 读自己体位（erArk DR_*：cache.character_data[0].h_state.current_sex_position）
+  function selfPositionEquals(posCode: number | null) {
+    return (ctx: any) => {
+      const ch = getSelf(ctx)
+      if (!ch?.h_state) return posCode === null
+      const pos = ch.h_state.current_sex_position ?? -1
+      return posCode === null ? pos === -1 : pos === posCode
+    }
+  }
+
+  const registerPositionPremise = (name: string, posCode: number | null, legacyName?: string): void => {
+    const handler = selfPositionEquals(posCode)
+    registry.registerPremise(name, handler)
+    if (legacyName) registry.registerPremise(legacyName, handler)
+  }
+
+  // 新数据用可读名；旧 erArk 名（DR_*）仅作兼容别名
+  registerPositionPremise('POSITION_NONE', null, 'DR_POSITION_NULL')
+  registerPositionPremise('POSITION_NORMAL', 1, 'DR_POSITION_NORMAL')
+  registerPositionPremise('POSITION_BACK', 2, 'DR_POSITION_BACK')
+  registerPositionPremise('POSITION_FACE_RIDE', 3, 'DR_POSITION_FACE_RIDE')
+  registerPositionPremise('POSITION_BACK_RIDE', 4, 'DR_POSITION_BACK_RIDE')
+  registerPositionPremise('POSITION_FACE_SEAT', 5, 'DR_POSITION_FACE_SEAT')
+  registerPositionPremise('POSITION_BACK_SEAT', 6, 'DR_POSITION_BACK_SEAT')
+  registerPositionPremise('POSITION_FACE_STAND', 7, 'DR_POSITION_FACE_STAND')
+  registerPositionPremise('POSITION_BACK_STAND', 8, 'DR_POSITION_BACK_STAND')
+  registerPositionPremise('POSITION_FACE_HUG', 9, 'DR_POSITION_FACE_HUG')
+  registerPositionPremise('POSITION_BACK_HUG', 10, 'DR_POSITION_BACK_HUG')
+  registerPositionPremise('POSITION_FACE_LIE', 11, 'DR_POSITION_FACE_LIE')
+  registerPositionPremise('POSITION_BACK_LIE', 12, 'DR_POSITION_BACK_LIE')
+
+  // 自己有任一体位（erArk DR_HAVE_SEX_POSITION = !DR_POSITION_NULL）
+  const haveSexPosition = (ctx: any): boolean => {
+    const ch = getSelf(ctx)
+    if (!ch?.h_state) return false
+    return (ch.h_state.current_sex_position ?? -1) !== -1
+  }
+  registry.registerPremise('HAVE_SEX_POSITION', haveSexPosition)
+  registry.registerPremise('DR_HAVE_SEX_POSITION', haveSexPosition)
+
+  // 兼容存量：pull_out_penis 用“自己有体位 或 目标任一处被插入”
+  const haveSexPositionOrPenisInTargetAnywhere = (ctx: any): boolean => {
+    if (haveSexPosition(ctx)) return true
+    const ch = getTarget(ctx)
+    const ip = ch?.h_state?.insert_position
+    return typeof ip === 'number' && ip >= 0 && ip <= 4
+  }
+  registry.registerPremise('HAVE_SEX_POSITION_OR_PENIS_IN_TARGET_ANYPART', haveSexPositionOrPenisInTargetAnywhere)
+  registry.registerPremise('DR_HAVE_SEX_POSITION_OR_PENIS_IN_T_ANYPART', haveSexPositionOrPenisInTargetAnywhere)
 
   // ── Insertion state ───────────────────────────────────────
+  // 目标插入位（h_state.insert_position）：0=V 1=A 2=U 3=W 4=M（引擎码；erArk body cid 6/8/9/7/5）
+  const INSERTION_CODES: Record<string, number[]> = {
+    vagina: [0],
+    anal: [1],
+    womb: [3],
+    urethral: [2],
+    mouth: [4],
+    hair: [5],
+    face: [6],
+    breast: [7],
+    axilla: [8],
+    hand: [9],
+    leg: [10],
+    foot: [11],
+    deep_throat: [12],
+    vagina_or_womb: [0, 3],
+    mouth_or_hand: [4, 9],
+    mouth_or_breast: [4, 7],
+    mouth_or_deep_throat: [4, 12],
+    any: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+  }
   function insertionIn(part: string) {
     return (ctx: any) => {
       const ch = getTarget(ctx)
-      if (!ch?.h_state?.insertion) return false
-      const insertion = ch.h_state.insertion
-      if (part === 'vagina_or_womb') {
-        return insertion === 'vagina' || insertion === 'womb'
-      }
-      return insertion === part
+      const ip = ch?.h_state?.insert_position
+      return typeof ip === 'number' && (INSERTION_CODES[part] ?? []).includes(ip)
     }
   }
 
+  registry.registerPremise('PENIS_IN_TARGET_VAGINA_OR_WOMB', insertionIn('vagina_or_womb'))
+  registry.registerPremise('PENIS_IN_TARGET_ANAL', insertionIn('anal'))
+  registry.registerPremise('PENIS_IN_TARGET_WOMB', insertionIn('womb'))
+  registry.registerPremise('PENIS_IN_TARGET_URETHRAL', insertionIn('urethral'))
+  registry.registerPremise('PENIS_IN_TARGET_MOUTH', insertionIn('mouth'))
+  registry.registerPremise('PENIS_NOT_IN_TARGET_MOUTH', (ctx: any) => !insertionIn('mouth')(ctx))
+  registry.registerPremise('PENIS_NOT_IN_TARGET_ANAL', (ctx: any) => !insertionIn('anal')(ctx))
+  registry.registerPremise('PENIS_NOT_IN_TARGET_VAGINA_OR_WOMB', (ctx: any) => !insertionIn('vagina_or_womb')(ctx))
+  registry.registerPremise('PENIS_NOT_IN_TARGET_WOMB', (ctx: any) => !insertionIn('womb')(ctx))
+  // wait_upon 侍奉位（erArk insert_position 0/1/2/3/4/5/10/11/15 的引擎码 5-12）
+  registry.registerPremise('PENIS_IN_TARGET_HAIR', insertionIn('hair'))
+  registry.registerPremise('PENIS_IN_TARGET_FACE', insertionIn('face'))
+  registry.registerPremise('PENIS_IN_TARGET_BREAST', insertionIn('breast'))
+  registry.registerPremise('PENIS_IN_TARGET_AXILLA', insertionIn('axilla'))
+  registry.registerPremise('PENIS_IN_TARGET_HAND', insertionIn('hand'))
+  registry.registerPremise('PENIS_IN_TARGET_LEG', insertionIn('leg'))
+  registry.registerPremise('PENIS_IN_TARGET_FOOT', insertionIn('foot'))
+  registry.registerPremise('PENIS_IN_TARGET_DEEP_THROAT', insertionIn('deep_throat'))
+  registry.registerPremise('PENIS_IN_TARGET_MOUTH_OR_HAND', insertionIn('mouth_or_hand'))
+  registry.registerPremise('PENIS_IN_TARGET_MOUTH_OR_BREAST', insertionIn('mouth_or_breast'))
+  registry.registerPremise('PENIS_IN_TARGET_MOUTH_OR_DEEP_THROAT', insertionIn('mouth_or_deep_throat'))
+  // 兼容别名（erArk 原名）
   registry.registerPremise('PENIS_IN_T_VAGINA_OR_WOMB', insertionIn('vagina_or_womb'))
   registry.registerPremise('PENIS_IN_T_ANAL', insertionIn('anal'))
   registry.registerPremise('PENIS_IN_T_WOMB', insertionIn('womb'))
   registry.registerPremise('PENIS_IN_T_URETHRAL', insertionIn('urethral'))
   registry.registerPremise('PENIS_IN_T_MOUSE', insertionIn('mouth'))
   registry.registerPremise('PENIS_NOT_IN_T_MOUSE', (ctx: any) => !insertionIn('mouth')(ctx))
+  registry.registerPremise('PENIS_IN_T_HAIR', insertionIn('hair'))
+  registry.registerPremise('PENIS_IN_T_FACE', insertionIn('face'))
+  registry.registerPremise('PENIS_IN_T_BREAST', insertionIn('breast'))
+  registry.registerPremise('PENIS_IN_T_AXILLA', insertionIn('axilla'))
+  registry.registerPremise('PENIS_IN_T_HAND', insertionIn('hand'))
+  registry.registerPremise('PENIS_IN_T_LEG', insertionIn('leg'))
+  registry.registerPremise('PENIS_IN_T_FOOT', insertionIn('foot'))
+  registry.registerPremise('PENIS_IN_T_DEEP_THROAT', insertionIn('deep_throat'))
+  registry.registerPremise('PENIS_IN_T_MOUSE_OR_HAND', insertionIn('mouth_or_hand'))
+  registry.registerPremise('PENIS_IN_T_MOUSE_OR_BREAST', insertionIn('mouth_or_breast'))
+  registry.registerPremise('PENIS_IN_T_MOUSE_OR_DEEP_THROAT', insertionIn('mouth_or_deep_throat'))
 
   // ── Dilate / aperture state ──────────────────────────────
-  registry.registerPremise('TARGET_A_EMPTY', (ctx: any) => {
+  // TARGET_A_EMPTY：目标后穴无肛门道具——erArk handle_self_a_empty =
+  //   无震动棒（body_item[3]）、无拉珠（body_item[7]）、非灌肠（dirty.a_clean ∈ [1,3]）。
+  // 注意：不检查 insert_position（“换肛交体位”同时需要 PENIS_IN_TARGET_ANAL + TARGET_ANUS_EMPTY）。
+  function anusEmpty(ctx: any): boolean {
     const ch = getTarget(ctx)
-    if (!ch?.h_state) return true
-    return ch.h_state.insertion == null || ch.h_state.insertion === ''
-  })
+    if (!ch) return false
+    const hs = ch.h_state ?? {}
+    const analToyItemIds = new Set(['震动棒', '肛珠', '灌肠用具', '灌肠液'])
+    const hasAnalToy = Object.values(ch.body_items ?? {}).some((sd: any) => sd?.active && analToyItemIds.has(sd?.itemId))
+    // 玩具系统落地前的预留字段（h_state 尚未定义时为 undefined = 无）
+    const analVibrator = hs.vibrator_insertion_anal === true
+    const analBeads = hs.anal_beads === true
+    const enema = ch.dirty?.a_clean === 1 || ch.dirty?.a_clean === 3
+    return !hasAnalToy && !analVibrator && !analBeads && !enema
+  }
+  registry.registerPremise('TARGET_ANUS_EMPTY', anusEmpty)
+  registry.registerPremise('TARGET_A_EMPTY', anusEmpty)
 
-  function dilateGe(part: string, minLevel: number) {
+  // 扩张等级走目标能力（erArk T_W_DILATE_GE_N = target ability[12]（子宫扩张））
+  function targetAbilityGe(abilityId: string, minLevel: number) {
     return (ctx: any) => {
       const ch = getTarget(ctx)
-      if (!ch?.h_state?.dilate) return false
-      return (ch.h_state.dilate[part] ?? 0) >= minLevel
+      if (!ch) return false
+      const abl = ch?.abilities?.[abilityId]
+      const lv = typeof abl === 'object' ? (abl?.level ?? 0) : (typeof abl === 'number' ? abl : 0)
+      return lv >= minLevel
     }
   }
-
-  registry.registerPremise('T_U_DILATE_GE_2', dilateGe('urethral', 2))
-  registry.registerPremise('T_U_DILATE_GE_3', dilateGe('urethral', 3))
-  registry.registerPremise('T_U_DILATE_GE_5', dilateGe('urethral', 5))
-  registry.registerPremise('T_W_DILATE_GE_3', dilateGe('womb', 3))
-  registry.registerPremise('T_W_DILATE_GE_5', dilateGe('womb', 5))
+  registry.registerPremise('TARGET_WOMB_DILATE_GE_3', targetAbilityGe('子宫扩张', 3))
+  registry.registerPremise('TARGET_WOMB_DILATE_GE_5', targetAbilityGe('子宫扩张', 5))
+  registry.registerPremise('T_W_DILATE_GE_3', targetAbilityGe('子宫扩张', 3))
+  registry.registerPremise('T_W_DILATE_GE_5', targetAbilityGe('子宫扩张', 5))
+  registry.registerPremise('T_U_DILATE_GE_2', targetAbilityGe('尿道扩张', 2))
+  registry.registerPremise('T_U_DILATE_GE_3', targetAbilityGe('尿道扩张', 3))
+  registry.registerPremise('T_U_DILATE_GE_5', targetAbilityGe('尿道扩张', 5))
 
   // 注释：服装前提已由 premise-clothing.ts 注册
 
   // ── Location / place ─────────────────────────────────────────
   // 注释：位置前提（IN_*）已按架构决策迁移为 location.tags 检查（见 docs/instruction-replication/location-tags.md）
   // 指令 TOML 不再写 IN_* 前提，改用 condition = "location.tags.has_xxx == true"
-  // 以下 PLACE_* 保留地点字段判断（furniture_count/door），不 tag 化
-
-  registry.registerPremise('PLACE_FURNITURE_GE_1', (_ctx: any) => {
+  // 家具前提保留 location.furniture_count 判断（erArk scene_data.have_furniture：
+  //   1=桌椅级 2=办公级 3=床级；指令 CSV 中 PLACE_FURNITURE_3 是 ==3，GE_* 是 >=）
+  const locationFurnitureGe = (min: number) => (_ctx: any) => {
     const loc = gameContext.getContext().location
     if (!loc) return false
-    return (loc as any).furniture_count >= 1
-  })
-  registry.registerPremise('PLACE_FURNITURE_GE_2', (_ctx: any) => {
+    return (loc as any).furniture_count >= min
+  }
+  const locationFurnitureEq = (value: number) => (_ctx: any) => {
     const loc = gameContext.getContext().location
     if (!loc) return false
-    return (loc as any).furniture_count >= 2
-  })
-  registry.registerPremise('PLACE_FURNITURE_GE_3', (_ctx: any) => {
-    const loc = gameContext.getContext().location
-    if (!loc) return false
-    return (loc as any).furniture_count >= 3
-  })
+    return (loc as any).furniture_count === value
+  }
+  registry.registerPremise('LOCATION_FURNITURE_GE_1', locationFurnitureGe(1))
+  registry.registerPremise('LOCATION_FURNITURE_GE_2', locationFurnitureGe(2))
+  registry.registerPremise('LOCATION_FURNITURE_GE_3', locationFurnitureGe(3))
+  registry.registerPremise('LOCATION_FURNITURE_3', locationFurnitureEq(3))
+  // 兼容别名（erArk 原名；仅存量数据引用，新数据用 LOCATION_FURNITURE_*）
+  registry.registerPremise('PLACE_FURNITURE_GE_1', locationFurnitureGe(1))
+  registry.registerPremise('PLACE_FURNITURE_GE_2', locationFurnitureGe(2))
+  registry.registerPremise('PLACE_FURNITURE_GE_3', locationFurnitureGe(3))
   registry.registerPremise('PLACE_DOOR_LOCKABLE', (_ctx: any) => {
     const loc = gameContext.getContext().location
     if (!loc) return false
@@ -153,12 +274,14 @@ export function registerInstructPremises(registry: any): void {
     if (!loc) return false
     return (loc as any).door === 'close'
   })
+  // sm 批：凌辱室 / 博士房间（IN_HUMILIATION_ROOM_OR_DR_ROOM）→ location.tags
+  registry.registerPremise('IN_HUMILIATION_ROOM_OR_DR_ROOM', (_ctx: any) => {
+    const tags = gameContext.getContext().location?.tags ?? []
+    return tags.includes('has_humiliation_room') || tags.includes('has_dr_room')
+  })
 
   // ── Item possession (inventory) ──────────────────────────────
   // erArk HAVE_* 无 T_ 前缀 = 查自己（有 T_ 前缀才查目标）；背包是数组，不能按 itemId 属性读
-  function selfId(ctx: any): string | null {
-    return ctx?.player?.id ?? ctx?.gameStore?.player?.id ?? ctx?.playerId ?? null
-  }
   function hasItem(itemId: string) {
     return (ctx: any) => {
       const charId = selfId(ctx)
@@ -168,13 +291,22 @@ export function registerInstructPremises(registry: any): void {
     }
   }
 
+  function hasAnyItem(itemIds: string[]) {
+    return (ctx: any) => {
+      const charId = selfId(ctx)
+      if (!charId) return false
+      const ch = entitySystem.get('character', charId) as any
+      return !!ch?.inventory?.some?.((i: any) => itemIds.includes(i.itemId) && (i.count ?? 0) > 0)
+    }
+  }
+
   registry.registerPremise('HAVE_BONDAGE', hasItem('绳子'))
-  registry.registerPremise('HAVE_VIBRATOR', hasItem('震动棒'))
+  registry.registerPremise('HAVE_VIBRATOR', hasAnyItem(['震动棒', 'V震动棒', 'A震动棒']))
   registry.registerPremise('HAVE_PHILTER', hasItem('媚药'))
   registry.registerPremise('HAVE_CONDOM', hasItem('避孕套'))
   registry.registerPremise('HAVE_BODY_LUBRICANT', hasItem('润滑液'))
   registry.registerPremise('HAVE_PATCH', hasItem('贴片'))
-  registry.registerPremise('HAVE_GAG', hasItem('口枷'))
+  registry.registerPremise('HAVE_GAG', hasAnyItem(['口枷', '口球']))
   registry.registerPremise('HAVE_WHIP', hasItem('鞭子'))
   registry.registerPremise('HAVE_SAFE_CANDLES', hasItem('安全蜡烛'))
   registry.registerPremise('HAVE_CLYSTER_TOOLS', hasItem('灌肠用具'))
@@ -182,9 +314,10 @@ export function registerInstructPremises(registry: any): void {
   registry.registerPremise('HAVE_URINE_COLLECTOR', hasItem('集尿器'))
   registry.registerPremise('HAVE_COTTON_STICK', hasItem('棉棒'))
   registry.registerPremise('HAVE_LOVE_EGG', hasItem('跳蛋'))
+  registry.registerPremise('HAVE_ELECTRIC_MESSAGE_STICK', hasItem('电动按摩棒'))
   registry.registerPremise('HAVE_NIPPLE_CLAMP', hasItem('乳头夹'))
   registry.registerPremise('HAVE_CLIT_CLAMP', hasItem('阴蒂夹'))
-  registry.registerPremise('HAVE_ANAL_BEADS', hasItem('肛珠'))
+  registry.registerPremise('HAVE_ANAL_BEADS', hasAnyItem(['肛珠', '肛门拉珠']))
   registry.registerPremise('HAVE_ENEMAS', hasItem('灌肠液'))
   registry.registerPremise('HAVE_SLEEPING_PILLS', hasItem('安眠药'))
   registry.registerPremise('HAVE_DIURETICS_ONCE', hasItem('利尿剂瞬间'))
@@ -221,12 +354,12 @@ export function registerInstructPremises(registry: any): void {
     return (ch?.base?.憋尿 ?? 0) >= 80
   })
   registry.registerPremise('NOW_CONDOM', (ctx: any) => {
-    const ch = getTarget(ctx)
+    const ch = getSelf(ctx)
     if (!ch) return false
     return ch?.h_state?.condom === true
   })
   registry.registerPremise('NOW_NOT_CONDOM', (ctx: any) => {
-    const ch = getTarget(ctx)
+    const ch = getSelf(ctx)
     if (!ch) return false
     return ch?.h_state?.condom !== true
   })
@@ -261,6 +394,69 @@ export function registerInstructPremises(registry: any): void {
     const ch = getTarget(ctx)
     if (!ch) return false
     return !!ch?.h_state?.vibrator_insertion
+  })
+  registry.registerPremise('TARGET_NOT_VIBRATOR_INSERTION_ANAL', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !ch?.h_state?.vibrator_insertion_anal
+  })
+  registry.registerPremise('TARGET_NOW_VIBRATOR_INSERTION_ANAL', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.h_state?.vibrator_insertion_anal
+  })
+  registry.registerPremise('TARGET_NOT_NIPPLE_CLAMP', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !ch?.h_state?.nipple_clamp
+  })
+  registry.registerPremise('TARGET_NOW_NIPPLE_CLAMP', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.h_state?.nipple_clamp
+  })
+  registry.registerPremise('TARGET_NOT_CLIT_CLAMP', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !ch?.h_state?.clit_clamp
+  })
+  registry.registerPremise('TARGET_NOW_CLIT_CLAMP', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.h_state?.clit_clamp
+  })
+  registry.registerPremise('TARGET_NOT_ANAL_BEADS', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !ch?.h_state?.anal_beads
+  })
+  registry.registerPremise('TARGET_NOW_ANAL_BEADS', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.h_state?.anal_beads
+  })
+  registry.registerPremise('TARGET_NOT_MILKING_MACHINE', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !ch?.h_state?.milking_machine
+  })
+  registry.registerPremise('TARGET_NOW_MILKING_MACHINE', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return !!ch?.h_state?.milking_machine
+  })
+  registry.registerPremise('TARGET_NOW_SEX_TOY_NOT_STRONG', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    return (ch?.h_state?.sex_toy_level ?? 0) !== 3
+  })
+  // 遥控玩具前提：身上有任一玩具（h_state 标志或 body_item 活跃）
+  registry.registerPremise('TARGET_HAVE_SEX_TOY', (ctx: any) => {
+    const ch = getTarget(ctx)
+    if (!ch) return false
+    const hs = ch.h_state ?? {}
+    if (hs.sex_toy_level > 0 || hs.vibrator_insertion || hs.vibrator_insertion_anal || hs.nipple_clamp || hs.clit_clamp || hs.anal_beads) return true
+    return Object.values(ch.body_items ?? {}).some((sd: any) => sd?.active)
   })
   registry.registerPremise('T_NOT_ENEMA', (ctx: any) => {
     const ch = getTarget(ctx)

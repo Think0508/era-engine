@@ -55,8 +55,9 @@ fields = [
   { id = "shoots", label = "射精次数", unit = "次", event = "h:shoot", add = 1 },
   # 部位使用次数（2026-08-25 喜欢的部位学习源；h:part_use 由 h-core 每次 H 行动发出）
   { id = "count",  label = "部位使用次数", unit = "次", event = "h:part_use", add = 1 },
-  # ⚠️ 半成品示例（插入系统 B2+ 实现后启用——去掉 pending 即激活，条件路径自动注册）：
-  # { id = "inserts", label = "插入次数", unit = "次", event = "h:insert", add = 1, pending = true },
+  # 插入次数（2026-08-26 insert 批次激活：h:insert 由 h-core sex_insert 在插入位迁移时发出；
+  # 每次“进入动作”计 1，换体位/连续抽插不重复计）
+  { id = "inserts", label = "插入次数", unit = "次", event = "h:insert", add = 1 },
 ]
 
 # 男角对女体部位使用统计（2026-08-25 新增；与女角 male_stats 对称）——用于男角“喜欢部位”学习

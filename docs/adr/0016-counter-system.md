@@ -24,8 +24,8 @@
 6. **分组表初始值**：角色可选字段 → 创建条目时**快照**进保留键 `__meta`（`{ count, named[], field_init{} }`，置于分组表根部与条目隔离）。读数两个：**总数**（含初始）/ **真实值**（路径加 `.real` 段，减初始且具名去重）。具名初始（named）是真实个体 id，游戏内再出现不重复计数；纯数字初始与具名可组合，作者约定不重叠。
 7. **惰性创建**：角色实体无 counters 字段不预建（500 NPC 零开销）；分组表条目首次命中才建。
 8. **条件接入**：core condition-engine 加通用**代理域注册表**（`registerProxyDomain`）——quest 域"core 特判 + apiSystem 转发"先例的通用化；counter-system 注册 `counters` 根域，路径 `counters.{charId}.{counterOrView}.{dims...} / .real.{dims...}`。core 不认知域内具体内容，只做路由。
-9. **半成品机制**：字段声明 `pending = true`（依赖未实现事件）→ 加载 warning + 条件路径不注册 + 监听跳过。插入次数/严格肉棒数因**插入动作本身未实现**（h:insert 事件无未来），本次仅留 pending 示例。
-10. **事件扩展延迟**：h:orgasm 补 sourceId、h:end 补 participants、新增 h:insert 事件——**本次不做**，在 h-core emit 点写 `// TODO(counter-system)` 标记，与**指令复刻批次（SEX 指令 B2+）对照**补全（指令蓝本来自 erArk，逐条复刻时正好对齐计数器需要）。群交路径整体重写后再验证覆盖（机制不改）。
+9. **半成品机制**：字段声明 `pending = true`（依赖未实现事件）→ 加载 warning + 条件路径不注册 + 监听跳过。曾用 `male_stats.inserts`（h:insert）作 pending 示例；2026-08-26 SEX/insert 批次已实现 `h:insert` 并激活该字段。
+10. **事件扩展**：`h:orgasm` 补 sourceId、新增 `h:insert` 事件——已在 2026-08-26 insert 批次补齐（h-core emit 点 `// TODO(counter-system)` 标记相应移除）；`h:end` 补 participants 仍延后至群交重写。群交路径整体重写后再验证覆盖（机制不改）。
 
 ## 原因
 

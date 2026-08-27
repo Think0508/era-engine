@@ -173,4 +173,9 @@ erArk 效果ID: 21   12   CVE_A2  CVE_A1  53  55  501
 | B2 催眠 12 条 / B3 其余 26 条 / B4-B6（sex 其余） | 📝 TODO | 催眠延后待用户 grill；B3 其余依赖位置/睡眠/玩具/H/隐奸/群交；sex 除 base 13 外其余延后至 H UI 就绪 |
 | B4 SEX/base 保留 13 条 | ✅ | native-instructions sex.toml + behavior/sex 口上 + instruction-sex-base-a/b.test.ts；群交 4 条延后 |
 | B3 基础触摸 11 条 | ✅ | native-instructions obscenity.toml + behavior/obscenity 口上 + instruction-touch-trio/rest.test.ts |
+| B3 exposure 邀请露出（5207） | ✅ | h-exposure 已实装 + behavior/obscenity/ask_exhibitionism_sex.toml 口上补齐 + exposure-system.test.ts；cid 5054→5207、tired_type=1 前提修正 |
+| B4-B7 SEX/insert 全链（6301-6360，58 条） | 📝 已完成实现待用户复核 | native-instructions sex-insert-{v,a,cervix,womb}.toml + behavior/sex 口上 + instruction-insert-{a,b,c}.test.ts（61 passed）；含可读前提/体位面板/h:insert 计数激活 |
+| B4-B7 SEX/wait_upon（6601-6614/6616，15 条） | 📝 已完成实现待用户复核 | native-instructions sex-wait-upon.toml + behavior/sex 口上 + instruction-wait-upon.test.ts（19 passed）；侍奉位 insert_position 扩展 5-12、just_shoot_off |
+| B4-B7 SEX/item（6401-6428 保留 19 条） | 📝 已完成实现待用户复核 | native-instructions sex-item.toml + behavior/sex 口上 + instruction-item.test.ts（10 passed）；toy_equip/toy_unequip/wear_condom/take_condom_off + 玩具前提 |
+| B4-B7 SEX/sm（6503/6506/6507，3 条） | 📝 已完成实现待用户复核 | native-instructions sex-sm.toml + behavior/sex 口上 + instruction-sm.test.ts（4 passed）；bondage 默认双手缚 TODO 面板；口球 slot14 |
 | 尿道/特殊特征/恋爱依赖项 | ⛔ 不做 | 尿道 19 条 / 特殊特征 8 条砍掉，告白延后 |

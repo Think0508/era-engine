@@ -79,13 +79,21 @@ export const PART_TAG_TO_KEY: Record<string, string> = {
   urethra: '10',
 }
 
-/** h_state.insert_position（0=V 1=A 2=U 3=W 4=M）→ favorite.parts 键 */
+/** h_state.insert_position（0=V 1=A 2=U 3=W 4=M 5-12=侍奉位）→ favorite.parts 键 */
 export const INSERT_POSITION_TO_PART_KEY: Record<number, string> = {
   0: '6',
   1: '8',
   2: '10',
   3: '7',
   4: '2',
+  5: '0',
+  6: '1',
+  7: '3',
+  8: '4',
+  9: '5',
+  10: '10',
+  11: '11',
+  12: '15',
 }
 
 /** 中文部位名/属性名 → favorite.parts 键（tech_adjust 的 part 参数用中文名） */

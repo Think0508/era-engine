@@ -49,6 +49,7 @@ import { registerClothEffects } from './effects/cloth-effects'
 import { registerBodyItemEffects } from './effects/body-item-effects'
 import { registerGiftEffects } from './effects/gift-effects'
 import { registerAngerEffects } from './effects/anger-effects'
+import { registerInsertEffects } from './effects/insert-effects'
 
 // 注释：game:plugins_loaded 监听器只注册一次（onEnable 重复执行时不重复监听）
 let hCorePluginsLoadedListener = false
@@ -74,10 +75,18 @@ export async function handleOrgasmResults(id: string, ch: any, result: SecondSet
   for (const ev of result.orgasms) {
     const cur = partMaxDegree.get(ev.partId)
     if (cur === undefined || ev.degree > cur) partMaxDegree.set(ev.partId, ev.degree)
-    await eventBus.emit('h:orgasm', { character: id, partId: ev.partId, level: ev.degree, count: ev.count, extra: ev.extra })
-    // TODO(counter-system)（ADR-0016）：h:orgasm payload 缺"施动者"——counter-system 按男角色
-    // 分条的绝顶统计需要 sourceId（谁让她绝顶）。与指令复刻批次对照后补（h:shoot 已有
-    // character/target/position/amount，h:orgasm 对齐加 sourceId）
+    await eventBus.emit('h:orgasm', {
+      character: id,
+      // 注释：sourceId = 施动者/让她绝顶的人（h:orgasm 缺 sourceId 的 TODO 已在本批次补齐）——
+      // 当前双人 H 取该角色 h_state.target_character_id；自慰等无对象时回退自己。
+      sourceId: ch?.h_state?.target_character_id ?? id,
+      partId: ev.partId,
+      level: ev.degree,
+      count: ev.count,
+      extra: ev.extra,
+    })
+    // TODO(counter-system)（ADR-0016）：h:orgasm 已补 sourceId；群交/多参与者场景的 participants
+    // 仍缺（群交整体重写时扩展）
   }
   for (const [, degree] of partMaxDegree) {
     const degreeName = ['小', '普通', '强', '超强'][degree] ?? '普通'
@@ -119,6 +128,8 @@ export function onLoad(_ctx: PluginContext): void {
 
   registerBodyItemEffects()
   registerGiftEffects()
+  // 注释：插入/体位效果域（insert 批次，2026-08-26）
+  registerInsertEffects()
 }
 
 // 注释：execution_end 二段结算处理（对齐 erArk check_second_effect）
@@ -268,6 +279,35 @@ export function onEnable(ctx: PluginContext): void {
     describeFavorites: (charId: string): string => {
       const ch = entitySystem.get('character', charId) as any
       return describeFavoriteText(ch)
+    },
+    // 注释：性交体位面板数据（2026-08-26 insert 批次）——按 h-config [sex_positions] +
+    // 玩家腰技 + 当前地点家具等级返回可用体位；sexType 预留给 V/A/宫颈/子宫链（当前过滤条件相同）
+    getAvailableSexPositions: (_sexType?: number): { id: number; name: string; furniture_req: number; skill_req: number; stamina_cost: number; pleasure_coefficient: number; available: boolean; current: boolean }[] => {
+      const hc = (modLoader.getMod()?.hConfig as any) ?? {}
+      const positions = hc.sex_positions ?? {}
+      const playerId = gameContext.getContext().player?.id
+      const player = playerId ? entitySystem.get('character', playerId) as any : null
+      const waistLv = player?.abilities?.['腰技']?.level ?? 0
+      const furniture = (gameContext.getContext().location as any)?.furniture_count ?? 0
+      const currentPos = player?.h_state?.current_sex_position ?? -1
+      const result: { id: number; name: string; furniture_req: number; skill_req: number; stamina_cost: number; pleasure_coefficient: number; available: boolean; current: boolean }[] = []
+      for (let id = 1; id <= 12; id++) {
+        const cfg = positions[id] as any
+        if (!cfg) continue
+        const furnitureReq = cfg.furniture_req ?? 0
+        const skillReq = cfg.skill_req ?? 0
+        result.push({
+          id,
+          name: cfg.name ?? String(id),
+          furniture_req: furnitureReq,
+          skill_req: skillReq,
+          stamina_cost: cfg.stamina_cost ?? 0,
+          pleasure_coefficient: cfg.pleasure_coefficient ?? 0,
+          available: furniture >= furnitureReq && waistLv >= skillReq,
+          current: currentPos === id,
+        })
+      }
+      return result
     },
     // 注释：通用状态结算（对外暴露——其他插件（如 h-hidden 隐奸/露出持续快感）经 API 调用，
     // 遵守"插件间禁止直接 import"铁律；参数同 settleOneState）

@@ -34,6 +34,16 @@ consume = true
 body_slot = -1
 effects = [{ type = "apply_instant_toy", params = { part = "clit", base = 50 } }]
 
+[items."电动按摩棒"]
+name = "电动按摩棒"
+type = "consumable"
+use = ["h_drug"]
+tags = ["toy", "h_drug"]
+stackable = true
+consume = true
+body_slot = -1
+effects = [{ type = "apply_instant_toy", params = { part = "clit", base = 50 } }]
+
 [items."灌肠液"]
 name = "灌肠液"
 type = "consumable"

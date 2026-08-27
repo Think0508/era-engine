@@ -188,7 +188,8 @@ initial_fields = { semen = "base.初始体内精液量" }
 
 - **加一个字段**（如未来插入系统）→ 在 `fields` 加一行：
   `{ id = "inserts", label = "插入次数", event = "h:insert", add = 1 }`
-  存储/存档/查询全兼容（惰性字段）。`h:insert` 事件实现后一启用即生效（见 §六 半成品）。
+  存储/存档/查询全兼容（惰性字段）。`h:insert` 事件已实现（2026-08-26 insert 批次），
+  该字段已在默认层激活（见 §六）。
 - **加一个维度**（如"场景"）→ `dims` 加一项 + 一条存档迁移（老树少一层）。避免频繁加维度——维度是语义结构，不是标签。
 
 ## 五、条件路径全集
@@ -225,17 +226,18 @@ initial_fields = { semen = "base.初始体内精液量" }
 依赖尚未实现事件的字段，声明 `pending = true`：
 
 ```toml
-{ id = "inserts", label = "插入次数", event = "h:insert", add = 1, pending = true }
+{ id = "future_stats", label = "未来统计", event = "h:future", add = 1, pending = true }
 ```
 
 效果：加载 warning 一次、**条件路径不注册**、监听跳过（值恒不存在）。事件实现后去掉 `pending`
-即激活（条件路径自动注册——registerConditionFields 增量注册）。插入次数/严格"插过"的肉棒数
-因此留半成品（插入动作本身待 SEX 指令批次 B2+）。
+即激活（条件路径自动注册——registerConditionFields 增量注册）。
+
+> 历史：`male_stats.inserts` 曾以 pending 形式预留（`h:insert` 未实现），已在 2026-08-26
+> SEX/insert 批次激活；`h:orgasm` 的 `sourceId` 也已同批补齐。
 
 当前已知的待补事件（h-core emit 点有 `// TODO(counter-system)` 标记）：
-- `h:insert`（新事件，插入结算处）
-- `h:orgasm` 补 `sourceId`（谁让她绝顶——按男角色分条绝顶统计需要）
 - `h:end` 补 `participants`（群交/被轮/一男多女计数需要，群交整体重写时扩展）
+- 群交路径整体重写后验证 `h:start`/`h:insert`/`h:shoot`/`h:orgasm` 在多参与者路径的覆盖
 
 ## 七、公共 API
 
@@ -344,6 +346,8 @@ mod 新字段卡死在原生校验里，正是你担心的反面）。兜底：�
 
 ## 十一、与指令复刻批次的对接
 
-指令复刻（docs/skills/replicating-an-instruction.md §5.7）对照本系统补事件：h:insert（插入）、
-h:orgasm 补 sourceId、h:end 补参与者列表——补完去掉对应字段 `pending` 即激活。群交系统重写后
-验证 h:shoot/h:start 在新路径的覆盖。
+指令复刻（docs/skills/replicating-an-instruction.md §5.7）对照本系统补事件：
+- ✅ `h:insert`（2026-08-26 insert 批次激活 `male_stats.inserts`；发射点 = h-core `sex_insert`）
+- ✅ `h:orgasm` 补 `sourceId`（2026-08-26 同批补齐）
+- 📝 `h:end` 补参与者列表——仍待群交系统重写时扩展
+群交系统重写后验证 h:start/h:insert/h:shoot/h:orgasm 在新路径的覆盖。

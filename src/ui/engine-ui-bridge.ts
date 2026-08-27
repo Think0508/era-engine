@@ -65,6 +65,14 @@ export class EngineUIBridge {
     eventBus.on('game:execution_end', execEndHandler)
     this.handlers.push({ event: 'game:execution_end', handler: execEndHandler })
 
+    // 注释：监听 ui:open_sex_position_panel → 打开性交体位面板（insert 批次 2026-08-26）
+    const openSexPanelHandler: BridgeHandler = (payload: any) => {
+      uiStore.sexPositionPanel = payload ?? null
+      uiStore.setActivePanel('sex-position')
+    }
+    eventBus.on('ui:open_sex_position_panel', openSexPanelHandler)
+    this.handlers.push({ event: 'ui:open_sex_position_panel', handler: openSexPanelHandler })
+
     // 注释：时停状态标记——执行结束/移动后同步 h-time-stop.isActive 到 game-store
     // 自动时停移动的静默循环发生在移动路径（不走指令生命周期），location:enter 兜底
     const syncTimeStopActive: BridgeHandler = () => {

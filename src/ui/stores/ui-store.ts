@@ -92,6 +92,9 @@ export const useUIStore = defineStore('ui', () => {
   const favorites = ref<string[]>([])
   // 注释：当前打开的系统面板（null=无）
   const activePanel = ref<string | null>(null)
+  // 注释：性交体位面板上下文（2026-08-26 insert 批次）——由 h-core open_sex_position_panel
+  // 效果经 engine-ui-bridge 写入；sexType 1=V 2=宫颈 3=子宫 4=A；change=是否换体位面板
+  const sexPositionPanel = ref<{ sexType: number; change: boolean } | null>(null)
   // 注释：顶层画面状态机（2026-08-14 存档复刻）——标题/模组选择/角色创建/游戏中
   // 启动流程：mod_select（active_mod 空）→ title → creation/game；游戏内退出到标题 → title
   const gameScreen = ref<'mod_select' | 'title' | 'creation' | 'game'>('title')
@@ -291,6 +294,7 @@ export const useUIStore = defineStore('ui', () => {
     toggleMainParameter,
     favorites,
     activePanel,
+    sexPositionPanel,
     gameScreen,
     setGameScreen,
     commandCategories,

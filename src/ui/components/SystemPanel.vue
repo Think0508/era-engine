@@ -11,6 +11,8 @@ import { useUIStore } from '../stores/ui-store'
 import OptionsPanel from './OptionsPanel.vue'
 import SavePanel from './SavePanel.vue'
 import CharacterPanel from './CharacterPanel.vue'
+import SexPositionPanel from './SexPositionPanel.vue'
+import BackpackPanel from './BackpackPanel.vue'
 
 const uiStore = useUIStore()
 
@@ -23,6 +25,8 @@ const panelTitles: Record<string, string> = {
   'options': '选项',
   'cheat': '作弊',
   'save': '存档',
+  'sex-position': '性交体位',
+  'inventory': '背包',
 }
 
 // 注释：关闭面板
@@ -79,6 +83,10 @@ onUnmounted(() => {
           target="npc"
           :character-id="uiStore.selectedCharacterId ?? undefined"
         />
+        <!-- 注释：性交体位面板（insert 批次） -->
+        <SexPositionPanel v-else-if="uiStore.activePanel === 'sex-position'" />
+        <!-- 注释：背包面板（SYSTEM item 入口） -->
+        <BackpackPanel v-else-if="uiStore.activePanel === 'inventory'" />
         <!-- 注释：其他面板占位 -->
         <div v-else>
           <p>面板内容：{{ uiStore.activePanel }}</p>

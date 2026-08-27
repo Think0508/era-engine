@@ -1,0 +1,14 @@
+# face_rub 指令默认通用口上（插件默认层，Layer 1）
+# ⚠️ 骨架：不搬运 erArk 长文本；保留 1 条简短示例 + 1 条占位符。
+# erArk 原前提：SEX/wait_upon（high_1 示例）→ 条件：premise(high_1)
+variable = "face_rub"
+description = "阴茎蹭脸指令默认通用口上（角色通用口上 Layer 1 兜底，mod 可覆盖）"
+
+# ── 基础组 ──────────────────────────────────────────────
+[[entries]]
+conditions = "premise(high_1)"
+context = "{player.name}用阴茎轻轻蹭过{character.name}的脸颊。"
+
+[[entries]]
+conditions = "premise(high_1)"
+context = "face_rub指令通用口上 1"

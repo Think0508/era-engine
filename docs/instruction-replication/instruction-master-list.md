@@ -275,7 +275,7 @@
 | 5051 | imprisonment_h | 监禁奸 | OBSCENITY | 延后 | 监禁系统未实装 |
 | 5052 | unconscious_h | 无意识奸 | OBSCENITY | 保留 | 睡眠/无意识状态（L1.7 已规划） |
 | 5053 | ask_hidden_sex | 邀请隐奸 | OBSCENITY | 保留 | system:hidden |
-| 5054 | ask_exhibitionism_sex | 邀请露出 | OBSCENITY | 保留 | system:hidden |
+| 5207 | ask_exhibitionism_sex | 邀请露出 | OBSCENITY | 已完成 | system:hidden |
 | 5055 | ask_group_sex | 邀请群交 | OBSCENITY | 保留 | system:group_sex |
 | 5101 | remote_toy_level_down_in_h | 降低玩具档位 | OBSCENITY | 保留 | 玩具系统（H 内版） |
 | 5102 | remote_toy_all_off_in_h | 遥控关闭全员玩具 | OBSCENITY | 保留 | 玩具系统（H 内版） |
@@ -351,66 +351,66 @@
 
 | cid | id | 名称 | 类型 | 建议 | 理由 |
 |-----|-----|------|------|------|------|
-| 6301 | vaginal_sex | 阴道性交 | SEX/insert | 保留 | 核心 |
-| 6302 | change_vaginal_sex_position | 换阴道性交体位 | SEX/insert | 保留 | 体位切换 |
-| 6303 | normal_sex | 正常位 | SEX/insert | 保留 | 体位 |
-| 6304 | back_sex | 背后位 | SEX/insert | 保留 | 体位 |
-| 6305 | riding_sex | 对面骑乘位 | SEX/insert | 保留 | 体位 |
-| 6306 | back_riding_sex | 背面骑乘位 | SEX/insert | 保留 | 体位 |
-| 6307 | face_seat_sex | 对面座位 | SEX/insert | 保留 | 体位 |
-| 6308 | back_seat_sex | 背面座位 | SEX/insert | 保留 | 体位 |
-| 6309 | face_stand_sex | 对面立位 | SEX/insert | 保留 | 体位 |
-| 6310 | back_stand_sex | 背面立位 | SEX/insert | 保留 | 体位 |
-| 6311 | face_hug_sex | 对面抱位 | SEX/insert | 保留 | 体位 |
-| 6312 | back_hug_sex | 背面抱位 | SEX/insert | 保留 | 体位 |
-| 6313 | face_lay_sex | 对面卧位 | SEX/insert | 保留 | 体位 |
-| 6314 | back_lay_sex | 背面卧位 | SEX/insert | 保留 | 体位 |
-| 6315 | stimulate_g_point | 刺激G点 | SEX/insert | 保留 | 通用 |
-| 6316 | womb_os_caress | 玩弄子宫口 | SEX/insert | 保留 | 通用 |
+| 6301 | vaginal_sex | 阴道性交 | SEX/insert | 已完成（待复核） | 核心 |
+| 6302 | change_vaginal_sex_position | 换阴道性交体位 | SEX/insert | 已完成（待复核） | 体位切换 |
+| 6303 | normal_sex | 正常位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6304 | back_sex | 背后位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6305 | riding_sex | 对面骑乘位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6306 | back_riding_sex | 背面骑乘位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6307 | face_seat_sex | 对面座位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6308 | back_seat_sex | 背面座位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6309 | face_stand_sex | 对面立位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6310 | back_stand_sex | 背面立位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6311 | face_hug_sex | 对面抱位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6312 | back_hug_sex | 背面抱位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6313 | face_lay_sex | 对面卧位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6314 | back_lay_sex | 背面卧位 | SEX/insert | 已完成（待复核） | 体位 |
+| 6315 | stimulate_g_point | 刺激G点 | SEX/insert | 已完成（待复核） | 通用 |
+| 6316 | womb_os_caress | 玩弄子宫口 | SEX/insert | 已完成（待复核） | 通用 |
 | 6317 | womb_insertion | 插入子宫口_旧指令已废弃 | SEX/insert | 砍掉 | 标已废弃（由宫颈/子宫姦体位链取代） |
-| 6318 | change_cervix_sex_position | 换子宫姦口体位 | SEX/insert | 保留 | 体位切换 |
-| 6319 | normal_cervix_sex | 正常位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6320 | back_cervix_sex | 后背位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6321 | riding_cervix_sex | 对面骑乘位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6322 | back_riding_cervix_sex | 背面骑乘位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6323 | face_seat_cervix_sex | 对面座位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6324 | back_seat_cervix_sex | 背面座位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6325 | face_stand_cervix_sex | 对面立位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6326 | back_stand_cervix_sex | 背面立位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6327 | face_hug_cervix_sex | 对面抱位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6328 | back_hug_cervix_sex | 背面抱位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6329 | face_lay_cervix_sex | 对面卧位子宫口姦 | SEX/insert | 保留 | 体位 |
-| 6330 | back_lay_cervix_sex | 背面卧位子宫口姦 | SEX/insert | 保留 | 体位 |
+| 6318 | change_cervix_sex_position | 换子宫姦口体位 | SEX/insert | 已完成（待复核） | 体位切换 |
+| 6319 | normal_cervix_sex | 正常位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6320 | back_cervix_sex | 后背位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6321 | riding_cervix_sex | 对面骑乘位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6322 | back_riding_cervix_sex | 背面骑乘位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6323 | face_seat_cervix_sex | 对面座位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6324 | back_seat_cervix_sex | 背面座位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6325 | face_stand_cervix_sex | 对面立位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6326 | back_stand_cervix_sex | 背面立位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6327 | face_hug_cervix_sex | 对面抱位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6328 | back_hug_cervix_sex | 背面抱位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6329 | face_lay_cervix_sex | 对面卧位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6330 | back_lay_cervix_sex | 背面卧位子宫口姦 | SEX/insert | 已完成（待复核） | 体位 |
 | 6331 | womb_sex | 子宫姦_旧指令已废弃 | SEX/insert | 砍掉 | 标已废弃（由 6332 体位链取代） |
-| 6332 | change_womb_sex_position | 换子宫姦体位 | SEX/insert | 保留 | 体位切换 |
-| 6333 | normal_womb_sex | 正常位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6334 | back_womb_sex | 后背位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6335 | riding_womb_sex | 对面骑乘位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6336 | back_riding_womb_sex | 背面骑乘位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6337 | face_seat_womb_sex | 对面座位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6338 | back_seat_womb_sex | 背面座位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6339 | face_stand_womb_sex | 对面立位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6340 | back_stand_womb_sex | 背面立位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6341 | face_hug_womb_sex | 对面抱位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6342 | back_hug_womb_sex | 背面抱位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6343 | face_lay_womb_sex | 对面卧位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6344 | back_lay_womb_sex | 背面卧位子宫姦 | SEX/insert | 保留 | 体位 |
-| 6345 | anal_sex | 肛门性交 | SEX/insert | 保留 | 核心 |
-| 6346 | change_anal_sex_position | 换肛交体位 | SEX/insert | 保留 | 体位切换 |
-| 6347 | normal_anal_sex | 正常位肛交 | SEX/insert | 保留 | 体位 |
-| 6348 | back_anal_sex | 后背位肛交 | SEX/insert | 保留 | 体位 |
-| 6349 | riding_anal_sex | 对面骑乘位肛交 | SEX/insert | 保留 | 体位 |
-| 6350 | back_riding_anal_sex | 背面骑乘位肛交 | SEX/insert | 保留 | 体位 |
-| 6351 | face_seat_anal_sex | 对面座位肛交 | SEX/insert | 保留 | 体位 |
-| 6352 | back_seat_anal_sex | 背面座位肛交 | SEX/insert | 保留 | 体位 |
-| 6353 | face_stand_anal_sex | 对面立位肛交 | SEX/insert | 保留 | 体位 |
-| 6354 | back_stand_anal_sex | 背面立位肛交 | SEX/insert | 保留 | 体位 |
-| 6355 | face_hug_anal_sex | 对面抱位肛交 | SEX/insert | 保留 | 体位 |
-| 6356 | back_hug_anal_sex | 背面抱位肛交 | SEX/insert | 保留 | 体位 |
-| 6357 | face_lay_anal_sex | 对面卧位肛交 | SEX/insert | 保留 | 体位 |
-| 6358 | back_lay_anal_sex | 背面卧位肛交 | SEX/insert | 保留 | 体位 |
-| 6359 | stimulate_sigmoid_colon | 玩弄s状结肠 | SEX/insert | 保留 | 通用 |
-| 6360 | stimulate_vagina | 隔着刺激阴道 | SEX/insert | 保留 | 通用 |
+| 6332 | change_womb_sex_position | 换子宫姦体位 | SEX/insert | 已完成（待复核） | 体位切换 |
+| 6333 | normal_womb_sex | 正常位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6334 | back_womb_sex | 后背位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6335 | riding_womb_sex | 对面骑乘位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6336 | back_riding_womb_sex | 背面骑乘位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6337 | face_seat_womb_sex | 对面座位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6338 | back_seat_womb_sex | 背面座位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6339 | face_stand_womb_sex | 对面立位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6340 | back_stand_womb_sex | 背面立位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6341 | face_hug_womb_sex | 对面抱位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6342 | back_hug_womb_sex | 背面抱位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6343 | face_lay_womb_sex | 对面卧位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6344 | back_lay_womb_sex | 背面卧位子宫姦 | SEX/insert | 已完成（待复核） | 体位 |
+| 6345 | anal_sex | 肛门性交 | SEX/insert | 已完成（待复核） | 核心 |
+| 6346 | change_anal_sex_position | 换肛交体位 | SEX/insert | 已完成（待复核） | 体位切换 |
+| 6347 | normal_anal_sex | 正常位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6348 | back_anal_sex | 后背位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6349 | riding_anal_sex | 对面骑乘位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6350 | back_riding_anal_sex | 背面骑乘位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6351 | face_seat_anal_sex | 对面座位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6352 | back_seat_anal_sex | 背面座位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6353 | face_stand_anal_sex | 对面立位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6354 | back_stand_anal_sex | 背面立位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6355 | face_hug_anal_sex | 对面抱位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6356 | back_hug_anal_sex | 背面抱位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6357 | face_lay_anal_sex | 对面卧位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6358 | back_lay_anal_sex | 背面卧位肛交 | SEX/insert | 已完成（待复核） | 体位 |
+| 6359 | stimulate_sigmoid_colon | 玩弄s状结肠 | SEX/insert | 已完成（待复核） | 通用 |
+| 6360 | stimulate_vagina | 隔着刺激阴道 | SEX/insert | 已完成（待复核） | 通用 |
 | 6361 | double_penetration | 二穴插入_未实装 | SEX/insert | 延后 | 标未实装（前提 TO_DO） |
 | 6362 | urethral_sex | 尿道姦 | SEX/insert | 砍掉 | 尿道不做 |
 | 6363 | change_urethral_sex_position | 换尿道姦体位 | SEX/insert | 砍掉 | 尿道不做 |
@@ -431,74 +431,74 @@
 
 | cid | id | 名称 | 类型 | 建议 | 理由 |
 |-----|-----|------|------|------|------|
-| 6401 | body_lubricant | 润滑液 | SEX/item | 保留 | 通用 |
-| 6402 | put_condom | 戴上避孕套 | SEX/item | 保留 | 通用 |
-| 6403 | take_condom_out | 摘掉避孕套 | SEX/item | 保留 | 通用 |
+| 6401 | body_lubricant | 润滑液 | SEX/item | 已完成（待复核） | 通用 |
+| 6402 | put_condom | 戴上避孕套 | SEX/item | 已完成（待复核） | 通用 |
+| 6403 | take_condom_out | 摘掉避孕套 | SEX/item | 已完成（待复核） | 通用 |
 | 6404 | urethral_swab | 尿道棉棒 | SEX/item | 砍掉 | 尿道不做 |
-| 6405 | nipples_love_egg | 乳头跳蛋 | SEX/item | 保留 | 玩具系统 |
-| 6406 | nipple_clamp_on | 戴上乳头夹 | SEX/item | 保留 | 玩具系统 |
-| 6407 | nipple_clamp_off | 取下乳头夹 | SEX/item | 保留 | 玩具系统 |
-| 6408 | clit_love_egg | 阴蒂跳蛋 | SEX/item | 保留 | 玩具系统 |
-| 6409 | clit_clamp_on | 戴上阴蒂夹 | SEX/item | 保留 | 玩具系统 |
-| 6410 | clit_clamp_off | 取下阴蒂夹 | SEX/item | 保留 | 玩具系统 |
-| 6411 | electric_message_stick | 电动按摩棒 | SEX/item | 保留 | 玩具系统 |
-| 6412 | vibrator_insertion | 插入震动棒 | SEX/item | 保留 | 玩具系统 |
+| 6405 | nipples_love_egg | 乳头跳蛋 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6406 | nipple_clamp_on | 戴上乳头夹 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6407 | nipple_clamp_off | 取下乳头夹 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6408 | clit_love_egg | 阴蒂跳蛋 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6409 | clit_clamp_on | 戴上阴蒂夹 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6410 | clit_clamp_off | 取下阴蒂夹 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6411 | electric_message_stick | 电动按摩棒 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6412 | vibrator_insertion | 插入震动棒 | SEX/item | 已完成（待复核） | 玩具系统 |
 | 6413 | big_vibrator_insertion | 加粗震动棒 | SEX/item | 延后 | 源码无 handler（仅 Instruct.py:595 常量），未实装 |
 | 6414 | huge_vibrator_insertion | 巨型震动棒 | SEX/item | 延后 | 源码无 handler（Instruct.py:597），未实装 |
-| 6415 | vibrator_insertion_off | 拔出震动棒 | SEX/item | 保留 | 玩具系统 |
-| 6416 | vibrator_insertion_anal | 肛门插入震动棒 | SEX/item | 保留 | 玩具系统 |
+| 6415 | vibrator_insertion_off | 拔出震动棒 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6416 | vibrator_insertion_anal | 肛门插入震动棒 | SEX/item | 已完成（待复核） | 玩具系统 |
 | 6417 | big_vibrator_insertion_anal | 加粗肛门震动棒 | SEX/item | 延后 | 源码无 handler（Instruct.py:603），未实装 |
 | 6418 | huge_vibrator_insertion_anal | 巨型肛门震动棒 | SEX/item | 延后 | 源码无 handler（Instruct.py:605），未实装 |
-| 6419 | vibrator_insertion_anal_off | 拔出肛门震动棒 | SEX/item | 保留 | 玩具系统 |
-| 6420 | anal_beads | 塞入肛门拉珠 | SEX/item | 保留 | 玩具系统 |
-| 6421 | anal_beads_off | 拔出肛门拉珠 | SEX/item | 保留 | 玩具系统 |
-| 6422 | milking_machine_on | 装上搾乳机 | SEX/item | 保留 | 泌乳已实现；IN_HUMILIATION_ROOM_OR_DR_ROOM → tag has_humiliation_room |
-| 6423 | milking_machine_off | 取下搾乳机 | SEX/item | 保留 | 同上 |
+| 6419 | vibrator_insertion_anal_off | 拔出肛门震动棒 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6420 | anal_beads | 塞入肛门拉珠 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6421 | anal_beads_off | 拔出肛门拉珠 | SEX/item | 已完成（待复核） | 玩具系统 |
+| 6422 | milking_machine_on | 装上搾乳机 | SEX/item | 延后 | 泌乳已实现；IN_HUMILIATION_ROOM_OR_DR_ROOM → tag has_humiliation_room |
+| 6423 | milking_machine_off | 取下搾乳机 | SEX/item | 延后 | 同上 |
 | 6424 | urine_collector_on | 装上采尿器 | SEX/item | 砍掉 | 尿道不做 |
 | 6425 | urine_collector_off | 取下采尿器 | SEX/item | 砍掉 | 尿道不做 |
-| 6426 | remote_toy_on_in_h | 遥控启动玩具 | SEX/item | 保留 | 玩具系统（H 内版） |
-| 6427 | remote_toy_off_in_h | 遥控关闭玩具 | SEX/item | 保留 | 玩具系统（H 内版） |
-| 6428 | remote_toy_level_up_in_h | 调高玩具档位 | SEX/item | 保留 | 玩具系统（H 内版） |
+| 6426 | remote_toy_on_in_h | 遥控启动玩具 | SEX/item | 已完成（待复核） | 玩具系统（H 内版） |
+| 6427 | remote_toy_off_in_h | 遥控关闭玩具 | SEX/item | 已完成（待复核） | 玩具系统（H 内版） |
+| 6428 | remote_toy_level_up_in_h | 调高玩具档位 | SEX/item | 已完成（待复核） | 玩具系统（H 内版） |
 
 #### SEX/sm（6501–6514）
 
 | cid | id | 名称 | 类型 | 建议 | 理由 |
 |-----|-----|------|------|------|------|
 | 6501 | beat_breast | 打胸部_未实装 | SEX/sm | 延后 | 标未实装（前提 TO_DO） |
-| 6502 | spanking | 打屁股 | SEX/sm | 保留 | 通用 |
-| 6503 | bondage | 绳艺 | SEX/sm | 保留 | system:bondage |
-| 6504 | patch_on | 戴上眼罩 | SEX/sm | 保留 | 通用（IN_HUMILIATION_ROOM → tag） |
-| 6505 | patch_off | 摘下眼罩 | SEX/sm | 保留 | 同上 |
-| 6506 | gag_on | 戴上口球 | SEX/sm | 保留 | 通用 |
-| 6507 | gag_off | 摘下口球 | SEX/sm | 保留 | 通用 |
-| 6508 | clyster | 灌肠 | SEX/sm | 保留 | 通用（IN_HUMILIATION_ROOM → tag） |
-| 6509 | continue_clyster | 继续灌肠 | SEX/sm | 保留 | 同上 |
+| 6502 | spanking | 打屁股 | SEX/sm | 延后 | 通用 |
+| 6503 | bondage | 绳艺 | SEX/sm | 已完成（待复核） | system:bondage |
+| 6504 | patch_on | 戴上眼罩 | SEX/sm | 延后 | 通用（IN_HUMILIATION_ROOM → tag） |
+| 6505 | patch_off | 摘下眼罩 | SEX/sm | 延后 | 同上 |
+| 6506 | gag_on | 戴上口球 | SEX/sm | 已完成（待复核） | 通用 |
+| 6507 | gag_off | 摘下口球 | SEX/sm | 已完成（待复核） | 通用 |
+| 6508 | clyster | 灌肠 | SEX/sm | 延后 | 通用（IN_HUMILIATION_ROOM → tag） |
+| 6509 | continue_clyster | 继续灌肠 | SEX/sm | 延后 | 同上 |
 | 6510 | anal_plug | 肛塞_已废弃 | SEX/sm | 延后 | 标已废弃（前提 TO_DO） |
-| 6511 | clyster_end | 拔出肛塞 | SEX/sm | 保留 | 灌肠结束 |
-| 6512 | safe_candles | 滴蜡 | SEX/sm | 保留 | 通用 |
-| 6513 | whip | 鞭子 | SEX/sm | 保留 | 通用 |
+| 6511 | clyster_end | 拔出肛塞 | SEX/sm | 延后 | 灌肠结束 |
+| 6512 | safe_candles | 滴蜡 | SEX/sm | 延后 | 通用 |
+| 6513 | whip | 鞭子 | SEX/sm | 延后 | 通用 |
 | 6514 | needle | 针_未实装 | SEX/sm | 延后 | 标未实装（前提 TO_DO） |
 
 #### SEX/wait_upon（6601–6632）
 
 | cid | id | 名称 | 类型 | 建议 | 理由 |
 |-----|-----|------|------|------|------|
-| 6601 | handjob | 手交 | SEX/wait_upon | 保留 | 通用（无 judge，SOP §6 已注明） |
-| 6602 | blowjob | 口交 | SEX/wait_upon | 保留 | 通用 |
-| 6603 | paizuri | 乳交 | SEX/wait_upon | 保留 | 通用 |
-| 6604 | footjob | 足交 | SEX/wait_upon | 保留 | 通用 |
-| 6605 | hairjob | 发交 | SEX/wait_upon | 保留 | 通用 |
-| 6606 | axillajob | 腋交 | SEX/wait_upon | 保留 | 通用 |
-| 6607 | rub_buttock | 素股 | SEX/wait_upon | 保留 | 通用 |
-| 6608 | hand_blowjob | 手交口交 | SEX/wait_upon | 保留 | 通用 |
-| 6609 | tits_blowjob | 乳交口交 | SEX/wait_upon | 保留 | 通用 |
-| 6610 | focus_blowjob | 真空口交 | SEX/wait_upon | 保留 | 通用 |
-| 6611 | deep_throat | 深喉插入 | SEX/wait_upon | 保留 | 通用 |
-| 6612 | clean_blowjob | 清洁口交 | SEX/wait_upon | 保留 | 通用（精液系统已实现） |
-| 6613 | sixty_nine | 六九式 | SEX/wait_upon | 保留 | 通用 |
-| 6614 | legjob | 腿交 | SEX/wait_upon | 保留 | 通用 |
+| 6601 | handjob | 手交 | SEX/wait_upon | 已完成（待复核） | 通用（无 judge，SOP §6 已注明） |
+| 6602 | blowjob | 口交 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6603 | paizuri | 乳交 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6604 | footjob | 足交 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6605 | hairjob | 发交 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6606 | axillajob | 腋交 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6607 | rub_buttock | 素股 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6608 | hand_blowjob | 手交口交 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6609 | tits_blowjob | 乳交口交 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6610 | focus_blowjob | 真空口交 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6611 | deep_throat | 深喉插入 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6612 | clean_blowjob | 清洁口交 | SEX/wait_upon | 已完成（待复核） | 通用（精液系统已实现） |
+| 6613 | sixty_nine | 六九式 | SEX/wait_upon | 已完成（待复核） | 通用 |
+| 6614 | legjob | 腿交 | SEX/wait_upon | 已完成（待复核） | 通用 |
 | 6615 | tailjob | 尾交 | SEX/wait_upon | 砍掉 | 特殊身体特征不做（TARGET_HAVE_TAIL） |
-| 6616 | face_rub | 阴茎蹭脸 | SEX/wait_upon | 保留 | 通用 |
+| 6616 | face_rub | 阴茎蹭脸 | SEX/wait_upon | 已完成（待复核） | 通用 |
 | 6617 | horn_rub | 阴茎蹭角 | SEX/wait_upon | 砍掉 | 特殊身体特征不做（TARGET_HAVE_HORN） |
 | 6618 | ears_rub | 阴茎蹭耳朵 | SEX/wait_upon | 砍掉 | 特殊身体特征不做（TARGET_HAVE_EARS） |
 | 6619 | hat_job | 帽子交 | SEX/wait_upon | 延后 | 服装系统（L1.4） |
@@ -686,3 +686,12 @@
 - 全部 404 条的 id/名称/类型/前提集/行为ID 均直接取自 `InstructConfig.csv`（各分类的行号范围见分类标题）
 - 源码查证点：6010（handle_instruct.py:3180）、6011/6012（:3189/:3195）、6108/6109（:2719/:2725）、6101（Instruct.py:555 无对应 handler）、6413/6414/6417/6418（Instruct.py:595-605 无对应 handler）、1011（food_shop_panel.py:22）、1035（handle_instruct.py:1069）、6901（handle_instruct.py:2242 有 handler 但 CSV 标注未实装，按标注为准）、5017/5018 前提（handle_premise_other.py:728/743）、3020 编码与设施（InstructConfig.csv 第 115 行 + Entertainment.csv 第 24 行）
 - 本清单只做"做不做"决策；time_cost/judge/前提注册/效果链等逐条细节全部留给批次阶段（SOP §3-§9）
+
+
+
+
+
+
+
+
+

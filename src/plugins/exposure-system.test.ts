@@ -294,7 +294,7 @@ describe('h-exposure 露出系统集成', () => {
     })
   })
 
-  describe('指令：邀请露出（5054）/ 结束露出（6007）', () => {
+  describe('指令：邀请露出（5207）/ 结束露出（6007）', () => {
     it('邀请露出：双方进露出模式 + H 开始 + 露出经验（CVE 效果 + 行为结算双路径）', async () => {
       const p = getChar(PLAYER)
       p.sp_flag = { exhibitionism_sex_mode: 0 }
@@ -309,6 +309,11 @@ describe('h-exposure 露出系统集成', () => {
       // 经验：邀请 CVE 效果 +1 + execution_end 行为结算 +1 = 2（erArk 双路径同）
       expect(p.experience['34']).toBe(2)
       expect(n.experience['34']).toBe(2)
+      // 口上默认文件（2026-08-26 补完）
+      const text = await apiSystem.call('talk-common', 'getText', 'ask_exhibitionism_sex', NPC, PLAYER) as string | null
+      expect(text).toBeTruthy()
+      expect(text).not.toContain('博士')
+      expect(text).not.toContain('源石')
     })
 
     it('已在露出中（EXHIBITIONISM_SEX_MODE_0 不满足）→ 邀请露出被拦截，时间不推进', async () => {

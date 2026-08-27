@@ -573,6 +573,19 @@ effects = [{ type = "modify_attribute", params = { attr = "声望", value = 10 }
 > 以上 5 个效果全走 settleOneState 通用管线（tenths_add/连续减值/素质修正/无意识门控自动生效），
 > 来源为 erArk 独立 settle 函数（2026-08-08 补齐）。**兽部不支持**（方舟世界观专属，全砍——遇兽部 warning+跳过）。
 
+### 插入/体位效果（h-core 注册，2026-08-26 insert 批次）
+
+| 效果 type | 参数 | 语义 |
+|-----------|------|------|
+| `sex_insert` | `part` | 插入部位：`vagina`（erArk 808）/ `anal`（810）/ `womb`（809）/ `urethral` / `mouth`；写入目标 `h_state.insert_position`（0/1/3/2/4） |
+| | `position`（可选） | 同步写入发起者 `current_sex_position`（1-12） |
+| | `wombMode`（可选） | 同步写入发起者 `current_womb_sex_position`（1=子宫口 2=子宫姦） |
+| | 语义 | 判定退缩时跳过；`insert_position` 发生迁移时发 `h:insert`（counter-system `male_stats.inserts` 消费） |
+| `sex_position_set` | `position` | 写入发起者 `current_sex_position`（1-12，erArk 851-862），变化时记录 `pre_sex_position`；不发 `h:insert` |
+| `sex_womb_mode_set` | `mode` | 写入发起者 `current_womb_sex_position`（1=子宫口 867 / 2=子宫姦 868）；不发 `h:insert` |
+| `open_sex_position_panel` | `sexType` | 打开性交体位面板（1=V 2=宫颈 3=子宫 4=A）；发 `ui:open_sex_position_panel` 事件，engine-ui-bridge 转 UI |
+| | `change` | true = 换体位面板（erArk change_position） |
+
 ### 射精欲效果（h-ejaculation 注册）
 
 | 效果 type | 参数 | 语义 |

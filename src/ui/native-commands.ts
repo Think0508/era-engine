@@ -94,6 +94,20 @@ export function registerNativeCommands(): void {
     },
   })
 
+  // 注释：SYSTEM item——通用背包/道具入口（2026-08-26 补）
+  commandRegistry.register({
+    id: 'item',
+    label: '背包',
+    group: 'main_menu',
+    modes: ['exploration', 'daily_menu'],
+    priority: 30,
+    source: 'native',
+    handler: () => {
+      const uiStore = useUIStore()
+      uiStore.setActivePanel('inventory')
+    },
+  })
+
   // 注释：退出到标题——autoSave（对齐 erArk 退出自动存）+ 清空会话状态回标题
   commandRegistry.register({
     id: 'exit_to_title',
@@ -212,7 +226,7 @@ export function registerNativeCommands(): void {
 export function unregisterNativeCommands(): void {
   const ids = [
     'open_player_panel', 'open_selected_panel',
-    'cheat_skip_day', 'save', 'load', 'options', 'log_history', 'exit_to_title',
+    'cheat_skip_day', 'save', 'load', 'item', 'options', 'log_history', 'exit_to_title',
     '@attrs', '@setattr', '@teleport', '@spawn', '@additem', '@startquest', '@premises', '@errors', '@help', '@testcombat',
   ]
   for (const id of ids) {

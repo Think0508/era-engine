@@ -50,6 +50,7 @@ export function registerBodyItemPremises(registry: any): void {
   registry.registerPremise('TARGET_HAS_ANAL_BEADS', hasBodyItemSlot(7, targetId))
   registry.registerPremise('TARGET_HAS_CONDOM', hasBodyItemSlot(13, targetId))
   registry.registerPremise('TARGET_HAS_GAG', hasBodyItemSlot(14, targetId))
+  registry.registerPremise('TARGET_NOW_GAG', hasBodyItemSlot(14, targetId))
   registry.registerPremise('TARGET_NOT_GAG', (ctx: any) => !hasBodyItemSlot(14, targetId)(ctx))
   registry.registerPremise('TARGET_HAS_NIPPLE_CLAMP', hasBodyItemSlot(0, targetId))
   registry.registerPremise('TARGET_HAS_MILKER', hasBodyItemSlot(4, targetId))

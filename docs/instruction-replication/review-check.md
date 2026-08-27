@@ -23,6 +23,15 @@
 | item | 19 | `sex-item.toml` | `instruction-item.test.ts` | 10 | ✅ |
 | sm | 3 | `sex-sm.toml` | `instruction-sm.test.ts` | 4 | ✅ |
 
+## item/sm 前提核对（2026-08-26）
+
+- 从 `sex-item.toml` / `sex-sm.toml` 提取 **35 个唯一前提**，全部在 `src/**` 有 `registerPremise` 注册（0 缺失）。
+- 语义对象核对：
+  - `HAVE_*`（无前缀）= 自己背包；`TARGET_*` = 选中目标；`NOW_*` = 自己状态。
+  - `PENIS_NOT_IN_TARGET_*` / `TARGET_ANUS_EMPTY` / `TARGET_NOW_*` 读 `h_state.insert_position` / `body_items` / `sex_toy_level`，已与“装备不消耗”模型统一。
+  - `NOW_CONDOM` / `NOW_NOT_CONDOM` 读 `body_items['13']`（并兼容 `h_state.condom` 镜像），与 h-ejaculation 判定一致。
+- 可玩性：所有 item 指令均有真实触发路径（有对应物品 + H 场景/状态），`instruction-item.test.ts` 与 `instruction-sm.test.ts` 全部执行通过。
+
 ## 复核备注（设计/映射说明，不属于复刻偏差）
 
 1. **bondage（6503）**：erArk 原为 BONDAGE 面板选择 15 种紧缚；当前实现默认 `bondageId=1（双手缚）`，面板 UI 未做，留 `TODO(panel)`——这是 UI 缺失，不是数据偏差。

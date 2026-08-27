@@ -141,7 +141,7 @@
 
 ## B4-B7 其余（SEX 125）
 
-> 2026-08-26：AI 预筛 + 用户确认。统计：原 125 → 已完成 20（drug 5 + foreplay 15）→ 已完成（待复核）95（insert 58 + wait_upon 15 + item 19 + sm 3）→ 保留 0 → 延后 10 → 剔除 0。
+> 2026-08-26：AI 预筛 + 用户确认。统计：原 125 → 已完成 20（drug 5 + foreplay 15）→ 已完成 95（insert 58 + wait_upon 15 + item 19 + sm 3，2026-08-26 复核通过）→ 保留 0 → 延后 10 → 剔除 0。
 > 2026-08-26 补充：insert 58 全部保留并已实现（待用户复核），按族分组——V 链（6301-6316）、宫颈链（6318-6330）、子宫链（6332-6344）、A 链（6345-6360）；依赖标注见各行列。
 
 | 批次 | 分类 | 所属系统 | cid | id | 名称 | 筛选结论 | 延后/剔除原因 |
@@ -166,115 +166,116 @@
 | B4-B7 | foreplay | h-core | 6213 | external_womb_massage | 体外子宫按摩 | 已完成 | 通用 |
 | B4-B7 | foreplay | h-core | 6215 | make_masturebate | 命令对方自慰 | 已完成 | 通用 |
 | B4-B7 | foreplay | h-core | 6216 | make_lick_anal | 命令对方舔自己肛门 | 已完成 | 通用 |
-| B4-B7 | insert | h-core | 6301 | vaginal_sex | 阴道性交 | 已完成（待复核） | 核心（V 链） |
-| B4-B7 | insert | h-core | 6302 | change_vaginal_sex_position | 换阴道性交体位 | 已完成（待复核） | 体位切换（V 链） |
-| B4-B7 | insert | h-core | 6303 | normal_sex | 正常位 | 已完成（待复核） | 体位（V 链） |
-| B4-B7 | insert | h-core | 6304 | back_sex | 背后位 | 已完成（待复核） | 体位（V 链） |
-| B4-B7 | insert | h-core | 6305 | riding_sex | 对面骑乘位 | 已完成（待复核） | 体位（V 链·床级家具） |
-| B4-B7 | insert | h-core | 6306 | back_riding_sex | 背面骑乘位 | 已完成（待复核） | 体位（V 链·床级家具） |
-| B4-B7 | insert | h-core | 6307 | face_seat_sex | 对面座位 | 已完成（待复核） | 体位（V 链） |
-| B4-B7 | insert | h-core | 6308 | back_seat_sex | 背面座位 | 已完成（待复核） | 体位（V 链） |
-| B4-B7 | insert | h-core | 6309 | face_stand_sex | 对面立位 | 已完成（待复核） | 体位（V 链） |
-| B4-B7 | insert | h-core | 6310 | back_stand_sex | 背面立位 | 已完成（待复核） | 体位（V 链） |
-| B4-B7 | insert | h-core | 6311 | face_hug_sex | 对面抱位 | 已完成（待复核） | 体位（V 链） |
-| B4-B7 | insert | h-core | 6312 | back_hug_sex | 背面抱位 | 已完成（待复核） | 体位（V 链） |
-| B4-B7 | insert | h-core | 6313 | face_lay_sex | 对面卧位 | 已完成（待复核） | 体位（V 链·床级家具） |
-| B4-B7 | insert | h-core | 6314 | back_lay_sex | 背面卧位 | 已完成（待复核） | 体位（V 链·床级家具） |
-| B4-B7 | insert | h-core | 6315 | stimulate_g_point | 刺激G点 | 已完成（待复核） | 通用（V 深部·腰技≥3） |
-| B4-B7 | insert | h-core | 6316 | womb_os_caress | 玩弄子宫口 | 已完成（待复核） | 通用（V 深部·腰技≥4） |
-| B4-B7 | insert | h-core | 6318 | change_cervix_sex_position | 换子宫姦口体位 | 已完成（待复核） | 体位切换（宫颈链·已入W） |
-| B4-B7 | insert | h-core | 6319 | normal_cervix_sex | 正常位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5） |
-| B4-B7 | insert | h-core | 6320 | back_cervix_sex | 后背位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5） |
-| B4-B7 | insert | h-core | 6321 | riding_cervix_sex | 对面骑乘位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5·床级家具） |
-| B4-B7 | insert | h-core | 6322 | back_riding_cervix_sex | 背面骑乘位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5·床级家具） |
-| B4-B7 | insert | h-core | 6323 | face_seat_cervix_sex | 对面座位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5） |
-| B4-B7 | insert | h-core | 6324 | back_seat_cervix_sex | 背面座位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5） |
-| B4-B7 | insert | h-core | 6325 | face_stand_cervix_sex | 对面立位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5） |
-| B4-B7 | insert | h-core | 6326 | back_stand_cervix_sex | 背面立位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5） |
-| B4-B7 | insert | h-core | 6327 | face_hug_cervix_sex | 对面抱位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5） |
-| B4-B7 | insert | h-core | 6328 | back_hug_cervix_sex | 背面抱位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5） |
-| B4-B7 | insert | h-core | 6329 | face_lay_cervix_sex | 对面卧位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5·床级家具） |
-| B4-B7 | insert | h-core | 6330 | back_lay_cervix_sex | 背面卧位子宫口姦 | 已完成（待复核） | 体位（宫颈链·扩张≥3·腰技≥5·床级家具） |
-| B4-B7 | insert | h-core | 6332 | change_womb_sex_position | 换子宫姦体位 | 已完成（待复核） | 体位切换（子宫链·已入W） |
-| B4-B7 | insert | h-core | 6333 | normal_womb_sex | 正常位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7） |
-| B4-B7 | insert | h-core | 6334 | back_womb_sex | 后背位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7） |
-| B4-B7 | insert | h-core | 6335 | riding_womb_sex | 对面骑乘位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7·床级家具） |
-| B4-B7 | insert | h-core | 6336 | back_riding_womb_sex | 背面骑乘位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7·床级家具） |
-| B4-B7 | insert | h-core | 6337 | face_seat_womb_sex | 对面座位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7） |
-| B4-B7 | insert | h-core | 6338 | back_seat_womb_sex | 背面座位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7） |
-| B4-B7 | insert | h-core | 6339 | face_stand_womb_sex | 对面立位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7） |
-| B4-B7 | insert | h-core | 6340 | back_stand_womb_sex | 背面立位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7） |
-| B4-B7 | insert | h-core | 6341 | face_hug_womb_sex | 对面抱位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7） |
-| B4-B7 | insert | h-core | 6342 | back_hug_womb_sex | 背面抱位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7） |
-| B4-B7 | insert | h-core | 6343 | face_lay_womb_sex | 对面卧位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7·床级家具） |
-| B4-B7 | insert | h-core | 6344 | back_lay_womb_sex | 背面卧位子宫姦 | 已完成（待复核） | 体位（子宫链·扩张≥5·腰技≥7·床级家具） |
-| B4-B7 | insert | h-core | 6345 | anal_sex | 肛门性交 | 已完成（待复核） | 核心（A 链） |
-| B4-B7 | insert | h-core | 6346 | change_anal_sex_position | 换肛交体位 | 已完成（待复核） | 体位切换（A 链） |
-| B4-B7 | insert | h-core | 6347 | normal_anal_sex | 正常位肛交 | 已完成（待复核） | 体位（A 链） |
-| B4-B7 | insert | h-core | 6348 | back_anal_sex | 后背位肛交 | 已完成（待复核） | 体位（A 链） |
-| B4-B7 | insert | h-core | 6349 | riding_anal_sex | 对面骑乘位肛交 | 已完成（待复核） | 体位（A 链·床级家具） |
-| B4-B7 | insert | h-core | 6350 | back_riding_anal_sex | 背面骑乘位肛交 | 已完成（待复核） | 体位（A 链·床级家具） |
-| B4-B7 | insert | h-core | 6351 | face_seat_anal_sex | 对面座位肛交 | 已完成（待复核） | 体位（A 链） |
-| B4-B7 | insert | h-core | 6352 | back_seat_anal_sex | 背面座位肛交 | 已完成（待复核） | 体位（A 链） |
-| B4-B7 | insert | h-core | 6353 | face_stand_anal_sex | 对面立位肛交 | 已完成（待复核） | 体位（A 链） |
-| B4-B7 | insert | h-core | 6354 | back_stand_anal_sex | 背面立位肛交 | 已完成（待复核） | 体位（A 链） |
-| B4-B7 | insert | h-core | 6355 | face_hug_anal_sex | 对面抱位肛交 | 已完成（待复核） | 体位（A 链） |
-| B4-B7 | insert | h-core | 6356 | back_hug_anal_sex | 背面抱位肛交 | 已完成（待复核） | 体位（A 链） |
-| B4-B7 | insert | h-core | 6357 | face_lay_anal_sex | 对面卧位肛交 | 已完成（待复核） | 体位（A 链·床级家具） |
-| B4-B7 | insert | h-core | 6358 | back_lay_anal_sex | 背面卧位肛交 | 已完成（待复核） | 体位（A 链·床级家具） |
-| B4-B7 | insert | h-core | 6359 | stimulate_sigmoid_colon | 玩弄s状结肠 | 已完成（待复核） | 通用（A 深部·技巧≥3） |
-| B4-B7 | insert | h-core | 6360 | stimulate_vagina | 隔着刺激阴道 | 已完成（待复核） | 通用（A 深部·技巧≥3） |
-| B4-B7 | item | h-core / 玩具系统 | 6401 | body_lubricant | 润滑液 | 已完成（待复核） | 通用 |
-| B4-B7 | item | h-core / 玩具系统 | 6402 | put_condom | 戴上避孕套 | 已完成（待复核） | 通用 |
-| B4-B7 | item | h-core / 玩具系统 | 6403 | take_condom_out | 摘掉避孕套 | 已完成（待复核） | 通用 |
-| B4-B7 | item | h-core / 玩具系统 | 6405 | nipples_love_egg | 乳头跳蛋 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6406 | nipple_clamp_on | 戴上乳头夹 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6407 | nipple_clamp_off | 取下乳头夹 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6408 | clit_love_egg | 阴蒂跳蛋 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6409 | clit_clamp_on | 戴上阴蒂夹 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6410 | clit_clamp_off | 取下阴蒂夹 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6411 | electric_message_stick | 电动按摩棒 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6412 | vibrator_insertion | 插入震动棒 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6415 | vibrator_insertion_off | 拔出震动棒 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6416 | vibrator_insertion_anal | 肛门插入震动棒 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6419 | vibrator_insertion_anal_off | 拔出肛门震动棒 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6420 | anal_beads | 塞入肛门拉珠 | 已完成（待复核） | 玩具系统 |
-| B4-B7 | item | h-core / 玩具系统 | 6421 | anal_beads_off | 拔出肛门拉珠 | 已完成（待复核） | 玩具系统 |
+| B4-B7 | insert | h-core | 6301 | vaginal_sex | 阴道性交 | 已完成 | 核心（V 链） |
+| B4-B7 | insert | h-core | 6302 | change_vaginal_sex_position | 换阴道性交体位 | 已完成 | 体位切换（V 链） |
+| B4-B7 | insert | h-core | 6303 | normal_sex | 正常位 | 已完成 | 体位（V 链） |
+| B4-B7 | insert | h-core | 6304 | back_sex | 背后位 | 已完成 | 体位（V 链） |
+| B4-B7 | insert | h-core | 6305 | riding_sex | 对面骑乘位 | 已完成 | 体位（V 链·床级家具） |
+| B4-B7 | insert | h-core | 6306 | back_riding_sex | 背面骑乘位 | 已完成 | 体位（V 链·床级家具） |
+| B4-B7 | insert | h-core | 6307 | face_seat_sex | 对面座位 | 已完成 | 体位（V 链） |
+| B4-B7 | insert | h-core | 6308 | back_seat_sex | 背面座位 | 已完成 | 体位（V 链） |
+| B4-B7 | insert | h-core | 6309 | face_stand_sex | 对面立位 | 已完成 | 体位（V 链） |
+| B4-B7 | insert | h-core | 6310 | back_stand_sex | 背面立位 | 已完成 | 体位（V 链） |
+| B4-B7 | insert | h-core | 6311 | face_hug_sex | 对面抱位 | 已完成 | 体位（V 链） |
+| B4-B7 | insert | h-core | 6312 | back_hug_sex | 背面抱位 | 已完成 | 体位（V 链） |
+| B4-B7 | insert | h-core | 6313 | face_lay_sex | 对面卧位 | 已完成 | 体位（V 链·床级家具） |
+| B4-B7 | insert | h-core | 6314 | back_lay_sex | 背面卧位 | 已完成 | 体位（V 链·床级家具） |
+| B4-B7 | insert | h-core | 6315 | stimulate_g_point | 刺激G点 | 已完成 | 通用（V 深部·腰技≥3） |
+| B4-B7 | insert | h-core | 6316 | womb_os_caress | 玩弄子宫口 | 已完成 | 通用（V 深部·腰技≥4） |
+| B4-B7 | insert | h-core | 6318 | change_cervix_sex_position | 换子宫姦口体位 | 已完成 | 体位切换（宫颈链·已入W） |
+| B4-B7 | insert | h-core | 6319 | normal_cervix_sex | 正常位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5） |
+| B4-B7 | insert | h-core | 6320 | back_cervix_sex | 后背位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5） |
+| B4-B7 | insert | h-core | 6321 | riding_cervix_sex | 对面骑乘位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5·床级家具） |
+| B4-B7 | insert | h-core | 6322 | back_riding_cervix_sex | 背面骑乘位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5·床级家具） |
+| B4-B7 | insert | h-core | 6323 | face_seat_cervix_sex | 对面座位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5） |
+| B4-B7 | insert | h-core | 6324 | back_seat_cervix_sex | 背面座位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5） |
+| B4-B7 | insert | h-core | 6325 | face_stand_cervix_sex | 对面立位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5） |
+| B4-B7 | insert | h-core | 6326 | back_stand_cervix_sex | 背面立位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5） |
+| B4-B7 | insert | h-core | 6327 | face_hug_cervix_sex | 对面抱位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5） |
+| B4-B7 | insert | h-core | 6328 | back_hug_cervix_sex | 背面抱位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5） |
+| B4-B7 | insert | h-core | 6329 | face_lay_cervix_sex | 对面卧位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5·床级家具） |
+| B4-B7 | insert | h-core | 6330 | back_lay_cervix_sex | 背面卧位子宫口姦 | 已完成 | 体位（宫颈链·扩张≥3·腰技≥5·床级家具） |
+| B4-B7 | insert | h-core | 6332 | change_womb_sex_position | 换子宫姦体位 | 已完成 | 体位切换（子宫链·已入W） |
+| B4-B7 | insert | h-core | 6333 | normal_womb_sex | 正常位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7） |
+| B4-B7 | insert | h-core | 6334 | back_womb_sex | 后背位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7） |
+| B4-B7 | insert | h-core | 6335 | riding_womb_sex | 对面骑乘位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7·床级家具） |
+| B4-B7 | insert | h-core | 6336 | back_riding_womb_sex | 背面骑乘位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7·床级家具） |
+| B4-B7 | insert | h-core | 6337 | face_seat_womb_sex | 对面座位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7） |
+| B4-B7 | insert | h-core | 6338 | back_seat_womb_sex | 背面座位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7） |
+| B4-B7 | insert | h-core | 6339 | face_stand_womb_sex | 对面立位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7） |
+| B4-B7 | insert | h-core | 6340 | back_stand_womb_sex | 背面立位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7） |
+| B4-B7 | insert | h-core | 6341 | face_hug_womb_sex | 对面抱位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7） |
+| B4-B7 | insert | h-core | 6342 | back_hug_womb_sex | 背面抱位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7） |
+| B4-B7 | insert | h-core | 6343 | face_lay_womb_sex | 对面卧位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7·床级家具） |
+| B4-B7 | insert | h-core | 6344 | back_lay_womb_sex | 背面卧位子宫姦 | 已完成 | 体位（子宫链·扩张≥5·腰技≥7·床级家具） |
+| B4-B7 | insert | h-core | 6345 | anal_sex | 肛门性交 | 已完成 | 核心（A 链） |
+| B4-B7 | insert | h-core | 6346 | change_anal_sex_position | 换肛交体位 | 已完成 | 体位切换（A 链） |
+| B4-B7 | insert | h-core | 6347 | normal_anal_sex | 正常位肛交 | 已完成 | 体位（A 链） |
+| B4-B7 | insert | h-core | 6348 | back_anal_sex | 后背位肛交 | 已完成 | 体位（A 链） |
+| B4-B7 | insert | h-core | 6349 | riding_anal_sex | 对面骑乘位肛交 | 已完成 | 体位（A 链·床级家具） |
+| B4-B7 | insert | h-core | 6350 | back_riding_anal_sex | 背面骑乘位肛交 | 已完成 | 体位（A 链·床级家具） |
+| B4-B7 | insert | h-core | 6351 | face_seat_anal_sex | 对面座位肛交 | 已完成 | 体位（A 链） |
+| B4-B7 | insert | h-core | 6352 | back_seat_anal_sex | 背面座位肛交 | 已完成 | 体位（A 链） |
+| B4-B7 | insert | h-core | 6353 | face_stand_anal_sex | 对面立位肛交 | 已完成 | 体位（A 链） |
+| B4-B7 | insert | h-core | 6354 | back_stand_anal_sex | 背面立位肛交 | 已完成 | 体位（A 链） |
+| B4-B7 | insert | h-core | 6355 | face_hug_anal_sex | 对面抱位肛交 | 已完成 | 体位（A 链） |
+| B4-B7 | insert | h-core | 6356 | back_hug_anal_sex | 背面抱位肛交 | 已完成 | 体位（A 链） |
+| B4-B7 | insert | h-core | 6357 | face_lay_anal_sex | 对面卧位肛交 | 已完成 | 体位（A 链·床级家具） |
+| B4-B7 | insert | h-core | 6358 | back_lay_anal_sex | 背面卧位肛交 | 已完成 | 体位（A 链·床级家具） |
+| B4-B7 | insert | h-core | 6359 | stimulate_sigmoid_colon | 玩弄s状结肠 | 已完成 | 通用（A 深部·技巧≥3） |
+| B4-B7 | insert | h-core | 6360 | stimulate_vagina | 隔着刺激阴道 | 已完成 | 通用（A 深部·技巧≥3） |
+| B4-B7 | item | h-core / 玩具系统 | 6401 | body_lubricant | 润滑液 | 已完成 | 通用 |
+| B4-B7 | item | h-core / 玩具系统 | 6402 | put_condom | 戴上避孕套 | 已完成 | 通用 |
+| B4-B7 | item | h-core / 玩具系统 | 6403 | take_condom_out | 摘掉避孕套 | 已完成 | 通用 |
+| B4-B7 | item | h-core / 玩具系统 | 6405 | nipples_love_egg | 乳头跳蛋 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6406 | nipple_clamp_on | 戴上乳头夹 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6407 | nipple_clamp_off | 取下乳头夹 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6408 | clit_love_egg | 阴蒂跳蛋 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6409 | clit_clamp_on | 戴上阴蒂夹 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6410 | clit_clamp_off | 取下阴蒂夹 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6411 | electric_message_stick | 电动按摩棒 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6412 | vibrator_insertion | 插入震动棒 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6415 | vibrator_insertion_off | 拔出震动棒 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6416 | vibrator_insertion_anal | 肛门插入震动棒 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6419 | vibrator_insertion_anal_off | 拔出肛门震动棒 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6420 | anal_beads | 塞入肛门拉珠 | 已完成 | 玩具系统 |
+| B4-B7 | item | h-core / 玩具系统 | 6421 | anal_beads_off | 拔出肛门拉珠 | 已完成 | 玩具系统 |
 | B4-B7 | item | h-core / 玩具系统 | 6422 | milking_machine_on | 装上搾乳机 | 延后 | 依赖地点 tag has_humiliation_room（当前未声明） |
 | B4-B7 | item | h-core / 玩具系统 | 6423 | milking_machine_off | 取下搾乳机 | 延后 | 依赖地点 tag has_humiliation_room（当前未声明） |
-| B4-B7 | item | h-core / 玩具系统 | 6426 | remote_toy_on_in_h | 遥控启动玩具 | 已完成（待复核） | 玩具系统（H 内版） |
-| B4-B7 | item | h-core / 玩具系统 | 6427 | remote_toy_off_in_h | 遥控关闭玩具 | 已完成（待复核） | 玩具系统（H 内版） |
-| B4-B7 | item | h-core / 玩具系统 | 6428 | remote_toy_level_up_in_h | 调高玩具档位 | 已完成（待复核） | 玩具系统（H 内版） |
+| B4-B7 | item | h-core / 玩具系统 | 6426 | remote_toy_on_in_h | 遥控启动玩具 | 已完成 | 玩具系统（H 内版） |
+| B4-B7 | item | h-core / 玩具系统 | 6427 | remote_toy_off_in_h | 遥控关闭玩具 | 已完成 | 玩具系统（H 内版） |
+| B4-B7 | item | h-core / 玩具系统 | 6428 | remote_toy_level_up_in_h | 调高玩具档位 | 已完成 | 玩具系统（H 内版） |
 | B4-B7 | sm | h-bondage / h-core | 6502 | spanking | 打屁股 | 延后 | 效果 handler 未注册（spanking） |
-| B4-B7 | sm | h-bondage / h-core | 6503 | bondage | 绳艺 | 已完成（待复核） | system:bondage |
+| B4-B7 | sm | h-bondage / h-core | 6503 | bondage | 绳艺 | 已完成 | system:bondage |
 | B4-B7 | sm | h-bondage / h-core | 6504 | patch_on | 戴上眼罩 | 延后 | 依赖地点 tag has_humiliation_room |
 | B4-B7 | sm | h-bondage / h-core | 6505 | patch_off | 摘下眼罩 | 延后 | 依赖地点 tag has_humiliation_room |
-| B4-B7 | sm | h-bondage / h-core | 6506 | gag_on | 戴上口球 | 已完成（待复核） | 通用 |
-| B4-B7 | sm | h-bondage / h-core | 6507 | gag_off | 摘下口球 | 已完成（待复核） | 通用 |
+| B4-B7 | sm | h-bondage / h-core | 6506 | gag_on | 戴上口球 | 已完成 | 通用 |
+| B4-B7 | sm | h-bondage / h-core | 6507 | gag_off | 摘下口球 | 已完成 | 通用 |
 | B4-B7 | sm | h-bondage / h-core | 6508 | clyster | 灌肠 | 延后 | 依赖地点 tag has_humiliation_room + 灌肠效果未注册 |
 | B4-B7 | sm | h-bondage / h-core | 6509 | continue_clyster | 继续灌肠 | 延后 | 依赖地点 tag has_humiliation_room + 灌肠效果未注册 |
 | B4-B7 | sm | h-bondage / h-core | 6511 | clyster_end | 拔出肛塞 | 延后 | 灌肠结束/肛塞效果未注册 |
 | B4-B7 | sm | h-bondage / h-core | 6512 | safe_candles | 滴蜡 | 延后 | 效果 handler 未注册（safe_candles） |
 | B4-B7 | sm | h-bondage / h-core | 6513 | whip | 鞭子 | 延后 | 效果 handler 未注册（whip） |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6601 | handjob | 手交 | 已完成（待复核） | 通用（无 judge，SOP §6 已注明） |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6602 | blowjob | 口交 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6603 | paizuri | 乳交 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6604 | footjob | 足交 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6605 | hairjob | 发交 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6606 | axillajob | 腋交 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6607 | rub_buttock | 素股 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6608 | hand_blowjob | 手交口交 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6609 | tits_blowjob | 乳交口交 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6610 | focus_blowjob | 真空口交 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6611 | deep_throat | 深喉插入 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6612 | clean_blowjob | 清洁口交 | 已完成（待复核） | 通用（精液系统已实现） |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6613 | sixty_nine | 六九式 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6614 | legjob | 腿交 | 已完成（待复核） | 通用 |
-| B4-B7 | wait_upon | h-core / h-ejaculation | 6616 | face_rub | 阴茎蹭脸 | 已完成（待复核） | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6601 | handjob | 手交 | 已完成 | 通用（无 judge，SOP §6 已注明） |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6602 | blowjob | 口交 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6603 | paizuri | 乳交 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6604 | footjob | 足交 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6605 | hairjob | 发交 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6606 | axillajob | 腋交 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6607 | rub_buttock | 素股 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6608 | hand_blowjob | 手交口交 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6609 | tits_blowjob | 乳交口交 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6610 | focus_blowjob | 真空口交 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6611 | deep_throat | 深喉插入 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6612 | clean_blowjob | 清洁口交 | 已完成 | 通用（精液系统已实现） |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6613 | sixty_nine | 六九式 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6614 | legjob | 腿交 | 已完成 | 通用 |
+| B4-B7 | wait_upon | h-core / h-ejaculation | 6616 | face_rub | 阴茎蹭脸 | 已完成 | 通用 |
 
 ## 后续批次（占位，筛选后填充）
 
 - 核对项：SYSTEM 8（2026-08-26 已核对，5 ✅ / 2 ⚠️ 待做（能力手动面板）/ 1 用户决策不做（target_to_self），见 `docs/instruction-replication/system-check.md`）
+
 
 
 

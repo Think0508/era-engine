@@ -251,15 +251,21 @@ export function registerBodyItemEffects(): void {
     return true
   })
 
-  // 1011 WEAR_CONDOM / 1012 TAKE_CONDOM_OFF：h_state.condom 布尔
+  // 1011 WEAR_CONDOM / 1012 TAKE_CONDOM_OFF：统一 body_items[13] 表示（erArk body_item[13][1]；
+  // h-ejaculation 射精判定用 body_items['13']，h_state.condom 仅作兼容镜像）
   effectTypeRegistry.register('wear_condom', (_p: any, execCtx: any) => {
     const self = execCtx.sourceId ? entitySystem.get('character', execCtx.sourceId) as any : null
     if (self?.h_state) self.h_state.condom = true
+    if (self) {
+      if (!self.body_items) self.body_items = {}
+      self.body_items['13'] = { itemId: '避孕套', active: true }
+    }
     return true
   })
   effectTypeRegistry.register('take_condom_off', (_p: any, execCtx: any) => {
     const self = execCtx.sourceId ? entitySystem.get('character', execCtx.sourceId) as any : null
     if (self?.h_state) self.h_state.condom = false
+    if (self?.body_items) delete self.body_items['13']
     return true
   })
 

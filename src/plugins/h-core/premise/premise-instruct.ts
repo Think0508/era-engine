@@ -356,12 +356,13 @@ export function registerInstructPremises(registry: any): void {
   registry.registerPremise('NOW_CONDOM', (ctx: any) => {
     const ch = getSelf(ctx)
     if (!ch) return false
-    return ch?.h_state?.condom === true
+    // erArk body_item[13][1]；h_state.condom 仅兼容镜像
+    return ch?.h_state?.condom === true || ch?.body_items?.['13']?.active === true
   })
   registry.registerPremise('NOW_NOT_CONDOM', (ctx: any) => {
     const ch = getSelf(ctx)
     if (!ch) return false
-    return ch?.h_state?.condom !== true
+    return ch?.h_state?.condom !== true && ch?.body_items?.['13']?.active !== true
   })
   function sexToyLevelGe(minLevel: number) {
     return (ctx: any) => {

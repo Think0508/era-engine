@@ -169,17 +169,20 @@ describe('B4-B7 SEX/item（6401-6428 保留 19 条）', () => {
     }
   })
 
-  it('put_condom / take_condom_out：避孕套装卸', async () => {
+  it('put_condom / take_condom_out：避孕套装卸（body_items[13] 统一）', async () => {
     resetChars()
     setInventory([['避孕套', 1]])
     await commandExecutor.execute('put_condom', execCtx())
     expect(player().h_state.condom).toBe(true)
+    expect(player().body_items['13'].active).toBe(true)
     expect((player().inventory.find((i: any) => i.itemId === '避孕套')?.count ?? 0)).toBe(0)
 
     resetChars()
     player().h_state.condom = true
+    player().body_items = { '13': { itemId: '避孕套', active: true } }
     await commandExecutor.execute('take_condom_out', execCtx())
     expect(player().h_state.condom).toBe(false)
+    expect(player().body_items?.['13']).toBeUndefined()
     expect(errorReporter.getErrors().some(e => e.severity === 'error')).toBe(false)
   })
 

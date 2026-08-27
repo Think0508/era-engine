@@ -23,11 +23,11 @@
 | item | 19 | `sex-item.toml` | `instruction-item.test.ts` | 10 | ✅ |
 | sm | 3 | `sex-sm.toml` | `instruction-sm.test.ts` | 4 | ✅ |
 
-## 已识别的已知偏差/备注（不影响“已确认”）
+## 复核备注（设计/映射说明，不属于复刻偏差）
 
-1. **bondage（6503）**：erArk 原为 BONDAGE 面板选择 15 种紧缚；当前实现默认 `bondageId=1（双手缚）`，面板 UI 未做，留 `TODO(panel)`。
-2. **wait_upon 侍奉位**：为了表示手/口/胸/足/发/腋/腿/脸/深喉等位置，扩展了 `insert_position` 编码 5-12；`sex_insert` 用 `countable=false`，不进入“插入次数”计数器。
-3. **item 卸载前提**：erArk 的 `HAVE_*` 在取下类指令中仍要求身上留有该物品，因此“装上→取下”的连续流程测试使用了 2 个物品（装 1 个、留 1 个）。这是 erArk 原语义，不是实现偏差。
+1. **bondage（6503）**：erArk 原为 BONDAGE 面板选择 15 种紧缚；当前实现默认 `bondageId=1（双手缚）`，面板 UI 未做，留 `TODO(panel)`——这是 UI 缺失，不是数据偏差。
+2. **wait_upon 侍奉位**：erArk 本身就用同一个 `insert_position` 表示阴茎位置（发/脸/口/胸/腋/手/腿/足/深喉等）。我们只是沿用了引擎已有的“0-4=性器位”的编号，为其补上 5-12 的映射（表示层不同，语义同 erArk）。`countable=false` 是**有意设计**：按你此前定的计数器口径，“插入次数”只统计性器进入（V/A/W），侍奉接触不计入，避免污染 `male_stats.inserts`；侍奉行动的“部位使用次数”由 `h:part_use`/`count` 统计。
+3. **item 卸载前提**：这不是我们的偏差——erArk `InstructConfig.csv` 的取下类指令（如 `nipple_clamp_off`）**本身就带 `HAVE_NIPPLE_CLAMP` 前提**，要求玩家背包仍有该物品。我们只是忠实复刻；测试用 2 个物品来覆盖“装 1 个、留 1 个”的连续流程。若想体验更顺（取下无需备件），需要主动偏离 erArk，需你拍板。
 4. **露出邀请 cid**：核对中修正为 erArk 实际 cid **5207**（原文档 5054 错误），且 tired_type=1 前提已修正。
 5. **能力提升/背包**：SYSTEM 核对见 `docs/instruction-replication/system-check.md`，与 95 条指令复核无关。
 

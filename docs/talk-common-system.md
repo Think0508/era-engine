@@ -58,7 +58,28 @@ talk-common-system 是从 erark `talk_common` 系统精确复刻的条件文本�
   └── body_part/vagina_s.toml   ← 覆盖默认
 ```
 
-加载时以默认数据为基础，用 mod 目录的同路径文件覆盖（**variable 同名整体替换，不是逐条深合并**——2026-08-23 校准）。mod 只写要改的文件，其余继承默认。
+加载时以默认数据为基础，用 mod 目录的**同名变量**整体覆盖（**variable 同名整体替换，不是逐条深合并**——2026-08-23 校准）。mod 只写要改的文件，其余继承默认。
+
+### 惰性加载模型（2026-09-11）
+
+默认层共 **331 文件 / 44MB / 20 万条目**。全量装载单次 ≈ 8.5-19.5s（模块实例化 + TOML.parse + 建索引），
+过去发生在 `onEnable`——每次游戏启动付一次，每个重集成测试文件各付一次（全套 506s 里约 460s 在此）。
+现改为**按需装载**：
+
+| 阶段 | 行为 |
+|---|---|
+| `onEnable` | 只登记**变量名**（由 glob 路径推导文件名，零解析、零模块加载）；装载 mod 层索引 | 
+| 首次查询 | `getText` / `getTextEntry` / `getBehaviorText` / `replace` 在 API 边界 `await` 装载涉及的变量（含伴生变量：`_s` 短词 → `common_s`；行为地文 → `action_A/B1/B2/C1/C2_*`），随后调用**同步**引擎 |
+| 嵌套引用 | `replace` 若替换结果引入了新的 `{var}`（嵌套口上），最多再装载 3 轮 |
+| 全量 | `talk-common.loadAll()` 显式装载全部（数据校验/预热用）；返回装载后的变量数 |
+
+**契约：数据文件名 = 文件内的 `variable` 名**（如 `behavior/daily/chat.toml` 内 `variable = "chat"`）。
+惰性索引按文件名推导变量名，违反该契约的口上变量将**永不生效**——由
+`talk-common-data.test.ts` 的「文件名 = variable 契约」用例全量守卫（2026-09-11 起，
+原 11 个 `unconscious_semen_body_N.toml` 已改名为 `in_unconscious_cum_on_body_N.toml` 以符合契约）。
+
+引擎（`engine.ts`）保持**同步**——条件筛选/权重/选择逻辑未改动，异步只存在于插件 API 边界；
+`getVariables()` 返回**已知**变量名（含未装载），`engine.variables` 仍为已装载集合。
 
 ## TOML 数据格式
 
@@ -314,11 +335,19 @@ const step1 = await apiSystem.call('talk-common', 'replace', raw, targetNpcId)
 const step2 = interpolateText(step1, { player, character, target, location, time })
 ```
 
-注意：talk_common 的替换结果中可能仍包含未被替换的嵌套变量（如 `{vagina}` → 结果中还有 `{vagina_s}`），因为这些嵌套变量不是 talk_common 当前遍历到的 key，会在后续的 `interpolateText` 保持原样。如果需要多轮替换，调用方应循环调用 `replace` 直到文本不再变化。
+注意（2026-09-11 起行为变化）：`replace` 内部会**循环替换最多 3 轮**——上一轮替换结果中新出现的
+嵌套变量（如 `{vagina}` → `…{vagina_s}…`）会在下一轮被继续替换（惰性加载模式下还需先装载这些变量，
+循环正是为此设计）。调用方一般无需自己再循环；确有多层嵌套（>3 层）时再按"替换到不再变化"处理。
 
 ### `getVariables(): string[]`（api 注册名）
 
-返回当前已加载的所有 talk_common 变量名列表，用于条件手册生成和校验。
+返回**已知的**全部 talk_common 变量名（惰性加载模型下 = 默认层 + 当前 mod 层的文件名集合，
+不触发数据装载），用于条件手册生成和校验。已装载集合见引擎内部 `variables`（测试/调试用）。
+
+### `loadAll(): Promise<number>`（api 注册名，2026-09-11）
+
+显式装载全部变量，返回装载后的变量数。用于数据校验/预热（`talk-common-data.test.ts` 走自己的
+eager glob，不依赖本 API）。惰性模型下日常不再需要调用。
 
 ## 插值上下文（dialogue-system 传入）
 

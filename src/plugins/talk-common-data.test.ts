@@ -101,6 +101,23 @@ describe('T2 talk-common 全量数据校验', () => {
     expect(vars['vagina_s']?.entries?.length).toBeGreaterThan(10)
   })
 
+  it('文件名 = variable 契约（惰性加载索引的依据）', () => {
+    // 注释（2026-09-11 惰性加载改造）：onEnable 只按**文件名**登记变量名、首次查询才装载，
+    // 因此"文件名 = 该文件内的 variable"是硬契约——违反会导致该口上变量永不生效（静默失效）。
+    // 2026-08-16 落地的 11 个 unconscious_semen_body_N.toml 已按本契约改名为
+    // in_unconscious_cum_on_body_N.toml（对应变量名）。
+    const violations: string[] = []
+    for (const [path, raw] of Object.entries(defaultModules)) {
+      const file = (path.split('/').pop() ?? path).replace(/\.toml$/, '')
+      const parsed = parseTomlVariable(raw as string)
+      const declared = Object.keys(parsed)
+      if (declared.length !== 1 || declared[0] !== file) {
+        violations.push(`${file}.toml → variable=${declared.join(',') || '(缺失)'}`)
+      }
+    }
+    expect(violations.slice(0, 10)).toEqual([])
+  })
+
   it('全部 premise(X) 引用均已注册（静默失效检测）', () => {
     const registered = new Set(conditionEngine.getRegisteredPremiseIds())
     const conditions = collectConditions()

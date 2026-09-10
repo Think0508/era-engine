@@ -44,18 +44,34 @@ gain = { condition = "player.talents.剑术精通 >= 5", replace = "剑术精通
 | formula | 作用 | 查询模式 | 调用位置 |
 |---------|------|---------|---------|
 | `judge` | 实行值判定（所有 H 指令） | `sumTalentModifiers(char, 'judge', {type})` | h-core/judge.ts |
-| `combat_damage` | 战斗伤害 | `multiplyTalentModifiers(char, 'combat_damage', {tag, ability})` | combat-wuxia |
+| `combat_damage` | 战斗伤害（整体倍率，可按技能过滤） | `multiplyTalentModifiers(char, 'combat_damage', {tag, ability})` | combat-wuxia |
+| `combat_channel` | **战斗公式中间量通道**（+ `channel` 字段：先攻/命中率/闪避率/浮动系数/防御/武功威力/风格系数/其他加成） | combat-wuxia 编译期按 `when_*` 过滤 | combat-wuxia |
+| `combat_hit` / `combat_dodge` / `combat_crit` / `combat_crit_mul` / `combat_defense` / `combat_in` | 战斗统计键（命中点/闪避点/暴击点/暴击倍率/防御倍率/减伤） | combat-wuxia 编译期 | combat-wuxia |
 | `favorability` | 好感度变化 | `multiplyTalentModifiers(char, 'favorability', {})` | h-core/favorability.ts |
 | `trust` | 信赖度变化 | `multiplyTalentModifiers(char, 'trust', {})` | h-core/trust.ts |
+
+**战斗通道天赋写法**（`channel` 必填，须是战斗插件已注册的通道；未注册 → 加载期 error）：
+
+```toml
+[[talents."剑骨".modifiers]]
+formula = "combat_channel"
+channel = "风格系数"      # 中间量名（见 docs/combat-system.md 通道表）
+when_tag = "刀剑"          # 可选过滤（when_tag/when_type/when_ability 同 combat_damage）
+multiply = 0.10            # 每级 ×0.1（percent）；plus = 平加值
+```
+
+`combat_damage` 与 `combat_channel` 的区别：前者乘"整体伤害"（可理解为 e2 步骤的总加成），
+后者只作用于**指定的那个中间量**（如风格系数、武功威力、防御、命中率）。
 
 **modifier 过滤字段**（全部可选，不写则匹配所有）：
 
 | 字段 | 说明 | 例子 |
 |------|------|------|
 | `when_tag` | 按能力标签匹配（abilities 的 tags） | `"sword"`, `"anal"` |
-| `when_type` | 按指令 type 匹配 | `"anal"`, `"kiss"` |
+| `when_type` | 按指令 type 匹配（战斗公式不使用） | `"anal"`, `"kiss"` |
 | `when_ability` | 按具体能力 ID 匹配 | `"降龙十八掌"` |
 | `condition` | 额外条件表达式 | `"game.time.hour >= 22"` |
+| `channel` | **仅 `combat_channel`**：战斗公式中间量通道名 | `"风格系数"`, `"防御"` |
 
 **效果字段**（二选一或都用）：
 

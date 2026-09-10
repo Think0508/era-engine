@@ -530,7 +530,11 @@ transform = { field = "attack", script = "recalc_attack.js" }
 - 每个核心模块（条件解析、事件总线、模板继承、实体系统）必须有单元测试
 - 每个插件必须有启用/禁用隔离测试（禁用后不影响其他插件运行）
 - 提供一个最小测试模组（3个角色、2个地点）用于集成测试
-- 测试命令：`npm run test`、`npm run test:unit`、`npm run test:plugins`
+- 测试命令：`npm run test`（全量 ~120s）、`npm run test:unit`（单元层，日常内循环 ~17s）、
+  `npm run test:integration`（重集成层 ~93s）、`npm run test:tiers`（打印分层清单）、
+  `npm run validate`（数据文件独立校验）
+  > 分层判据 = 文件内是否 `loadMod(`/`parseModData(`/`talkCommonOnEnable`（详见 `docs/developer-handbook.md`）。
+  > 两层相加 = 全量，不跳过任何用例。
 
 ---
 

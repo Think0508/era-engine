@@ -1903,7 +1903,9 @@ L2.9 已统一 scene 管理、事件拦截、嵌套、持久化、ConversationRe
 
 - LLM 口上（流�?上下�?token/降级�?
 - 天赋/套装钩子式效果（需沙箱�?
-- combat-wuxia 公式 mod override 完整机制
+- combat-wuxia 公式 mod override 完整机制（v1.1 部分落地：公式中间量通道/命中与伤害公式修订；仍缺：公式整体替换）
+- 测试基建提速（2026-09-11）：talk-common 口上数据改惰性加载（onEnable 只登记变量名，首次查询才装载该变量）——全套 506s → 120s、游戏启动同类开销近 0；新增分层脚本 npm run test:unit（~17s）/ test:integration（~93s）/ test:tiers；契约：默认层数据文件名 = variable 名（talk-common-data.test.ts 全量守卫，11 个 unconscious_semen_body_* 已改名）
+- 战斗毒体系（2026-09-11 v1.2）：即时毒伤并入同一次命中（M 过受方「毒伤害」通道）+ 目标回合开始结算持续毒伤（(1+0.25(k−1))×(1%气血上限+M×0.1)，8 回合含本回合）；新增「挂状态」类别（默认 on_hit/enemy/5 回合、重复刷新、merge_group 合并）与第 9 个通道「毒伤害」；属性新增「人物毒功」（风格第四维）；数据：battle-effects 毒/猛毒/剧毒（k=1/2/3）；减免接线留 seam（毒抗性/带毒体质待重设计）
 - 战斗外精确分钟级 tick
 - NPC 队友 AI 优化
 - inventory-system tags 驱动指令完整实现（当前只 stub�?

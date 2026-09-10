@@ -2,17 +2,26 @@
 id = "combat-wuxia"
 name = "武侠回合制战斗"
 version = "1.0.0"
-description = "extends combat-base——六维/武功/阴阳/暴击/闪避"
+description = "extends combat-base——六维/武学系数/风格三值/七系伤害公式/公式中间量通道/特殊系脚本/被动天赋编译"
 extends = "combat-base"
 
 dependencies = [
   { plugin = "combat-base", version = "^1.0.0" }
 ]
 
+# 系别标签（技能 category 唯一系别；风格与被动等标签供过滤/加成）——中文键必须加引号
 [optional_ability_tags]
-sword = { description = "剑类技能，有剑法加成系数" }
-internal = { description = "内功，影响内力计算" }
-movement = { description = "轻功，影响闪避" }
+"拳掌" = { description = "拳掌系（力道轴标准伤害公式）" }
+"指腿" = { description = "指腿系（力道轴标准伤害公式）" }
+"刀剑" = { description = "刀剑系（力道轴标准伤害公式）" }
+"奇兵" = { description = "奇兵系（力道轴标准伤害公式）" }
+"暗毒" = { description = "暗毒系（灵敏轴变体公式）" }
+"气功" = { description = "气功系（per-skill 沙箱脚本伤害，无统一公式）" }
+"异术" = { description = "异术系（per-skill 沙箱脚本伤害，无统一公式）" }
+"轻功" = { description = "轻功系（特殊：命中/闪避计算用，非伤害系）" }
+
+[optional_attributes]
+weapon_base = { type = "number", description = "武器基础伤害（装备系统未开工前 = 0）" }
 
 [data_dependencies]
 provides = ["combat-wuxia:ready"]

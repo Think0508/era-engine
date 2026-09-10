@@ -1,0 +1,150 @@
+# combat-wuxia 插件默认战斗效果定义库（插件默认层 Layer 1）
+# mod 可在 definitions/battle-effects.toml 覆盖/新增（同 id 深合并）
+# 契约：trigger 相位 / action 动作 / chance / value / target / duration / stack / priority /
+#       category / condition / recursive / uses / min_level / stat / mode / skill
+
+# 战斗效果动作：modify_stat（统计键）/ modify_channel（公式中间量通道：风格系数/武功威力/防御/
+# 命中率/闪避率/浮动系数/先攻/其他加成）/ 其余见 docs/combat-system.md
+
+[effects]
+
+# ── 示例：公式中间量通道（mod 可覆盖/删除；完整通道表见 docs/combat-system.md）──
+# 飘逸（示例）：本场战斗风格系数 ×1.1（示例「效果给中间量加值」的写法）
+[effects."飘逸（示例）"]
+name = "飘逸（示例）"
+description = "风格系数 ×1.1（本场）"
+action = "modify_channel"
+channel = "风格系数"
+mode = "percent"
+value = 0.1
+target = "self"
+duration = "battle"
+category = "buff"
+stack = "refresh"
+
+# 蓄势：只在施展 降龙十八掌 时，该次攻击的武功威力 +30%（when_skill 过滤 + 相位叠加）
+[effects."蓄势（示例）"]
+name = "蓄势（示例）"
+description = "施展指定技能时该段武功威力 +30%（触发一次即消）"
+action = "modify_channel"
+trigger = "attack_pre"
+channel = "武功威力"
+mode = "percent"
+value = 0.3
+target = "self"
+duration = "battle"
+uses = 1
+category = "buff"
+# when_skill = "降龙十八掌"   # 改成实际技能 id 后生效（未定义时加载校验会报错）
+
+# 护体：使用后 N 回合减伤 x%（减伤 = damage_in 负向倍率）
+[effects."护体"]
+name = "护体"
+description = "减伤 30%"
+action = "modify_stat"
+stat = "damage_in"
+mode = "percent"
+value = 0.3
+target = "self"
+duration = { turns = 3 }
+category = "buff"
+stack = "refresh"
+
+# 破甲：命中后让敌人减防 30%（2 回合）
+[effects."破甲"]
+name = "破甲"
+description = "防御 × 0.7，持续 2 回合"
+action = "modify_stat"
+stat = "defense_mult"
+mode = "percent"
+value = 0.3
+target = "self"
+duration = { turns = 2 }
+category = "debuff"
+stack = "refresh"
+
+# 减闪避：命中后让敌人闪避降低（%点数）
+[effects."减闪避"]
+name = "减闪避"
+description = "闪避 -10，持续 2 回合"
+action = "modify_stat"
+stat = "dodge_bonus"
+mode = "flat"
+value = -10
+target = "self"
+duration = { turns = 2 }
+category = "debuff"
+stack = "refresh"
+
+# 战中毒：通用周期伤害示例（回合初扣血按层数缩放）——保留为通用 DoT 机制
+[effects."战中毒"]
+name = "战中毒"
+description = "每回合初毒伤 15/层，持续 3 回合"
+action = "periodic_damage"
+trigger = "turn_start"
+value = 15
+target = "self"
+duration = { turns = 3 }
+category = "debuff"
+stack = "increment"
+max_stack = 5
+
+# ── 毒（v1.2）：技能词条 { action = "apply_poison", status = "毒|猛毒|剧毒" } 引用 ──
+# 三条定义共用合并组 "毒"（merge_group）——一个目标身上永远只有一份毒：k 取高、M 取大、回合重置；
+# 显示名随最强那一级。k=1/2/3 对应 毒/猛毒/剧毒；更高层后续再加（校验 1..3）。
+# 结算：目标自己的回合开始时（turn_start）→ (1+0.25×(k−1))×(1%×气血上限 + M×0.1) → 过通道「毒伤害」→ 扣血
+[effects."毒"]
+name = "毒"
+description = "毒：每回合开始受到 (1%气血上限 + M×0.1) 毒伤，持续 8 回合（含本回合）"
+action = "poison_dot"
+trigger = "turn_start"
+duration = { turns = 8 }
+k = 1
+merge = "strongest"
+merge_group = "毒"
+category = "debuff"
+
+[effects."猛毒"]
+name = "猛毒"
+description = "猛毒：每回合开始受到 1.25×(1%气血上限 + M×0.1) 毒伤，持续 8 回合（含本回合）"
+action = "poison_dot"
+trigger = "turn_start"
+duration = { turns = 8 }
+k = 2
+merge = "strongest"
+merge_group = "毒"
+category = "debuff"
+
+[effects."剧毒"]
+name = "剧毒"
+description = "剧毒：每回合开始受到 1.5×(1%气血上限 + M×0.1) 毒伤，持续 8 回合（含本回合）"
+action = "poison_dot"
+trigger = "turn_start"
+duration = { turns = 8 }
+k = 3
+merge = "strongest"
+merge_group = "毒"
+category = "debuff"
+
+# 神照经：战斗中死亡时满状态复活一次（uses=1 消耗；被动技能效果引用）
+[effects."神照经"]
+name = "神照经"
+description = "战斗内死亡时复活一次（满状态 + 效果区重建）"
+action = "revive"
+trigger = "death"
+uses = 1
+duration = "battle"
+category = "neutral"
+
+# 蛤蟆功蓄势：本招不攻击，挂反击状态——对方打上来时用蛤蟆功反击（触发一次即消）
+[effects."蛤蟆功蓄势"]
+name = "蛤蟆功蓄势"
+description = "受击时以蛤蟆功反击一次（触发即消）"
+action = "counter"
+trigger = "damage_mitigate"
+value = { skill = "蛤蟆功" }
+target = "self"
+duration = "battle"
+uses = 1
+priority = 0
+category = "buff"

@@ -1,12 +1,27 @@
 # combat-wuxia 插件默认属性定义（插件默认层 Layer 1）
-# 武侠六维：mod 可 override（武侠 mod 在 definitions/attributes.toml 中覆盖默认值）
-# 契约补键（2026-08-09）：ATTR.STR/CON/WILL/AGI/FORT 常量引用 '力道/根骨/定力/灵敏/福缘'
-# 但此前无任何 attributes.toml 定义 → 角色裸字段 + 扫描违规。此处补插件默认定义
-# （默认 0 = 未设定时不产生面板加成；武侠 mod 内容起步时在 mod 层覆写真实默认值）
-
+# 武侠六维 + 武学系数 + 风格三值：mod 可 override（武侠 mod 在 definitions/attributes.toml 中覆盖默认值）
+# 六维（悟性不参与战斗公式，供战斗外成长系统用）
 [attributes]
 "力道" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：攻击力基础（combat-wuxia）" }
 "根骨" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：防御/体力上限基础（combat-wuxia）" }
 "定力" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：防御/气力上限基础（combat-wuxia）" }
-"灵敏" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：闪避/命中基础（combat-wuxia）" }
+"灵敏" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：命中/先攻/暗毒系伤害基础（combat-wuxia）" }
 "福缘" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：暴击基础（combat-wuxia）" }
+"悟性" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：战斗外成长用，不参与战斗公式" }
+
+# 武学系数（开局 roll 可修炼成长；对应系别武功伤害加成 (1+系数/1000)；
+# 轻功系数特殊：先攻比较值 + 命中准头 轻功系数×2+灵敏×1）
+"拳掌系数" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "拳掌系伤害系数（combat-wuxia）" }
+"指腿系数" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "指腿系伤害系数（combat-wuxia）" }
+"刀剑系数" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "刀剑系伤害系数（combat-wuxia）" }
+"奇兵系数" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "奇兵系伤害系数（combat-wuxia）" }
+"暗毒系数" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "暗毒系伤害系数（combat-wuxia）" }
+"轻功系数" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "轻功系数：先攻比较值 + 命中准头（对方闪避/自己命中）（combat-wuxia）" }
+
+# 风格三值（开局 roll 可修炼；风格系数 (1+技能值/1000)×(1+人物值/50) / 精通系数 1+三值和/250 / 技能风格适配）
+"轻灵" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "人物风格：轻灵（combat-wuxia）" }
+"厚重" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "人物风格：厚重（combat-wuxia）" }
+"巧技" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "人物风格：巧技（combat-wuxia）" }
+
+# 人物毒功（风格第四维——与轻灵/厚重/巧技同档的永久积累值；只走毒线，不进风格系数/精通系数）
+"毒功" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "人物毒功：毒伤害的积累加成（毒功系数 (1+技能毒性/1000)×(1+毒功/50)、毒功精通 1+毒功/200）（combat-wuxia）" }

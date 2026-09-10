@@ -49,13 +49,81 @@ export function normalizeCommonTextEntry(e: VariableData[string]['entries'][numb
 export class CommonTextsEngine {
   private index: CommonTextIndex = {}
   private loaded = false
+  /** 全部已知变量名（含尚未加载的）——惰性加载用：API 层据此判断"哪些 {var} 值得去加载" */
+  private known = new Set<string>()
 
   get isLoaded(): boolean {
     return this.loaded
   }
 
+  /** 已加载变量（保持原语义） */
   get variables(): string[] {
     return Object.keys(this.index)
+  }
+
+  /** 已知变量（含未加载——`loadAll` 的输入；getVariables API 用） */
+  get knownVariables(): string[] {
+    return [...this.known]
+  }
+
+  // ── 惰性加载支持（2026-09-11）─────────────────────────────────────────
+  // 背景：默认层 331 文件 / 44MB 全量装载 ≈ 每次 8.5-19.5s（测试每个重集成文件各付一次，
+  // 生产启动也付一次）。改为：只登记变量名（零解析），首次查询时才装载该变量。
+  // 引擎本身保持**同步**（选择/权重/条件逻辑一行未动），异步只发生在插件的 API 边界。
+
+  /** 登记已知变量名（不加载数据） */
+  markKnown(names: Iterable<string>): void {
+    for (const n of names) {
+      if (typeof n === 'string' && n.length > 0) this.known.add(n)
+    }
+  }
+
+  hasVariable(name: string): boolean {
+    return this.known.has(name)
+  }
+
+  isLoadedVariable(name: string): boolean {
+    return this.index[name] !== undefined
+  }
+
+  /** 装载单个变量（API 层取到数据后调用；重复调用幂等覆盖） */
+  insertVariable(variable: string, def: VariableData[string]): void {
+    this.known.add(variable)
+    this.index[variable] = {
+      variable,
+      description: def.description ?? '',
+      parts: def.parts ?? [],
+      entries: def.entries.map(e => this.normalizeEntry(e)),
+    }
+    this.loaded = true
+  }
+
+  /** `_s` 短词合并目标（erArk talk.py:662-665）——求值所需伴生变量与选择逻辑共用同一判定 */
+  private shortWordMergeTarget(variable: string): string | null {
+    if (!variable.includes('_s') || variable.includes('penis') || variable.includes('hair')) return null
+    return 'common_s'
+  }
+
+  /** 查询该变量还需哪些伴生变量（API 层惰性加载用；与 getTextEntry 的实际读取保持一致） */
+  requiredVariables(variable: string): string[] {
+    const merge = this.shortWordMergeTarget(variable)
+    return merge ? [variable, merge] : [variable]
+  }
+
+  /** 行为地文（getBehaviorText）会查询的全部变量名 */
+  static behaviorVariableKeys(behaviorKey: string): string[] {
+    return [
+      `action_A_${behaviorKey}`,
+      `action_B1_${behaviorKey}`, `action_B2_${behaviorKey}`,
+      `action_C1_${behaviorKey}`, `action_C2_${behaviorKey}`,
+    ]
+  }
+
+  /** 文本中的 {变量} 引用（replaceAll 惰性加载用） */
+  static extractVariableRefs(text: string): string[] {
+    const out = new Set<string>()
+    for (const m of text.matchAll(/\{(\w+)\}/g)) out.add(m[1])
+    return [...out]
   }
 
   // 注释：归一化入口（见 normalizeCommonTextEntry——幂等；缓存命中直接别名）
@@ -72,6 +140,7 @@ export class CommonTextsEngine {
     }
 
     for (const [variable, def] of Object.entries(merged)) {
+      this.known.add(variable)
       this.index[variable] = {
         variable,
         description: def.description ?? '',
@@ -165,10 +234,12 @@ export class CommonTextsEngine {
   // 动作段间换行（erArk 'action' in type_id → + '\n'）
   // 注：地文保持纯文本输出，不携带展示字段（ADR 0018——展示字段只面向叙事口上）。
   getBehaviorText(behaviorKey: string, targetId: string | null, actorId?: string): string | null {
+    // 变量名构造集中在 behaviorVariableKeys（惰性加载侧复用同一份定义，避免两处漂移）
+    const keys = CommonTextsEngine.behaviorVariableKeys(behaviorKey)
     const segmentGroups = [
-      [`action_A_${behaviorKey}`],
-      [`action_B1_${behaviorKey}`, `action_B2_${behaviorKey}`],
-      [`action_C1_${behaviorKey}`, `action_C2_${behaviorKey}`],
+      [keys[0]],
+      [keys[1], keys[2]],
+      [keys[3], keys[4]],
     ]
     let out = ''
     for (const group of segmentGroups) {
@@ -212,8 +283,9 @@ export class CommonTextsEngine {
       }
       // 注释：T8 审查补漏——短词池合并（erArk talk.py:662-665）：
       // _s 短词且非 penis/hair → A 段并入 common_s 的 A 段候选（合并后统一权重随机）
-      if (entry.variable.includes('_s') && !entry.variable.includes('penis') && !entry.variable.includes('hair')) {
-        const commonA = this.index['common_s']
+      const mergeTarget = this.shortWordMergeTarget(entry.variable)
+      if (mergeTarget) {
+        const commonA = this.index[mergeTarget]
         if (commonA) {
           const a = groups.get('A') ?? []
           for (const e of commonA.entries) {

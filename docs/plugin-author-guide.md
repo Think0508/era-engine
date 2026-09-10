@@ -330,17 +330,34 @@ ctx.api.call('hunger-system', 'getDigestion', charId)         // → number（�
 
 ```typescript
 ctx.api.call('combat', 'getCombatContext')                    // → CombatContext | null
-ctx.api.call('combat', 'registerHook', hookName, handler)     // → void
+ctx.api.call('combat', 'getCombatState')                      // → 快照（含 stats/channels/effects）
+ctx.api.call('combat', 'registerHook', hookName, handler)     // → void（handler 可返回 number 或 {value, parts}）
+ctx.api.call('combat', 'addZoneEffect', entityId, partial)    // → void（modify_stat / modify_channel / …）
+ctx.api.call('combat', 'recalcStats', entityId)               // → void
 ctx.api.call('combat', 'start', enemies, allies?)             // → void（发出 combat:start）
 ctx.api.call('combat', 'executeAction', actorId, action, targetId) // → void（发出 combat:turn）
 ctx.api.call('combat', 'end', winner, outcome)                // → void（发出 combat:end）
+// 公式中间量通道（机制层：base 只存不解释，语义由注册通道的插件定义）
+ctx.api.call('combat', 'registerChannel', { id, label?, description? })  // → void（幂等）
+ctx.api.call('combat', 'getChannels')                         // → [{id,label,description,source}]
+// 公式明细（调参/调试/UI）
+ctx.api.call('combat', 'getLastFormula')                      // → {hook,parts,channels,value} | null
+ctx.api.call('combat', 'getFormulaHistory', n?)                // → FormulaRecord[]（最近 50 条）
+ctx.api.call('combat', 'clearFormulaHistory')
+ctx.api.call('combat', 'setFormulaDetail', on)                // 明细写入叙事日志
 ```
 
 #### combat-wuxia — 武侠战斗（extends combat-base）
 
 ```typescript
-ctx.api.call('combat-wuxia', 'calcPanel', charId)             // → CombatPanel
+ctx.api.call('combat-wuxia', 'getSnapshot', charId)           // → 六维/系数/风格/防御面板
+ctx.api.call('combat-wuxia', 'getUsableSkills', charId)       // → 可用主动技（七系过滤）
 ctx.api.call('combat-wuxia', 'getAbilitiesByTag', charId, tag)// → {id, level}[]
+ctx.api.call('combat-wuxia', 'getChannels')                   // → 武侠通道清单（先攻/命中率/…）
+ctx.api.call('combat-wuxia', 'previewDamage', sourceId, skillId?, level?, targetId?)
+                                                              // → {parts, value, hitRate, hitParts}
+ctx.api.call('combat-wuxia', 'setFormulaDetail', on) / ('getFormulaDetail')
+// 公式与通道的权威说明见 docs/combat-system.md
 ```
 
 #### quest — 任务
@@ -633,11 +650,17 @@ TIRED_LE_84、NOT_H）→ 自动 时停on→瞬移→时停off 完整循环（�
 #### talk-common — 条件文本片断
 
 ```typescript
-ctx.api.call('talk-common', 'replace', text, targetId)        // → string（替换 {var} 占位符）
+ctx.api.call('talk-common', 'replace', text, targetId)        // → string（替换 {var} 占位符，内部最多 3 轮嵌套）
 ctx.api.call('talk-common', 'getText', variable, targetId)    // → string | null
-ctx.api.call('talk-common', 'getVariables')                   // → string[]
+ctx.api.call('talk-common', 'getTextEntry', variable, targetId) // → { text, display? } | null（ADR 0018）
 ctx.api.call('talk-common', 'getBehaviorText', behaviorKey, targetId, actorId?) // → string | null（行为地文三段组合）
+ctx.api.call('talk-common', 'getVariables')                   // → string[]（已知变量名，不触发装载）
+ctx.api.call('talk-common', 'loadAll')                        // → Promise<number>（显式全量装载，校验/预热用）
 ```
+
+> 2026-09-11 起为**惰性加载**：onEnable 只登记变量名，首次查询才装载该变量（含伴生变量）。
+> 以上方法均为 async（调用方一律走 `ctx.api.call`）——**禁止 `callSync`**。
+> 契约：数据文件名 = 文件内 `variable` 名（`talk-common-data.test.ts` 全量守卫）。
 
 详见 `docs/talk-common-system.md`。
 

@@ -37,6 +37,15 @@ class EntitySystem {
     return this.entities.get(type)?.get(id) ?? null
   }
 
+  // 注释：注销实体（通用机制）——运行时清理用（测试指令的临时实体、重建 NPC 等）；
+  // 无注册通知（register 的 character:registered 批处理仅用于初始化挂载）
+  unregister(type: string, id: string): boolean {
+    const pool = this.entities.get(type)
+    if (!pool || !pool.has(id)) return false
+    pool.delete(id)
+    return true
+  }
+
   getAll(type: string): EntityData[] {
     const pool = this.entities.get(type)
     return pool ? [...pool.values()] : []

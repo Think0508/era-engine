@@ -8,13 +8,13 @@
 
 | 类目 | 数量 | 说明 |
 |---|---|---|
-| 天赋 talents | 177 | h-core/data/default/talents.toml · 标签分组见输出；gain 语法糖编译进 gain-rule-system；mod 可 override |
+| 天赋 talents | 165 | h-core/data/default/talents.toml · 标签分组见输出；gain 语法糖编译进 gain-rule-system；mod 可 override |
 | 关系 relations | types=1 · pairs=7 · groups=1 | h-core/data/default/relations.toml · 关系有向，端对×端；groups 引用未定义 pair/类型 → 校验报错；mod 可覆盖/新增 |
 | 能力 abilities | 36 | h-core/data/default/abilities.toml · 带等级的一切（感度/扩张/ABL/刻印/技术）；升级路径另见 ability-upgrades |
 | 能力升级表 ability-upgrades | 29 | h-core/data/default/ability-upgrades.toml（生成文件，勿手改）· 仅声明已存在能力的条件升级路径；needs 里 juel→实绩、ability→能力 会被校验 |
-| 属性 attributes | 100 | h-core + combat-wuxia 两处 attributes.toml · 定义权威：条件字段 player.{属性}/character.{ID}.{属性} 自动生成；绑定同名 |
+| 属性 attributes | 111 | h-core + combat-wuxia 两处 attributes.toml · 定义权威：条件字段 player.{属性}/character.{ID}.{属性} 自动生成；绑定同名 |
 | 状态效果 status-effects | 3 | h-core/data/default/status-effects.toml · 条件路径 character.{id}.status.{状态ID} / .stack；v1 不深挖 tick_effects 内部引用 |
-| 物品 items | 23 | h-core/items/（药物/玩具/特种）+ h-bondage + hunger-system + confinement-system， 分散多文件、跨文件按 ID 合并 → 跨文件重名会被查重；v1 不展开 effects 内部引用 |
+| 物品 items | 24 | h-core/items/（药物/玩具/特种）+ h-bondage + hunger-system + confinement-system， 分散多文件、跨文件按 ID 合并 → 跨文件重名会被查重；v1 不展开 effects 内部引用 |
 | 束缚类型 bondage | 16 | h-core/data/default/bondage/types.toml · 数组表（[[types]]），完全对齐 erArk Bondage.csv |
 | 实绩 juels | 23 | h-core/data/default/juels.toml（生成文件，勿手改）· status_attr 必须指向 attributes.toml 里存在的每日重置属性 → 校验 |
 | 装备槽 equipment | 9 | h-core/data/default/equipment.toml · 数组表（[[slots]]） |
@@ -37,9 +37,9 @@ tags = ["性素质"]   # 性素质/身体素质/精神素质/技术素质/其他
 > 归属/注意：h-core/data/default/talents.toml ·
 标签分组见输出；gain 语法糖编译进 gain-rule-system；mod 可 override
 
-**天赋 talents（177）**
+**天赋 talents（165）**
 
-分组小计：`性素质` 63　`精神素质` 42　`身体素质` 44　`其他素质` 6　`技术素质` 22
+分组小计：`性素质` 63　`精神素质` 30　`身体素质` 44　`其他素质` 6　`技术素质` 22
 
 | ID | 分组 | 关键字段 | 来源 |
 |---|---|---|---|
@@ -66,20 +66,9 @@ tags = ["性素质"]   # 性素质/身体素质/精神素质/技术素质/其他
 | 性爱催眠 | 技术素质 | max=1 | h-core/talents.toml |
 | 窄域时停 | 技术素质 | max=1 · gain | h-core/talents.toml |
 | 爱侣 | 精神素质 | max=1 · favor×1 | h-core/talents.toml |
-| 背后位喜好 | 精神素质 | max=1 · 体位偏好#2 | h-core/talents.toml |
-| 背面抱位喜好 | 精神素质 | max=1 · 体位偏好#10 | h-core/talents.toml |
-| 背面立位喜好 | 精神素质 | max=1 · 体位偏好#8 | h-core/talents.toml |
-| 背面骑乘位喜好 | 精神素质 | max=1 · 体位偏好#4 | h-core/talents.toml |
-| 背面卧位喜好 | 精神素质 | max=1 · 体位偏好#12 | h-core/talents.toml |
-| 背面座位喜好 | 精神素质 | max=1 · 体位偏好#6 | h-core/talents.toml |
 | 宠物 | 精神素质 | max=1 · favor×1 | h-core/talents.toml |
 | 脆弱 | 精神素质 | max=1 · state×1 | h-core/talents.toml |
 | 倒错 | 精神素质 | max=1 | h-core/talents.toml |
-| 对面抱位喜好 | 精神素质 | max=1 · 体位偏好#9 | h-core/talents.toml |
-| 对面立位喜好 | 精神素质 | max=1 · 体位偏好#7 | h-core/talents.toml |
-| 对面骑乘位喜好 | 精神素质 | max=1 · 体位偏好#3 | h-core/talents.toml |
-| 对面卧位喜好 | 精神素质 | max=1 · 体位偏好#11 | h-core/talents.toml |
-| 对面座位喜好 | 精神素质 | max=1 · 体位偏好#5 | h-core/talents.toml |
 | 感情缺乏 | 精神素质 | max=1 · state×1 · favor×1 | h-core/talents.toml |
 | 孤僻 | 精神素质 | max=1 · state×1 | h-core/talents.toml |
 | 坚强 | 精神素质 | max=1 · state×1 | h-core/talents.toml |
@@ -106,7 +95,6 @@ tags = ["性素质"]   # 性素质/身体素质/精神素质/技术素质/其他
 | 已催眠·极 | 精神素质 | max=1 | h-core/talents.toml |
 | 已催眠·浅 | 精神素质 | max=1 | h-core/talents.toml |
 | 已催眠·深 | 精神素质 | max=1 | h-core/talents.toml |
-| 正常位喜好 | 精神素质 | max=1 · 体位偏好#1 | h-core/talents.toml |
 | 被博士持有把柄 | 其他素质 | max=1 | h-core/talents.toml |
 | 持有博士把柄 | 其他素质 | max=1 | h-core/talents.toml |
 | 戒指 | 其他素质 | max=1 | h-core/talents.toml |
@@ -391,9 +379,9 @@ needs = [{ type = "juel", id = 0, value = 125 }, { type = "experience", id = 0, 
 > 归属/注意：h-core + combat-wuxia 两处 attributes.toml ·
 定义权威：条件字段 player.{属性}/character.{ID}.{属性} 自动生成；绑定同名
 
-**属性 attributes（100）**
+**属性 attributes（111）**
 
-分组小计：`base` 32　`combat` 2　`parameter` 24　`economy` 1　`social` 5　`ability` 29　`mark` 7
+分组小计：`base` 43　`combat` 2　`parameter` 24　`economy` 1　`social` 5　`ability` 29　`mark` 7
 
 | ID | 分组 | 关键字段 | 来源 |
 |---|---|---|---|
@@ -426,11 +414,15 @@ needs = [{ type = "juel", id = 0, value = 125 }, { type = "experience", id = 0, 
 | 子宫感度 | ability | type=number · def=0 · 显示[感觉] | h-core/attributes.toml |
 | 子宫扩张 | ability | type=number · def=0 · 显示[感觉] | h-core/attributes.toml |
 | 足技 | ability | type=number · def=0 · 显示[性能力] | h-core/attributes.toml |
+| 暗毒系数 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
+| 刀剑系数 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
 | 定力 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
+| 毒功 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
 | 额外精液量 | base | type=number · def=0 · 显示[h] | h-core/attributes.toml |
 | 愤怒 | base | type=number · def=0 · 显示[emotion] | h-core/attributes.toml |
 | 福缘 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
 | 根骨 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
+| 厚重 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
 | 饥饿值 | base | type=number · def=0 · 显示[status] | h-core/attributes.toml |
 | 精力 | base | type=number · def=100 · 显示[status] | h-core/attributes.toml |
 | 精力上限 | base | type=number · def=100 · 显示[status] | h-core/attributes.toml |
@@ -443,18 +435,25 @@ needs = [{ type = "juel", id = 0, value = 125 }, { type = "experience", id = 0, 
 | 尿意 | base | type=number · def=0 · 显示[status] | h-core/attributes.toml |
 | 排卵周期 | base | type=number · def=0 | h-core/attributes.toml |
 | 疲劳度 | base | type=number · def=0 · 显示[status] | h-core/attributes.toml |
+| 奇兵系数 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
 | 气力 | base | type=number · def=100 · 显示[status] | h-core/attributes.toml |
 | 气力上限 | base | type=number · def=2000 · 显示[status] | h-core/attributes.toml |
+| 巧技 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
+| 轻功系数 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
+| 轻灵 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
 | 情绪 | base | type=number · def=50 · 显示[emotion] | h-core/attributes.toml |
+| 拳掌系数 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
 | 射精欲 | base | type=number · def=0 · 显示[h] | h-core/attributes.toml |
 | 射精欲上限 | base | type=number · def=1000 · 显示[h] | h-core/attributes.toml |
 | 熟睡值 | base | type=number · def=0 · 显示[status] | h-core/attributes.toml |
 | 体力 | base | type=number · def=100 · 显示[status] | h-core/attributes.toml |
 | 体力上限 | base | type=number · def=2500 · 显示[status] | h-core/attributes.toml |
+| 悟性 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
 | 消化剩余 | base | type=number · def=0 | h-core/attributes.toml |
 | 性别 | base | type=number · def=0 | h-core/attributes.toml |
 | 阴茎大小 | base | type=number · def=1 · 显示[h] | h-core/attributes.toml |
 | 欲望值 | base | type=number · def=0 · 显示[h] | h-core/attributes.toml |
+| 指腿系数 | base | type=number · def=0 · 显示[combat] | combat-wuxia/attributes.toml |
 | hp | base | type=number · def=100 · 显示[status] | h-core/attributes.toml |
 | mp | base | type=number · def=50 · 显示[status] | h-core/attributes.toml |
 | speed | base | type=number · def=5 · 显示[base] | h-core/attributes.toml |
@@ -545,14 +544,15 @@ effects = [{ type = "apply_xxx", params = { ... } }]   # 效果 type 须已注�
 > 归属/注意：h-core/items/（药物/玩具/特种）+ h-bondage + hunger-system + confinement-system，
 分散多文件、跨文件按 ID 合并 → 跨文件重名会被查重；v1 不展开 effects 内部引用
 
-**物品 items（23）**
+**物品 items（24）**
 
-分组小计：`tool` 2　`consumable` 10　`equipment` 8　`food` 3
+分组小计：`tool` 2　`consumable` 11　`equipment` 8　`food` 3
 
 | ID | 分组 | 关键字段 | 来源 |
 |---|---|---|---|
 | 安眠药 | consumable | type=consumable · 可堆叠 · use[h_drug] | h-core/items/h-drugs.toml |
 | 避孕套 | consumable | type=consumable · 可堆叠 · use[h_special] | h-core/items/h-special.toml |
+| 电动按摩棒 | consumable | type=consumable · 可堆叠 · 不消耗 · use[h_drug] | h-core/items/h-drugs.toml |
 | 灌肠液 | consumable | type=consumable · 可堆叠 · use[h_drug] | h-core/items/h-drugs.toml |
 | 利尿剂 | consumable | type=consumable · 可堆叠 · use[h_drug] | h-core/items/h-drugs.toml |
 | 媚药 | consumable | type=consumable · 可堆叠 · use[h_drug] | h-core/items/h-drugs.toml |
@@ -560,15 +560,15 @@ effects = [{ type = "apply_xxx", params = { ... } }]   # 效果 type 须已注�
 | 润滑液 | consumable | type=consumable · 可堆叠 · use[h_drug] | h-core/items/h-drugs.toml |
 | 事后避孕药 | consumable | type=consumable · 可堆叠 · use[h_drug] | h-core/items/h-drugs.toml |
 | 事前避孕药 | consumable | type=consumable · 可堆叠 · use[h_drug] | h-core/items/h-drugs.toml |
-| 跳蛋 | consumable | type=consumable · 可堆叠 · use[h_drug] | h-core/items/h-drugs.toml |
-| 肛门拉珠 | equipment | type=equipment · 不堆叠 · use[h_toy] | h-core/items/h-toys.toml |
-| 挤奶器 | equipment | type=equipment · 不堆叠 · use[h_toy] | h-core/items/h-toys.toml |
-| 口球 | equipment | type=equipment · 不堆叠 · use[h_toy] | h-core/items/h-toys.toml |
-| 乳头夹 | equipment | type=equipment · 不堆叠 · use[h_toy] | h-core/items/h-toys.toml |
-| 眼罩 | equipment | type=equipment · 不堆叠 · use[h_toy] | h-core/items/h-toys.toml |
-| 阴蒂夹 | equipment | type=equipment · 不堆叠 · use[h_toy] | h-core/items/h-toys.toml |
-| A震动棒 | equipment | type=equipment · 不堆叠 · use[h_toy] | h-core/items/h-toys.toml |
-| V震动棒 | equipment | type=equipment · 不堆叠 · use[h_toy] | h-core/items/h-toys.toml |
+| 跳蛋 | consumable | type=consumable · 可堆叠 · 不消耗 · use[h_drug] | h-core/items/h-drugs.toml |
+| 肛门拉珠 | equipment | type=equipment · 不堆叠 · 不消耗 · use[h_toy] | h-core/items/h-toys.toml |
+| 挤奶器 | equipment | type=equipment · 不堆叠 · 不消耗 · use[h_toy] | h-core/items/h-toys.toml |
+| 口球 | equipment | type=equipment · 不堆叠 · 不消耗 · use[h_toy] | h-core/items/h-toys.toml |
+| 乳头夹 | equipment | type=equipment · 不堆叠 · 不消耗 · use[h_toy] | h-core/items/h-toys.toml |
+| 眼罩 | equipment | type=equipment · 不堆叠 · 不消耗 · use[h_toy] | h-core/items/h-toys.toml |
+| 阴蒂夹 | equipment | type=equipment · 不堆叠 · 不消耗 · use[h_toy] | h-core/items/h-toys.toml |
+| A震动棒 | equipment | type=equipment · 不堆叠 · 不消耗 · use[h_toy] | h-core/items/h-toys.toml |
+| V震动棒 | equipment | type=equipment · 不堆叠 · 不消耗 · use[h_toy] | h-core/items/h-toys.toml |
 | 干粮 | food | type=— · 可堆叠 · 食Q3 · use[food] | hunger-system/items.toml |
 | 甜点 | food | type=— · 可堆叠 · 食Q6 · use[food] | hunger-system/items.toml |
 | 饮水 | food | type=— · 可堆叠 · 食Q1 · use[food] | hunger-system/items.toml |

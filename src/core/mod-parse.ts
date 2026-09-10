@@ -20,7 +20,7 @@ import type {
   SleepConfig, RandomEventDef, AbilityDef, TalentDef, EquipmentSlot, CalendarConfig,
   NpcSpawn, ReactiveLine, ConversationNode, ItemDef, SetDef, StatusEffectDef, JuelDef,
   AttributeDefinition, ModDependency, PendingSpawn, GainRuleDef, AchievementDef,
-  CounterDef, CounterViewDef, BodyShapeDef, BodyShapeDimDef,
+  CounterDef, CounterViewDef, BodyShapeDef, BodyShapeDimDef, BattleEffectDef,
 } from './mod-types'
 import {
   validateCharacterContract,
@@ -286,6 +286,7 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     items: {},
     sets: [],
     statusEffects: {},
+    battleEffects: {},
     juelDefs: {},
     abilities: {},
     quests: new Map(),
@@ -667,6 +668,11 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   // 注释：加载 status-effects.toml
   const statusData = loadMerged<Record<string, StatusEffectDef>>('status-effects.toml', 'status-effects')
   if (statusData) mod.statusEffects = statusData
+
+  // 注释：加载 battle-effects.toml（战斗效果定义库，combat-wuxia 消费）——
+  // 插件默认 + mod 定义 deepMerge（与 status-effects 同构的通用数据桶）
+  const battleEffectData = loadMerged<Record<string, BattleEffectDef>>('battle-effects.toml', 'effects')
+  if (battleEffectData) mod.battleEffects = battleEffectData
 
   // 注释：加载 abilities——单文件 abilities.toml（插件默认 + mod definitions）+ 目录拆分
   // definitions/abilities/*.toml 与 data/default/abilities/*.toml（2026-08-11：几百技能按

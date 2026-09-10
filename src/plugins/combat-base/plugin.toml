@@ -2,21 +2,23 @@
 id = "combat-base"
 name = "回合制战斗骨架"
 version = "1.0.0"
-description = "回合循环/HP扣减/状态结算/钩子系统"
+description = "战斗本地管线：回合循环/相位结算/效果区/反击递归防护/隔离回写"
 
 [data_dependencies]
 provides = ["combat:ready"]
 depends_on = ["status:ready", "abilities:ready", "effects:ready"]
 
-# 注释：战斗必需属性（2026-08-12 全面审计 I8 修复——此前无声明，未绑定则战斗静默退化）
+# 战斗必需属性（合同 v1.0：hp/mp 隔离值；speed 不再使用——先攻由子插件 initiative 钩子决定）
 [required_attributes]
-hp = { type = "number", description = "生命值，扣减判定胜负" }
-attack = { type = "number", description = "攻击力，伤害计算" }
-defense = { type = "number", description = "防御力，伤害减免" }
-speed = { type = "number", description = "速度，决定行动顺序" }
+hp = { type = "number", description = "生命值，战斗内隔离扣减，结束回写" }
+mp = { type = "number", description = "内力/能量值，技能消耗" }
+
+# 可选：上限（治疗/吸收钳制；未绑定则用当前值入场）
+[optional_attributes]
+hp_max = { type = "number", description = "生命值上限（吸内/治疗钳制用）" }
+mp_max = { type = "number", description = "内力上限（吸上限/永久吸收回写用）" }
 
 [condition_fields]
-# 注释：combat.in_progress 已删除（B1 修复——无取值源，战斗门控改用内置 game.mode）
 "combat.turn_count" = { type = "number", description = "当前战斗回合数" }
 
 [[events.listen]]

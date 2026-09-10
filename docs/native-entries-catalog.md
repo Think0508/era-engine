@@ -551,7 +551,7 @@ growth = 0.5                 # 每层乘性增量：value × (1+growth×(层数�
 
 | ID | 分组 | 关键字段 | 来源 |
 |---|---|---|---|
-| 即时回气 | 出手时·即时 | instant@on_use · pct=0.05 | combat-wuxia/battle-effects.toml |
+| 即时回内 | 出手时·即时 | instant@on_use · pct=0.05 | combat-wuxia/battle-effects.toml |
 | 即时回血 | 出手时·即时 | instant@on_use · pct=0.05 | combat-wuxia/battle-effects.toml |
 | 神照经 | 出手时·即时 | instant@death | combat-wuxia/battle-effects.toml |
 | 蓄势（示例） | 出手时·即时 | instant@attack_pre · pct=0.3 | combat-wuxia/battle-effects.toml |
@@ -579,7 +579,7 @@ growth = 0.5                 # 每层乘性增量：value × (1+growth×(层数�
 | 追击 | 命中后·即时 | instant@on_hit · chance=0.3 | combat-wuxia/battle-effects.toml |
 | 蛤蟆功蓄势 | 自身状态 | zone→self · settle=damage_mitigate | combat-wuxia/battle-effects.toml |
 | 护体 | 自身状态 | zone→self · pct=0.3 | combat-wuxia/battle-effects.toml |
-| 回气 | 自身状态 | zone→self · settle=turn_end · pct=0.05 | combat-wuxia/battle-effects.toml |
+| 回内 | 自身状态 | zone→self · settle=turn_end · pct=0.05 | combat-wuxia/battle-effects.toml |
 | 回血 | 自身状态 | zone→self · settle=turn_end · pct=0.05 | combat-wuxia/battle-effects.toml |
 | 飘逸（示例） | 自身状态 | zone→self · pct=0.1 | combat-wuxia/battle-effects.toml |
 

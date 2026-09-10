@@ -302,9 +302,9 @@ action = "heal_hp"
 value = { percent = 0.05 }
 category = "buff"
 
-[effects."即时回气"]
-name = "即时回气"
-description = "施展后立即回复 5% 内力（气力）上限（不驻留）"
+[effects."即时回内"]
+name = "即时回内"
+description = "施展后立即回复 5% 内力上限（不驻留）"
 delivery = "instant"
 target = "self"
 trigger = "on_use"
@@ -325,9 +325,9 @@ value = { percent = 0.05 }
 priority = 20
 category = "buff"
 
-[effects."回气"]
-name = "回气"
-description = "回合结束时回复 5% 内力（气力）上限（使用后 5 回合；被动引用 = 整场）"
+[effects."回内"]
+name = "回内"
+description = "回合结束时回复 5% 内力上限（使用后 5 回合；被动引用 = 整场）"
 delivery = "zone"
 target = "self"
 apply_at = "on_use"

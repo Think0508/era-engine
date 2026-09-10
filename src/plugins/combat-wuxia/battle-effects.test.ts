@@ -38,7 +38,7 @@ const DEFAULT_DEFS: Record<string, BattleEffectDef> = (() => {
 })()
 
 // ⚠️ 中文效果名/公式分项名一律经变量间接取（scan-attr-refs 会把 `x['中文']` 判为属性引用，属结构数据）
-const REQ_IDS = '连绵 饮血 增伤 增加暴击几率 增加暴击伤害 乘势 消内 吸内 追击 即时回血 即时回气 回血 回气 流血 破甲 失势 缓慢 致盲 封穴 截脉 破绽 毒 火毒 寒毒'.split(' ')
+const REQ_IDS = '连绵 饮血 增伤 增加暴击几率 增加暴击伤害 乘势 消内 吸内 追击 即时回血 即时回内 回血 回内 流血 破甲 失势 缓慢 致盲 封穴 截脉 破绽 毒 火毒 寒毒'.split(' ')
 const ELEMENT_IDS = '毒 火毒 寒毒'.split(' ')
 const P = ((): Record<string, string> => {
   const keys = '准头守基准 准头守 准头攻基准 准头攻 力道项'.split(' ')
@@ -294,42 +294,42 @@ describe('战斗效果全集：实战行为', () => {
     expect(ENEMY_HP - enemy.hp).toBeGreaterThan(1500)
   })
 
-  it('即时回血/即时回气（技能词条）：施展后立即回复，不进效果区', async () => {
+  it('即时回血/即时回内（技能词条）：施展后立即回复，不进效果区', async () => {
     await bootWithSkill(
-      '回气诀',
-      [{ effect: '即时回血', value: { percent: 0.1 } }, { effect: '即时回气', value: { percent: 0.1 } }],
+      '调息诀',
+      [{ effect: '即时回血', value: { percent: 0.1 } }, { effect: '即时回内', value: { percent: 0.1 } }],
       { playerStats: { 根骨: 99999 }, playerMp: 100 },
     )
     await apiSystem.call('combat', 'applyDamage', 'player', 1000, { source: 'x', kind: 'external' })
     const hpBefore = state().combatants.player.hp
-    await playerAct('回气诀')
+    await playerAct('调息诀')
     const st = state().combatants.player
     expect(st.hp).toBe(Math.min(PLAYER_HP, hpBefore + Math.round(PLAYER_HP * 0.1)))
     expect(st.mp).toBe(150)                                     // 100 + 10%×500
     // 即时型 = 技能词条：用完即弃，不驻留
     expect(st.effects.some((e: any) => e.id === '即时回血')).toBe(false)
-    expect(st.effects.some((e: any) => e.id === '即时回气')).toBe(false)
+    expect(st.effects.some((e: any) => e.id === '即时回内')).toBe(false)
   })
 
-  it('回血/回气（自身状态）：使用后挂自身，回合结束时按上限比例回复', async () => {
+  it('回血/回内（自身状态）：使用后挂自身，回合结束时按上限比例回复', async () => {
     await bootWithSkill(
-      '回气心法',
-      [{ effect: '回血', value: { percent: 0.1 } }, { effect: '回气', value: { percent: 0.1 } }],
+      '内功心法·调息',
+      [{ effect: '回血', value: { percent: 0.1 } }, { effect: '回内', value: { percent: 0.1 } }],
       { playerStats: { 根骨: 99999 }, playerMp: 100 },
     )
     await apiSystem.call('combat', 'applyDamage', 'player', 1000, { source: 'x', kind: 'external' })
     const hpBefore = state().combatants.player.hp
-    await playerAct('回气心法')          // 施招 → 挂自身（on_use）→ 回合结束结算
+    await playerAct('内功心法·调息')          // 施招 → 挂自身（on_use）→ 回合结束结算
     const st = state().combatants.player
     expect(st.effects.some((e: any) => e.id === '回血')).toBe(true)
-    expect(st.effects.some((e: any) => e.id === '回气')).toBe(true)
+    expect(st.effects.some((e: any) => e.id === '回内')).toBe(true)
     // 敌方回合打不动玩家（防御极高）→ HP/MP 只由回复推动
     expect(st.hp).toBe(Math.min(PLAYER_HP, hpBefore + Math.round(PLAYER_HP * 0.1)))
     expect(st.mp).toBe(100 + Math.round(500 * 0.1))
   })
 
   it('同一效果不同来源并存：被动常驻 + 技能挂的 = 两条独立实例（各算各的回合）', async () => {
-    await bootWithSkill('回气心法', [{ effect: '回血', value: { percent: 0.1 } }], {
+    await bootWithSkill('内功心法·调息', [{ effect: '回血', value: { percent: 0.1 } }], {
       playerAbilities: { 内功心法: { level: 1, xp: 0 } },
       extraAbilities: {
         内功心法: { id: '内功心法', name: '内功心法', type: 'passive', tags: [], battle_effects: [{ effect: '回血' }] },
@@ -340,7 +340,7 @@ describe('战斗效果全集：实战行为', () => {
     expect(passiveOnly.origin).toBe('passive')
     expect(passiveOnly.remainingTurns).toBe(0)              // 常驻：不倒数
 
-    await playerAct('回气心法')
+    await playerAct('内功心法·调息')
     const both = state().combatants.player.effects.filter((e: any) => e.name === '回血')
     // 两条并存：被动常驻一条 + 技能挂的一条（id 不同 → 不合并、各自结算）
     expect(both.length).toBe(2)

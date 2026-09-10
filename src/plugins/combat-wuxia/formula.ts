@@ -71,6 +71,11 @@ export const CH = {
   EXTRA: '其他加成',
   /** 毒伤害减免（v1.2：即时毒伤与持续毒伤共用；set 0 = 免疫毒伤） */
   POISON: '毒伤害',
+  /** 准头（攻/守两侧，0 基准之上的比例修正）：失势 = 守方 ×0.5、致盲 = 攻方 ×0.7 */
+  AIM: '准头',
+  /** 伤害公式的属性分项（力道×3 / 灵敏×3）：截脉 = 力道项 ×0.7 */
+  STAT_POWER: '力道项',
+  STAT_AGI: '灵敏项',
 } as const
 
 export interface WuxiaChannelDef {
@@ -89,6 +94,9 @@ export const WUXIA_CHANNEL_DEFS: WuxiaChannelDef[] = [
   { id: CH.STYLE, label: '风格系数', description: '风格系数 (轻²+厚²+巧²)/(轻+厚+巧)：flat=平加，percent=×1.1 类加成，set=覆盖' },
   { id: CH.EXTRA, label: '其他加成', description: '公式末尾平加伤害（只认 flat/set；percent 对 0 基准无效）' },
   { id: CH.POISON, label: '毒伤害', description: '毒伤害减免（即时毒伤与持续毒伤共用；flat 平减、percent 百分比、set 0 = 免疫毒伤。只作用于伤害数字，不阻止挂毒）' },
+  { id: CH.AIM, label: '准头', description: '准头（轻功系数×2+灵敏）的比例修正：percent -0.5 = 闪避/命中能力减半（失势/致盲用它；「命中率/闪避率」是 0 基准，percent 对它们无效）' },
+  { id: CH.STAT_POWER, label: '力道项', description: '伤害公式的力道项（力道×3）的比例修正：percent -0.3 = 力道减三成（截脉用它）' },
+  { id: CH.STAT_AGI, label: '灵敏项', description: '暗毒系伤害公式的灵敏项（灵敏×3）的比例修正' },
 ]
 
 // ── 侧前缀类型（技能侧四维 / 人物侧四维）────────────────────────────────
@@ -149,8 +157,11 @@ export interface HitRateInput {
 }
 
 export function computeHitRate(input: HitRateInput): { value: number; parts: Record<string, number> } {
-  const atkAim = aimValue(input.attacker.qinggong, input.attacker.agi)
-  const defAim = aimValue(input.defender.qinggong, input.defender.agi)
+  const atkAimBase = aimValue(input.attacker.qinggong, input.attacker.agi)
+  const defAimBase = aimValue(input.defender.qinggong, input.defender.agi)
+  // 通道「准头」：对现算准头做比例修正（percent -0.5 = 准头减半 → 失势/致盲的落点）
+  const atkAim = Math.max(0, applyChannel(atkAimBase, channelOf(input.channels.source, CH.AIM)))
+  const defAim = Math.max(0, applyChannel(defAimBase, channelOf(input.channels.target, CH.AIM)))
   const total = atkAim + defAim
   const ratio = total > 0 ? atkAim / total : 0.5
   const base = BASE_HIT_RATE + (ratio - 0.5) * HIT_K
@@ -161,7 +172,9 @@ export function computeHitRate(input: HitRateInput): { value: number; parts: Rec
   return {
     value,
     parts: {
+      准头攻基准: atkAimBase,
       准头攻: atkAim,
+      准头守基准: defAimBase,
       准头守: defAim,
       准头比率: ratio,
       基础命中: base,
@@ -247,8 +260,10 @@ export interface DamageResult {
 }
 
 export function computeStandardDamage(input: DamageInput): DamageResult {
-  const statChannelName = input.dark ? '灵敏项' : '力道项'
-  const statTerm = input.stat * 3
+  const statChannelName = input.dark ? CH.STAT_AGI : CH.STAT_POWER
+  // 通道「力道项/灵敏项」：对属性分项做比例修正（percent -0.3 = 力道减三成 → 截脉的落点）
+  const statTermBase = input.stat * 3
+  const statTerm = Math.max(0, applyChannel(statTermBase, channelOf(input.channels, statChannelName)))
   const styleBase = styleCoefficient(input.skillStyle, input.charStyle)
   const mastery = masteryCoefficient(input.charStyle)
 
@@ -338,13 +353,23 @@ export interface PoisonDotInput {
   channels?: ChannelBag
 }
 
+/** 毒伤原值 → 过通道「毒伤害」→ 取整（即时毒伤与持续毒伤共用同一减免落点） */
+export function applyPoisonMitigation(raw: number, channels?: ChannelBag): number {
+  return Math.max(0, Math.round(applyChannel(raw, channelOf(channels, CH.POISON))))
+}
+
+/** 单层持续毒伤基准 = 1%×气血上限 + M×0.1（层数倍率由实例的 growth 负责） */
+export function poisonDotBase(maxHp: number, M: number): number {
+  return maxHp * POISON_HP_RATE + M * POISON_M_RATE
+}
+
 /** 持续毒伤 = (1 + 0.25×(k−1)) × (1%×气血上限 + M×0.1) → 过通道「毒伤害」→ 取整 */
 export function computePoisonDot(input: PoisonDotInput): DamageResult {
   const 等级倍率 = 1 + POISON_K_STEP * (input.k - 1)
   const 上限项 = input.maxHp * POISON_HP_RATE
   const M项 = input.M * POISON_M_RATE
   const raw = 等级倍率 * (上限项 + M项)
-  const value = Math.max(0, Math.round(applyChannel(raw, channelOf(input.channels, CH.POISON))))
+  const value = applyPoisonMitigation(raw, input.channels)
   return {
     value,
     parts: {

@@ -348,59 +348,63 @@ export interface StatusEffectDef {
 
 // ── 战斗效果定义库（combat-wuxia 战斗系统消费；core 仅作通用数据桶）──
 // definitions/battle-effects.toml 的 [effects.xxx] 条目；插件默认层 + mod 层 deepMerge。
-// 战斗本地管线（combat-base 相位）消费；语义（trigger/action/stat/stack…）由战斗插件校验。
+// 战斗本地管线（combat-base 相位）消费；语义（delivery/settle/action/stat…）由战斗插件校验。
+//
+// 契约 v4.0（2026-09）：一个效果 = 库定义（这里）+ 技能引用（abilities[].battle_effects 的
+// { effect = "名", 参数… }）。技能只覆盖参数白名单，结构字段一律以库定义为准。
+// 解析实现见 src/plugins/combat-base/effect-entry.ts（类型同源，勿另立一份）。
 export interface BattleEffectDef {
   name?: string
   description?: string
-  /** 时机相位：turn_start/action_pre/attack_pre/attack_launch/hit_roll/attack_miss/on_hit/
-   *  damage_base/damage_crit/damage_output/damage_on_target/damage_mitigate/damage_taken/
-   *  attack_end/action_end/turn_end/death；省略 = 常驻条目（modify_stat 类直接进统计值） */
-  trigger?: string
-  /** 动作类型：modify_stat/periodic_damage/leech_hp/leech_mp/leech_mp_max/mp_drain/
-   *  reflect/counter/cancel/repeat/revive/apply_effect */
+  /** zone = 驻留（挂到身上，按 settle 结算）；instant = 就地执行。缺省 instant */
+  delivery?: 'zone' | 'instant'
+  /** zone：结算动作；instant：执行动作 */
   action: string
-  /** 触发概率 0-1；递归类（repeat）必须 < 1（加载校验） */
-  chance?: number
-  /** 数值（百分比/平数/回合数，按 action/stat 语义）；apply_effect 时 = {effect, value?, ...} 引用于外部覆盖值 */
-  value?: number | Record<string, any>
+  /** instant 专用：发生相位（turn_start/on_hit/attack_end/action_end/death…） */
+  trigger?: string
+  /** zone 专用：驻留期间的结算相位；省略 = 常驻修正条目（modify_stat/modify_channel 直接进聚合） */
+  settle?: string
+  /** zone 专用：何时施加（缺省按 target 推导：enemy→on_hit、self→on_use） */
+  apply_at?: string
+  /** zone 专用：施加器名（缺省 = 直接挂载）；如 毒=apply_poison、火毒寒毒=apply_element */
+  apply?: string
+  /** zone 专用：施加器参数 */
+  apply_args?: Record<string, any>
   target?: 'self' | 'enemy'
-  /** 持续：回合数 number / {turns:N} / "battle"（本场）/ "permanent"（结束回写实体） */
+  /** 持续：回合数 / {turns:N} / "battle"（本场）/ "permanent"（结束回写实体）；zone 缺省 5 回合 */
   duration?: number | { turns: number } | 'battle' | 'permanent'
-  /** 叠层策略：refresh（刷新回合+归1）/increment（+1 至 max_stack）/clamp（已有则不动） */
-  stack?: 'refresh' | 'increment' | 'clamp'
-  max_stack?: number
-  /** 同相位结算序——取消类必须高于反震等（如 cancel=10, reflect=0） */
-  priority?: number
   /** buff/debuff/neutral——乘势等按敌方是否存在 debuff 判定的依据 */
   category?: 'buff' | 'debuff' | 'neutral'
-  /** 战斗条件（本场内置字面量：target_has_debuff/target_has_buff/self_has_debuff/self_has_buff），余待扩展 */
-  condition?: string
-  /** true = 复读整招允许递归（仅 repeat 类，chance<1 校验） */
-  recursive?: boolean
-  /** 触发次数（如神照经 1 次/场、蛤蟆功蓄势触发一次即消）；0/省略 = 无限 */
-  uses?: number
-  /** 仅在技能等级 ≥ min_level 时参与（技能效果解锁） */
-  min_level?: number
-  /** modify_stat 的目标统计：hit_bonus/dodge_bonus/crit_rate/crit_mul/damage_out/damage_in/defense_mult */
+  /** 重复施加时的合并策略：refresh（只刷时长）/ stack（层数累加）/ strongest（取高层数） */
+  merge?: 'refresh' | 'stack' | 'strongest'
+  max_stack?: number
+  /** 数值：数字（固定数）/ {flat, percent}（比例+固定）/ {set}（覆盖基准，仅通道） */
+  value?: number | { flat?: number; percent?: number; set?: number }
+  /** 每层乘性增量：value × (1 + growth × (层数−1))；缺省 0 */
+  growth?: number
+  /** modify_stat 的目标统计：hit_bonus/dodge_bonus/crit_rate（吃 flat 点数）/
+   *  crit_mul/damage_out/damage_in/defense_mult（吃 percent 倍率） */
   stat?: string
-  /** modify_stat 模式：percent（0.3=30%）/ flat（数值）；set（覆盖）仅用于 modify_channel */
-  mode?: 'percent' | 'flat' | 'set'
   /** modify_channel 用：公式中间量通道名（语义由战斗插件注册的通道解释） */
   channel?: string
-  /** 只在施展该技能（技能 id）时参与——禁止使用 skill 字段兼作过滤（skill = 反击类效果的反击技能） */
-  when_skill?: string
-  /** apply_status / apply_poison 用：要挂的状态 id（battle-effects 条目名） */
-  status?: string
-  /** 挂状态重复施加时的合并策略：refresh（刷新，默认）/ strongest（k 取高、数值取大、回合重置）/ stack */
-  merge?: 'refresh' | 'strongest' | 'stack'
-  /** 同组合并键（缺省 = 状态 id）：毒 的 毒/猛毒/剧毒 共用 "毒"，保证一个目标只有一份毒 */
-  merge_group?: string
-  /** 状态等级（毒：1=毒 / 2=猛毒 / 3=剧毒；语义由状态定义的动作解释） */
-  k?: number
-  /** apply_status 类词条：本条覆盖状态定义的回合数（缺省取状态定义，再无则类别默认 5 回合） */
-  turns?: number
-  /** counter 类效果反击用技能 id（缺省 = 默认攻击） */
+  /** 层数→显示名（缺省 "名字 x层"） */
+  level_names?: string[]
+  /** 参数在 UI 里的中文标签覆盖（只写要改的） */
+  param_labels?: Record<string, string>
+  /** counter/cancel 类效果反制时使用的技能 id（缺省 = 默认攻击） */
   skill?: string
+  /** extra_attack（追击）用：每次行动最多追加几次（缺省 1；0 = 不限） */
+  max_per_action?: number
+  /** 同相位结算序——取消类必须高于反震等（如 cancel=10, reflect=0） */
+  priority?: number
+  /** 战斗条件（本场内置字面量：target_has_debuff/target_has_buff/self_has_debuff/self_has_buff） */
+  condition?: string
+  /** 触发次数（如神照经 1 次/场、封穴触发一次即消）；省略 = 无限 */
+  uses?: number
+  /** 只在施展该技能（技能 id）时参与 */
+  when_skill?: string
+  /** 仅在技能等级 ≥ min_level 时参与（技能效果解锁） */
+  min_level?: number
 }
 
 // 注释：能力定义（扩展）

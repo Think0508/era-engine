@@ -42,14 +42,19 @@ function baseMod() {
       消耗技: { id: '消耗技', name: '消耗技', type: 'active', power: 50, cost: 100 },
       连击连连: {
         id: '连击连连', name: '连击连连', type: 'active', power: 20, cost: 5, hits: 1,
-        effects: [{ trigger: 'action_end', action: 'repeat', chance: 0.9 }],
+        battle_effects: [{ effect: '复读（测试）', chance: 0.9 }],
       },
       复读零耗: {
         id: '复读零耗', name: '复读零耗', type: 'active', power: 10, cost: 0, hits: 1,
-        effects: [{ trigger: 'action_end', action: 'repeat', chance: 1 }],
+        battle_effects: [{ effect: '复读（测试）', chance: 1 }],
       },
     } as any,
-    battleEffects: {},
+    battleEffects: {
+      '复读（测试）': {
+        name: '复读', delivery: 'instant', trigger: 'action_end',
+        action: 'repeat', target: 'self', category: 'neutral',
+      },
+    },
     scripts: new Map<string, string>(),
     talentDefs: {},
   }
@@ -223,7 +228,7 @@ describe('combat-base 效果区与防护', () => {
   it('护体（damage_in 减伤）：敌方三连击 3 段各减半', async () => {
     await startBattle(() => 0.9)
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
-    await addEffect('player', { id: '护体', action: 'modify_stat', stat: 'damage_in', mode: 'percent', value: 0.5 })
+    await addEffect('player', { id: '护体', action: 'modify_stat', stat: 'damage_in', value: { percent: 0.5  }})
     await playerAct(null) // 玩家攻击后敌人回合：三连击 3×10×(1-0.5)=15
     const st = apiSystem.callSync('combat', 'getCombatState')
     expect(st.combatants.player.hp).toBe(85)
@@ -253,8 +258,8 @@ describe('combat-base 效果区与防护', () => {
     await startBattle(() => 0.9)
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     // 敌方：受击反击（三连击）；玩家：受击反震——敌对玩家的反击/反震在反击链中不触发
-    await addEffect('enemy', { id: '反打', trigger: 'damage_mitigate', action: 'counter', value: { skill: '三连击' } })
-    await addEffect('player', { id: '反震', trigger: 'damage_mitigate', action: 'reflect', value: 1.0 })
+    await addEffect('enemy', { id: '反打', trigger: 'damage_mitigate', action: 'counter', skill: '三连击' })
+    await addEffect('player', { id: '反震', trigger: 'damage_mitigate', action: 'reflect', value: { percent: 1.0 } })
     await playerAct(null)
     // 玩家：100 - 30（敌方反打反击 3×10） - 30（敌方自己回合三连击 3×10）= 40
     // —— 反击链中玩家的反震未触发（否则反击伤害会再次被反震掉）
@@ -272,7 +277,7 @@ describe('combat-base 效果区与防护', () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await addEffect('enemy', {
       id: '以柔克刚', trigger: 'damage_on_target', action: 'cancel',
-      value: { skill: '三连击' }, priority: 10,
+      skill: '三连击', priority: 10,
     })
     const result = await playerAct(null)
     expect(result.damage).toBe(0) // 伤害被取消
@@ -325,7 +330,7 @@ describe('combat-base 效果区与防护', () => {
     await apiSystem.call('combat', 'registerHook', 'base_damage', () => 1000)
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     // 敌人反震 100%：玩家 1000 伤同时被反震 1000 → 同归
-    await addEffect('enemy', { id: '反震', trigger: 'damage_mitigate', action: 'reflect', value: 1.0 })
+    await addEffect('enemy', { id: '反震', trigger: 'damage_mitigate', action: 'reflect', value: { percent: 1.0 } })
     let outcome: string | null = null
     eventBus.once('combat:end', (p: any) => { outcome = p.outcome })
     await playerAct(null)
@@ -350,31 +355,31 @@ describe('combat-base 效果区与防护', () => {
 describe('combat-base 行动前相位与禁技', () => {
   beforeEach(async () => { await boot() })
 
-  it('action_pre：用技能前执行；action_block 禁止行动（玩家侧内力不扣、不推进回合）', async () => {
+  it('action_pre：用技能前执行；action_block 禁止行动（内力不扣、该次行动作废轮到下一位）', async () => {
     await startBattle(() => 0.9)
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '封穴', trigger: 'action_pre', action: 'action_block', value: '被封穴', duration: 'battle',
+      id: '封穴', trigger: 'action_pre', action: 'action_block', value: { flat: 0 }, duration: 'battle',
     })
-    const phases: string[] = []
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '记录', trigger: 'action_pre', action: 'modify_stat', stat: 'damage_out', mode: 'flat', value: 0,
+      id: '记录', trigger: 'action_pre', action: 'modify_stat', stat: 'damage_out', value: { flat: 0 },
       duration: 'battle',
     })
-    void phases
     const result = await playerAct('三连击')
     expect(result).toBeNull() // 行动被拒（未发出 combat:turn）
     const st = apiSystem.callSync('combat', 'getCombatState')
     expect(st.combatants.player.mp).toBe(50) // 内力未扣
     expect(st.combatants.enemy.hp).toBe(60) // 未造成伤害
     expect(narrativeLog.getEntries().some(e => e.text.includes('无法行动'))).toBe(true)
+    // 封穴 = 该次行动作废、轮到下一位（玩家与 NPC 一致）：本回合已被消耗 → 已进入新一轮
+    expect(st.round).toBeGreaterThan(1)
   })
 
   it('action_pre 的技能加成：对本次行动生效（相位 overlay 不再被丢弃）', async () => {
     await startBattle(() => 0.9)
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '聚气', trigger: 'action_pre', action: 'modify_stat', stat: 'damage_out', mode: 'percent', value: 1.0,
+      id: '聚气', trigger: 'action_pre', action: 'modify_stat', stat: 'damage_out', value: { percent: 1.0 },
       duration: 'battle', uses: 1,
     })
     const result = await playerAct(null)
@@ -401,7 +406,7 @@ describe('combat-base 相位叠加与命中', () => {
     await startBattle(() => 0.9)
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '精准', trigger: 'damage_output', action: 'modify_stat', stat: 'damage_out', mode: 'percent', value: 0.5,
+      id: '精准', trigger: 'damage_output', action: 'modify_stat', stat: 'damage_out', value: { percent: 0.5 },
       duration: 'battle',
     })
     const result = await playerAct(null)
@@ -414,7 +419,7 @@ describe('combat-base 相位叠加与命中', () => {
     await apiSystem.call('combat', 'registerHook', 'hit_rate', () => 40)
     // 40% 命中 → rng 0.5×100=50 ≥ 40 本应 Miss；attack_pre 加 20 点 → 60 → 命中
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '凝神', trigger: 'attack_pre', action: 'modify_stat', stat: 'hit_bonus', mode: 'flat', value: 20,
+      id: '凝神', trigger: 'attack_pre', action: 'modify_stat', stat: 'hit_bonus', value: { flat: 20 },
       duration: 'battle',
     })
     const result = await playerAct(null)
@@ -439,10 +444,10 @@ describe('combat-base 公式中间量通道（通用机制）', () => {
   it('常驻通道聚合进 combatant.channels 并注入钩子 ctx', async () => {
     await startBattle(() => 0.9)
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '飘逸', action: 'modify_channel', channel: '风格系数', mode: 'percent', value: 0.1, duration: 'battle',
+      id: '飘逸', action: 'modify_channel', channel: '风格系数', value: { percent: 0.1 }, duration: 'battle',
     })
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '破防', action: 'modify_channel', channel: '防御', mode: 'set', value: 0, duration: 'battle',
+      id: '破防', action: 'modify_channel', channel: '防御', value: { set: 0 }, duration: 'battle',
     })
     const st = apiSystem.callSync('combat', 'getCombatState')
     expect(chan(st.combatants.player.channels, '风格系数').percent).toBeCloseTo(0.1, 10)
@@ -462,7 +467,7 @@ describe('combat-base 公式中间量通道（通用机制）', () => {
   it('未注册通道也能存（base 不认识通道名，语义由上层解释）', async () => {
     await startBattle(() => 0.9)
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '自定义', action: 'modify_channel', channel: '自定义通道', mode: 'flat', value: 7, duration: 'battle',
+      id: '自定义', action: 'modify_channel', channel: '自定义通道', value: { flat: 7 }, duration: 'battle',
     })
     const st = apiSystem.callSync('combat', 'getCombatState')
     expect(chan(st.combatants.player.channels, '自定义通道').flat).toBe(7)
@@ -477,71 +482,97 @@ describe('combat-base 公式中间量通道（通用机制）', () => {
   })
 })
 
-describe('combat-base 挂状态类别（apply_status）', () => {
+describe('combat-base zone 型挂载（mount_effect / 库条目 + 技能引用）', () => {
   beforeEach(async () => { await boot() })
 
-  async function addStatusDef(id: string, def: any): Promise<void> {
+  async function addDef(id: string, def: any): Promise<void> {
     const mod = modLoader.getMod() as any
     mod.battleEffects[id] = def
   }
 
-  it('默认生命周期 5 回合（含本回合）；重复挂刷新而不叠层', async () => {
-    await addStatusDef('灼烧', { name: '灼烧', action: 'periodic_damage', trigger: 'turn_start', value: 5, category: 'debuff' })
+  it('zone 型缺省生命周期 5 回合；重复挂按 refresh 重设为本次层数并重置时长', async () => {
+    await addDef('灼烧', {
+      name: '灼烧', delivery: 'zone', target: 'enemy',
+      action: 'periodic_damage', settle: 'turn_start', value: 5, category: 'debuff',
+    })
     await startBattle(() => 0.9)
-    await apiSystem.call('combat', 'applyStatus', 'enemy', '灼烧', { sourceId: 'player' })
-    let inst = (apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[]).find(e => e.id === '灼烧')
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '灼烧', { sourceId: 'player' })
+    const inst = (apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[]).find(e => e.id === '灼烧')
     expect(inst).toBeDefined()
-    expect(inst.remainingTurns).toBe(5)          // 类别默认 5 回合
-    // 重复挂 → refresh：仍是一条、回合重置
-    await apiSystem.call('combat', 'applyStatus', 'enemy', '灼烧', { sourceId: 'player' })
+    expect(inst.remainingTurns).toBe(5)          // zone 默认 5 回合
+    // 重复挂 → refresh：仍是一条、时长重置
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '灼烧', { sourceId: 'player' })
     const list = (apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[]).filter(e => e.id === '灼烧')
     expect(list.length).toBe(1)
     expect(list[0].remainingTurns).toBe(5)
-    void inst
   })
 
-  it('状态定义回合数优先于类别默认（8 回合）', async () => {
-    await addStatusDef('长毒', { name: '长毒', action: 'periodic_damage', trigger: 'turn_start', value: 5, duration: { turns: 8 }, category: 'debuff' })
+  it('库条目 duration 优先于 zone 默认（8 回合）', async () => {
+    await addDef('长毒', {
+      name: '长毒', delivery: 'zone', target: 'enemy',
+      action: 'periodic_damage', settle: 'turn_start', value: 5, duration: { turns: 8 }, category: 'debuff',
+    })
     await startBattle(() => 0.9)
-    await apiSystem.call('combat', 'applyStatus', 'enemy', '长毒', { sourceId: 'player' })
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '长毒', { sourceId: 'player' })
     const inst = (apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[]).find(e => e.id === '长毒')
     expect(inst.remainingTurns).toBe(8)
   })
 
-  it('merge=strongest：同组合并组只留一份，k 取高、数值取大、回合重置；弱的不降级', async () => {
-    await addStatusDef('毒X', { name: '毒X', action: 'periodic_damage', trigger: 'turn_start', value: 1, duration: { turns: 8 }, k: 1, merge: 'strongest', merge_group: '毒X', category: 'debuff' })
-    await addStatusDef('剧毒X', { name: '剧毒X', action: 'periodic_damage', trigger: 'turn_start', value: 1, duration: { turns: 8 }, k: 3, merge: 'strongest', merge_group: '毒X', category: 'debuff' })
+  it('merge=stack：层数累加（受 max_stack 限），数值不变（层数由 growth 放大）', async () => {
+    await addDef('叠毒', {
+      name: '叠毒', delivery: 'zone', target: 'enemy',
+      action: 'periodic_damage', settle: 'turn_start',
+      value: { flat: 15 }, growth: 1, duration: { turns: 8 }, merge: 'stack', max_stack: 3, category: 'debuff',
+    })
     await startBattle(() => 0.9)
-    await apiSystem.call('combat', 'applyStatus', 'enemy', '毒X', { sourceId: 'player', value: { m: 10 } })
-    await apiSystem.call('combat', 'applyStatus', 'enemy', '剧毒X', { sourceId: 'player', value: { m: 30 } })
-    let poisons = (apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[])
-      .filter(e => e.id === '毒X' || e.id === '剧毒X')
-    expect(poisons.length).toBe(1)               // 一份
-    expect(poisons[0].id).toBe('剧毒X')           // 升级为强的那一级
-    // 再中弱的：保持强的显示名，M 取大
-    await apiSystem.call('combat', 'applyStatus', 'enemy', '毒X', { sourceId: 'player', value: { m: 5 } })
-    poisons = (apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[])
-      .filter(e => e.id === '毒X' || e.id === '剧毒X')
-    expect(poisons.length).toBe(1)
-    expect(poisons[0].id).toBe('剧毒X')
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '叠毒', { sourceId: 'player', params: { stacks: 1 } })
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '叠毒', { sourceId: 'player', params: { stacks: 1 } })
+    let inst = (apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[]).find(e => e.id === '叠毒')
+    expect(inst.stack).toBe(2)
+    expect(inst.value.flat).toBe(15)             // 基础数值不变
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '叠毒', { sourceId: 'player', params: { stacks: 5 } })
+    inst = (apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[]).find(e => e.id === '叠毒')
+    expect(inst.stack).toBe(3)                   // max_stack 封顶
   })
 
-  it('未定义状态 → warning 并跳过（不抛错）', async () => {
+  it('merge=strongest：层数取高、数值取大、时长重置；弱的一击不降级', async () => {
+    await addDef('毒X', {
+      name: '毒X', delivery: 'zone', target: 'enemy',
+      action: 'periodic_damage', settle: 'turn_start',
+      value: { flat: 1, percent: 0.01 }, growth: 0.25, duration: { turns: 8 },
+      merge: 'strongest', category: 'debuff', level_names: ['毒X', '猛毒X', '剧毒X'],
+    })
     await startBattle(() => 0.9)
-    await apiSystem.call('combat', 'applyStatus', 'enemy', '不存在的状态', { sourceId: 'player' })
-    expect(errorReporter.getErrors().some(e => e.message.includes('未在 battle-effects.toml 定义'))).toBe(true)
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '毒X', { sourceId: 'player', params: { stacks: 1 } })
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '毒X', { sourceId: 'player', params: { stacks: 3 }, value: { flat: 30, percent: 0.01 } })
+    let list = (apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[]).filter(e => e.id === '毒X')
+    expect(list.length).toBe(1)                  // 一份实例
+    expect(list[0].stack).toBe(3)                // 层数取高
+    expect(list[0].value.flat).toBe(30)          // M 取大
+    // 再中弱的：保持层数与数值，不降级
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '毒X', { sourceId: 'player', params: { stacks: 2 }, value: { flat: 5, percent: 0.01 } })
+    list = (apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[]).filter(e => e.id === '毒X')
+    expect(list.length).toBe(1)
+    expect(list[0].stack).toBe(3)
+    expect(list[0].value.flat).toBe(30)
+  })
+
+  it('挂载不存在的库条目 → warning 并跳过（不抛错）', async () => {
+    await startBattle(() => 0.9)
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '不存在的状态', { sourceId: 'player' })
+    expect(errorReporter.getErrors().some(e => e.message.includes('不存在的战斗效果'))).toBe(true)
     expect((apiSystem.callSync('combat', 'getCombatState').combatants.enemy.effects as any[]).length).toBe(0)
   })
 
   it('相位动作 ctx 带通道包（插件自定义动作可读减免）', async () => {
     await startBattle(() => 0.9)
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '毒抗', action: 'modify_channel', channel: '毒伤害', mode: 'percent', value: -0.5, duration: 'battle',
+      id: '毒抗', action: 'modify_channel', channel: '毒伤害', value: { percent: -0.5 }, duration: 'battle',
     })
     let seen: any = null
     apiSystem.callSync('combat', 'registerAction', 'probe_action', (actCtx: any) => { seen = actCtx.channels })
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '探针', trigger: 'attack_pre', action: 'probe_action', status: 'x', duration: 'battle',
+      id: '探针', trigger: 'attack_pre', action: 'probe_action', duration: 'battle',
     })
     await playerAct(null)
     expect(chan(seen?.self, '毒伤害').percent).toBeCloseTo(-0.5, 10)

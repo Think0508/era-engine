@@ -1,205 +1,250 @@
 # 战斗系统（combat-base + combat-wuxia）
 
 > 2026-08-31 合同 v1.0 落地重写：战斗本地管线（相位结算 + 效果区 + 隔离回写）。
-> 2026-09-11 修订（合同 v1.1）：公式修订（力道×3 平值威力 / 系数÷1000 / 风格÷1000 / 精通÷250 /
-> 新命中公式 / 防御 0.5）+ **公式中间量通道**（效果与天赋可给公式的某一步加值）+
-> 补齐 `action_pre`（禁技/技能加成）+ 修正五个相位的统计被静默丢弃 + 命中不截断。
-> 2026-09-11 v1.2：**毒伤害**（即时并入同一次命中 / 持续在目标回合开始结算）+
-> **「挂状态」类别**（默认 on_hit/enemy、默认 5 回合含本回合、重复刷新、`merge_group` 合并）+ 第 9 个通道「毒伤害」。
-> 唯一权威公式实现：`src/plugins/combat-wuxia/formula.ts`；通道机制：`src/plugins/combat-base/formula-channels.ts`。
+> 2026-09-11 修订（合同 v1.1）：公式修订 + **公式中间量通道**（效果与天赋可给公式的某一步加值）+
+> 补齐 `action_pre` + 修正五个相位的统计被静默丢弃 + 命中不截断。
+> 2026-09-11 v1.2：**毒伤害** + 「挂状态」类别 + 第 9 个通道「毒伤害」。
+> 2026-09-12 **v4.0（本版）**：**战斗效果 = 库定义 + 技能引用**（参数白名单覆盖）·
+> 数值三形态 + 每层乘性 `growth` · `delivery`/`settle`/`apply_at` 三相位字段 · **施加器**机制 ·
+> 新增 3 个通道（准头 / 力道项 / 灵敏项）· 毒合并为单条层数模型 · 火毒寒毒冰火相消 ·
+> 删除 `apply_status`/`apply_effect`/`mode`/`k`/`merge_group` 与隐式 `×层数` 缩放（不留兼容分支）。
+>
+> 唯一权威公式实现：`src/plugins/combat-wuxia/formula.ts`；通道机制：`src/plugins/combat-base/formula-channels.ts`；
+> **效果条目解析：`src/plugins/combat-base/effect-entry.ts`**（字段语义以此文件为准）。
 
 ## 做什么
 
-回合制战斗骨架 + 武侠公式层。combat-base 提供**战斗本地管线**：战斗孤立场景
-（hp/mp 快照隔离、结束回写）、回合循环（每轮重排行动序）、18 相位攻击管线、
-效果区（效果定义库）、公式中间量通道（机制）、反击/递归防护、死亡/复活、permanent 吸收回写；
-combat-wuxia extends combat-base，覆盖武侠公式钩子、注册通道、编译被动/天赋。
+回合制战斗骨架 + 武侠公式层。combat-base 提供**战斗本地管线**：战斗孤立场景（hp/mp 快照隔离、
+结束回写）、回合循环（每轮重排行动序）、18 相位攻击管线、效果区、公式中间量通道、反击/递归防护、
+死亡/复活、permanent 吸收回写；combat-wuxia extends combat-base，覆盖武侠公式钩子、注册通道与施加器、
+编译被动/天赋。
 
 发出标准事件 `combat:request` → `combat:start` → `combat:turn`（每行动）→ `combat:end`。
 
-## 关键概念
+## 战斗效果条目（v4.0）
 
-- **战斗孤立场景**：`CombatScene` + `Combatant`（hp/mp/效果区/统计/通道包）只在战斗中存活；
-  实体 hp/mp 结束回写（死亡=0 持久）；permanent 类吸收（内力上限）结束合并进实体
-  （NPC 缩水存档持久化）；战斗内效果区全清不回写。
-- **相位管线**（每段攻击一次）：
-  `attack_pre → attack_launch → hit_roll → [miss: attack_miss | on_hit →
-   damage_base → damage_crit → damage_output → damage_on_target → damage_mitigate
-   → −防御 → damage_taken] → attack_end`；整招结束 `action_end`（连绵复读）。
-  回合级相位：`turn_start / turn_end`；行动前相位 `action_pre`（禁技/技能加成）；
-  使用技相位 `on_use`；死亡相位 `death`（复活）。
-- **效果区**：战斗内第三容器（与 status-system 分离，战斗外状态暂不换算）。
-  条目 = 效果定义库（`definitions/battle-effects.toml`）引用或技能效果条目。
-  修正型（`modify_stat` / `modify_channel` 无 trigger → 聚合进战斗统计/通道）与触发型（相位点判定）
-  统一在区内。骨架字段：`trigger/action/chance/value/target/duration(turns|battle|permanent)/
-  stack(refresh|increment|clamp)/priority/category(buff|debuff)/condition/
-  recursive/uses/min_level/stat/mode/skill/channel/when_skill`。
-- **行动前相位（v1.1 补齐）**：`action_pre` 在**扣除内力之前**执行——被 `action_block` 禁止则
-  内力不扣、行动作废（玩家回 IDLE 可改选其他行动，NPC 本回合不出手）；该相位的
-  `modify_stat`/`modify_channel` 叠加作用于本次行动的**全部段**。
-- **反击链一层**：反击/反震/取消（以柔克刚类）只对主动攻击触发；反击产生的攻击
-  跳过对方反击类效果（护体等减伤照常生效）。
-- **递归防护**：repeat 类（连绵）`chance < 1` 加载校验；作业队列深度上限 64，
-  超限断链 + errorReporter 上报；复读再扣消耗，内力不足不触发。
-- **死亡/复活**：检查点 = 每段攻击结算后/回合初结算后/行动后；0 血失去结算资格
-  （剩余段纯演出）；死亡相位内复活（神照经：uses=1 一次性，满状态 + 效果区重建，
-  重建跳过已消耗被动——consumedEffects）；同归于尽判玩家败。
-- **回合节奏**：每轮重排（initiative 钩子，平速 rng）；角色粒度回合：
-  `turn_start → 行动 → turn_end`；NPC 自动行动 MVP 随机。
+**一个效果 = 库定义（`definitions/battle-effects.toml`）+ 技能引用（`abilities[].battle_effects`）。**
 
-## 战斗流程 ↔ 相位 ↔ 中间量（一张图看懂"效果/天赋改哪里"）
+```toml
+# ① 库定义：时机、目标、落地方式、结算动作、默认参数
+[effects."火毒"]
+name = "火毒"
+description = "每回合开始受到 5% 气血上限伤害（每层 ×1.5），持续 5 回合；化解自身寒毒并引爆敌方寒毒"
+delivery = "zone"
+target = "enemy"
+apply = "apply_element"                     # 施加器（缺省 = mount 直接挂载）
+apply_args = { element = "火毒", opposite = "寒毒" }
+action = "periodic_damage"                  # zone：结算动作
+settle = "turn_start"                       # zone：结算相位
+value = { percent = 0.05 }                  # 数值三形态见下
+growth = 0.5                                # 每层乘性增量
+merge = "strongest"
+category = "debuff"
+level_names = ["火毒", "烈火毒", "焚身毒"]     # 层数 → 显示名（可选）
+
+# ② 技能引用：只写"引用谁 + 覆盖哪些参数"
+[abilities."火毒掌"]
+battle_effects = [
+  { effect = "火毒", stacks = 2, chance = 0.6 },
+]
+```
+
+### 字段速查
+
+| 字段 | 取值 | 说明 |
+|---|---|---|
+| `delivery` | `zone` / `instant`（缺省） | zone = 驻留（挂到身上，按 settle 结算）；instant = 就地执行 |
+| `action` | 已注册动作名 | zone：**结算动作**；instant：**执行动作** |
+| `trigger` | 相位 | **instant 专用**：发生相位（on_hit / attack_end / action_end / death…） |
+| `settle` | 相位 | **zone 专用**：驻留期间的结算相位；**省略 = 常驻修正**（modify_stat/modify_channel 直接进聚合） |
+| `apply_at` | 相位 | **zone 专用**：何时施加；缺省按 target 推导 → `enemy`→`on_hit`、`self`→`on_use` |
+| `apply` | 施加器名 | **zone 专用**：缺省 `mount`（直接挂载）；`apply_poison`（毒）/`apply_element`（冰火） |
+| `apply_args` | 表 | 传给施加器的参数 |
+| `target` | `self` / `enemy` | zone：挂给谁；instant：作用谁 |
+| `duration` | `{turns=N}` / `"battle"` / `"permanent"` | zone 专用；**省略 → 通用默认 5 回合** |
+| `merge` | `refresh`（缺省）/`stack`/`strongest` | 重复施加的合并策略 |
+| `max_stack` | 整数（缺省 99） | `merge=stack` 时的层数上限 |
+| `value` | 数字 / `{flat?, percent?, set?}` | 数值三形态（见下） |
+| `growth` | 数字（缺省 0） | 每层乘性增量：`value × (1 + growth×(层数−1))` |
+| `stat` | 统计键 | `modify_stat` 用（见「统计键」） |
+| `channel` | 通道名 | `modify_channel` 用（见「公式中间量通道」） |
+| `category` | `buff` / `debuff` / `neutral` | 乘势等按此判定 |
+| `level_names` | 字符串数组 | 层数 → 显示名（缺省 `名字 x层`） |
+| `param_labels` | 表 | 覆盖参数在 UI 里的中文标签（只写要改的） |
+| `skill` | 技能 id | `counter`/`cancel` 反击时使用的技能 |
+| `max_per_action` | 整数（缺省 1；0 = 不限） | `extra_attack`（追击）每次行动的最大追加次数 |
+| `priority` | 整数 | 同相位内**大者先**结算 |
+| `condition` | 内置字面量 | `target_has_debuff`/`target_has_buff`/`self_has_debuff`/`self_has_buff` |
+| `uses` | 整数 | 触发 N 次后移除（封穴 = 1） |
+| `when_skill` | 技能 id | 只在施展该技能时参与 |
+| `min_level` | 整数 | 技能等级 ≥ N 才参与 |
+
+### 数值三形态与层数缩放
+
+```toml
+value  = 20                              # 固定数（≡ { flat = 20 }）
+value  = { percent = 0.05 }              # 比例（基准由动作定义）
+value  = { flat = 10, percent = 0.05 }   # 比例 + 固定（先比例后固定）
+value  = { set = 0 }                     # 覆盖基准（**仅 modify_channel**）
+growth = 0.5                             # 层数 k 的数值 = 基础值 × (1 + growth×(k−1))
+```
+
+`percent` 的**基准由动作定义**：
+
+| 动作 | percent 的基准 |
+|---|---|
+| `periodic_damage` | 受方最大气血 |
+| `heal_hp` / `heal_mp` | 自身最大气血 / 最大内力 |
+| `leech_hp` / `leech_mp` / `leech_mp_max` / `mp_drain` | 对方最大气血 / 最大内力 |
+| `leech_hp_from_damage`（饮血） | **本次实际扣掉的血量** |
+| `reflect`（反震） | 受击前的待结算伤害 |
+| `modify_stat` / `modify_channel` | 原值（倍数） |
+
+三个"随层数递增"的效果同型（都是乘性）：
+
+| 效果 | value | growth | 层数 1/2/3 |
+|---|---|---|---|
+| 破绽 | `{percent = -0.5}` | 0.5 | 受伤 +50% / +75% / +100% |
+| 火毒·寒毒 | `{percent = 0.05}` | 0.5 | 5% / 7.5% / 10% 气血上限 |
+| 毒 | `{percent = 0.01, flat = 0.1×M}` | 0.25 | ×1 / ×1.25 / ×1.5 |
+
+### 技能侧引用（参数白名单）
+
+技能只能覆盖下列参数（**结构字段一律以库条目为准**；越界 → 加载期 error）：
+
+`chance`（0–1，缺省 1，**多段技按段掷**）、`value`、`growth`、`stacks`（施加层数，缺省 1）、
+`turns`、`merge`、`max_stack`、`uses`、`priority`、`condition`、`when_skill`、`min_level`。
+
+> 需要给某技能定制结构（换时机/换目标/换动作）→ **单独写一条库条目**，不要在技能里覆盖。
+
+### 合并策略
+
+| merge | 语义 |
+|---|---|
+| `refresh`（缺省） | 按本次声明的数值/层数重新施加，只重置时长 |
+| `stack` | 层数累加（受 `max_stack` 限），基础数值不变（层数由 `growth` 放大） |
+| `strongest` | 本次层数 ≥ 现有层数才升级（数值取大），否则只重置时长——弱的一击不降级 |
+
+## 回合数语义（合同，与实际施加时机无关）
+
+| 类型 | `turns = N` 的含义 |
+|---|---|
+| **常驻型**（破甲/失势/致盲/截脉/缓慢…，无 settle） | 含挂上那回合在内共 N 个回合。挂上时对方**还没动** → 影响 N 回合；挂上时对方**本回合已结束** → 只影响 **N−1 回合** |
+| **结算型·turn_start**（流血/毒/火毒/寒毒） | 恰好 **N 次结算**，每次都在该角色行动**之前**（先吃伤害再行动） |
+| **结算型·turn_end**（回血/回内） | 恰好 **N 次结算**，在该角色行动**之后** |
+
+实现：`tickDurations(c, phase)` 在角色自己的回合按 `settle` 分桶扣数（`turn_end` 的条目在 turn_end
+相位之后扣，其余在 turn_start 相位之后扣）。
+
+> ⚠️ 毒发**不打断**本回合行动：毒在行动前结算，扣完血若角色存活，照常行动；被毒死属于死亡
+> （失去行动资格），不是额外的"打断"机制。历史文档里"毒杀可打断该角色本回合行动"的措辞已废弃。
+
+## 相位管线
+
+`attack_pre → attack_launch → hit_roll → [miss: attack_miss | on_hit → damage_base → damage_crit →
+damage_output → damage_on_target → damage_mitigate → −防御 → damage_taken] → attack_end`；
+整招结束 `action_end`（连绵复读）。回合级：`turn_start` / `turn_end`；行动前：`action_pre`（禁技/技能加成）；
+使用技：`on_use`；死亡：`death`（复活）。
 
 | 流程 | 相位/钩子 | 可改的中间量（通道） |
 |---|---|---|
-| 回合初结算（毒/到期） | `turn_start` + `tickDurations` | 毒 DoT（毒伤害通道）；到期效果在此扣数移除 |
-| 常驻被动不重复加载 | `combatant_init` + `consumedEffects` | 常驻通道随效果区聚合 |
+| 回合初结算（DoT/到期） | `turn_start` + `tickDurations` | 毒伤害（毒系 DoT） |
+| 回合末结算（回血/回内/到期） | `turn_end` + `tickDurations(turn_end)` | — |
 | 用技能前（禁技/技能加成） | `action_pre`（+`action_block`） | 本次行动：全部通道 |
 | 使用技能（扣内力/挂效果） | `on_use` | 全部通道（常驻） |
-| 出手前 / 出手时 | `attack_pre` / `attack_launch` | `命中率` `闪避率` `暴击率`* `暴击倍率`* `武功威力` `风格系数` `其他加成` `防御` |
-| 命中判定 | `hit_roll` + `hit_rate` 钩子 | `命中率` `闪避率` |
-| 未命中结算 | `attack_miss` → `attack_end` | — |
-| 基础伤害（e1/e2） | `base_damage` 钩子 + `on_hit`/`damage_base` | `武功威力` `风格系数` `其他加成` `毒伤害`(即时毒伤) (+ 统计键 `damage_out`) |
+| 出手前 / 出手时 | `attack_pre` / `attack_launch` | `命中率` `闪避率` `准头` `暴击率`* `暴击倍率`* `武功威力` `风格系数` `其他加成` `防御` |
+| 命中判定 | `hit_roll` + `hit_rate` 钩子 | `准头`（攻/守两侧）`命中率` `闪避率` |
+| 基础伤害（e1/e2） | `base_damage` 钩子 + `on_hit`/`damage_base` | `力道项`/`灵敏项` `武功威力` `风格系数` `其他加成` `毒伤害` |
 | 暴击（e3） | `damage_crit` + `crit_rate`/`crit_mul` 钩子 | 统计键 `crit_rate` `crit_mul` |
-| 浮动（e4） | `damage_output` + `float_mul` 钩子 | `浮动系数`（该相位统计键作用于最终伤害） |
-| 打到对方（e5，取消/反击） | `damage_on_target` | `防御` `受伤`* |
-| 护体/反震（e6） | `damage_mitigate` | `防御`（+ 统计键 `damage_in`） |
+| 浮动（e4） | `damage_output` + `float_mul` 钩子 | `浮动系数` |
+| 打到对方（e5，取消） | `damage_on_target` | `防御` |
+| 真伤害前（护体/反震/反击） | `damage_mitigate` | `防御`；统计键 `damage_in`（正 = 减伤、负 = 易伤，**不截断**） |
 | −防御（e7） | `defense_value` 钩子 | `防御`（`set 0` = 无视防御） |
-| 受到伤害后（e8） | `damage_taken` | —（本段已结算，仅记录） |
-| 多段 | 每段独立走完整管线 | 每段各自求值 |
-| 反击/反伤 | 独立作业（不递归，深度 64 断链） | 同上 |
-| 回合结束 / 轮转 | `action_end` / `turn_end` / `advanceTurn` | — |
+| 受到伤害后（e8） | `damage_taken` | —（本段已结算） |
+| 出手结束（命中或未命中） | `attack_end` | ctx 带 `pendingDamage` = **本段实际扣血量** |
+| 多段 | 每段独立走完整管线 | 每段各自求值（`chance` **按段掷**） |
 
-`*` = 该阶段目前用既有统计键表达（`crit_rate`/`crit_mul`/`damage_in`），未注册通道——见下节判据。
+`*` = 该阶段目前用既有统计键表达（`crit_rate`/`crit_mul`），未注册通道。
 
-## 公式中间量通道（v1.1 新增）
+## 战斗效果动作（已注册）
 
-**要解决的问题**：「风格系数 ×1.1」「命中率 +10%」「防御提高 20%」「无视防御」这类效果/天赋，
-此前只能改 7 个固定统计键，公式内部的分项完全摸不到。
+| 动作 | 落点 | 说明 |
+|---|---|---|
+| `modify_stat` | 统计键 | 常驻（无 trigger）进聚合；有 trigger 则只作用于该相位 |
+| `modify_channel` | 公式通道 | 同上；`value.set` 表示覆盖基准 |
+| `mount_effect` | zone 引用入口 | 由 combat-base 内建：按库条目的 `apply` 施加器把效果挂到目标 |
+| `action_block` | 行动前 | 该次行动作废、轮到下一位（玩家与 NPC 一致） |
+| `periodic_damage` | 任意相位 | 按数值扣血（走死亡/复活/受伤害后链路） |
+| `heal_hp` / `heal_mp` | 任意相位 | 按数值回复（封顶） |
+| `leech_hp` / `leech_mp` / `leech_mp_max` / `mp_drain` | 命中后 | 吸取转移 / 上限吸收 / 削减内力 |
+| `leech_hp_from_damage` | attack_end | 按本次**实际扣血量**回血（饮血） |
+| `reflect` | damage_mitigate | 反震（按待结算伤害的比例） |
+| `counter` / `cancel` | damage_mitigate / damage_on_target | 反击 / 取消伤害（`skill` 指定反击技能） |
+| `repeat` | action_end | 复读整招（连绵；`chance` 必须 < 1，再扣内力） |
+| `extra_attack` | 命中后 | 追击：同招再打一次（不递归、扣内力、`max_per_action` 限次） |
+| `revive` | death | 复活（`uses=1` 一场一次） |
+| `poison_dot` | turn_start | combat-wuxia 注册：毒系持续伤害（过「毒伤害」通道） |
 
-**设通道的判据（三条全中才设）**：
-1. 天赋/效果常改这个阶段；2. **改属性达不到**（能靠属性 buff 达成的，不设通道）；3. 改了影响本次计算。
+## 施加器（zone 型条目的"怎么挂"）
 
-按此判据**被剪掉的**：`力道项`/`灵敏项`（= 力道/灵敏属性 buff）、`武器项`（= 装备数据）、
-`武功系数`/`精通系数`/`内力项`（= 对应属性 buff 的自然结果）、基础命中率 90 与 K=180（常量，且二者
-数学上互相抵消）、`基础伤害`/`受伤`/`暴击率`/`暴击倍率`（已有统计键 `damage_out`/`damage_in`/`crit_rate`/`crit_mul`）。
-**机制通用**：以后要加回某个分项 = 注册表加一行 + 公式里读一行。
+| 施加器 | 说明 |
+|---|---|
+| `mount`（缺省） | 直接挂载：按 `merge`/`stacks`/`duration` 合并进效果区 |
+| `apply_poison`（combat-wuxia） | 先算毒功面板的 M 快照，再以 `{percent: 1%气血上限, flat: 0.1×M}` 挂载 |
+| `apply_element`（combat-wuxia） | 冰火相消：挂本元素 → 清自己身上层数 **≤ 本次层数**的对立毒 → 引爆对方对立毒（按层数结算一次并清除） |
+
+插件可用 `ctx.api.call('combat','registerApply', name, fn)` 注册自己的施加器。
+
+## 公式中间量通道（12 个）
 
 | 通道 | 落点 | 语义 |
 |---|---|---|
-| `先攻` | 每轮行动序 | 默认 = 轻功系数 |
-| `命中率` | 命中判定（攻方） | 0 基准：flat=点数、percent=倍率、`set 999` = 必中 |
-| `闪避率` | 命中判定（守方） | 与「命中率」相减 |
+| `先攻` | 每轮行动序 | 默认 = 轻功系数；`flat=-10` = 缓慢（下一轮生效） |
+| `命中率` | 命中判定（攻方） | **0 基准**：flat = 点数、set = 覆盖贡献（如 999 = 必中）；**percent 对 0 基准无效** |
+| `闪避率` | 命中判定（守方） | 同上（与「命中率」相减） |
+| `准头` | 命中判定的准头 | **比例修正现算准头**（轻功系数×2+灵敏）：`percent -0.5` = 失势、`-0.3` = 致盲 |
 | `浮动系数` | 伤害浮动 | 默认 0.9–1.1 随机；`set 1.0` = 稳定输出 |
-| `防御` | 最终伤害扣减 | flat=平加、percent=倍率、`set 0` = 无视防御 |
+| `防御` | 最终伤害扣减 | flat = 平加、percent = 倍率、`set 0` = 无视防御 |
 | `武功威力` | 伤害分项 | 该段威力（power×威力曲线÷段数） |
 | `风格系数` | 伤害分项 | 乘法链内分项（×1.1 类加成） |
-| `其他加成` | 伤害公式末项 | flat 平加伤害（公式里的 `+ 其他加成`） |
-| `毒伤害`（v1.2） | 毒伤（即时与持续共用） | **受方**的减免：flat/percent/`set 0` = 免疫毒伤（只作用于伤害数字，**不阻止挂毒**） |
+| `其他加成` | 伤害公式末项 | flat 平加伤害 |
+| `力道项` / `灵敏项` | 伤害公式属性分项 | `percent -0.3` = 截脉（力道减三成；只影响对应轴） |
+| `毒伤害` | 毒伤（即时与持续共用） | 受方减免：flat/percent/`set 0` = 免疫毒伤（只作用于伤害数字，不阻止挂毒） |
 
-**语义**：`base′ = set ?? base` → `value = (base′ + flat) × (1 + percent)`；`stack` 按层数缩放。
-通道只在战斗本地存活（与统计键同生命周期：战斗开始编译、复活重建、战斗结束全清）。
+**语义**：`base′ = set ?? base` → `value = (base′ + flat) × (1 + percent)`；层数缩放由效果数值的
+`growth` 在累加前完成。通道只在战斗本地存活（战斗开始编译、复活重建、战斗结束全清）。
 
-### 三条作者入口（不写代码）
+## 战斗统计键（7 个）
 
-```toml
-# ① 战斗效果库（definitions/battle-effects.toml）：常驻
-[effects."飘逸（示例）"]
-action = "modify_channel"
-channel = "风格系数"     # 必填；未注册通道 → 加载期 error（列出可用通道）
-mode = "percent"          # flat / percent / set
-value = 0.1
-target = "self"
-duration = "battle"
+| 键 | 单位 | 吃哪一项 |
+|---|---|---|
+| `hit_bonus` / `dodge_bonus` / `crit_rate` | 点数 | `value.flat` |
+| `crit_mul` / `damage_out` / `damage_in` / `defense_mult` | 倍率 | `value.percent` |
 
-# ①b 相位版：只在施展指定技能时、该段攻击前生效（触发一次即消）
-[effects."蓄势（示例）"]
-action = "modify_channel"
-trigger = "attack_pre"
-channel = "武功威力"
-mode = "percent"
-value = 0.3
-uses = 1
-when_skill = "降龙十八掌"   # 只在施展该技能时参与（未定义技能 → 加载期 error）
+用错单位（点数组给 percent / 倍率组给 flat）→ 忽略该分量并报一次 warning（**不做静默换算**）。
 
-# ② 技能自带效果（abilities.toml 的 effects[]，min_level 控制解锁）
-effects = [{ trigger = "damage_base", action = "modify_channel", channel = "其他加成", mode = "flat", value = 50 }]
+- `damage_in`：**正 = 减伤**（护体 `+0.3`）、**负 = 易伤**（破绽 `-0.5`）；**不截断**（易伤无上限）。
+- `defense_mult`：正 = 加防、负 = 破甲（`-0.5` = 防御 ×0.5 → 公式 `×(1+defense_mult)`）。
 
-# ③ 天赋 modifier（talents.toml；带 when_tag/when_ability 过滤）
-[[talents."剑骨".modifiers]]
-formula = "combat_channel"
-channel = "风格系数"
-when_tag = "刀剑"
-multiply = 0.10           # percent；plus = flat
-```
+## 毒 / 火毒 / 寒毒
 
-### 常用写法对照
-
-| 你想要的效果 | 写法 |
-|---|---|
-| 命中率 +10%（点数） | `命中率` flat 10（或统计键 `hit_bonus`） |
-| 命中率提高 20%（乘法） | `命中率` percent 0.2（旧机制做不到） |
-| 出手必中 / 必被闪 | `命中率` set 999 / `闪避率` set 999 |
-| 防御提高 20% | `防御` percent 0.2（或统计键 `defense_mult`） |
-| 无视防御 | `防御` set 0（旧机制做不到） |
-| 伤害提高 20% / 减伤 30% | 统计键 `damage_out` / `damage_in`（不重复造通道） |
-| 暴击率 +10 点 / 倍率 +0.5 | 统计键 `crit_rate` / `crit_mul` |
-| 该武功威力 +20% | `武功威力` percent 0.2 |
-| 风格系数 ×1.1 | `风格系数` percent 0.1 |
-| 先手 +50 | `先攻` flat 50 |
-| 浮动不再随机 | `浮动系数` set 1.0 |
-
-## 毒与「挂状态」体系（2026-09-11 v1.2）
-
-### 挂状态类别（通用）
-
-技能/效果条目可以在**命中或某相位**把 battle-effects 里的一个**状态**挂到目标身上：
-
-```toml
-# abilities.toml —— 毒沙掌带"剧毒"词条（trigger/target 可省略：默认 on_hit / enemy）
-effects = [{ action = "apply_poison", status = "剧毒" }]
-```
-
-| 规则 | 说明 |
-|---|---|
-| 缺省时机/目标 | 声明了 `status` 的条目：`trigger` 默认 `on_hit`、`target` 默认 `enemy`（自增益请显式写 `on_use` + `self`） |
-| 生命周期 | 词条 `turns` > 状态定义 `duration` > **类别默认 5 回合（含本回合）**；其它 effects 的缺省仍是"整场"，不受影响 |
-| 重复命中 | `merge`（词条）> 状态定义 `merge` > 默认 `refresh`（刷新回合数，不叠层）；`strongest` = k 取高、数值取大、回合重置；`stack` = 叠层 |
-| 一份状态 | 状态定义可给 `merge_group`（缺省 = 状态 id）：毒的 毒/猛毒/剧毒 三条定义共用组 `毒` → **一个目标只有一份毒**，显示名随最强那一级 |
-| 通用动作 | `apply_status`（combat-base，不含任何"毒"语义）；毒用 `apply_poison`（combat-wuxia 注册：先算 M 再挂同名状态） |
-
-> ⚠️ 同名不同层：`status-system` 也注册了一个 effect **type** 叫 `apply_status`（战斗**外**挂 status-system 状态，如 example-mod `打坐.toml` 的 振奋/力竭）。
-> 本条讲的是**战斗效果区**的挂状态（战斗动作），作用域、生命周期与减免链路都不同，勿混用。
-### 毒（公式与流程）
+**毒**（单条定义 + 层数）：技能写 `{ effect = "毒", stacks = N }`，N = 1/2/3 → 显示名 毒/猛毒/剧毒。
 
 ```
-M = 该段武功威力 × (1 + 暗毒系数/1000) × 毒功系数 × 毒功精通系数        ← 施加时快照，写进毒状态
+M = 该段武功威力 × (1 + 暗毒系数/1000) × 毒功系数 × 毒功精通系数     ← 施加时快照（施加器 apply_poison 算）
 毒功系数     = (1 + 技能毒性/1000) × (1 + 人物毒功/50)
 毒功精通系数 = 1 + 人物毒功/200
+即时毒伤：本段基础伤害 = D(标准公式) + M′       M′ = M 过**受方**的「毒伤害」通道
+持续毒伤（该角色自己的回合开始、行动前）= (1%×气血上限 + 0.1×M) × (1 + 0.25×(层数−1)) → 过「毒伤害」→ 扣血
 ```
-- **技能毒性**在技能侧（技能风格四维的第 4 维 `style.毒性`，可选）；**人物毒功**在人物侧（与轻灵/厚重/巧技同档的永久积累属性）。
-  `毒性`/`毒功` **不进**风格系数与精通系数——毒是独立一条线（除数也不同：技能侧 /1000、人物侧 /50、毒功精通 /200）。
-- 毒源在技能侧：人物毒功为 0 时 `M = 该段威力 × (1+暗毒系数/1000)`，零毒功角色使毒招照样有毒伤。
+- 结算：`turn_start` 相位先结算毒伤 → 再 `tickDurations` 扣回合数；`turns = 8` 恰好 8 次毒发。
+- 重复命中：`merge = strongest` → 层数取高、M 取大、回合重置；弱毒不覆盖强毒。
+- 持续毒伤**不走**命中/暴击/浮动/防御/取消/反震/反击，也**不吃**通用减伤 `damage_in`。
 
-**即时毒伤**（与普通伤害同一次判定）：
-```
-本段基础伤害 = D(标准公式) + M′        M′ = M 过**受方**的「毒伤害」通道
-→ 一起走 暴击 → 浮动 → damage_out → 取消 → 护体 → −防御 → 扣血（防御只减一次）
-```
-**持续毒伤**（简化流程，**目标自己的回合开始时**）：
-```
-持续毒伤 = (1 + 0.25×(k−1)) × (1%×目标气血上限 + M×0.1)   ← M 为施加时快照
-→ 过「毒伤害」通道 → 扣血 → 死亡相位/复活 → 触发 damage_taken（受伤害后效果）
-不走：命中 / 暴击 / 浮动 / 防御 / 取消 / 反震 / 反击；**不吃**通用减伤 damage_in
-```
-**时序与计数**（8 回合含本回合）：`turn_start` 相位先结算毒伤 → 再 `tickDurations` 扣回合数 → 扣到 0 移除
-⟹ `turns = 8` 正好 8 次毒发，且毒发在目标行动之前（**毒杀可打断该角色本回合行动**）。
-若施加时机已错过目标本回合的 `turn_start`（目标本轮先动过），本回合不跳毒、8 次顺延（已确认为可接受）。
-
-**减免空间（TODO seam）**：通道 `毒伤害` 是唯一落点——未来的抗毒/解毒/医疗只需往它写值；
-`set 0` 表示免疫毒伤（**不阻止挂毒**，"免疫是否等于不中毒"留给后续细化的抗毒设计）。
-现有 `毒抗性`/`带毒体质` 天赋（h-core 默认层）是**待重设计的占位**，本期未接线，勿直接接上。
-
-**战斗边界**：毒是战斗内状态，战斗结束随效果区全清（不换算 status-system 的 `中毒`）。
+**火毒 / 寒毒**（施加器 `apply_element`，5 回合）：
+1. 敌方得到本次层数的本元素毒（`merge = strongest`）；
+2. **自己**身上层数 **≤ 本次层数**的对立毒被清除（高于本级别的留着）；
+3. **敌方**身上若有对立毒 → 按其层数立刻结算**一次**伤害（过「毒伤害」）并**清除**（天生不共存）。
 
 ## 钩子
 
@@ -207,134 +252,70 @@ M = 该段武功威力 × (1 + 暗毒系数/1000) × 毒功系数 × 毒功精�
 float_mul / defense_value / is_attack_skill`
 链式：`battle_start / combatant_init（被动/天赋编译）/ turn_start（动态技能指令挂载）/ turn_end`
 
-钩子 ctx 统一带 `channels: { source, target }`（攻方/守方通道包，已合并该公式之前的所有相位叠加）；
-返回值可以是 `number`，也可以是 `{ value, parts }`（`parts` = 中间量明细，写入公式明细环）。
+钩子 ctx 统一带 `channels: { source, target }`；返回值可以是 `number` 或 `{ value, parts }`。
 
 ## 武侠公式（combat-wuxia/formula.ts）
 
 - 命中：`准头 = 轻功系数×2 + 灵敏`；`比率 = 攻方准头 /(攻方准头 + 守方准头)`（双方全 0 → 0.5）；
-  `命中率 = 90 + (比率 − 0.5)×180 + 攻方 hit_bonus − 守方 dodge_bonus + 通道 ±`
-  ——**不截断**：>100 必中、<0 必 Miss。（注：90 与 K=180 数学上抵消 → 实际等价 `180 × 比率`）
-- 标准系（拳掌/指腿/刀剑/奇兵）：
-  `base = (力道×3 + 武功威力(L) + 武器基础) × (1+武功系数/1000) × 风格系数 × 精通系数 + 当前内力/25 + 其他加成`
-- 暗毒系：同式以 `灵敏×3` 代 `力道×3`。
-- 空手平A：同式，武功威力 = 0、武功系数 = 0（力道轴）。
-- 气功/异术：`scripts/damage_<skillId>.js` 沙箱脚本（裸标识符作用域：
-  `source/target/skill/combat/channels/rand`），返回"基础伤害数字"，脚本值再 `+通道「其他加成」`。
-- 风格：得分 `(1+技能值/1000)×(1+人物值/50)`（武功无该系风格 → 技能值 0，人物项仍计入）；
-  `风格系数 = (轻²+厚²+巧²)/(轻+厚+巧)`（全 0 → 1.0）。
-- 精通系数 = `1 + (人物轻灵+人物厚重+人物巧技)/250`（单次乘法）。
+  `命中率 = 90 + (比率 − 0.5)×180 + 攻方 hit_bonus − 守方 dodge_bonus + 通道 ±`，其中准头先过各自的
+  「准头」通道（比例修正）——**不截断**。
+- 标准系：`base = (力道×3 + 武功威力(L) + 武器基础) × (1+武功系数/1000) × 风格系数 × 精通系数 + 当前内力/25 + 其他加成`；
+  属性分项先过「力道项」/「灵敏项」通道。暗毒系以 `灵敏×3` 代 `力道×3`。
+- 气功/异术：`scripts/damage_<skillId>.js` 沙箱脚本（返回基础伤害数字）。
 - 先攻 = 轻功系数；暴击 = 福缘/5 + 修正（%点），倍率 1.5 + 加成；浮动 0.9–1.1。
-- 防御 = 根骨×0.8 + 定力×0.5（再 ×(1+defense_mult)，最后套通道「防御」；最终伤害扣减，伤害<防御=0）。
-- 威力曲线默认 `0.7 + 0.05×(L−1)`（L≥1 线性外推）；`power_curve` 表覆写。
-- 多段：威力(总)/N 每段，**每段完整套公式**（力道/武器/内力项逐段全量重复）。
-- 被动技能（type=passive）与战斗天赋（modifiers `combat_*`/`combat_channel`、
-  talent.battle_effects）在战斗开始编译进效果区/通道包。
+- 防御 = (根骨×0.8 + 定力×0.5) × (1 + defense_mult) → 通道「防御」；最终伤害扣减（伤害 < 防御 = 0）。
+- 被动技能（type=passive）与战斗天赋（`modifiers` `combat_*`/`combat_channel`、`talent.battle_effects`）
+  在战斗开始时编译进效果区/通道包。
 
-### 量级提示（数值由 mod 数据决定，插件不设死值）
+## 数据校验（combat-wuxia onEnable + game:mod_loaded）
 
-威力从"百分比乘数"变"平值加数"后，同一面板下伤害整体放大（示例面板 铁砂掌 375→1013、平A 0→716）；
-防御 = 根骨×0.8+定力×0.5 在高伤害量级下占比会变小；多段技因逐段重复力道项而显著偏强。
-调参入口：`六维`/`武学系数`/`威力 power`/`威力曲线`/`hits`/`cost`，以及 `combat-wuxia.previewDamage`
-与 `@公式明细`（见下）。
-
-## 数据格式
-
-```toml
-# abilities.toml（战斗切片）
-[abilities."铁砂掌"]
-type = "active"
-power = 100            # 武功基础威力（等级 1 基准，×威力曲线）
-cost = 20              # 内力消耗（平值，不随等级）
-hits = 1               # 多段数（不随等级；每段完整套公式）
-category = "拳掌"      # 唯一系别：拳掌/指腿/刀剑/奇兵/暗毒/气功/异术
-style = { 轻灵 = 0, 厚重 = 60, 巧技 = 0, 毒性 = 0 }
-effects = []           # 战斗效果条目（trigger/action/…），效果 x 级解锁用 min_level
-attack = true          # 显式 false = 增益/架势技（如蛤蟆功：使用不攻击，挂蓄势）
-power_curve = [[1, 1.0], [5, 1.5]]   # 可选：等级→威力系数表
-
-# 被动技能示例
-[abilities."神照经"]
-type = "passive"
-effects = [{ trigger = "death", action = "revive", uses = 1, duration = "battle" }]
-
-# definitions/battle-effects.toml（效果定义库；插件默认层 + mod 层）
-[effects."战中毒"]
-action = "periodic_damage"
-trigger = "turn_start"
-value = 15
-duration = { turns = 3 }
-category = "debuff"
-stack = "increment"
-max_stack = 5
-```
-
-战斗效果动作（base 注册）：`modify_stat / modify_channel / action_block / periodic_damage /
-leech_hp / leech_mp / leech_mp_max / mp_drain / reflect / counter / cancel / repeat / revive / apply_effect`。
-
-## 战斗状态/条件
-
-- 条件路径：`game.mode == 'combat'`（战斗指令门控）。
-- 战斗内毒等状态与 status-system 分离（战斗外中毒暂不进战斗，将来毒换算）。
+- **库条目**：`action` 必须已注册；`trigger`/`settle`/`apply_at` 必须是合法相位；`apply` 必须已注册；
+  `merge` 枚举；`value` 形态；`value.set` 仅 `modify_channel`；`modify_stat` 的 `stat` 合法且单位匹配；
+  `modify_channel` 的 `channel` 必须已注册；`when_skill` 必须指向已定义技能；`repeat` 的 `chance` 必须 < 1；
+  `apply_poison` 必须配 `poison_dot`；`damage_in` 极端值 warning。
+- **技能引用**：`effect` 必须存在（列可用名）；**白名单外的字段 → error**；`repeat` 的技能侧 `chance` 必须 < 1。
+- **旧字段**：技能写 `effects`（而非 `battle_effects`）→ error 提示改名。
+- **技能契约**：category 唯一、power_curve 格式、特殊系脚本存在性。
 
 ## API
 
 ```
 # combat-base
-ctx.api.call('combat', 'getCombatContext')      → {enemies, allies, target} | null
-ctx.api.call('combat', 'getCombatState')        → 战斗快照（回合/行动序/战斗实体/统计/通道包/效果区）
+ctx.api.call('combat', 'getCombatState')        → 战斗快照（回合/行动序/实体/统计/通道包/效果区）
 ctx.api.call('combat', 'registerHook', name, fn)
-ctx.api.call('combat', 'addZoneEffect', entityId, partial)
-ctx.api.call('combat', 'recalcStats', entityId)
-ctx.api.call('combat', 'setRng', fn)            # 测试确定性
-ctx.api.call('combat', 'start', enemies, allies?)
-ctx.api.call('combat', 'executeAction', actor, {type:'skill'|'flee', skillId?, targetId?})
-ctx.api.call('combat', 'end', winner, outcome)
-ctx.api.call('combat', 'registerChannel', {id, label?, description?})   # 注册公式中间量通道
-ctx.api.call('combat', 'getChannels')           → [{id,label,description,source}]
-ctx.api.call('combat', 'getLastFormula')        → 最近一次公式明细 {hook,parts,channels,value}
-ctx.api.call('combat', 'getFormulaHistory', n?) → 公式明细环形缓冲（最近 50 条）
-ctx.api.call('combat', 'clearFormulaHistory')
-ctx.api.call('combat', 'setFormulaDetail', on)  # 明细写入叙事日志（调参用）
-ctx.api.call('combat', 'getFormulaDetail')      → boolean
+ctx.api.call('combat', 'registerAction', name, fn)         # 战斗动作
+ctx.api.call('combat', 'registerApply', name, fn)          # 施加器
+ctx.api.call('combat', 'resolveEffect', raw)               # {ok, entry} | {ok:false, error}
+ctx.api.call('combat', 'mountEffect', entityId, effectId, {sourceId, params, value, turns})
+ctx.api.call('combat', 'mountResolved', entityId, entry, {sourceId, value, turns})
+ctx.api.call('combat', 'addResolvedEffect', entityId, entry, {id})   # 常驻编译（被动/天赋）
+ctx.api.call('combat', 'applyDamage', entityId, amount, {source, kind, triggerTakenPhase})
+ctx.api.call('combat', 'registerChannel', {id, label?, description?})
+ctx.api.call('combat', 'getChannels') / ('getParamVocab') / ('getEffectCatalog')   # 手册/UI 数据源
+ctx.api.call('combat', 'getLastFormula') / ('getFormulaHistory') / ('setFormulaDetail')
 
 # combat-wuxia
-ctx.api.call('combat-wuxia', 'getSnapshot', charId)      → 六维/系数/风格面板（含防御按新式）
-ctx.api.call('combat-wuxia', 'getUsableSkills', charId) → 七系过滤的可用主动技
-ctx.api.call('combat-wuxia', 'getAbilitiesByTag', charId, tag)
-ctx.api.call('combat-wuxia', 'getChannels')             → 武侠通道清单（实为 combat.getChannels）
+ctx.api.call('combat-wuxia', 'getSnapshot', charId)
+ctx.api.call('combat-wuxia', 'getUsableSkills', charId)
 ctx.api.call('combat-wuxia', 'previewDamage', sourceId, skillId?, level?, targetId?)
-                                    → {parts, value, hitRate, hitParts}（不战斗也能算，调参/UI 用）
-ctx.api.call('combat-wuxia', 'setFormulaDetail', on) / ('getFormulaDetail')
 ```
 
 调试指令：`@公式明细`（主菜单，开关明细输出并打印最近一次公式的全部中间量）。
 
-## 数据校验（combat-wuxia onEnable + game:mod_loaded）
-
-battle-effects 条目与技能效果条目共用一套字段级校验：相位合法性、动作必须已注册、
-递归类 `chance < 1`、`apply_effect` 引用的效果存在、**`modify_channel` 必须给出已注册的 `channel` 且
-`value` 为数值**、`mode='set'` 只允许用于 `modify_channel`、`when_skill` 必须指向已定义技能；
-天赋 `combat_channel` modifier 必须给出已注册的 `channel`（缺 `plus`/`multiply` → warning）；
-技能契约（category 唯一、power_curve 格式、特殊系脚本存在性）。错误即 errorReporter error。
-
 ## Mod 作者使用
 
-- 战斗触发：`effects = [{type = "start_combat", params = {enemies = ["华山_弟子_甲"]}}]`。
-- 给公式加值：写 `modify_channel` 效果条目或 `combat_channel` 天赋 modifier（见上「三条作者入口」）。
-- 测试指令：主菜单"战斗测试（临时）"（battle_test）——临时注入演示技能与对手，
-  战斗结束自动清理（玩家面板/技能/临时敌人/临时技能定义全部还原）。
-- 调参：`@公式明细` + `combat-wuxia.previewDamage`。
+- 给技能加效果：`battle_effects = [{ effect = "流血", chance = 0.3 }]`（效果名见
+  `docs/native-entries-catalog.md` 的「战斗效果」一节，或 `combat.getEffectCatalog()`）。
+- 新效果：在 mod 的 `definitions/battle-effects.toml` 写 `[effects."XXX"]`（与插件默认层同 id 深合并）。
+- 调参：`@公式明细` + `combat-wuxia.previewDamage`；战斗测试：主菜单"战斗测试（临时）"。
 
 ## 挂账（后续轮）
 
-- 战斗 UI 面板与技能选择视觉（当前为动态指令 + 叙事日志 MVP）
-- 战斗内道具（回血丹类）走 UI 轮（effect 需战斗感知执行）
-- 装备系统（武器基础 weapon_base 绑定，缺省 0）
-- 战斗外毒换算（status-system `中毒`）；异术系公式；效果批次全量条目；敌人 AI 升级
-- 公式**整体替换**（mod 用脚本换掉整个伤害公式——当前只支持分项通道加值）
-- 通道扩展：`暴击率`/`暴击倍率`/`基础伤害` 的 percent/set 形态、技能标签过滤 `when_tag`
-- 把通道暴露进条件字典（如 `combat.风格系数 > 2`）
-- **毒**：更高毒等级（k>3）与毒层数叠加；细化的抗毒/解毒设计（`毒抗性`/`带毒体质` 待重设计；
-  「`毒伤害` 通道 set 0 是否等于不中毒」的接缝已留）；医疗类减免写入 `毒伤害` 通道；
-  毒影响 NPC AI 行为（中毒逃跑/求医）
+- 战斗 UI 面板与技能选择视觉（当前为动态指令 + 叙事日志 MVP）；**拖拽式技能编辑器**（数据侧已备：
+  `getEffectCatalog` 给出分类/参数/默认值，`getParamVocab` 给出参数中文标签与类型）。
+- 战斗内道具（回血丹类）走 UI 轮；装备系统（武器基础 weapon_base 绑定）。
+- 战斗外毒换算（status-system `中毒`）；细化的抗毒/解毒设计（`毒伤害` 通道是唯一落点；
+  `毒抗性`/`带毒体质` 天赋仍是待重设计的占位）。
+- 通道扩展：`暴击率`/`暴击倍率`/`基础伤害` 的 percent/set 形态、技能标签过滤 `when_tag`。
+- 把通道暴露进条件字典（如 `combat.风格系数 > 2`）。
+- 毒影响 NPC AI 行为（中毒逃跑/求医）。

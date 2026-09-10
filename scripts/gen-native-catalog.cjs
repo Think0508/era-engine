@@ -198,6 +198,50 @@ max_stack = 3
 条件路径 character.{id}.status.{状态ID} / .stack；v1 不深挖 tick_effects 内部引用`,
   },
 
+  // ═══ 战斗效果 battle-effects（技能可引用的命名效果库，combat-wuxia 消费） ═══
+  {
+    id: 'battle-effects',
+    title: '战斗效果 battle-effects',
+    match: (f) => path.basename(f) === 'battle-effects.toml',
+    containerKey: 'effects',
+    isArray: false,
+    groupBy: (e) => {
+      const delivery = e.delivery === 'zone' ? 'zone' : 'instant'
+      if (delivery === 'zone') return e.target === 'self' ? '自身状态' : '命中后·挂状态'
+      const phase = e.trigger ?? ''
+      if (phase === 'action_end') return '攻击后'
+      if (phase === 'on_hit' || phase === 'attack_end' || phase.startsWith('damage_')) return '命中后·即时'
+      return '出手时·即时'
+    },
+    keyFields: (e) => {
+      const bits = []
+      bits.push(e.delivery === 'zone' ? `zone→${e.target ?? 'enemy'}` : `instant@${e.trigger ?? '—'}`)
+      if (e.settle) bits.push(`settle=${e.settle}`)
+      if (e.apply) bits.push(`apply=${e.apply}`)
+      const v = e.value
+      if (typeof v === 'object' && v) {
+        if (v.flat) bits.push(`flat=${v.flat}`)
+        if (v.percent) bits.push(`pct=${v.percent}`)
+        if (v.set !== undefined) bits.push(`set=${v.set}`)
+      } else if (v !== undefined) bits.push(`v=${v}`)
+      if (e.growth) bits.push(`growth=${e.growth}`)
+      if (e.chance !== undefined && e.chance < 1) bits.push(`chance=${e.chance}`)
+      return bits.join(' · ')
+    },
+    container: (d) => d.effects,
+    template: `[effects."新效果"]
+name = "新效果"
+description = "…"
+delivery = "zone"            # zone = 驻留（按 settle 结算）｜instant = 就地执行（缺省）
+target = "enemy"             # zone：挂给谁（enemy→命中时施加；self→使用时施加）
+action = "periodic_damage"   # zone：结算动作；instant：执行动作
+settle = "turn_start"        # zone 专用；省略 = 常驻修正（modify_stat/modify_channel）
+value = { percent = 0.05 }   # 数字 = 固定数｜{flat, percent} = 比例+固定｜{set} = 覆盖（仅通道）
+growth = 0.5                 # 每层乘性增量：value × (1+growth×(层数−1))（可省）`,
+    note: `combat-wuxia/data/default/battle-effects.toml（mod 可覆盖/新增）·
+技能引用：abilities[].battle_effects = [{ effect = "效果名", chance = 0.3 }]（只覆盖参数白名单）`,
+  },
+
   // ═══ 物品 items（多文件合并） ═══
   {
     id: 'items',

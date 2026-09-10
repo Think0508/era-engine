@@ -35,6 +35,11 @@ import {
   registerChannel, zeroChannelBag, formatChannelBag, formatParts,
 } from './formula-channels'
 import type { ChannelBag, FormulaRecord } from './formula-channels'
+import {
+  MOUNT_ACTION, PARAM_VOCAB, POINT_STATS, RATIO_STATS, classifyEffect, displayNameOf,
+  normalizeValue, resolveEffectRef, scaleValue, usedParams, valueAmount,
+} from './effect-entry'
+import type { EffectValue, ResolvedEffect } from './effect-entry'
 
 // ── 类型定义 ────────────────────────────────────────────────────────────
 
@@ -53,6 +58,8 @@ export const BATTLE_TRIGGERS: BattleTrigger[] = [
 ]
 
 // 战斗统计键（修正型效果的落点）
+// 点数组（吃 value.flat）：hit_bonus / dodge_bonus / crit_rate
+// 倍率组（吃 value.percent）：crit_mul / damage_out / damage_in / defense_mult
 export type CombatStatKey =
   | 'hit_bonus' | 'dodge_bonus' | 'crit_rate' | 'crit_mul'
   | 'damage_out' | 'damage_in' | 'defense_mult'
@@ -61,10 +68,10 @@ export interface CombatStats {
   hit_bonus: number      // 命中%点
   dodge_bonus: number    // 闪避%点（对方）
   crit_rate: number      // 暴击%点
-  crit_mul: number       // 暴击倍率加成（加法）
+  crit_mul: number       // 暴击倍率加成（加法倍率）
   damage_out: number     // 伤害输出加成（加法倍率）
-  damage_in: number      // 减伤/易伤（加法倍率，护体=-0.3）
-  defense_mult: number   // 防御加减（加法倍率，破甲=-0.3）
+  damage_in: number      // 减伤/易伤（加法倍率；正 = 减伤，负 = 易伤）
+  defense_mult: number   // 防御加减（加法倍率；正 = 加防，负 = 破甲）
 }
 
 export interface BattleEffectInst {
@@ -73,7 +80,10 @@ export interface BattleEffectInst {
   trigger?: BattleTrigger
   action: string
   chance: number
-  value: any
+  /** 归一化数值（flat + percent × 基准；set 仅通道） */
+  value: EffectValue
+  /** 每层乘性增量：value × (1 + growth×(层数−1)) */
+  growth: number
   target: 'self' | 'enemy'
   duration: 'battle' | 'permanent' | { turns: number }
   remainingTurns: number
@@ -82,24 +92,22 @@ export interface BattleEffectInst {
   priority: number
   category: 'buff' | 'debuff' | 'neutral'
   condition?: string
-  recursive: boolean
   usesLeft: number | null   // null=无限
-  uses?: number             // 定义输入：触发次数（makeInst 时转换到 usesLeft）
   stat?: CombatStatKey
-  mode?: 'percent' | 'flat' | 'set'
-  skill?: string
   /** modify_channel 用：通道名（语义由注册通道的插件解释，base 只当不透明字符串） */
   channel?: string
   /** 只在施展该技能（技能 id）时参与—攻击/伤害类相位与 action_pre 判定用 */
   when_skill?: string
-  /** apply_status 用：要挂的状态 id（battle-effects 条目名） */
-  status?: string
-  /** apply_status 用：重复挂同一状态时的合并策略（默认 refresh = 现有语义） */
-  merge?: 'refresh' | 'strongest' | 'stack'
-  /** 同组合并键（缺省 = 状态 id）：毒 的 毒/猛毒/剧毒 共用 "毒"，保证一个目标只有一份毒 */
-  merge_group?: string
-  /** 毒等自定义状态用：等级（语义由状态定义的动作解释） */
-  k?: number
+  /** counter/cancel 类：反制使用的技能 id */
+  skill?: string
+  /** 层数→显示名（缺省 "名字 x层"） */
+  levelNames?: string[]
+  /** extra_attack 用：每次行动最大追加次数（缺省 1；0 = 不限） */
+  maxPerAction?: number
+  /** 该实例当前的有效显示名（随层数变化） */
+  displayName?: string
+  /** 技能引用解析结果（mount_effect 用；不序列化） */
+  resolved?: ResolvedEffect
   sourceId: string
 }
 
@@ -138,6 +146,8 @@ export interface CombatScene {
   rng: () => number
   pendingJobs: AttackJob[]
   depthBudget: number       // 递归/反击防护预算（每次行动重置）
+  /** 追击（extra_attack）本行动的剩余次数（每次行动开始时重置为条目声明的上限） */
+  extraAttacksLeft: number
   target: string | null
   /** action_pre 相位产生的叠加（统计+通道）：作用于本次行动的后续全部段，行动开始时重置 */
   actionOverlay: StatOverlay
@@ -195,11 +205,29 @@ export function registerBattleAction(name: string, handler: BattleActionHandler)
   battleActions.set(name, handler)
 }
 
-// 测试用：模块级状态重置（hooks/动作表/当前战斗/通道注册表/公式明细）
+// ── 施加器注册表（zone 型条目的"怎么挂"）────────────────────────────────
+// 缺省施加器 'mount' = 直接挂载（含 merge/层数/时长）；插件可注册专用施加器
+// （如 combat-wuxia 的 apply_poison 先算 M 再挂、apply_element 处理冰火相消）。
+// ctx: { combat, caster, target, entry: ResolvedEffect, inst, sourceId }
+type ApplyHandler = (ctx: any) => void | Promise<void>
+const applyHandlers = new Map<string, ApplyHandler>()
+
+export function registerApplyHandler(name: string, handler: ApplyHandler): void {
+  applyHandlers.set(name, handler)
+}
+
+/** 缺省施加器：按条目规格直接挂载到目标 */
+async function defaultMountApply(a: any): Promise<void> {
+  await mountInstance(a.combat, a.target, a.entry, { sourceId: a.sourceId })
+}
+
+/** 测试用：模块级状态重置（hooks/动作表/施加器表/当前战斗/通道注册表/公式明细） */
 export function __resetCombatModule(): void {
   hooks.clear()
   overrideHooks.clear()
   battleActions.clear()
+  applyHandlers.clear()
+  registerApplyHandler('mount', defaultMountApply)
   currentCombat = null
   clearChannels()
   formulaLog.length = 0
@@ -290,6 +318,9 @@ function addOverlays(base: CombatStats, ...overlays: (StatOverlay | undefined)[]
 // ── onLoad：effect type 注册 ─────────────────────────────────────────────
 
 export function onLoad(_ctx: PluginContext): void {
+  // 缺省施加器（zone 型条目的 apply 缺省值）
+  registerApplyHandler('mount', defaultMountApply)
+
   effectTypeRegistry.register('start_combat', async (params: any, execCtx: any) => {
     const sourceId = execCtx.sourceId ?? execCtx?._targetIds?.[0]
     await startCombat(params.enemies ?? [], params.allies ?? [sourceId], sourceId)
@@ -318,70 +349,101 @@ export function onLoad(_ctx: PluginContext): void {
   })
 
   // ── 通用战斗动作（本场语义，全部走效果区管线）──
+  // 数值一律经 effValue（层数缩放）→ 每个动作声明 percent 的基准（见各动作注释）
+  //
   // modify_stat：常驻/瞬态统计修正（无 trigger = 常驻；有 trigger = 该相位临时叠加）
+  //   点数组 stat（hit_bonus/dodge_bonus/crit_rate）吃 value.flat；倍率组吃 value.percent
   registerBattleAction('modify_stat', (actCtx: any) => {
-    const inst = actCtx.effect
+    const inst = actCtx.effect as BattleEffectInst
     if (!inst.stat) return
     if (inst.trigger && actCtx.overlay) {
-      accumulateStat(actCtx.overlay, inst.stat, inst.mode ?? 'flat', inst.value * Math.max(1, inst.stack))
+      accumulateStat(actCtx.overlay, inst.stat, effValue(inst))
     }
     // 常驻型（无 trigger）由 recalcStats 统一聚合
   })
 
   // modify_channel：公式中间量通道修正（无 trigger = 常驻；有 trigger = 该相位临时叠加）
-  // 通道名是不透明字符串（语义由注册它的插件解释，如 combat-wuxia 的 风格系数/命中率/防御）
+  // 通道名是不透明字符串（语义由注册它的插件解释，如 combat-wuxia 的 风格系数/准头/防御）
   registerBattleAction('modify_channel', (actCtx: any) => {
-    const inst = actCtx.effect
+    const inst = actCtx.effect as BattleEffectInst
     if (!inst.channel) return
-    const mode = inst.mode ?? 'flat'
-    const value = (typeof inst.value === 'number' ? inst.value : 0) * Math.max(1, inst.stack)
     if (inst.trigger && actCtx.overlay) {
-      accumulateChannel(actCtx.overlay.channels, inst.channel, mode, value)
+      accumulateChannelValue(actCtx.overlay.channels, inst.channel, effValue(inst))
     }
     // 常驻型（无 trigger）由 recalcStats 统一聚合
   })
 
-  // apply_status：「挂状态」类别——把 battle-effects 里的状态条目挂到目标身上（BUFF/DEBUFF 通用）
-  // 生命周期优先级：词条 turns/duration > 状态定义的 duration > 类别默认（5 回合，含本回合）
-  // 重复挂同一状态：merge（词条）> 状态定义 merge > 默认 refresh（刷新回合数）
-  // 注：本动作不感知"毒"等具体语义——毒由 combat-wuxia 的 apply_poison 算完 M 后调用同一 helper
-  registerBattleAction('apply_status', async (actCtx: any) => {
-    const inst = actCtx.effect
-    const statusId = inst.status ?? (typeof inst.value === 'object' && inst.value ? inst.value.status : undefined)
-    if (!statusId) return
-    const targetCombatant = inst.target === 'self' ? actCtx.self : actCtx.target
+  // mount_effect：zone 型引用的统一入口——把库条目按 apply 施加器挂到目标身上（BUFF/DEBUFF 通用）
+  // 时机（on_hit/on_use）与目标（self/enemy）由库条目的 target/apply_at 决定，技能行只传参数
+  registerBattleAction(MOUNT_ACTION, async (actCtx: any) => {
+    const inst = actCtx.effect as BattleEffectInst & { resolved?: ResolvedEffect }
+    const entry = inst.resolved
+    if (!entry) return
+    const targetCombatant = entry.target === 'self' ? actCtx.self : (actCtx.target ?? actCtx.self)
     if (!targetCombatant) return
-    await applyStatusTo(actCtx.combat, targetCombatant, statusId, {
-      sourceId: actCtx.self.entityId,
-      value: typeof inst.value === 'object' && inst.value ? { ...inst.value } : inst.value,
-      turns: typeof inst.turns === 'number' ? inst.turns : undefined,
-      merge: inst.merge,
+    const applierName = entry.apply ?? 'mount'
+    const applier = applyHandlers.get(applierName)
+    if (!applier) {
+      errorReporter.reportDedup(`battle-apply:${applierName}`, {
+        source: 'combat-base', severity: 'error',
+        message: `效果 '${inst.id}' 的施加器 '${applierName}' 未注册，挂载被跳过`,
+        suggestion: '检查库条目的 apply 字段拼写，或由插件用 registerApply 注册',
+      })
+      return
+    }
+    await applier({
+      combat: actCtx.combat, caster: actCtx.self, target: targetCombatant,
+      entry, inst, sourceId: actCtx.self.entityId,
+      job: actCtx.job, skillLevel: actCtx.skillLevel,
     })
   })
 
-  // action_block：禁止本次行动（action_pre 相位用；如定身/封穴禁止出招）
-  // 玩家侧被禁 → 本次行动被拒（回 IDLE 可改选其他行动）；NPC 侧被禁 → 本回合不出手
+  // action_block：禁止本次行动（action_pre 相位用；封穴类）
+  // 玩家与 NPC 一致：该次行动作废、轮到下一位（玩家不再"回 IDLE 改选"）
   registerBattleAction('action_block', (actCtx: any) => {
     if (actCtx.blockedRef) actCtx.blockedRef.blocked = true
-    const reason = typeof actCtx.effect?.value === 'string' ? `（${actCtx.effect.value}）` : ''
-    narrativeLog.write(`${getCharName(actCtx.self.entityId)} 无法行动${reason}！`, 'combat', 'combat-base')
+    narrativeLog.write(`${getCharName(actCtx.self.entityId)} 无法行动！`, 'combat', 'combat-base')
   })
 
-  // periodic_damage：回合初/相位点扣血（按 stack 缩放）
+  // periodic_damage：周期伤害（按层缩放）；value.percent 的基准 = 受方最大气血
   registerBattleAction('periodic_damage', async (actCtx: any) => {
-    const inst = actCtx.effect
-    const dmg = Math.max(1, Math.ceil((typeof inst.value === 'number' ? inst.value : 0) * Math.max(1, inst.stack)))
-    await applyDamageTo(actCtx.combat, actCtx.self, dmg, {
-      source: inst.sourceId, kind: 'periodic',
-    })
+    const inst = actCtx.effect as BattleEffectInst
+    const owner = actCtx.self as Combatant
+    const dmg = Math.max(0, Math.round(effAmount(inst, owner.maxHp)))
+    if (dmg <= 0) return
+    await applyDamageTo(actCtx.combat, owner, dmg, { source: inst.sourceId, kind: 'periodic' })
   })
 
-  // leech_hp / leech_mp / mp_drain / leech_mp_max：命中后吸收（数值平量 × stack）
+  // heal_hp / heal_mp：回复（封顶）；value.percent 的基准 = 自身最大气血/内力
+  registerBattleAction('heal_hp', (actCtx: any) => {
+    const inst = actCtx.effect as BattleEffectInst
+    const self = actCtx.self as Combatant
+    const amount = Math.max(0, Math.round(effAmount(inst, self.maxHp)))
+    if (amount <= 0) return
+    const before = self.hp
+    self.hp = Math.min(self.maxHp, self.hp + amount)
+    const healed = self.hp - before
+    narrativeLog.write(`${getCharName(self.entityId)} 回复了 ${healed} 点气血`, 'combat', 'combat-base')
+  })
+
+  registerBattleAction('heal_mp', (actCtx: any) => {
+    const inst = actCtx.effect as BattleEffectInst
+    const self = actCtx.self as Combatant
+    const amount = Math.max(0, Math.round(effAmount(inst, self.maxMp)))
+    if (amount <= 0) return
+    const before = self.mp
+    self.mp = Math.min(self.maxMp, self.mp + amount)
+    const healed = self.mp - before
+    narrativeLog.write(`${getCharName(self.entityId)} 回复了 ${healed} 点内力`, 'combat', 'combat-base')
+  })
+
+  // leech_hp / leech_mp：吸取转移给自己（value.percent 基准 = 对方最大气血/内力）
   registerBattleAction('leech_hp', (actCtx: any) => {
-    const inst = actCtx.effect
-    const amount = Math.max(0, Math.round((typeof inst.value === 'number' ? inst.value : 0) * Math.max(1, inst.stack)))
-    const self = actCtx.self, target = actCtx.target
+    const inst = actCtx.effect as BattleEffectInst
+    const self = actCtx.self as Combatant, target = actCtx.target as Combatant
     if (!target || target.dead) return
+    const amount = Math.max(0, Math.round(effAmount(inst, target.maxHp)))
+    if (amount <= 0) return
     const actual = Math.min(amount, target.hp)
     target.hp = Math.max(0, target.hp - actual)
     self.hp = Math.min(self.maxHp, self.hp + actual)
@@ -389,21 +451,58 @@ export function onLoad(_ctx: PluginContext): void {
   })
 
   registerBattleAction('leech_mp', (actCtx: any) => {
-    const inst = actCtx.effect
-    const amount = Math.max(0, Math.round((typeof inst.value === 'number' ? inst.value : 0) * Math.max(1, inst.stack)))
-    const self = actCtx.self, target = actCtx.target
+    const inst = actCtx.effect as BattleEffectInst
+    const self = actCtx.self as Combatant, target = actCtx.target as Combatant
     if (!target || target.dead) return
+    const amount = Math.max(0, Math.round(effAmount(inst, target.maxMp)))
+    if (amount <= 0) return
     const actual = Math.min(amount, target.mp)
     target.mp = Math.max(0, target.mp - actual)
     self.mp = Math.min(self.maxMp, self.mp + actual)
     narrativeLog.write(`${getCharName(self.entityId)} 吸收了 ${actual} 点内力`, 'combat', 'combat-base')
   })
 
+  // leech_hp_from_damage（饮血）：按**本次实际扣掉的血量**回血给自己；value.percent 基准 = 本次实际伤害
+  registerBattleAction('leech_hp_from_damage', (actCtx: any) => {
+    const inst = actCtx.effect as BattleEffectInst
+    const self = actCtx.self as Combatant
+    const dealt = typeof actCtx.pendingDamage === 'number' ? actCtx.pendingDamage : 0
+    const amount = Math.max(0, Math.round(effAmount(inst, dealt)))
+    if (amount <= 0) return
+    const before = self.hp
+    self.hp = Math.min(self.maxHp, self.hp + amount)
+    narrativeLog.write(`${getCharName(self.entityId)} 饮血回复 ${self.hp - before} 点气血`, 'combat', 'combat-base')
+  })
+
+  // extra_attack（追击）：命中后再打一次**同一招**；不递归（作业 isOriginal=false）、照常扣内力
+  // 每次行动的次数上限 = 库条目 max_per_action（缺省 1；写 0 = 不限）
+  registerBattleAction('extra_attack', (actCtx: any) => {
+    const inst = actCtx.effect as BattleEffectInst
+    const job = actCtx.job
+    if (!job || !job.isOriginal || !job.skillId) return
+    const limit = typeof inst.maxPerAction === 'number' ? inst.maxPerAction : 1
+    if (limit > 0 && actCtx.combat.extraAttacksLeft <= 0) return
+    const mod = modLoader.getMod()
+    const def = mod?.abilities?.[job.skillId]
+    const cost = typeof def?.cost === 'number' ? def.cost : 0
+    const src = actCtx.combat.combatants.get(job.source)
+    if (!src) return
+    if (src.mp < cost) {
+      narrativeLog.write(`${getCharName(job.source)} 内力不足，追击落空`, 'combat', 'combat-base')
+      return
+    }
+    if (cost > 0) src.mp -= cost
+    if (limit > 0) actCtx.combat.extraAttacksLeft--
+    actCtx.combat.pendingJobs.push({ ...job, isOriginal: false })
+    narrativeLog.write(`${getCharName(job.source)} 乘胜追击，再出一招！`, 'combat', 'combat-base')
+  })
+
   registerBattleAction('leech_mp_max', (actCtx: any) => {
-    const inst = actCtx.effect
-    const amount = Math.max(0, Math.round((typeof inst.value === 'number' ? inst.value : 0) * Math.max(1, inst.stack)))
-    const self = actCtx.self, target = actCtx.target
+    const inst = actCtx.effect as BattleEffectInst
+    const self = actCtx.self as Combatant, target = actCtx.target as Combatant
     if (!target || target.dead) return
+    const amount = Math.max(0, Math.round(effAmount(inst, target.maxMp)))
+    if (amount <= 0) return
     self.maxMp += amount
     self.absorbedMaxMp += amount
     // 目标侧上限削减（钳制：不能低于当前内力；实际削减量记账，结束回写 → NPC 缩水持久化）
@@ -416,23 +515,24 @@ export function onLoad(_ctx: PluginContext): void {
   })
 
   registerBattleAction('mp_drain', (actCtx: any) => {
-    const inst = actCtx.effect
-    const amount = Math.max(0, Math.round((typeof inst.value === 'number' ? inst.value : 0) * Math.max(1, inst.stack)))
-    const target = actCtx.target
+    const inst = actCtx.effect as BattleEffectInst
+    const target = actCtx.target as Combatant
     if (!target || target.dead) return
+    const amount = Math.max(0, Math.round(effAmount(inst, target.maxMp)))
+    if (amount <= 0) return
     target.mp = Math.max(0, target.mp - amount)
   })
 
-  // reflect：反震 y% 输出伤害（扣防前；受反震方自己的减伤影响）
+  // reflect：反震（value.percent 基准 = 受击前的待结算伤害；扣防前）
   registerBattleAction('reflect', async (actCtx: any) => {
     const job = actCtx.job
-    const inst = actCtx.effect
+    const inst = actCtx.effect as BattleEffectInst
     if (!job) return
-    const pct = typeof inst.value === 'number' ? inst.value : 0
-    const raw = Math.round(actCtx.pendingDamage * pct)
+    const raw = Math.round(effAmount(inst, actCtx.pendingDamage))
+    if (raw <= 0) return
     const attacker = actCtx.combat.combatants.get(job.source)
     if (!attacker) return
-    const reduced = Math.max(0, Math.round(raw * (1 - clamp(attacker.stats.damage_in, -0.9, 0.9))))
+    const reduced = Math.max(0, Math.round(raw * (1 - attacker.stats.damage_in)))
     narrativeLog.write(`${getCharName(actCtx.self.entityId)} 反震出 ${reduced} 点伤害！`, 'combat', 'combat-base')
     await applyDamageTo(actCtx.combat, attacker, reduced, { source: actCtx.self.entityId, kind: 'reflect' })
   })
@@ -442,7 +542,7 @@ export function onLoad(_ctx: PluginContext): void {
     const job = actCtx.job
     const inst = actCtx.effect
     if (!job || job.isCounter) return
-    const skillId = inst.skill ?? ((typeof inst.value === 'object' && inst.value?.skill) || null)
+    const skillId = inst.skill ?? null
     actCtx.combat.pendingJobs.push({
       source: actCtx.self.entityId,
       target: job.source,
@@ -460,7 +560,7 @@ export function onLoad(_ctx: PluginContext): void {
     if (!job) return
     if (actCtx.canceledRef) actCtx.canceledRef.canceled = true
     narrativeLog.write(`${getCharName(actCtx.self.entityId)} 化解了攻击，伤害被取消！`, 'combat', 'combat-base')
-    const skillId = inst.skill ?? ((typeof inst.value === 'object' && inst.value?.skill) || null)
+    const skillId = inst.skill ?? null
     if (skillId && !job.isCounter) {
       actCtx.combat.pendingJobs.push({
         source: actCtx.self.entityId,
@@ -510,34 +610,7 @@ export function onLoad(_ctx: PluginContext): void {
     await eventBus.emit('character:changed', { id: combatant.entityId })
   })
 
-  // apply_effect：引效果定义库条目施加（破甲/减闪避/毒/蓄势等）
-  registerBattleAction('apply_effect', async (actCtx: any) => {
-    const inst = actCtx.effect
-    const ref = typeof inst.value === 'object' && inst.value ? inst.value as Record<string, any> : null
-    const effectId = (ref?.effect ?? inst.value ?? inst.id) as string
-    const mod = modLoader.getMod()
-    const def = mod?.battleEffects?.[effectId]
-    if (!def) {
-      errorReporter.reportDedup(`battle-effect:${effectId}`, {
-        source: 'combat-base',
-        severity: 'warning',
-        message: `战斗效果 '${effectId}' 未在 battle-effects.toml 定义，跳过`,
-        suggestion: '检查 definitions/battle-effects.toml（插件默认层亦可）是否定义了该效果',
-      })
-      return
-    }
-    const targetCombatant = inst.target === 'self' ? actCtx.self : actCtx.target
-    if (!targetCombatant) return
-    const overrideValue = typeof ref?.value === 'number' ? ref.value : undefined
-    const overDur = ref?.duration
-    await applyEffectTo(actCtx.combat, targetCombatant, def, {
-      sourceId: actCtx.self.entityId,
-      valueOverride: overrideValue,
-      durationOverride: overDur,
-      // 实例 id 用库条目 id（叠层/触发一次即消/条件判定都按此 id 识别）
-      id: effectId,
-    })
-  })
+  // apply_effect 已并入 zone 型引用（mount_effect + 库条目的 apply 施加器）——不再单独注册动作
 }
 
 // ── onEnable ─────────────────────────────────────────────────────────────
@@ -575,7 +648,20 @@ export function onEnable(ctx: PluginContext): void {
           absorbedMaxMp: c.absorbedMaxMp, dead: c.dead,
           stats: { ...c.stats },
           channels: { ...c.channels },
-          effects: c.zone.map(z => ({ id: z.id, stack: z.stack, remainingTurns: z.remainingTurns, category: z.category })),
+          effects: c.zone.map(z => ({
+            id: z.id,
+            name: z.displayName ?? z.name ?? z.id,
+            stack: z.stack,
+            remainingTurns: z.remainingTurns,
+            category: z.category,
+            trigger: z.trigger,
+            action: z.action,
+            stat: z.stat,
+            channel: z.channel,
+            value: { ...z.value },
+            growth: z.growth,
+            usesLeft: z.usesLeft,
+          })),
         }
       }
       return state
@@ -606,6 +692,88 @@ export function onEnable(ctx: PluginContext): void {
     registerAction: (name: string, handler: BattleActionHandler): void => {
       battleActions.set(name, handler)
     },
+    /** 注册施加器（zone 型条目的"怎么挂"：缺省 mount = 直接挂载；如 毒=apply_poison） */
+    registerApply: (name: string, handler: ApplyHandler): void => {
+      applyHandlers.set(name, handler)
+    },
+    getApplyNames: (): string[] => [...applyHandlers.keys()],
+    /** 解析一条技能/天赋效果条目（含 { effect = "名", 参数… } 引用）→ { ok, entry } | { ok:false, error } */
+    resolveEffect: (raw: any): any => {
+      const r = resolveEffectRef(raw, modLoader.getMod()?.battleEffects)
+      return r.ok ? { ok: true, entry: r.entry } : { ok: false, error: r.error }
+    },
+    /**
+     * 常驻编译（被动技/天赋）：把解析后的条目直接推进效果区。
+     * duration 强制 'battle'（被动 = 会这个就整场常驻），其余参数尊重条目声明。
+     */
+    addResolvedEffect: (entityId: string, entry: ResolvedEffect, opts?: any): void => {
+      const c = currentCombat?.combatants.get(entityId)
+      if (!c || !entry) return
+      const spec = entry.spec
+      c.zone.push(makeInst({
+        id: opts?.id ?? entry.id,
+        name: entry.name,
+        trigger: spec.trigger,
+        action: spec.action,
+        value: spec.value,
+        growth: spec.growth,
+        target: entry.target,
+        duration: opts?.duration ?? 'battle',
+        stack: spec.stacks,
+        maxStack: spec.maxStack,
+        priority: spec.priority,
+        category: spec.category,
+        condition: spec.condition,
+        uses: spec.uses,
+        stat: spec.stat,
+        channel: spec.channel,
+        skill: spec.skill,
+        when_skill: spec.whenSkill,
+        levelNames: spec.levelNames,
+        maxPerAction: spec.maxPerAction,
+        sourceId: entityId,
+      }))
+      recalcStats(c)
+    },
+    /**
+     * 挂载一个**已解析**的条目到指定战斗单位（施加器内部用；保留条目的层数/合并/时长规格）。
+     * value/turns 可覆盖（如毒施加器算出的 M 快照）。
+     */
+    mountResolved: async (entityId: string, entry: ResolvedEffect, opts?: any): Promise<any> => {
+      if (!currentCombat) return null
+      const c = currentCombat.combatants.get(entityId)
+      if (!c || !entry) return null
+      return mountInstance(currentCombat, c, entry, {
+        sourceId: opts?.sourceId ?? entityId,
+        valueOverride: opts?.value,
+        turnsOverride: opts?.turns,
+      })
+    },
+    /**
+     * 按库条目 id 挂载到指定战斗单位（缺省施加器/测试用）。
+     * params 走参数白名单覆盖（stacks/value/merge…），value/turns 为便捷覆盖。
+     */
+    mountEffect: async (entityId: string, effectId: string, opts?: any): Promise<any> => {
+      if (!currentCombat) return null
+      const c = currentCombat.combatants.get(entityId)
+      if (!c) return null
+      const r = resolveEffectRef(
+        opts?.params ? { effect: effectId, ...opts.params } : { effect: effectId },
+        modLoader.getMod()?.battleEffects,
+      )
+      if (!r.ok) {
+        errorReporter.reportDedup(`battle-mount:${effectId}`, {
+          source: 'combat-base', severity: 'warning',
+          message: `挂载 '${effectId}' 失败：${r.error}`,
+        })
+        return null
+      }
+      return mountInstance(currentCombat, c, r.entry, {
+        sourceId: opts?.sourceId ?? entityId,
+        valueOverride: opts?.value,
+        turnsOverride: opts?.turns,
+      })
+    },
     /** 直接扣血（子插件自定义伤害阶段：毒 DoT 等）——走死亡相位/复活/(可选)受伤害后相位 */
     applyDamage: async (entityId: string, amount: number, opts?: any): Promise<void> => {
       if (!currentCombat) return
@@ -631,17 +799,44 @@ export function onEnable(ctx: PluginContext): void {
     getFormulaDetail: (): boolean => formulaDetail,
     /** 插件自定义公式阶段（毒 DoT 等）记录明细——与内建钩子共用同一环形缓冲 */
     recordFormula: (rec: any): void => { recordFormula(rec) },
-    /** 挂状态（「挂状态」类别）：插件自定义动作（如毒）算完 payload 后调它统一挂/刷新 */
-    applyStatus: async (entityId: string, statusId: string, opts?: any): Promise<any> => {
-      if (!currentCombat) return null
-      const c = currentCombat.combatants.get(entityId)
-      if (!c) return null
-      return applyStatusTo(currentCombat, c, statusId, {
-        sourceId: opts?.sourceId ?? entityId,
-        value: opts?.value,
-        turns: opts?.turns,
-        merge: opts?.merge,
-      })
+    // ── 效果库契约（手册 / 未来拖拽 UI 用）──
+    /** 参数词汇表（技能行可覆盖的白名单：中文标签/类型/说明） */
+    getParamVocab: (): any[] => PARAM_VOCAB.map(p => ({ ...p })),
+    /** 效果库目录：每条库条目的分类、参数、默认值（UI 表单数据源） */
+    getEffectCatalog: (): any[] => {
+      const defs = modLoader.getMod()?.battleEffects ?? {}
+      const out: any[] = []
+      for (const id of Object.keys(defs)) {
+        const r = resolveEffectRef(id, defs)
+        if (!r.ok) { out.push({ id, error: r.error }); continue }
+        const e = r.entry
+        out.push({
+          id,
+          name: e.name,
+          description: e.description,
+          delivery: e.delivery,
+          group: classifyEffect(e),
+          target: e.target,
+          at: e.at,
+          settle: e.spec.trigger,
+          action: e.spec.action,
+          apply: e.apply,
+          category: e.spec.category,
+          params: usedParams(e),
+          defaults: {
+            chance: e.chance,
+            value: e.spec.value,
+            growth: e.spec.growth,
+            stacks: e.spec.stacks,
+            turns: typeof e.spec.duration === 'object' ? e.spec.duration.turns : undefined,
+            merge: e.spec.merge,
+            max_stack: e.spec.maxStack,
+            uses: e.spec.uses,
+          },
+          paramLabels: e.paramLabels,
+        })
+      }
+      return out
     },
     // RNG 注入（测试确定性）
     setRng: (fn: () => number): void => {
@@ -742,6 +937,7 @@ async function startCombat(enemies: string[], allies: string[], _sourceId: strin
     rng: Math.random,
     pendingJobs: [],
     depthBudget: MAX_JOB_DEPTH,
+    extraAttacksLeft: 0,
     target: enemies[0] ?? null,
     actionOverlay: zeroOverlay(),
     actionOverlayOwner: null,
@@ -806,217 +1002,199 @@ function zeroStats(): CombatStats {
   return { hit_bonus: 0, dodge_bonus: 0, crit_rate: 0, crit_mul: 0, damage_out: 0, damage_in: 0, defense_mult: 0 }
 }
 
-// 聚合常驻修正（效果区无 trigger 的 modify_stat / modify_channel 条目 × stack）
+// 聚合常驻修正（效果区无 trigger 的 modify_stat / modify_channel 条目；数值已含层数缩放）
 function recalcStats(c: Combatant): void {
   const s = zeroStats()
   const bag = zeroChannelBag()
   for (const inst of c.zone) {
     if (inst.trigger) continue
-    if (inst.action === 'modify_stat' && inst.stat && inst.mode !== 'set') {
-      accumulateStat(s, inst.stat, inst.mode ?? 'flat', inst.value * Math.max(1, inst.stack))
+    if (inst.action === 'modify_stat' && inst.stat) {
+      accumulateStat(s, inst.stat, effValue(inst))
     } else if (inst.action === 'modify_channel' && inst.channel) {
-      accumulateChannel(bag, inst.channel, inst.mode ?? 'flat', inst.value * Math.max(1, inst.stack))
+      accumulateChannelValue(bag, inst.channel, effValue(inst))
     }
   }
   c.stats = s
   c.channels = bag
 }
 
-function accumulateStat(target: CombatStats | StatOverlay, stat: CombatStatKey, mode: 'percent' | 'flat', value: number): void {
-  const pctMode = mode === 'percent'
-  switch (stat) {
-    case 'hit_bonus':
-    case 'dodge_bonus':
-    case 'crit_rate':
-      // 点数制：flat → 原值（%点）；percent → ×100
-      target[stat] += pctMode ? value * 100 : value
-      break
-    case 'crit_mul':
-    case 'damage_out':
-    case 'damage_in':
-    case 'defense_mult':
-      // 倍率制：percent → 原值（0.3=30%）；flat → /100
-      target[stat] += pctMode ? value : value / 100
-      break
-  }
+/** 实例数值（已按层数乘性缩放）：value × (1 + growth×(层数−1)) */
+function effValue(inst: BattleEffectInst): EffectValue {
+  return scaleValue(inst.value, inst.growth, inst.stack)
 }
 
-// 构建效果实例
-function makeInst(raw: Partial<BattleEffectInst> & { id: string; action: string }): BattleEffectInst {
-  const durNorm = normalizeDuration(raw.duration ?? 'battle')
-  // 「挂状态」类条目（声明了 status）默认「攻击命中后挂给敌人」——作者可省略 trigger/target
-  // （自增益类请显式写 trigger = "on_use" / target = "self"；其它类别保持原语义：无 trigger = 常驻修正条目）
-  const isStatusApply = (raw as any).status !== undefined
-  const trigger = raw.trigger ?? (isStatusApply ? 'on_hit' : undefined)
-  const target = raw.target ?? (isStatusApply ? 'enemy' : 'self')
-  return {
+/** 实例数值落到具体量：flat + percent × 基准（基准由各动作定义） */
+function effAmount(inst: BattleEffectInst, basis: number): number {
+  return valueAmount(effValue(inst), basis)
+}
+
+/**
+ * 统计键累加——**不做单位换算**：点数组只认 value.flat，倍率组只认 value.percent。
+ * 用错（点位给 percent / 倍率给 flat）时忽略并报一次 warning（不静默折算）。
+ */
+function accumulateStat(target: CombatStats | StatOverlay, stat: CombatStatKey, v: EffectValue): void {
+  if (POINT_STATS.has(stat)) {
+    if (v.percent !== 0) {
+      errorReporter.reportDedup(`battle-stat-unit:${stat}`, {
+        source: 'combat-base', severity: 'warning',
+        message: `统计键 '${stat}' 是点数制，只吃 value.flat；本条给了 percent（已忽略度数）`,
+        suggestion: `改写 value = { flat = N }（N = 点数）`,
+      })
+    }
+    target[stat] += v.flat
+    return
+  }
+  if (v.flat !== 0 && RATIO_STATS.has(stat)) {
+    errorReporter.reportDedup(`battle-stat-unit:${stat}`, {
+      source: 'combat-base', severity: 'warning',
+      message: `统计键 '${stat}' 是倍率制，只吃 value.percent；本条给了 flat（已忽略平值）`,
+      suggestion: `改写 value = { percent = N }（N = 倍率，0.3 = 30%）`,
+    })
+  }
+  target[stat] += v.percent
+}
+
+/** 通道累加：set / flat / percent 可同时给（语义见 formula-channels 的 applyChannel） */
+function accumulateChannelValue(bag: ChannelBag, channel: string, v: EffectValue): void {
+  if (v.set !== undefined) accumulateChannel(bag, channel, 'set', v.set)
+  if (v.flat !== 0) accumulateChannel(bag, channel, 'flat', v.flat)
+  if (v.percent !== 0) accumulateChannel(bag, channel, 'percent', v.percent)
+}
+
+// 构建效果实例（归一化：数值/层数/时长）
+function makeInst(raw: any): BattleEffectInst {
+  const durNorm = normDuration(raw.duration ?? 'battle')
+  const inst: BattleEffectInst = {
     id: raw.id,
     name: raw.name,
-    trigger: trigger as BattleTrigger | undefined,
+    trigger: raw.trigger as BattleTrigger | undefined,
     action: raw.action,
-    chance: raw.chance ?? 1,
-    value: raw.value ?? 0,
-    target,
+    chance: typeof raw.chance === 'number' ? raw.chance : 1,
+    value: normalizeValue(raw.value),
+    growth: typeof raw.growth === 'number' && Number.isFinite(raw.growth) ? raw.growth : 0,
+    target: raw.target ?? 'self',
     duration: durNorm,
     remainingTurns: typeof durNorm === 'object' ? durNorm.turns : 0,
-    // 注意：定义层的 stack 是叠层策略字符串（refresh/increment/clamp），不是数值——
-    // 数值层数在 makeInst/applyEffectTo 中固定为 1（策略在 applyEffectTo 消费）
-    stack: typeof raw.stack === 'number' && Number.isFinite(raw.stack) ? raw.stack : 1,
+    stack: typeof raw.stack === 'number' && Number.isFinite(raw.stack) ? raw.stack : (typeof raw.stacks === 'number' ? raw.stacks : 1),
     maxStack: typeof raw.maxStack === 'number' && Number.isFinite(raw.maxStack)
       ? raw.maxStack
-      : (typeof (raw as any).max_stack === 'number' && Number.isFinite((raw as any).max_stack) ? (raw as any).max_stack : 99),
-    priority: raw.priority ?? 0,
+      : (typeof raw.max_stack === 'number' && Number.isFinite(raw.max_stack) ? raw.max_stack : 99),
+    priority: typeof raw.priority === 'number' ? raw.priority : 0,
     category: raw.category ?? 'neutral',
     condition: raw.condition,
-    recursive: raw.recursive ?? false,
     usesLeft: typeof raw.uses === 'number' ? raw.uses : null,
     stat: raw.stat as CombatStatKey,
-    mode: raw.mode,
     skill: raw.skill,
     channel: raw.channel,
-    when_skill: (raw as any).when_skill,
-    status: (raw as any).status,
-    merge: (raw as any).merge,
-    merge_group: (raw as any).merge_group,
-    k: (raw as any).k,
+    when_skill: raw.when_skill,
+    levelNames: raw.levelNames,
+    maxPerAction: typeof raw.maxPerAction === 'number' ? raw.maxPerAction : 1,
+    resolved: raw.resolved,
     sourceId: raw.sourceId ?? '',
   }
+  inst.displayName = displayNameOf(inst.name ?? inst.id, inst.levelNames, inst.stack)
+  return inst
 }
 
-function normalizeDuration(d: any): 'battle' | 'permanent' | { turns: number } {
+function normDuration(d: any): 'battle' | 'permanent' | { turns: number } {
   if (d === 'battle' || d === 'permanent') return d
   if (typeof d === 'number') return { turns: Math.max(1, Math.round(d)) }
   if (d && typeof d === 'object' && typeof d.turns === 'number') return { turns: Math.max(1, Math.round(d.turns)) }
   return 'battle'
 }
 
-// 施加效果（引用库定义 / 技能效果条目）
-export async function applyEffectTo(
-  combat: CombatScene,
-  combatant: Combatant,
-  def: BattleEffectDef,
-  opts: { sourceId: string; valueOverride?: number; durationOverride?: any; id?: string },
-): Promise<void> {
-  void combat
-  const inst = makeInst({
-    ...def,
-    id: opts.id ?? (def as any).id ?? (def as any).name ?? 'effect',
-    value: opts.valueOverride ?? def.value ?? 0,
-    duration: opts.durationOverride ?? def.duration ?? 'battle',
-    sourceId: opts.sourceId,
-  } as any)
-  // 同 id 叠层策略
-  const existing = combatant.zone.find(z => z.id === inst.id)
-  const stackMode = def.stack ?? 'refresh'
-  if (existing) {
-    if (stackMode === 'clamp') return
-    if (stackMode === 'increment') {
-      existing.stack = Math.min(existing.maxStack, existing.stack + 1)
-      if (typeof inst.duration === 'object') existing.remainingTurns = inst.duration.turns
-    } else { // refresh
-      existing.stack = 1
-      if (typeof inst.duration === 'object') existing.remainingTurns = inst.duration.turns
-    }
-    recalcStats(combatant)
-    return
-  }
-  combatant.zone.push(inst)
-  recalcStats(combatant)
+// ── 挂载（zone 型条目的公共实现）────────────────────────────────────────
+// 一个 zone 效果 = 库条目（时机/目标/结算动作/默认参数）+ 技能引用（参数覆盖，已由 resolveEffectRef 合并）。
+// 生命周期：技能行 turns > 库条目 duration > zone 默认 5 回合（含本回合）。
+// 重复施加按 merge 合并：
+//   refresh（缺省）：按本次声明的数值/层数重新施加，只重置时长
+//   stack         ：层数累加（受 max_stack 限制），基础数值不变（层数由 growth 放大）
+//   strongest     ：本次层数 ≥ 现有层数才升级（数值取大），否则只重置时长——弱的一击不降级
+
+function maxValue(a: EffectValue, b: EffectValue): EffectValue {
+  const out: EffectValue = { flat: Math.max(a.flat, b.flat), percent: Math.max(a.percent, b.percent) }
+  const set = b.set ?? a.set
+  if (set !== undefined) out.set = set
+  return out
 }
 
-// ── 挂状态（apply_status 类别的公共实现）────────────────────────────────
-// 「挂状态」= 技能/效果条目在命中或某相位把 battle-effects 里的一个**状态**挂到目标身上：
-//   · 生命周期：词条 turns > 状态定义 duration > 类别默认 5 回合（含本回合，`{turns:5}`）
-//   · 实例合并组：状态定义的 merge_group（缺省 = 状态 id）——毒 的 毒/猛毒/剧毒 三条定义共用
-//     组 "毒"，因此一个目标身上永远只有**一份**毒（对外显示名随最强那一级）
-//   · 合并策略：merge（词条）> 状态定义 merge > 默认 refresh（刷新回合数，不叠层）
-//     - refresh   ：同 id 刷新回合数（现有语义）
-//     - strongest ：k 取高、value 内数值取大、回合重置；新 k ≥ 旧 k 时连显示名一起升级
-//     - stack     ：走既有叠层语义（stack+1，受 max_stack 限制）
-// 返回挂上/刷新后的实例。
-export async function applyStatusTo(
+export async function mountInstance(
   combat: CombatScene,
-  combatant: Combatant,
-  statusId: string,
-  opts: { sourceId: string; value?: any; turns?: number; merge?: BattleEffectInst['merge'] },
+  owner: Combatant,
+  entry: ResolvedEffect,
+  opts: { sourceId: string; valueOverride?: EffectValue; turnsOverride?: number },
 ): Promise<BattleEffectInst | null> {
   if (!currentCombat || combat !== currentCombat) return null
-  const def = modLoader.getMod()?.battleEffects?.[statusId] as BattleEffectDef | undefined
-  if (!def) {
-    errorReporter.reportDedup(`battle-status:${statusId}`, {
-      source: 'combat-base', severity: 'warning',
-      message: `状态 '${statusId}' 未在 battle-effects.toml 定义，挂状态被跳过`,
-      suggestion: '检查该状态的来源条目里的 status 名，或在 battle-effects.toml 补定义',
-    })
-    return null
-  }
-  const 状态定义回合数 = typeof def.duration === 'object' && typeof (def.duration as any)?.turns === 'number'
-    ? (def.duration as any).turns as number
-    : undefined
-  // 类别默认 5 回合（含本回合）——仅"挂状态"类别适用，不影响其它 effects 的整场缺省
-  const 回合数 = (typeof opts.turns === 'number' ? opts.turns : undefined) ?? 状态定义回合数 ?? 5
-  const merge = opts.merge ?? (def as any).merge ?? 'refresh'
-  const group = (def as any).merge_group ?? statusId
-  const 新k = typeof (def as any).k === 'number' ? (def as any).k as number : undefined
+  const spec = entry.spec
+  const value = opts.valueOverride ?? spec.value
+  const turns = opts.turnsOverride ?? (typeof spec.duration === 'object' ? spec.duration.turns : undefined)
+  const duration: BattleEffectInst['duration'] = turns !== undefined
+    ? { turns: Math.max(1, Math.round(turns)) }
+    : spec.duration
 
-  const existing = combatant.zone.find(z => ((z as any).merge_group ?? z.id) === group)
+  const existing = owner.zone.find(z => z.id === entry.id)
   if (existing) {
-    if (merge === 'stack') {
-      existing.stack = Math.min(existing.maxStack, existing.stack + 1)
-      existing.remainingTurns = 回合数
-      existing.duration = { turns: 回合数 }
-      recalcStats(combatant)
-      return existing
+    if (typeof duration === 'object') {
+      existing.remainingTurns = duration.turns
+      existing.duration = duration
     }
-    if (merge === 'strongest') {
-      const 旧k = typeof existing.k === 'number' ? existing.k : 0
-      existing.value = mergeStrongestValue(existing.value, opts.value)
-      existing.remainingTurns = 回合数
-      existing.duration = { turns: 回合数 }
-      // 升级：更强的那一级接管显示名（更弱的一击只刷新 M/回合数，不降级）
-      if (新k !== undefined && 新k >= 旧k) {
-        existing.id = statusId
-        existing.name = (def as any).name
-        existing.k = 新k
+    if (spec.merge === 'stack') {
+      existing.stack = Math.min(existing.maxStack, existing.stack + spec.stacks)
+    } else if (spec.merge === 'strongest') {
+      if (spec.stacks >= existing.stack) {
+        existing.stack = spec.stacks
+        existing.value = maxValue(existing.value, value)
+        existing.name = entry.name
+        existing.levelNames = spec.levelNames
       }
-      recalcStats(combatant)
-      return existing
+    } else {
+      existing.stack = spec.stacks
+      existing.value = value
+      existing.name = entry.name
+      existing.levelNames = spec.levelNames
     }
-    // refresh（默认）
-    existing.stack = 1
-    if (opts.value !== undefined) existing.value = opts.value
-    existing.remainingTurns = 回合数
-    existing.duration = { turns: 回合数 }
-    recalcStats(combatant)
+    existing.growth = spec.growth
+    existing.category = spec.category
+    existing.displayName = displayNameOf(existing.name ?? existing.id, existing.levelNames, existing.stack)
+    recalcStats(owner)
+    if (!entry.apply) reportMount(owner, existing)
     return existing
   }
 
   const inst = makeInst({
-    ...def,
-    id: statusId,
-    value: opts.value ?? (def as any).value ?? 0,
-    duration: { turns: 回合数 },
-    merge: merge as any,
-    merge_group: group,
+    id: entry.id,
+    name: entry.name,
+    trigger: spec.trigger as BattleTrigger | undefined,
+    action: spec.action,
+    chance: 1,
+    value,
+    growth: spec.growth,
+    target: entry.target,
+    duration,
+    stack: spec.stacks,
+    maxStack: spec.maxStack,
+    priority: spec.priority,
+    category: spec.category,
+    condition: spec.condition,
+    uses: spec.uses,
+    stat: spec.stat,
+    channel: spec.channel,
+    skill: spec.skill,
+    when_skill: spec.whenSkill,
+    levelNames: spec.levelNames,
+    maxPerAction: spec.maxPerAction,
     sourceId: opts.sourceId,
-  } as any)
-  combatant.zone.push(inst)
-  recalcStats(combatant)
-  narrativeLog.write(`${getCharName(combatant.entityId)} 被挂上【${(def as any).name ?? statusId}】（${回合数} 回合）`, 'combat', 'combat-base')
+  })
+  owner.zone.push(inst)
+  recalcStats(owner)
+  reportMount(owner, inst)
   return inst
 }
 
-/** merge='strongest'：数值字段取较大者（对象递归；非数值取新值） */
-function mergeStrongestValue(oldValue: any, newValue: any): any {
-  if (typeof newValue === 'number' && typeof oldValue === 'number') return Math.max(oldValue, newValue)
-  if (newValue && typeof newValue === 'object' && !Array.isArray(newValue)) {
-    const out: Record<string, any> = { ...(oldValue && typeof oldValue === 'object' ? oldValue : {}) }
-    for (const [k, v] of Object.entries(newValue)) {
-      out[k] = mergeStrongestValue(out[k], v)
-    }
-    return out
-  }
-  return newValue
+/** 挂载日志（施加器自己写更具体日志时可以设 apply 跳过本条） */
+function reportMount(owner: Combatant, inst: BattleEffectInst): void {
+  const turns = typeof inst.duration === 'object' ? `（${inst.remainingTurns} 回合）` : ''
+  narrativeLog.write(`${getCharName(owner.entityId)} 被挂上【${inst.displayName ?? inst.id}】${turns}`, 'combat', 'combat-base')
 }
 
 // ── 回合循环 ─────────────────────────────────────────────────────────────
@@ -1078,7 +1256,7 @@ async function nextTurn(): Promise<void> {
 
   // 回合初相位（毒结算/到期削减在相位后）
   await runPhase(combat, 'turn_start', actor, makePhaseCtx(combat, null, actor, actor))
-  tickDurations(actor)
+  tickDurations(actor, 'turn_start')
   if (!currentCombat) return
   if (await checkBattleEnd()) return
   if (actor.dead || actor.hp <= 0) { await advanceTurn(); return }
@@ -1104,22 +1282,27 @@ async function advanceTurn(): Promise<void> {
   if (actor) {
     await runPhase(combat, 'turn_end', actor, makePhaseCtx(combat, null, actor, actor))
     await runChainHooks('turn_end', { actorId, combat })
+    // turn_end 结算的条目在相位之后再扣时长（turns = N 恰好结算 N 次）
+    if (currentCombat === combat) tickDurations(actor, 'turn_end')
   }
   combat.orderIndex++
   await nextTurn()
 }
 
-// 回合初 duration 扣减（相位结算后）
-function tickDurations(c: Combatant): void {
+// 回合初/回合末的 duration 扣减（相位结算之后）
+// 分桶规则：settle === 'turn_end' 的条目在 turn_end 相位之后扣，其余在 turn_start 相位之后扣
+// ——保证 turns = N 对两种结算相位都恰好结算 N 次（与施加时机无关）
+function tickDurations(c: Combatant, phase: 'turn_start' | 'turn_end'): void {
   let changed = false
   for (let i = c.zone.length - 1; i >= 0; i--) {
     const inst = c.zone[i]
-    if (typeof inst.duration === 'object') {
-      inst.remainingTurns--
-      if (inst.remainingTurns <= 0) {
-        c.zone.splice(i, 1)
-        changed = true
-      }
+    if (typeof inst.duration !== 'object') continue
+    const bucket = inst.trigger === 'turn_end' ? 'turn_end' : 'turn_start'
+    if (bucket !== phase) continue
+    inst.remainingTurns--
+    if (inst.remainingTurns <= 0) {
+      c.zone.splice(i, 1)
+      changed = true
     }
   }
   if (changed) recalcStats(c)
@@ -1170,15 +1353,19 @@ async function executePlayerAction(actorId: string, options: { type: string; ski
   const formulaStart = formulaLog.length
 
   // action_pre 相位：用技能前生效的效果（禁技 action_block / 对该技能加成 modify_stat·modify_channel）
-  // 注意在扣消耗之前——被禁则内力不扣、行动作废（玩家回 IDLE 可改选其他行动）
+  // 注意在扣消耗之前——被禁则内力不扣、**该次行动作废（轮到下一位）**，玩家与 NPC 一致
   const blockedRef = { blocked: false }
   combat.actionOverlay = zeroOverlay()
   combat.actionOverlayOwner = actorId
+  combat.extraAttacksLeft = 1
   await runPhaseWithOverlay(combat, 'action_pre', actor, makePhaseCtx(combat, null, actor, combat.combatants.get(targetId) ?? actor, {
     skillDef, skillLevel, blockedRef,
   }), combat.actionOverlay)
   if (!currentCombat) return
-  if (blockedRef.blocked) return
+  if (blockedRef.blocked) {
+    await advanceTurn()
+    return
+  }
 
   if (cost > 0) actor.mp -= cost
   if (skillDef) {
@@ -1246,6 +1433,7 @@ async function npcAutoAction(actorId: string): Promise<void> {
   const blockedRef = { blocked: false }
   combat.actionOverlay = zeroOverlay()
   combat.actionOverlayOwner = actorId
+  combat.extraAttacksLeft = 1
   await runPhaseWithOverlay(combat, 'action_pre', actor, makePhaseCtx(combat, null, actor, combat.combatants.get(targetId) ?? actor, {
     skillDef, skillLevel, blockedRef,
   }), combat.actionOverlay)
@@ -1513,7 +1701,9 @@ async function executeHit(
   if (!currentCombat || combat !== currentCombat) return { damage: 0, crit: false }
   const defenderStats = addOverlays(defender.stats, onTargetOverlay, mitigateOverlay)
   const dmgInReduction = defenderStats.damage_in
-  pending = Math.max(0, Math.round(pending * (1 - clamp(dmgInReduction, -0.9, 0.9))))
+  // 减伤/易伤：正 = 减伤、负 = 易伤（破绽类）。**不截断**——易伤侧无上限（伤害加深可无限叠），
+  // 数据层负责平衡；校验期对 |damage_in| > 3 的条目发 warning。
+  pending = Math.max(0, Math.round(pending * (1 - dmgInReduction)))
   // e7. −防御（归 0 规则）
   const defenderChannels = channelBagOf(defender, onTargetOverlay, mitigateOverlay)
   const defNorm = await runFormulaHook('defense_value', {
@@ -1529,31 +1719,35 @@ async function executeHit(
   })
 
   // e8. 扣血 + 受伤害后效果
+  // dealt = **实际扣掉的血量**（溢出的过量伤害不计入）——饮血等按实际伤害结算的效果用它
+  let dealt = 0
   if (final > 0) {
-    await applyDamageTo(combat, defender, final, { source: job.source, kind: 'hit' })
+    dealt = await applyDamageTo(combat, defender, final, { source: job.source, kind: 'hit' })
   }
   if (!currentCombat || combat !== currentCombat) return { damage: final, crit: isCrit }
   if (defender.dead || defender.hp <= 0) {
     narrativeLog.write(`${getCharName(defender.entityId)} 倒下了！`, 'combat', 'combat-base')
   } else {
-    await runPhaseStats(combat, 'damage_taken', defender, { ...baseCtx, pendingDamage: final })
+    await runPhaseStats(combat, 'damage_taken', defender, { ...baseCtx, pendingDamage: dealt })
   }
-  // 出手结束（命中路径）
-  await runPhase(combat, 'attack_end', attacker, baseCtx)
+  // 出手结束（命中路径）——pendingDamage = 本段实际扣血量（miss 路径为 0）
+  await runPhase(combat, 'attack_end', attacker, { ...baseCtx, pendingDamage: dealt })
   return { damage: final, crit: isCrit }
 }
 
 // 扣血 + 死亡处理（检查点：死亡相位 → 复活 → 胜负检查由调用方）
+// 返回**实际扣掉的血量**（0 = 没扣到，如已死亡/伤害为 0/被钳到 0）
 export async function applyDamageTo(
   combat: CombatScene,
   target: Combatant,
   damage: number,
   opts: { source: string; kind: 'hit' | 'periodic' | 'reflect' | 'external'; triggerTakenPhase?: boolean },
-): Promise<void> {
+): Promise<number> {
   void opts
-  if (damage <= 0 || target.dead) return
+  if (damage <= 0 || target.dead) return 0
   const prev = target.hp
   target.hp = Math.max(0, target.hp - Math.round(damage))
+  const dealt = prev - target.hp
   narrativeLog.write(`${getCharName(target.entityId)} 受到 ${Math.round(damage)} 点伤害（HP: ${prev}→${target.hp}）`, 'combat', 'combat-base')
   if (target.hp <= 0 && !target.dead) {
     target.dead = true
@@ -1563,12 +1757,13 @@ export async function applyDamageTo(
       narrativeLog.write(`${getCharName(target.entityId)} 力竭倒地。`, 'combat', 'combat-base')
     }
   }
-  // 受伤害后相位（v1.2：周期伤害/毒等"简化流程"的伤害也可声明触发——受伤害后效果照常生效）
+  // 受伤害后相位（周期伤害/毒等"简化流程"的伤害也可声明触发——受伤害后效果照常生效）
   if (opts.triggerTakenPhase && currentCombat === combat && !target.dead) {
-    await runPhase(combat, 'damage_taken', target, makePhaseCtx(combat, null, target, target, { pendingDamage: Math.round(damage) }))
+    await runPhase(combat, 'damage_taken', target, makePhaseCtx(combat, null, target, target, { pendingDamage: dealt }))
   }
   // 串行 await：避免多发 character:changed 在异步分发中互相 same-tick 覆盖
   await eventBus.emit('character:changed', { id: target.entityId })
+  return dealt
 }
 
 // ── 相位执行器 ───────────────────────────────────────────────────────────
@@ -1695,16 +1890,49 @@ function collectPhaseEffects(owner: Combatant, phase: BattleTrigger, ctx: PhaseC
   if (ctx.includeSkillEffects && skillId && ctx.attacker.entityId === owner.entityId) {
     const mod = modLoader.getMod()
     const def = mod?.abilities?.[skillId]
-    const effects = def?.effects as BattleEffectDef[] | undefined
+    const effects = def?.battle_effects as BattleEffectDef[] | undefined
     if (Array.isArray(effects)) {
       const level = getSkillLevel(owner.entityId, skillId)
-      for (const e of effects) {
-        if (!e) continue
-        // 「挂状态」类条目（声明了 status）默认攻击命中后触发——与 makeInst 的默认保持一致
-        const trig = (e as any).trigger ?? ((e as any).status !== undefined ? 'on_hit' : undefined)
-        if (trig !== phase) continue
-        if (typeof e.min_level === 'number' && level < e.min_level) continue
-        filtered.push(makeInst({ ...e, trigger: trig, id: `${skillId}#${e.action}`, sourceId: owner.entityId } as any))
+      for (const rawEntry of effects) {
+        if (!rawEntry) continue
+        const r = resolveEffectRef(rawEntry, mod?.battleEffects)
+        if (!r.ok) {
+          errorReporter.reportDedup(`battle-ref:${skillId}:${JSON.stringify(rawEntry)}`, {
+            source: 'combat-base', severity: 'error',
+            message: `技能 '${skillId}' 的战斗效果引用无效：${r.error}`,
+            suggestion: '检查 definitions/battle-effects.toml 的 [effects] 表',
+          })
+          continue
+        }
+        const e = r.entry
+        if (e.at !== phase) continue
+        if (typeof e.spec.minLevel === 'number' && level < e.spec.minLevel) continue
+        const inst = makeInst({
+          id: `${skillId}#${e.id}`,
+          name: e.name,
+          trigger: phase,
+          action: e.action,
+          chance: e.chance,
+          value: e.spec.value,
+          growth: e.spec.growth,
+          target: e.target,
+          duration: typeof e.spec.duration === 'object' ? e.spec.duration : 'battle',
+          stack: e.spec.stacks,
+          maxStack: e.spec.maxStack,
+          priority: e.spec.priority,
+          category: e.spec.category,
+          condition: e.spec.condition,
+          uses: e.spec.uses,
+          stat: e.spec.stat,
+          channel: e.spec.channel,
+          skill: e.spec.skill,
+          when_skill: e.spec.whenSkill,
+          levelNames: e.spec.levelNames,
+          maxPerAction: e.spec.maxPerAction,
+          resolved: e,
+          sourceId: owner.entityId,
+        })
+        filtered.push(inst)
       }
     }
   }

@@ -50,7 +50,7 @@ function wuxiaMod() {
         id: '蛤蟆功', name: '蛤蟆功', type: 'active', cost: 15, category: '气功',
         attack: false, // 增益/架势技：使用时不攻击，挂蓄势
         tags: ['气功'],
-        effects: [{ trigger: 'on_use', action: 'apply_effect', target: 'self', value: { effect: '蛤蟆功蓄势' } }],
+        battle_effects: [{ effect: '蛤蟆功蓄势' }],
       },
       太玄经: {
         id: '太玄经', name: '太玄经', type: 'active', cost: 0, category: '气功', tags: ['气功'],
@@ -59,51 +59,64 @@ function wuxiaMod() {
       寒冰掌: {
         id: '寒冰掌', name: '寒冰掌', type: 'active', power: 100, cost: 20, hits: 1,
         category: '拳掌', style: { 轻灵: 60, 毒性: 40 }, tags: ['拳掌'],
-        effects: [{ trigger: 'on_hit', action: 'apply_effect', chance: 1, target: 'enemy', value: { effect: '战中毒', value: 20 } }],
+        battle_effects: [{ effect: '战中毒', value: { flat: 20 } }],
       },
       三连掌: {
         id: '三连掌', name: '三连掌', type: 'active', power: 90, cost: 0, hits: 3,
-        category: '拳掌', style: { 厚重: 60 }, tags: ['拳掌'], effects: [],
+        category: '拳掌', style: { 厚重: 60 }, tags: ['拳掌'], battle_effects: [],
       },
-      // ── 毒（v1.2）：挂状态类别——命中后挂同名状态（毒/猛毒/剧毒 = k1/2/3，8 回合，回合开始结算）──
+      // ── 毒：zone 型引用——命中后挂「毒」状态（层数由词条 stacks 决定，回合开始结算）──
       毒沙掌: {
         id: '毒沙掌', name: '毒沙掌', type: 'active', power: 100, cost: 20, hits: 1,
         category: '拳掌', style: { 厚重: 60, 毒性: 40 }, tags: ['拳掌'],
-        effects: [{ action: 'apply_poison', status: '剧毒' }],
+        battle_effects: [{ effect: '毒', stacks: 3 }],
       },
       毒手: {
         id: '毒手', name: '毒手', type: 'active', power: 100, cost: 20, hits: 1,
         category: '拳掌', style: { 厚重: 60, 毒性: 10 }, tags: ['拳掌'],
-        effects: [{ action: 'apply_poison', status: '毒' }],
+        battle_effects: [{ effect: '毒', stacks: 1 }],
       },
       凌波微步: {
         id: '凌波微步', name: '凌波微步', type: 'passive', tags: [],
-        effects: [{ action: 'modify_stat', stat: 'dodge_bonus', mode: 'flat', value: 10 }],
+        battle_effects: [{ effect: '凌波（测试）' }],
       },
       神照经: {
         id: '神照经', name: '神照经', type: 'passive', tags: [],
-        effects: [{ trigger: 'death', action: 'revive', uses: 1, duration: 'battle' }],
+        battle_effects: [{ effect: '神照经' }],
       },
       火焰刀: {
         id: '火焰刀', name: '火焰刀', type: 'active', power: 100, cost: 20, hits: 1,
         category: '拳掌', style: { 厚重: 60 }, tags: ['拳掌'],
         power_curve: [[1, 1.0], [5, 1.5]],
-        effects: [],
+        battle_effects: [],
       },
     } as any,
     battleEffects: {
       蛤蟆功蓄势: {
-        name: '蛤蟆功蓄势', action: 'counter', trigger: 'damage_mitigate',
-        value: { skill: '蛤蟆功' }, duration: 'battle', uses: 1, category: 'buff',
+        name: '蛤蟆功蓄势', delivery: 'zone', target: 'self', apply_at: 'on_use',
+        action: 'counter', settle: 'damage_mitigate',
+        skill: '蛤蟆功', duration: 'battle', uses: 1, category: 'buff',
       },
       战中毒: {
-        name: '战中毒', action: 'periodic_damage', trigger: 'turn_start',
-        value: 15, duration: { turns: 3 }, category: 'debuff', stack: 'increment', max_stack: 5,
+        name: '战中毒', delivery: 'zone', target: 'enemy', action: 'periodic_damage',
+        settle: 'turn_start', value: { flat: 15 }, growth: 1, duration: { turns: 3 }, category: 'debuff',
+        merge: 'stack', max_stack: 5,
       },
-      // 毒三条定义（与插件默认层数据同构；merge_group 让三条共用一份实例）
-      毒: { name: '毒', action: 'poison_dot', trigger: 'turn_start', duration: { turns: 8 }, k: 1, merge: 'strongest', merge_group: '毒', category: 'debuff' },
-      猛毒: { name: '猛毒', action: 'poison_dot', trigger: 'turn_start', duration: { turns: 8 }, k: 2, merge: 'strongest', merge_group: '毒', category: 'debuff' },
-      剧毒: { name: '剧毒', action: 'poison_dot', trigger: 'turn_start', duration: { turns: 8 }, k: 3, merge: 'strongest', merge_group: '毒', category: 'debuff' },
+      // 毒：一条定义 + 层数（毒/猛毒/剧毒 = 1/2/3 层，显示名随层数）
+      毒: {
+        name: '毒', delivery: 'zone', target: 'enemy', apply: 'apply_poison',
+        action: 'poison_dot', settle: 'turn_start', duration: { turns: 8 },
+        value: { percent: 0.01 }, growth: 0.25, merge: 'strongest', category: 'debuff',
+        level_names: ['毒', '猛毒', '剧毒'],
+      },
+      '凌波（测试）': {
+        name: '凌波', delivery: 'zone', target: 'self', action: 'modify_stat',
+        stat: 'dodge_bonus', value: { flat: 10 }, duration: 'battle', category: 'buff',
+      },
+      神照经: {
+        name: '神照经', trigger: 'death', action: 'revive', uses: 1,
+        duration: 'battle', category: 'neutral',
+      },
     } as any,
     scripts: new Map<string, string>([
       ['damage_太玄经.js', 'return source.mp / 5'],
@@ -311,7 +324,7 @@ describe('combat-wuxia 公式', () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
     apiSystem.callSync('combat', 'addZoneEffect', 'enemy', {
-      id: '迷踪', action: 'modify_stat', stat: 'dodge_bonus', mode: 'flat', value: 200, duration: 'battle',
+      id: '迷踪', action: 'modify_stat', stat: 'dodge_bonus', value: { flat: 200 }, duration: 'battle',
     })
     // 108% − 200 = −92% → Miss
     const result = await playerAct('铁砂掌')
@@ -345,7 +358,7 @@ describe('combat-wuxia 公式', () => {
     expect(r1.damage).toBe(1000 - 55)
     // 通道「防御」percent 0.2 → 55×1.2 = 66
     apiSystem.callSync('combat', 'addZoneEffect', 'enemy', {
-      id: '铁布衫（防御）', action: 'modify_channel', channel: '防御', mode: 'percent', value: 0.2, duration: 'battle',
+      id: '铁布衫（防御）', action: 'modify_channel', channel: '防御', value: { percent: 0.2 }, duration: 'battle',
     })
     const r2 = await playerAct('铁砂掌')
     expect(r2.damage).toBe(1000 - 66)
@@ -357,14 +370,15 @@ describe('combat-wuxia 公式', () => {
 describe('combat-wuxia 公式中间量通道', () => {
   beforeEach(async () => { await boot() })
 
-  it('注册 9 个通道（getChannels，含毒伤害）', () => {
+  it('注册 12 个通道（getChannels，含毒伤害与准头/力道项/灵敏项）', () => {
     const ids = (apiSystem.callSync('combat', 'getChannels') as any[]).map(c => c.id)
     expect(ids).toEqual(expect.arrayContaining([
       '先攻', '命中率', '闪避率', '浮动系数', '防御', '武功威力', '风格系数', '其他加成', '毒伤害',
+      '准头', '力道项', '灵敏项',
     ]))
-    expect(ids.length).toBe(9)
+    expect(ids.length).toBe(12)
     // combat-wuxia 侧同名 API 透传同一清单
-    expect((apiSystem.callSync('combat-wuxia', 'getChannels') as any[]).length).toBe(9)
+    expect((apiSystem.callSync('combat-wuxia', 'getChannels') as any[]).length).toBe(12)
   })
 
   it('previewDamage：不进战斗也能拿到中间量（含命中率），战斗内则带实时通道', async () => {
@@ -380,7 +394,7 @@ describe('combat-wuxia 公式中间量通道', () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '飘逸', action: 'modify_channel', channel: '风格系数', mode: 'percent', value: 0.1, duration: 'battle',
+      id: '飘逸', action: 'modify_channel', channel: '风格系数', value: { percent: 0.1 }, duration: 'battle',
     })
     // (300+90)×1.05×(1.7785347×1.1)×1.44 + 19.2 = 1172.84 → 1173−55 = 1118
     const result = await playerAct('铁砂掌')
@@ -391,7 +405,7 @@ describe('combat-wuxia 公式中间量通道', () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '蓄势', action: 'modify_channel', channel: '武功威力', mode: 'percent', value: 0.3, duration: 'battle',
+      id: '蓄势', action: 'modify_channel', channel: '武功威力', value: { percent: 0.3 }, duration: 'battle',
     })
     // 威力 90×1.3 = 117 → (300+117)×1.05×1.7785347×1.44 + 19.2 = 1140.6 → 1141−55 = 1086
     const result = await playerAct('铁砂掌')
@@ -402,7 +416,7 @@ describe('combat-wuxia 公式中间量通道', () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
     apiSystem.callSync('combat', 'addZoneEffect', 'enemy', {
-      id: '破防', action: 'modify_channel', channel: '防御', mode: 'set', value: 0, duration: 'battle',
+      id: '破防', action: 'modify_channel', channel: '防御', value: { set: 0 }, duration: 'battle',
     })
     const result = await playerAct('铁砂掌')
     expect(result.damage).toBe(1068)
@@ -411,11 +425,17 @@ describe('combat-wuxia 公式中间量通道', () => {
   it('相位通道：damage_base 相位的「其他加成」只作用于该段', async () => {
     const mod = modLoader.getMod()!
     const 蓄力掌Id = '蓄力掌'
+    Object.assign(mod.battleEffects, {
+      '蓄力（测试）': {
+        name: '蓄力', delivery: 'instant', trigger: 'damage_base', target: 'self',
+        action: 'modify_channel', channel: '其他加成', value: { flat: 50 }, category: 'buff',
+      },
+    })
     Object.assign(mod.abilities, {
       [蓄力掌Id]: {
         id: 蓄力掌Id, name: 蓄力掌Id, type: 'active', power: 100, cost: 20, hits: 1,
         category: '拳掌', style: { 厚重: 60 }, tags: ['拳掌'],
-        effects: [{ trigger: 'damage_base', action: 'modify_channel', channel: '其他加成', mode: 'flat', value: 50 }],
+        battle_effects: [{ effect: '蓄力（测试）' }],
       },
     })
     ;(entitySystem.get('character', 'player') as any).abilities[蓄力掌Id] = { level: 5, xp: 0 }
@@ -433,7 +453,7 @@ describe('combat-wuxia 公式中间量通道', () => {
     const mod = modLoader.getMod()!
     Object.assign(mod.battleEffects, {
       '黑蜂针专精': {
-        name: '黑蜂针专精', action: 'modify_channel', channel: '其他加成', mode: 'flat', value: 100,
+        name: '黑蜂针专精', action: 'modify_channel', channel: '其他加成', value: { flat: 100 },
         target: 'self', duration: 'battle', when_skill: '黑蜂针',
       },
     })
@@ -448,7 +468,7 @@ describe('combat-wuxia 公式中间量通道', () => {
   it('浮动系数通道：set 1.0 → 稳定输出', async () => {
     await startBattle(() => 0.9) // 不注册 float_mul override（用插件默认）
     apiSystem.callSync('combat', 'addZoneEffect', 'player', {
-      id: '心如止水', action: 'modify_channel', channel: '浮动系数', mode: 'set', value: 1.0, duration: 'battle',
+      id: '心如止水', action: 'modify_channel', channel: '浮动系数', value: { set: 1.0 }, duration: 'battle',
     })
     const result = await playerAct('铁砂掌')
     expect(result.damage).toBe(IRON_PALM_DAMAGE)
@@ -591,14 +611,16 @@ describe('combat-wuxia 毒（v1.2）', () => {
     expect(result.damage).toBe(POISON_HIT_DAMAGE)
   })
 
-  it('命中后挂上同名毒 DEBUFF：k/M/回合数', async () => {
+  it('命中后挂上毒 DEBUFF：层数（剧毒=3 层）/M/回合数', async () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
     await playerAct('毒沙掌')
     const effects = state().combatants.enemy.effects as any[]
-    const poison = effects.find((e: any) => e.id === '剧毒')
+    const poison = effects.find((e: any) => e.id === '毒')
     expect(poison).toBeDefined()
-    expect(poison.stack).toBe(1)
+    expect(poison.stack).toBe(3)                 // 词条 stacks = 3 → 剧毒
+    expect(poison.name).toBe('剧毒')              // 显示名随层数
+    expect(poison.value.flat).toBeCloseTo(POISON_M * 0.1, 6)   // M 快照
     // 8 回合起算；playerAct 内部已推进到敌方回合（turn_start 毒发一次 + 扣 1 回合）→ 剩 7
     expect(poison.remainingTurns).toBe(7)
   })
@@ -621,34 +643,39 @@ describe('combat-wuxia 毒（v1.2）', () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
     // 只挂一次毒（用平A 推进回合，避免"每次命中都刷新毒"改变计数）
-    await apiSystem.call('combat', 'applyStatus', 'enemy', '剧毒', { sourceId: 'player', value: { m: POISON_M, k: 3 } })
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '毒', {
+      sourceId: 'player', params: { stacks: 3 }, value: { percent: 0.01, flat: POISON_M * 0.1 },
+    })
+    const hasPoison = () => (state().combatants.enemy.effects as any[]).some(e => e.id === '毒')
     for (let i = 0; i < 7; i++) await playerAct(null)
-    expect((state().combatants.enemy.effects as any[]).some(e => e.id === '剧毒')).toBe(true)
+    expect(hasPoison()).toBe(true)
     // 第 8 次敌方回合开始：毒发第 8 次 → 扣到 0 → 移除
     await playerAct(null)
-    expect((state().combatants.enemy.effects as any[]).some(e => e.id === '剧毒')).toBe(false)
+    expect(hasPoison()).toBe(false)
   })
 
-  it('重复命中：单实例、k 取高、M 取大、回合重置（弱毒不覆盖强毒）', async () => {
+  it('重复命中：单实例、层数取高、M 取大、回合重置（弱毒不覆盖强毒）', async () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
-    await playerAct('毒沙掌')       // 剧毒 k=3, M≈210.3
-    await playerAct('毒手')         // 毒 k=1, M 更小 → 不降级
+    await playerAct('毒沙掌')       // 3 层，M≈210.3
+    await playerAct('毒手')         // 1 层，M 更小 → 不降级
     const effects = state().combatants.enemy.effects as any[]
-    const poisons = effects.filter(e => e.id === '剧毒' || e.id === '毒' || e.id === '猛毒')
+    const poisons = effects.filter(e => e.id === '毒')
     expect(poisons.length).toBe(1)              // 一份毒
-    expect(poisons[0].id).toBe('剧毒')           // 显示名保持最强那一级
+    expect(poisons[0].stack).toBe(3)            // 层数保持强的
+    expect(poisons[0].name).toBe('剧毒')
   })
 
-  it('重复命中：先弱后强 → 升级为毒等级名并刷新回合', async () => {
+  it('重复命中：先弱后强 → 层数与显示名升级，回合重置', async () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
-    await playerAct('毒手')        // 毒 k=1
-    expect((state().combatants.enemy.effects as any[]).find(e => e.id === '毒')).toBeDefined()
-    await playerAct('毒沙掌')      // 剧毒 k=3 → 升级
+    await playerAct('毒手')        // 1 层（毒）
+    expect((state().combatants.enemy.effects as any[]).find(e => e.id === '毒')?.name).toBe('毒')
+    await playerAct('毒沙掌')      // 3 层 → 升级为剧毒
     const effects = state().combatants.enemy.effects as any[]
-    expect(effects.some(e => e.id === '毒')).toBe(false)
-    expect(effects.find(e => e.id === '剧毒')).toBeDefined()
+    expect(effects.filter(e => e.id === '毒').length).toBe(1)
+    expect(effects.find(e => e.id === '毒').stack).toBe(3)
+    expect(effects.find(e => e.id === '毒').name).toBe('剧毒')
   })
 
   it('通道「毒伤害」：percent 减免即时毒伤与持续毒伤；set 0 = 免疫（仍挂毒）', async () => {
@@ -656,7 +683,7 @@ describe('combat-wuxia 毒（v1.2）', () => {
     await startBattle(() => 0.9)
     // 受方自带 毒伤害 -50%：即时毒伤只并入一半 M；持续毒伤同样减半（M 快照仍是原值）
     apiSystem.callSync('combat', 'addZoneEffect', 'enemy', {
-      id: '抗毒', action: 'modify_channel', channel: '毒伤害', mode: 'percent', value: -0.5, duration: 'battle',
+      id: '抗毒', action: 'modify_channel', channel: '毒伤害', value: { percent: -0.5 }, duration: 'battle',
     })
     const result = await playerAct('毒沙掌')
     const 半M = POISON_M / 2
@@ -672,18 +699,18 @@ describe('combat-wuxia 毒（v1.2）', () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
     apiSystem.callSync('combat', 'addZoneEffect', 'enemy', {
-      id: '毒免疫', action: 'modify_channel', channel: '毒伤害', mode: 'set', value: 0, duration: 'battle',
+      id: '毒免疫', action: 'modify_channel', channel: '毒伤害', value: { set: 0 }, duration: 'battle',
     })
     const result = await playerAct('毒沙掌')
     expect(result.damage).toBe(1068 - 55)      // 只剩普通伤害
-    expect((state().combatants.enemy.effects as any[]).some(e => e.id === '剧毒')).toBe(true)
+    expect((state().combatants.enemy.effects as any[]).some(e => e.id === '毒')).toBe(true)
   })
 
   it('持续毒伤不吃通用减伤 damage_in（护体无效）', async () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
     apiSystem.callSync('combat', 'addZoneEffect', 'enemy', {
-      id: '护体', action: 'modify_stat', stat: 'damage_in', mode: 'percent', value: -0.5, duration: 'battle',
+      id: '护体', action: 'modify_stat', stat: 'damage_in', value: { percent: -0.5 }, duration: 'battle',
     })
     await playerAct('毒沙掌')
     const rec = (apiSystem.callSync('combat', 'getFormulaHistory') as any[])
@@ -696,20 +723,24 @@ describe('combat-wuxia 毒（v1.2）', () => {
     // 玩家攻击全部落空 → 本场对敌方唯一的伤害来源就是毒 DoT
     await apiSystem.call('combat', 'registerHook', 'hit_rate', () => -100)
     await startBattle(() => 0.9)
-    // 受伤害后效果：给自己挂一个可观测的状态（战中毒，3 回合）
+    // 受伤害后钩子：注册一个探针动作，把「战中毒」挂到受击者身上（证明该相位确实被触发）
+    apiSystem.callSync('combat', 'registerAction', 'probe_mount', async (actCtx: any) => {
+      await apiSystem.call('combat', 'mountEffect', actCtx.self.entityId, '战中毒', { sourceId: 'player' })
+    })
     apiSystem.callSync('combat', 'addZoneEffect', 'enemy', {
-      id: '受击印记', trigger: 'damage_taken', action: 'apply_effect', target: 'self',
-      value: { effect: '战中毒' }, duration: 'battle',
+      id: '受击印记', trigger: 'damage_taken', action: 'probe_mount', duration: 'battle',
     })
     // 直接挂毒（不经攻击）
-    await apiSystem.call('combat', 'applyStatus', 'enemy', '剧毒', { sourceId: 'player', value: { m: POISON_M, k: 3 } })
+    await apiSystem.call('combat', 'mountEffect', 'enemy', '毒', {
+      sourceId: 'player', params: { stacks: 3 }, value: { percent: 0.01, flat: POISON_M * 0.1 },
+    })
     expect(state().combatants.enemy.hp).toBe(ENEMY_HP)
     await playerAct('毒沙掌')   // 攻击落空；敌方回合开始毒发 → 触发 damage_taken
     const effects = state().combatants.enemy.effects as any[]
     expect(effects.some(e => e.id === '战中毒')).toBe(true)
   })
 
-  it('毒杀：回合开始毒死 → 该角色本回合不行动', async () => {
+  it('毒杀：行动前毒发致死 → 该角色本回合无法行动（死亡，而非额外的"打断"机制）', async () => {
     await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
     await startBattle(() => 0.9)
     // 敌方残血：中毒后下一回合开始必被毒死
@@ -732,15 +763,15 @@ describe('combat-wuxia 毒（v1.2）', () => {
 describe('combat-wuxia 数据校验', () => {
   beforeEach(async () => { await boot() })
 
-  it('递归类效果 chance≥1 → 校验报错', () => {
+  it('repeat 类效果 chance≥1 → 校验报错（会无限复读）', () => {
     const mod = modLoader.getMod()!
     Object.assign(mod.battleEffects, {
       '连招': {
-        name: '连招', action: 'repeat', trigger: 'action_end', chance: 1, recursive: true,
+        name: '连招', delivery: 'instant', action: 'repeat', trigger: 'action_end', chance: 1,
       },
     })
     validateBattleData()
-    expect(errorReporter.getErrors().some(e => e.message.includes('recursive') || e.message.includes('递归'))).toBe(true)
+    expect(errorReporter.getErrors().some(e => e.message.includes('chance < 1'))).toBe(true)
   })
 
   it('特殊系技能缺脚本 → 校验报错', () => {
@@ -765,21 +796,48 @@ describe('combat-wuxia 数据校验', () => {
     expect(errorReporter.getErrors().some(e => e.message.includes('category'))).toBe(true)
   })
 
-  it('apply_effect 引用不存在的效果 → 校验报错', () => {
+  it('技能引用不存在的效果 → 校验报错（列出可用效果）', () => {
     const mod = modLoader.getMod()!
-    const yh = {
-      id: '妖火', name: '妖火', type: 'active', power: 10, cost: 0, category: '拳掌', tags: [], effects: [],
-    } as any
-    yh.effects = [{ trigger: 'on_hit', action: 'apply_effect', value: { effect: '不存在' } }]
-    Object.assign(mod.abilities, { '妖火': yh })
+    Object.assign(mod.abilities, {
+      '妖火': {
+        id: '妖火', name: '妖火', type: 'active', power: 10, cost: 0, category: '拳掌', tags: [],
+        battle_effects: [{ effect: '不存在' }],
+      },
+    })
     validateBattleData()
-    expect(errorReporter.getErrors().some(e => e.message.includes('不存在的战斗效果'))).toBe(true)
+    const err = errorReporter.getErrors().find(e => e.message.includes("引用了不存在的战斗效果 '不存在'"))
+    expect(err).toBeDefined()
+    expect(err!.suggestion ?? '').toContain('毒')
+  })
+
+  it('技能引用里写了白名单外的字段 → 校验报错（结构字段由库条目决定）', () => {
+    const mod = modLoader.getMod()!
+    Object.assign(mod.abilities, {
+      '越权掌': {
+        id: '越权掌', name: '越权掌', type: 'active', power: 10, cost: 0, category: '拳掌', tags: [],
+        battle_effects: [{ effect: '毒', action: 'modify_stat' }],
+      },
+    })
+    validateBattleData()
+    expect(errorReporter.getErrors().some(e => e.message.includes('不在参数白名单内'))).toBe(true)
+  })
+
+  it('技能仍用旧字段 effects → 校验报错（已改名 battle_effects）', () => {
+    const mod = modLoader.getMod()!
+    Object.assign(mod.abilities, {
+      '旧写法掌': {
+        id: '旧写法掌', name: '旧写法掌', type: 'active', power: 10, cost: 0, category: '拳掌', tags: [],
+        effects: [{ trigger: 'on_hit', action: 'leech_hp', value: 5 }],
+      },
+    })
+    validateBattleData()
+    expect(errorReporter.getErrors().some(e => e.message.includes('该字段已改名为 battle_effects'))).toBe(true)
   })
 
   it('未注册的公式通道 → 校验报错（列出可用通道）', () => {
     const mod = modLoader.getMod()!
     Object.assign(mod.battleEffects, {
-      '乱写': { name: '乱写', action: 'modify_channel', channel: '不存在的通道', mode: 'percent', value: 0.1 },
+      '乱写': { name: '乱写', delivery: 'zone', target: 'self', apply_at: 'on_use', action: 'modify_channel', channel: '不存在的通道', value: { percent: 0.1 }, duration: 'battle' },
     })
     validateBattleData()
     const err = errorReporter.getErrors().find(e => e.message.includes('未注册的公式通道'))
@@ -787,19 +845,52 @@ describe('combat-wuxia 数据校验', () => {
     expect(err!.suggestion ?? '').toContain('风格系数')
   })
 
-  it('mode=set 用于 modify_stat → 校验报错（仅通道支持覆盖语义）', () => {
+  it('value.set 用于 modify_stat → 校验报错（仅通道支持覆盖语义）', () => {
     const mod = modLoader.getMod()!
     Object.assign(mod.battleEffects, {
-      '硬设': { name: '硬设', action: 'modify_stat', stat: 'damage_out', mode: 'set', value: 0.5 },
+      '硬设': { name: '硬设', action: 'modify_stat', stat: 'damage_out', value: { set: 0.5 } },
     })
     validateBattleData()
-    expect(errorReporter.getErrors().some(e => e.message.includes("mode='set' 只允许用于 modify_channel"))).toBe(true)
+    expect(errorReporter.getErrors().some(e => e.message.includes('value.set 只允许用于 modify_channel'))).toBe(true)
+  })
+
+  it('点数制统计键给了 percent → 校验报错（不做静默换算）', () => {
+    const mod = modLoader.getMod()!
+    Object.assign(mod.battleEffects, {
+      '错单位': { name: '错单位', delivery: 'zone', target: 'self', apply_at: 'on_use', action: 'modify_stat', stat: 'crit_rate', value: { percent: 0.5 }, duration: 'battle' },
+    })
+    validateBattleData()
+    expect(errorReporter.getErrors().some(e => e.message.includes('是点数制'))).toBe(true)
+  })
+
+  it('未注册的施加器 → 校验报错（列出可用施加器）', () => {
+    const mod = modLoader.getMod()!
+    Object.assign(mod.battleEffects, {
+      '鬼施加': { name: '鬼施加', delivery: 'zone', target: 'enemy', apply: '没这个施加器', action: 'periodic_damage', settle: 'turn_start', value: { flat: 1 } },
+    })
+    validateBattleData()
+    expect(errorReporter.getErrors().some(e => e.message.includes("apply '没这个施加器' 未注册"))).toBe(true)
+  })
+
+  it('技能侧把 repeat 的 chance 覆盖成 ≥1 → 校验报错', () => {
+    const mod = modLoader.getMod()!
+    Object.assign(mod.battleEffects, {
+      '连招': { name: '连招', delivery: 'instant', action: 'repeat', trigger: 'action_end', chance: 0.3 },
+    })
+    Object.assign(mod.abilities, {
+      '无限连': {
+        id: '无限连', name: '无限连', type: 'active', power: 10, cost: 0, category: '拳掌', tags: [],
+        battle_effects: [{ effect: '连招', chance: 1 }],
+      },
+    })
+    validateBattleData()
+    expect(errorReporter.getErrors().some(e => e.message.includes('chance 必须 < 1'))).toBe(true)
   })
 
   it('when_skill 引用未定义技能 → 校验报错', () => {
     const mod = modLoader.getMod()!
     Object.assign(mod.battleEffects, {
-      '错技能': { name: '错技能', action: 'modify_channel', channel: '武功威力', mode: 'flat', value: 10, when_skill: '无此武功' },
+      '错技能': { name: '错技能', delivery: 'instant', action: 'modify_channel', channel: '武功威力', value: { flat: 10 }, when_skill: '无此武功' },
     })
     validateBattleData()
     expect(errorReporter.getErrors().some(e => e.message.includes("when_skill '无此武功'"))).toBe(true)
@@ -823,49 +914,37 @@ describe('combat-wuxia 数据校验', () => {
     expect(errorReporter.getErrors().some(e => e.message.includes("引用了未注册的公式通道 '没这个'"))).toBe(true)
   })
 
-  // ── 毒（v1.2）校验 ──
-  it('apply_poison 缺少 status → 校验报错', () => {
-    const mod = modLoader.getMod()!
-    Object.assign(mod.abilities, {
-      缺状态毒掌: { id: '缺状态毒掌', name: '缺状态毒掌', type: 'active', power: 10, cost: 0, category: '拳掌', tags: [], effects: [{ action: 'apply_poison' }] },
-    })
-    validateBattleData()
-    expect(errorReporter.getErrors().some(e => e.message.includes('缺少 status'))).toBe(true)
-  })
-
-  it('apply_poison 引用不存在的状态 → 校验报错', () => {
-    const mod = modLoader.getMod()!
-    Object.assign(mod.abilities, {
-      幽灵毒掌: { id: '幽灵毒掌', name: '幽灵毒掌', type: 'active', power: 10, cost: 0, category: '拳掌', style: { 毒性: 10 }, tags: [], effects: [{ action: 'apply_poison', status: '不存在之毒' }] },
-    })
-    validateBattleData()
-    expect(errorReporter.getErrors().some(e => e.message.includes("引用了不存在的状态 '不存在之毒'"))).toBe(true)
-  })
-
-  it('毒状态 k 越界 → 校验报错（当前支持 1..3）', () => {
+  // ── 毒 / 冰火（v4.0）校验 ──
+  it('毒条目的 action 与施加器不配对 → 校验报错', () => {
     const mod = modLoader.getMod()!
     Object.assign(mod.battleEffects, {
-      超级毒: { name: '超级毒', action: 'poison_dot', trigger: 'turn_start', k: 5, merge_group: '毒', category: 'debuff' },
+      怪毒掌法: { name: '怪毒掌法', delivery: 'zone', target: 'enemy', apply: 'apply_poison', action: 'periodic_damage', settle: 'turn_start', duration: { turns: 8 }, value: { percent: 0.01 } },
     })
     validateBattleData()
-    expect(errorReporter.getErrors().some(e => e.message.includes("的 k '5' 非法"))).toBe(true)
-  })
-
-  it('合并组内 action 不一致 → 校验报错（防"一份毒、两套结算"）', () => {
-    const mod = modLoader.getMod()!
-    Object.assign(mod.battleEffects, {
-      怪毒: { name: '怪毒', action: 'periodic_damage', trigger: 'turn_start', value: 1, k: 1, merge_group: '毒', category: 'debuff' },
-    })
-    validateBattleData()
-    expect(errorReporter.getErrors().some(e => e.message.includes("同属合并组 '毒' 但 action 不同"))).toBe(true)
+    expect(errorReporter.getErrors().some(e => e.message.includes('结算动作应为 poison_dot'))).toBe(true)
   })
 
   it('毒词条但 style.毒性 缺省 → warning（毒功系数只吃人物毒功）', () => {
     const mod = modLoader.getMod()!
     Object.assign(mod.abilities, {
-      没毒性毒掌: { id: '没毒性毒掌', name: '没毒性毒掌', type: 'active', power: 10, cost: 0, category: '拳掌', tags: [], effects: [{ action: 'apply_poison', status: '毒' }] },
+      没毒性毒掌: {
+        id: '没毒性毒掌', name: '没毒性毒掌', type: 'active', power: 10, cost: 0, category: '拳掌', tags: [],
+        battle_effects: [{ effect: '毒' }],
+      },
     })
     validateBattleData()
     expect(errorReporter.getErrors().some(e => e.message.includes('style.毒性 缺省/为 0'))).toBe(true)
+  })
+
+  it('毒词条 + style.毒性 > 0 → 无 warning', () => {
+    const mod = modLoader.getMod()!
+    Object.assign(mod.abilities, {
+      有毒性毒掌: {
+        id: '有毒性毒掌', name: '有毒性毒掌', type: 'active', power: 10, cost: 0, category: '拳掌', tags: [],
+        style: { 毒性: 20 }, battle_effects: [{ effect: '毒', stacks: 2 }],
+      },
+    })
+    validateBattleData()
+    expect(errorReporter.getErrors().some(e => e.message.includes('style.毒性 缺省/为 0'))).toBe(false)
   })
 })

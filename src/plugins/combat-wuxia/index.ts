@@ -32,10 +32,13 @@ import { getEntityAttr } from '../../core/entity-utils'
 import type { CommandDef } from '../../core/command-registry'
 import {
   CH, WUXIA_CHANNEL_DEFS, applyChannel, channelOf, computeHitRate, computeStandardDamage,
-  computeDefaultAttack, defenseBase, powerCurve, computePoisonBase, computePoisonDot,
+  computeDefaultAttack, defenseBase, powerCurve, computePoisonBase,
+  applyPoisonMitigation, POISON_M_RATE,
   SKILL_STYLE_KEYS,
 } from './formula'
 import type { ChannelBag, CharStyleValues } from './formula'
+import { displayNameOf, resolveEffectRef, scaleValue, valueAmount, POINT_STATS, STAT_KEYS } from '../combat-base/effect-entry'
+import type { ResolvedEffect } from '../combat-base/effect-entry'
 
 // ── 常量与面板 ──────────────────────────────────────────────────────────
 
@@ -155,7 +158,10 @@ export function onEnable(ctx: PluginContext): void {
     return
   }
   const registerHook = combatMethod('registerHook') as (name: string, handler: any) => void
-  const combatApi = { registerAction: combatMethod('registerAction') }
+  const combatApi = {
+    registerAction: combatMethod('registerAction'),
+    registerApply: combatMethod('registerApply'),
+  }
 
   // ── 公式通道注册（中间量；mod 数据按名引用，combat-base 只存不解释）──
   for (const def of WUXIA_CHANNEL_DEFS) {
@@ -239,10 +245,12 @@ export function onEnable(ctx: PluginContext): void {
   registerHook('turn_end', clearSkillCommands)
   ctx.events.on('combat:end', () => clearSkillCommands())
 
-  // ── 毒：两个自定义战斗动作（v1.2）──────────────────────────────────────
-  // apply_poison：命中后算 M（施加时快照）并挂/刷新毒状态（毒/猛毒/剧毒共用一份实例）
-  // poison_dot ：目标回合开始，按 k 与 M 结算持续毒伤（简化流程：只过「毒伤害」通道）
-  combatApi.registerAction('apply_poison', applyPoisonAction)
+  // ── 毒 / 冰火：施加器（zone 型条目的 apply 字段引用它们）─────────────────
+  // apply_poison ：命中后算 M（施加时快照）再挂毒状态（层数由词条 stacks 决定）
+  // poison_dot   ：毒状态的结算动作（该角色行动前发作）
+  // apply_element：火毒/寒毒——挂本元素 + 清自己对立毒（层数 ≤ 本次）+ 引爆对方对立毒
+  combatApi.registerApply('apply_poison', applyPoisonApply)
+  combatApi.registerApply('apply_element', applyElementApply)
   combatApi.registerAction('poison_dot', poisonDotAction)
 
   // ── API ──
@@ -422,23 +430,22 @@ async function compileCombatant(hctx: CompileCtx): Promise<void> {
       const def = mod.abilities?.[abilityId]
       if (!def || def.type !== 'passive') continue
       const level = typeof (entry as any)?.level === 'number' ? (entry as any).level : 0
-      const effects = def.effects as any[] | undefined
+      const effects = def.battle_effects as any[] | undefined
       if (!Array.isArray(effects)) continue
       const key = effectKey('passive', abilityId)
-      // 一次性效果已消耗（inst id = key#action）：skill 级与 inst 级都要命中
+      // 一次性效果已消耗（inst id = key#effectId）：skill 级与 inst 级都要命中
       const consumedMatch = consumed.some(c => c === key || c.startsWith(`${key}#`))
       if (consumedMatch) continue
-      for (const e of effects) {
-        if (!e) continue
-        if (typeof e.min_level === 'number' && level < e.min_level) continue
-        apiSystem.callSync('combat', 'addZoneEffect', combatant.entityId, {
-          id: `${key}#${e.action}`, trigger: e.trigger, action: e.action,
-          chance: e.chance, value: e.value, target: e.target ?? 'self',
-          duration: e.duration ?? 'battle',
-          priority: e.priority ?? 0, category: e.category ?? 'neutral',
-          condition: e.condition, uses: e.uses, stat: e.stat, mode: e.mode, skill: e.skill,
-          channel: e.channel, when_skill: e.when_skill,
-          sourceId: combatant.entityId,
+      for (const raw of effects) {
+        if (!raw) continue
+        const r = resolveEffectRef(raw, mod.battleEffects)
+        if (!r.ok) {
+          reportEffectRefError(`被动技 '${abilityId}'`, r.error)
+          continue
+        }
+        if (typeof r.entry.spec.minLevel === 'number' && level < r.entry.spec.minLevel) continue
+        apiSystem.callSync('combat', 'addResolvedEffect', combatant.entityId, r.entry, {
+          id: `${key}#${r.entry.id}`,
         })
       }
     }
@@ -450,22 +457,21 @@ async function compileCombatant(hctx: CompileCtx): Promise<void> {
       const def = mod.talentDefs?.[talentId]
       if (!def) continue
       const level = typeof lvl === 'number' ? lvl : 0
-      // 机制类：talent.battle_effects 直接进效果区
+      // 机制类：talent.battle_effects 直接进效果区（常驻，与被动技同容器）
       const battleEffects = (def as any).battle_effects as any[] | undefined
       if (Array.isArray(battleEffects)) {
         const key = effectKey('talent', talentId)
         const consumedMatch = consumed.some(c => c === key || c.startsWith(`${key}#`))
         if (!consumedMatch) {
-          for (const e of battleEffects) {
-            if (!e) continue
-            apiSystem.callSync('combat', 'addZoneEffect', combatant.entityId, {
-              id: `${key}#${e.action}`, trigger: e.trigger, action: e.action,
-              chance: e.chance, value: e.value, target: e.target ?? 'self',
-              duration: e.duration ?? 'battle',
-              priority: e.priority ?? 0, category: e.category ?? 'neutral',
-              condition: e.condition, uses: e.uses, stat: e.stat, mode: e.mode, skill: e.skill,
-              channel: e.channel, when_skill: e.when_skill,
-              sourceId: combatant.entityId,
+          for (const raw of battleEffects) {
+            if (!raw) continue
+            const r = resolveEffectRef(raw, mod.battleEffects)
+            if (!r.ok) {
+              reportEffectRefError(`天赋 '${talentId}'`, r.error)
+              continue
+            }
+            apiSystem.callSync('combat', 'addResolvedEffect', combatant.entityId, r.entry, {
+              id: `${key}#${r.entry.id}`,
             })
           }
         }
@@ -505,7 +511,7 @@ async function compileCombatant(hctx: CompileCtx): Promise<void> {
             if (value === 0) continue
             apiSystem.callSync('combat', 'addZoneEffect', combatant.entityId, {
               id: effectKey('talent', talentId) + `#${m.formula}`, action: 'modify_stat',
-              stat: map.stat, mode: 'percent', value, duration: 'battle',
+              stat: map.stat, value: { percent: value }, duration: 'battle',
               category: 'neutral', sourceId: combatant.entityId,
             })
           } else {
@@ -513,7 +519,7 @@ async function compileCombatant(hctx: CompileCtx): Promise<void> {
             if (value === 0) continue
             apiSystem.callSync('combat', 'addZoneEffect', combatant.entityId, {
               id: effectKey('talent', talentId) + `#${m.formula}`, action: 'modify_stat',
-              stat: map.stat, mode: 'flat', value, duration: 'battle',
+              stat: map.stat, value: { flat: value }, duration: 'battle',
               category: 'neutral', sourceId: combatant.entityId,
             })
           }
@@ -756,21 +762,18 @@ async function wuxiaBaseDamage(hctx: any): Promise<{ value: number; parts: Recor
   }
 }
 
-// ── 毒（v1.2）：即时毒伤 / 施加 / 每回合结算 ─────────────────────────────
+// ── 毒 / 火毒 / 寒毒：即时毒伤 + 施加器 + 持续结算 ────────────────────────
 
-/** 技能上的毒词条（apply_poison）；无则返回 null */
-function poisonEntryOf(skill: any): any | null {
-  const list = Array.isArray(skill?.effects) ? skill.effects : []
-  return list.find((e: any) => e && e.action === 'apply_poison') ?? null
-}
-
-/** 该毒词条对应的状态定义（拿 k 与回合数） */
-function poisonStatusDef(entry: any): any | null {
-  const statusId = typeof entry?.status === 'string' ? entry.status : undefined
-  if (!statusId) return null
-  const mod = modLoader.getMod()
-  const def = mod?.battleEffects?.[statusId]
-  return def ? { statusId, def } : null
+/** 技能上的毒词条：解析后 apply = 'apply_poison' 的那一条 */
+function poisonEntryOf(skill: any): { entry: ResolvedEffect } | null {
+  const list = Array.isArray(skill?.battle_effects) ? skill.battle_effects : []
+  const defs = modLoader.getMod()?.battleEffects
+  for (const raw of list) {
+    if (!raw) continue
+    const r = resolveEffectRef(raw, defs)
+    if (r.ok && r.entry.apply === 'apply_poison') return { entry: r.entry }
+  }
+  return null
 }
 
 /** 毒面板读数：技能毒性（技能侧）/ 人物毒功（人物侧）/ 人物暗毒系数 */
@@ -783,72 +786,163 @@ function poisonPanel(attackerId: string, skill: any): { 技能毒性: number; �
   }
 }
 
+/** 该段武功威力（power × 威力曲线 / 段数） */
+function perHitPowerOf(skill: any, level: number): number {
+  const hits = typeof skill?.hits === 'number' && skill.hits >= 1 ? skill.hits : 1
+  return ((typeof skill?.power === 'number' ? skill.power : 0) * powerCurve(skill, level)) / hits
+}
+
 /** 即时毒伤：返回 M（原值，供 DEBUFF 快照）与 M′（并入本次伤害）
  *  减免以**受方**的通道包为准（「毒伤害」是受害一方的减免：抗毒/医疗等） */
 function poisonImmediate(
   source: CompileCombatant, skill: any, perHitPower: number, targetChannels: ChannelBag | undefined,
 ): { M: number; M应用: number; partKey: string } | null {
-  const entry = poisonEntryOf(skill)
-  if (!entry) return null
+  const found = poisonEntryOf(skill)
+  if (!found) return null
   const panel = poisonPanel(source.entityId, skill)
   const r = computePoisonBase({ 技能威力: perHitPower, ...panel, channels: targetChannels })
-  const status = poisonStatusDef(entry)
-  const 等级名 = status?.def?.name ?? status?.statusId ?? '毒'
+  const 等级名 = displayNameOf(found.entry.name ?? found.entry.id, found.entry.spec.levelNames, found.entry.spec.stacks)
   return { M: r.M, M应用: r.M应用, partKey: `即时毒伤（${等级名}）` }
 }
 
-/** 施加毒状态：命中后由技能词条（apply_poison）触发；M 用施加时快照（不过「毒伤害」减免） */
-async function applyPoisonAction(actCtx: any): Promise<void> {
-  const entry = actCtx.effect
-  const status = poisonStatusDef(entry)
-  if (!status) return
-  const attacker = actCtx.self as CompileCombatant
-  const target = entry.target === 'self' ? actCtx.self : actCtx.target
+/**
+ * 施加器 apply_poison：先算毒功面板的 M 快照，再以 M 作为实例数值挂到目标身上。
+ * 实例数值 = { percent: 1%气血上限, flat: 0.1×M }，层数倍率由条目的 growth 负责。
+ */
+async function applyPoisonApply(a: any): Promise<void> {
+  const attacker = a.caster as CompileCombatant
+  const target = a.target as CompileCombatant
   if (!attacker || !target || target.dead) return
-  const skillId = actCtx.job?.skillId ?? null
+  const skillId = a.job?.skillId ?? null
   const skill = skillId ? modLoader.getMod()?.abilities?.[skillId] : null
   if (!skill) return
-  const level = typeof actCtx.skillLevel === 'number' ? actCtx.skillLevel : 1
-  const hits = typeof (skill as any).hits === 'number' && (skill as any).hits >= 1 ? (skill as any).hits : 1
-  const perHitPower = ((typeof skill.power === 'number' ? skill.power : 0) * powerCurve(skill, level)) / hits
+  const level = typeof a.skillLevel === 'number' ? a.skillLevel : 1
   const panel = poisonPanel(attacker.entityId, skill)
-  const r = computePoisonBase({ 技能威力: perHitPower, ...panel, channels: undefined })
-  // 挂/刷新毒状态（毒/猛毒/剧毒 共用一份实例；k 取高、M 取大、回合重置）
-  await apiSystem.call('combat', 'applyStatus', target.entityId, status.statusId, {
+  const r = computePoisonBase({ 技能威力: perHitPowerOf(skill, level), ...panel, channels: undefined })
+  const entry = a.entry as ResolvedEffect
+  // 实例数值：percent = 气血上限比例（条目声明，默认 1%），flat = 0.1×M（毒功面板快照）
+  const value = {
+    percent: entry.spec.value.percent,
+    flat: r.M * POISON_M_RATE,
+  }
+  await apiSystem.call('combat', 'mountResolved', target.entityId, entry, {
     sourceId: attacker.entityId,
-    value: { m: r.M, k: typeof status.def?.k === 'number' ? status.def.k : 1 },
+    value,
   })
-  narrativeLog.write(`${getCharName(attacker.entityId)} 使 ${getCharName(target.entityId)} 中了【${status.def?.name ?? status.statusId}】`, 'combat', 'combat-wuxia')
+  narrativeLog.write(
+    `${getCharName(attacker.entityId)} 使 ${getCharName(target.entityId)} 中了【${displayNameOf(entry.name ?? entry.id, entry.spec.levelNames, entry.spec.stacks)}】`,
+    'combat', 'combat-wuxia',
+  )
 }
 
-/** 持续毒伤：状态挂在谁身上，就在谁的回合开始结算（简化流程：只过「毒伤害」通道） */
+/** 持续毒伤：状态挂在谁身上，就在结算相位发作（简化流程：只过「毒伤害」通道） */
 async function poisonDotAction(actCtx: any): Promise<void> {
   const inst = actCtx.effect
   const target = actCtx.self as CompileCombatant
   if (!target || target.dead) return
-  const k = typeof inst.k === 'number' ? inst.k : 1
-  const value = inst.value
-  const M = typeof value?.m === 'number' ? value.m : (typeof value === 'number' ? value : 0)
   const channels = actCtx.channels?.self as ChannelBag | undefined
-  const result = computePoisonDot({ k, M, maxHp: target.maxHp, channels })
+  // 实例数值 = { percent: 1%×气血上限, flat: 0.1×M }，层数倍率由 growth 承担
+  const scaled = scaleValue(inst.value, inst.growth, inst.stack)
+  const raw = valueAmount(scaled, target.maxHp)
+  const value = applyPoisonMitigation(raw, channels)
   apiSystem.callSync('combat', 'recordFormula', {
     hook: 'poison_dot',
     sourceId: inst.sourceId,
     targetId: target.entityId,
-    parts: result.parts,
+    parts: {
+      毒等级: inst.stack,
+      层数倍率: 1 + inst.growth * Math.max(0, inst.stack - 1),
+      M快照: inst.value.flat / POISON_M_RATE,
+      上限项: inst.value.percent * target.maxHp,
+      基准毒伤: raw,
+      减免后: value,
+    },
     channels: { source: {}, target: channels ?? {} },
-    value: result.value,
+    value,
   })
-  narrativeLog.write(`【${inst.name ?? inst.id}】发作：${getCharName(target.entityId)} 受到 ${result.value} 点毒伤`, 'combat', 'combat-wuxia')
+  narrativeLog.write(`【${inst.displayName ?? inst.name ?? inst.id}】发作：${getCharName(target.entityId)} 受到 ${value} 点毒伤`, 'combat', 'combat-wuxia')
   // 简化流程：不走命中/暴击/浮动/防御/减伤；扣血后触发"受伤害后"相位（受伤害类天赋/效果照常生效）
-  await apiSystem.call('combat', 'applyDamage', target.entityId, result.value, {
+  await apiSystem.call('combat', 'applyDamage', target.entityId, value, {
     source: inst.sourceId, kind: 'periodic', triggerTakenPhase: true,
   })
+}
+
+// ── 冰火相消（施加器 apply_element）──────────────────────────────────────
+// 规则（2026-09 定稿）：
+//   1) 对方得到本次层数的本元素毒（火毒 x / 寒毒 x）
+//   2) 自己身上**层数 ≤ 本次层数**的对立毒被清除（低于我们用的级别就不冷了/不热了）
+//   3) 对方身上若有对立毒 → 冷热对冲：按其层数立刻结算一次伤害，随即清除（天生不共存）
+
+function zoneEffectsOf(combatant: CompileCombatant): any[] {
+  return Array.isArray(combatant?.zone) ? combatant.zone : []
+}
+
+function findZoneEffect(combatant: CompileCombatant, id: string): any | null {
+  return zoneEffectsOf(combatant).find((z: any) => z && z.id === id) ?? null
+}
+
+async function applyElementApply(a: any): Promise<void> {
+  const caster = a.caster as CompileCombatant
+  const target = a.target as CompileCombatant
+  const entry = a.entry as ResolvedEffect
+  if (!caster || !target || target.dead) return
+  const element = String(a.entry?.applyArgs?.element ?? entry.id)
+  const opposite = String(a.entry?.applyArgs?.opposite ?? '')
+  const stacks = Math.max(1, entry.spec.stacks)
+
+  // 1) 先把本元素毒挂上去（合并策略由库条目决定：strongest = 取高层数）
+  await apiSystem.call('combat', 'mountResolved', target.entityId, entry, {
+    sourceId: caster.entityId,
+  })
+  if (!opposite) return
+
+  // 2) 清自己身上"层数 ≤ 本次层数"的对立毒
+  const own = findZoneEffect(caster, opposite)
+  if (own && own.stack <= stacks) {
+    caster.zone.splice(caster.zone.indexOf(own), 1)
+    apiSystem.callSync('combat', 'recalcStats', caster.entityId)
+    narrativeLog.write(`${getCharName(caster.entityId)} 以${element}之力化解了自身的【${own.displayName ?? own.id}】`, 'combat', 'combat-wuxia')
+  }
+
+  // 3) 引爆对方身上的对立毒（按层数结算一次），随即清除
+  const foe = findZoneEffect(target, opposite)
+  if (!foe) return
+  const scaled = scaleValue(foe.value, foe.growth, foe.stack)
+  const channels = combatChannelBagOf(target.entityId)
+  const burst = applyPoisonMitigation(valueAmount(scaled, target.maxHp), channels)
+  target.zone.splice(target.zone.indexOf(foe), 1)
+  apiSystem.callSync('combat', 'recalcStats', target.entityId)
+  narrativeLog.write(
+    `冷热对冲！${getCharName(target.entityId)} 的【${foe.displayName ?? foe.id}】被引爆（${burst} 点伤害）`,
+    'combat', 'combat-wuxia',
+  )
+  if (burst > 0) {
+    await apiSystem.call('combat', 'applyDamage', target.entityId, burst, {
+      source: caster.entityId, kind: 'periodic', triggerTakenPhase: true,
+    })
+  }
+}
+
+/** 取战斗单位的通道包（引爆伤害过「毒伤害」减免用） */
+function combatChannelBagOf(entityId: string): ChannelBag | undefined {
+  try {
+    const st = apiSystem.callSync('combat', 'getCombatState')
+    return st?.combatants?.[entityId]?.channels as ChannelBag | undefined
+  } catch { return undefined }
 }
 
 function getCharName(charId: string): string {
   const char = entitySystem.get('character', charId) as any
   return char?.name ?? charId
+}
+
+/** 效果引用解析失败的统一上报（技能/被动/天赋三处共用） */
+function reportEffectRefError(owner: string, error: string): void {
+  errorReporter.reportDedup(`battle-ref:${owner}:${error}`, {
+    source: 'combat-wuxia', severity: 'error',
+    message: `${owner} 的战斗效果引用无效：${error}`,
+    suggestion: '检查 definitions/battle-effects.toml 的 [effects] 表（技能只写 { effect = "名", 参数… }）',
+  })
 }
 
 // ── 动态技能指令 ─────────────────────────────────────────────────────────
@@ -907,110 +1001,153 @@ export function validateBattleData(): void {
   try {
     channelIds = new Set((apiSystem.callSync('combat', 'getChannels') as any[]).map(c => c.id))
   } catch { /* combat 未启用：无通道表可校验 */ }
+  let applyNames = new Set<string>()
+  try {
+    applyNames = new Set(apiSystem.callSync('combat', 'getApplyNames') as string[])
+  } catch { /* combat 未启用：无施加器表可校验 */ }
+  const defs = mod.battleEffects ?? {}
 
-  /** 效果条目契约校验（battle-effects 条目与技能自带效果共用） */
-  const validateEffectEntry = (owner: string, e: any): void => {
-    if (!e || typeof e !== 'object') return
-    if (e.trigger && !BATTLE_TRIGGER_NAMES.includes(e.trigger)) {
-      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的效果 trigger '${e.trigger}' 非法`, suggestion: `可用相位：${BATTLE_TRIGGER_NAMES.join('/')}` })
+  /** 库条目（battle-effects.toml）契约校验 */
+  const validateDef = (id: string, def: any): void => {
+    const owner = `战斗效果 '${id}'`
+    if (!def || typeof def !== 'object') return
+    if (typeof def.action !== 'string' || def.action.length === 0) {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 缺少 action` })
+      return
     }
-    if (e.recursive && (!(typeof e.chance === 'number') || e.chance >= 1)) {
-      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的递归类效果 chance 必须 < 1` })
+    if (!actionNames.has(def.action)) {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 action '${def.action}' 未注册`, suggestion: `已注册动作：${[...actionNames].join('、')}` })
     }
-    // 中间量通道契约
-    if (e.action === 'modify_channel') {
-      if (typeof e.channel !== 'string' || e.channel.length === 0) {
+    const delivery = def.delivery === 'zone' ? 'zone' : 'instant'
+    // 相位合法性
+    const phase = delivery === 'zone' ? (def.settle ?? def.trigger) : def.trigger
+    if (phase && !BATTLE_TRIGGER_NAMES.includes(phase)) {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的${delivery === 'zone' ? ' settle' : ' trigger'} '${phase}' 非法`, suggestion: `可用相位：${BATTLE_TRIGGER_NAMES.join('/')}` })
+    }
+    if (def.apply_at !== undefined && !BATTLE_TRIGGER_NAMES.includes(def.apply_at)) {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 apply_at '${def.apply_at}' 非法` })
+    }
+    // 施加器
+    const applier = def.apply ?? 'mount'
+    if (!applyNames.has(applier)) {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 apply '${applier}' 未注册`, suggestion: `已注册施加器：${[...applyNames].join('、')}` })
+    }
+    // 合并策略
+    if (def.merge !== undefined && !['refresh', 'stack', 'strongest'].includes(def.merge)) {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 merge '${def.merge}' 非法`, suggestion: '允许：refresh / stack / strongest' })
+    }
+    // 数值形态
+    const value = def.value
+    if (value !== undefined && typeof value !== 'number' && (typeof value !== 'object' || value === null)) {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 value 必须是数字或 { flat, percent, set } 对象` })
+    }
+    if (value && typeof value === 'object' && value.set !== undefined && def.action !== 'modify_channel') {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 value.set 只允许用于 modify_channel（统计键无覆盖语义）` })
+    }
+    // 统计键 / 通道落点
+    if (def.action === 'modify_stat') {
+      if (!STAT_KEYS.has(def.stat)) {
+        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 stat '${def.stat}' 不是合法统计键`, suggestion: `可用：${[...STAT_KEYS].join('、')}` })
+      } else if (value && typeof value === 'object') {
+        const point = POINT_STATS.has(def.stat)
+        if (point && value.percent) {
+          errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 stat '${def.stat}' 是点数制，请用 value = { flat = N }` })
+        }
+        if (!point && value.flat) {
+          errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 stat '${def.stat}' 是倍率制，请用 value = { percent = N }` })
+        }
+      }
+      // 破绽类：易伤无上限，但极端值给提示
+      const pct = typeof value === 'number' ? 0 : (value?.percent ?? 0)
+      const growth = typeof def.growth === 'number' ? def.growth : 0
+      if (def.stat === 'damage_in' && (Math.abs(pct) > 3 || Math.abs(growth) > 1)) {
+        errorReporter.report({ source: 'combat-wuxia', severity: 'warning', message: `${owner} 的 damage_in 数值极端（percent=${pct}, growth=${growth}）——易伤不截断，请注意平衡` })
+      }
+    }
+    if (def.action === 'modify_channel') {
+      if (typeof def.channel !== 'string' || def.channel.length === 0) {
         errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 modify_channel 缺少 channel 字段`, suggestion: `可用通道：${[...channelIds].join('、')}` })
-      } else if (!channelIds.has(e.channel)) {
-        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 引用了未注册的公式通道 '${e.channel}'`, suggestion: `可用通道：${[...channelIds].join('、')}` })
-      }
-      if (typeof e.value !== 'number') {
-        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 modify_channel 需要数值 value` })
+      } else if (!channelIds.has(def.channel)) {
+        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 引用了未注册的公式通道 '${def.channel}'`, suggestion: `可用通道：${[...channelIds].join('、')}` })
       }
     }
-    if (e.mode === 'set' && e.action !== 'modify_channel') {
-      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 mode='set' 只允许用于 modify_channel（统计键无覆盖语义）` })
+    if (def.when_skill !== undefined && !mod.abilities?.[def.when_skill]) {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 when_skill '${def.when_skill}' 不是已定义的技能` })
     }
-    if (e.mode !== undefined && !['flat', 'percent', 'set'].includes(e.mode)) {
-      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 mode '${e.mode}' 非法`, suggestion: '允许：flat / percent / set（set 仅通道）' })
+    // repeat 递归校验（连绵）
+    if (def.action === 'repeat' && (typeof def.chance !== 'number' || def.chance >= 1)) {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner}（repeat）必须给出 chance < 1，否则会无限复读` })
     }
-    if (e.when_skill !== undefined && !mod.abilities?.[e.when_skill]) {
-      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 when_skill '${e.when_skill}' 不是已定义的技能` })
+    // 毒：结算动作与施加器必须成对
+    if (applier === 'apply_poison' && def.action !== 'poison_dot') {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 用 apply_poison 施加，结算动作应为 poison_dot（当前 '${def.action}'）` })
     }
-    // 挂状态类别（v1.2）：毒/毒抗性等 DEBUFF/BUFF 词条必须引用已定义状态
-    if (e.action === 'apply_status' || e.action === 'apply_poison') {
-      const statusId = typeof e.status === 'string' ? e.status : undefined
-      if (!statusId) {
-        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 ${e.action} 缺少 status（要挂的状态 id）`, suggestion: `可用状态：${Object.keys(mod.battleEffects ?? {}).join('、')}` })
-      } else if (!mod.battleEffects?.[statusId]) {
-        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 引用了不存在的状态 '${statusId}'`, suggestion: '检查 definitions/battle-effects.toml' })
+  }
+
+  /** 技能/被动/天赋里的引用契约校验 */
+  const validateRefList = (owner: string, list: any[] | undefined): void => {
+    if (!Array.isArray(list)) return
+    for (const raw of list) {
+      if (!raw) continue
+      const r = resolveEffectRef(raw, defs)
+      if (!r.ok) {
+        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的战斗效果引用无效：${r.error}`, suggestion: `可用效果：${Object.keys(defs).join('、')}` })
+        continue
       }
-      if (e.merge !== undefined && !['refresh', 'strongest', 'stack'].includes(e.merge)) {
-        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 merge '${e.merge}' 非法`, suggestion: '允许：refresh / strongest / stack' })
+      const e = r.entry
+      if (e.delivery === 'zone' && typeof e.spec.duration === 'object' && e.spec.duration.turns === undefined) {
+        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 引用的 '${e.id}' 回合数非法` })
       }
-    }
-    if (e.action === 'apply_effect') {
-      const ref = typeof e.value === 'object' && e.value ? e.value.effect : undefined
-      const effectId = ref ?? (typeof e.value === 'string' ? e.value : undefined)
-      if (!effectId || !mod.battleEffects?.[effectId]) {
-        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 引用了不存在的战斗效果 '${effectId ?? '?'}'`, suggestion: '检查 battle-effects.toml 定义' })
+      // 递归类：技能侧覆盖的 chance 也必须 < 1（否则无限复读）
+      if (e.spec.action === 'repeat' && e.chance >= 1) {
+        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 引用的 '${e.id}'（repeat）chance 必须 < 1`, suggestion: '写 chance = 0.3 之类的概率，或把 effect 的默认 chance 改成 < 1' })
+      }
+      if (e.spec.uses !== undefined && (!Number.isInteger(e.spec.uses) || e.spec.uses < 1)) {
+        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 引用的 '${e.id}' 的 uses 必须是正整数` })
+      }
+      if (raw && typeof raw === 'object' && raw.effect === undefined) {
+        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的效果条目缺少 effect 字段（应写 { effect = "名", 参数… }）` })
       }
     }
   }
 
   // battle-effects.toml 条目
-  for (const [id, def] of Object.entries(mod.battleEffects ?? {})) {
-    if (!def || typeof def !== 'object') continue
-    validateEffectEntry(`战斗效果 '${id}'`, def)
-    if (!actionNames.has(def.action)) {
-      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `战斗效果 '${id}' 的 action '${def.action}' 未注册`, suggestion: `已注册动作：${[...actionNames].join('、')}` })
-    }
-    if (def.recursive && def.action !== 'repeat') {
-      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `战斗效果 '${id}' 的 recursive=true 只允许用于 repeat 动作` })
-    }
-    // 毒等级 / 合并策略（v1.2）
-    const k = (def as any).k
-    if (k !== undefined && (!Number.isInteger(k) || k < 1 || k > 3)) {
-      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `状态 '${id}' 的 k '${k}' 非法`, suggestion: '当前支持 1=毒 / 2=猛毒 / 3=剧毒（更高层待扩展）' })
-    }
-    const merge = (def as any).merge
-    if (merge !== undefined && !['refresh', 'strongest', 'stack'].includes(merge)) {
-      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `状态 '${id}' 的 merge '${merge}' 非法`, suggestion: '允许：refresh / strongest / stack' })
-    }
-    // 共组合并键自检：同 merge_group 的条目应共享同一结算动作（否则"一份毒、两套结算"）
-    const group = (def as any).merge_group
-    if (typeof group === 'string' && group.length > 0) {
-      const peers = Object.entries(mod.battleEffects ?? {})
-        .filter(([otherId, other]) => otherId !== id && (other as any)?.merge_group === group && (other as any)?.action !== def.action)
-      if (peers.length > 0) {
-        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `状态 '${id}' 与 '${peers[0][0]}' 同属合并组 '${group}' 但 action 不同（'${def.action}' vs '${(peers[0][1] as any).action}'）`, suggestion: '同一合并组的状态应共用同一结算动作' })
-      }
-    }
+  for (const [id, def] of Object.entries(defs)) {
+    validateDef(id, def as any)
   }
 
   // 天赋 modifier 公式点契约（combat_channel 必填 channel + 通道须已注册）
   for (const [talentId, def] of Object.entries(mod.talentDefs ?? {})) {
     const modifiers = (def as any)?.modifiers
-    if (!Array.isArray(modifiers)) continue
-    for (const m of modifiers) {
-      if (!m || m.formula !== 'combat_channel') continue
-      if (typeof m.channel !== 'string' || m.channel.length === 0) {
-        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `天赋 '${talentId}' 的 combat_channel modifier 缺少 channel`, suggestion: `可用通道：${[...channelIds].join('、')}` })
-      } else if (!channelIds.has(m.channel)) {
-        errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `天赋 '${talentId}' 引用了未注册的公式通道 '${m.channel}'`, suggestion: `可用通道：${[...channelIds].join('、')}` })
-      }
-      if ((m.plus ?? 0) === 0 && (m.multiply ?? 0) === 0) {
-        errorReporter.report({ source: 'combat-wuxia', severity: 'warning', message: `天赋 '${talentId}' 的 combat_channel modifier 未给出 plus/multiply（无效果）` })
+    if (Array.isArray(modifiers)) {
+      for (const m of modifiers) {
+        if (!m || m.formula !== 'combat_channel') continue
+        if (typeof m.channel !== 'string' || m.channel.length === 0) {
+          errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `天赋 '${talentId}' 的 combat_channel modifier 缺少 channel`, suggestion: `可用通道：${[...channelIds].join('、')}` })
+        } else if (!channelIds.has(m.channel)) {
+          errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `天赋 '${talentId}' 引用了未注册的公式通道 '${m.channel}'`, suggestion: `可用通道：${[...channelIds].join('、')}` })
+        }
+        if ((m.plus ?? 0) === 0 && (m.multiply ?? 0) === 0) {
+          errorReporter.report({ source: 'combat-wuxia', severity: 'warning', message: `天赋 '${talentId}' 的 combat_channel modifier 未给出 plus/multiply（无效果）` })
+        }
       }
     }
+    validateRefList(`天赋 '${talentId}'`, (def as any)?.battle_effects)
   }
 
   // 技能契约
   for (const [id, def] of Object.entries(mod.abilities ?? {})) {
     if (!def) continue
     const w = def as any
-    const isWuxia = w.category !== undefined || typeof w.power === 'number' || Array.isArray(w.effects)
+    const isWuxia = w.category !== undefined || typeof w.power === 'number' || Array.isArray(w.battle_effects)
     if (!isWuxia) continue
+    if (Array.isArray(w.effects)) {
+      errorReporter.report({
+        source: 'combat-wuxia', severity: 'error',
+        message: `技能 '${id}' 用 effects 声明战斗效果——该字段已改名为 battle_effects`,
+        suggestion: '改写 battle_effects = [{ effect = "效果名", 参数… }]（通用 {type, params} 效果留给 effect-system）',
+      })
+    }
     if (w.category !== undefined && !WUXIA_CATEGORIES.includes(w.category)) {
       errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `技能 '${id}' 的 category '${w.category}' 非法`, suggestion: `可用系别：${WUXIA_CATEGORIES.join('、')}` })
     }
@@ -1032,19 +1169,26 @@ export function validateBattleData(): void {
         }
       }
     }
-    if (Array.isArray(w.effects)) {
-      for (const e of w.effects) {
-        validateEffectEntry(`技能 '${id}'`, e)
-      }
-      // 毒词条但技能无「毒性」→ 毒伤仅由人物毒功与暗毒系数驱动（提示，不是错误）
-      if (w.effects.some((e: any) => e?.action === 'apply_poison') && !(typeof w.style?.毒性 === 'number' && w.style.毒性 > 0)) {
-        errorReporter.report({
-          source: 'combat-wuxia', severity: 'warning',
-          message: `技能 '${id}' 带 apply_poison 但 style.毒性 缺省/为 0——毒功系数将只吃人物毒功（(1+0/1000)×(1+毒功/50)）`,
-          suggestion: '若该武功确有毒性强度，在 style 里补 毒性 = N',
-        })
-      }
+    validateRefList(`技能 '${id}'`, w.battle_effects)
+    // 毒词条但技能无「毒性」→ 毒伤仅由人物毒功与暗毒系数驱动（提示，不是错误）
+    const hasPoison = Array.isArray(w.battle_effects) && w.battle_effects.some((raw: any) => {
+      const r = resolveEffectRef(raw, defs)
+      return r.ok && r.entry.apply === 'apply_poison'
+    })
+    if (hasPoison && !(typeof w.style?.毒性 === 'number' && w.style.毒性 > 0)) {
+      errorReporter.report({
+        source: 'combat-wuxia', severity: 'warning',
+        message: `技能 '${id}' 带毒词条但 style.毒性 缺省/为 0——毒功系数将只吃人物毒功（(1+0/1000)×(1+毒功/50)）`,
+        suggestion: '若该武功确有毒性强度，在 style 里补 毒性 = N',
+      })
     }
+  }
+
+  // 被动技能（type=passive）的 battle_effects 同样参与校验
+  for (const [id, def] of Object.entries(mod.abilities ?? {})) {
+    const w = def as any
+    if (!w || w.type !== 'passive') continue
+    validateRefList(`被动技 '${id}'`, w.battle_effects)
   }
 }
 
@@ -1090,23 +1234,23 @@ async function runBattleTest(): Promise<void> {
       id: '测试_铁砂掌', name: '铁砂掌（测试）', type: 'active',
       power: 100, cost: 20, hits: 1, category: '拳掌', style: { 厚重: 60 },
       tags: ['拳掌'],
-      effects: [],
+      battle_effects: [],
     },
     测试_蛤蟆功: {
       id: '测试_蛤蟆功', name: '蛤蟆功（测试）', type: 'active',
       cost: 15, category: '气功',
       tags: ['气功'],
-      effects: [
-        { trigger: 'on_use', action: 'apply_effect', target: 'self', value: { effect: '蛤蟆功蓄势' } },
+      battle_effects: [
+        { effect: '蛤蟆功蓄势' },
       ],
     },
     测试_寒冰掌: {
       id: '测试_寒冰掌', name: '寒冰掌（测试）', type: 'active',
       power: 120, cost: 25, hits: 1, category: '拳掌', style: { 轻灵: 50, 毒性: 40 },
       tags: ['拳掌'],
-      // v1.2：毒走「挂状态」类别——命中后挂同名状态（毒=1/猛毒=2/剧毒=3，8 回合，回合开始结算）
-      effects: [
-        { action: 'apply_poison', status: '剧毒', target: 'enemy', chance: 1 },
+      // 毒走 zone 型引用：命中后挂「毒」3 层（＝剧毒），回合开始结算
+      battle_effects: [
+        { effect: '毒', stacks: 3 },
       ],
     },
   }

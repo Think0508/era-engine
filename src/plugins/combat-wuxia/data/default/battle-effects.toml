@@ -1,150 +1,405 @@
-# combat-wuxia 插件默认战斗效果定义库（插件默认层 Layer 1）
+# combat-wuxia 插件默认战斗效果库（插件默认层 Layer 1）
 # mod 可在 definitions/battle-effects.toml 覆盖/新增（同 id 深合并）
-# 契约：trigger 相位 / action 动作 / chance / value / target / duration / stack / priority /
-#       category / condition / recursive / uses / min_level / stat / mode / skill
-
-# 战斗效果动作：modify_stat（统计键）/ modify_channel（公式中间量通道：风格系数/武功威力/防御/
-# 命中率/闪避率/浮动系数/先攻/其他加成）/ 其余见 docs/combat-system.md
+#
+# 契约 v4.0：一个效果 = **库条目**（本文件）+ **技能引用**（abilities[].battle_effects 的
+# { effect = "名", 参数… }）。技能只覆盖参数白名单（chance/value/growth/stacks/turns/merge/
+# max_stack/uses/priority/condition/when_skill/min_level），结构字段一律以库条目为准。
+#
+# 字段速查：
+#   delivery  zone = 驻留（挂到身上，按 settle 结算）｜instant = 就地执行（缺省）
+#   trigger   instant 专用：发生相位（on_hit/attack_end/action_end/death…）
+#   settle    zone 专用：驻留期间的结算相位；省略 = 常驻修正（modify_stat/modify_channel 直接聚合）
+#   apply_at  zone 专用：何时施加（缺省推导：target=enemy → on_hit、target=self → on_use）
+#   apply     zone 专用：施加器（缺省 mount = 直接挂载；毒用 apply_poison）
+#   value     数字 = 固定数｜{ flat, percent } = 比例+固定｜{ set } = 覆盖基准（仅通道）
+#   growth    每层乘性增量：value × (1 + growth×(层数−1))
+#
+# 解析实现：src/plugins/combat-base/effect-entry.ts（唯一权威）
 
 [effects]
 
 # ── 示例：公式中间量通道（mod 可覆盖/删除；完整通道表见 docs/combat-system.md）──
-# 飘逸（示例）：本场战斗风格系数 ×1.1（示例「效果给中间量加值」的写法）
+
+# 飘逸（示例）：本场战斗风格系数 ×1.1（使用技能时挂自己，整场有效）
 [effects."飘逸（示例）"]
 name = "飘逸（示例）"
-description = "风格系数 ×1.1（本场）"
+description = "风格系数 ×1.1（使用后本场有效）"
+delivery = "zone"
+target = "self"
 action = "modify_channel"
 channel = "风格系数"
-mode = "percent"
-value = 0.1
-target = "self"
+value = { percent = 0.1 }
 duration = "battle"
 category = "buff"
-stack = "refresh"
 
-# 蓄势：只在施展 降龙十八掌 时，该次攻击的武功威力 +30%（when_skill 过滤 + 相位叠加）
+# 蓄势（示例）：施展指定技能时该段武功威力 +30%（触发一次即消）
 [effects."蓄势（示例）"]
 name = "蓄势（示例）"
 description = "施展指定技能时该段武功威力 +30%（触发一次即消）"
-action = "modify_channel"
+delivery = "instant"
 trigger = "attack_pre"
+action = "modify_channel"
 channel = "武功威力"
-mode = "percent"
-value = 0.3
+value = { percent = 0.3 }
 target = "self"
-duration = "battle"
 uses = 1
 category = "buff"
 # when_skill = "降龙十八掌"   # 改成实际技能 id 后生效（未定义时加载校验会报错）
 
-# 护体：使用后 N 回合减伤 x%（减伤 = damage_in 负向倍率）
+# 护体：使用后 3 回合减伤 30%（damage_in 正 = 减伤）
 [effects."护体"]
 name = "护体"
-description = "减伤 30%"
+description = "减伤 30%，持续 3 回合"
+delivery = "zone"
+target = "self"
 action = "modify_stat"
 stat = "damage_in"
-mode = "percent"
-value = 0.3
-target = "self"
+value = { percent = 0.3 }
 duration = { turns = 3 }
 category = "buff"
-stack = "refresh"
 
-# 破甲：命中后让敌人减防 30%（2 回合）
+# 破甲：命中后降低敌人 50% 防御值（defense_mult 负 = 破防；公式 × (1+defense_mult)）
 [effects."破甲"]
 name = "破甲"
-description = "防御 × 0.7，持续 2 回合"
+description = "防御值 ×0.5"
+delivery = "zone"
+target = "enemy"
 action = "modify_stat"
 stat = "defense_mult"
-mode = "percent"
-value = 0.3
-target = "self"
-duration = { turns = 2 }
+value = { percent = -0.5 }
 category = "debuff"
-stack = "refresh"
 
-# 减闪避：命中后让敌人闪避降低（%点数）
+# 减闪避：命中后降低敌人闪避点数
 [effects."减闪避"]
 name = "减闪避"
-description = "闪避 -10，持续 2 回合"
+description = "闪避 -10 点"
+delivery = "zone"
+target = "enemy"
 action = "modify_stat"
 stat = "dodge_bonus"
-mode = "flat"
-value = -10
-target = "self"
-duration = { turns = 2 }
+value = { flat = -10 }
 category = "debuff"
-stack = "refresh"
 
-# 战中毒：通用周期伤害示例（回合初扣血按层数缩放）——保留为通用 DoT 机制
+# 战中毒：通用周期伤害示例（每层 15 点；growth = 1 → 15×层数）
 [effects."战中毒"]
 name = "战中毒"
-description = "每回合初毒伤 15/层，持续 3 回合"
+description = "每回合开始受到 15×层数 点伤害，持续 3 回合"
+delivery = "zone"
+target = "enemy"
 action = "periodic_damage"
-trigger = "turn_start"
-value = 15
-target = "self"
+settle = "turn_start"
+value = { flat = 15 }
+growth = 1
 duration = { turns = 3 }
-category = "debuff"
-stack = "increment"
+merge = "stack"
 max_stack = 5
+category = "debuff"
 
-# ── 毒（v1.2）：技能词条 { action = "apply_poison", status = "毒|猛毒|剧毒" } 引用 ──
-# 三条定义共用合并组 "毒"（merge_group）——一个目标身上永远只有一份毒：k 取高、M 取大、回合重置；
-# 显示名随最强那一级。k=1/2/3 对应 毒/猛毒/剧毒；更高层后续再加（校验 1..3）。
-# 结算：目标自己的回合开始时（turn_start）→ (1+0.25×(k−1))×(1%×气血上限 + M×0.1) → 过通道「毒伤害」→ 扣血
+# ── 毒：技能词条 { effect = "毒", stacks = N } 引用 ──
+# 层数 = 1/2/3（毒/猛毒/剧毒，显示名随层数）；重复命中按 strongest 取高层数、M 取大、回合重置；
+# 结算：该角色自己的回合开始（行动前）→ (1%气血上限 + 0.1×M) × (1+0.25×(层数−1)) → 过通道「毒伤害」→ 扣血
+# M = 该段武功威力 × (1+暗毒系数/1000) × 毒功系数 × 毒功精通系数（施加时快照，由施加器 apply_poison 计算）
 [effects."毒"]
 name = "毒"
-description = "毒：每回合开始受到 (1%气血上限 + M×0.1) 毒伤，持续 8 回合（含本回合）"
+description = "每回合开始受到 (1%气血上限 + 0.1M) 毒伤（每层 ×1.25），持续 8 回合"
+delivery = "zone"
+target = "enemy"
+apply = "apply_poison"
 action = "poison_dot"
-trigger = "turn_start"
+settle = "turn_start"
 duration = { turns = 8 }
-k = 1
+value = { percent = 0.01 }
+growth = 0.25
 merge = "strongest"
-merge_group = "毒"
 category = "debuff"
+level_names = ["毒", "猛毒", "剧毒", "绝毒", "蛊毒"]
 
-[effects."猛毒"]
-name = "猛毒"
-description = "猛毒：每回合开始受到 1.25×(1%气血上限 + M×0.1) 毒伤，持续 8 回合（含本回合）"
-action = "poison_dot"
-trigger = "turn_start"
-duration = { turns = 8 }
-k = 2
+# ── 冰火：火毒 / 寒毒（施加器 apply_element 处理相消）──
+# 命中 → 敌方得本元素毒（层数 = 词条 stacks）→ 自己身上「层数 ≤ 本次层数」的对立毒被清除
+# → 敌方若有对立毒：按其层数立刻结算一次伤害并清除（天生不共存）
+[effects."火毒"]
+name = "火毒"
+description = "每回合开始受到 5% 气血上限伤害（每层 ×1.5），持续 5 回合；化解自身寒毒并引爆敌方寒毒"
+delivery = "zone"
+target = "enemy"
+apply = "apply_element"
+apply_args = { element = "火毒", opposite = "寒毒" }
+action = "periodic_damage"
+settle = "turn_start"
+value = { percent = 0.05 }
+growth = 0.5
 merge = "strongest"
-merge_group = "毒"
 category = "debuff"
+level_names = ["火毒", "烈火毒", "焚身毒"]
 
-[effects."剧毒"]
-name = "剧毒"
-description = "剧毒：每回合开始受到 1.5×(1%气血上限 + M×0.1) 毒伤，持续 8 回合（含本回合）"
-action = "poison_dot"
-trigger = "turn_start"
-duration = { turns = 8 }
-k = 3
+[effects."寒毒"]
+name = "寒毒"
+description = "每回合开始受到 5% 气血上限伤害（每层 ×1.5），持续 5 回合；化解自身火毒并引爆敌方火毒"
+delivery = "zone"
+target = "enemy"
+apply = "apply_element"
+apply_args = { element = "寒毒", opposite = "火毒" }
+action = "periodic_damage"
+settle = "turn_start"
+value = { percent = 0.05 }
+growth = 0.5
 merge = "strongest"
-merge_group = "毒"
 category = "debuff"
+level_names = ["寒毒", "寒冰毒", "玄冰毒"]
 
-# 神照经：战斗中死亡时满状态复活一次（uses=1 消耗；被动技能效果引用）
+# 神照经：战斗中死亡时满状态复活一次（被动技能引用；uses=1 消耗）
 [effects."神照经"]
 name = "神照经"
 description = "战斗内死亡时复活一次（满状态 + 效果区重建）"
-action = "revive"
 trigger = "death"
+action = "revive"
 uses = 1
 duration = "battle"
 category = "neutral"
 
-# 蛤蟆功蓄势：本招不攻击，挂反击状态——对方打上来时用蛤蟆功反击（触发一次即消）
+# 蛤蟆功蓄势：使用技能时挂自己，受击时以蛤蟆功反击一次（触发即消）
 [effects."蛤蟆功蓄势"]
 name = "蛤蟆功蓄势"
 description = "受击时以蛤蟆功反击一次（触发即消）"
-action = "counter"
-trigger = "damage_mitigate"
-value = { skill = "蛤蟆功" }
+delivery = "zone"
 target = "self"
+apply_at = "on_use"
+action = "counter"
+settle = "damage_mitigate"
+skill = "蛤蟆功"
 duration = "battle"
 uses = 1
 priority = 0
 category = "buff"
+
+# ════════════════════════════════════════════════════════════════════════
+# 招式效果全集（2026-09 定稿，草稿 24 条）
+# 技能引用写法：battle_effects = [{ effect = "名", chance = 0.3, value = … }]
+# ════════════════════════════════════════════════════════════════════════
+
+# ── A. 攻击后（instant）────────────────────────────────────────────────
+
+# 连绵：整招结束后有几率复读（复读作业 isOriginal=true → 可再次触发连绵；再扣内力）
+[effects."连绵"]
+name = "连绵"
+description = "攻击后 30% 几率复读整招（可递归；复读再扣内力）"
+delivery = "instant"
+trigger = "action_end"
+action = "repeat"
+target = "self"
+chance = 0.3
+category = "neutral"
+
+# ── B. 命中后·即时（attack-scoped，不驻留）──────────────────────────────
+
+# 饮血：按本次**实际扣掉的血量**回血（溢出伤害不计）
+[effects."饮血"]
+name = "饮血"
+description = "命中后回复本次实际伤害的 20% 气血"
+delivery = "instant"
+trigger = "attack_end"
+action = "leech_hp_from_damage"
+value = { percent = 0.2 }
+target = "self"
+category = "buff"
+
+# 增伤：命中瞬间判定，加成**本次**伤害（on_hit 在伤害计算之前）
+[effects."增伤"]
+name = "增伤"
+description = "命中后 30% 几率本次伤害 +20%"
+delivery = "instant"
+trigger = "on_hit"
+action = "modify_stat"
+stat = "damage_out"
+value = { percent = 0.2 }
+chance = 0.3
+target = "self"
+category = "buff"
+
+# 增加暴击几率：施展该招时全部段生效（点数）
+[effects."增加暴击几率"]
+name = "增加暴击几率"
+description = "此招暴击率 +10 点"
+delivery = "instant"
+trigger = "attack_pre"
+action = "modify_stat"
+stat = "crit_rate"
+value = { flat = 10 }
+target = "self"
+category = "buff"
+
+# 增加暴击伤害：加暴击倍率点（1.5 → 1.5+x）
+[effects."增加暴击伤害"]
+name = "增加暴击伤害"
+description = "此招暴击倍率 +0.5（1.5 → 2.0）"
+delivery = "instant"
+trigger = "damage_crit"
+action = "modify_stat"
+stat = "crit_mul"
+value = { percent = 0.5 }
+target = "self"
+category = "buff"
+
+# 乘势：目标身上有 DEBUFF 时本次伤害提高
+[effects."乘势"]
+name = "乘势"
+description = "若目标身上有 DEBUFF，本次伤害 +30%"
+delivery = "instant"
+trigger = "damage_base"
+action = "modify_stat"
+stat = "damage_out"
+value = { percent = 0.3 }
+condition = "target_has_debuff"
+target = "self"
+category = "buff"
+
+# 消内：命中后削减敌人内力
+[effects."消内"]
+name = "消内"
+description = "命中后削减敌人 20 点内力"
+delivery = "instant"
+trigger = "on_hit"
+action = "mp_drain"
+value = { flat = 20 }
+target = "enemy"
+category = "debuff"
+
+# 吸内：命中后吸取敌人内力给自己（按对方实际内力转移）
+[effects."吸内"]
+name = "吸内"
+description = "命中后吸取敌人 20 点内力"
+delivery = "instant"
+trigger = "on_hit"
+action = "leech_mp"
+value = { flat = 20 }
+target = "enemy"
+category = "buff"
+
+# 追击：命中后再打一次**同一招**（不递归、照常扣内力、每次行动上限由 max_per_action 控制）
+[effects."追击"]
+name = "追击"
+description = "命中后 30% 几率再出一招（同招；不递归，每次行动最多 1 次）"
+delivery = "instant"
+trigger = "on_hit"
+action = "extra_attack"
+chance = 0.3
+max_per_action = 1
+target = "enemy"
+category = "buff"
+
+# ── C. 回合结束·自身（zone + self）─────────────────────────────────────
+# 主动技引用 = 使用后挂自己 5 回合；被动心法引用 = 整场常驻（被动编译强制 battle 时长）
+# ⚠️ 数值待定（用户 2026-09 尚未定稿）：先用 5% 占位
+
+[effects."回血"]
+name = "回血"
+description = "回合结束时回复 5% 气血上限（使用后 5 回合）"
+delivery = "zone"
+target = "self"
+apply_at = "on_use"
+action = "heal_hp"
+settle = "turn_end"
+value = { percent = 0.05 }
+priority = 20
+category = "buff"
+
+[effects."回内"]
+name = "回内"
+description = "回合结束时回复 5% 内力上限（使用后 5 回合）"
+delivery = "zone"
+target = "self"
+apply_at = "on_use"
+action = "heal_mp"
+settle = "turn_end"
+value = { percent = 0.05 }
+priority = 10
+category = "buff"
+
+# ── D. 命中后·挂状态（zone + enemy）────────────────────────────────────
+
+# 流血：每回合开始（行动前）流失 5% 气血上限
+[effects."流血"]
+name = "流血"
+description = "每回合开始流失 5% 气血上限，持续 5 回合（重复命中刷新）"
+delivery = "zone"
+target = "enemy"
+action = "periodic_damage"
+settle = "turn_start"
+value = { percent = 0.05 }
+chance = 0.3
+category = "debuff"
+
+# 失势：准头 ×0.5（闪避能力减半）
+[effects."失势"]
+name = "失势"
+description = "准头 ×0.5（闪避能力减半）"
+delivery = "zone"
+target = "enemy"
+action = "modify_channel"
+channel = "准头"
+value = { percent = -0.5 }
+chance = 0.3
+category = "debuff"
+
+# 缓慢：先攻 -10（行动序每轮重排 → 下一轮生效）
+[effects."缓慢"]
+name = "缓慢"
+description = "先攻 -10（行动序每轮重排，下一轮生效）"
+delivery = "zone"
+target = "enemy"
+action = "modify_channel"
+channel = "先攻"
+value = { flat = -10 }
+chance = 0.3
+category = "debuff"
+
+# 致盲：准头 ×0.7（命中能力下降）
+[effects."致盲"]
+name = "致盲"
+description = "准头 ×0.7（命中下降 30%）"
+delivery = "zone"
+target = "enemy"
+action = "modify_channel"
+channel = "准头"
+value = { percent = -0.3 }
+chance = 0.3
+category = "debuff"
+
+# 封穴：行动前相位禁止行动，触发一次即消（该次行动作废、轮到下一位）
+[effects."封穴"]
+name = "封穴"
+description = "无法行动一次（触发即消）"
+delivery = "zone"
+target = "enemy"
+action = "action_block"
+settle = "action_pre"
+uses = 1
+chance = 0.3
+category = "debuff"
+
+# 截脉：力道项 ×0.7（只影响标准系伤害公式的属性分项）
+[effects."截脉"]
+name = "截脉"
+description = "力道项 ×0.7（力道减三成）"
+delivery = "zone"
+target = "enemy"
+action = "modify_channel"
+channel = "力道项"
+value = { percent = -0.3 }
+chance = 0.3
+category = "debuff"
+
+# 破绽：受伤加深（每层 ×1.5；无上限，不截断——它是"伤害加深"，不是"防御减不完"）
+[effects."破绽"]
+name = "破绽"
+description = "受到的伤害 +50%（每层 ×1.5），重复命中叠层"
+delivery = "zone"
+target = "enemy"
+action = "modify_stat"
+stat = "damage_in"
+value = { percent = -0.5 }
+growth = 0.5
+merge = "stack"
+category = "debuff"
+level_names = ["破绽", "破绽 II", "破绽 III", "破绽 IV", "破绽 V"]
+

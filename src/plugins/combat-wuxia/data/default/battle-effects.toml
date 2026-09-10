@@ -292,8 +292,8 @@ category = "buff"
 # ⚠️ 数值待定（用户 2026-09 尚未定稿）：先用 5% 占位
 #
 # 即时版（技能词条，不驻留、不进效果区）：施展技能时立即回复一次
-[effects."回血"]
-name = "回血"
+[effects."即时回血"]
+name = "即时回血"
 description = "施展后立即回复 5% 气血上限（不驻留）"
 delivery = "instant"
 target = "self"
@@ -302,9 +302,9 @@ action = "heal_hp"
 value = { percent = 0.05 }
 category = "buff"
 
-[effects."回内"]
-name = "回内"
-description = "施展后立即回复 5% 内力上限（不驻留）"
+[effects."即时回气"]
+name = "即时回气"
+description = "施展后立即回复 5% 内力（气力）上限（不驻留）"
 delivery = "instant"
 target = "self"
 trigger = "on_use"
@@ -313,8 +313,8 @@ value = { percent = 0.05 }
 category = "buff"
 
 # 持续版（自身状态，会出现在效果区，来源 = 技能/被动/天赋）
-[effects."回血诀"]
-name = "回血诀"
+[effects."回血"]
+name = "回血"
 description = "回合结束时回复 5% 气血上限（使用后 5 回合；被动引用 = 整场）"
 delivery = "zone"
 target = "self"
@@ -325,9 +325,9 @@ value = { percent = 0.05 }
 priority = 20
 category = "buff"
 
-[effects."回内诀"]
-name = "回内诀"
-description = "回合结束时回复 5% 内力上限（使用后 5 回合；被动引用 = 整场）"
+[effects."回气"]
+name = "回气"
+description = "回合结束时回复 5% 内力（气力）上限（使用后 5 回合；被动引用 = 整场）"
 delivery = "zone"
 target = "self"
 apply_at = "on_use"

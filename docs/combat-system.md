@@ -40,7 +40,7 @@
 | `origin` | `originId` | 谁弄进来的 | 例子 |
 |---|---|---|---|
 | `skill` | 技能名 | 技能词条挂上去的（被技能 A 出来的 BUFF/DEBUFF） | 命中后挂上的【流血】 |
-| `passive` | 被动技名 | 被动技在战斗开始时常驻编译（id = `passive:能力#条目`） | 内功心法引用的【回血诀】（整场） |
+| `passive` | 被动技名 | 被动技在战斗开始时常驻编译（id = `passive:能力#条目`） | 内功心法引用的【回血】（整场） |
 | `talent` | 天赋名 | 战斗天赋同上（id = `talent:天赋#条目`） | 天赋给的常驻减伤 |
 | `system` | — | 插件 API / mod 脚本直接挂 | `mountEffect` 调用 |
 
@@ -154,7 +154,7 @@ growth = 0.5                             # 层数 k 的数值 = 基础值 × (1 
 |---|---|
 | **常驻型**（破甲/失势/致盲/截脉/缓慢…，无 settle） | 含挂上那回合在内共 N 个回合。挂上时对方**还没动** → 影响 N 回合；挂上时对方**本回合已结束** → 只影响 **N−1 回合** |
 | **结算型·turn_start**（流血/毒/火毒/寒毒） | 恰好 **N 次结算**，每次都在该角色行动**之前**（先吃伤害再行动） |
-| **结算型·turn_end**（回血/回内） | 恰好 **N 次结算**，在该角色行动**之后** |
+| **结算型·turn_end**（回血/回气） | 恰好 **N 次结算**，在该角色行动**之后** |
 
 实现：`tickDurations(c, phase)` 在角色自己的回合按 `settle` 分桶扣数（`turn_end` 的条目在 turn_end
 相位之后扣，其余在 turn_start 相位之后扣）。
@@ -172,7 +172,7 @@ damage_output → damage_on_target → damage_mitigate → −防御 → damage_
 | 流程 | 相位/钩子 | 可改的中间量（通道） |
 |---|---|---|
 | 回合初结算（DoT/到期） | `turn_start` + `tickDurations` | 毒伤害（毒系 DoT） |
-| 回合末结算（回血/回内/到期） | `turn_end` + `tickDurations(turn_end)` | — |
+| 回合末结算（回血/回气/到期） | `turn_end` + `tickDurations(turn_end)` | — |
 | 用技能前（禁技/技能加成） | `action_pre`（+`action_block`） | 本次行动：全部通道 |
 | 使用技能（扣内力/挂效果） | `on_use` | 全部通道（常驻） |
 | 出手前 / 出手时 | `attack_pre` / `attack_launch` | `命中率` `闪避率` `准头` `暴击率`* `暴击倍率`* `武功威力` `风格系数` `其他加成` `防御` |

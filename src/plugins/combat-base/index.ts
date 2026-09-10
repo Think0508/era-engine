@@ -39,7 +39,7 @@ import {
   MOUNT_ACTION, PARAM_VOCAB, POINT_STATS, RATIO_STATS, classifyEffect, displayNameOf,
   normalizeValue, resolveEffectRef, scaleValue, usedParams, valueAmount,
 } from './effect-entry'
-import type { EffectValue, ResolvedEffect } from './effect-entry'
+import type { EffectOrigin, EffectValue, ResolvedEffect } from './effect-entry'
 
 // ── 类型定义 ────────────────────────────────────────────────────────────
 
@@ -106,6 +106,10 @@ export interface BattleEffectInst {
   maxPerAction?: number
   /** 该实例当前的有效显示名（随层数变化） */
   displayName?: string
+  /** 来源类型：skill（技能词条挂的）/ passive / talent（常驻编译）/ system（API 直挂） */
+  origin: EffectOrigin
+  /** 来源 id：技能名 / 被动技名 / 天赋名（system 时省略） */
+  originId?: string
   /** 技能引用解析结果（mount_effect 用；不序列化） */
   resolved?: ResolvedEffect
   sourceId: string
@@ -216,9 +220,13 @@ export function registerApplyHandler(name: string, handler: ApplyHandler): void 
   applyHandlers.set(name, handler)
 }
 
-/** 缺省施加器：按条目规格直接挂载到目标 */
+/** 缺省施加器：按条目规格直接挂载到目标（来源沿用"词条实例"的 origin） */
 async function defaultMountApply(a: any): Promise<void> {
-  await mountInstance(a.combat, a.target, a.entry, { sourceId: a.sourceId })
+  await mountInstance(a.combat, a.target, a.entry, {
+    sourceId: a.sourceId,
+    origin: a.inst?.origin ?? 'system',
+    originId: a.inst?.originId,
+  })
 }
 
 /** 测试用：模块级状态重置（hooks/动作表/施加器表/当前战斗/通道注册表/公式明细） */
@@ -395,6 +403,7 @@ export function onLoad(_ctx: PluginContext): void {
       combat: actCtx.combat, caster: actCtx.self, target: targetCombatant,
       entry, inst, sourceId: actCtx.self.entityId,
       job: actCtx.job, skillLevel: actCtx.skillLevel,
+      origin: inst.origin, originId: inst.originId,
     })
   })
 
@@ -661,6 +670,8 @@ export function onEnable(ctx: PluginContext): void {
             value: { ...z.value },
             growth: z.growth,
             usesLeft: z.usesLeft,
+            origin: z.origin,
+            originId: z.originId,
           })),
         }
       }
@@ -705,6 +716,7 @@ export function onEnable(ctx: PluginContext): void {
     /**
      * 常驻编译（被动技/天赋）：把解析后的条目直接推进效果区。
      * duration 强制 'battle'（被动 = 会这个就整场常驻），其余参数尊重条目声明。
+     * origin 决定 UI 里的来源分组（passive / talent）。
      */
     addResolvedEffect: (entityId: string, entry: ResolvedEffect, opts?: any): void => {
       const c = currentCombat?.combatants.get(entityId)
@@ -731,13 +743,15 @@ export function onEnable(ctx: PluginContext): void {
         when_skill: spec.whenSkill,
         levelNames: spec.levelNames,
         maxPerAction: spec.maxPerAction,
+        origin: (opts?.origin ?? 'system') as EffectOrigin,
+        originId: opts?.originId,
         sourceId: entityId,
       }))
       recalcStats(c)
     },
     /**
      * 挂载一个**已解析**的条目到指定战斗单位（施加器内部用；保留条目的层数/合并/时长规格）。
-     * value/turns 可覆盖（如毒施加器算出的 M 快照）。
+     * value/turns 可覆盖（如毒施加器算出的 M 快照）；origin 缺省沿用调用链的来源。
      */
     mountResolved: async (entityId: string, entry: ResolvedEffect, opts?: any): Promise<any> => {
       if (!currentCombat) return null
@@ -747,6 +761,8 @@ export function onEnable(ctx: PluginContext): void {
         sourceId: opts?.sourceId ?? entityId,
         valueOverride: opts?.value,
         turnsOverride: opts?.turns,
+        origin: opts?.origin,
+        originId: opts?.originId,
       })
     },
     /**
@@ -772,6 +788,8 @@ export function onEnable(ctx: PluginContext): void {
         sourceId: opts?.sourceId ?? entityId,
         valueOverride: opts?.value,
         turnsOverride: opts?.turns,
+        origin: opts?.origin,
+        originId: opts?.originId,
       })
     },
     /** 直接扣血（子插件自定义伤害阶段：毒 DoT 等）——走死亡相位/复活/(可选)受伤害后相位 */
@@ -1089,6 +1107,8 @@ function makeInst(raw: any): BattleEffectInst {
     when_skill: raw.when_skill,
     levelNames: raw.levelNames,
     maxPerAction: typeof raw.maxPerAction === 'number' ? raw.maxPerAction : 1,
+    origin: (raw.origin ?? 'system') as EffectOrigin,
+    originId: raw.originId,
     resolved: raw.resolved,
     sourceId: raw.sourceId ?? '',
   }
@@ -1122,11 +1142,13 @@ export async function mountInstance(
   combat: CombatScene,
   owner: Combatant,
   entry: ResolvedEffect,
-  opts: { sourceId: string; valueOverride?: EffectValue; turnsOverride?: number },
+  opts: { sourceId: string; valueOverride?: EffectValue; turnsOverride?: number; origin?: EffectOrigin; originId?: string },
 ): Promise<BattleEffectInst | null> {
   if (!currentCombat || combat !== currentCombat) return null
   const spec = entry.spec
   const value = opts.valueOverride ?? spec.value
+  const origin: EffectOrigin = opts.origin ?? 'system'
+  const originId = opts.originId
   const turns = opts.turnsOverride ?? (typeof spec.duration === 'object' ? spec.duration.turns : undefined)
   const duration: BattleEffectInst['duration'] = turns !== undefined
     ? { turns: Math.max(1, Math.round(turns)) }
@@ -1155,6 +1177,8 @@ export async function mountInstance(
     }
     existing.growth = spec.growth
     existing.category = spec.category
+    existing.origin = origin
+    existing.originId = originId
     existing.displayName = displayNameOf(existing.name ?? existing.id, existing.levelNames, existing.stack)
     recalcStats(owner)
     if (!entry.apply) reportMount(owner, existing)
@@ -1183,6 +1207,8 @@ export async function mountInstance(
     when_skill: spec.whenSkill,
     levelNames: spec.levelNames,
     maxPerAction: spec.maxPerAction,
+    origin,
+    originId,
     sourceId: opts.sourceId,
   })
   owner.zone.push(inst)
@@ -1929,6 +1955,8 @@ function collectPhaseEffects(owner: Combatant, phase: BattleTrigger, ctx: PhaseC
           when_skill: e.spec.whenSkill,
           levelNames: e.spec.levelNames,
           maxPerAction: e.spec.maxPerAction,
+          origin: 'skill',
+          originId: skillId,
           resolved: e,
           sourceId: owner.entityId,
         })

@@ -25,6 +25,29 @@
 
 **一个效果 = 库定义（`definitions/battle-effects.toml`）+ 技能引用（`abilities[].battle_effects`）。**
 
+### 先分清两个东西（本节的术语基准）
+
+| 叫法 | 是什么 | 住在哪 | 生命周期 |
+|---|---|---|---|
+| **战斗效果条目**（技能词条） | 技能上挂的"这一招会干什么"：`{ effect = "流血", chance = 0.3 }` | 静态数据：`abilities[].battle_effects` → 库里 `[effects.X]` | 每个相位现造现弃（id = `技能名#效果名`），**从不进入效果区** |
+| **战斗状态**（BUFF / DEBUFF） | 真正挂在人身上、会显示在效果区里的东西 | 运行时：`combatant.zone`（`getCombatState().combatants[x].effects`） | 驻留，带 `stack` / `remainingTurns`，id = **库条目名本身** |
+
+判据就是库条目的 `delivery`：**`instant` = 技能词条**（就地执行）、**`zone` = 战斗状态**（挂到身上）。
+技能 A 一下让对手出现【流血】，前者是词条、后者是状态——是两个对象。
+
+效果区里的状态按 **`origin`（来源）** 分三类，`getCombatState` 会一并返回，UI 据此分组即可（不必解析 id 字符串）：
+
+| `origin` | `originId` | 谁弄进来的 | 例子 |
+|---|---|---|---|
+| `skill` | 技能名 | 技能词条挂上去的（被技能 A 出来的 BUFF/DEBUFF） | 命中后挂上的【流血】 |
+| `passive` | 被动技名 | 被动技在战斗开始时常驻编译（id = `passive:能力#条目`） | 内功心法引用的【回血诀】（整场） |
+| `talent` | 天赋名 | 战斗天赋同上（id = `talent:天赋#条目`） | 天赋给的常驻减伤 |
+| `system` | — | 插件 API / mod 脚本直接挂 | `mountEffect` 调用 |
+
+> 同一个库条目被谁引用，决定它会不会进效果区、以及以什么来源出现：主动技引用 `instant` 条目 → 当场执行不进区；
+> 主动技引用 `zone` 条目 → 命中/使用时挂上（`origin=skill`）；被动/天赋引用**任何**条目 → 战斗开始就常驻进区
+> （`origin=passive|talent`，时长强制 `battle`）。
+
 ```toml
 # ① 库定义：时机、目标、落地方式、结算动作、默认参数
 [effects."火毒"]
@@ -281,7 +304,9 @@ float_mul / defense_value / is_attack_skill`
 
 ```
 # combat-base
-ctx.api.call('combat', 'getCombatState')        → 战斗快照（回合/行动序/实体/统计/通道包/效果区）
+ctx.api.call('combat', 'getCombatState')
+    → 战斗快照；combatants[id].effects[] = 效果区里的**战斗状态**
+      （name / stack / remainingTurns / category / trigger / value / growth / origin / originId）
 ctx.api.call('combat', 'registerHook', name, fn)
 ctx.api.call('combat', 'registerAction', name, fn)         # 战斗动作
 ctx.api.call('combat', 'registerApply', name, fn)          # 施加器

@@ -14,13 +14,13 @@
 | 能力升级表 ability-upgrades | 29 | h-core/data/default/ability-upgrades.toml（生成文件，勿手改）· 仅声明已存在能力的条件升级路径；needs 里 juel→实绩、ability→能力 会被校验 |
 | 属性 attributes | 111 | h-core + combat-wuxia 两处 attributes.toml · 定义权威：条件字段 player.{属性}/character.{ID}.{属性} 自动生成；绑定同名 |
 | 状态效果 status-effects | 3 | h-core/data/default/status-effects.toml · 条件路径 character.{id}.status.{状态ID} / .stack；v1 不深挖 tick_effects 内部引用 |
-| 战斗效果 battle-effects | 29 | combat-wuxia/data/default/battle-effects.toml（mod 可覆盖/新增）· 技能引用：abilities[].battle_effects = [{ effect = "效果名", chance = 0.3 }]（只覆盖参数白名单） |
+| 战斗效果 battle-effects | 31 | combat-wuxia/data/default/battle-effects.toml（mod 可覆盖/新增）· 技能引用：abilities[].battle_effects = [{ effect = "效果名", chance = 0.3 }]（只覆盖参数白名单） |
 | 物品 items | 24 | h-core/items/（药物/玩具/特种）+ h-bondage + hunger-system + confinement-system， 分散多文件、跨文件按 ID 合并 → 跨文件重名会被查重；v1 不展开 effects 内部引用 |
 | 束缚类型 bondage | 16 | h-core/data/default/bondage/types.toml · 数组表（[[types]]），完全对齐 erArk Bondage.csv |
 | 实绩 juels | 23 | h-core/data/default/juels.toml（生成文件，勿手改）· status_attr 必须指向 attributes.toml 里存在的每日重置属性 → 校验 |
 | 装备槽 equipment | 9 | h-core/data/default/equipment.toml · 数组表（[[slots]]） |
 | 天赋获得规则 talent-gains | 8 | h-core/data/default/talent-gains.toml（生成文件，勿手改）· [talents."X"] 的 key 必须已定义于 talents.toml； needs 的 ability→能力 / talent→天赋 / juel→实绩 都会被校验 |
-| **合计** | **462** | 含关系子表 |
+| **合计** | **464** | 含关系子表 |
 
 ## 天赋 talents
 
@@ -545,12 +545,14 @@ growth = 0.5                 # 每层乘性增量：value × (1+growth×(层数�
 > 归属/注意：combat-wuxia/data/default/battle-effects.toml（mod 可覆盖/新增）·
 技能引用：abilities[].battle_effects = [{ effect = "效果名", chance = 0.3 }]（只覆盖参数白名单）
 
-**战斗效果 battle-effects（29）**
+**战斗效果 battle-effects（31）**
 
-分组小计：`自身状态` 5　`出手时·即时` 3　`命中后·挂状态` 13　`攻击后` 1　`命中后·即时` 7
+分组小计：`自身状态` 5　`出手时·即时` 5　`命中后·挂状态` 13　`攻击后` 1　`命中后·即时` 7
 
 | ID | 分组 | 关键字段 | 来源 |
 |---|---|---|---|
+| 回内 | 出手时·即时 | instant@on_use · pct=0.05 | combat-wuxia/battle-effects.toml |
+| 回血 | 出手时·即时 | instant@on_use · pct=0.05 | combat-wuxia/battle-effects.toml |
 | 神照经 | 出手时·即时 | instant@death | combat-wuxia/battle-effects.toml |
 | 蓄势（示例） | 出手时·即时 | instant@attack_pre · pct=0.3 | combat-wuxia/battle-effects.toml |
 | 增加暴击几率 | 出手时·即时 | instant@attack_pre · flat=10 | combat-wuxia/battle-effects.toml |
@@ -577,8 +579,8 @@ growth = 0.5                 # 每层乘性增量：value × (1+growth×(层数�
 | 追击 | 命中后·即时 | instant@on_hit · chance=0.3 | combat-wuxia/battle-effects.toml |
 | 蛤蟆功蓄势 | 自身状态 | zone→self · settle=damage_mitigate | combat-wuxia/battle-effects.toml |
 | 护体 | 自身状态 | zone→self · pct=0.3 | combat-wuxia/battle-effects.toml |
-| 回内 | 自身状态 | zone→self · settle=turn_end · pct=0.05 | combat-wuxia/battle-effects.toml |
-| 回血 | 自身状态 | zone→self · settle=turn_end · pct=0.05 | combat-wuxia/battle-effects.toml |
+| 回内诀 | 自身状态 | zone→self · settle=turn_end · pct=0.05 | combat-wuxia/battle-effects.toml |
+| 回血诀 | 自身状态 | zone→self · settle=turn_end · pct=0.05 | combat-wuxia/battle-effects.toml |
 | 飘逸（示例） | 自身状态 | zone→self · pct=0.1 | combat-wuxia/battle-effects.toml |
 
 ## 物品 items

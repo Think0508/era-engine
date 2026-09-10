@@ -446,6 +446,8 @@ async function compileCombatant(hctx: CompileCtx): Promise<void> {
         if (typeof r.entry.spec.minLevel === 'number' && level < r.entry.spec.minLevel) continue
         apiSystem.callSync('combat', 'addResolvedEffect', combatant.entityId, r.entry, {
           id: `${key}#${r.entry.id}`,
+          origin: 'passive',
+          originId: abilityId,
         })
       }
     }
@@ -472,6 +474,8 @@ async function compileCombatant(hctx: CompileCtx): Promise<void> {
             }
             apiSystem.callSync('combat', 'addResolvedEffect', combatant.entityId, r.entry, {
               id: `${key}#${r.entry.id}`,
+              origin: 'talent',
+              originId: talentId,
             })
           }
         }
@@ -512,7 +516,7 @@ async function compileCombatant(hctx: CompileCtx): Promise<void> {
             apiSystem.callSync('combat', 'addZoneEffect', combatant.entityId, {
               id: effectKey('talent', talentId) + `#${m.formula}`, action: 'modify_stat',
               stat: map.stat, value: { percent: value }, duration: 'battle',
-              category: 'neutral', sourceId: combatant.entityId,
+              category: 'neutral', origin: 'talent', originId: talentId, sourceId: combatant.entityId,
             })
           } else {
             const value = plusVal + multVal * 100
@@ -520,7 +524,7 @@ async function compileCombatant(hctx: CompileCtx): Promise<void> {
             apiSystem.callSync('combat', 'addZoneEffect', combatant.entityId, {
               id: effectKey('talent', talentId) + `#${m.formula}`, action: 'modify_stat',
               stat: map.stat, value: { flat: value }, duration: 'battle',
-              category: 'neutral', sourceId: combatant.entityId,
+              category: 'neutral', origin: 'talent', originId: talentId, sourceId: combatant.entityId,
             })
           }
         }
@@ -828,6 +832,8 @@ async function applyPoisonApply(a: any): Promise<void> {
   await apiSystem.call('combat', 'mountResolved', target.entityId, entry, {
     sourceId: attacker.entityId,
     value,
+    origin: a.origin,
+    originId: a.originId,
   })
   narrativeLog.write(
     `${getCharName(attacker.entityId)} 使 ${getCharName(target.entityId)} 中了【${displayNameOf(entry.name ?? entry.id, entry.spec.levelNames, entry.spec.stacks)}】`,
@@ -893,6 +899,8 @@ async function applyElementApply(a: any): Promise<void> {
   // 1) 先把本元素毒挂上去（合并策略由库条目决定：strongest = 取高层数）
   await apiSystem.call('combat', 'mountResolved', target.entityId, entry, {
     sourceId: caster.entityId,
+    origin: a.origin,
+    originId: a.originId,
   })
   if (!opposite) return
 

@@ -26,6 +26,16 @@
 export type EffectDelivery = 'zone' | 'instant'
 export type MergeMode = 'refresh' | 'stack' | 'strongest'
 
+/**
+ * 实例来源——**战斗状态**（zone 里的东西）是被谁弄出来的：
+ *   · skill   ：技能施展时的效果条目（"技能词条"）挂上去的
+ *   · passive ：被动技在战斗开始时常驻编译进效果区
+ *   · talent  ：战斗天赋同上
+ *   · system  ：插件 API / mod 脚本直接挂（mountEffect / mountResolved）
+ * UI 用它把"被技能挂的 BUFF/DEBUFF"与"被动/天赋的常驻条目"分开显示（不必解析 id 字符串）。
+ */
+export type EffectOrigin = 'skill' | 'passive' | 'talent' | 'system'
+
 /** 数值：固定项 + 比例项（+ 仅通道使用的覆盖项） */
 export interface EffectValue {
   flat: number

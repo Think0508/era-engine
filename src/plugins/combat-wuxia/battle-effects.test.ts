@@ -38,7 +38,7 @@ const DEFAULT_DEFS: Record<string, BattleEffectDef> = (() => {
 })()
 
 // ⚠️ 中文效果名/公式分项名一律经变量间接取（scan-attr-refs 会把 `x['中文']` 判为属性引用，属结构数据）
-const REQ_IDS = '连绵 饮血 增伤 增加暴击几率 增加暴击伤害 乘势 消内 吸内 追击 回血 回内 流血 破甲 失势 缓慢 致盲 封穴 截脉 破绽 毒 火毒 寒毒'.split(' ')
+const REQ_IDS = '连绵 饮血 增伤 增加暴击几率 增加暴击伤害 乘势 消内 吸内 追击 回血 回内 回血诀 回内诀 流血 破甲 失势 缓慢 致盲 封穴 截脉 破绽 毒 火毒 寒毒'.split(' ')
 const ELEMENT_IDS = '毒 火毒 寒毒'.split(' ')
 const P = ((): Record<string, string> => {
   const keys = '准头守基准 准头守 准头攻基准 准头攻 力道项'.split(' ')
@@ -108,8 +108,24 @@ describe('战斗效果全集：库条目契约（真读插件默认层）', () =
     }
     expect(group('连绵')).toBe('攻击后')
     expect(group('饮血')).toBe('命中后·即时')
-    expect(group('回血')).toBe('自身状态')
+    expect(group('回血')).toBe('出手时·即时')      // 即时版 = 技能词条（不驻留）
+    expect(group('回血诀')).toBe('自身状态')       // 持续版 = 自身状态（进效果区）
     expect(group('火毒')).toBe('命中后·挂状态')
+  })
+
+  it('每条 zone 型条目都有挂载来源语义（技能挂 / 被动天赋常驻）', () => {
+    for (const [id, e] of Object.entries(DEFAULT_DEFS)) {
+      const r = resolveEffectRef(id, DEFAULT_DEFS)
+      if (!r.ok) throw new Error(r.error)
+      if (r.entry.delivery === 'instant') {
+        // 即时型 = 技能词条：必须有发生相位，且不声称驻留
+        expect(typeof r.entry.at, `'${id}'`).toBe('string')
+        expect((e as any).settle, `'${id}' 是即时型却写了 settle`).toBeUndefined()
+      } else {
+        // zone 型 = 会出现在效果区里的状态：必须有作用对象 + 施加器/常驻落点
+        expect(r.entry.target === 'self' || r.entry.target === 'enemy').toBe(true)
+      }
+    }
   })
 
   it('毒/火毒/寒毒 是 zone 型且带施加器；施加器名已注册', () => {
@@ -141,7 +157,13 @@ function wuxiaMod(extraDefs: Record<string, any>) {
 async function bootWithSkill(
   skillId: string,
   effects: any[],
-  opts: { playerAbilities?: Record<string, any>; playerStats?: Record<string, number>; playerMp?: number } = {},
+  opts: {
+    playerAbilities?: Record<string, any>
+    playerStats?: Record<string, number>
+    playerMp?: number
+    /** 额外注册的能力定义（被动技测试用——能力必须在 mod.abilities 里有定义才会被编译） */
+    extraAbilities?: Record<string, any>
+  } = {},
 ): Promise<void> {
   __resetCombatModule()
   effectTypeRegistry.clear()
@@ -161,6 +183,7 @@ async function bootWithSkill(
   }
   const mod = wuxiaMod({}) as any
   mod.abilities[skillId] = skill
+  for (const [id, def] of Object.entries(opts.extraAbilities ?? {})) mod.abilities[id] = def
   ;(modLoader as any).loadedMod = mod
   entitySystem.register('character', 'player', {
     id: 'player', name: '玩家',
@@ -271,7 +294,7 @@ describe('战斗效果全集：实战行为', () => {
     expect(ENEMY_HP - enemy.hp).toBeGreaterThan(1500)
   })
 
-  it('回血/回内：使用后挂自身，回合结束时按上限比例回复', async () => {
+  it('回血/回内（即时版）：施展后立即回复，不进效果区', async () => {
     await bootWithSkill(
       '回气诀',
       [{ effect: '回血', value: { percent: 0.1 } }, { effect: '回内', value: { percent: 0.1 } }],
@@ -279,13 +302,53 @@ describe('战斗效果全集：实战行为', () => {
     )
     await apiSystem.call('combat', 'applyDamage', 'player', 1000, { source: 'x', kind: 'external' })
     const hpBefore = state().combatants.player.hp
-    await playerAct('回气诀')          // 施招 → 挂自身（on_use）→ 回合结束结算
+    await playerAct('回气诀')
     const st = state().combatants.player
-    expect(st.effects.some((e: any) => e.id === '回血')).toBe(true)
-    expect(st.effects.some((e: any) => e.id === '回内')).toBe(true)
+    expect(st.hp).toBe(Math.min(PLAYER_HP, hpBefore + Math.round(PLAYER_HP * 0.1)))
+    expect(st.mp).toBe(150)                                     // 100 + 10%×500
+    // 即时型 = 技能词条：用完即弃，不驻留
+    expect(st.effects.some((e: any) => e.id === '回血')).toBe(false)
+    expect(st.effects.some((e: any) => e.id === '回内')).toBe(false)
+  })
+
+  it('回血诀/回内诀（持续版）：使用后挂自身，回合结束时按上限比例回复', async () => {
+    await bootWithSkill(
+      '回气心法',
+      [{ effect: '回血诀', value: { percent: 0.1 } }, { effect: '回内诀', value: { percent: 0.1 } }],
+      { playerStats: { 根骨: 99999 }, playerMp: 100 },
+    )
+    await apiSystem.call('combat', 'applyDamage', 'player', 1000, { source: 'x', kind: 'external' })
+    const hpBefore = state().combatants.player.hp
+    await playerAct('回气心法')          // 施招 → 挂自身（on_use）→ 回合结束结算
+    const st = state().combatants.player
+    expect(st.effects.some((e: any) => e.id === '回血诀')).toBe(true)
+    expect(st.effects.some((e: any) => e.id === '回内诀')).toBe(true)
     // 敌方回合打不动玩家（防御极高）→ HP/MP 只由回复推动
     expect(st.hp).toBe(Math.min(PLAYER_HP, hpBefore + Math.round(PLAYER_HP * 0.1)))
-    expect(st.mp).toBe(100 - 0 + Math.round(500 * 0.1))   // cost 0 + 10% 上限
+    expect(st.mp).toBe(100 + Math.round(500 * 0.1))
+  })
+
+  it('效果区来源标记：技能挂的 = origin "skill"（带技能名），被动编译的 = "passive"', async () => {
+    // 被动技「内功心法」= 整场常驻回血（引用同一个库条目 回血诀）
+    await bootWithSkill('平A', [{ effect: '流血', chance: 1 }], {
+      playerAbilities: { 内功心法: { level: 1, xp: 0 } },
+      extraAbilities: {
+        内功心法: { id: '内功心法', name: '内功心法', type: 'passive', tags: [], battle_effects: [{ effect: '回血诀' }] },
+      },
+    })
+    // 被动编译的实例 id 是复合键（passive:能力#条目），显示名才是库条目名
+    const passive = state().combatants.player.effects.find((e: any) => e.name === '回血诀')
+    expect(passive).toBeDefined()
+    expect(passive.id).toContain('passive:内功心法')
+    expect(passive.origin).toBe('passive')
+    expect(passive.originId).toBe('内功心法')
+    expect(passive.remainingTurns).toBe(0)       // 常驻（battle 时长，不倒数）
+
+    await playerAct('平A')
+    const debuff = state().combatants.enemy.effects.find((e: any) => e.id === '流血')
+    expect(debuff).toBeDefined()
+    expect(debuff.origin).toBe('skill')          // 被技能挂上去的 BUFF/DEBUFF
+    expect(debuff.originId).toBe('平A')          // 哪个技能挂的
   })
 
   it('流血：回合开始（行动前）按最大气血比例扣血', async () => {

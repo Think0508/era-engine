@@ -67,7 +67,9 @@ function registerChars(): void {
   })
   entitySystem.register('character', 'enemy', {
     id: 'enemy', name: '敌人',
-    base: { hp: 60, mp: 30, attack: 10, defense: 0, speed: 5, hp_max: 60, mp_max: 30 },
+    // speed 6（不是 5）：10/6 = 1.67 < 2 → 不触发先攻碾压连动，本文件其余用例保持
+    // 「一次 playerAct = 走完一轮」的节奏；连动专项见 describe「先攻碾压连动」
+    base: { hp: 60, mp: 30, attack: 10, defense: 0, speed: 6, hp_max: 60, mp_max: 30 },
     abilities: { '三连击': { level: 1, xp: 0 } },
   })
 }
@@ -213,6 +215,130 @@ describe('combat-base 命中/暴击/浮动', () => {
     // 敌人死亡检查点在每段后 → 战斗已结束
     const state = apiSystem.callSync('combat', 'getCombatState')
     expect(state).toBeNull()
+  })
+})
+
+// ── 先攻碾压连动（先攻 ≥ 对方最快者 2 倍 → 连续行动）────────────────────
+
+describe('combat-base 先攻碾压连动', () => {
+  beforeEach(async () => { await boot() })
+
+  // 直接注入先攻值（绕过速度属性，精确控制比值）
+  async function setInitiative(map: Record<string, number>): Promise<void> {
+    await apiSystem.call('combat', 'registerHook', 'initiative', (hctx: any) => map[hctx.sourceId] ?? 0)
+  }
+  const combatState = () => apiSystem.callSync('combat', 'getCombatState')
+
+  it('档位：比值 1.99/2/3.99/4/8/16 → 额外 0/1/1/2/3/3（封顶 3）', async () => {
+    const cases: [number, number, number][] = [
+      [199, 100, 0], [200, 100, 1], [399, 100, 1], [400, 100, 2], [800, 100, 3], [1600, 100, 3],
+    ]
+    for (const [p, e, extra] of cases) {
+      await boot()
+      await setInitiative({ player: p, enemy: e })
+      await startBattle()
+      const st = combatState()
+      expect({ p, e, extra: st.combatants.player.extraTurns }).toEqual({ p, e, extra })
+      // 连动 = 行动序里连续出现（快方动完才轮到对方）
+      expect(st.order).toEqual([...Array(extra + 1).fill('player'), 'enemy'])
+      expect(st.combatants.enemy.extraTurns).toBe(0)
+      // 轮初连动日志（extra = 0 时不写）
+      expect(narrativeLog.getEntries().some(e => e.text.includes('轻功碾压'))).toBe(extra > 0)
+    }
+  })
+
+  it('除零：对方先攻 0 → 满档 +3；双方全 0 → 双双不连动', async () => {
+    await setInitiative({ player: 50, enemy: 0 })
+    await startBattle()
+    let st = combatState()
+    expect(st.combatants.player.extraTurns).toBe(3)
+    expect(st.combatants.enemy.extraTurns).toBe(0) // 自己 0 先攻谈不上碾压
+    expect(st.order).toEqual(['player', 'player', 'player', 'player', 'enemy'])
+
+    await boot()
+    await setInitiative({ player: 0, enemy: 0 })
+    await startBattle()
+    st = combatState()
+    expect(st.combatants.player.extraTurns).toBe(0)
+    expect(st.combatants.enemy.extraTurns).toBe(0)
+    expect(st.order.length).toBe(2)
+  })
+
+  it('群战口径：必须碾过对方最快者才连动（不是碾过任意弱者）', async () => {
+    const addEnemy2 = () => entitySystem.register('character', 'enemy2', {
+      id: 'enemy2', name: '敌二',
+      base: { hp: 60, mp: 30, attack: 10, defense: 0, speed: 6, hp_max: 60, mp_max: 30 },
+    })
+    addEnemy2()
+    await setInitiative({ player: 40, enemy: 100, enemy2: 15 })
+    await apiSystem.call('combat', 'start', ['enemy', 'enemy2'], ['player'])
+    expect(combatState().combatants.player.extraTurns).toBe(0) // 对方最快 100 → 40/100 < 2
+
+    await boot()
+    addEnemy2()
+    await setInitiative({ player: 40, enemy: 15, enemy2: 15 })
+    await apiSystem.call('combat', 'start', ['enemy', 'enemy2'], ['player'])
+    expect(combatState().combatants.player.extraTurns).toBe(1) // 40/15 ≈ 2.67 → +1
+  })
+
+  it('连动 = 完整回合：回合初相位/时长递减按自己的行动次数结算', async () => {
+    await setInitiative({ player: 20, enemy: 10 }) // 2 倍 → 玩家 +1
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    // 战斗开始即挂毒（生产路径 combatant_init）：毒在自己的每个回合初结算一次
+    await apiSystem.call('combat', 'registerHook', 'combatant_init', (hctx: any) => {
+      if (hctx.combatant.entityId === 'player') {
+        apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+          id: '连动毒', trigger: 'turn_start', action: 'periodic_damage',
+          value: 5, duration: { turns: 2 }, category: 'debuff',
+        })
+      }
+    })
+    let playerTurns = 0
+    await apiSystem.call('combat', 'registerHook', 'turn_start', (hctx: any) => {
+      if (hctx.actorId === 'player') playerTurns++
+    })
+    await startBattle(() => 0.9)
+    const st = combatState()
+    expect(st.order).toEqual(['player', 'player', 'enemy'])
+    expect(playerTurns).toBe(1)
+    expect(st.combatants.player.hp).toBe(95) // 首个回合初：毒 5
+
+    await playerAct(null)
+    const st2 = combatState()
+    expect(playerTurns).toBe(2)               // 连动走的是完整回合（回合初链钩子再次触发）
+    expect(st2.combatants.player.hp).toBe(90) // 第二次回合初：毒再结算 5
+
+    await playerAct(null) // 玩家第 2 动（连动）→ 之后敌人行动 → 下一轮重排
+    const st3 = combatState()
+    // 毒 turns = 2 被自己的 2 次行动走完 → 到期（若是「赠一次攻击」的伪回合则不会走完）
+    expect(st3.combatants.player.effects.find((e: any) => e.id === '连动毒')).toBeUndefined()
+    expect(st3.round).toBe(2)
+  })
+
+  it('采样时机：轮中先攻下降不改变本轮已排定的连动，下一轮才降档', async () => {
+    // 先攻 = 基准 + 「先攻」通道（通道是活态：recalcStats 即时重算），但连动档位轮初冻结
+    await apiSystem.call('combat', 'registerHook', 'initiative', (hctx: any) => {
+      const base = hctx.sourceId === 'player' ? 40 : 20
+      return base + (chan(hctx.channels?.source, '先攻')?.flat ?? 0)
+    })
+    await startBattle(() => 0.9)
+    expect(combatState().order).toEqual(['player', 'player', 'enemy'])
+
+    // 轮中给玩家挂先攻 -25（无 trigger = 常驻通道）
+    apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+      id: '轮中缓慢', action: 'modify_channel', channel: '先攻', value: { flat: -25 }, duration: { turns: 5 },
+    })
+    const st = combatState()
+    expect(chan(st.combatants.player.channels, '先攻').flat).toBe(-25) // 通道即时生效
+    expect(st.order).toEqual(['player', 'player', 'enemy'])            // 本轮已排定的连动不受影响
+    expect(st.combatants.player.extraTurns).toBe(1)
+
+    await playerAct(null) // 玩家第 1 动
+    await playerAct(null) // 玩家连动（第 2 动）→ 敌人行动 → 下一轮重排
+    const st2 = combatState()
+    expect(st2.round).toBe(2)
+    expect(st2.order).toEqual(['enemy', 'player']) // 玩家 15 < 敌人 20 → 先攻反转，双双不连动
+    expect(st2.combatants.player.extraTurns).toBe(0)
   })
 })
 

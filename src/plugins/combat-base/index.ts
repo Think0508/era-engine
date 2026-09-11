@@ -147,6 +147,8 @@ export interface CombatScene {
   round: number
   order: string[]
   orderIndex: number
+  /** 本轮每人额外行动次数（先攻碾压连动；轮初冻结，与 order 的重复项对应） */
+  extraTurns: Map<string, number>
   rng: () => number
   pendingJobs: AttackJob[]
   depthBudget: number       // 递归/反击防护预算（每次行动重置）
@@ -655,6 +657,7 @@ export function onEnable(ctx: PluginContext): void {
           entityId: id,
           hp: c.hp, maxHp: c.maxHp, mp: c.mp, maxMp: c.maxMp,
           absorbedMaxMp: c.absorbedMaxMp, dead: c.dead,
+          extraTurns: currentCombat.extraTurns.get(id) ?? 0,
           stats: { ...c.stats },
           channels: { ...c.channels },
           effects: c.zone.map(z => ({
@@ -952,6 +955,7 @@ async function startCombat(enemies: string[], allies: string[], _sourceId: strin
     round: 0,
     order: [],
     orderIndex: 0,
+    extraTurns: new Map(),
     rng: Math.random,
     pendingJobs: [],
     depthBudget: MAX_JOB_DEPTH,
@@ -1232,7 +1236,20 @@ function aliveActors(combat: CombatScene): string[] {
   })
 }
 
-// 每轮重排行动序（initiative 钩子；平速 rng）
+// 轻功碾压连动：先攻比值每翻一倍多一次行动（2 倍 +1、4 倍 +2、8 倍 +3…），封顶后快方每轮最多 1+3 = 4 次行动。
+// 调平衡改这一行即可（刻意不做数据配置/API——避免新增数据桶）。
+const EXTRA_TURN_CAP = 3
+
+/** 先攻比值 → 本轮额外行动次数（采样时机 = 轮初，与「缓慢下一轮生效」同源） */
+function extraTurnsFor(own: number, bestOpponent: number): number {
+  if (!(own > 0)) return 0                        // 自己没先攻（含 NaN/负）→ 谈不上碾压
+  if (!(bestOpponent > 0)) return EXTRA_TURN_CAP  // 对方先攻 ≤ 0 → 比值无穷 = 满档
+  // 容差：0.6/0.3 = 1.9999999999999998，不补容差会把「正好 2/4/8 倍」判低一档
+  const tiers = Math.floor(Math.log2(own / bestOpponent) + 1e-9)
+  return Math.min(Math.max(tiers, 0), EXTRA_TURN_CAP)
+}
+
+// 每轮重排行动序（initiative 钩子；平速 rng）+ 先攻碾压连动（按展开后的行动序连续行动）
 // 每个参战者只求值一次（排序比较器内多次调用会重复触发钩子/明细记录，且带状态钩子结果不稳定）
 function buildRound(combat: CombatScene): void {
   const alive = aliveActors(combat)
@@ -1250,10 +1267,28 @@ function buildRound(combat: CombatScene): void {
     if (ia === ib) return combat.rng() < 0.5 ? -1 : 1
     return ib - ia
   })
+  // 碾压连动：跟**对方存活者中最快的先攻**比（必须碾过对方全员）；档位轮初冻结，轮中先攻变化下一轮生效
+  const isFoe = (a: string, b: string): boolean => combat.allies.includes(a) !== combat.allies.includes(b)
+  const extras = new Map<string, number>()
+  const expanded: string[] = []
+  for (const id of order) {
+    const foes = alive.filter(o => o !== id && isFoe(id, o))
+    const extra = foes.length
+      ? extraTurnsFor(initiative.get(id) ?? 0, Math.max(...foes.map(o => initiative.get(o) ?? 0)))
+      : 0
+    extras.set(id, extra)
+    for (let i = 0; i <= extra; i++) expanded.push(id)
+  }
   combat.round++
-  combat.order = order
+  combat.order = expanded
+  combat.extraTurns = extras
   combat.orderIndex = 0
   narrativeLog.write(`—— 第 ${combat.round} 轮 ——`, 'combat', 'combat-base')
+  for (const [id, extra] of extras) {
+    if (extra > 0) {
+      narrativeLog.write(`轻功碾压——${getCharName(id)} 本轮连动 ${extra} 次（共 ${extra + 1} 次行动）`, 'combat', 'combat-base')
+    }
+  }
 }
 
 async function nextTurn(): Promise<void> {

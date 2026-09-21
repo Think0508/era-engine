@@ -155,9 +155,68 @@ function applyCompute(_entity: any, _name: string, raw: number): number {
   return raw
 }
 
-/** T1 阶段修正栈恒为空；Task 2 实装叠加代数 */
-function applyMods(_entity: any, _name: string, v: number): number {
-  return v
+/** 叠加代数：base′ = set ?? v → value = (base′ + Σflat) × (1 + Σpercent)
+ *  与 plugins/combat-base/formula-channels.ts 的通道语义一致（percent 相加后只乘一次） */
+function applyMods(entity: object, name: string, v: number): number {
+  const st = states.get(entity)
+  if (!st || st.mods.length === 0) return v
+  let set: number | undefined
+  let flat = 0
+  let percent = 0
+  let hit = false
+  for (const m of st.mods) {
+    if (m.attr !== name) continue
+    hit = true
+    if (typeof m.mod.set === 'number' && Number.isFinite(m.mod.set)) set = m.mod.set
+    if (typeof m.mod.flat === 'number' && Number.isFinite(m.mod.flat)) flat += m.mod.flat
+    if (typeof m.mod.percent === 'number' && Number.isFinite(m.mod.percent)) percent += m.mod.percent
+  }
+  if (!hit) return v
+  const base = set !== undefined ? set : v
+  return (base + flat) * (1 + percent)
+}
+
+/** 注册一条属性修正。同 (id, attr) 重复注册 = 覆盖（幂等：热重载/重复挂载安全） */
+export function registerModifier(
+  entity: any, id: string, attr: string, mod: AttributeMod, opts?: { source?: string },
+): void {
+  if (entity === null || typeof entity !== 'object') return
+  if (typeof id !== 'string' || id.length === 0) return
+  if (typeof attr !== 'string' || attr.length === 0) return
+  const st = stateOf(entity)
+  const entry: ModifierEntry = { id, attr, mod: { ...mod }, source: opts?.source }
+  const i = st.mods.findIndex(m => m.id === id && m.attr === attr)
+  if (i >= 0) st.mods[i] = entry
+  else st.mods.push(entry)
+  st.version++
+}
+
+/** 移除修正：给 attr 则只移除该属性的那条，否则移除该 id 的全部。返回移除条数 */
+export function removeModifier(entity: any, id: string, attr?: string): number {
+  if (entity === null || typeof entity !== 'object') return 0
+  const st = states.get(entity)
+  if (!st) return 0
+  const before = st.mods.length
+  st.mods = st.mods.filter(m => !(m.id === id && (attr === undefined || m.attr === attr)))
+  const removed = before - st.mods.length
+  if (removed > 0) st.version++
+  return removed
+}
+
+export function clearModifiers(entity: any): void {
+  if (entity === null || typeof entity !== 'object') return
+  const st = states.get(entity)
+  if (!st || st.mods.length === 0) return
+  st.mods = []
+  st.version++
+}
+
+/** 调试/测试用：当前挂在该实体上的修正清单（副本） */
+export function listModifiers(entity: any): ModifierEntry[] {
+  if (entity === null || typeof entity !== 'object') return []
+  const st = states.get(entity)
+  if (!st) return []
+  return st.mods.map(m => ({ ...m, mod: { ...m.mod } }))
 }
 
 /** 供 compute 脚本读取其他属性的有效值（递归走同一管线）——Task 4 使用 */

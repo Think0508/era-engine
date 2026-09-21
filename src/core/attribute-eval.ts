@@ -50,6 +50,10 @@ let states = new WeakMap<object, EntityState>()
 let globalVersion = 1
 let definitions: Record<string, AttributeDefLike> = {}
 let scriptResolver: ((name: string) => string | undefined) | null = null
+// ⚠️ 桩期说明（T1，2026-09-22）：scriptResolver 由 configureAttributeEval 写入，
+//    首次读取在 Task 4 的 applyCompute；桩期无读取点，显式引用以满足 tsconfig noUnusedLocals
+//    （与 mod-validate.ts 的 `void pairName` 同惯例）。Task 4 实装 applyCompute 后**删除本行**。
+void scriptResolver
 let rawReader: ((entity: any, name: string) => any) | null = null
 let depth = 0
 

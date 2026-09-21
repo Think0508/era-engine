@@ -238,6 +238,15 @@ export function onEnable(ctx: PluginContext): void {
     }
   })
 
+  // 最终伤害 = 扣防御后的值 → 通道「最终伤害」（这是"最终伤害 ×0.5 / +N 点"的落点）
+  // 攻守双方的修正**合并后只应用一次**（flat/percent 相加、set 后者覆盖），保证多个来源可预测叠加
+  registerHook('final_damage', (hctx: any) => {
+    const base = typeof hctx.input === 'number' ? hctx.input : 0
+    const merged = mergeBagsLocal(hctx.channels?.source ?? {}, hctx.channels?.target ?? {})
+    const value = Math.max(0, Math.round(applyChannel(base, channelOf(merged, CH.FINAL))))
+    return { value, parts: { 扣防御后: base, 最终伤害: value } }
+  })
+
   // ── 编译钩子（链式）：被动技能 + 战斗天赋 → 效果区 ──
   registerHook('combatant_init', compileCombatant)
   // ── 动态技能指令（玩家/队友回合挂载，回合结束/战斗结束卸载）──

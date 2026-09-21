@@ -48,9 +48,10 @@ export function channelOf(bag: ChannelBag | undefined, channel: string): Channel
 
 // ── 通道词表（天赋/效果常改、且改属性达不到的介入点）─────────────────────
 // 判据：① 天赋常改 ② 改属性达不到 ③ 改完影响本次计算
-// 被剪掉的（改属性即可表达、或已有统计键落点）：力道项/灵敏项/武器项/武功系数/精通系数/内力项/
+// 被剪掉的（改属性即可表达、或已有统计键落点）：武器项/武功系数/精通系数/内力项/
 //   基础命中率/K/准头比率（属性或常量）、基础伤害/受伤/暴击率/暴击倍率（= damage_out/damage_in/
 //   crit_rate/crit_mul 既有统计键）。要加回来 = 注册表加一行 + 公式里读一行。
+//   （注：力道项/灵敏项曾在此列，后为「截脉」加回并注册——见下面 CH.STAT_POWER / CH.STAT_AGI）
 
 export const CH = {
   /** 先攻值（initiative） */
@@ -63,6 +64,8 @@ export const CH = {
   FLOAT: '浮动系数',
   /** 防御值（set 0 = 无视防御） */
   DEFENSE: '防御',
+  /** 最终伤害（扣防御**之后**的最后一道修正；攻守双方写入合并后只应用一次。set 0 = 免疫该次伤害） */
+  FINAL: '最终伤害',
   /** 该段武功威力 */
   POWER: '武功威力',
   /** 风格系数 */
@@ -90,6 +93,7 @@ export const WUXIA_CHANNEL_DEFS: WuxiaChannelDef[] = [
   { id: CH.DODGE, label: '闪避率', description: '守方侧命中率扣减（0 基准；与「命中率」相减）' },
   { id: CH.FLOAT, label: '浮动系数', description: '伤害浮动（默认 0.9–1.1；set 1.0 = 稳定输出）' },
   { id: CH.DEFENSE, label: '防御', description: '防御值（根骨×0.8+定力×0.5；flat=平加，percent=倍率，set 0 = 无视防御）' },
+  { id: CH.FINAL, label: '最终伤害', description: '扣防御**之后**的最后一道修正（flat=平加，percent=倍率，set 0 = 该次伤害归 0）；攻守双方的修正合并后只应用一次' },
   { id: CH.POWER, label: '武功威力', description: '该段武功威力（power×威力曲线/段数）：flat/percent/set' },
   { id: CH.STYLE, label: '风格系数', description: '风格系数 (轻²+厚²+巧²)/(轻+厚+巧)：flat=平加，percent=×1.1 类加成，set=覆盖' },
   { id: CH.EXTRA, label: '其他加成', description: '公式末尾平加伤害（只认 flat/set；percent 对 0 基准无效）' },

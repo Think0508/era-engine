@@ -197,7 +197,7 @@ const overrideHooks = new Map<string, HookHandler>()
 
 const OVERRIDE_HOOK_NAMES = new Set([
   'initiative', 'hit_rate', 'base_damage', 'crit_rate', 'crit_mul', 'float_mul', 'defense_value',
-  'is_attack_skill',
+  'final_damage', 'is_attack_skill',
 ])
 
 // ── 战斗动作注册表 ──────────────────────────────────────────────────────
@@ -1718,7 +1718,11 @@ async function executeHit(
     source: channelBagOf(attacker, actionOverlay, preOverlay, onHitOverlay, dmgOverlay, hitOverlay, critOverlay),
     target: channelBagOf(defender),
   }
-  const critStats = addOverlays(attacker.stats, actionOverlay, preOverlay, onHitOverlay, dmgOverlay, critOverlay)
+  // 只叠加**相位** overlay——常驻统计值由公式钩子自己读 ctx.source.stats（与上面 hit_rate 对
+  // hit_bonus/dodge_bonus 的处理一致）。此前把 attacker.stats 也并进来，导致常驻
+  // crit_rate/crit_mul 被「钩子读一次 + 这里加一次」双重计费（实测 +50 点变 +100 点、
+  // crit_mul +1.0 变 ×3.5）。damage_out/damage_in 不在此列：那两个键的常驻值由本文件自己应用。
+  const critStats = addOverlays(zeroStats(), actionOverlay, preOverlay, onHitOverlay, dmgOverlay, critOverlay)
   const critRate = (await runFormulaHook('crit_rate', {
     source: attacker, target: defender, skill: skillDef, combat, channels: critChannels,
   }, 0)).value + critStats.crit_rate
@@ -1766,17 +1770,29 @@ async function executeHit(
   // 数据层负责平衡；校验期对 |damage_in| > 3 的条目发 warning。
   pending = Math.max(0, Math.round(pending * (1 - dmgInReduction)))
   // e7. −防御（归 0 规则）
+  const attackerFullBag = channelBagOf(attacker, actionOverlay, preOverlay, onHitOverlay, dmgOverlay, hitOverlay, critOverlay, outputOverlay)
   const defenderChannels = channelBagOf(defender, onTargetOverlay, mitigateOverlay)
   const defNorm = await runFormulaHook('defense_value', {
     source: attacker, target: defender, skill: skillDef, combat,
-    channels: { source: channelBagOf(attacker, actionOverlay, preOverlay, onHitOverlay, dmgOverlay, hitOverlay, critOverlay, outputOverlay), target: defenderChannels },
+    channels: { source: attackerFullBag, target: defenderChannels },
   }, 0)
   const defVal = defNorm.value
-  const final = Math.max(0, pending - defVal)
+  const afterDefense = Math.max(0, pending - defVal)
+  // e7.5 最终伤害：**扣防御之后**的最后一道修正（数值链的⑨ → ⑩ 之间）。
+  // 这是"最终伤害 ×0.5 / +N 点"的唯一落点——通道名与语义由上层插件解释（本文件不认识"最终伤害"）。
+  const finalNorm = await runFormulaHook('final_damage', {
+    source: attacker, target: defender, skill: skillDef, combat,
+    channels: { source: attackerFullBag, target: defenderChannels },
+    input: afterDefense,
+  }, afterDefense)
+  const final = Math.max(0, Math.round(finalNorm.value))
   recordFormula({
     hook: 'defense_value', sourceId: job.source, targetId: job.target, skillId: job.skillId, hitIdx,
-    parts: { ...defNorm.parts, 减伤: dmgInReduction, 防御: defVal, 扣防前: pending, 最终伤害: final },
-    channels: { source: zeroChannelBag(), target: defenderChannels }, value: defVal,
+    parts: {
+      ...defNorm.parts, 减伤: dmgInReduction, 防御: defVal, 扣防前: pending,
+      ...finalNorm.parts, 扣防御后: afterDefense, 最终伤害: final,
+    },
+    channels: { source: attackerFullBag, target: defenderChannels }, value: defVal,
   })
 
   // e8. 扣血 + 受伤害后效果

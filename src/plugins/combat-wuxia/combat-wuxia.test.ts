@@ -139,6 +139,10 @@ function wuxiaMod() {
         name: '飘逸', max: 5,
         modifiers: [{ formula: 'combat_channel', channel: '风格系数', when_tag: '拳掌', multiply: 0.1 }],
       },
+      神目: {
+        name: '神目', max: 5,
+        modifiers: [{ formula: 'combat_crit', plus: 10 }],   // 点数组：plus = 点数
+      },
     } as any,
     attributes: {},
   }
@@ -239,6 +243,11 @@ function state(): any {
 // ⚠️ 通道名/中间量名/技能 id 属"结构数据"，不是 attributes.toml 属性——
 // 中文 key 必须经变量/helper 间接取（scan-attr-refs 契约：`obj['中文']` 会被判为属性引用）
 const part = (parts: any, key: string): any => parts?.[key]
+
+// 最近一条公式记录（公式日志同时含敌方回合的记录 → 按攻方过滤）
+const lastFormula = (hook: string, sourceId = 'player'): any =>
+  (apiSystem.callSync('combat', 'getFormulaHistory') as any[])
+    .filter(r => r.hook === hook && r.sourceId === sourceId).pop()
 
 // 手算基准（面板：力道100/灵敏80/轻功50/根骨50/定力30，风格 40·40·30，拳掌系数50，武器0）：
 //   风格系数（技能 厚重60）= (1.8² + 1.908² + 1.6²)/(1.8+1.908+1.6) = 1.7785347
@@ -370,15 +379,15 @@ describe('combat-wuxia 公式', () => {
 describe('combat-wuxia 公式中间量通道', () => {
   beforeEach(async () => { await boot() })
 
-  it('注册 12 个通道（getChannels，含毒伤害与准头/力道项/灵敏项）', () => {
+  it('注册 13 个通道（getChannels，含毒伤害/准头/力道项/灵敏项/最终伤害）', () => {
     const ids = (apiSystem.callSync('combat', 'getChannels') as any[]).map(c => c.id)
     expect(ids).toEqual(expect.arrayContaining([
       '先攻', '命中率', '闪避率', '浮动系数', '防御', '武功威力', '风格系数', '其他加成', '毒伤害',
-      '准头', '力道项', '灵敏项',
+      '准头', '力道项', '灵敏项', '最终伤害',
     ]))
-    expect(ids.length).toBe(12)
+    expect(ids.length).toBe(13)
     // combat-wuxia 侧同名 API 透传同一清单
-    expect((apiSystem.callSync('combat-wuxia', 'getChannels') as any[]).length).toBe(12)
+    expect((apiSystem.callSync('combat-wuxia', 'getChannels') as any[]).length).toBe(13)
   })
 
   it('previewDamage：不进战斗也能拿到中间量（含命中率），战斗内则带实时通道', async () => {
@@ -484,6 +493,131 @@ describe('combat-wuxia 公式中间量通道', () => {
     // 黑蜂针（tags=[暗毒]）不匹配 when_tag → 无加成
     const poison = await playerAct('黑蜂针')
     expect(poison.damage).toBe(843)
+  })
+
+  // ── 最终伤害通道（数值链⑨→⑩之间的最后一道修正）──────────────────────────
+  // 基准：铁砂掌 扣防前 1068、防御 55 → 扣防御后 1013
+
+  it('最终伤害通道 percent：−50% → 1013×0.5 = 507（扣防前不变）', async () => {
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    await startBattle(() => 0.9)
+    apiSystem.callSync('combat', 'addZoneEffect', 'enemy', {
+      id: '铁布衫减伤', action: 'modify_channel', channel: '最终伤害', value: { percent: -0.5 }, duration: 'battle',
+    })
+    const result = await playerAct('铁砂掌')
+    expect(result.damage).toBe(507)
+    const rec = lastFormula('defense_value')
+    expect(part(rec.parts, '扣防前')).toBe(1068)   // 减伤落在⑨之后，⑧之前的值不动
+    expect(part(rec.parts, '扣防御后')).toBe(1013)
+    expect(part(rec.parts, '最终伤害')).toBe(507)
+  })
+
+  it('最终伤害通道 flat：+100 点 → 1013+100 = 1113（平加在扣防御之后）', async () => {
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    await startBattle(() => 0.9)
+    apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+      id: '摧心', action: 'modify_channel', channel: '最终伤害', value: { flat: 100 }, duration: 'battle',
+    })
+    const result = await playerAct('铁砂掌')
+    expect(result.damage).toBe(1113)
+  })
+
+  it('最终伤害通道 set 0：该次伤害归 0（不是"无视防御"）', async () => {
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    await startBattle(() => 0.9)
+    apiSystem.callSync('combat', 'addZoneEffect', 'enemy', {
+      id: '金刚不坏', action: 'modify_channel', channel: '最终伤害', value: { set: 0 }, duration: 'battle',
+    })
+    const result = await playerAct('铁砂掌')
+    expect(result.damage).toBe(0)
+  })
+
+  it('最终伤害通道：攻守双方写入合并后只应用一次（+10% 与 −50% → ×0.6）', async () => {
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    await startBattle(() => 0.9)
+    apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+      id: '攻方终伤', action: 'modify_channel', channel: '最终伤害', value: { percent: 0.1 }, duration: 'battle',
+    })
+    apiSystem.callSync('combat', 'addZoneEffect', 'enemy', {
+      id: '守方终伤', action: 'modify_channel', channel: '最终伤害', value: { percent: -0.5 }, duration: 'battle',
+    })
+    const result = await playerAct('铁砂掌')
+    expect(result.damage).toBe(608)                 // 1013 ×(1+0.1−0.5) = 607.8 → 608
+  })
+
+  it('同通道多来源：percent **相加后只乘一次**（+10% 与 +20% → ×1.30，不是 ×1.32）', async () => {
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    await startBattle(() => 0.9)
+    apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+      id: '风格甲', action: 'modify_channel', channel: '风格系数', value: { percent: 0.1 }, duration: 'battle',
+    })
+    apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+      id: '风格乙', action: 'modify_channel', channel: '风格系数', value: { percent: 0.2 }, duration: 'battle',
+    })
+    const result = await playerAct('铁砂掌')
+    // 相加：(300+90)×1.05×(1.7785347×1.30)×1.44 + 19.2 = 1382.6 → 1383−55 = 1328
+    // 若按复利 1.1×1.2=1.32 则为 1349——本条断言即"相加而非复利"的守卫
+    expect(result.damage).toBe(1328)
+    expect(part(lastFormula('base_damage').parts, '风格系数')).toBeCloseTo(1.7785347 * 1.3, 3)
+  })
+})
+
+// ── 统计键计费（防"钩子读一次 + combat-base 加一次"双重计费回归）─────────
+// 契约：**常驻**统计值由公式钩子自己读 ctx.source.stats / ctx.target.stats（combat-wuxia 的
+// crit_rate/crit_mul/hit_rate/defense_value 钩子都这么做），combat-base 只叠加**相位** overlay。
+// damage_out / damage_in 例外：这两个键的常驻值由 combat-base 自己应用（钩子不读）。
+
+describe('combat-wuxia 统计键计费', () => {
+  beforeEach(async () => { await boot() })
+
+  it('常驻 crit_rate +50 → 暴击率 = 福缘/5 + 50 = 54（不双计费）', async () => {
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    await startBattle(() => 0.9)
+    apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+      id: '测试暴击', action: 'modify_stat', stat: 'crit_rate', value: { flat: 50 }, duration: 'battle',
+    })
+    await playerAct('铁砂掌')
+    expect(part(lastFormula('float_mul').parts, '暴击率')).toBeCloseTo(54, 6)
+  })
+
+  it('相位 crit_rate（damage_crit）+50 → 暴击率 = 54（overlay 只算一次）', async () => {
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    await startBattle(() => 0.9)
+    apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+      id: '相位暴击', trigger: 'damage_crit', action: 'modify_stat', stat: 'crit_rate',
+      value: { flat: 50 }, duration: 'battle',
+    })
+    await playerAct('铁砂掌')
+    expect(part(lastFormula('float_mul').parts, '暴击率')).toBeCloseTo(54, 6)
+  })
+
+  it('常驻 crit_mul +1.0 → 暴击倍率 = 2.5（不双计费）', async () => {
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    await startBattle(() => 0)                     // rng 0 → 必中且必暴（基准暴击率 4）
+    apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+      id: '测试暴伤', action: 'modify_stat', stat: 'crit_mul', value: { percent: 1.0 }, duration: 'battle',
+    })
+    await playerAct('铁砂掌')
+    const f = lastFormula('float_mul').parts
+    expect(part(f, '暴击倍率')).toBeCloseTo(2.5, 6)  // 1.5 + 1.0
+  })
+
+  it('天赋 combat_crit：plus=10 是点数 → 暴击率 = 4 + 10 = 14', async () => {
+    await boot({ playerTalents: { 神目: 1 } })
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    await startBattle(() => 0.9)
+    await playerAct('铁砂掌')
+    expect(part(lastFormula('float_mul').parts, '暴击率')).toBeCloseTo(14, 6)
+  })
+
+  it('对照组：常驻 hit_bonus +50 → 命中率 +50（本来就是单计费）', async () => {
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    await startBattle(() => 0.9)
+    apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+      id: '测试命中', action: 'modify_stat', stat: 'hit_bonus', value: { flat: 50 }, duration: 'battle',
+    })
+    await playerAct('铁砂掌')
+    expect(lastFormula('hit_rate').value).toBeCloseTo(158, 6)  // 108 + 50
   })
 })
 

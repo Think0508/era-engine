@@ -45,7 +45,7 @@ gain = { condition = "player.talents.剑术精通 >= 5", replace = "剑术精通
 |---------|------|---------|---------|
 | `judge` | 实行值判定（所有 H 指令） | `sumTalentModifiers(char, 'judge', {type})` | h-core/judge.ts |
 | `combat_damage` | 战斗伤害（整体倍率，可按技能过滤） | `multiplyTalentModifiers(char, 'combat_damage', {tag, ability})` | combat-wuxia |
-| `combat_channel` | **战斗公式中间量通道**（+ `channel` 字段：先攻/命中率/闪避率/浮动系数/防御/武功威力/风格系数/其他加成） | combat-wuxia 编译期按 `when_*` 过滤 | combat-wuxia |
+| `combat_channel` | **战斗公式中间量通道**（+ `channel` 字段，13 个可选值见 `docs/combat-system.md` 通道表） | combat-wuxia 编译期按 `when_*` 过滤 | combat-wuxia |
 | `combat_hit` / `combat_dodge` / `combat_crit` / `combat_crit_mul` / `combat_defense` / `combat_in` | 战斗统计键（命中点/闪避点/暴击点/暴击倍率/防御倍率/减伤） | combat-wuxia 编译期 | combat-wuxia |
 | `favorability` | 好感度变化 | `multiplyTalentModifiers(char, 'favorability', {})` | h-core/favorability.ts |
 | `trust` | 信赖度变化 | `multiplyTalentModifiers(char, 'trust', {})` | h-core/trust.ts |
@@ -79,6 +79,10 @@ multiply = 0.10            # 每级 ×0.1（percent）；plus = 平加值
 |------|------|------|
 | `plus` | 每级加法值 | `plus = 10` → Lv3 时 +30 |
 | `multiply` | 每级乘法系数 | `multiply = 0.05` → Lv3 时 +15% |
+
+> ⚠️ **`plus` 的单位按 formula 分档、并不统一**（`combat_channel` 是平加原值、`combat_damage` 是百分数、
+> `combat_crit` 是点数、`combat_crit_mul` 是比例）——写战斗天赋前**必查**
+> `docs/combat-system.md`「伤害数值链」节的「天赋 modifiers 的单位」表，别照抄别的 formula 的数字。
 
 ## 三、自动习得（gain）
 

@@ -12,7 +12,7 @@
 
 - **三层架构铁律**：core 层不认识任何具体属性名 —— 属性名是数据，派生公式是 mod 提供的脚本。
 - **写入语义不变**：不改动任何现有写入路径（`hpmp-growth`、吸内削上限、`settlement.applyChange` 全部照旧）。
-- **零回归**：T1 完成后 `npm run test` 必须仍是 **1642 passed / 5 skipped**，逐位不变。
+- **零回归**：**原有 1642 passed / 5 skipped 必须全部仍通过、零失败**。注意新增测试文件会使总数增加（计划一结束时约 1659+），所以判据是「**原有用例无一转红**」，而不是总数不变。**不得修改任何原有测试用例来迁就实现** —— 若某个原有用例失败，那是实现有错。
 - **管线同步**：不得引入 `async`/Promise（140+ 处调用点是同步的）。派生脚本返回非 `number` 一律按失败处理。
 - **无超时保护**：同步管线无法超时（见 spec §4.3）。以「深度护栏 + 加载期校验 + 运行期回退上报」替代。
 - **叠加代数复用公式通道语义**：`base′ = set ?? v` → `value = (base′ + Σflat) × (1 + Σpercent)`。`percent` 相加后只乘一次。
@@ -300,7 +300,7 @@ export function readAttrForCompute(entity: any, name: string): any {
 - [ ] **Step 4: 运行测试确认通过**
 
 Run: `npx vitest run src/core/attribute-eval.test.ts`
-Expected: PASS（9 个用例全绿）
+Expected: PASS（7 个用例全绿：闸门 4 + 缓存与版本 3）
 
 - [ ] **Step 5: 确认没有破坏属性引用扫描**
 
@@ -516,7 +516,7 @@ export function listModifiers(entity: any): ModifierEntry[] {
 - [ ] **Step 4: 运行测试确认通过**
 
 Run: `npx vitest run src/core/attribute-eval.test.ts`
-Expected: PASS（19 个用例全绿）
+Expected: PASS（17 个用例全绿：Task 1 的 7 + 本任务新增 10）
 
 - [ ] **Step 5: 提交**
 
@@ -726,8 +726,8 @@ Expected: PASS（6 个用例全绿）
 - [ ] **Step 6: 零回归验收（本任务的关键门槛）**
 
 Run: `npm run test`
-Expected: **1642 passed | 5 skipped**，且 `Test Files 131 passed | 1 skipped (132)` —— 与本计划开始前逐位一致。
-若有任何用例转红，**不要继续**：说明有属性的裸值不再原样透出（先查闸门是否误放行，或 `readEffective` 是否对非数字/未定义属性做了多余变换）。
+Expected: **0 failed**，且原有 1642 例全部仍通过（此时因 Task 1/2 新增测试，总数应约为 1659 = 1642 + 17）。
+若有任何**原有**用例转红，**不要继续**：说明有属性的裸值不再原样透出（先查闸门是否误放行，或 `readEffective` 是否对非数字/未定义属性做了多余变换）。
 
 - [ ] **Step 7: 类型检查**
 
@@ -872,6 +872,10 @@ Expected: FAIL —— compute 用例 expected 800 received 300（桩未执行脚
 
 在 `src/core/attribute-eval.ts` 中，把 `applyCompute` 桩替换为：
 
+> ⚠️ **同时删除** Task 1 为通过 `noUnusedLocals` 而加的占位行 `void scriptResolver`（及其上方 3 行说明注释）
+> —— 本任务实装后 `scriptResolver` 在 `applyCompute` 里被真正读取，占位行会变成死代码。
+> 该占位行由 Task 1 的修复提交 `fdd6d483` 引入，其提交信息也已注明「Task 4 实装后删除」。
+
 ```ts
 /** 编译缓存：同一段脚本文本只编译一次（mod 热重载换文本即重新编译） */
 const compiled = new Map<string, Function>()
@@ -950,12 +954,12 @@ function applyCompute(entity: object, name: string, raw: number): number {
 - [ ] **Step 5: 运行测试确认通过**
 
 Run: `npx vitest run src/core/attribute-eval.test.ts`
-Expected: PASS（全部用例绿，含 compute 的 8 例）
+Expected: PASS（25 个用例全绿：前两任务的 17 + 本任务 compute 8；含被升级的 1 例）
 
 - [ ] **Step 6: 端到端验证（真实 mod 数据加载路径）**
 
 Run: `npm run test` 与 `npm run validate`
-Expected: 全量测试仍 **1642 passed / 5 skipped**（本任务未接任何来源，不应改变既有行为）；`validate` 4 passed。
+Expected: **0 failed**，原有 1642 例全部仍通过（本任务未接任何来源，不应改变既有行为；总数约 1659+）；`validate` 4 passed。
 另外跑一次 `npm run check:catalog`，Expected: `✅ 校验通过`。
 
 - [ ] **Step 7: 类型检查**
@@ -1035,7 +1039,7 @@ git commit -m "docs(attributes): 补有效值读取语义、compute 契约与条
 
 ## 验收清单（计划一整体）
 
-- [ ] `npm run test` → **1642 passed / 5 skipped**（与计划开始前逐位一致）
+- [ ] `npm run test` → **0 failed**，原有 1642 例全部仍通过（新增测试使总数增加属预期）
 - [ ] `npm run typecheck` → exit 0
 - [ ] `npm run scan:attrs` → `VIOLATION=0`
 - [ ] `npm run validate` → 4 passed

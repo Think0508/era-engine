@@ -1,3 +1,5 @@
+import { configureAttributeEval, readEffective, notifyAttrWrite } from './attribute-eval'
+
 /** 属性名常量——插件代码引用属性的唯一途径，禁止直接写字符串 */
 export const ATTR = {
   // 基础
@@ -48,8 +50,8 @@ const SEARCH_ORDER = [
   'first_record', 'experience', 'social', 'economy', 'combat',
 ]
 
-/** 跨命名空间读取属性值 */
-export function getEntityAttr(entity: any, name: string): any {
+/** 跨命名空间读取**裸值**（不含派生与修正）——有效值管线的输入 */
+export function readRawAttr(entity: any, name: string): any {
   if (entity === null || entity === undefined) return 0
 
   // 直接属性（如 entity.name, entity.abilities）
@@ -70,6 +72,16 @@ export function getEntityAttr(entity: any, name: string): any {
   return 0
 }
 
+/** 跨命名空间读取属性值（**有效值**：裸值 → 派生 → 修正栈；未命中闸门时等于裸值）
+ *  2026-09-22：接入 src/core/attribute-eval.ts（设计见 docs/superpowers/specs/
+ *  2026-09-22-attribute-effective-value-design.md） */
+export function getEntityAttr(entity: any, name: string): any {
+  return readEffective(entity, name, readRawAttr(entity, name))
+}
+
+// 注入裸值读取器：compute 脚本跨属性读取时递归走同一管线（命名空间查找单一来源保留在本文件）
+configureAttributeEval({ rawReader: readRawAttr })
+
 /** 检查属性是否存在于任一命名空间（区别于 getEntityAttr 的 0 兜底——区分"值为 0"与"不存在"） */
 export function hasEntityAttr(entity: any, name: string): boolean {
   if (entity === null || entity === undefined) return false
@@ -86,8 +98,14 @@ export function hasEntityAttr(entity: any, name: string): boolean {
   return false
 }
 
-/** 跨命名空间写入属性值 */
+/** 跨命名空间写入属性值（写的是**裸值**；写后让该实体的有效值缓存失效） */
 export function setEntityAttr(entity: any, name: string, value: any): boolean {
+  const ok = writeRawAttr(entity, name, value)
+  if (ok) notifyAttrWrite(entity)
+  return ok
+}
+
+function writeRawAttr(entity: any, name: string, value: any): boolean {
   if (!entity) return false
 
   // 直接属性

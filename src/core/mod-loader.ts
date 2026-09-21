@@ -9,6 +9,7 @@
 //   mod-loader.ts    本文件：glob 声明 + ModLoader class + modLoader 实例 + re-exports
 
 import { parseModData } from './mod-parse'
+import { configureAttributeEval } from './attribute-eval'
 import { bindingResolver } from './binding-resolver'
 import { conditionRegistry } from './condition-registry'
 import { entitySystem } from './entity-system'
@@ -111,6 +112,11 @@ export class ModLoader {
     bindingResolver.loadBindings(mod.bindings)
     conditionRegistry.clear()
     conditionRegistry.registerFromAttributes(mod.attributes)
+    // 属性有效值层：注入属性定义（哪些属性允许 compute/修正）与脚本解析器（compute 脚本按文件名取）
+    configureAttributeEval({
+      definitions: mod.attributes as Record<string, { compute?: string }>,
+      scriptResolver: (fileName: string) => scripts.get(fileName),
+    })
     conditionRegistry.registerFromBindings(mod.bindings)
     // 注释：关系组注入（关系系统 v2）——条件引擎聚合路径 any(group:xxx) 求值用
     gameContext.setRelationGroups(mod.relationGroups)

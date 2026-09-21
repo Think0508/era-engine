@@ -9,7 +9,8 @@
 //   mod-loader.ts    本文件：glob 声明 + ModLoader class + modLoader 实例 + re-exports
 
 import { parseModData } from './mod-parse'
-import { configureAttributeEval } from './attribute-eval'
+import { configureAttributeEval, bumpDataVersion } from './attribute-eval'
+import { errorReporter } from './error-reporter'
 import { bindingResolver } from './binding-resolver'
 import { conditionRegistry } from './condition-registry'
 import { entitySystem } from './entity-system'
@@ -112,11 +113,25 @@ export class ModLoader {
     bindingResolver.loadBindings(mod.bindings)
     conditionRegistry.clear()
     conditionRegistry.registerFromAttributes(mod.attributes)
+    // 属性有效值层加载期校验：声明的 compute 脚本必须真实存在
+    for (const [attrName, def] of Object.entries((mod.attributes ?? {}) as Record<string, any>)) {
+      const f = def?.compute
+      if (typeof f !== 'string' || f.length === 0) continue
+      if (!scripts.has(f)) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `属性 '${attrName}' 的 compute 脚本 '${f}' 不存在`,
+          suggestion: `在 mods/${modName}/scripts/ 下创建 ${f}（签名：(base, attrs) => number，必须同步）`,
+        })
+      }
+    }
     // 属性有效值层：注入属性定义（哪些属性允许 compute/修正）与脚本解析器（compute 脚本按文件名取）
     configureAttributeEval({
       definitions: mod.attributes as Record<string, { compute?: string }>,
       scriptResolver: (fileName: string) => scripts.get(fileName),
     })
+    // 属性有效值层：mod 数据（重）加载 = 属性定义变更 → 所有实体的有效值缓存必须失效
+    bumpDataVersion()
     conditionRegistry.registerFromBindings(mod.bindings)
     // 注释：关系组注入（关系系统 v2）——条件引擎聚合路径 any(group:xxx) 求值用
     gameContext.setRelationGroups(mod.relationGroups)

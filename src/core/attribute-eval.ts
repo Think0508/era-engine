@@ -50,10 +50,6 @@ let states = new WeakMap<object, EntityState>()
 let globalVersion = 1
 let definitions: Record<string, AttributeDefLike> = {}
 let scriptResolver: ((name: string) => string | undefined) | null = null
-// ⚠️ 桩期说明（T1，2026-09-22）：scriptResolver 由 configureAttributeEval 写入，
-//    首次读取在 Task 4 的 applyCompute；桩期无读取点，显式引用以满足 tsconfig noUnusedLocals
-//    （与 mod-validate.ts 的 `void pairName` 同惯例）。Task 4 实装 applyCompute 后**删除本行**。
-void scriptResolver
 let rawReader: ((entity: any, name: string) => any) | null = null
 let depth = 0
 
@@ -110,17 +106,18 @@ function hasMods(entity: object, name: string): boolean {
 /** 闸门 + 管线入口。raw 由 entity-utils 的命名空间查找算出 */
 export function readEffective(entity: any, name: string, raw: any): any {
   if (entity === null || entity === undefined || typeof entity !== 'object') return raw
-  // 非数字属性（string/boolean/对象型如 abilities 条目）不参与派生与修正
-  if (typeof raw !== 'number') return raw
+  // 非数字属性（string/boolean/对象型如 abilities 条目）不参与派生与修正；
+  // 用 Number.isFinite 而非 typeof：NaN/±Infinity 也不得进入管线（否则会被缓存并污染下游）
+  if (!Number.isFinite(raw)) return raw
   const def = definitions[name]
   if (!def) return raw
   const hasCompute = typeof def.compute === 'string' && def.compute.length > 0
   if (!hasCompute && !hasMods(entity, name)) return raw
   if (depth >= MAX_DEPTH) {
-    errorReporter.reportDedup('attr-eval-depth', {
+    errorReporter.reportDedup(`attr-eval-depth:${name}`, {
       source: 'attribute-eval', severity: 'error',
-      message: `属性求值递归超过深度上限（${MAX_DEPTH}）——已断链并返回裸值`,
-      suggestion: '检查属性之间的 compute 依赖是否构成循环（如 A 派生依赖 A）',
+      message: `属性 '${name}' 求值递归超过深度上限（${MAX_DEPTH}）——已断链并返回裸值`,
+      suggestion: `检查属性 '${name}' 的 compute 依赖是否构成循环（如 '${name}' 的派生公式里读取了 '${name}' 自身）`,
     })
     return raw
   }
@@ -150,9 +147,53 @@ export function readEffective(entity: any, name: string, raw: any): any {
   return v
 }
 
-/** T1 阶段为桩（原样返回）；Task 4 实装 */
-function applyCompute(_entity: any, _name: string, raw: number): number {
-  return raw
+/** 编译缓存：同一段脚本文本只编译一次（mod 热重载换文本即重新编译） */
+const compiled = new Map<string, Function>()
+
+function compileScript(code: string): Function {
+  let fn = compiled.get(code)
+  if (!fn) {
+    // 严格模式 + 显式两个入参（不用 with/Proxy：契约比 src/utils/sandbox.ts 更窄）
+    fn = new Function('base', 'attrs', `"use strict";\n${code}`)
+    compiled.set(code, fn)
+  }
+  return fn
+}
+
+/** 派生：v = 脚本(raw, attrs)。失败姿态一律「回退裸值 + 去重上报」，不阻断调用方。
+ *  ⚠️ 同步执行、**无超时保护**（同步管线里做不到，见 spec §4.3）——脚本必须纯同步且快速 */
+function applyCompute(entity: object, name: string, raw: number): number {
+  const def = definitions[name]
+  const file = def?.compute
+  if (typeof file !== 'string' || file.length === 0) return raw
+  if (!scriptResolver) return raw
+  const code = scriptResolver(file)
+  if (typeof code !== 'string' || code.trim().length === 0) {
+    errorReporter.reportDedup(`attr-compute-missing:${file}`, {
+      source: 'attribute-eval', severity: 'error',
+      message: `属性 '${name}' 的 compute 脚本 '${file}' 不存在或为空——已回退裸值`,
+      suggestion: `检查 mods/<mod>/scripts/${file} 是否存在`,
+    })
+    return raw
+  }
+  try {
+    const out = compileScript(code)(raw, { get: (n: string) => readAttrForCompute(entity, n) })
+    if (typeof out !== 'number' || !Number.isFinite(out)) {
+      errorReporter.reportDedup(`attr-compute-bad:${name}`, {
+        source: 'attribute-eval', severity: 'error',
+        message: `属性 '${name}' 的 compute 脚本 '${file}' 返回非有限数字（收到 ${typeof out}）——已回退裸值`,
+        suggestion: 'compute 脚本必须 return 一个有限 number，且不得是 async',
+      })
+      return raw
+    }
+    return out
+  } catch (err) {
+    errorReporter.reportDedup(`attr-compute-throw:${name}`, {
+      source: 'attribute-eval', severity: 'error',
+      message: `属性 '${name}' 的 compute 脚本 '${file}' 执行抛错：${err instanceof Error ? err.message : String(err)}——已回退裸值`,
+    })
+    return raw
+  }
 }
 
 /** 叠加代数：base′ = set ?? v → value = (base′ + Σflat) × (1 + Σpercent)
@@ -219,9 +260,18 @@ export function listModifiers(entity: any): ModifierEntry[] {
   return st.mods.map(m => ({ ...m, mod: { ...m.mod } }))
 }
 
-/** 供 compute 脚本读取其他属性的有效值（递归走同一管线）——Task 4 使用 */
+/** 供 compute 脚本读取其他属性的有效值（递归走同一管线） */
 export function readAttrForCompute(entity: any, name: string): any {
-  if (!rawReader) return 0
+  if (!rawReader) {
+    // 结构性接线缺失（entity-utils 模块加载时注入）——静默返回 0 会让派生值无声地错，
+    // 故必须上报：调用方拿到 0 是回退姿态，但错误必须有信号。
+    errorReporter.reportDedup('attr-eval-no-raw-reader', {
+      source: 'attribute-eval', severity: 'error',
+      message: `读取属性 '${name}' 的有效值时 rawReader 未注入——已返回 0（compute 结果不可信）`,
+      suggestion: 'entity-utils 在模块加载时注入 rawReader；单独使用本模块（如单元测试）须自行 configureAttributeEval({ rawReader })',
+    })
+    return 0
+  }
   const raw = rawReader(entity, name)
   return readEffective(entity, name, raw)
 }

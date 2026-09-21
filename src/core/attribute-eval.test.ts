@@ -2,7 +2,7 @@
 // ⚠️ 中文属性名属「结构数据」，必须经 helper 间接取（scan-attr-refs 契约：`obj['中文']` 会被判为属性引用）
 import { describe, it, expect, beforeEach } from 'vitest'
 import {
-  configureAttributeEval, readEffective, notifyAttrWrite, bumpDataVersion, __resetAttributeEval,
+  configureAttributeEval, readEffective, bumpDataVersion, __resetAttributeEval,
 } from './attribute-eval'
 
 describe('attribute-eval：闸门（零回归保证）', () => {
@@ -28,7 +28,12 @@ describe('attribute-eval：闸门（零回归保证）', () => {
     expect(readEffective(e, '快乐刻印', raw)).toBe(raw)
   })
 
-  it('null / 非对象实体不崩，原样返回', () => {
+  it('null / 非对象实体不崩，原样返回（entity 守卫是承载的）', () => {
+    configureAttributeEval({
+      definitions: { 力道: { compute: 'p.js' } },
+      scriptResolver: () => 'return base',
+      rawReader: () => 0,
+    })
     expect(readEffective(null, '力道', 5)).toBe(5)
     expect(readEffective(undefined, '力道', 5)).toBe(5)
   })
@@ -47,20 +52,39 @@ describe('attribute-eval：缓存与版本失效', () => {
     expect(readEffective(e, '力道', 10)).toBe(10)
   })
 
-  it('bumpDataVersion 后缓存失效（不影响返回值正确性）', () => {
-    configureAttributeEval({ definitions: { 力道: {} } })
+  it('bumpDataVersion 后仍按当前 raw 正确求值（失效计数由 Task 4 的脚本探针断言）', () => {
+    configureAttributeEval({
+      definitions: { 力道: { compute: 'p.js' } },
+      scriptResolver: () => 'return base',
+      rawReader: () => 0,
+    })
     const e = { id: 'c1' }
     expect(readEffective(e, '力道', 10)).toBe(10)
     bumpDataVersion()
     expect(readEffective(e, '力道', 10)).toBe(10)
+    expect(readEffective(e, '力道', 20)).toBe(20)
   })
 
-  it('不同实体互不干扰', () => {
-    configureAttributeEval({ definitions: { 力道: {} } })
+  it('不同实体互不干扰（走缓存路径）', () => {
+    configureAttributeEval({
+      definitions: { 力道: { compute: 'p.js' } },
+      scriptResolver: () => 'return base',
+      rawReader: () => 0,
+    })
     const a = { id: 'a' }
     const b = { id: 'b' }
     expect(readEffective(a, '力道', 10)).toBe(10)
-    notifyAttrWrite(a)
-    expect(readEffective(b, '力道', 20)).toBe(20)
+    expect(readEffective(b, '力道', 20)).toBe(20)   // 若缓存不按实体隔离，这里会错误地返回 10
+  })
+
+  it('同一 (实体,属性) 换了 raw 必须重算，不得命中旧缓存', () => {
+    configureAttributeEval({
+      definitions: { 力道: { compute: 'p.js' } },
+      scriptResolver: () => 'return base',
+      rawReader: () => 0,
+    })
+    const e = { id: 'c1' }
+    expect(readEffective(e, '力道', 10)).toBe(10)
+    expect(readEffective(e, '力道', 20)).toBe(20)   // 缓存键若不比对 raw，这里会错误地返回 10
   })
 })

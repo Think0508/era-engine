@@ -39,7 +39,7 @@ interface EntityState {
   version: number
   cachedAtVersion: number
   cachedAtGlobal: number
-  cache: Map<string, any>
+  cache: Map<string, { raw: number; v: number }>
   mods: ModifierEntry[]
 }
 
@@ -131,7 +131,12 @@ export function readEffective(entity: any, name: string, raw: any): any {
     st.cachedAtVersion = st.version
     st.cachedAtGlobal = globalVersion
   }
-  if (st.cache.has(name)) return st.cache.get(name)
+  // 缓存键必须同时比对 raw：生产写路径大量直接改 entity.base[...]（effect-system、h-group-sex、
+  //   h-ejaculation、hunger-system 等），绕过 setEntityAttr 也就绕过了 notifyAttrWrite 的版本号自增，
+  //   故版本戳单独不可信 —— 同一 (实体, 属性) 在版本不变的情况下裸值可能已变。
+  //   用 Object.is 而非 ===，使缓存里的 NaN 仍能命中（NaN !== NaN 会永远击穿缓存）。
+  const hit = st.cache.get(name)
+  if (hit && Object.is(hit.raw, raw)) return hit.v
 
   depth++
   let v: number = raw
@@ -141,7 +146,7 @@ export function readEffective(entity: any, name: string, raw: any): any {
   } finally {
     depth--
   }
-  st.cache.set(name, v)
+  st.cache.set(name, { raw, v })
   return v
 }
 

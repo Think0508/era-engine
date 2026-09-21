@@ -63,6 +63,21 @@ v = (mod.set ?? v + Σmod.flat) × (1 + Σmod.percent)
 
 理由：「给最大气血 +50」的直觉是**最终值** +50，而不是只加在公式的某个分项上。对**非派生属性**公式是恒等，两种次序完全等价 —— 所以这条只影响派生属性，风险面小。
 
+### 4.1.1 管线闸门（这是零回归的关键）
+
+**只有 `mod.attributes` 里定义过、且（声明了 `compute` 或存在修正条目）的属性才走管线**；其余属性在求值入口**原样返回裸值**。
+
+由此得到一个可证的安全性质：T1 不含来源接入时，任何属性都命不中闸门 → 管线是恒等变换 → 现有 140+ 处读取点逐位不变。这同时把「`getEntityAttr` 也读 `entity.id`/`entity.name` 这类直接属性」的边缘情况一起挡在门外。
+
+### 4.1.2 依赖注入（避免 core 内部循环依赖）
+
+`entity-utils.ts` 不能 import `mod-loader`（`mod-loader → mod-parse → entity-utils` 已构成链路，反向 import 会成环）。因此：
+
+- 新增**叶子模块** `src/core/attribute-eval.ts`：只依赖 `error-reporter`，不 import 任何 core 模块
+- 它接收**裸值**作为入参（`readEffective(entity, name, raw)`）—— `SEARCH_ORDER` 与命名空间查找仍单一来源保留在 `entity-utils.ts`（不复制第二份）
+- 属性定义与脚本解析器由 `mod-loader` 在加载后**注入**（`configureAttributeEval`），位置与 `conditionRegistry.registerFromAttributes` 并列
+- 缓存与修正栈按**实体对象**用 `WeakMap` 索引（不依赖 `entity.id`，且自动随对象回收）
+
 ### 4.2 叠加代数：直接复用公式通道
 
 不新造一套叠加数学，沿用 `src/plugins/combat-base/formula-channels.ts:7-10` 的既有语义（已有测试覆盖，且是用户已确认的期望行为）：
@@ -89,10 +104,12 @@ compute = "calc_max_hp.js"      # (base, attrs) => number
 ```
 
 - 签名 `(base: number, attrs: { get(name: string): number }) => number`；`attrs.get` 返回**其他属性的有效值**（递归走同一管线）。**整条管线是同步的** —— 派生脚本不得返回 Promise（返回非 `number` 一律按失败处理）
-- 沙箱执行 + 超时保护（沿用 `combat-wuxia` 的 `SPECIAL_SCRIPT_TIMEOUT_MS = 3000` 惯例）
-- 加载期：脚本文件必须存在，否则 error；返回值非有限数 → 回退 `base` 并上报
-- 运行期：递归深度上限（对齐战斗管线的 64）+ 超限断链上报（D7）
-- 脚本抛错 → 该次读取回退 `base` + 去重上报，不阻断调用方
+- 执行方式：`new Function('base', 'attrs', '"use strict";' + code)` —— 脚本体直接 `return`，与既有 mod 脚本风格一致（`damage_<skillId>.js`、quest 脚本同形）
+- ⚠️ **不做超时保护**：同步管线里无法实现超时（`Promise.race` 需要 async，而 140+ 处调用点是同步的），因此**加载期文档必须写明「compute 脚本必须纯同步且快速」**。防护手段只有三条：① 递归深度上限 ② 加载期脚本存在性/非空校验 ③ 运行期抛错与非有限数回退 + 上报。这也是 `src/utils/sandbox.ts` 顶部警告的同一取舍（mod 作者自写脚本、非第三方提交）
+- 不使用 `src/utils/sandbox.ts`（该文件零消费者，其注释明确要求「新增钩子一律走 script-runner 的安全姿态，勿直接使用本文件」）；本设计的脚本契约比它更窄（两个入参、同步、返回 number）
+- 加载期：`compute` 指向的脚本文件必须存在，否则 error
+- 运行期：返回值非有限数 → 回退 `base` 并上报；脚本抛错 → 回退 `base` + 去重上报，不阻断调用方
+- 递归深度上限（对齐战斗管线的 64）+ 超限断链上报（D7）
 
 ## 5. 修正栈的两类来源
 
@@ -181,15 +198,18 @@ value = { percent = -0.2 }
 ## 9. 分阶段实施
 
 ### T1 core：读取管线骨架（零回归基线）
-- 新增属性求值模块（`src/core/` 层）：`base → compute → modifiers` 三段 + 缓存 + 版本号失效
-- `getEntityAttr` / `setEntityAttr` 接入该管线；`bindingResolver.get*` 自动继承
-- 修正栈数据结构 + 叠加代数（复用通道语义，含 `flat=0` 跳过、`set` 记录）
-- **不含任何来源接入**；验收标准 = 全量测试逐位不变（`npm run test` 当前基线 1642 通过 / 5 跳过）
+- 新增叶子模块 `src/core/attribute-eval.ts`：闸门（§4.1.1）+ 修正栈 + 叠加代数 + 缓存与版本号失效 + 注入接口
+- `entity-utils.ts` 的 `getEntityAttr` 变「先算裸值 → `readEffective`」；`setEntityAttr` 写后 bump；`bindingResolver.get*` 自动继承
+- `mod-loader.ts` 在 `registerFromAttributes` 之后注入属性定义
+- 修正栈代数复用通道语义（`flat=0` 跳过、`set` 即使为 0 也记录）
+- **compute 只留桩**（闸门认 `compute` 字段但执行函数在 T2 接入）；**不含任何来源接入**
+- 验收标准 = 全量测试逐位不变（`npm run test` 当前基线 1642 通过 / 5 跳过）
 
 ### T2 core：compute 派生
-- 脚本加载（按属性定义的 `compute` 文件名）+ 沙箱 + 超时
-- 加载期校验（脚本存在性）；运行期回退与上报
+- 脚本解析器注入（`mod.scripts` 按文件名）+ `new Function('base','attrs',…)` 严格模式执行
+- 加载期校验（`compute` 指向的脚本存在且非空）；运行期抛错/非有限数回退 + 上报
 - 递归深度护栏 + 断链上报
+- ⚠️ 无超时保护（§4.3），以文档约束「必须纯同步且快速」
 
 ### T3 声明式来源接入
 - 装备/服装：`attribute_mods`（随穿戴；与 `clothing-system` 的穿戴状态联动）

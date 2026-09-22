@@ -114,16 +114,52 @@ level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 1
 - **属性修正**：由效果/装配/装备/状态挂上来的临时或条件性增减（`flat` / `percent` / `set`）。
   叠加规则与战斗公式通道完全一致：`((set ?? 值) + Σflat) × (1 + Σpercent)`。
   **多个 percent 相加后只乘一次** —— 两个 `+10%` 是 `+20%`，不是复利。
-  多个 `set` 并存时**只有一条生效** —— 按修正清单顺序（`listModifiers` 可见）最后一条的值胜出，覆盖而非相加。
-  - ⚠️ **修正栈目前只是代码 API，数据驱动来源尚未接线**：上一句的"效果/装配/装备/状态"是**设计意图**。
-    今天唯一能挂修正的方式，是插件/脚本调用 `src/core/attribute-eval.ts` 导出的
+  多个 `set` 并存时**只有一条生效** —— 按修正清单顺序最后一条的值胜出，覆盖而非相加
+  （顺序 = 声明式来源（装备 → 被动技能 → 天赋 → 插件追加）在前，push 栈在后；`listModifiers` 只列 push 栈条目）。
+  - ✅ **数据驱动来源已接线（2026-09-22 计划二）**：上一句的"效果/装配/装备/状态"里，
+    **装备/服装、被动技能、天赋**三类**声明式来源**今天写在数据里即生效 —— 不需要任何注册代码。
+    读属性时按角色**当前状态现算**（`char.equipment` / `char.abilities` / `char.talents`），
+    **不缓存聚合结果、不需要任何变更通知**：脱下装备 / 技能掉级 / 失去天赋**立即**不再生效。
+
+    | 来源 | 读哪里 | 等级缩放 |
+    |---|---|---|
+    | 装备/服装 | `char.equipment[槽位]` → `items.toml` 的该物品定义 | 无（写 `per_level` 是**加载期报错**，不静默当 1 级） |
+    | 被动技能 | `char.abilities[技能ID].level` → `abilities.toml` | `per_level × (等级−1)` 追加到 `flat`/`percent` |
+    | 天赋 | `char.talents[天赋ID]`（数字等级） → `talents.toml` | 同上（与被动技能同规则） |
+
+    写法 —— `attribute_mods` 内联在各来源**自己的定义**里：
+
+    ```toml
+    # definitions/items.toml
+    [items."玄铁护腕"]
+    attribute_mods = [ { attr = "根骨", flat = 5 } ]                    # 装备：无等级语义，写 per_level 会报错
+
+    # definitions/abilities.toml（被动技能）
+    [abilities."龟息功"]
+    attribute_mods = [ { attr = "力道", flat = 10, per_level = 2 } ]    # 1 级 +10，每多 1 级再 +2（3 级 = 14）
+
+    # definitions/talents.toml
+    [talents."神目"]
+    attribute_mods = [ { attr = "福缘", flat = 1, per_level = 1 } ]     # 2 级 = 1 + 1×(2−1) = 2
+    ```
+
+    三个必须知道的点：
+    - `char.equipment_off`（H 中自动脱下的部位）**不算穿着** → 不提供修正；穿回后自动恢复
+      （现算，没有"补挂"这一步，所以不会漂移）。
+    - `per_level` 只对**有等级**的来源（被动技能/天赋）有意义，且是**线性追加**：
+      `flat(级 n) = flat + per_level×(n−1)`（**1 级就是 `flat` 本身**）；`percent` 同理；`set` **不随等级缩放**；
+      只缩放**显式给过**的字段（没给 `percent` 不会因为 `per_level` 凭空产生 `percent`）。
+    - 属性必须先在 `attributes.toml` **定义**（闸门以定义为前提），`attribute_mods` 指向**未定义属性** → **加载期报错**
+      （`npm run validate` 即可查出；校验在 `src/core/mod-validate.ts` 的 `validateAttributeMods`）。
+  - **今天仍未接线（计划三）**：战斗效果里挂属性修正的动作（`combat-base` 的 `modify_attribute` 落点 ——
+    与 effect-system 已有的同名「一次性加减值」效果不是一回事）、脚本/API 直挂的带时长与条件修正、
+    跨天限时状态（`attribute_mods` + `duration`，随存档序列化、到期回落）、内功装配（`equipped_mods`）。
+    **今天在数据里写这几类字段不会有任何效果。**
+    代码 API 仍是脚本/插件挂临时修正（以及用 `registerDeclarativeSource()` 追加声明式来源）的入口：
     `registerModifier(entity, id, attr, { flat, percent, set }, opts?)`
-    （同文件另导出 `removeModifier` / `clearModifiers` / `listModifiers`；
-    同 `(id, attr)` 重复注册 = 覆盖，可重复挂载与热重载）。
-    **能力 / 天赋 / 物品上还没有 `attribute_mods` 这类字段，没有 `equipped_mods`，
-    战斗效果动作里没有属性修正动作，也没有跨天限时属性修正** ——
-    这些装备 / 被动技能 / 天赋 / 战斗效果 / 跨天状态来源属于**后续计划**；
-    **今天在数据里写这类字段不会有任何效果**（引擎不认识这些字段，写了也不会挂上修正）。
+    （同文件另导出 `removeModifier` / `clearModifiers` / `listModifiers`；同 `(id, attr)` 重复注册 = 覆盖，可重复挂载与热重载）。
+  - ⚠️ **以上只改了「读」**：写路径契约（上一节）不变 —— 声明式修正同样只进有效值，不会被写回 `base`；
+    「要写回哪个值就从哪个值出发读」（`applyAttrDelta` / `readRawAttr` / `bindingResolver.getRaw`）照旧。
   - mod 数据（重新）加载时（`loadMod`）会自动失效全部实体的有效值缓存（引擎内部调 `bumpDataVersion()`），作者无需处理；
     今天**没有** TOML 热重载（`src/` 里零处 `import.meta.hot`）——改完数据须重新加载模组才生效。
 

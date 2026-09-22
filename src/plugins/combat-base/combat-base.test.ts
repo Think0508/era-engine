@@ -14,6 +14,7 @@ import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { commandRegistry } from '../../core/command-registry'
 import { getEntityAttr, readRawAttr, setEntityAttr } from '../../core/entity-utils'
 import { configureAttributeEval } from '../../core/attribute-eval'
+import { restoreFromSave } from '../../core/save-system'
 import { validateBattleEffectDefs } from './effect-validate'
 
 // ── 测试环境 ────────────────────────────────────────────────────────────
@@ -797,6 +798,33 @@ describe('combat-base 属性修正（modify_attribute）', () => {
     expect(eff()).toBe(120)
 
     await playerAct(null)                         // 走完本轮 → 下一轮 turn_start 到期（tickDurations → recalcStats）
+    expect(eff()).toBe(100)
+    expect(raw()).toBe(100)
+    expect(mods()).toEqual([])
+  })
+
+  it('战斗中存档 → 读档：combat: 修正随来源（战斗）一起消失，不留 buff 逛街', async () => {
+    await startBattle(() => 0.9)
+    addEffect('player', { id: '测试增益', action: 'modify_attribute', attr: PROBE_ATTR, value: { flat: 20 } })
+    expect(eff()).toBe(120)
+    expect(raw()).toBe(100)
+
+    // ① 战斗中存档：走 saveGame 同款快照（characters = 角色池整对象深拷贝 → attr_mods 一并入档）。
+    //    可达路径不是假设：pagehide 自动存档与崩溃存档在战斗中也会触发，mod 脚本还能直调 saveGame。
+    const mod = modLoader.getMod() as any
+    mod.locations = new Map()   // 假 mod 无地点池；restoreFromSave 会遍历它重建地点实体
+    const data = {
+      modId: mod.id, modVersion: '1.0.0',
+      gameTime: { ...gameContext.getContext().time },
+      characters: entitySystem.getAll('character').map(c => JSON.parse(JSON.stringify(c))),
+      gameState: {}, uiState: { foldStates: {} },
+    }
+    expect((data.characters.find((c: any) => c.id === 'player') as any).attr_mods.length).toBe(1)
+
+    // ② 读档（真实链路：core/save-system 的 restoreFromSave 末尾广播 game:load）
+    await restoreFromSave(data as any)
+
+    // ③ 战斗已被丢弃 → 修正必须一起消失（否则角色带着战斗 buff 逛街到下一场战斗）
     expect(eff()).toBe(100)
     expect(raw()).toBe(100)
     expect(mods()).toEqual([])

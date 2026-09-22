@@ -955,6 +955,15 @@ export function onEnable(ctx: PluginContext): void {
 
   ctx.events.on('game:load', () => {
     currentCombat = null
+    // 读档清扫战斗期属性修正：读档会丢弃战斗（战斗状态不入档），但**修正条目是持久化字段**
+    // （char.attr_mods 随存档整对象往返），而 combat: 条目没有 expiresAt——它的生命周期**只**由
+    // endCombat 清理。于是"战斗中存档 → 读档"会让修正**活过它的来源**：pagehide 自动存档与崩溃
+    // 存档在战斗中同样触发（模式门控只挡手动存档/退出标题），mod 脚本还能直调 saveGame →
+    // 关掉标签页再进来，角色就带着战斗 buff 逛街，直到下一场战斗才自愈（而"下一场战斗"可能永远不来）。
+    // 参战者表读档后已不存在（currentCombat 已丢），故只能扫**角色池**整批清 combat: 前缀。
+    for (const entity of entitySystem.getAll('character')) {
+      removeRuntimeModsByPrefix(entity, 'combat:')
+    }
   })
 }
 
@@ -1093,7 +1102,9 @@ function syncAttributeMods(c: Combatant): void {
     if (inst.action !== 'modify_attribute' || !inst.attr) continue
     const v = effValue(inst)
     const id = `combat:${inst.id}`
-    want.set(`${id}|${inst.attr}`, {
+    // 去重键 = (id, attr) 的 JSON 元组：id/属性名里若含分隔符（如 `|`）也不会把两条不同的修正
+    // 塌成一条（用 `|` 裸拼时 `a|b`+`c` 与 `a`+`b|c` 同键 → 静默少一条修正）
+    want.set(JSON.stringify([id, inst.attr]), {
       id, attr: inst.attr, flat: v.flat, percent: v.percent, set: v.set, source: 'combat',
     })
   }
@@ -2076,6 +2087,7 @@ function collectPhaseEffects(owner: Combatant, phase: BattleTrigger, ctx: PhaseC
           uses: e.spec.uses,
           stat: e.spec.stat,
           channel: e.spec.channel,
+          attr: e.spec.attr,
           skill: e.spec.skill,
           when_skill: e.spec.whenSkill,
           levelNames: e.spec.levelNames,

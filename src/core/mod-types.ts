@@ -398,6 +398,9 @@ export interface BattleEffectDef {
   stat?: string
   /** modify_channel 用：公式中间量通道名（语义由战斗插件注册的通道解释） */
   channel?: string
+  /** modify_attribute 用：要修正的角色属性名（必须在 mod.attributes 里定义；
+   *  落点 = 属性有效值层的运行时修正清单，战斗结束按 combat: 前缀清除） */
+  attr?: string
   /** 层数→显示名（缺省 "名字 x层"） */
   level_names?: string[]
   /** 参数在 UI 里的中文标签覆盖（只写要改的） */

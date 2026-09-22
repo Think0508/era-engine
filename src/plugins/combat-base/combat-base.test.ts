@@ -12,6 +12,9 @@ import { errorReporter } from '../../core/error-reporter'
 import { modLoader } from '../../core/mod-loader'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { commandRegistry } from '../../core/command-registry'
+import { getEntityAttr, readRawAttr, setEntityAttr } from '../../core/entity-utils'
+import { configureAttributeEval } from '../../core/attribute-eval'
+import { validateBattleEffectDefs } from './effect-validate'
 
 // ── 测试环境 ────────────────────────────────────────────────────────────
 
@@ -740,5 +743,132 @@ describe('combat-base 公式明细', () => {
     await playerAct(null)
     expect(apiSystem.callSync('combat', 'getFormulaDetail')).toBe(true)
     expect(narrativeLog.getEntries().some(e => e.text.includes('【公式·base_damage】'))).toBe(true)
+  })
+})
+
+// ── 计划三 Task 4：modify_attribute（落点 = 属性有效值层运行时清单）─────────
+// 与 modify_stat/modify_channel 不同：那两者的落点是**战斗本地**（combatant.stats/channels），
+// 本动作的落点是**角色实体**——经 recalcStats 的签名增量同步写进实体字段 attr_mods
+// （纯数据字段 → 随存档往返），战斗结束按 combat: 前缀整批清除。
+//
+// 生产接线：mod-loader 在 loadMod 里 configureAttributeEval({ definitions: mod.attributes })。
+// 本文件不跑 loadMod（用假 mod），故在此显式注入夹具属性定义——否则有效值管线的闸门不认该属性，
+// 修正条目会被静默忽略（读到的恒是裸值），测试会以"实现没生效"的假象红。
+const PROBE_ATTR = '修正测试值'
+
+describe('combat-base 属性修正（modify_attribute）', () => {
+  beforeEach(async () => {
+    await boot()
+    configureAttributeEval({ definitions: { [PROBE_ATTR]: {} } })
+    setEntityAttr(entitySystem.get('character', 'player'), PROBE_ATTR, 100)
+  })
+
+  const probe = (): any => entitySystem.get('character', 'player') as any
+  /** 有效值（裸值 → 派生 → 声明式 + 运行时修正） */
+  const eff = (): number => getEntityAttr(probe(), PROBE_ATTR)
+  /** 裸值（基础值域——本任务第一验收点：全程分毫不动） */
+  const raw = (): number => readRawAttr(probe(), PROBE_ATTR)
+  /** 实体上的运行时修正清单 */
+  const mods = (): any[] => probe().attr_mods ?? []
+  const addEffect = (entityId: string, partial: any): void => {
+    apiSystem.callSync('combat', 'addZoneEffect', entityId, { ...partial, duration: partial.duration ?? 'battle' })
+  }
+  const addDef = (id: string, def: any): void => { (modLoader.getMod() as any).battleEffects[id] = def }
+
+  it('常驻修正进有效值层（基础值不动）；战斗结束按 combat: 前缀整批清除', async () => {
+    await startBattle(() => 0.9)
+    addEffect('player', { id: '测试增益', action: 'modify_attribute', attr: PROBE_ATTR, value: { flat: 20 } })
+    expect(eff()).toBe(120)                       // 100 + 20
+    expect(raw()).toBe(100)                       // 基础值域全程不动（spec §2.1 的雷）
+    expect(mods().length).toBe(1)
+    expect(mods()[0].id).toBe('combat:测试增益')   // 命名空间前缀 = 清理与顶替的作用域
+    expect(mods()[0].attr).toBe(PROBE_ATTR)
+
+    await apiSystem.call('combat', 'end', '', 'fled')
+    expect(eff()).toBe(100)                       // 回落
+    expect(raw()).toBe(100)
+    expect(mods()).toEqual([])                    // 不留残骸（否则随存档往返变永久增益）
+  })
+
+  it('效果中途到期 → 修正随之撤销（不必等到战斗结束）', async () => {
+    await startBattle(() => 0.9)
+    await apiSystem.call('combat', 'registerHook', 'float_mul', () => 1.0)
+    addEffect('player', { id: '短效增益', action: 'modify_attribute', attr: PROBE_ATTR, value: { flat: 20 }, duration: { turns: 1 } })
+    expect(eff()).toBe(120)
+
+    await playerAct(null)                         // 走完本轮 → 下一轮 turn_start 到期（tickDurations → recalcStats）
+    expect(eff()).toBe(100)
+    expect(raw()).toBe(100)
+    expect(mods()).toEqual([])
+  })
+
+  it('库条目 attr 贯通：resolveEffectRef → makeInst → 清单（漏拷 def.attr 即红）', async () => {
+    addDef('测试属性增益', {
+      name: '测试属性增益', delivery: 'zone', target: 'self',
+      action: 'modify_attribute', attr: PROBE_ATTR, value: { flat: 20 },
+      duration: 'battle', category: 'buff',
+    })
+    // ① 解析层：spec 是显式逐字段构造的，attr 必须被显式拷过去（漏了 = 库条目写法静默失效）
+    const resolved = apiSystem.callSync('combat', 'resolveEffect', { effect: '测试属性增益' }) as any
+    expect(resolved.ok).toBe(true)
+    expect(resolved.entry.spec.attr).toBe(PROBE_ATTR)
+
+    // ② 实例层 + 同步层：库条目 → makeInst → 实体清单 → 有效值
+    await startBattle(() => 0.9)
+    await apiSystem.call('combat', 'mountEffect', 'player', '测试属性增益', { sourceId: 'player' })
+    const inst = (apiSystem.callSync('combat', 'getCombatState').combatants.player.effects as any[])
+      .find(e => e.id === '测试属性增益')
+    expect(inst).toBeDefined()
+    expect(eff()).toBe(120)
+    expect(raw()).toBe(100)
+
+    await apiSystem.call('combat', 'end', '', 'fled')
+    expect(eff()).toBe(100)
+    expect(mods()).toEqual([])
+  })
+
+  it('签名守卫：无关键条目不重写清单（同对象），数值真变才重写', async () => {
+    addDef('测试属性增益', {
+      name: '测试属性增益', delivery: 'zone', target: 'self',
+      action: 'modify_attribute', attr: PROBE_ATTR, value: { flat: 20 }, duration: 'battle',
+    })
+    await startBattle(() => 0.9)
+    await apiSystem.call('combat', 'mountEffect', 'player', '测试属性增益', { sourceId: 'player' })
+    expect(eff()).toBe(120)
+    const first = mods()[0]
+
+    // 无关的常驻统计条目 → recalcStats 重算，但本场属性修正签名未变 → 不写不 bump（同一对象）
+    addEffect('player', { id: '无关统计', action: 'modify_stat', stat: 'damage_out', value: { percent: 0.1 } })
+    expect(mods().length).toBe(1)
+    expect(mods()[0]).toBe(first)
+
+    // 数值真变（refresh 覆盖）→ 签名变 → 先清本场旧条目再按新值登记
+    await apiSystem.call('combat', 'mountEffect', 'player', '测试属性增益', { sourceId: 'player', value: { flat: 35, percent: 0 } })
+    expect(eff()).toBe(135)
+    expect(mods().length).toBe(1)
+    expect(mods()[0]).not.toBe(first)
+    expect(raw()).toBe(100)
+  })
+
+  it('库条目校验：modify_attribute 缺 attr / attr 未定义 → 加载期 error（合法条目零误报）', () => {
+    ;(modLoader.getMod() as any).attributes = { [PROBE_ATTR]: { type: 'number' } }
+    addDef('合法增益', {
+      name: '合法增益', delivery: 'zone', target: 'self',
+      action: 'modify_attribute', attr: PROBE_ATTR, value: { flat: 20 }, duration: 'battle',
+    })
+    expect(validateBattleEffectDefs()).toBe(0)
+
+    addDef('缺字段', {
+      name: '缺字段', delivery: 'zone', target: 'self',
+      action: 'modify_attribute', value: { flat: 20 }, duration: 'battle',
+    })
+    addDef('错属性', {
+      name: '错属性', delivery: 'zone', target: 'self',
+      action: 'modify_attribute', attr: '不存在的属性', value: { flat: 20 }, duration: 'battle',
+    })
+    expect(validateBattleEffectDefs()).toBe(2)
+    const errs = errorReporter.getErrors()
+    expect(errs.some(e => e.message.includes("'缺字段'") && e.message.includes('attr'))).toBe(true)
+    expect(errs.some(e => e.message.includes("'错属性'") && e.message.includes('不存在的属性'))).toBe(true)
   })
 })

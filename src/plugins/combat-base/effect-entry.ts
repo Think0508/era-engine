@@ -68,6 +68,9 @@ export interface EffectInstanceSpec {
   minLevel?: number
   stat?: string
   channel?: string
+  /** modify_attribute 用：要修正的**角色属性名**（落点 = 属性有效值层的运行时清单，
+   *  与 stat/channel 的"战斗本地聚合"不同；属性名由 mod 数据定义，base 只当不透明字符串） */
+  attr?: string
   skill?: string
   levelNames?: string[]
   uses?: number
@@ -249,6 +252,7 @@ export function resolveEffectRef(raw: any, defs: Record<string, any> | undefined
       minLevel: r.min_level ?? def.min_level,
       stat: def.stat,
       channel: def.channel,
+      attr: def.attr,
       skill: def.skill,
       levelNames: def.level_names,
       uses: r.uses ?? def.uses,

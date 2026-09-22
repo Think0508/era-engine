@@ -24,6 +24,8 @@ import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { bindingResolver } from '../../core/binding-resolver'
+import { registerRuntimeMod, removeRuntimeModsByPrefix } from '../../core/attribute-eval'
+import type { RuntimeAttrMod } from '../../core/attribute-eval'
 import { errorReporter } from '../../core/error-reporter'
 import { registerSkipRule } from '../../core/skip-registry'
 import { apiSystem } from '../../core/api'
@@ -39,6 +41,7 @@ import {
   MOUNT_ACTION, PARAM_VOCAB, POINT_STATS, RATIO_STATS, classifyEffect, displayNameOf,
   normalizeValue, resolveEffectRef, scaleValue, usedParams, valueAmount,
 } from './effect-entry'
+import { validateBattleEffectDefs } from './effect-validate'
 import type { EffectOrigin, EffectValue, ResolvedEffect } from './effect-entry'
 
 // ── 类型定义 ────────────────────────────────────────────────────────────
@@ -96,6 +99,8 @@ export interface BattleEffectInst {
   stat?: CombatStatKey
   /** modify_channel 用：通道名（语义由注册通道的插件解释，base 只当不透明字符串） */
   channel?: string
+  /** modify_attribute 用：要修正的角色属性名（落点 = 属性有效值层运行时清单，非战斗本地聚合） */
+  attr?: string
   /** 只在施展该技能（技能 id）时参与—攻击/伤害类相位与 action_pre 判定用 */
   when_skill?: string
   /** counter/cancel 类：反制使用的技能 id */
@@ -129,6 +134,8 @@ export interface Combatant {
   talentDamageMods: any[]  // 天赋伤害修正（当次攻击按技能过滤求值，wuxia 填充）
   talentChannelMods: any[] // 天赋通道修正（当次攻击按技能过滤求值，wuxia 填充）
   consumedEffects: string[] // 一次性效果已消耗记录（复活重建时跳过，如神照经）
+  /** modify_attribute 同步签名（效果区 → 实体运行时清单的增量同步守卫；签名未变则完全不碰实体） */
+  attrModSig?: string
 }
 
 export interface AttackJob {
@@ -383,6 +390,21 @@ export function onLoad(_ctx: PluginContext): void {
     // 常驻型（无 trigger）由 recalcStats 统一聚合
   })
 
+  // modify_attribute：属性有效值层的临时修正（落点 = **角色实体**的运行时清单 attr_mods）
+  // 与 modify_stat/modify_channel 不同：那两者的落点是战斗本地聚合（combatant.stats/channels，
+  // 战斗结束随战斗一起消失）；本动作要写进实体（随存档往返），故**不能**按相位临时叠加——
+  // 常驻型（无 trigger）在 recalcStats 的增量同步里统一写入/撤销，本 handler 不做事。
+  // 有了 trigger 的条目无处落地（运行时清单没有"相位"概念）→ 明确报一次，不静默无效。
+  registerBattleAction('modify_attribute', (actCtx: any) => {
+    const inst = actCtx.effect as BattleEffectInst
+    if (!inst.trigger) return
+    errorReporter.reportDedup(`battle-attr-triggered:${inst.id}`, {
+      source: 'combat-base', severity: 'warning',
+      message: `战斗效果 '${inst.id}'（modify_attribute）带 trigger '${inst.trigger}'，本条不生效——属性修正只支持常驻形态（无 trigger / 无 settle）`,
+      suggestion: '删掉库条目的 trigger/settle（或在技能行不写 turns），让它作为常驻修正挂到战斗结束',
+    })
+  })
+
   // mount_effect：zone 型引用的统一入口——把库条目按 apply 施加器挂到目标身上（BUFF/DEBUFF 通用）
   // 时机（on_hit/on_use）与目标（self/enemy）由库条目的 target/apply_at 决定，技能行只传参数
   registerBattleAction(MOUNT_ACTION, async (actCtx: any) => {
@@ -631,6 +653,10 @@ export function onEnable(ctx: PluginContext): void {
     return !!currentCombat && currentCombat.participants.includes(charId)
   })
 
+  // 战斗效果库条目校验（加载期 + mod 热重载后；语义见 effect-validate.ts）
+  validateBattleEffectDefs()
+  ctx.events.on('game:mod_loaded', () => validateBattleEffectDefs())
+
   ctx.api.register('combat', {
     getCombatContext: (): any => {
       if (!currentCombat) return null
@@ -670,6 +696,7 @@ export function onEnable(ctx: PluginContext): void {
             action: z.action,
             stat: z.stat,
             channel: z.channel,
+            attr: z.attr,
             value: { ...z.value },
             growth: z.growth,
             usesLeft: z.usesLeft,
@@ -742,6 +769,7 @@ export function onEnable(ctx: PluginContext): void {
         uses: spec.uses,
         stat: spec.stat,
         channel: spec.channel,
+        attr: spec.attr,
         skill: spec.skill,
         when_skill: spec.whenSkill,
         levelNames: spec.levelNames,
@@ -1025,6 +1053,7 @@ function zeroStats(): CombatStats {
 }
 
 // 聚合常驻修正（效果区无 trigger 的 modify_stat / modify_channel 条目；数值已含层数缩放）
+// 并把本场 modify_attribute 效果同步进实体运行时清单（见 syncAttributeMods）
 function recalcStats(c: Combatant): void {
   const s = zeroStats()
   const bag = zeroChannelBag()
@@ -1038,6 +1067,49 @@ function recalcStats(c: Combatant): void {
   }
   c.stats = s
   c.channels = bag
+  syncAttributeMods(c)
+}
+
+/** 把本场常驻 modify_attribute 效果同步进实体运行时清单（`char.attr_mods`）。
+ *
+ *  挂点：`recalcStats`——它已是"效果区一有变化就被调用"的唯一聚合点（挂载/合并/到期/复活/API 重算），
+ *  且已在本函数里全量遍历效果区，故不新增钩子、不做"挂载注册/卸下注销"的配对逻辑（那种配对一旦漏一处
+ *  就永久漏一条修正）。本函数同样是**全量推导 + 幂等**：实体清单里属于本场的内容恒等于效果区里的条目。
+ *
+ *  增量守门（关键）：先算"本场需要哪些修正"的签名，签名未变 → **完全不碰实体**（不删不写、不 bump
+ *  属性缓存版本）。否则每次 recalcStats（每回合、每次无关效果挂载）都会重写清单，
+ *  运行时清单就没必要做版本/剪除那套设计了。
+ *
+ *  幂等依据：签名由 (实例 id, 属性名, 数值三元组) 组成 → 同签名必然推出同清单内容，
+ *  故"签名相同则跳过"不会漏更新；数值/层数/属性任一变化都会改变签名。
+ */
+function syncAttributeMods(c: Combatant): void {
+  const entity = entitySystem.get('character', c.entityId)
+  if (!entity) return
+  // 去重键 = (id, attr)：同 id 同属性只留最后一条（清单本身按 (id, attr) 顶替，重复登记无意义）
+  const want = new Map<string, RuntimeAttrMod>()
+  for (const inst of c.zone) {
+    if (inst.trigger) continue                                   // 相位条目无处落地（handler 已报 warning）
+    if (inst.action !== 'modify_attribute' || !inst.attr) continue
+    const v = effValue(inst)
+    const id = `combat:${inst.id}`
+    want.set(`${id}|${inst.attr}`, {
+      id, attr: inst.attr, flat: v.flat, percent: v.percent, set: v.set, source: 'combat',
+    })
+  }
+  // 签名：按 key 排序后把 key 与数值绑在一起（两者分开排序会在顺序变化时错配）
+  const sig = JSON.stringify(
+    [...want.entries()]
+      .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))
+      .map(([key, m]) => [key, m.flat ?? null, m.percent ?? null, m.set ?? null]),
+  )
+  if (c.attrModSig === sig) return
+  c.attrModSig = sig
+  // 先清本场旧条目（含已从效果区消失的），再按当前值登记：强度算式 = set ?? flat ?? percent ?? 0（全项目统一）
+  removeRuntimeModsByPrefix(entity, 'combat:')
+  for (const m of want.values()) {
+    registerRuntimeMod(entity, m, m.set ?? m.flat ?? m.percent ?? 0)
+  }
 }
 
 /** 实例数值（已按层数乘性缩放）：value × (1 + growth×(层数−1)) */
@@ -1108,6 +1180,7 @@ function makeInst(raw: any): BattleEffectInst {
     stat: raw.stat as CombatStatKey,
     skill: raw.skill,
     channel: raw.channel,
+    attr: typeof raw.attr === 'string' && raw.attr.length > 0 ? raw.attr : undefined,
     when_skill: raw.when_skill,
     levelNames: raw.levelNames,
     maxPerAction: typeof raw.maxPerAction === 'number' ? raw.maxPerAction : 1,
@@ -1207,6 +1280,7 @@ export async function mountInstance(
     uses: spec.uses,
     stat: spec.stat,
     channel: spec.channel,
+    attr: spec.attr,
     skill: spec.skill,
     when_skill: spec.whenSkill,
     levelNames: spec.levelNames,
@@ -2097,6 +2171,11 @@ async function endCombat(winner: string, outcome: string): Promise<void> {
 
   for (const c of combat.combatants.values()) {
     await writeBackCombatant(c)
+    // 临时属性修正整批撤销（本场限定）：放在回写**之后**、且刻意不放进 writeBackCombatant——
+    // 那个函数的职责是 hp/mp 与 permanent 吸收的**基础值域**读-改-写，与"清临时修正"是两件事；
+    // 混在一起以后容易再引入基础值污染。按前缀清（而非逐条）确保效果区已不可考时也能清干净。
+    const entity = entitySystem.get('character', c.entityId)
+    if (entity) removeRuntimeModsByPrefix(entity, 'combat:')
   }
 
   await gameContext.exitMode()

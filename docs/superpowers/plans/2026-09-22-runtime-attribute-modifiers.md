@@ -705,7 +705,24 @@ git commit -m "feat(status): 到期改存绝对时刻 + 层数三层模型 + 属
 
 **Interfaces:**
 - Consumes：Task 1 的 `registerRuntimeMod` / `removeRuntimeModsByPrefix`
-- Produces：战斗动作 `modify_attribute`（`action` + `attr` + `value = { flat?/percent?/set? }`）；战斗结束清 `combat:` 前缀修正
+- Produces：战斗动作 `modify_attribute`（`action` + `attr` + `value = { flat?/percent?/set? }`）；战斗结束清 `combat:` 前缀修正；`BattleEffectInst.attr?` 与 `BattleEffectDef.attr?` 两个新字段
+
+> **【controller 预裁定 — 派发前已核对代码，优先于本节正文】**
+> 1. **`attr` 字段需要新增/贯通四处**（不止两处——`resolveEffectRef` 是**显式逐字段**构造 spec 的，
+>    新库字段不会自动带过去，这点我已读代码确认）：
+>    - `EffectInstanceSpec`（`effect-entry.ts:53-75`，`stat?` / `channel?` 旁）加 `attr?: string`；
+>    - `resolveEffectRef` 的 spec 字面量（`effect-entry.ts:250-251`，`stat: def.stat` / `channel: def.channel` 旁）加 `attr: def.attr`；
+>    - `BattleEffectDef`（`mod-types.ts:360+`）加可选 `attr?: string`（库条目声明用）；
+>    - `BattleEffectInst`（`index.ts:77-101`）加 `attr?: string`，并让 `makeInst`（`index.ts:1087`）从 spec 归一化过去。
+>    （`PARAM_WHITELIST`（`effect-entry.ts:98-114`）只管**技能行可覆盖参数**与 UI 渲染，不拦库条目字段——不必加它；
+>    除非你决定让技能行也能覆盖 `attr`，那是超出本任务的范围。）
+> 2. **清理位置**：`endCombat`（`index.ts:2092`）既有的 `for (const c of combat.combatants.values()) { await writeBackCombatant(c) }`
+>    （`:2098-2100`）循环内、**在 `writeBackCombatant(c)` 之后**调 `removeRuntimeModsByPrefix(entity, 'combat:')`。
+>    **不要写进 `writeBackCombatant`**——那是 hp/mp 与 permanent 吸收的**基础值域回写**（`:2107-2140`，计划一清扫过的站点），两件事。
+> 3. **强度算式**：`strength = set ?? flat ?? percent ?? 0`，显式传给 `registerRuntimeMod`。
+> 4. **同步点必须是既有 `recalcStats`**（`:617,697,753,1187` 都会被调）——不新增钩子、不做挂载/注销配对。
+> 5. Step 1 的 `addEffect(...)` / `endBattleForTest()` 是伪代码占位，照 `combat-base.test.ts` 既有惯例改写并在报告写明实际 API。
+> 6. 测试属性名必须已定义（`修正测试值` / `attack`），**不要发明属性名**（有前例把 scan:attrs 打成 VIOLATION=1）。
 
 - [ ] **Step 1: 写失败测试**
 

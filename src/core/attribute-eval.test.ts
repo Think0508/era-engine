@@ -518,6 +518,15 @@ describe('attribute-eval：运行时修正（带到期时刻）', () => {
     expect((c as any).attr_mods[0].expiresAt).toBe(3000)
   })
 
+  it('D5：比较基准必须是**存活**条目——已到点但没人读过的条目不得否决新的较弱施加', () => {
+    const c = ent('r5c')
+    registerRuntimeMod(c, { id: 'status:x', attr: '力道', set: 3, expiresAt: 2000 }, 3)
+    NOW = 2000                                     // 到点，但该实体此间没被读过 → 过期条目仍躺在清单里
+    const applied = registerRuntimeMod(c, { id: 'status:x', attr: '力道', set: 2, expiresAt: 9999 }, 2)
+    expect(applied).toBe(true)                     // 过期条目不得否决（"现有强度"只指存活条目）
+    expect(readEffective(c, '力道', 100)).toBe(2)  // 顶上新的较弱值，而不是"静默什么都没发生"
+  })
+
   it('强度随条目持久化：JSON 往返后仍能正确判定顶替', () => {
     const c = ent('r5b')
     registerRuntimeMod(c, { id: 'status:破绽', attr: '力道', set: 3, expiresAt: 2000 }, 3)
@@ -564,6 +573,57 @@ describe('attribute-eval：运行时修正（带到期时刻）', () => {
   it('缺状态字段 / 非数组 attr_mods → 静默跳过，不崩', () => {
     expect(readEffective({ id: 'r9' }, '力道', 100)).toBe(100)
     expect(readEffective({ id: 'r10', attr_mods: 'nonsense' as any }, '力道', 100)).toBe(100)
+  })
+
+  it('畸形条目（null，坏存档可能是 [null]）→ remove 不抛、register 剪除、读取照常', () => {
+    const c: any = { id: 'r13', attr_mods: [null] }
+    expect(removeRuntimeMod(c, 'status:x')).toBe(0)            // 空值安全：不抛 TypeError、不误删
+    expect(registerRuntimeMod(c, { id: 'status:x', attr: '力道', flat: 1 }, 1)).toBe(true)
+    expect(c.attr_mods).toHaveLength(1)                        // 畸形条目被剪除，不与新条目并存
+    expect(readEffective(c, '力道', 100)).toBe(101)
+  })
+
+  it('expiresAt 非有限数字（字符串/NaN typo）→ 上报一次 + 仍视为不自动到期（行为不变但不再静默）', () => {
+    __resetAttributeEval()
+    NOW = 1000
+    configureAttributeEval({ ...RUNTIME_DEFS, nowMinutes: () => NOW })
+    const c: any = { id: 'r14' }
+    c.attr_mods = [
+      { id: 'status:str', attr: '力道', flat: -10, expiresAt: '2000' },
+      { id: 'status:nan', attr: '力道', flat: -5, expiresAt: Number.NaN },
+    ]
+    NOW = 999999
+    expect(readEffective(c, '力道', 100)).toBe(85)              // 两条照旧不自动到期（不误剪）
+    const hits = () => errorReporter.getErrors().filter(e => e.message.includes('expiresAt'))
+    expect(hits()).toHaveLength(1)                              // 去重键含 attr：同属性只报一次
+    expect(readEffective(c, '力道', 100)).toBe(85)
+    expect(hits()).toHaveLength(1)                              // 重复读取不刷屏
+  })
+
+  it('老档条目没有 strength 字段 → 视为 -Infinity，任何新施加都能覆盖（含更弱的）', () => {
+    const c: any = { id: 'r15' }
+    c.attr_mods = [{ id: 'status:破绽', attr: '力道', set: 3, expiresAt: 9999 }]   // 老档形状：无 strength
+    expect(registerRuntimeMod(c, { id: 'status:破绽', attr: '力道', set: 2, expiresAt: 9999 }, 2)).toBe(true)
+    expect(readEffective(c, '力道', 100)).toBe(2)
+  })
+
+  it('strength 非有限（NaN/Infinity）→ 拒绝，且不创建 attr_mods 字段（不留空壳）', () => {
+    const c: any = { id: 'r16' }
+    expect(registerRuntimeMod(c, { id: 'status:x', attr: '力道', flat: 1 }, Number.NaN)).toBe(false)
+    expect(registerRuntimeMod(c, { id: 'status:x', attr: '力道', flat: 1 }, Number.POSITIVE_INFINITY)).toBe(false)
+    expect('attr_mods' in c).toBe(false)
+    expect(readEffective(c, '力道', 100)).toBe(100)
+  })
+
+  it('removeRuntimeMod 限定 attr：只摘该属性那条，同 id 的其他属性条目保留', () => {
+    const c = ent('r17')
+    registerRuntimeMod(c, { id: 'status:x', attr: '力道', flat: 5 }, 5)
+    registerRuntimeMod(c, { id: 'status:x', attr: '根骨', flat: 7 }, 7)
+    expect(removeRuntimeMod(c, 'status:x', '力道')).toBe(1)
+    expect((c as any).attr_mods).toHaveLength(1)
+    expect((c as any).attr_mods[0].attr).toBe('根骨')
+    expect(removeRuntimeMod(c, 'status:x', '力道')).toBe(0)     // 已摘掉 → 幂等
+    expect(readEffective(c, '力道', 100)).toBe(100)             // 力道不再被修正
   })
 
   it('无 nowMinutes 注入（单测直调）→ 视为不过期', () => {

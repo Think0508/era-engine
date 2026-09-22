@@ -366,10 +366,13 @@ export function collectDeclarativeMods(entity: any): AttributeModSource[] {
   return out
 }
 
-/** 读实体的运行时修正清单：跳过并剪除已过期条目。返回的条目保证在当前时刻有效。
+/** 读实体的运行时修正清单：跳过并剪除已过期/畸形的条目。返回的条目保证在当前时刻有效。
  *  每次读取都重算（不缓存）→ 到点立即失效，**不需要任何变更通知**；过期条目就地剪掉，
  *  否则清单会随挂载次数无界增长（且会一并写进存档）。
- *  未注入时钟（nowMinutes === null，如单测直调）时条目一律视为不过期（见 nowMinutes 注释）。 */
+ *  未注入时钟（nowMinutes === null，如单测直调）时条目一律视为不过期（见 nowMinutes 注释）。
+ *  ⚠️ 返回的数组与条目就是**实体自己的对象**（不是副本）：就地改 `strength` 会改写后续 D5 顶替
+ *  判定的比较基准，就地改数值则直接改写生效中的修正，且都绕过 notifyAttrWrite（不失效缓存）。
+ *  要改清单请走 registerRuntimeMod / removeRuntimeMod / removeRuntimeModsByPrefix。 */
 export function readRuntimeMods(entity: any): RuntimeAttrMod[] {
   if (!entity || typeof entity !== 'object') return []
   const list = (entity as any)[RUNTIME_FIELD]
@@ -378,7 +381,19 @@ export function readRuntimeMods(entity: any): RuntimeAttrMod[] {
   const live: RuntimeAttrMod[] = []
   let dropped = false
   for (const raw of list) {
-    if (!raw || typeof raw !== 'object' || typeof raw.attr !== 'string' || raw.attr.length === 0) continue
+    if (!raw || typeof raw !== 'object' || typeof raw.attr !== 'string' || raw.attr.length === 0) {
+      dropped = true            // 畸形条目一并剪除：否则每次存档都被原样写回，永远留在档里
+      continue
+    }
+    // 有 expiresAt 但非有限数字（字符串/NaN/Infinity typo）→ 视为不自动到期（保持既有行为），但要上报：
+    //   静默把一个"该到点的减益"变成永久减益，符号是反的，不能没有诊断。
+    if (raw.expiresAt !== undefined && !(typeof raw.expiresAt === 'number' && Number.isFinite(raw.expiresAt))) {
+      errorReporter.reportDedup(`attr-mod-expires:${raw.attr}`, {
+        source: 'attribute-eval', severity: 'error',
+        message: `实体 '${entity.id}' 的运行时修正 '${raw.id}'（属性 '${raw.attr}'）的 expiresAt 不是有限数字（收到 ${typeof raw.expiresAt}）——该条目视为不自动到期`,
+        suggestion: 'expiresAt 必须是有限 number（绝对游戏分钟）；写成字符串/NaN 会让减益永不失效',
+      })
+    }
     if (now !== null && typeof raw.expiresAt === 'number' && now >= raw.expiresAt) { dropped = true; continue }
     live.push(raw as RuntimeAttrMod)
   }
@@ -399,10 +414,15 @@ export function registerRuntimeMod(entity: any, entry: RuntimeAttrMod, strength:
   if (!entry || typeof entry.id !== 'string' || entry.id.length === 0) return false
   if (typeof entry.attr !== 'string' || entry.attr.length === 0) return false
   if (!Number.isFinite(strength)) return false
+  // D5 的比较基准必须是**存活**条目：先借 readRuntimeMods 剪除过期/畸形条目（**不另写一份剪除逻辑**），
+  //   再从实体重读剪除后的数组——它把剪除结果就地写回了实体字段。
+  //   否则"已到点但没人读过该实体"（离屏 NPC，或两次读取之间的任意角色）的过期条目仍会否决
+  //   新的较弱施加：静默不生效，连较弱的那条都没有——比"降级"更糟。
+  readRuntimeMods(entity)
   if (!Array.isArray((entity as any)[RUNTIME_FIELD])) (entity as any)[RUNTIME_FIELD] = []
   const list = (entity as any)[RUNTIME_FIELD] as RuntimeAttrMod[]
   const next: RuntimeAttrMod = { ...entry, strength }
-  const i = list.findIndex(m => m.id === entry.id && m.attr === entry.attr)
+  const i = list.findIndex(m => m?.id === entry.id && m?.attr === entry.attr)
   if (i >= 0) {
     const prev = typeof list[i].strength === 'number' ? list[i].strength : Number.NEGATIVE_INFINITY
     if (!(strength >= prev)) return false
@@ -420,7 +440,7 @@ export function removeRuntimeMod(entity: any, id: string, attr?: string): number
   const list = (entity as any)[RUNTIME_FIELD]
   if (!Array.isArray(list)) return 0
   const before = list.length
-  ;(entity as any)[RUNTIME_FIELD] = list.filter((m: any) => !(m.id === id && (attr === undefined || m.attr === attr)))
+  ;(entity as any)[RUNTIME_FIELD] = list.filter((m: any) => !(m?.id === id && (attr === undefined || m?.attr === attr)))
   const removed = before - (entity as any)[RUNTIME_FIELD].length
   if (removed > 0) notifyAttrWrite(entity)
   return removed

@@ -348,6 +348,13 @@ export interface StatusEffectDef {
   tick_effects?: any[]
   on_apply_effects?: any[]
   on_remove_effects?: any[]
+  // 注释：计划三（运行时属性修正 + 层数三层模型）——三个字段全部可选，既有 mod 数据零影响。
+  /** 生效期间对该角色属性的临时修正（属性有效值层运行时来源） */
+  attribute_mods?: AttributeModSource[]
+  /** 对其他状态层数的修正（如护体：破绽 −1） */
+  stack_mods?: { status: string; value: number }[]
+  /** 层数随时间衰减：每 every 分钟 −amount 层 */
+  stack_decay?: { every: number; amount: number }
 }
 
 // ── 战斗效果定义库（combat-wuxia 战斗系统消费；core 仅作通用数据桶）──

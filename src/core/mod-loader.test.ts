@@ -3,6 +3,8 @@ import { parseModData, ModLoader, modLoader, revalidateItemUses, type LoadedMod 
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
 import { getEntityAttr, setEntityAttr, readRawAttr } from './entity-utils'
+import { registerRuntimeMod } from './attribute-eval'
+import { gameContext, gameTimeToTotalMinutes } from './game-context'
 import { conditionRegistry } from './condition-registry'
 import { errorReporter } from './error-reporter'
 import { checkUpgrade } from '../plugins/ability-progression/index'
@@ -370,6 +372,56 @@ describe('mod-loader integration', () => {
     })
   })
 
+  // ── 运行时修正清单 × 注入游戏时钟（计划三）──────────────────────────────────
+  // 修正能挂上去（125）不算难点，难的是**到点自己消失**：core 不 import game-context，
+  // 时钟由 loadMod 注入（configureAttributeEval({ nowMinutes })）。未注入 = 条目一律不过期，
+  // 下面两条断言会双双停在 125（D3 隐形失效）。
+  describe('运行时修正的时钟注入（计划三）', () => {
+    it('时钟注入：真实 loadMod 后，带到期时刻的运行时修正按游戏时间生效/失效', async () => {
+      const loader = new ModLoader()
+      await loader.loadMod('test-mod')
+      const p = entitySystem.get('character', 'player') as any
+      expect(getEntityAttr(p, '修正测试值')).toBe(100)
+
+      registerRuntimeMod(p, { id: 'status:测试', attr: '修正测试值', flat: 25, expiresAt: 1e15 }, 25)
+      expect(getEntityAttr(p, '修正测试值')).toBe(125)
+
+      registerRuntimeMod(p, { id: 'status:测试', attr: '修正测试值', flat: 25, expiresAt: 0 }, 25)
+      // expiresAt = 0 → 立即过期；强度相等 → 顶上（换成已过期的那条）
+      expect(getEntityAttr(p, '修正测试值')).toBe(100)
+    })
+
+    // 注释：上一条只能证明"时钟被接上了"，证不了"时钟被**惰性**读取"。若注入的是
+    // loadMod 时刻的快照（nowMinutes = () => 快照值），上一条照样绿——本条是那条缺陷的唯一探针：
+    // 同一进程内推进游戏时间，中间不重新 loadMod、不重挂条目、不手动通知，只有每次求值现读时钟
+    // 才可能让 now >= expiresAt 成立。
+    it('时钟是惰性读取：推进游戏时间到点后修正自动失效（快照时钟会红）', async () => {
+      const loader = new ModLoader()
+      await loader.loadMod('test-mod')
+      const p = entitySystem.get('character', 'player') as any
+      const t0 = gameContext.getContext().time
+      // 固定到一个整点起点，让 29/1 分钟的推进不跨小时（避开 hour_changed 的噪声）
+      gameContext.setTime({ minute: 0, hour: 8, day: 1, month: 1, year: 1 })
+      try {
+        const now = gameTimeToTotalMinutes(gameContext.getContext().time)
+        registerRuntimeMod(p, { id: 'status:计时', attr: '修正测试值', flat: 25, expiresAt: now + 30 }, 25)
+        expect(getEntityAttr(p, '修正测试值')).toBe(125)
+
+        // 未到点：+29 分钟仍生效
+        await gameContext.advanceTime(29)
+        expect(getEntityAttr(p, '修正测试值')).toBe(125)
+
+        // 到点：now = t0 + 30 = expiresAt（now >= expiresAt 即失效）→ 回裸值 100
+        await gameContext.advanceTime(1)
+        expect(getEntityAttr(p, '修正测试值')).toBe(100)
+        // 过期条目被就地剪除（不留残骸随存档往返）
+        expect(p.attr_mods).toEqual([])
+      } finally {
+        gameContext.setTime(t0)
+      }
+    })
+  })
+
   // ── attribute_mods 加载期校验（作者写错的四类声明）──────────────────────────
   // 用 makeMap 注入合成 TOML（同「item 校验」「quest 加载期校验」惯例）：坏数据不进真实文件，
   // 否则每次 loadMod 都报错并污染全量测试。走 parseModData = loadMod 的同一加载期校验入口。
@@ -504,6 +556,59 @@ describe('mod-loader integration', () => {
       const errs = modErrors().filter(e =>
         e.message.includes('数值等级棍法') || e.message.includes('数值等级天赋'))
       expect(errs).toEqual([])
+    })
+
+    // ── 状态定义侧（计划三）：attribute_mods / stack_mods / stack_decay ──────────────
+    it('状态定义的 attribute_mods/stack_mods 加载期校验：per_level 报错、未知状态报错', () => {
+      errorReporter.clear()
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."坏状态"]',
+          'name = "坏状态"',
+          'description = "x"',
+          'category = "debuff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          'attribute_mods = [ { attr = "修正测试值", flat = 1, per_level = 2 } ]',
+          'stack_mods = [ { status = "不存在的状态", value = -1 } ]',
+        ].join('\n'),
+      }))
+      const errs = errorReporter.getErrors().filter(e => e.severity === 'error')
+      expect(errs.some(e => e.message.includes('per_level'))).toBe(true)
+      expect(errs.some(e => e.message.includes('不存在的状态'))).toBe(true)
+    })
+
+    it('stack_mods.value / stack_decay 非法值 → error；真实夹具零误报（正对照）', () => {
+      errorReporter.clear()
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."坏层数状态"]',
+          'name = "坏层数状态"',
+          'description = "x"',
+          'category = "debuff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          // 自引用（已定义）→ 只测 value 这一条分支；0 层 = 没写
+          'stack_mods = [ { status = "坏层数状态", value = 0 } ]',
+          // every = 0 → 永不衰减（等于没写）；amount = -1 → 反向增长
+          'stack_decay = { every = 0, amount = -1 }',
+        ].join('\n'),
+      }))
+      const errs = errorReporter.getErrors().filter(e => e.severity === 'error')
+      expect(errs.some(e => e.message.includes('坏层数状态') && e.message.includes('非零整数'))).toBe(true)
+      expect(errs.some(e => e.message.includes('stack_decay.every'))).toBe(true)
+      expect(errs.some(e => e.message.includes('stack_decay.amount'))).toBe(true)
+
+      // 正对照：真实夹具（修正测试护体 → 修正测试层数 的 stack_mods、修正测试层数 的 stack_decay）
+      // 是合法声明，加载期不得报任何 error —— 拦住"校验写得太严把所有夹具都判死"这类过报
+      errorReporter.clear()
+      parseModData('test-mod', makeMap())
+      const real = errorReporter.getErrors().filter(e => e.severity === 'error')
+      expect(real.filter(e => e.message.includes('修正测试'))).toEqual([])
     })
   })
 

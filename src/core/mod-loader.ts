@@ -14,7 +14,7 @@ import { errorReporter } from './error-reporter'
 import { bindingResolver } from './binding-resolver'
 import { conditionRegistry } from './condition-registry'
 import { entitySystem } from './entity-system'
-import { gameContext } from './game-context'
+import { gameContext, gameTimeToTotalMinutes } from './game-context'
 import { resetPendingSpawns } from './spawn-system'
 import { eventBus } from './event-bus'
 import { SELF_LOADED_DATA_DIRS } from './data-paths'
@@ -132,6 +132,10 @@ export class ModLoader {
       // 声明式来源（装备/被动技能/天赋的 attribute_mods）需要读 mod 定义——core 不能 import
       // mod-loader（成环），故由这里注入定义快照。缺了它 = 声明式来源静默失效（恒等式）。
       defs: { items: mod.items, abilities: mod.abilities, talentDefs: mod.talentDefs },
+      // 运行时修正的到期判定需要"当前游戏分钟"——core 不 import game-context，故在此注入。
+      // ⚠️ 必须是**惰性闭包**（每次调用现读游戏时间）：快照一次会让所有运行时条目按 loadMod 那一刻
+      //    判定到期，时间推进后 D3「到点自己消失」静默失效。
+      nowMinutes: () => gameTimeToTotalMinutes(gameContext.getContext().time),
     })
     // 属性有效值层：mod 数据（重）加载 = 属性定义变更 → 所有实体的有效值缓存必须失效
     bumpDataVersion()

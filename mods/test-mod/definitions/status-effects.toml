@@ -36,3 +36,36 @@ on_apply_effects = [
 on_remove_effects = [
   { type = "modify_attribute", params = { attr = "attack", value = -10, target = "self" } }
 ]
+
+# 属性有效值层 计划三夹具：状态生效期间对属性的临时修正（运行时来源）
+[status-effects."修正测试状态"]
+name = "修正测试状态"
+description = "属性修正夹具（生效期间 修正测试值 +25；无 tick）"
+category = "buff"
+duration = 120
+tick_interval = 0
+stackable = false
+max_stack = 1
+attribute_mods = [ { attr = "修正测试值", flat = 25 } ]
+
+# 层数修正夹具：给「修正测试层数」状态 −1 层（三层模型）
+[status-effects."修正测试护体"]
+name = "修正测试护体"
+description = "层数修正夹具（对 修正测试层数 恒 −1）"
+category = "buff"
+duration = 120
+tick_interval = 0
+stackable = false
+max_stack = 1
+stack_mods = [ { status = "修正测试层数", value = -1 } ]
+
+# 层数状态的载体：基础层数由 apply_status 的 stack/stack_add 决定
+[status-effects."修正测试层数"]
+name = "修正测试层数"
+description = "层数夹具（基础层数由招式给定；每 60 分钟 −1 层）"
+category = "debuff"
+duration = 600
+tick_interval = 0
+stackable = false
+max_stack = 10
+stack_decay = { every = 60, amount = 1 }

@@ -625,5 +625,59 @@ export function validateAttributeMods(mod: LoadedMod): void {
   for (const [id, def] of Object.entries(mod.talentDefs ?? {})) {
     check(`天赋 '${id}'`, def?.attribute_mods, true)
   }
+  // 状态定义（计划三）：生效期间的属性临时修正 + 对其他状态层数的修正 + 层数衰减。
+  // 状态**没有等级概念** → attribute_mods 里写 per_level 一律 error（与装备同待遇：不静默当 1 级）。
+  for (const [id, def] of Object.entries(mod.statusEffects ?? {})) {
+    check(`状态 '${id}'`, def?.attribute_mods, false)
+    // stack_mods：被修正的状态 id 必须已定义（写错 = 一条恒不生效的静默修正），
+    // 层数增减必须是非零整数（0 = 没写；小数 = 半层）。
+    if (def?.stack_mods !== undefined) {
+      if (!Array.isArray(def.stack_mods)) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `状态 '${id}' 的 stack_mods 必须是数组`,
+        })
+      } else {
+        for (const entry of def.stack_mods) {
+          const target: unknown = entry?.status
+          const value: unknown = entry?.value
+          if (typeof target !== 'string' || !mod.statusEffects?.[target]) {
+            errorReporter.report({
+              source: 'mod-loader', severity: 'error',
+              message: `状态 '${id}' 的 stack_mods 引用了未定义状态 '${String(target)}'`,
+              suggestion: '被修正层数的状态需先在 definitions/status-effects.toml 定义（未定义 = 该条层数修正静默不生效）',
+            })
+          }
+          if (typeof value !== 'number' || !Number.isInteger(value) || value === 0) {
+            errorReporter.report({
+              source: 'mod-loader', severity: 'error',
+              message: `状态 '${id}' 的 stack_mods['${String(target)}'] 的 value 必须是非零整数（收到 ${String(value)}）`,
+              suggestion: '层数是整数：0 等于没写这条修正，小数会让层数出现半层',
+            })
+          }
+        }
+      }
+    }
+    // stack_decay：每 every 分钟 −amount 层 → 两者都必须是正有限数
+    // （0/负数 = 永不衰减或层数反向增长，都是"看起来配了其实没配"的静默失效）。
+    if (def?.stack_decay !== undefined) {
+      const every: unknown = def.stack_decay?.every
+      const amount: unknown = def.stack_decay?.amount
+      if (typeof every !== 'number' || !Number.isFinite(every) || every <= 0) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `状态 '${id}' 的 stack_decay.every 必须是正有限数（收到 ${String(every)}）`,
+          suggestion: 'every 是衰减间隔的分钟数；0/负数/非数字会让层数永不衰减',
+        })
+      }
+      if (typeof amount !== 'number' || !Number.isFinite(amount) || amount <= 0) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `状态 '${id}' 的 stack_decay.amount 必须是正有限数（收到 ${String(amount)}）`,
+          suggestion: 'amount 是每次衰减扣掉的层数；0 等于没有这个字段，负数会让层数反向增长',
+        })
+      }
+    }
+  }
 }
 

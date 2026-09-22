@@ -339,6 +339,24 @@ describe('attribute-eval：声明式来源（装备/被动技能/天赋）', () 
     expect(readEffective(c, '力道', 100)).toBe(157.5)
   })
 
+  it('声明式侧独占 percent：push 栈为空时也照乘（(100 + 0) × 1.5 = 150）', () => {
+    // 本用例**只走声明式侧**（push 栈为空）：共享累积闭包（applyMods 的 acc）里的 percent 若在
+    // 声明式这条路上丢失（如有人把两侧代数重新分叉、只给 push 侧补上 percent），既有用例不会发现 ——
+    // 「多源叠加」是声明式 flat + **push** percent，percent 由 push 侧兜住。
+    // 探针实证：把声明式循环改成 acc({ flat: m.flat, set: m.set })（丢掉声明式 percent）
+    // → 整个测试文件 34 例仍绿，只有本用例失败（expected 100 to be 150）。
+    configureAttributeEval({
+      definitions: { 力道: {}, 根骨: {} },
+      defs: {
+        ...DEFS,
+        items: { ...DEFS.items, 百分比护腕: { attribute_mods: [{ attr: '力道', percent: 0.5 }] } },
+      },
+    })
+    const c = { id: 'p1', equipment: { wrist: '百分比护腕' } }
+    // 无 flat、无 set → 基准就是裸值 100；(100 + 0) × (1 + 0.5) = 150
+    expect(readEffective(c, '力道', 100)).toBe(150)
+  })
+
   it('【无漂移】脱下装备后立即不再加（无需任何通知）', () => {
     const c: any = { id: 'd1', equipment: { wrist: '玄铁护腕' } }
     expect(readEffective(c, '力道', 100)).toBe(105)

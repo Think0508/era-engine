@@ -204,7 +204,13 @@ function settleEjaDecay(entity: any, minutes: number): void {
   if (now - last <= 30) return
   const eja = readRawAttr(entity, '射精欲')
   if (typeof eja !== 'number' || !Number.isFinite(eja) || eja <= 0) return
-  setEntityAttr(entity, '射精欲', clampAttrValue(entity, '射精欲', eja - minutes * 10))
+  // 2026-09-23 末轮清扫：**去掉写入端的上限钳制**（原 `clampAttrValue(entity, '射精欲', …)`）。
+  // 它是本文件最后一个没加上限判据的写回点：`clampAttrValue` 按**有效**「射精欲上限」解析，
+  // 于是临时 `射精欲上限 −N` 会把裸值截断（裸值 500 / 上限修正 −900 → 有效上限 100 → 写成 100，
+  // 撤修正仍 100 = 永久 −400）——与 R1 同一个通道。消退是**减量**路径，故不需要
+  // `applyAttrDelta` 的「非负增量不反噬」守卫，只需下限 0：上限的约束由**读时封顶投影**
+  // （attribute-eval.applyCapProjection）负责——裸值留在基础值域，读出来的有效值不超有效上限。
+  setEntityAttr(entity, '射精欲', Math.max(0, eja - minutes * 10))
 }
 
 // ── 入口 ──

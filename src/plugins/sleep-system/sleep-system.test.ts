@@ -18,7 +18,8 @@ import { conditionRegistry } from '../../core/condition-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { narrativeLog } from '../../core/narrative-log'
 import { registerRuntimeMod, removeRuntimeMod } from '../../core/attribute-eval'
-import { getEntityAttr } from '../../core/entity-utils'
+import { getEntityAttr, readRawAttr } from '../../core/entity-utils'
+import { settleJuelConversion } from '../../core/juel-settle'
 import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
 import { getSleepLevelInfo } from './sleep-state'
@@ -528,6 +529,20 @@ describe('指令级口上与 ask_target_sleep（1014/1022 补测）', () => {
       expect(girl.sp_flag.sleeping).toBe(true)
     })
 
+    // 2026-09-23 末轮 Item 3：熟睡值扣减的操作数取**基础值**（判定仍读有效值）
+    it('熟睡值扣减取基础值：临时「熟睡值 +50」不沉淀进 base', async () => {
+      startSleepH(90)
+      const girl = getChar(GIRL)
+      registerRuntimeMod(girl, { id: 'audit:熟睡值', attr: '熟睡值', flat: 50 }, 50)
+      try {
+        expect(getEntityAttr(girl, '熟睡值')).toBe(140)  // 判定/等级读有效值
+        await settleSleepH(10)
+        expect(readRawAttr(girl, '熟睡值')).toBe(60)     // 90 − floor(10×3)；修复前读有效值 → 写成 110
+      } finally {
+        removeRuntimeMod(girl, 'audit:熟睡值')
+      }
+    })
+
     it('半梦半醒目标 + 吵醒成功 → 醒来流程（疲劳/熟睡清零 + 装睡继续 H + 时间推进）', async () => {
       startSleepH(20)
       const girl = getChar(GIRL)
@@ -646,6 +661,62 @@ describe('指令级口上与 ask_target_sleep（1014/1022 补测）', () => {
     })
   })
 
+  // ═══ 2026-09-23 末轮 Item 3：睡眠插件的「精力/精液」结算站点（挂修正 → 裸值不变）═══
+  // 三站点的操作数都改成了基础值域（精力经 getRawForPlugin、精液量经 readRawAttr）。
+  // 每例只做一件事：挂上修正跑一次，断言写回的裸值与**无修正时应得的值**一致（并自证修正已生效）。
+  describe('精力/精液结算站点（最小回归：挂修正 → 裸值不变）', () => {
+    async function runEffect(type: string, params: any): Promise<void> {
+      await apiSystem.call('effect-system', 'execute', [{ type, params }], {
+        sourceId: PLAYER, _targetIds: [PLAYER], _timeCost: 60,
+      })
+    }
+
+    it('add_small_sanity_point：精力恢复只加在基础值上（修复前读有效值 → 100）', async () => {
+      const player = getChar(PLAYER)
+      player.base['精力'] = 50
+      player.action_info = {}
+      registerRuntimeMod(player, { id: 'audit:精力', attr: '精力', flat: 40 }, 40)
+      try {
+        expect(getEntityAttr(player, '精力')).toBe(90)                  // 修正生效
+        await runEffect('add_small_sanity_point', {})
+        expect(readRawAttr(player, '精力')).toBe(65)                    // 50 + floor(1×0.15×100)
+      } finally {
+        removeRuntimeMod(player, 'audit:精力')
+      }
+    })
+
+    it('consume_sanity：精力扣减只从基础值扣（修复前读有效值 → 70）', async () => {
+      const player = getChar(PLAYER)
+      player.base['精力'] = 50
+      player.action_info = {}
+      registerRuntimeMod(player, { id: 'audit:精力', attr: '精力', flat: 40 }, 40)
+      try {
+        expect(getEntityAttr(player, '精力')).toBe(90)                  // 修正生效
+        await runEffect('consume_sanity', { amount: 20 })
+        expect(readRawAttr(player, '精力')).toBe(30)                    // 50 − 20
+        expect(player.action_info.today_sanity_point_cost).toBe(20)     // 今日消耗按实际扣减量记
+      } finally {
+        removeRuntimeMod(player, 'audit:精力')
+      }
+    })
+
+    it('add_small_semen_point：精液量恢复只加在基础值上（修复前读有效值 → 整段恢复被跳过）', async () => {
+      const player = getChar(PLAYER)
+      player.base['精液量'] = 80
+      player.base['精液量上限'] = 100
+      registerRuntimeMod(player, { id: 'audit:精液量', attr: '精液量', flat: 40 }, 40)
+      try {
+        expect(getEntityAttr(player, '精液量')).toBe(100)                // 修正生效（有效值被顶到上限）
+        await runEffect('add_small_semen_point', {})
+        // 「已达上限则不写」的判据必须读**裸值** 80（不是有效值 100）：修复前判据命中 → 裸值停在 80；
+        // 写入端（applyAttrDelta）本就只加在基础值上 → 80 + floor(1×0.15×100) = 95
+        expect(readRawAttr(player, '精液量')).toBe(95)
+      } finally {
+        removeRuntimeMod(player, 'audit:精液量')
+      }
+    })
+  })
+
   // ═══════ 成长结算链（2026-08-11：睡眠触发能力升级/素质获得/精力成长/宝珠转换）═══════
   describe('成长结算链（睡眠触发）', () => {
     it('NPC 睡眠触发能力升级（condition 模式 needs + 扣宝珠）', async () => {
@@ -693,6 +764,31 @@ describe('指令级口上与 ask_target_sleep（1014/1022 补测）', () => {
       await updateSleepAll(600)
       expect(girl.juel['0']).toBe(50) // 皮肤快感珠（level 0 → 100%）
       expect(girl.base['皮肤']).toBe(0)
+    })
+
+    // ═══ 转珠的「换算规则」（2026-09-23 末轮 Item 2）：存在性判定读**有效值**、换算/清零读**基础值** ═══
+    // 修复前两个操作数都读有效值 → base 快乐 0 + 临时「快乐 +500」每晚凭空铸珠（可重复、免费）。
+    it('转珠换算读基础值：临时「快乐 +500」不凭空铸珠（存在性判定仍读有效值）', () => {
+      const player = getChar(PLAYER)
+      player.juel = {}
+      player.base['快乐'] = 0
+      registerRuntimeMod(player, { id: 'test:快乐', attr: '快乐', flat: 500 }, 500)
+      try {
+        expect(getEntityAttr(player, '快乐')).toBe(500)   // 判定读有效值：存在性成立（debuff 归零则正当拦住）
+        settleJuelConversion(player)
+        expect(player.juel['13'] ?? 0).toBe(0)            // 换算读基础值 0 → 修复前凭空铸 500 珠（test-mod 的快乐无 level_thresholds → 100%）
+      } finally {
+        removeRuntimeMod(player, 'test:快乐')
+      }
+    })
+
+    it('转珠换算正对照：无修正时行为不变（base 快乐 100 → 100 快乐珠 + 清零）', () => {
+      const player = getChar(PLAYER)
+      player.juel = {}
+      player.base['快乐'] = 100
+      settleJuelConversion(player)
+      expect(player.juel['13']).toBe(100)                 // level 1 → 100%
+      expect(player.base['快乐']).toBe(0)                 // 清零量与被换算量同域
     })
 
     it('完整闭环：状态值 → 转珠 → 能力升级消耗珠（一条链）', async () => {

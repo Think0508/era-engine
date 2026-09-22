@@ -11,6 +11,9 @@ import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
 import { commandRegistry } from '../../core/command-registry'
 import { errorReporter } from '../../core/error-reporter'
+import { effectTypeRegistry } from '../../core/effect-type-registry'
+import { registerRuntimeMod } from '../../core/attribute-eval'
+import { readRawAttr, getEntityAttr } from '../../core/entity-utils'
 
 async function bootPlugins() {
   const pluginManager = new PluginManager(apiSystem, eventBus, new SlotRegistry(), commandRegistry)
@@ -167,6 +170,61 @@ describe('body_item 归还语义', () => {
       await eventBus.emit('game:hour_changed', { hour: 1 })
       const ch = entitySystem.get('character', 'exp3') as any
       expect(ch.body_items['0']?.active).toBe(true)
+    })
+  })
+
+  // ── 2026-09-23 末轮 Item 3：h-core 审计站点的最小回归（挂修正 → 裸值不变）──────────────
+  // 三个站点都是「把同一属性当前值的一部分当增量写回该属性基础值」，读有效值会按比例复利。
+  // 判据一句话：挂上修正跑一遍，裸值必须与**无修正时应得的值**完全相同（对照组）。
+  describe('审计站点（最小回归：挂修正 → 裸值不变）', () => {
+    /** 造一个全新实体并跑同一动作，返回若干属性的**裸值**（对照/实验各用独立实体，互不污染） */
+    function mk(id: string, base: Record<string, number>, useMods: boolean, mods: Record<string, number>): any {
+      entitySystem.register('character', id, { id, name: id, base: { ...base }, abilities: {}, sp_flag: {} })
+      const c = entitySystem.get('character', id) as any
+      for (const [a, v] of Object.entries(mods)) {
+        if (useMods) registerRuntimeMod(c, { id: `audit:${a}`, attr: a, flat: v }, v)
+      }
+      if (useMods) {
+        for (const [a, v] of Object.entries(mods)) {
+          expect(getEntityAttr(c, a)).toBe(readRawAttr(c, a) + v)   // 修正确实生效（判据读有效值）
+        }
+      }
+      return c
+    }
+
+    it('tech_adjust：部位快感/欲情的 tenths 追加项（cur/10）取基础值', async () => {
+      const run = async (useMods: boolean): Promise<any[]> => {
+        const c = mk(`audit_tech_${useMods ? 'p' : 'c'}`, { 胸部: 100, 欲情: 100 }, useMods, { 胸部: 200, 欲情: 200 })
+        await apiSystem.call('effect-system', 'execute', [{ type: 'tech_adjust', params: { part: '胸部' } }], {
+          sourceId: 'player', _targetIds: [c.id], _timeCost: 10,
+        })
+        return [readRawAttr(c, '胸部'), readRawAttr(c, '欲情')]
+      }
+      // 修复前：追加项按有效值 300/10 = 30 计（对照 100/10 = 10）→ 两个属性都多涨 20
+      expect(await run(true)).toEqual(await run(false))
+    })
+
+    it('listen_complaint_settle（无 settlement 兜底分支）：降怒量取基础值', async () => {
+      const handler = effectTypeRegistry.getHandler('listen_complaint_settle')!
+      const run = async (useMods: boolean): Promise<any> => {
+        const c = mk(`audit_listen_${useMods ? 'p' : 'c'}`, { 愤怒: 100 }, useMods, { 愤怒: 200 })
+        // 不传 settlement → 走 else 兜底分支（`current − value`）
+        await handler({}, { sourceId: 'player', _targetIds: [c.id], _timeCost: 10 })
+        return readRawAttr(c, '愤怒')
+      }
+      // 修复前：100 − 20 = 80 与 300 − 20 = 280（临时修正被烘进 base）→ 差值 200
+      expect(await run(true)).toBe(await run(false))
+    })
+
+    it('settleState：tenths_add 追加项（cur/10）取基础值', async () => {
+      const run = async (useMods: boolean): Promise<any> => {
+        const c = mk(`audit_state_${useMods ? 'p' : 'c'}`, { 好意: 100 }, useMods, { 好意: 200 })
+        // abilityLevel 0 → 系数 1.0；base = timeCost(0) + baseValue(10) → 追加 min(30, 裸值/10)
+        await apiSystem.call('h-core', 'settleState', c.id, '好意', 10, 0, { abilityLevel: 0, continuous: 1 })
+        return readRawAttr(c, '好意')
+      }
+      // 修复前：追加项按有效值 300/10 = 30 计（对照 100/10 = 10）→ 多涨 20
+      expect(await run(true)).toBe(await run(false))
     })
   })
 })

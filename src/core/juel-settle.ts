@@ -3,7 +3,7 @@
 // 按状态等级衰减率转为对应宝珠（juel），然后清零状态值；最后反感珠抵消。
 // 此前宝珠系统被砍（对账表 juel 有意删减，只留清零）——2026-08-11 用户要求完整复刻，恢复转换链。
 
-import { getEntityAttr, setEntityAttr, getLevel } from './entity-utils'
+import { getEntityAttr, setEntityAttr, readRawAttr, getLevel } from './entity-utils'
 import { modLoader } from './mod-loader'
 
 // 注释：状态等级 → 转换率（erArk get_juel：LV0-1 = 100%，LV10 = 10%）
@@ -31,18 +31,27 @@ export function settleJuelConversion(entity: any): string[] {
     if (Number.isNaN(juelId)) continue
     const statusAttr = def.status_attr
     if (!statusAttr) continue
+    // ── 转珠的「换算规则」（2026-09-23 末轮用户裁定）——
+    //   阈值/存在性判定读**有效值**（临时 buff 可帮忙达标，debuff 可正当拦住转珠）；
+    //   被换算、被清零的量读**基础值**（换算把值变成**永久**宝珠，而被扣除的是基础值——
+    //   两个操作数必须同域，否则授予 ≠ 扣除：base 快乐 0 + 临时 `快乐 +500` 会每晚凭空铸 500 珠，
+    //   可重复、免费）。审计探针：修复前读有效值 → 500 珠/夜。）
     const statusValue = getEntityAttr(entity, statusAttr)
     // 注释：audit-i 修复——erArk sleep_settle.py 对 !=0 无条件转珠并清零；
     // 原 `<= 0 continue` 使负值（如负好感）跳过且**不清零** → 永久残留
     if (typeof statusValue !== 'number' || statusValue === 0) continue
 
+    const rawValue = readRawAttr(entity, statusAttr)
+    const convertible = typeof rawValue === 'number' && Number.isFinite(rawValue) ? rawValue : 0
+
     const attrDef = mod.attributes?.[statusAttr]
+    // 等级衰减率同样按**被换算的量**取（换算的一部分，不是判定）
     const level = attrDef?.level_thresholds?.length
-      ? getLevel(statusValue, attrDef.level_thresholds)
+      ? getLevel(convertible, attrDef.level_thresholds)
       : 0
     const rate = JUEL_CONVERSION_RATE[Math.min(level, JUEL_CONVERSION_RATE.length - 1)] ?? 1
     // 注释：erArk 用 Python round()（银行家舍入）；JS Math.round 四舍五入——量级差异可忽略（已记录）
-    const addJuel = Math.round(statusValue * rate)
+    const addJuel = Math.round(convertible * rate)
 
     if (SPECIAL_STATUS.includes(juelId)) {
       // 苦痛/恐怖/抑郁：1/4 到自身 + 1/2 到反感珠

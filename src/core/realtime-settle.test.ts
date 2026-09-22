@@ -1,11 +1,11 @@
 // G3 决策测试（2026-08-09）：射精欲自然消退（erArk realtime_settle.py:144-149）
 // 仅玩家、非 H、距上次射精 >30 分钟 → -10/分钟（下限 0）
-import { describe, it, expect, beforeEach } from 'vitest'
-import { realtimeSettle } from './realtime-settle'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { realtimeSettle, sleepPassSettle, settleHunger, settleUrine } from './realtime-settle'
 import { gameTimeToTotalMinutes, gameContext } from './game-context'
 import { entitySystem } from './entity-system'
 import { getEntityAttr, readRawAttr } from './entity-utils'
-import { configureAttributeEval, registerRuntimeMod } from './attribute-eval'
+import { configureAttributeEval, registerRuntimeMod, removeRuntimeMod } from './attribute-eval'
 
 function registerChar(id: string, base: Record<string, number>, extra: any = {}): any {
   entitySystem.register('character', id, { id, base, action_info: {}, ...extra })
@@ -237,7 +237,7 @@ describe('realtimeSettle 基础值域（临时修正不沉淀）', () => {
   beforeEach(() => {
     entitySystem.clear()
     gameContext.reset()
-    configureAttributeEval({ definitions: { 疲劳度: {}, 体力: {}, 体力上限: {} } })
+    configureAttributeEval({ definitions: { 疲劳度: {}, 体力: {}, 体力上限: {}, 射精欲: {}, 射精欲上限: {} } })
   })
 
   it('settleTired：增量落基础值，有效值仍含修正', () => {
@@ -264,5 +264,84 @@ describe('realtimeSettle 基础值域（临时修正不沉淀）', () => {
     const c = registerChar('npc_hp2', { 体力: 500, 体力上限: 120 })
     realtimeSettle(c, 10)
     expect(readRawAttr(c, '体力')).toBe(120)
+  })
+
+  // 2026-09-23 末轮 Item 1：settleEjaDecay 是本文件最后一个「写回按**有效上限**钳制」的站点。
+  // 消退是减量路径（"非负增量不反噬"守卫盖不到），临时 `射精欲上限 −N` 会把裸值永久截断。
+  it('settleEjaDecay：临时「射精欲上限 −N」不截断裸值（写回不再按有效上限钳制）', () => {
+    const now = gameTimeToTotalMinutes(gameContext.getContext().time)
+    const c = registerChar('player', { 射精欲: 500, 射精欲上限: 1000 }, { action_info: { last_eaj_add_time: now - 60 } })
+    registerRuntimeMod(c, { id: 'status:射精欲上限', attr: '射精欲上限', flat: -900 }, -900)
+    try {
+      expect(getEntityAttr(c, '射精欲上限')).toBe(100)   // 有效上限（「上限−900」立即生效）
+      realtimeSettle(c, 10)                              // 消退 10 分钟 = −100
+      // 修复前 `clampAttrValue(entity, '射精欲', 400)` 按有效上限写成 **100**（撤修正仍 100 = 永久 −400）
+      expect(readRawAttr(c, '射精欲')).toBe(400)
+      expect(getEntityAttr(c, '射精欲')).toBe(100)       // 读时封顶：裸值 400 读出来不超有效上限
+    } finally {
+      removeRuntimeMod(c, 'status:射精欲上限')
+    }
+  })
+})
+
+// ── 2026-09-23 末轮 Item 3：审计修过但**没有带修正测试**的站点，每站点一条最小回归 ──────────
+// 判据只有一句：**挂上修正 → 该站点写回的裸值分毫不变**（修正只该出现在判据里）。
+// 助手 rawPair：同一结算跑两遍（对照 / 挂 flat 修正），返回两次的裸值——并先自证修正真的生效
+// （读时闸门没过的话用例会静默空转，那种"绿的假测试"比没测试更糟）。
+describe('realtimeSettle 审计站点（最小回归：挂修正 → 裸值不变）', () => {
+  let seq = 0
+  beforeEach(() => {
+    entitySystem.clear()
+    gameContext.reset()
+    vi.spyOn(Math, 'random').mockReturnValue(0.5)   // 0.8 + 0.5×0.4 = 1.0 → 饥饿/尿意的随机系数固定为 1
+    configureAttributeEval({
+      definitions: {
+        疲劳度: {}, 熟睡值: {}, 体力: {}, 体力上限: {}, 气力: {}, 气力上限: {},
+        饥饿值: {}, 尿意: {}, 精液量: {}, 精液量上限: {},
+      },
+    })
+  })
+  afterEach(() => vi.restoreAllMocks())
+
+  /** 每次调用造一个**新实体**（对照与实验组必须是两个对象） */
+  function mkChar(base: Record<string, number>): () => any {
+    return () => registerChar(`audit_${++seq}`, { ...base })
+  }
+
+  function rawPair(attr: string, flat: number, make: () => any, run: (c: any) => void): [any, any] {
+    const control = make()
+    const probe = make()
+    registerRuntimeMod(probe, { id: 'audit:probe', attr, flat }, flat)
+    try {
+      // 修正确实生效（有效值被抬高——判据/显示读的是它）。用 > 而非 = raw+flat：读时封顶可能压住修正后的值。
+      expect(getEntityAttr(probe, attr)).toBeGreaterThan(readRawAttr(control, attr))
+      run(control)
+      run(probe)
+      return [readRawAttr(control, attr), readRawAttr(probe, attr)]
+    } finally {
+      removeRuntimeMod(probe, 'audit:probe')
+    }
+  }
+
+  it('sleepPassSettle：疲劳度/熟睡值两个站点都从基础值取操作数', () => {
+    const mk = mkChar({ 疲劳度: 60, 熟睡值: 0, 体力: 100, 体力上限: 100, 气力: 100, 气力上限: 100 })
+    expect(rawPair('疲劳度', 30, mk, c => sleepPassSettle(c, 60))).toEqual([40, 40])   // 60 − 20（读有效值则 90−20=70）
+    expect(rawPair('熟睡值', 40, mk, c => sleepPassSettle(c, 60))).toEqual([90, 90])   // 0 + 90（读有效值则 100）
+  })
+
+  it('sleepRecovery：体力/气力两个站点都从基础值取操作数', () => {
+    // 修正 +60 把**有效值**顶到有效上限 100：判据若读有效值 → 「未满」不成立 → 整段恢复被跳过（裸值停在 50）
+    const mk = mkChar({ 体力: 50, 体力上限: 100, 气力: 50, 气力上限: 100, 疲劳度: 0, 熟睡值: 0 })
+    expect(rawPair('体力', 60, mk, c => sleepPassSettle(c, 60))).toEqual([245, 245])   // 50 + floor(3.25×60)
+    expect(rawPair('气力', 60, mk, c => sleepPassSettle(c, 60))).toEqual([440, 440])   // 50 + floor(6.5×60)
+  })
+
+  it('settleHunger / settleUrine / settleSemen：三个站点都从基础值取操作数', () => {
+    const mkHunger = mkChar({ 饥饿值: 10, 体力: 100, 体力上限: 100, 气力: 100, 气力上限: 100 })
+    expect(rawPair('饥饿值', 100, mkHunger, c => settleHunger(c, 60))).toEqual([70, 70])   // 系数 1 → +60
+    const mkUrine = mkChar({ 尿意: 10 })
+    expect(rawPair('尿意', 100, mkUrine, c => settleUrine(c, 60))).toEqual([70, 70])       // +60
+    const mkSemen = mkChar({ 精液量: 50, 精液量上限: 100 })
+    expect(rawPair('精液量', 40, mkSemen, c => realtimeSettle(c, 60))).toEqual([53, 53])   // +3（读有效值则 93）
   })
 })

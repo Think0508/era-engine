@@ -17,6 +17,8 @@ import { SlotRegistry } from '../../ui/slots/slot-registry'
 import { getPrisoners, getSettings, resetConfinementState, getState } from './state'
 import { getUnusedPrisonCell } from './prisoner'
 import { calculateEscapeProbability, judgeCanEscape } from './escape'
+import { registerRuntimeMod, removeRuntimeMod } from '../../core/attribute-eval'
+import { readRawAttr, getEntityAttr } from '../../core/entity-utils'
 
 async function boot(): Promise<void> {
   entitySystem.clear()
@@ -442,6 +444,32 @@ describe('confinement-system', () => {
       delete getPrisoners()['trainee']
       getSettings().training = 0
       getState().wardenId = null
+    })
+
+    // 2026-09-23 末轮 Item 3：训练消耗 hp/mp 的操作数取**基础值**
+    // （原 getForPlugin 读有效值 → hp/mp 上的临时修正被烘进 base：100 + 修正 30 → 写成 125）
+    it('训练消耗 hp/mp 取基础值：临时修正不进 base（挂修正 → 裸值不变）', async () => {
+      registerChar('trainee_mod')
+      const { setTrainingModes, settleTraining } = await import('./warden')
+      getState().wardenId = gameContext.getContext().player?.id!
+      getSettings().training = 6
+      setTrainingModes([{ id: 6, name: 't', state: '好意', stateBase: 20, wardenAbility: '经验' }])
+      getPrisoners()['trainee_mod'] = { imprisonedAt: { ...gameContext.getContext().time }, escapeProbability: 0 }
+      const trainee = entitySystem.get('character', 'trainee_mod') as any
+      registerRuntimeMod(trainee, { id: 'audit:hp', attr: 'hp', flat: 30 }, 30)
+      registerRuntimeMod(trainee, { id: 'audit:mp', attr: 'mp', flat: 30 }, 30)
+      try {
+        expect(getEntityAttr(trainee, 'hp')).toBe(130)   // 修正确实生效（判据读有效值）
+        await settleTraining()
+        expect(readRawAttr(trainee, 'hp')).toBe(95)      // 100 − 5（修复前 130 − 5 = 125）
+        expect(readRawAttr(trainee, 'mp')).toBe(47)      // 50 − 3（修复前 80 − 3 = 77）
+      } finally {
+        removeRuntimeMod(trainee, 'audit:hp')
+        removeRuntimeMod(trainee, 'audit:mp')
+        delete getPrisoners()['trainee_mod']
+        getSettings().training = 0
+        getState().wardenId = null
+      }
     })
   })
 

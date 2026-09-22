@@ -31,11 +31,12 @@ tick_effects = [
 
 # ── 写法变体：debuff + 无 tick + 施加/移除时各触发一次的效果 ──
 # 与 振奋（buff + tick_interval>0）的区别：没有 tick_effects 就不会周期触发；
-# on_apply/on_remove_effects 在施加/移除时各触发一次——演示**非属性**效果（此处为叙事文本）。
-# （原先这里是 `modify_attribute 体力 -10`：写基础值、被计划三判为加载期 error，故迁移。）
+# on_apply/on_remove_effects 在施加/移除时各触发一次。
+# 这里演示 `permanent = true` 这条出口：**一次性永久改变**（施加瞬间体力 −10，不随状态到期回退）。
+# （若想要"生效期间体力 −10、到期自动恢复" → 那才该写 `attribute_mods`，见 test-mod 的 攻击增益。）
 [status-effects."力竭"]
 name = "力竭"
-description = "过度劳累，精神涣散"
+description = "过度劳累：施加瞬间体力大损"
 category = "debuff"
 duration = 120
 tick_interval = 0
@@ -43,10 +44,8 @@ stackable = false
 max_stack = 1
 on_apply_effects = [
   # 目标由 status-system 注入（状态持有者），勿写 params.target
-  { type = "narrative_output", params = { text = "一阵力竭涌上来，手脚发软。" } }
-]
-on_remove_effects = [
-  { type = "narrative_output", params = { text = "力竭感渐渐消退。" } }
+  # permanent = true = 作者的明确意图声明（供加载期校验判读；运行期路径不变，照旧写基础值）
+  { type = "modify_attribute", params = { attr = "体力", value = -10, permanent = true } }
 ]
 
 # 写法变体：stackable = true 的叠加型（醉意等）——重新施加刷新时长 + 层数递增；

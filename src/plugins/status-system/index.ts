@@ -24,7 +24,7 @@ import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
 import { gameContext, gameTimeToTotalMinutes } from '../../core/game-context'
-import { registerRuntimeMod, removeRuntimeMod } from '../../core/attribute-eval'
+import { registerRuntimeMod, removeRuntimeMod, readRuntimeMods } from '../../core/attribute-eval'
 
 /** 层数修正条目（挂在**目标状态**实例上；`from` = 来源状态 id，用于撤销与排查） */
 export interface StatusStackMod {
@@ -103,15 +103,15 @@ export function onEnable(ctx: PluginContext): void {
 
   ctx.api.register('status', {
     hasStatus: (charId: string, statusId: string): boolean => {
-      const entry = findEntry(charOf(charId), statusId)
-      return !!entry && !isExpired(entry, getCurrentGameMinutes())
+      // 注释：findEntry 已把"已过期但未结算"的条目视为不存在并剪除 → 与条件存在性/层数读取一致
+      return !!findEntry(charOf(charId), statusId)
     },
     // 注释：有效层数（含层数修正与待衰减）——spec §9「层数条件看有效层数」的读取入口
     getStack: (charId: string, statusId: string): number => effectiveStack(charId, statusId),
     getRemaining: (charId: string, statusId: string): number => {
       const entry = findEntry(charOf(charId), statusId)
       if (!entry) return 0
-      return typeof entry.expiresAt === 'number' ? Math.max(0, entry.expiresAt - getCurrentGameMinutes()) : -1
+      return remainingMinutes(entry, getCurrentGameMinutes()) // 注释：与 remaining_duration 视图同一份公式
     },
     apply: (charId: string, statusId: string, opts?: ApplyStatusOpts): void => applyStatus(charId, statusId, opts),
     remove: (charId: string, statusId: string): void => removeStatus(charId, statusId),
@@ -186,10 +186,18 @@ export function applyStatus(charId: string, statusId: string, opts: ApplyStatusO
 
   // 注释：已存在——「打到几」/「加几」/既有叠加语义（三选一）
   if (opts.stack !== undefined) {
-    // D5 ①「打到几」：比较基准是**有效层数**（基础 + 层数修正）；打不动 → 直接返回，
+    // D5 ①「打到几」：比较基准是**有效层数**（基础 + 层数修正 − 待衰减）；打不动 → 直接返回，
     // 连时长都不刷新（这是用户明确要的语义）
     if (!(opts.stack > stackValueOf(existing, now))) return
-    existing.base_stack = opts.stack
+    // 顶上成功：**先把投影出的待衰减量落账**，再写目标层数，并把衰减锚点重置到"现在"。
+    // 若直接写 base_stack 而不管待衰减（曾经的写法）：投影出的层数会比目标少一截（刚"打到 3"
+    // 却显示 2），且锚点还停在上次衰减时刻 → 下一次结算按陈旧锚点再扣一次，极端情形 base 归 0
+    // → **刚施加的状态被自己删掉**（8:30 打 1 层、9:30 再打 1 层即复现）。
+    // 语义：本条 = 「基础层数打到 N」（spec §5.1 的 `base_stack = max(base_stack, N)`）；
+    // 层数修正（护体那类）仍叠在它之上 —— 打到 3 + 护体 −1 → 有效 2，护体到期后回到 3。
+    existing.base_stack -= pendingDecay(existing, def, now)
+    existing.base_stack = Math.max(existing.base_stack, opts.stack)
+    existing.last_decay_at = now
   } else if (opts.stack_add !== undefined) {
     // 注释：加法类恒生效（不受顶替判定约束）
     existing.base_stack += opts.stack_add
@@ -272,18 +280,22 @@ function applyStackModsFromSource(char: any, sourceId: string): void {
   }
 }
 
-/** 目标状态新出现时补挂身上已有来源状态声明的层数修正（"恒 −1"与施加顺序无关） */
+/** 目标状态新出现时补挂身上已有来源状态声明的层数修正（"恒 −1"与施加顺序无关）。
+ *  · 只认**存活**来源（已过期未结算的来源不再补挂——它的修正本就该随之消失；否则会留下
+ *    `expiresAt` 已过、纯残留的层数修正条目）；
+ *  · 遍历**快照**：内部 `findEntry` 会顺手剪除死条目（改数组），直接 for...of 原数组会跳项。 */
 function retrofitStackMods(char: any, targetId: string): void {
   const mod = modLoader.getMod()
   if (!mod) return
   const target = findEntry(char, targetId)
   if (!target) return
-  for (const raw of char.status_effects as any[]) {
+  const now = getCurrentGameMinutes()
+  for (const raw of [...(char.status_effects as any[])]) {
     if (!raw || raw.id === targetId) continue
     const otherDef = mod.statusEffects[raw.id]
     if (!otherDef?.stack_mods?.length) continue
     const source = normalizeEntry(raw)
-    if (!source) continue
+    if (!source || isExpired(source, now)) continue
     for (const m of otherDef.stack_mods) {
       if (m.status !== targetId) continue
       upsertStackMod(target, { from: source.id, value: m.value, expiresAt: source.expiresAt })
@@ -291,7 +303,10 @@ function retrofitStackMods(char: any, targetId: string): void {
   }
 }
 
-/** 同来源只留一条（重复施加 = 覆盖，不叠加） */
+/** 同来源只留一条（重复施加 = 覆盖，不叠加）。
+ *  ⚠️ 已知行为：同一状态定义的 `stack_mods` 里若对**同一目标状态**写了两条（如 −1 与 −2），
+ *  这里是**后者覆盖前者**（upsert 合并），不会叠加——加载期未对此告警（mod-validate 只校验
+ *  目标状态已定义与非零整数）。作者要"既 −1 又 −2"须写成一个 −3 或换两个来源状态。 */
 function upsertStackMod(target: StatusEntry, entry: StatusStackMod): void {
   if (!Array.isArray(target.stack_mods)) target.stack_mods = []
   const i = target.stack_mods.findIndex(m => m?.from === entry.from)
@@ -325,8 +340,27 @@ function pushAttributeMods(char: any, entry: StatusEntry, def: StatusEffectDef, 
       // 注释：到期时刻 = 状态到期时刻（永久状态 → undefined = 由移除显式撤销）
       expiresAt: entry.expiresAt,
       source: id,
-    }, runtimeStrength(def, entry, m, now))
+    }, modStrengthFor(char, id, def, entry, m, now))
   }
+}
+
+/** 状态属性修正的强度：**清单层不得降级**（D5）——状态层已经做过 D5 决策（打不动 → applyStatus
+ *  早退；顶上/加层/刷新才走到这里），故这里取 `max(当前有效层数, 已存条目强度)`：
+ *  只写"当前值"会踩到一个坑——层数被衰减掉一部分后再顶上时，新算出的强度可能**低于**已存条目
+ *  的强度 → `registerRuntimeMod` 按 D5 拒绝 → 保留**旧的 expiresAt**，而状态时长已经刷新 →
+ *  **buff 的属性效果比状态本身先过期**（例：5 层挂在 8:00、9:30 衰减到 3 层后打 4 层，强度 4 < 5）。 */
+function modStrengthFor(
+  char: any,
+  id: string,
+  def: StatusEffectDef,
+  entry: StatusEntry,
+  mod: any,
+  now: number,
+): number {
+  const current = runtimeStrength(def, entry, mod, now)
+  // readRuntimeMods 会顺手剪除过期条目（core 既有姿态），故拿到的一定是存活条目的强度
+  const stored = readRuntimeMods(char).find(m => m?.id === id && m?.attr === mod?.attr)?.strength
+  return typeof stored === 'number' && Number.isFinite(stored) ? Math.max(current, stored) : current
 }
 
 /** 运行时条目的强度（D5 顶替比较基准，随条目持久化）：
@@ -393,12 +427,33 @@ function removeEntryAt(char: any, idx: number, def: StatusEffectDef | undefined)
 // 条目归一化（旧档就地迁移 + 兼容视图装配）
 // ═══════════════════════════════════════════════════════════════════════
 
-/** 取条目并按需归一化（首触迁移）；无该状态返回 null */
+/** 取条目并按需归一化（首触迁移）；**已过期的条目一律视为不存在**（并顺手剪除）。
+ *
+ *  为什么把"过期"挡在查找之外（D3/D2 一致性）：
+ *  到期是**绝对时刻**判定的，而副作用（撤修正、on_remove_effects）落在 `game:hour_changed`——
+ *  于是"已过期但还没结算"的条目会在这个窗口里继续应答查找，造成两类问题：
+ *   ① `apply_status` 拿死条目当 existing 比层数 → 「打到 3」被死条目的 5 层判"打不动"而**静默无效**
+ *      （或带着陈旧的衰减锚点复活）；
+ *   ② `hasStatus`（判到期）/ 条件存在性（core 引擎直接扫 `char.status_effects` 数组）/
+ *      `getStack`（0）三者互相矛盾。
+ *  故这里对齐 core 对 `attr_mods` 的既有姿态（spec §6「读时跳过过期条目并顺手剪除——任何读取都
+ *  正确」）：读路径发现死条目就地走 `removeEntryAt`（撤属性修正 + 撤层数修正 + on_remove_effects）。
+ *  ⚠️ 残留窗口（已知、可接受）：条件引擎直接扫原始数组，若它是**过期后第一个**读取方，仍能看到
+ *  死条目（要彻底闭合得改 core 的条件引擎，不在本文件职责内）；任何一次 status-system 触碰之后
+ *  数组即干净，三者一致。 */
 function findEntry(char: any, statusId: string): StatusEntry | null {
   if (!Array.isArray(char?.status_effects)) return null
-  const raw = char.status_effects.find((s: any) => s?.id === statusId)
-  if (!raw) return null
-  return normalizeEntry(raw)
+  const mod = modLoader.getMod()
+  const now = getCurrentGameMinutes()
+  let found: StatusEntry | null = null
+  // 倒序遍历（剪除用 splice 不破坏未访问下标）
+  for (let i = char.status_effects.length - 1; i >= 0; i--) {
+    const entry = normalizeEntry(char.status_effects[i])
+    if (!entry) { char.status_effects.splice(i, 1); continue } // 注释：畸形条目（无 id）剪除
+    if (isExpired(entry, now)) { removeEntryAt(char, i, mod?.statusEffects[entry.id]); continue }
+    if (entry.id === statusId) found = entry
+  }
+  return found
 }
 
 /** 归一化（**幂等**；就地改条目，不换对象 → 不丢条目）：
@@ -425,6 +480,17 @@ function normalizeEntry(raw: any): StatusEntry | null {
     if (isLegacy || typeof entry.last_decay_at !== 'number') entry.last_decay_at = getCurrentGameMinutes()
     delete (entry as any).remaining_duration // 注释：旧字段退场（同名读取交给访问器）
     delete (entry as any).stack
+    // 注释：`expiresAt` 卫生（对齐 attribute-eval 对 attr_mods 的同款姿态）——非有限数字
+    // （字符串/NaN/Infinity，多为手改档或旧格式）会让 `isExpired` 恒 false = **静默变成永久状态**，
+    // 且 `remaining_duration` 视图给不出有意义的剩余时长。此处去重上报并**按不自动到期处理**
+    // （宁可不失效并留痕，也不静默失效——与 core 的取舍一致）。
+    if (entry.expiresAt !== undefined && !(typeof entry.expiresAt === 'number' && Number.isFinite(entry.expiresAt))) {
+      errorReporter.reportDedup(`status-expires:${entry.id}`, {
+        source: 'status-system', severity: 'error',
+        message: `状态 '${entry.id}' 的 expiresAt 不是有限数字（收到 ${typeof entry.expiresAt}）——该状态视为不自动到期`,
+        suggestion: 'expiresAt 必须是有限 number（绝对游戏分钟）；写成字符串/NaN 会让状态永不失效（与 attribute-eval 对 attr_mods 的同款诊断）',
+      })
+    }
     installViews(entry)
   }
   if (typeof entry.base_stack !== 'number' || !Number.isFinite(entry.base_stack)) entry.base_stack = 1
@@ -436,9 +502,18 @@ function normalizeEntry(raw: any): StatusEntry | null {
 
 /** 装配兼容视图（**非枚举访问器** → 不入 JSON/存档，真值唯一）：
  *  - `stack` = 有效层数（含层数修正与待衰减）——AGENTS §8 的 `character.{id}.status.{id}.stack`
- *    条件路径与 spec §9「层数条件看有效层数」靠它对齐；
+ *    条件路径与 spec §9「层数条件看有效层数」靠它对齐；setter 落回 `base_stack`（旧拼写的写入方
+ *    不会静默失效：写 `stack` = 写基础层数）；
  *  - `remaining_duration` = 剩余分钟数（永久 = -1）——`remaining` 条件别名、example-mod 等
- *    既有读取方靠它继续工作；旧代码"逐次扣减"的写法已删除，这里是**推导值**。 */
+ *    既有读取方靠它继续工作；旧代码"逐次扣减"的写法已删除，这里是**推导值**；setter 把分钟数
+ *    换算成绝对时刻写回 `expiresAt`。
+ *
+ *  「永不陈旧」的准确边界：**活对象上**不可能陈旧（每次读都从唯一真值现算，含待衰减投影）；
+ *  但视图是**非枚举访问器**，任何克隆（`JSON.parse(JSON.stringify(char))` / 结构化克隆）都不带
+ *  访问器 —— 克隆体上 `entry.stack` / `entry.remaining_duration` 为 `undefined`（
+ *  `engine-ui-bridge.ts:117` 把 player 克隆进 UI store、`character-system/index.ts:204` 同理）。
+ *  当前这些克隆只有读取真值字段的消费方，故 D6 的三处消费者仍成立；新增消费方请读真值字段
+ *  （`base_stack` / `expiresAt`），或先经 status-system 触碰（`game:load` 会重装视图）。 */
 function installViews(entry: StatusEntry): void {
   Object.defineProperty(entry, VIEW_MARK, { value: true, enumerable: false, configurable: true })
   Object.defineProperty(entry, 'stack', {
@@ -450,11 +525,16 @@ function installViews(entry: StatusEntry): void {
   Object.defineProperty(entry, 'remaining_duration', {
     enumerable: false,
     configurable: true,
-    get: () => (typeof entry.expiresAt === 'number' ? Math.max(0, entry.expiresAt - getCurrentGameMinutes()) : -1),
+    get: () => remainingMinutes(entry, getCurrentGameMinutes()),
     set: (v: number) => {
       entry.expiresAt = (v === -1 || v === undefined) ? undefined : getCurrentGameMinutes() + v
     },
   })
+}
+
+/** 剩余分钟数（永久状态 = -1）——`getRemaining` API 与 `remaining_duration` 视图**共用这一份公式** */
+function remainingMinutes(entry: StatusEntry, now: number): number {
+  return typeof entry.expiresAt === 'number' ? Math.max(0, entry.expiresAt - now) : -1
 }
 
 function isExpired(entry: StatusEntry, now: number): boolean {

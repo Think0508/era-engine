@@ -271,6 +271,125 @@ describe('status-system —— expiresAt + 层数三层模型 + 属性修正生�
     expect(errorReporter.getErrors().some(e => e.severity === 'warning' && e.message.includes('no_such_status'))).toBe(true)
   })
 
+  // ── 审查修复（2026-09-22）：待衰减对账 + 死条目不应答查找 ──────────────────
+  it('「打到 N」先把待衰减落账：顶上后有效层数 == N，且下次结算不会把刚施加的状态删掉', async () => {
+    applyStatus('player', '修正测试层数', { stack: 1 })        // 8:00 → base 1、锚点 8:00
+    setTime(9, 30)                                             // 已过 60 分钟（待衰减 1，尚未结算）
+    expect(effectiveStack('player', '修正测试层数')).toBe(0)    // 投影：1 − 1
+
+    applyStatus('player', '修正测试层数', { stack: 1 })         // 打到 1（1 > 0 → 顶上）
+    // 修前：直接写 base_stack = 1 而不管待衰减、锚点仍是 8:00 → 有效层数 0，
+    //       下一次结算按陈旧锚点扣到 0 → 刚施加的状态被自己删掉
+    expect(entryOf('player', '修正测试层数').base_stack).toBe(1)
+    expect(entryOf('player', '修正测试层数').last_decay_at).toBe(nowMin())  // 锚点重置到"现在"
+    expect(effectiveStack('player', '修正测试层数')).toBe(1)     // 有效层数 == 目标层数
+
+    setTime(10)                                                // 结算（hour_changed）
+    await eventBus.emit('game:hour_changed', { hour: 10, minute: 0 })
+    expect(entryOf('player', '修正测试层数')).toBeDefined()      // 状态仍在（没被自己删掉）
+    expect(effectiveStack('player', '修正测试层数')).toBe(1)
+  })
+
+  it('顶上的属性修正到期时刻跟随状态（强度不降级：衰减后再顶上不会让 buff 先过期）', () => {
+    const mod = modLoader.getMod()!
+    // 同时有层数概念（会衰减）与属性修正的状态——衰减会让"新算出的强度"低于已存条目强度
+    mod.statusEffects['probe_decay_attr'] = {
+      id: 'probe_decay_attr', name: 'probe', description: '', category: 'buff',
+      duration: 600, tick_interval: 0, stackable: false, max_stack: 10,
+      stack_decay: { every: 60, amount: 1 },
+      attribute_mods: [{ attr: '修正测试值', flat: 5 }],
+    }
+    try {
+      applyStatus('player', 'probe_decay_attr', { stack: 5 })   // 8:00 → 强度 5、到期 1080
+      const p = player()
+      const modId = 'status:probe_decay_attr'
+      expect(p.attr_mods.find((m: any) => m.id === modId)?.strength).toBe(5)
+      expect(getEntityAttr(p, '修正测试值')).toBe(105)
+
+      setTime(10, 30)                                            // 待衰减 2 → 有效 3
+      applyStatus('player', 'probe_decay_attr', { stack: 4 })    // 4 > 3 → 顶上（新强度 4 < 已存 5）
+      const entry = entryOf('player', 'probe_decay_attr')
+      expect(entry.expiresAt).toBe(nowMin() + 600)               // 状态时长刷新到 1170
+      // 修前：强度 4 < 已存 5 → registerRuntimeMod 按 D5 拒绝 → 属性修正保留旧到期时刻 1080
+      //       = buff 的属性效果比状态本身先过期 90 分钟
+      expect(p.attr_mods.find((m: any) => m.id === modId)?.expiresAt).toBe(entry.expiresAt)
+      expect(p.attr_mods.find((m: any) => m.id === modId)?.strength).toBe(5) // 强度不降级（D5）
+    } finally {
+      delete mod.statusEffects['probe_decay_attr']
+    }
+  })
+
+  it('已过期未落账的条目不应答查找：三处答案一致，且不让新的较低层数施加静默无效', async () => {
+    const mod = modLoader.getMod()!
+    // 无衰减的状态：死后层数不会被投影抹平，最能暴露"死条目挡住新施加"
+    mod.statusEffects['probe_plain_stack'] = {
+      id: 'probe_plain_stack', name: 'probe', description: '', category: 'debuff',
+      duration: 60, tick_interval: 0, stackable: false, max_stack: 10,
+    }
+    try {
+      applyStatus('player', 'probe_plain_stack', { stack: 5 })   // 8:00 → 到期 9:00
+      setTime(9, 30)                                             // 越过到期时刻；**不发** hour_changed（这就是窗口）
+      const { conditionEngine } = await import('../../core/condition-engine')
+      const ctx = { ...gameContext.getContext(), selectedCharacterId: 'player' }
+
+      // ① 死条目不得让新的较低层数施加静默无效
+      applyStatus('player', 'probe_plain_stack', { stack: 2 })
+      // 修前：死条目（5 层）被当成 existing → 2 > 5 不成立 → 静默 no-op，状态仍是死的 5 层
+      expect(entryOf('player', 'probe_plain_stack').base_stack).toBe(2)
+      expect(entryOf('player', 'probe_plain_stack').expiresAt).toBe(nowMin() + 60) // 全新条目（不是死条目的 9:00）
+      expect(player().status_effects.filter((s: any) => s.id === 'probe_plain_stack')).toHaveLength(1) // 死条目已被剪除
+      // ② 同一时刻三处答案一致（活着）
+      expect(await apiSystem.call('status', 'hasStatus', 'player', 'probe_plain_stack')).toBe(true)
+      expect(await apiSystem.call('status', 'getStack', 'player', 'probe_plain_stack')).toBe(2)
+      expect(conditionEngine.evaluate('selected.status.probe_plain_stack == true', ctx)).toBe(true)
+
+      // ③ 再让它过期（同样不发结算）：第一次触碰即剪除死条目 → 三处一致地"没有这个状态"
+      setTime(12)                                                // 越过新条目的 10:30
+      expect(await apiSystem.call('status', 'getStack', 'player', 'probe_plain_stack')).toBe(0)
+      expect(await apiSystem.call('status', 'hasStatus', 'player', 'probe_plain_stack')).toBe(false)
+      expect(player().status_effects.some((s: any) => s.id === 'probe_plain_stack')).toBe(false) // 原始数组也干净
+      expect(conditionEngine.evaluate('selected.status.probe_plain_stack == true', ctx)).toBe(false)
+    } finally {
+      delete mod.statusEffects['probe_plain_stack']
+    }
+  })
+
+  it('expiresAt 卫生：非有限数字 → 去重上报 error，并按"不自动到期"处理（不静默变永久、视图不返 NaN）', () => {
+    const p = player()
+    // 手改档/旧格式：expiresAt 写成了字符串
+    p.status_effects = [{
+      id: '醉意', base_stack: 2, expiresAt: 'abc',
+      stack_mods: [], last_decay_at: 0, last_tick_game_time: 0,
+    }]
+    expect(effectiveStack('player', '醉意')).toBe(2)             // 触碰 → 归一化 + 上报
+    const errs = errorReporter.getErrors().filter(e => e.source === 'status-system' && e.message.includes('expiresAt'))
+    expect(errs).toHaveLength(1)
+    expect(errs[0].severity).toBe('error')
+    expect(errs[0].message.includes('醉意')).toBe(true)
+    expect(entryOf('player', '醉意').remaining_duration).toBe(-1) // 视图给 -1（不是 NaN）
+    setTime(23)                                                  // 跳很远也不失效——但**有 error 留痕**，不是静默
+    expect(effectiveStack('player', '醉意')).toBe(2)
+  })
+
+  it('兼容视图的 setter 落回唯一真值：写 stack → base_stack；写 remaining_duration → expiresAt', () => {
+    applyStatus('player', '修正测试层数', { stack: 3 })
+    applyStatus('player', '修正测试护体')
+    const e = entryOf('player', '修正测试层数')
+    expect(e.stack).toBe(2)                                      // 读：有效层数（含护体 −1）
+    e.stack = 6                                                  // 写：旧拼写的写入方不静默失效
+    expect(e.base_stack).toBe(6)
+    expect(effectiveStack('player', '修正测试层数')).toBe(5)     // 6 − 1
+
+    const prot = entryOf('player', '修正测试护体')
+    expect(prot.remaining_duration).toBe(120)                    // 读：剩余分钟（由 expiresAt 推导）
+    prot.remaining_duration = 30                                 // 写：分钟数换算成绝对时刻
+    const absolute = nowMin() + 30                               // 8:00 + 30 分钟
+    expect(prot.expiresAt).toBe(absolute)
+    setTime(9)
+    expect(entryOf('player', '修正测试护体').remaining_duration).toBe(0)  // 推导值随时间走
+    expect(entryOf('player', '修正测试护体').expiresAt).toBe(absolute)    // 真值不动
+  })
+
   // ── 条件路径的既有消费者（字段改名的静默回归防线）──────────────────────────
   it('条件路径兼容：状态存在性 / 条目形状检查 / .stack（有效层数）/ .remaining（剩余分钟）', async () => {
     const mod = modLoader.getMod()!

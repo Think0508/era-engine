@@ -149,52 +149,59 @@ export function readEffective(entity: any, name: string, raw: any): any {
   const def = definitions[name]
   if (!def) return raw
   const hasCompute = typeof def.compute === 'string' && def.compute.length > 0
-  // 声明式来源每次进管线**现算一次**：闸门与叠加共用同一份清单（不在两处各聚合一次）
-  const decl = collectDeclarativeMods(entity)
-  const hasDecl = decl.some(m => m.attr === name)
-  if (!hasCompute && !hasMods(entity, name) && !hasDecl) return raw
+  // 深度护栏（本模块**唯一**一份，措辞与 compute 自引用同款）必须**先于聚合**判定，且聚合要在它
+  //   自增的这一帧内完成。原因：声明式来源可以读属性（"从角色当前状态派生修正"最自然的写法 ——
+  //   装备看 state、被动技能看等级），那会重入本函数；若聚合发生在 depth 自增之前，重入链上
+  //   depth 恒等于**进入值**（既不增长也不回退）→ 递归只受栈深限制，最终以 RangeError 被来源
+  //   循环的 try/catch 吞成 'attr-decl-source' 上报（有界性的假象，且断链处不可归因）。
+  //   放在护栏内之后：重入链每层 +1，到 MAX_DEPTH 由同一份护栏干净断链 + 同一套去重上报。
   if (depth >= MAX_DEPTH) {
     errorReporter.reportDedup(`attr-eval-depth:${name}`, {
       source: 'attribute-eval', severity: 'error',
       message: `属性 '${name}' 求值递归超过深度上限（${MAX_DEPTH}）——已断链并返回裸值`,
-      suggestion: `检查属性 '${name}' 的 compute 依赖是否构成循环（如 '${name}' 的派生公式里读取了 '${name}' 自身）`,
+      suggestion: `检查属性 '${name}' 的 compute 依赖是否构成循环（如 '${name}' 的派生公式里读取了 '${name}' 自身），或声明式来源是否无条件地重读了 '${name}'`,
     })
     return raw
   }
 
-  const st = stateOf(entity)
-  // 声明式来源**没有任何变更通知**（改 equipment/abilities/talents 不走 registerModifier、
-  //   也不保证走 setEntityAttr）→ 它不能进 (raw → v) 缓存：缓存键只比对裸值与版本戳，
-  //   同裸值 + 同版本下声明式修正可能已经变了（换装备/升级/掉级/失去天赋），命中的就是陈旧值。
-  //   故只要实体带**任何**声明式修正，本次读取既不读缓存也不写缓存（一律现算）。
-  //   判据用整份清单而非仅本属性：compute 派生会读别的属性（attrs.get），别的属性上的声明式
-  //   变化同样会让本属性的缓存失真，只看本属性会漏掉这条传递路径。
-  //   反向仍然安全：缓存条目只在 decl 为空时写入，而 decl 为空时值与 (裸值, 版本) 一一对应。
-  const cacheable = decl.length === 0
-  if (cacheable) {
-    if (st.cachedAtVersion !== st.version || st.cachedAtGlobal !== globalVersion) {
-      st.cache.clear()
-      st.cachedAtVersion = st.version
-      st.cachedAtGlobal = globalVersion
-    }
-    // 缓存键必须同时比对 raw：生产写路径大量直接改 entity.base[...]（effect-system、h-group-sex、
-    //   h-ejaculation、hunger-system 等），绕过 setEntityAttr 也就绕过了 notifyAttrWrite 的版本号自增，
-    //   故版本戳单独不可信 —— 同一 (实体, 属性) 在版本不变的情况下裸值可能已变。
-    //   用 Object.is 而非 ===，使缓存里的 NaN 仍能命中（NaN !== NaN 会永远击穿缓存）。
-    const hit = st.cache.get(name)
-    if (hit && Object.is(hit.raw, raw)) return hit.v
-  }
-
   depth++
-  let v: number = raw
   try {
+    // 声明式来源每次进管线**现算一次**：闸门与叠加共用同一份清单（不在两处各聚合一次）
+    const decl = collectDeclarativeMods(entity)
+    const hasDecl = decl.some(m => m.attr === name)
+    if (!hasCompute && !hasMods(entity, name) && !hasDecl) return raw
+
+    const st = stateOf(entity)
+    // 声明式来源**没有任何变更通知**（改 equipment/abilities/talents 不走 registerModifier、
+    //   也不保证走 setEntityAttr）→ 它不能进 (raw → v) 缓存：缓存键只比对裸值与版本戳，
+    //   同裸值 + 同版本下声明式修正可能已经变了（换装备/升级/掉级/失去天赋），命中的就是陈旧值。
+    //   故只要实体带**任何**声明式修正，本次读取既不读缓存也不写缓存（一律现算）。
+    //   判据用整份清单而非仅本属性：compute 派生会读别的属性（attrs.get），别的属性上的声明式
+    //   变化同样会让本属性的缓存失真，只看本属性会漏掉这条传递路径。
+    //   反向仍然安全：缓存条目只在 decl 为空时写入，而 decl 为空时值与 (裸值, 版本) 一一对应。
+    const cacheable = decl.length === 0
+    if (cacheable) {
+      if (st.cachedAtVersion !== st.version || st.cachedAtGlobal !== globalVersion) {
+        st.cache.clear()
+        st.cachedAtVersion = st.version
+        st.cachedAtGlobal = globalVersion
+      }
+      // 缓存键必须同时比对 raw：生产写路径大量直接改 entity.base[...]（effect-system、h-group-sex、
+      //   h-ejaculation、hunger-system 等），绕过 setEntityAttr 也就绕过了 notifyAttrWrite 的版本号自增，
+      //   故版本戳单独不可信 —— 同一 (实体, 属性) 在版本不变的情况下裸值可能已变。
+      //   用 Object.is 而非 ===，使缓存里的 NaN 仍能命中（NaN !== NaN 会永远击穿缓存）。
+      const hit = st.cache.get(name)
+      if (hit && Object.is(hit.raw, raw)) return hit.v
+    }
+
+    let v: number = raw
     v = applyCompute(entity, name, v)
     v = applyMods(entity, name, v, decl)
+    if (cacheable) st.cache.set(name, { raw, v })
+    return v
   } finally {
     depth--
   }
-  if (cacheable) st.cache.set(name, { raw, v })
-  return v
 }
 
 /** 编译缓存：同一段脚本文本只编译一次（mod 热重载换文本即重新编译） */

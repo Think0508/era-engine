@@ -147,10 +147,15 @@ level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 1
     - `char.equipment_off`（H 中自动脱下的部位）**不算穿着** → 不提供修正；穿回后自动恢复
       （现算，没有"补挂"这一步，所以不会漂移）。
     - `per_level` 只对**有等级**的来源（被动技能/天赋）有意义，且是**线性追加**：
-      `flat(级 n) = flat + per_level×(n−1)`（**1 级就是 `flat` 本身**）；`percent` 同理；`set` **不随等级缩放**；
+      `flat(级 n) = flat + per_level×(n−1)`（**1 级就是 `flat` 本身**）；`percent` 同样线性追加，
+      且**单位与被缩放的字段本身一致 = 小数**：`percent(级 n) = percent + per_level×(n−1)`，
+      `{ percent = 0.1, per_level = 0.05 }` 在 3 级 = `0.2` → `×1.2`（不是"百分点"那种读法）；
+      `set` **不随等级缩放**（`{ set = 50, per_level = 5 }` 在 3 级仍是 50，不是 60）；
       只缩放**显式给过**的字段（没给 `percent` 不会因为 `per_level` 凭空产生 `percent`）。
     - 属性必须先在 `attributes.toml` **定义**（闸门以定义为前提），`attribute_mods` 指向**未定义属性** → **加载期报错**
       （`npm run validate` 即可查出；校验在 `src/core/mod-validate.ts` 的 `validateAttributeMods`）。
+      ⚠️ 该校验只看**名字写对**的 `attribute_mods` 数组内的条目；字段名本身拼错（写成 `attribute_mod = [...]`）
+      **不在**校验范围内 —— 它压根不是 `attribute_mods`，会被静默忽略（修正不生效，也不报错）。
   - **今天仍未接线（计划三）**：战斗效果里挂属性修正的动作（`combat-base` 的 `modify_attribute` 落点 ——
     与 effect-system 已有的同名「一次性加减值」效果不是一回事）、脚本/API 直挂的带时长与条件修正、
     跨天限时状态（`attribute_mods` + `duration`，随存档序列化、到期回落）、内功装配（`equipped_mods`）。

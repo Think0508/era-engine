@@ -6,6 +6,7 @@ import {
   configureAttributeEval, readEffective, notifyAttrWrite, bumpDataVersion, __resetAttributeEval,
   registerModifier, removeModifier, clearModifiers, listModifiers,
   registerDeclarativeSource,
+  readAttrForCompute,
 } from './attribute-eval'
 
 describe('attribute-eval：闸门（零回归保证）', () => {
@@ -296,6 +297,9 @@ describe('attribute-eval：声明式来源（装备/被动技能/天赋）', () 
     abilities: {
       龟息功: { attribute_mods: [{ attr: '力道', flat: 10, per_level: 2 }] },
       无等级被动: { attribute_mods: [{ attr: '根骨', flat: 3 }] },
+      // 等级缩放的 percent / set（终审 Fix 2 的钉子：percent 与 flat 同单位 = 小数；set 不缩放）
+      内力运转: { attribute_mods: [{ attr: '力道', percent: 0.1, per_level: 0.05 }] },
+      定力诀: { attribute_mods: [{ attr: '力道', set: 50, per_level: 5 }] },
     },
     talentDefs: { 神目: { attribute_mods: [{ attr: '根骨', flat: 1, per_level: 1 }] } },
   }
@@ -357,6 +361,24 @@ describe('attribute-eval：声明式来源（装备/被动技能/天赋）', () 
     expect(readEffective(c, '力道', 100)).toBe(150)
   })
 
+  it('等级缩放的 percent：与 flat 同单位（**小数**，不是百分点）——3 级 0.1 + 0.05×(3−1) = 0.2 → ×1.2', () => {
+    // 契约里最容易误读的一处：per_level 加到 percent 上时，单位跟的是 percent 字段本身（小数，0.05 = 5%），
+    // 不是"百分点"。判据 120 vs 100.1：若被当成百分点（0.05 → +0.0005）会得 100.1。
+    const c = { id: 'lv1', abilities: { 内力运转: { level: 3, xp: 0 } } }
+    expect(readEffective(c, '力道', 100)).toBe(120)                 // 100 × (1 + 0.2)
+    // 2 级：0.1 + 0.05×(2−1) = 0.15 → 100 × 1.15（浮点表示不精确，按精度断言）
+    const c2 = { id: 'lv2', abilities: { 内力运转: { level: 2, xp: 0 } } }
+    expect(readEffective(c2, '力道', 100)).toBeCloseTo(115, 10)
+  })
+
+  it('等级缩放的 set：`set` 不随等级缩放，`per_level` 也不会凭空产生 flat/percent', () => {
+    // 两个错误读法都会得 60：① set 被当可缩放字段（50 + 5×2）② per_level 在没写 flat 时凭空造出 flat=10。
+    const c = { id: 'sv1', abilities: { 定力诀: { level: 3, xp: 0 } } }
+    expect(readEffective(c, '力道', 100)).toBe(50)
+    const c2 = { id: 'sv2', abilities: { 定力诀: { level: 1, xp: 0 } } }
+    expect(readEffective(c2, '力道', 100)).toBe(50)
+  })
+
   it('【无漂移】脱下装备后立即不再加（无需任何通知）', () => {
     const c: any = { id: 'd1', equipment: { wrist: '玄铁护腕' } }
     expect(readEffective(c, '力道', 100)).toBe(105)
@@ -382,6 +404,34 @@ describe('attribute-eval：声明式来源（装备/被动技能/天赋）', () 
     registerDeclarativeSource(() => [{ attr: '力道', set: 50 }])
     registerDeclarativeSource(() => [{ attr: '力道', set: 70 }])
     expect(readEffective(c, '力道', 100)).toBe(70)   // 后注册者胜
+  })
+
+  it('【有界】追加来源读取属性（重入管线）→ 既有深度护栏干净断链并上报一次，不靠栈耗尽收场', () => {
+    // 来源函数读属性（"从角色当前状态派生修正"最自然的写法）会重入 readEffective。
+    // 若聚合发生在 depth 自增之前，重入链上 depth 恒等于进入值 → 递归只受栈深限制，
+    // 最终以 RangeError 被来源循环的 try/catch 吞成 'attr-decl-source' 上报（有界性假象）。
+    // 本用例钉三点：① 调用次数有界（护栏值 64 量级，而非栈深的千级）② 走的是既有深度上报
+    // ③ 不是"来源抛错"姿态。断言只依赖 MAX_DEPTH 语义，不依赖具体断链层数。
+    errorReporter.clear()
+    let calls = 0
+    configureAttributeEval({
+      definitions: { 力道: {}, 根骨: {} },
+      defs: DEFS,
+      rawReader: (ent: any, n: string) => ent.base?.[n] ?? 0,
+    })
+    registerDeclarativeSource((ent) => {
+      calls++
+      readAttrForCompute(ent, '根骨')                // 读属性 → 重入本管线
+      return [{ attr: '力道', flat: 1 }]
+    })
+    const c = { id: 'r1', base: { 根骨: 7 } }
+    const v = readEffective(c, '力道', 100)
+    expect(v).toBe(101)                              // 闸门内的加法照旧（断链处回退裸值，不改变外层结果）
+    expect(calls).toBeGreaterThan(0)
+    expect(calls).toBeLessThan(200)                  // 有界：护栏断链（64 量级），不是栈耗尽（千级）
+    const errs = errorReporter.getErrors()
+    expect(errs.some(x => x.message.includes('深度上限'))).toBe(true)
+    expect(errs.some(x => x.message.includes('声明式来源函数抛错'))).toBe(false)
   })
 
   it('未知装备 ID / 未声明 attribute_mods 的定义 / 缺状态字段 → 静默跳过，不崩', () => {

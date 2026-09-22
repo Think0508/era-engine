@@ -605,6 +605,15 @@ export function validateAttributeMods(mod: LoadedMod): void {
           suggestion: 'per_level 只能用在被动技能/天赋这类有等级的定义上',
         })
       }
+      // per_level 的类型：非有限数字 = 运行期被 scaleByLevel 当"无缩放"静默吞掉
+      // （最可能是 TOML 里写成了字符串 "2"）—— 与本校验器要消灭的 flats/静默失效同一类
+      if (m?.per_level !== undefined && (typeof m.per_level !== 'number' || !Number.isFinite(m.per_level))) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 的 attribute_mods['${attr}'] 的 per_level 不是有限数字（收到 ${typeof m.per_level}）`,
+          suggestion: 'per_level 必须是数字（最可能是 TOML 里写成了字符串 "2"）；非数字不会参与等级缩放，运行时按无缩放静默处理',
+        })
+      }
     }
   }
   for (const [id, def] of Object.entries(mod.items ?? {})) {

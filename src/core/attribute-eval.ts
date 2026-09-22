@@ -329,23 +329,24 @@ function applyMods(entity: object, name: string, v: number, decl: AttributeModSo
   let flat = 0
   let percent = 0
   let hit = false
-  // ① 声明式来源（顺序：装备→技能→天赋→插件追加；push 栈在其后 —— 后写的 set 胜出）
-  for (const m of decl) {
-    if (m.attr !== name) continue
+  // 叠加累积体（**全场唯一一份**）：声明式与 push 栈共用，杜绝"两处各写一遍、改单侧就静默分叉"。
+  // 两条来源的形状不同（AttributeModSource 带 attr/per_level；push 条目是 ModifierEntry.attr + .mod），
+  // 故 attr 判定留在各自循环里，只有累积数学进闭包。
+  const acc = (m: AttributeMod): void => {
     hit = true
     if (typeof m.set === 'number' && Number.isFinite(m.set)) set = m.set
     if (typeof m.flat === 'number' && Number.isFinite(m.flat)) flat += m.flat
     if (typeof m.percent === 'number' && Number.isFinite(m.percent)) percent += m.percent
   }
+  // ① 声明式来源（顺序：装备→技能→天赋→插件追加；push 栈在其后 —— 后写的 set 胜出）
+  for (const m of decl) {
+    if (m.attr === name) acc(m)
+  }
   // ② push 栈（既有逻辑，原样保留）
   const st = states.get(entity)
   if (st) {
-    for (const m of st.mods) {
-      if (m.attr !== name) continue
-      hit = true
-      if (typeof m.mod.set === 'number' && Number.isFinite(m.mod.set)) set = m.mod.set
-      if (typeof m.mod.flat === 'number' && Number.isFinite(m.mod.flat)) flat += m.mod.flat
-      if (typeof m.mod.percent === 'number' && Number.isFinite(m.mod.percent)) percent += m.mod.percent
+    for (const e of st.mods) {
+      if (e.attr === name) acc(e.mod)
     }
   }
   if (!hit) return v

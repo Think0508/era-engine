@@ -449,11 +449,61 @@ describe('mod-loader integration', () => {
           'attribute_mods = [ { attr = "修正测试值", flat = 1, per_level = 2 } ]',
         ].join('\n'),
       }))
-      const perLevelErrs = modErrors().filter(e => e.message.includes('per_level'))
+      // Fix 3：只筛本用例自己种下的那两个定义 —— 不筛的话断言会耦合到整个夹具清单的
+      // per_level 用量（将来任何物品夹具一用 per_level 就红，而规则本身没坏）
+      const perLevelErrs = modErrors().filter(e =>
+        e.message.includes('per_level')
+        && (e.message.includes('坏等级护腕') || e.message.includes('合法等级棍法')))
       expect(perLevelErrs.some(e => e.message.includes('坏等级护腕'))).toBe(true)
-      // 正对照：能力（有等级）用 per_level 不报 → 只有装备那一条
+      // 正对照：能力（有等级）用 per_level 不报 → 本用例种下的两条定义里只有装备那一条
       expect(perLevelErrs).toHaveLength(1)
       expect(perLevelErrs.some(e => e.message.includes('合法等级棍法'))).toBe(false)
+    })
+
+    // 注释：per_level 类型校验（Fix wave 2026-09-22）——`per_level = "2"`（TOML 字符串）原先
+    // 过了加载期、运行期被 scaleByLevel 当"无缩放"静默吞掉（无声失效，正是本校验器存在的理由）
+    it('per_level 是字符串（TOML 写成 "2"）→ error（原先静默不缩放）', () => {
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/abilities/bad-per-level-type.toml': [
+          '[abilities]',
+          '[abilities."字符串等级棍法"]',
+          'name = "字符串等级棍法"',
+          'type = "passive"',
+          'max_level = 5',
+          'tags = ["combat_passive"]',
+          'attribute_mods = [ { attr = "修正测试值", flat = 1, per_level = "2" } ]',
+        ].join('\n'),
+      }))
+      const errs = modErrors().filter(e => e.message.includes('字符串等级棍法'))
+      expect(errs.some(e => e.message.includes('per_level') && e.message.includes('不是有限数字'))).toBe(true)
+      // 报错须点名 owner + 属性 id，并给出「per_level 必须是数字（TOML 字符串最可能）」的建议
+      expect(errs.some(e => e.message.includes('修正测试值') && e.suggestion?.includes('per_level'))).toBe(true)
+    })
+
+    // 正对照：数字 per_level（含非整数）在能力/天赋上都不得报 —— 校验只拦非数字
+    it('per_level 是数字（能力 + 天赋，含小数）→ 不报', () => {
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/abilities/ok-per-level-type.toml': [
+          '[abilities]',
+          '[abilities."数值等级棍法"]',
+          'name = "数值等级棍法"',
+          'type = "passive"',
+          'max_level = 5',
+          'tags = ["combat_passive"]',
+          'attribute_mods = [ { attr = "修正测试值", flat = 1, per_level = 2.5 } ]',
+        ].join('\n'),
+        '/mods/test-mod/definitions/per-level-type-check/talents.toml': [
+          '[talents]',
+          '[talents."数值等级天赋"]',
+          'name = "数值等级天赋"',
+          'description = "per_level 类型校验正对照（数字 → 不报）"',
+          'max = 5',
+          'attribute_mods = [ { attr = "修正测试值", flat = 2, per_level = 3 } ]',
+        ].join('\n'),
+      }))
+      const errs = modErrors().filter(e =>
+        e.message.includes('数值等级棍法') || e.message.includes('数值等级天赋'))
+      expect(errs).toEqual([])
     })
   })
 

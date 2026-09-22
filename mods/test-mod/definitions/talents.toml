@@ -41,3 +41,12 @@ max = 1
 name = "广域时停"
 description = "时停门槛（广域）——测试/dev 用"
 max = 1
+
+# 属性有效值层 计划二夹具：声明式来源（天赋 → attribute_mods，per_level 按天赋等级缩放）
+# 新增而非改既有天赋：既有条目被 roster.toml/npc.toml 与其他测试引用。
+# 无生产消费方读取它（测试用：src/core/mod-loader.test.ts）。
+[talents."修正测试天赋"]
+name = "修正测试天赋"
+description = "属性修正夹具（1 级 +20，每多 1 级再 +5）"
+max = 5
+attribute_mods = [ { attr = "修正测试值", flat = 20, per_level = 5 } ]

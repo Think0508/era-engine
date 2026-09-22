@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { parseModData, ModLoader, modLoader, revalidateItemUses, type LoadedMod } from './mod-loader'
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
-import { getEntityAttr, setEntityAttr } from './entity-utils'
+import { getEntityAttr, setEntityAttr, readRawAttr } from './entity-utils'
 import { conditionRegistry } from './condition-registry'
 import { errorReporter } from './error-reporter'
 import { checkUpgrade } from '../plugins/ability-progression/index'
@@ -323,6 +323,138 @@ describe('mod-loader integration', () => {
     // 写**依赖**属性（派生属性自己的裸值仍为 0）：只有 setEntityAttr 的版本自增能让缓存失效。
     setEntityAttr(player, '根骨', 60)
     expect(getEntityAttr(player, '派生测试值')).toBe(600)
+  })
+
+  // ── 属性有效值层 × 声明式来源（计划二）：装备/被动技能/天赋的 attribute_mods ─────────
+  // 夹具 = test-mod 的属性「修正测试值」(default 100) + 物品「测试护腕」(flat 5)
+  // + 能力「修正测试棍法」(flat 10 / per_level 2) + 天赋「修正测试天赋」(flat 20 / per_level 5)。
+  // 单测 collectDeclarativeMods 覆盖不到「loadMod 是否把 mod 定义快照注入 core」这条缝。
+  describe('属性修正声明 attribute_mods（声明式来源 E2E）', () => {
+    it('装备/被动技能/天赋经真实 loadMod 生效（含 per_level 等级缩放与撤销后无漂移）', async () => {
+      errorReporter.clear()   // ⑤ 断言全局上报表 → 不依赖本文件其他用例的残留
+      const loader = new ModLoader()
+      await loader.loadMod('test-mod')
+      const p = entitySystem.get('character', 'player') as any
+      // 闸门：属性已定义但无任何修正来源 → 裸值
+      expect(readRawAttr(p, '修正测试值')).toBe(100)
+      expect(getEntityAttr(p, '修正测试值')).toBe(100)
+
+      // ① 装备（accessory = equipment.toml 的真实槽位）
+      p.equipment.accessory = '测试护腕'
+      expect(getEntityAttr(p, '修正测试值')).toBe(105)          // 100 + 5
+
+      // ② 被动技能：1 级 = flat 本身（玩家本来没有这个技能 → setEntityAttr 落不到 abilities，直接写状态）
+      p.abilities.修正测试棍法 = { level: 1, xp: 0 }
+      expect(getEntityAttr(p, '修正测试值')).toBe(115)          // 100 + 5 + 10
+      // 3 级 = flat + per_level×(3−1) = 14 → 只有等级真的流进管线才可能得到 119（等级被忽略则仍是 115）
+      p.abilities.修正测试棍法.level = 3
+      expect(getEntityAttr(p, '修正测试值')).toBe(119)          // 100 + 5 + 14
+
+      // ③ 天赋（1 级 = flat；2 级 = flat + per_level×(2−1)）
+      p.talents.修正测试天赋 = 1
+      expect(getEntityAttr(p, '修正测试值')).toBe(139)          // 100 + 5 + 14 + 20
+      p.talents.修正测试天赋 = 2
+      expect(getEntityAttr(p, '修正测试值')).toBe(144)          // 100 + 5 + 14 + 25
+
+      // ④ 撤销：脱下装备 + 技能掉 0 级 + 失去天赋 → 立即回裸值（推导式，无通知、无注销路径）
+      delete p.equipment.accessory
+      p.abilities.修正测试棍法.level = 0
+      delete p.talents.修正测试天赋
+      expect(getEntityAttr(p, '修正测试值')).toBe(100)
+      // 再写一次裸值（版本自增 → 缓存必须失效）仍为 100：证明不是"命中撤销前的旧缓存"
+      setEntityAttr(p, '修正测试值', 100)
+      expect(getEntityAttr(p, '修正测试值')).toBe(100)
+
+      // ⑤ 合法声明（含能力/天赋的 per_level）不得被加载期校验误报
+      expect(errorReporter.getErrors().filter(e => e.message.includes('attribute_mods'))).toEqual([])
+    })
+  })
+
+  // ── attribute_mods 加载期校验（作者写错的四类声明）──────────────────────────
+  // 用 makeMap 注入合成 TOML（同「item 校验」「quest 加载期校验」惯例）：坏数据不进真实文件，
+  // 否则每次 loadMod 都报错并污染全量测试。走 parseModData = loadMod 的同一加载期校验入口。
+  describe('attribute_mods 加载期校验', () => {
+    beforeEach(() => {
+      errorReporter.clear()
+    })
+
+    const modErrors = () => errorReporter.getErrors()
+      .filter(e => e.severity === 'error' && e.source === 'mod-loader')
+
+    it('attribute_mods 不是数组 → error', () => {
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/abilities/bad-mods.toml': [
+          '[abilities]',
+          '[abilities."坏声明棍法"]',
+          'name = "坏声明棍法"',
+          'type = "passive"',
+          'max_level = 5',
+          'tags = ["combat_passive"]',
+          'attribute_mods = "不是数组"',
+        ].join('\n'),
+      }))
+      expect(modErrors().some(e => e.message.includes('坏声明棍法') && e.message.includes('attribute_mods 必须是数组'))).toBe(true)
+    })
+
+    it('attribute_mods 引用未定义属性 → error（属性有效值层的闸门以定义为前提）', () => {
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/items/bad-mod-attr.toml': [
+          '[items]',
+          '[items."坏护腕"]',
+          'id = "坏护腕"',
+          'name = "坏护腕"',
+          'type = "clothing"',
+          'stackable = false',
+          'use = "equip"',
+          'attribute_mods = [ { attr = "不存在的属性", flat = 1 } ]',
+        ].join('\n'),
+      }))
+      expect(modErrors().some(e => e.message.includes('坏护腕') && e.message.includes('不存在的属性'))).toBe(true)
+    })
+
+    it('attribute_mods 没给 flat/percent/set → error（字段名拼错 = 静默失效）', () => {
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/abilities/empty-mods.toml': [
+          '[abilities]',
+          '[abilities."空修正棍法"]',
+          'name = "空修正棍法"',
+          'type = "passive"',
+          'max_level = 5',
+          'tags = ["combat_passive"]',
+          'attribute_mods = [ { attr = "修正测试值" } ]',
+        ].join('\n'),
+      }))
+      expect(modErrors().some(e => e.message.includes('空修正棍法') && e.message.includes('至少要给 flat/percent/set 之一'))).toBe(true)
+    })
+
+    it('装备用 per_level → error；能力用 per_level → 合法（有等级概念，只拦装备那条）', () => {
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/items/bad-per-level.toml': [
+          '[items]',
+          '[items."坏等级护腕"]',
+          'id = "坏等级护腕"',
+          'name = "坏等级护腕"',
+          'type = "clothing"',
+          'stackable = false',
+          'use = "equip"',
+          'attribute_mods = [ { attr = "修正测试值", flat = 1, per_level = 2 } ]',
+        ].join('\n'),
+        '/mods/test-mod/definitions/abilities/ok-per-level.toml': [
+          '[abilities]',
+          '[abilities."合法等级棍法"]',
+          'name = "合法等级棍法"',
+          'type = "passive"',
+          'max_level = 5',
+          'tags = ["combat_passive"]',
+          'attribute_mods = [ { attr = "修正测试值", flat = 1, per_level = 2 } ]',
+        ].join('\n'),
+      }))
+      const perLevelErrs = modErrors().filter(e => e.message.includes('per_level'))
+      expect(perLevelErrs.some(e => e.message.includes('坏等级护腕'))).toBe(true)
+      // 正对照：能力（有等级）用 per_level 不报 → 只有装备那一条
+      expect(perLevelErrs).toHaveLength(1)
+      expect(perLevelErrs.some(e => e.message.includes('合法等级棍法'))).toBe(false)
+    })
   })
 
   it('should populate condition registry after loading mod', async () => {

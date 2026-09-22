@@ -129,6 +129,9 @@ export class ModLoader {
     configureAttributeEval({
       definitions: mod.attributes as Record<string, { compute?: string }>,
       scriptResolver: (fileName: string) => scripts.get(fileName),
+      // 声明式来源（装备/被动技能/天赋的 attribute_mods）需要读 mod 定义——core 不能 import
+      // mod-loader（成环），故由这里注入定义快照。缺了它 = 声明式来源静默失效（恒等式）。
+      defs: { items: mod.items, abilities: mod.abilities, talentDefs: mod.talentDefs },
     })
     // 属性有效值层：mod 数据（重）加载 = 属性定义变更 → 所有实体的有效值缓存必须失效
     bumpDataVersion()

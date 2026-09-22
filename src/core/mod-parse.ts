@@ -29,6 +29,7 @@ import {
   validateAbilityUpgrades,
   validateLocations,
   validateTalents,
+  validateAttributeMods,
   normalizeRelationGroups,
   normalizeRelations,
   normalizeMarksToAbilities,
@@ -1333,6 +1334,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   // 注释：校验 locations——exit.target 和 parent 必须存在
   validateLocations(mod, modName)
   validateTalents(mod, modName)
+  // 注释：声明式属性修正声明校验（属性有效值层 计划二）——items/abilities/talentDefs 合并结果
+  validateAttributeMods(mod)
   // 注释：角色契约校验（裸字段 warning + 插件注册的必需集校验器）
   validateCharacterContract(mod, modName)
 

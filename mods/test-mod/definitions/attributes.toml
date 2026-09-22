@@ -151,3 +151,7 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 # display = false（不进 UI 列表）；无任何生产消费方读取它。
 # ════════════════════════════════════════
 "派生测试值" = { type = "number", default = 0, category = "base", display = false, compute = "calc_derived_test.js", description = "属性有效值层 E2E 夹具（派生公式 = base + 根骨×10）" }
+
+# 属性有效值层 计划二夹具（2026-09-22）：声明式来源（装备/被动技能/天赋的 attribute_mods）
+# E2E 用（src/core/mod-loader.test.ts）。display = false（不进 UI 列表）；无生产消费方读取它。
+"修正测试值" = { type = "number", default = 100, category = "base", display = false, description = "属性有效值层 E2E 夹具（声明式修正来源：无来源时 = 裸值 100）" }

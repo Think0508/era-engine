@@ -2,6 +2,7 @@
 import type { Edge, EntityData, LocationData, MapLayout, MigrationStep, MoveConfig } from './types'
 import type { Effect } from './effect-type-registry'
 import type { StyledTalkDisplay } from './talk-display'
+import type { AttributeModSource } from './attribute-eval'
 // 转导出（mod-parse/mod-validate/外部消费者统一从本文件或 mod-loader 导入）
 export type { Edge, EntityData, LocationData, MapLayout, MigrationStep, MoveConfig } from './types'
 export type { Effect } from './effect-type-registry'
@@ -290,6 +291,9 @@ export interface TalentDef {
   modifiers?: TalentModifier[]
   gain?: TalentGain
   tags?: string[]
+  // 注释：声明式属性修正（属性有效值层 计划二）——持有该天赋即生效，per_level 按天赋等级线性追加。
+  // ItemDef/AbilityDef 有 index signature 兜住该字段；此处显式声明，让引擎契约可见（不是 any 兜底）。
+  attribute_mods?: AttributeModSource[]
   // 注释：结算修正（数据化，h-core settle/talent-adjust.ts 消费）
   // state_adjusts：状态系数加法修正（erArk chara_base_state_adjust），states=["*"]=全部状态
   // favorability_adjusts：好感/信赖系数加法修正（erArk calculation_favorability），同 group 取最大

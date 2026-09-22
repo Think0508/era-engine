@@ -7,6 +7,7 @@ import { useRegistry } from './use-registry'
 import { getCharacterValidators, validateTopLevelLayers } from './character-contract'
 import { modLoader } from './mod-loader'
 import type { LoadedMod, RelationTypeDef, RelationGroupDef, Quest, UpgradeNeed } from './mod-types'
+import type { AttributeModSource } from './attribute-eval'
 
 export function validateCharacterContract(mod: LoadedMod, modName: string): void {
   const characters = mod.entities.get('character')
@@ -561,6 +562,59 @@ export function validateAbilityUpgrades(mod: LoadedMod, _modName: string): void 
       for (const need of entry.backup_needs ?? []) checkNeed(need, `第 ${idx} 级备选`)
     }
     for (const need of def.extra_needs ?? []) checkNeed(need, '能力级附加判定')
+  }
+}
+
+// 注释：声明式属性修正（attribute_mods）加载期校验（属性有效值层 计划二）——
+// 校验引擎真正消费的那份数据（合并后的 items/abilities/talentDefs）。
+// 只上报、不抛错：坏声明在运行时被 collectDeclarativeMods 静默跳过（形状不对即忽略），
+// 若加载期不留痕，"属性名拼错 / flat 拼成 flats / 装备写了 per_level" 全是无声失效。
+// per_level 只允许用在有等级概念的来源（被动技能/天赋）；装备写 → error（不静默当 1 级）。
+export function validateAttributeMods(mod: LoadedMod): void {
+  const check = (owner: string, list: unknown, allowPerLevel: boolean): void => {
+    if (list === undefined) return
+    if (!Array.isArray(list)) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error',
+        message: `${owner} 的 attribute_mods 必须是数组`,
+      })
+      return
+    }
+    for (const entry of list) {
+      const m = entry as AttributeModSource | null | undefined
+      const attr: unknown = m?.attr
+      if (typeof attr !== 'string' || !mod.attributes?.[attr]) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 的 attribute_mods 引用了未定义属性 '${String(attr)}'`,
+          suggestion: '该属性需先在 attributes.toml 定义（属性有效值层的闸门以定义为前提，未定义 = 静默不生效）',
+        })
+        continue
+      }
+      if (typeof m?.flat !== 'number' && typeof m?.percent !== 'number' && typeof m?.set !== 'number') {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 的 attribute_mods['${attr}'] 至少要给 flat/percent/set 之一`,
+          suggestion: '只写 attr 的条目没有任何修正量，运行时会被跳过',
+        })
+      }
+      if (m?.per_level !== undefined && !allowPerLevel) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 的 attribute_mods['${attr}'] 用了 per_level，但该来源没有等级概念`,
+          suggestion: 'per_level 只能用在被动技能/天赋这类有等级的定义上',
+        })
+      }
+    }
+  }
+  for (const [id, def] of Object.entries(mod.items ?? {})) {
+    check(`物品 '${id}'`, def?.attribute_mods, false)
+  }
+  for (const [id, def] of Object.entries(mod.abilities ?? {})) {
+    check(`能力 '${id}'`, def?.attribute_mods, true)
+  }
+  for (const [id, def] of Object.entries(mod.talentDefs ?? {})) {
+    check(`天赋 '${id}'`, def?.attribute_mods, true)
   }
 }
 

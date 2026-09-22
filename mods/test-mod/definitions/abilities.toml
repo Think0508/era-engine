@@ -37,3 +37,15 @@ type = "passive"
 max_level = 10
 tags = ["knowledge"]
 description = "学识（confinement-system 逃脱公式 knowledge 技能来源）"
+
+# 属性有效值层 计划二夹具：声明式来源（被动技能 → attribute_mods，per_level 按技能等级缩放）
+# 新增而非改既有能力：混元功等被 roster.toml/npc.toml 与其他测试引用，改它会波及其他用例。
+# display = false（不在角色面板显示）；无生产消费方读取它。
+[abilities."修正测试棍法"]
+name = "修正测试棍法"
+type = "passive"
+max_level = 10
+tags = ["combat_passive", "combat"]
+display = false
+description = "属性修正夹具（1 级 +10，每多 1 级再 +2）"
+attribute_mods = [ { attr = "修正测试值", flat = 10, per_level = 2 } ]

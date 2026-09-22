@@ -34,6 +34,26 @@ describe('entity-utils × 有效值管线', () => {
     expect(getEntityAttr(c, '力道')).toBe(210)
   })
 
+  // 注释：派生夹具（中文键走对象字面量，不做 ['中文'] 索引——scan-attr-refs 契约）
+  function mkDerivedChar(): any {
+    return { id: 'd1', name: '派生', base: { 最大气血: 300, 根骨: 50 } }
+  }
+
+  it('setEntityAttr 写依赖属性 → 派生属性重算（版本失效承载）', () => {
+    const c = mkDerivedChar()
+    configureAttributeEval({
+      definitions: { 最大气血: { compute: 'calc.js' }, 根骨: {} },
+      scriptResolver: () => 'return base + attrs.get("根骨") * 10',
+      // rawReader 由 entity-utils 模块加载时注入，不要覆盖
+    })
+    expect(getEntityAttr(c, '最大气血')).toBe(800)        // 300 + 50×10
+    // 派生属性**自己的裸值没变**（仍是 300）：缓存只能靠 setEntityAttr 里的版本自增失效，
+    // 裸值比对救不了它（readEffective 的 raw 比对键是「最大气血」自己的 raw）。
+    // 去掉 entity-utils.ts:104 的 notifyAttrWrite(entity) → 这里会仍旧返回 800。
+    setEntityAttr(c, '根骨', 60)
+    expect(getEntityAttr(c, '最大气血')).toBe(900)        // 300 + 60×10
+  })
+
   it('非数字属性（对象型能力条目）不受管线影响', () => {
     const c = mkChar()
     c.abilities['快乐刻印'] = { level: 3, xp: 0 }

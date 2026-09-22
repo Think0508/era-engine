@@ -54,29 +54,34 @@ describe('attribute-eval：缓存与版本失效', () => {
     expect(readEffective(e, '力道', 10)).toBe(11)
   })
 
-  it('bumpDataVersion 后仍按当前 raw 正确求值（失效计数由 Task 4 的脚本探针断言）', () => {
+  it('bumpDataVersion 全局失效：同一裸值重读会重跑脚本（探针计数，不是恒等变换）', () => {
+    let probes = 0
     configureAttributeEval({
-      definitions: { 力道: { compute: 'p.js' } },
-      scriptResolver: () => 'return base',
-      rawReader: () => 0,
+      definitions: { 力道: { compute: 'p.js' }, 根骨: {} },
+      // 脚本每执行一次就读一次其他属性 → rawReader 被调一次 = 脚本重跑一次的硬证据
+      // （只比返回值的话，清空 bumpDataVersion() 也照样绿：恒等变换下值不变）
+      scriptResolver: () => 'return base + attrs.get("根骨")',
+      rawReader: () => { probes++; return 0 },
     })
     const e = { id: 'c1' }
     expect(readEffective(e, '力道', 10)).toBe(10)
+    expect(readEffective(e, '力道', 10)).toBe(10)
+    expect(probes).toBe(1)                          // 同版本同裸值：第二次命中缓存，脚本没再跑
     bumpDataVersion()
     expect(readEffective(e, '力道', 10)).toBe(10)
-    expect(readEffective(e, '力道', 20)).toBe(20)
+    expect(probes).toBe(2)                          // 全局版本变了 → 即使裸值/实体版本都没变也必须重算
   })
 
-  it('不同实体互不干扰（走缓存路径）', () => {
-    configureAttributeEval({
-      definitions: { 力道: { compute: 'p.js' } },
-      scriptResolver: () => 'return base',
-      rawReader: () => 0,
-    })
+  it('不同实体互不干扰：同一裸值 + 各自修正 → 各看各的（缓存必须按实体隔离）', () => {
+    configureAttributeEval({ definitions: { 力道: {} } })
     const a = { id: 'a' }
     const b = { id: 'b' }
-    expect(readEffective(a, '力道', 10)).toBe(10)
-    expect(readEffective(b, '力道', 20)).toBe(20)   // 若缓存不按实体隔离，这里会错误地返回 10
+    registerModifier(a, 'm', '力道', { flat: 5 })
+    registerModifier(b, 'm', '力道', { percent: 1 })
+    // 两个实体喂**同一个 raw**：若缓存不按实体隔离（单张全局表），b 会命中 a 的条目拿到 15
+    expect(readEffective(a, '力道', 10)).toBe(15)   // a：10 + 5
+    expect(readEffective(b, '力道', 10)).toBe(20)   // b：10 × 2
+    expect(readEffective(a, '力道', 10)).toBe(15)   // 回读 a 仍是 a 的（b 的重算没覆盖 a 的缓存）
   })
 
   it('同一 (实体,属性) 换了 raw 必须重算，不得命中旧缓存', () => {
@@ -151,6 +156,15 @@ describe('attribute-eval：修正栈与叠加代数', () => {
     expect(removeModifier(c, 'm1')).toBe(1)
     expect(readEffective(c, '力道', 100)).toBe(100)
     expect(readEffective(c, '根骨', 100)).toBe(103)
+    // 限定 attr 的分支：同 id 挂在两个属性上，按 (id, attr) 只移除点名的那个属性，
+    // 同 id 的另一属性的那条必须活着（去掉 attr 过滤就会连带删掉 → 根骨 掉回 103）
+    registerModifier(c, 'm3', '力道', { flat: 7 })
+    registerModifier(c, 'm3', '根骨', { flat: 9 })
+    expect(readEffective(c, '力道', 100)).toBe(107)
+    expect(readEffective(c, '根骨', 100)).toBe(112)
+    expect(removeModifier(c, 'm3', '力道')).toBe(1)
+    expect(readEffective(c, '力道', 100)).toBe(100)
+    expect(readEffective(c, '根骨', 100)).toBe(112)   // 同 id 的另一属性那条未被误删
     clearModifiers(c)
     expect(listModifiers(c).length).toBe(0)
     expect(readEffective(c, '根骨', 100)).toBe(100)

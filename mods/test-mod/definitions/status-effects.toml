@@ -22,6 +22,10 @@ tick_interval = 0
 stackable = true
 max_stack = 3
 
+# 计划三迁移（第一验收点）：原先用 on_apply_effects/on_remove_effects 改 attack **基础值**
+# （modify_attribute 写 base → readRawAttr 永不回落 = 临时 buff 永久沉淀成角色属性）。
+# 改为 attribute_mods（运行时清单）：生效期间有效值 +10，到期/移除自动消失，基础值分毫不动。
+# ⚠️ on_apply_effects / on_remove_effects 只允许用于**非属性**效果（见 status-system 文件头注释）。
 [status-effects."攻击增益"]
 name = "攻击增益"
 description = "攻击力提升"
@@ -30,12 +34,7 @@ duration = 180
 tick_interval = 0
 stackable = false
 max_stack = 1
-on_apply_effects = [
-  { type = "modify_attribute", params = { attr = "attack", value = 10, target = "self" } }
-]
-on_remove_effects = [
-  { type = "modify_attribute", params = { attr = "attack", value = -10, target = "self" } }
-]
+attribute_mods = [ { attr = "attack", flat = 10 } ]
 
 # 属性有效值层 计划三夹具：状态生效期间对属性的临时修正（运行时来源）
 [status-effects."修正测试状态"]

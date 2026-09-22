@@ -6,6 +6,7 @@ import {
   configureAttributeEval, readEffective, notifyAttrWrite, bumpDataVersion, __resetAttributeEval,
   registerModifier, removeModifier, clearModifiers, listModifiers,
   registerDeclarativeSource,
+  registerRuntimeMod, removeRuntimeMod, removeRuntimeModsByPrefix,
   readAttrForCompute,
 } from './attribute-eval'
 
@@ -439,5 +440,137 @@ describe('attribute-eval：声明式来源（装备/被动技能/天赋）', () 
     expect(readEffective({ id: 'n2' }, '力道', 100)).toBe(100)   // 无 equipment/abilities/talents
     configureAttributeEval({ defs: { items: { 无mods: {} } } })
     expect(readEffective({ id: 'n3', equipment: { wrist: '无mods' } }, '力道', 100)).toBe(100)
+  })
+})
+
+describe('attribute-eval：运行时修正（带到期时刻）', () => {
+  let NOW = 1000
+  const RUNTIME_DEFS = { definitions: { 力道: {} }, defs: {} as any }
+
+  beforeEach(() => {
+    __resetAttributeEval()
+    errorReporter.clear()
+    NOW = 1000
+    configureAttributeEval({ ...RUNTIME_DEFS, nowMinutes: () => NOW })
+  })
+
+  const ent = (id: string) => ({ id })
+
+  it('挂上的修正参与读取；到期后不再参与，且条目被剪除', () => {
+    const c = ent('r1')
+    registerRuntimeMod(c, { id: 'status:中毒', attr: '力道', flat: -20, expiresAt: 2000 }, -20)
+    expect(readEffective(c, '力道', 100)).toBe(80)
+    NOW = 2000                       // 到点（now >= expiresAt）
+    expect(readEffective(c, '力道', 100)).toBe(100)
+    expect((c as any).attr_mods).toHaveLength(0)   // 已被剪除
+  })
+
+  it('无 expiresAt = 不自动到期', () => {
+    const c = ent('r2')
+    registerRuntimeMod(c, { id: 'combat:e1', attr: '力道', flat: 5 }, 5)
+    NOW = 999999
+    expect(readEffective(c, '力道', 100)).toBe(105)
+  })
+
+  it('【无陈旧缓存】挂修正期间落下的缓存不得在到期后复活修正值（cacheable 判据含运行时清单）', () => {
+    // 该属性必须有 compute 才会走缓存路径；且条目必须**绕过 registerRuntimeMod** 直接落在实体上
+    //   （registerRuntimeMod 会 notifyAttrWrite 改版本戳 → 下一次读取即清缓存，把这条缺陷掩盖掉）。
+    //   这正是读档场景：存档里带着未到期的 attr_mods，实体是新对象、缓存从零开始。
+    __resetAttributeEval()
+    NOW = 1000
+    configureAttributeEval({
+      definitions: { 力道: { compute: 'id.js' } },
+      scriptResolver: () => 'return base',
+      nowMinutes: () => NOW,
+    })
+    const c: any = ent('r12')
+    c.attr_mods = [{ id: 'status:x', attr: '力道', flat: 20, expiresAt: 2000, strength: 20 }]
+    expect(readEffective(c, '力道', 100)).toBe(120)   // 有条目 → 一律现算，且不得把 120 写进缓存
+    NOW = 2000                                        // 到点：没有任何通知（版本戳、裸值都没变）
+    expect(readEffective(c, '力道', 100)).toBe(100)   // 判据若只看 decl，这里会命中上面那口缓存 → 120
+    expect(c.attr_mods).toHaveLength(0)               // 同时被剪除
+  })
+
+  it('D5：强度 <= 现有 → 什么都不发生（不降级、不刷新时长）', () => {
+    const c = ent('r3')
+    registerRuntimeMod(c, { id: 'status:破绽', attr: '力道', set: 3, expiresAt: 2000 }, 3)
+    NOW = 1500
+    const applied = registerRuntimeMod(c, { id: 'status:破绽', attr: '力道', set: 2, expiresAt: 9999 }, 2)
+    expect(applied).toBe(false)
+    expect(readEffective(c, '力道', 100)).toBe(3)          // 还是 3
+    expect((c as any).attr_mods[0].expiresAt).toBe(2000)   // 时长也没刷新
+  })
+
+  it('D5：强度 > 现有 → 顶上 + 时长重置为新的完整时长', () => {
+    const c = ent('r4')
+    registerRuntimeMod(c, { id: 'status:破绽', attr: '力道', set: 3, expiresAt: 2000 }, 3)
+    NOW = 1500
+    const applied = registerRuntimeMod(c, { id: 'status:破绽', attr: '力道', set: 5, expiresAt: 9999 }, 5)
+    expect(applied).toBe(true)
+    expect(readEffective(c, '力道', 100)).toBe(5)
+    expect((c as any).attr_mods[0].expiresAt).toBe(9999)
+  })
+
+  it('强度相等也要顶上并刷新时长（D5 边界）', () => {
+    const c = ent('r5')
+    registerRuntimeMod(c, { id: 'status:中毒', attr: '力道', flat: -10, expiresAt: 2000 }, -10)
+    expect(registerRuntimeMod(c, { id: 'status:中毒', attr: '力道', flat: -10, expiresAt: 3000 }, -10)).toBe(true)
+    expect((c as any).attr_mods[0].expiresAt).toBe(3000)
+  })
+
+  it('强度随条目持久化：JSON 往返后仍能正确判定顶替', () => {
+    const c = ent('r5b')
+    registerRuntimeMod(c, { id: 'status:破绽', attr: '力道', set: 3, expiresAt: 2000 }, 3)
+    const revived: any = JSON.parse(JSON.stringify(c))     // 模拟存档 → 读档
+    expect(registerRuntimeMod(revived, { id: 'status:破绽', attr: '力道', set: 2, expiresAt: 9999 }, 2)).toBe(false)
+    expect(readEffective(revived, '力道', 100)).toBe(3)
+  })
+
+  it('幂等：同 id 同属性不产生重复条目', () => {
+    const c = ent('r6')
+    registerRuntimeMod(c, { id: 'combat:e1', attr: '力道', flat: 1 }, 1)
+    registerRuntimeMod(c, { id: 'combat:e1', attr: '力道', flat: 2 }, 2)
+    registerRuntimeMod(c, { id: 'combat:e1', attr: '力道', flat: 3 }, 3)
+    expect((c as any).attr_mods).toHaveLength(1)
+    expect(readEffective(c, '力道', 100)).toBe(103)
+  })
+
+  it('与声明式来源共用一份代数（percent 相加只乘一次）', () => {
+    __resetAttributeEval()
+    NOW = 1000
+    configureAttributeEval({
+      definitions: { 力道: {} },
+      defs: { items: { 护腕: { attribute_mods: [{ attr: '力道', flat: 5 }] } } },
+      nowMinutes: () => NOW,
+    })
+    const c: any = { id: 'r7', equipment: { accessory: '护腕' } }
+    registerRuntimeMod(c, { id: 'status:x', attr: '力道', percent: 0.2 }, 0.2)
+    registerRuntimeMod(c, { id: 'status:y', attr: '力道', percent: 0.3 }, 0.3)
+    // 声明式 flat 5 + 运行时两个 percent（0.2+0.3）→ (100+5) × 1.5
+    expect(readEffective(c, '力道', 100)).toBe(157.5)
+  })
+
+  it('removeRuntimeMod / removeRuntimeModsByPrefix', () => {
+    const c = ent('r8')
+    registerRuntimeMod(c, { id: 'combat:a', attr: '力道', flat: 1 }, 1)
+    registerRuntimeMod(c, { id: 'combat:b', attr: '力道', flat: 2 }, 2)
+    registerRuntimeMod(c, { id: 'status:z', attr: '力道', flat: 3 }, 3)
+    expect(removeRuntimeModsByPrefix(c, 'combat:')).toBe(2)
+    expect(readEffective(c, '力道', 100)).toBe(103)
+    expect(removeRuntimeMod(c, 'status:z')).toBe(1)
+    expect(readEffective(c, '力道', 100)).toBe(100)
+  })
+
+  it('缺状态字段 / 非数组 attr_mods → 静默跳过，不崩', () => {
+    expect(readEffective({ id: 'r9' }, '力道', 100)).toBe(100)
+    expect(readEffective({ id: 'r10', attr_mods: 'nonsense' as any }, '力道', 100)).toBe(100)
+  })
+
+  it('无 nowMinutes 注入（单测直调）→ 视为不过期', () => {
+    __resetAttributeEval()
+    configureAttributeEval({ definitions: { 力道: {} }, defs: {} as any })
+    const c = ent('r11')
+    registerRuntimeMod(c, { id: 'x', attr: '力道', flat: 7, expiresAt: 1 }, 7)
+    expect(readEffective(c, '力道', 100)).toBe(107)
   })
 })

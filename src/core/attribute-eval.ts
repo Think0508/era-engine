@@ -14,11 +14,13 @@
 // 闸门（零回归保证）：只有【属性定义存在】+【裸值是数字】+【有 compute 或有修正条目】才走管线，
 //   其余一律原样返回。因此未接入任何来源时，本管线是恒等变换。
 //
-// 两类修正来源（同一份叠加代数，见 applyMods）：
+// 修正来源（同一份叠加代数，见 applyMods）：
 //   ① 声明式（pull，2026-09-22 计划二）：装备/被动技能/天赋从实体**当前状态**现推导
 //      （char.equipment / char.abilities[id].level / char.talents[id]），每次进管线重算 ——
 //      不缓存、不需要任何变更通知，故脱下装备/掉级/失去天赋**立即**失效（天然无漂移）。
-//   ② 运行时（push）：registerModifier 登记的临时修正（战斗 buff 等）。
+//   ② 运行时清单（计划三）：实体上的纯数据字段 char.attr_mods（带绝对到期时刻 expiresAt），
+//      读时现算 + 剪除过期条目；因为是纯数据字段，它随存档往返（save-system 整对象序列化）。
+//   ③ push 栈：registerModifier 登记的临时修正（存模块内 WeakMap，**不随存档**）。
 
 import { errorReporter } from './error-reporter'
 
@@ -40,6 +42,21 @@ export interface AttributeModSource {
   percent?: number
   set?: number
   per_level?: number
+}
+
+/** 运行时修正（带到期时刻）——存实体 `char.attr_mods`，随存档往返（纯数据字段） */
+export interface RuntimeAttrMod {
+  /** 来源标识：状态用 `status:<状态ID>`，战斗用 `combat:<效果实例ID>` */
+  id: string
+  attr: string
+  flat?: number
+  percent?: number
+  set?: number
+  /** 绝对游戏分钟；缺省 = 不自动到期（由来源显式移除） */
+  expiresAt?: number
+  source?: string
+  /** D5 比较用的强度，随条目持久化（存档往返后比较仍成立）。缺省 = -Infinity（老档条目，任何新施加都能覆盖） */
+  strength?: number
 }
 
 /** 声明式来源需要的 mod 定义快照（mod-loader 注入；core 不能 import mod-loader，否则成环） */
@@ -78,6 +95,11 @@ let rawReader: ((entity: any, name: string) => any) | null = null
 let defs: DeclarativeDefs = {}
 /** 插件追加的声明式来源（内置三源之后，按注册顺序） */
 const extraSources: ((entity: any, defs: DeclarativeDefs) => AttributeModSource[])[] = []
+/** 运行时修正清单在实体上的字段名（纯数据字段 → 随存档往返，见 save-system 的整对象序列化） */
+const RUNTIME_FIELD = 'attr_mods'
+/** 游戏内当前时刻（分钟），由 mod-loader 注入。未注入 = 运行时条目一律视为不过期
+ *  （把它们当成"全过期"会静默返回偏小的错值——宁可不失效，也不静默算错） */
+let nowMinutes: (() => number) | null = null
 let depth = 0
 
 export function configureAttributeEval(cfg: {
@@ -85,11 +107,13 @@ export function configureAttributeEval(cfg: {
   scriptResolver?: (name: string) => string | undefined
   rawReader?: (entity: any, name: string) => any
   defs?: DeclarativeDefs
+  nowMinutes?: () => number
 }): void {
   if (cfg.definitions) definitions = cfg.definitions
   if (cfg.scriptResolver) scriptResolver = cfg.scriptResolver
   if (cfg.rawReader) rawReader = cfg.rawReader
   if (cfg.defs) defs = cfg.defs
+  if (cfg.nowMinutes) nowMinutes = cfg.nowMinutes
 }
 
 /** 追加声明式来源（内置三源最先，注册的按注册顺序在其后；顺序只影响 set 的「最后一条胜出」） */
@@ -119,6 +143,8 @@ export function __resetAttributeEval(): void {
   extraSources.length = 0
   // ⚠️ 刻意**不重置** rawReader：它由 entity-utils 在模块加载时注入，属结构性接线而非测试态。
   //    若在此清掉，测试里 reset 之后 compute 的跨属性读取会静默失效（attr.get 恒 0）。
+  // 时钟同属注入态（mod-loader 注入）→ 必须重置，否则上一个用例的时刻会渗进下一个用例。
+  nowMinutes = null
   depth = 0
 }
 
@@ -166,9 +192,17 @@ export function readEffective(entity: any, name: string, raw: any): any {
 
   depth++
   try {
-    // 声明式来源每次进管线**现算一次**：闸门与叠加共用同一份清单（不在两处各聚合一次）
+    // 两类清单来源每次进管线**现算一次**，且闸门与叠加共用同一份清单（不在两处各聚合一次）：
+    //   ① 声明式（装备/被动技能/天赋/插件追加）—— 从实体当前状态现推导
+    //   ② 运行时清单（char.attr_mods）—— 读时现算并剪除过期条目（到点即失效，无需通知）
+    // 顺序 = 声明式在前、运行时在后 → 多个 set 取清单顺序最后一条，即**临时修正压过常驻来源**
+    //   （与「后写的 set 胜出」既有语义一致：同一属性上运行时修正比装备/被动更"晚"）。
     const decl = collectDeclarativeMods(entity)
-    const hasDecl = decl.some(m => m.attr === name)
+    const runtime = readRuntimeMods(entity)
+    const all: AttributeModSource[] = [...decl, ...runtime]
+    // 名字沿用「声明式」时期：这里判定的是**合并后清单**（声明式 + 运行时），
+    // 故单有运行时条目（既无 compute 也无声明式）也能过闸门。
+    const hasDecl = all.some(m => m.attr === name)
     if (!hasCompute && !hasMods(entity, name) && !hasDecl) return raw
 
     const st = stateOf(entity)
@@ -178,8 +212,12 @@ export function readEffective(entity: any, name: string, raw: any): any {
     //   故只要实体带**任何**声明式修正，本次读取既不读缓存也不写缓存（一律现算）。
     //   判据用整份清单而非仅本属性：compute 派生会读别的属性（attrs.get），别的属性上的声明式
     //   变化同样会让本属性的缓存失真，只看本属性会漏掉这条传递路径。
-    //   反向仍然安全：缓存条目只在 decl 为空时写入，而 decl 为空时值与 (裸值, 版本) 一一对应。
-    const cacheable = decl.length === 0
+    //   ⚠️ 判据必须用**合并后**的 all（含运行时清单），不能只看 decl：运行时条目"到点即失效"同样
+    //   没有任何通知，若只看 decl，则「挂修正期间读一次（被判为可缓存 → 缓存里存的是**含修正**的值）
+    //   → 修正到期（版本戳不变、裸值不变）→ 命中该缓存」会一直返回含修正的陈旧值。
+    //   用 all 则「有条目 ⇒ 一律现算」，与声明式共用同一条策略，不新增第二套失效机制。
+    //   反向仍然安全：缓存条目只在 all 为空时写入，而 all 为空时值与 (裸值, 版本) 一一对应。
+    const cacheable = all.length === 0
     if (cacheable) {
       if (st.cachedAtVersion !== st.version || st.cachedAtGlobal !== globalVersion) {
         st.cache.clear()
@@ -196,7 +234,7 @@ export function readEffective(entity: any, name: string, raw: any): any {
 
     let v: number = raw
     v = applyCompute(entity, name, v)
-    v = applyMods(entity, name, v, decl)
+    v = applyMods(entity, name, v, all)
     if (cacheable) st.cache.set(name, { raw, v })
     return v
   } finally {
@@ -328,25 +366,97 @@ export function collectDeclarativeMods(entity: any): AttributeModSource[] {
   return out
 }
 
+/** 读实体的运行时修正清单：跳过并剪除已过期条目。返回的条目保证在当前时刻有效。
+ *  每次读取都重算（不缓存）→ 到点立即失效，**不需要任何变更通知**；过期条目就地剪掉，
+ *  否则清单会随挂载次数无界增长（且会一并写进存档）。
+ *  未注入时钟（nowMinutes === null，如单测直调）时条目一律视为不过期（见 nowMinutes 注释）。 */
+export function readRuntimeMods(entity: any): RuntimeAttrMod[] {
+  if (!entity || typeof entity !== 'object') return []
+  const list = (entity as any)[RUNTIME_FIELD]
+  if (!Array.isArray(list) || list.length === 0) return []
+  const now = nowMinutes ? nowMinutes() : null
+  const live: RuntimeAttrMod[] = []
+  let dropped = false
+  for (const raw of list) {
+    if (!raw || typeof raw !== 'object' || typeof raw.attr !== 'string' || raw.attr.length === 0) continue
+    if (now !== null && typeof raw.expiresAt === 'number' && now >= raw.expiresAt) { dropped = true; continue }
+    live.push(raw as RuntimeAttrMod)
+  }
+  // 只在本轮真的剪掉了东西时才写回（避免每次读取都产生一次无意义的赋值）
+  // 刻意**不** notifyAttrWrite：剪除不改变聚合值（被剪的条目本就不参与），且有条目存在时该实体
+  //   的读取本就不走缓存（见 readEffective 的 cacheable）——没有需要失效的缓存。
+  if (dropped) (entity as any)[RUNTIME_FIELD] = live
+  return live
+}
+
+/** 施加/刷新一条运行时修正。
+ *  强度（strength）由调用方给出并随条目持久化：`<` 现有 → 不生效（不降级、不刷新时长）；
+ *  `>=` 现有 → 顶上并重置为该条自己的 expiresAt（同强度也刷新时长）。返回是否顶上。
+ *  ⚠️ strength **写在条目上**（不是 WeakMap）：它必须随存档往返，否则"存了破绽3、读档后又打来
+ *  破绽2"会因丢失强度而错误顶替（老档条目无此字段 → 视为 -Infinity，任何新施加都能覆盖）。 */
+export function registerRuntimeMod(entity: any, entry: RuntimeAttrMod, strength: number): boolean {
+  if (!entity || typeof entity !== 'object') return false
+  if (!entry || typeof entry.id !== 'string' || entry.id.length === 0) return false
+  if (typeof entry.attr !== 'string' || entry.attr.length === 0) return false
+  if (!Number.isFinite(strength)) return false
+  if (!Array.isArray((entity as any)[RUNTIME_FIELD])) (entity as any)[RUNTIME_FIELD] = []
+  const list = (entity as any)[RUNTIME_FIELD] as RuntimeAttrMod[]
+  const next: RuntimeAttrMod = { ...entry, strength }
+  const i = list.findIndex(m => m.id === entry.id && m.attr === entry.attr)
+  if (i >= 0) {
+    const prev = typeof list[i].strength === 'number' ? list[i].strength : Number.NEGATIVE_INFINITY
+    if (!(strength >= prev)) return false
+    list[i] = next
+  } else {
+    list.push(next)
+  }
+  notifyAttrWrite(entity)
+  return true
+}
+
+/** 移除运行时修正：给 attr 则只移除该属性的那条，否则移除该 id 的全部。返回移除条数 */
+export function removeRuntimeMod(entity: any, id: string, attr?: string): number {
+  if (!entity || typeof entity !== 'object') return 0
+  const list = (entity as any)[RUNTIME_FIELD]
+  if (!Array.isArray(list)) return 0
+  const before = list.length
+  ;(entity as any)[RUNTIME_FIELD] = list.filter((m: any) => !(m.id === id && (attr === undefined || m.attr === attr)))
+  const removed = before - (entity as any)[RUNTIME_FIELD].length
+  if (removed > 0) notifyAttrWrite(entity)
+  return removed
+}
+
+/** 按 id 前缀批量移除（战斗结束清理 `combat:*`、状态移除清理 `status:<id>`）。返回移除条数 */
+export function removeRuntimeModsByPrefix(entity: any, prefix: string): number {
+  if (!entity || typeof entity !== 'object') return 0
+  const list = (entity as any)[RUNTIME_FIELD]
+  if (!Array.isArray(list)) return 0
+  const before = list.length
+  ;(entity as any)[RUNTIME_FIELD] = list.filter((m: any) => !(typeof m?.id === 'string' && m.id.startsWith(prefix)))
+  const removed = before - (entity as any)[RUNTIME_FIELD].length
+  if (removed > 0) notifyAttrWrite(entity)
+  return removed
+}
+
 /** 叠加代数：base′ = set ?? v → value = (base′ + Σflat) × (1 + Σpercent)
  *  与 plugins/combat-base/formula-channels.ts 的通道语义一致（percent 相加后只乘一次）。
- *  `decl` 由 readEffective 现算后传入（一次读取只聚合一次，闸门与叠加共用）；多个 set 取清单顺序最后一条。 */
-function applyMods(entity: object, name: string, v: number, decl: AttributeModSource[]): number {
+ *  `mods` 由 readEffective 现算后传入（一次读取只聚合一次，闸门与叠加共用）；多个 set 取清单顺序最后一条。 */
+function applyMods(entity: object, name: string, v: number, mods: AttributeModSource[]): number {
   let set: number | undefined
   let flat = 0
   let percent = 0
   let hit = false
-  // 叠加累积体（**全场唯一一份**）：声明式与 push 栈共用，杜绝"两处各写一遍、改单侧就静默分叉"。
-  // 两条来源的形状不同（AttributeModSource 带 attr/per_level；push 条目是 ModifierEntry.attr + .mod），
-  // 故 attr 判定留在各自循环里，只有累积数学进闭包。
+  // 叠加累积体（**全场唯一一份**）：声明式 + 运行时清单 + push 栈共用，杜绝"两处各写一遍、改单侧就静默分叉"。
+  // 各来源的形状不同（AttributeModSource 带 attr/per_level；运行时条目带 id/expiresAt/strength；
+  // push 条目是 ModifierEntry.attr + .mod），故 attr 判定留在各自循环里，只有累积数学进闭包。
   const acc = (m: AttributeMod): void => {
     hit = true
     if (typeof m.set === 'number' && Number.isFinite(m.set)) set = m.set
     if (typeof m.flat === 'number' && Number.isFinite(m.flat)) flat += m.flat
     if (typeof m.percent === 'number' && Number.isFinite(m.percent)) percent += m.percent
   }
-  // ① 声明式来源（顺序：装备→技能→天赋→插件追加；push 栈在其后 —— 后写的 set 胜出）
-  for (const m of decl) {
+  // ① 声明式 + 运行时（顺序：装备→技能→天赋→插件追加→运行时清单；push 栈在其后 —— 后写的 set 胜出）
+  for (const m of mods) {
     if (m.attr === name) acc(m)
   }
   // ② push 栈（既有逻辑，原样保留）

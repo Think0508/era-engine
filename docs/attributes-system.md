@@ -90,18 +90,20 @@ level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 1
   依赖被直写时它不会重算，直到该实体上发生一次**无关的**失效
   （任何 `setEntityAttr`、增删修正，或 mod 数据重载触发的全局失效）。
   **结论：写属性走 `setEntityAttr` / `bindingResolver.set` / `settlement.applyChange`，不要直写 `entity.base[...]`。**
-- **⚠️ 写路径安全 ≠ 读-改-写安全（接入修正前的阻塞项）**：上面三条路只保证"失效"正确，**不保证"读-改-写"正确**。
-  `setEntityAttr` 写的是**裸值**，而下面这些站点是**经有效值读取器**做读-改-写（`write(read(x) + Δ)`）：
-  一旦该属性有修正（或有 `compute`），`read(x)` 已经把修正/派生算进去了，回写就把**有效值烘焙进 `base`** ——
-  下次读取再叠一次修正/公式，**无界膨胀**。站点清单：
-  - `src/plugins/effect-system/settlement-context.ts:49-53`（`resolveValue` 走 `getEntityAttr` 有效值 → `writeValue` 走 `setEntityAttr` 写裸值；`modify_attribute` 与各 h-core 结算的主写路径）
-  - `src/plugins/h-core/settle/hpmp-growth.ts:32-35,45-48`（`HP_MAX`/`MP_MAX`/`SEMEN_MAX` 上限成长）
-  - `src/plugins/sleep-system/update-sleep.ts:35-39`（`STAMINA_MAX`）
-  - `src/plugins/combat-base/index.ts:2126-2128`（吸内削 `mp_max`）
-  - `src/plugins/effect-system/index.ts:60-63`（绑定回退 RMW）
-
-  **规则：在接入任何属性修正来源之前，这些读-改-写站点必须先改为「读裸值」或改走增量写入 API**；否则修正会被写进 base 并重复叠加。
-  （今天这套管线在生产里是惰性的——没有 mod 声明 `compute`、没有生产代码调 `registerModifier`——所以上面这条现在是"接来源前必办"，不是现网故障。）
+- **⚠️ 写路径安全 ≠ 读-改-写安全（2026-09-22 已清扫）**：上面三条路只保证"失效"正确，**不保证"读-改-写"正确**。
+  `setEntityAttr` 写的是**基础值**，所以任何「读出来加一点再写回去」的代码，只要读的是**有效值**，
+  就会把修正/派生**烘焙进 `base`**，下次读取再叠一次 —— **无界膨胀**
+  （例：`体力上限` 基础 500 挂 +500 修正 → 读 1000 → 成长写回 1002 → 下次读 1502，每场 H 多烙一遍 500）。
+  当初有 5 处这样的站点（各 h-core 结算主路径、上限成长、精力上限成长、吸内削上限、效果绑定回退）；
+  **现已全部清扫，并加了防回归测试**（`src/core/entity-utils.test.ts` 的 `applyAttrDelta` 组 +
+  `src/plugins/h-core/settle/hpmp-growth.test.ts` 的真实站点回归——变异验证：把读改回有效值会得到
+  `expected 1006 to be 506`）。
+- **规则（写新代码必守）**：**要写回哪个值，就从哪个值出发读**；白字（基础）会被写，绿字（加成）只用于显示与判断。
+  - 做「加 N」这类读-改-写 → 用 `applyAttrDelta(entity, attr, delta, { clamp?, max? })`
+    （读基础 → 加 → 钳制 → 写基础，原子；返回 `{ old, new }` 均为基础值）
+  - 需要在**基础值域**自行运算 → 用 `readRawAttr(entity, attr)`（走绑定键时为 `bindingResolver.getRaw(id, key)`）
+  - **上限/门槛判据仍用有效值**（`getEntityAttr` / `clampAttrValue`）——「上限 +500」这类修正的意义就是抬高上限，
+    判超限时必须看到加成后的上限。`applyAttrDelta` 的 `clamp: true` 已按此实现
 - **派生公式**：属性定义里写 `compute = "某某.js"`，脚本签名 `(base, attrs) => number`。
   - `base` = 该属性的裸值（把它当**成长项**参与，如 `最大气血 = base + 根骨×10`，不要写纯 `根骨×10`，否则成长会被吞）
   - `attrs.get("根骨")` = 其他属性的**有效值**（带修正，递归求值）

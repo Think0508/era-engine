@@ -250,13 +250,19 @@ value = { percent = -0.2 }
 1. 战斗中挂「灵敏 −20」→ 命中率与伤害公式跟着变 → 效果到期 → **自动恢复**（无恢复代码）
 2. 装配内功 → 属性（及上限）变化 → 卸下回落
 3. 派生属性随根骨变化：根骨 −10 → 最大气血按公式下降；根骨回正 → 回升
-4. **读-改-写清扫（计划二的阻塞交付项，不是已完成事实）**：`hpmp-growth` 的 `HP_MAX = get + n` 是
-   **经有效值读取器**的读-改-写（`getEntityAttr` 读有效值 → `setEntityAttr` 写裸值）。
-   派生或修正一旦存在，`get` 的值里已含修正/公式，回写就把**修正烘焙进 `base`**，下次读取再叠一次 —— **无界膨胀**。
-   **原文「成长项进 base、公式叠加其上」的断言是错的**：它只对"读裸值"的实现成立。
-   受影响站点清单与规则见 `docs/attributes-system.md`「写路径契约」的 ⚠️ 段
-   （`settlement-context` / `hpmp-growth` / `sleep-system` / `combat-base` 吸内削上限 / `effect-system` 绑定回退，共 5 处）。
-   **清扫（改为「读裸值」或改走增量写入 API）是计划二的阻塞交付项** —— 未清扫前不得接入任何修正来源。
+4. **读-改-写清扫（2026-09-22 已完成）**：`hpmp-growth` 的 `HP_MAX = get + n` 曾是**经有效值读取器**的
+   读-改-写（`getEntityAttr` 读有效值 → `setEntityAttr` 写基础值）。派生或修正一旦存在，
+   `get` 的值里已含修正/公式，回写就把**修正烘焙进 `base`**，下次读取再叠一次 —— **无界膨胀**。
+   （本设计初稿曾断言「成长项进 base、公式叠加其上」是错的：那只对"读基础值"的实现成立。）
+
+   **已完成**：5 处站点（`settlement-context` / `hpmp-growth` / `sleep-system` / `combat-base` 吸内削上限 /
+   `effect-system` 绑定回退）全部改为在**基础值域**做读-改-写，并新增两个机制：
+   - `applyAttrDelta(entity, attr, delta, { clamp?, max? })`（core）：读基础 → 加 → 钳制 → 写基础，原子
+   - `bindingResolver.getRaw(id, key)`（core）：绑定键 → 基础值（`get` 仍是有效值）
+   防回归：`src/core/entity-utils.test.ts`（`applyAttrDelta` 组，含**反证**用例：误用有效值就复现膨胀）+
+   `src/plugins/h-core/settle/hpmp-growth.test.ts`（真实站点回归）。变异验证：把 `applyAttrDelta` 的读改回
+   有效值 → `expected 1006 to be 506`（+500 修正被烘焙进 base）。
+   规则与作者侧说明见 `docs/attributes-system.md`「写路径契约」的 ⚠️ 段。
 5. 条件表达式看到有效值（临时修正计入判断）
 6. 跨天状态：存档 → 读档 → 剩余时长与修正均正确恢复；到期后属性回落
 
@@ -264,10 +270,9 @@ value = { percent = -0.2 }
 
 - 不做 `attribute-mods.toml` 库模式（D4：数值与使用处同文件）
 - 不做修正的静态依赖图 / 静态循环检测（D7：运行期护栏）
-- **计划一（本设计）不改动任何现有写入路径**（`hpmp-growth`、吸内削上限、`settlement.applyChange` 全部照旧）；
-  但**计划二必须清扫**这些**读-改-写**站点（清单见 §10 验证要点 4 与 `docs/attributes-system.md` 写路径契约 ⚠️ 段，
-  共 5 处：settlement-context / hpmp-growth / sleep-system / combat-base 吸内 / effect-system 绑定回退），
-  否则修正来源无法安全接入 —— 这不是长期豁免，只是"计划一不碰"
+- **读-改-写站点**：原计划一"不改动任何现有写入路径"，但全分支审查发现 5 处读-改-写会被有效值层污染，
+  故**已在计划一内清扫**（§10 验证要点 4；只改「读的一半」+ 新增 `applyAttrDelta`/`getRaw`，
+  写入语义与封顶数值逐位不变）。除此之外不改动其他写入路径
 - 不做「每层成长按当前层数实时派生」（D5：历史累积即得）
 - 不做 UI 的基础值/有效值差异呈现
 - 不做秘籍/技能系统本身（本设计只提供属性层能力，秘籍是消费方）

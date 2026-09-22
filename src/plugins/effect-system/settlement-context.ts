@@ -1,5 +1,5 @@
 import { entitySystem } from '../../core/entity-system'
-import { getEntityAttr, setEntityAttr, getLevel, clampAttrValue } from '../../core/entity-utils'
+import { setEntityAttr, getLevel, readRawAttr, applyAttrDelta } from '../../core/entity-utils'
 import { modLoader } from '../../core/mod-loader'
 
 interface ChangeRecord {
@@ -46,11 +46,11 @@ export class SettlementContext {
       return
     }
 
-    const oldVal = this.resolveValue(char, attrName)
-    const clamped = this.clampValue(char, attrName, oldVal + delta)
-    this.writeValue(char, attrName, clamped)
-
-    this.record(charId, attrName, oldVal, clamped)
+    // 读-改-写全程锁在**基础值域**（applyAttrDelta：读基础 → 加 → 按上限钳制 → 写基础）。
+    // 不可读有效值再加：那会把修正/派生烘焙进 base 并反复叠加（2026-09-22 属性有效值层清扫）。
+    // 上限判据仍走有效值（clampAttrDelta 内部 clampAttrValue 读 maxAttr 走 getEntityAttr）。
+    const res = applyAttrDelta(char, attrName, delta, { clamp: true })
+    if (res) this.record(charId, attrName, res.old, res.new)
   }
 
   /**
@@ -71,7 +71,7 @@ export class SettlementContext {
       return
     }
 
-    const oldVal = this.resolveValue(char, attrName)
+    const oldVal = this.resolveBase(char, attrName)
     this.writeValue(char, attrName, value)
 
     this.record(charId, attrName, oldVal, value)
@@ -156,12 +156,6 @@ export class SettlementContext {
 
   // ── private ──
 
-  /** 钳制属性值到有效范围（下限 0；上限查 core ATTR_CAPS——C6 合并 effect-system 与
-   * realtime-settle 的双份 cap 表为单一来源） */
-  private clampValue(char: any, attr: string, value: number): number {
-    return clampAttrValue(char, attr, value)
-  }
-
   private record(charId: string, attr: string, oldVal: number, newVal: number): void {
     if (!this.changes.has(charId)) {
       this.changes.set(charId, new Map())
@@ -175,8 +169,9 @@ export class SettlementContext {
     }
   }
 
-  private resolveValue(char: any, attr: string): number {
-    const val = getEntityAttr(char, attr)
+  private resolveBase(char: any, attr: string): number {
+    // 读**基础值**：变更记录的 old 必须是存储值（有效值是投影，不是真相）
+    const val = readRawAttr(char, attr)
     return typeof val === 'number' ? val : 0
   }
 

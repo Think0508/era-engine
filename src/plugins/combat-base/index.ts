@@ -2123,7 +2123,9 @@ async function writeBackCombatant(c: Combatant): Promise<void> {
   // permanent 吸收（内力上限）：实体 mp_max 累加（负数 = 被吸收流失）
   if (c.absorbedMaxMp !== 0) {
     try {
-      const cur = bindingResolver.get(c.entityId, 'mp_max')
+      // mp_max 本身就是「上限」，此处无上限可判；但读必须是**基础值**——
+      // 读有效值再加会把修正烘焙进 base 并反复叠加（2026-09-22 属性有效值层清扫）
+      const cur = bindingResolver.getRaw(c.entityId, 'mp_max')
       if (typeof cur === 'number') {
         bindingResolver.set(c.entityId, 'mp_max', Math.max(0, cur + c.absorbedMaxMp))
       } else {

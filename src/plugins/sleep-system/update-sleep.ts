@@ -17,7 +17,7 @@ import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
 import { eventBus } from '../../core/event-bus'
 import { errorReporter } from '../../core/error-reporter'
-import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, readRawAttr, applyAttrDelta, ATTR } from '../../core/entity-utils'
 import { settleDailyReset } from '../../core/realtime-settle'
 import { settleJuelConversion } from '../../core/juel-settle'
 import { narrativeLog } from '../../core/narrative-log'
@@ -32,11 +32,12 @@ function growStaminaMax(char: any): void {
   const todayCost = char.action_info.today_sanity_point_cost ?? 0
   char.action_info.today_sanity_point_cost = 0
   if (todayCost < 50) return
-  const staminaMax = getEntityAttr(char, ATTR.STAMINA_MAX)
+  const staminaMax = readRawAttr(char, ATTR.STAMINA_MAX)
   if (typeof staminaMax !== 'number' || staminaMax >= 9999) return
   const grow = Math.round(todayCost / 50)
-  const next = Math.min(9999, staminaMax + grow)
-  setEntityAttr(char, ATTR.STAMINA_MAX, next)
+  // 成长走**基础值域**（applyAttrDelta：读基础 → 加 → 封顶 → 写基础）。
+  // 不可读有效值再加：那会把修正/派生烘焙进 base 并反复叠加（2026-09-22 属性有效值层清扫）。
+  applyAttrDelta(char, ATTR.STAMINA_MAX, grow, { max: 9999 })
   const charName = (char as any).name ?? char.id
   // 叙事输出（erArk "在刻苦的锻炼下，博士理智最大值成长了X点"）
   narrativeLog.write(`在刻苦的锻炼下，${charName}精力最大值成长了${grow}点`, 'system', 'sleep-system')
@@ -53,7 +54,8 @@ function refreshTempSemenMax(char: any, minutes: number): void {
   if (typeof semen !== 'number' || semen <= 0) return
   if (typeof semenMax !== 'number' || semenMax <= 0) return
   const extraMax = semenMax * 4
-  const extra = getEntityAttr(char, ATTR.EXTRA_SEMEN)
+  // 要写回 EXTRA_SEMEN，就必须从它自己的**基础值**出发读（有效值是投影）——2026-09-22 清扫
+  const extra = readRawAttr(char, ATTR.EXTRA_SEMEN)
   const newExtra = Math.min(extraMax, (typeof extra === 'number' ? extra : 0) + Math.floor(semen / 2))
   setEntityAttr(char, ATTR.EXTRA_SEMEN, newExtra)
   if (!char.talents) char.talents = {}

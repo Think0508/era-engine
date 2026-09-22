@@ -3,7 +3,7 @@
 // handle_group_sex_end_h_add_hpmp_max（:6756-6814）：H 结束时按"本次 H 绝顶次数"成长。
 // 在 endHScene 清 h_state 之前调用（orgasm_count 数据源 = h_state.orgasm_count[part][0]）。
 
-import { getEntityAttr, setEntityAttr, ATTR } from '../../../core/entity-utils'
+import { setEntityAttr, readRawAttr, applyAttrDelta, ATTR } from '../../../core/entity-utils'
 import { narrativeLog } from '../../../core/narrative-log'
 import { apiSystem } from '../../../core/api'
 import { errorReporter } from '../../../core/error-reporter'
@@ -29,12 +29,13 @@ export async function settleEndHHpmpGrowth(charId: string): Promise<void> {
   if (orgasmCount <= 0) return
 
   const name = char.name ?? charId
-  const hpMax = getEntityAttr(char, ATTR.HP_MAX)
-  const mpMax = getEntityAttr(char, ATTR.MP_MAX)
-  if (typeof hpMax === 'number') setEntityAttr(char, ATTR.HP_MAX, hpMax + orgasmCount * 2)
-  if (typeof mpMax === 'number') setEntityAttr(char, ATTR.MP_MAX, mpMax + orgasmCount * 3)
+  // 上限成长走**基础值域**（applyAttrDelta：读基础 → 加 → 写基础）。
+  // 不可读有效值再加：那会把修正/派生烘焙进 base 并反复叠加（2026-09-22 属性有效值层清扫）。
+  applyAttrDelta(char, ATTR.HP_MAX, orgasmCount * 2)
+  applyAttrDelta(char, ATTR.MP_MAX, orgasmCount * 3)
 
-  const desire = getEntityAttr(char, ATTR.DESIRE)
+  // 欲望值：绝对值扣减。读基础值（若要写回的是它自己，就必须从它自己出发读）
+  const desire = readRawAttr(char, ATTR.DESIRE)
   if (typeof desire === 'number' && desire > 0) {
     setEntityAttr(char, ATTR.DESIRE, Math.max(0, desire - orgasmCount * 20))
   }
@@ -42,10 +43,9 @@ export async function settleEndHHpmpGrowth(charId: string): Promise<void> {
   const playerId = modLoader.getMod()?.playerCharacter
   let text = `在激烈的H之后，${name}的体力上限增加了${orgasmCount * 2}，气力上限增加了${orgasmCount * 3}`
   if (char.id === playerId) {
-    const semenMax = getEntityAttr(char, ATTR.SEMEN_MAX)
+    const semenMax = readRawAttr(char, ATTR.SEMEN_MAX)
     if (typeof semenMax === 'number' && semenMax < 999) {
-      const next = Math.min(999, semenMax + orgasmCount)
-      setEntityAttr(char, ATTR.SEMEN_MAX, next)
+      applyAttrDelta(char, ATTR.SEMEN_MAX, orgasmCount, { max: 999 })
       text += `，精液量上限增加了${orgasmCount}`
     }
   }

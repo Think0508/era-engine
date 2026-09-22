@@ -56,11 +56,11 @@ export function onLoad(_ctx: PluginContext): void {
       if (ctx.settlement) {
         ctx.settlement.applyChange(id, params.attr, delta)
       } else {
-        // fallback：没有 settlement 时直接改
-        const hasBinding = bindingResolver.get(id, params.attr) !== null
-        if (hasBinding) {
-          const current = bindingResolver.get(id, params.attr) ?? 0
-          bindingResolver.set(id, params.attr, current + delta)
+        // fallback：没有 settlement 时直接改。读用**裸值**（getRaw）——读有效值再加会把修正/
+        // 派生烘焙进 base 并反复叠加（2026-09-22 属性有效值层清扫）
+        const currentRaw = bindingResolver.getRaw(id, params.attr)
+        if (currentRaw !== null) {
+          bindingResolver.set(id, params.attr, currentRaw + delta)
         } else {
           const char = entitySystem.get('character', id) as any
           if (!char) continue

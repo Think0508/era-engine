@@ -207,3 +207,33 @@ export function clampAttrValue(char: any, attr: string, value: number): number {
   }
   return v
 }
+
+/**
+ * 属性**增量写入**（原子：读基础值 → 加 delta → 钳制 → 写回基础值）。
+ *
+ * 为什么必须用它：读属性返回的是**有效值**（基础值 + `compute` 派生 + 修正栈），而写入写的是**基础值**。
+ * 任何「读出来加一点再写回去」的代码，只要读的是有效值，就会把修正/派生**烘焙进基础值**，
+ * 下次读取再叠一次 —— 无界膨胀（挂 +20 的效果，每次改属性都多烙一遍 +20）。
+ * 本函数把这条读-改-写全程锁在基础值域，调用方不可能写错。
+ *
+ * 上限判据用**有效值**（`clampAttrValue` 读 `maxAttr` 走 `getEntityAttr`）：「上限 +500」这类修正的
+ * 意义就是抬高上限，判超限时必须看到加成后的上限。规则一句话 ——
+ * **要写回哪个值，就从哪个值出发读；白字（基础）会被写，绿字（加成）只用于显示与判断。**
+ *
+ * @param opts.clamp 按 `ATTR_CAPS` 钳制（默认 false = 纯基础值加减，不引入新上限）
+ * @param opts.max   额外固定上限（如 `STAMINA_MAX` 的 9999、`SEMEN_MAX` 的 999）
+ * @returns `{ old, new }`（均为**基础值**）；实体/增量不可用 → `null`（未写入）。
+ *          属性缺失沿用全仓既有「缺失 = 0」约定（`readRawAttr` 返回 0 → 结果为 delta）
+ */
+export function applyAttrDelta(
+  entity: any, name: string, delta: number, opts?: { clamp?: boolean; max?: number },
+): { old: number; new: number } | null {
+  if (!entity || typeof delta !== 'number' || !Number.isFinite(delta)) return null
+  const old = readRawAttr(entity, name)
+  if (typeof old !== 'number' || !Number.isFinite(old)) return null
+  let next = Math.max(0, old + delta)
+  if (typeof opts?.max === 'number') next = Math.min(opts.max, next)
+  if (opts?.clamp) next = clampAttrValue(entity, name, next)
+  setEntityAttr(entity, name, next)
+  return { old, new: next }
+}

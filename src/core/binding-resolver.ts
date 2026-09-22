@@ -1,5 +1,5 @@
 import { entitySystem } from './entity-system'
-import { getEntityAttr, setEntityAttr, hasEntityAttr } from './entity-utils'
+import { getEntityAttr, setEntityAttr, hasEntityAttr, readRawAttr } from './entity-utils'
 
 type RequiredAttr = { type: string; description: string }
 
@@ -26,6 +26,26 @@ class BindingResolver {
     // 注释：audit-a I2——原只读 entity.base，绑定到 social/combat/economy 类属性读恒 null。
     // 跨命名空间读取；缺失（任何命名空间都无此键）→ null（既有语义保留）
     return hasEntityAttr(entity, attrKey) ? getEntityAttr(entity, attrKey) : null
+  }
+
+  /**
+   * 绑定键 → **裸值**读取（2026-09-22，属性有效值层清扫）。
+   *
+   * `get()` 返回的是**有效值**（基础值 + `compute` 派生 + 修正栈）。凡是「读出来加一点再写回
+   * `set()`」的读-改-写，都必须用本方法读：否则修正/派生会被烘焙进基础值并反复叠加（无界膨胀）。
+   * 解析规则与 `get()` 完全一致（同名解析 + 存在性判定），只是底层换成 `readRawAttr`。
+   */
+  getRaw(entityId: string, pluginKey: string): any {
+    const entity = entitySystem.get('character', entityId)
+    if (!entity) return null
+
+    const mapping = this.findMapping(pluginKey)
+    if (!mapping) return null
+
+    const attrKey = mapping[pluginKey]
+    if (!attrKey) return null
+
+    return hasEntityAttr(entity, attrKey) ? readRawAttr(entity, attrKey) : null
   }
 
   // 注释：按插件读自己的绑定映射（2026-08-10）——get() 跨插件搜索首个含 key 的映射，

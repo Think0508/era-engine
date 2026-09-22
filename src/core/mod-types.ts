@@ -357,6 +357,26 @@ export interface StatusEffectDef {
   stack_decay?: { every: number; amount: number }
 }
 
+// 注释：状态「层数」判据（**全项目唯一一份**，2026-09-22 终审 Fix 2）——
+//   此前 status-system 的叠加分支（`stackable && base_stack < max_stack`）与强度判定
+//   （`stackable || max_stack > 1 || stack_decay`）各写一份判据，两处可以互相矛盾。
+//   现在拆成两个**意图明确**的谓词，由 status-system 与 mod-validate 共用：
+/** 「可叠层」：再施加一次会 +1 层（上限 max_stack）。`stackable = true` 与 `max_stack > 1`
+ *  必须**同时**成立——只写 `stackable = true` 而 `max_stack <= 1` 是自相矛盾的声明，
+ *  加载期报 error（不在这里悄悄放行成"其实不可叠"）。 */
+export function isStackable(def: { stackable?: boolean; max_stack?: number } | undefined | null): boolean {
+  return !!def && def.stackable === true && typeof def.max_stack === 'number' && def.max_stack > 1
+}
+
+/** 「有层数概念」：强度判定取**有效层数**（层数就是"这条状态多强"）而非条目自身数值。
+ *  可叠 **或** 会随时间衰减都算——与 isStackable 分开是刻意的：可叠决定"再施加会不会 +1 层"，
+ *  衰减只决定"层数会不会随时间变"，两者不是同一件事。 */
+export function hasStackLevelConcept(
+  def: { stackable?: boolean; max_stack?: number; stack_decay?: unknown } | undefined | null,
+): boolean {
+  return isStackable(def) || def?.stack_decay !== undefined
+}
+
 // ── 战斗效果定义库（combat-wuxia 战斗系统消费；core 仅作通用数据桶）──
 // definitions/battle-effects.toml 的 [effects.xxx] 条目；插件默认层 + mod 层 deepMerge。
 // 战斗本地管线（combat-base 相位）消费；语义（delivery/settle/action/stat…）由战斗插件校验。

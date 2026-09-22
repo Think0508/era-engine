@@ -34,6 +34,17 @@ export interface AttributeMod {
   set?: number
 }
 
+/** 「一条修正声明有多强」的**唯一一份**算式（2026-09-22 终审 Fix 4）：`set ?? flat ?? percent ?? fallback`。
+ *  消费方：状态属性修正的 D5 强度（status-system，fallback = 1）、战斗 modify_attribute 的登记强度
+ *  （combat-base，fallback = 0）。**禁止再各写一份**——本算式此前在两个插件里各写一遍，且默认值已经分叉
+ *  （状态侧 `?? 1`、战斗侧无兜底），改单侧就静默分叉。
+ *  非有限数（TOML 的 `nan`/`inf` typo，或上游算出的 NaN）→ 一律取 `fallback`：强度是**比较基准**，
+ *  把 NaN 传下去会让 `registerRuntimeMod` 的 `strength >= prev` 全假 → 修正静默拒绝（旧战斗侧的形态）。 */
+export function modStrength(mod: { flat?: number; percent?: number; set?: number } | undefined | null, fallback = 0): number {
+  const v = mod?.set ?? mod?.flat ?? mod?.percent
+  return typeof v === 'number' && Number.isFinite(v) ? v : fallback
+}
+
 /** 声明式来源的单条修正（mod 数据里写的 `attribute_mods = [{ attr, flat?, percent?, set?, per_level? }]`）。
  *  ⚠️ 与 push 栈的 `AttributeMod` 刻意不同：本形状 `attr` 必填、多一个 `per_level`（等级缩放）。 */
 export interface AttributeModSource {
@@ -370,8 +381,12 @@ export function collectDeclarativeMods(entity: any): AttributeModSource[] {
  *  每次读取都重算（不缓存）→ 到点立即失效，**不需要任何变更通知**；过期条目就地剪掉，
  *  否则清单会随挂载次数无界增长（且会一并写进存档）。
  *  未注入时钟（nowMinutes === null，如单测直调）时条目一律视为不过期（见 nowMinutes 注释）。
- *  ⚠️ 返回的数组与条目就是**实体自己的对象**（不是副本）：就地改 `strength` 会改写后续 D5 顶替
- *  判定的比较基准，就地改数值则直接改写生效中的修正，且都绕过 notifyAttrWrite（不失效缓存）。
+ *  ⚠️ 别名契约（两半要分清，2026-09-22 终审 M-1）：
+ *  · **条目**（`RuntimeAttrMod`）就是**实体自己的对象**（不是副本）：就地改 `strength` 会改写后续
+ *    D5 顶替判定的比较基准，就地改数值则直接改写生效中的修正，且都绕过 notifyAttrWrite（不失效缓存）；
+ *  · **返回的数组**每次调用都是**新数组**，且剪除轮里实体字段会被整个换成它（`entity.attr_mods = live`）
+ *    —— 调用方**不得长期持有这个数组引用**：上一轮拿到的那份在下一次剪除后已与实体脱钩，
+ *    往里 push 既不会进实体、也不会进存档（每轮都要现调本函数取最新一份）。
  *  要改清单请走 registerRuntimeMod / removeRuntimeMod / removeRuntimeModsByPrefix。 */
 export function readRuntimeMods(entity: any): RuntimeAttrMod[] {
   if (!entity || typeof entity !== 'object') return []

@@ -314,6 +314,13 @@ level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 1
       | `tick_effects` | **合法**（不报） | 逐次增量 = **伤害/回复的本义**（中毒每 tick 扣 5 点气血），不是"生效期间的加成" |
 
       - 生效期间的临时加成 → 写 `attribute_mods`（到期/移除自动消失、基础值分毫不动）。
+      - ⚠️ **「打到 N」被拒时 `on_apply_effects` 不会执行**（D5 「什么都不发生」是**字面**语义）：
+        `N ≤ 当前有效层数` 时 `apply_status` 直接早退 —— 不顶上、不刷时长、**也不跑 `on_apply_effects`**
+        （被拒的「打到 2」不会造成伤害）。所以「命中时造成 5 点伤害」这类"每次施加都该发生"的效果
+        **不能**写在这个钩子里：要"每次"就用 `tick_effects`（周期结算）或把增量写进 `apply_status` 的
+        `stack_add`（加法恒生效，不受顶替判定约束）。**有层数概念**（可叠 `stackable = true` + `max_stack > 1`，
+        或带 `stack_decay`）**且**声明了 `on_apply_effects` 的状态会在**加载期报 warning** 点名这个陷阱
+        （`npm run validate` 可见；不是 error —— 施加成功时钩子照跑，只有被拒的那次被吞）。
       - 确实要**一次性永久改变属性**（伤害/成长）→ 在 `params` 上写 `permanent = true` **显式声明意图**：
         `{ type = "modify_attribute", params = { attr = "hp", value = -50, permanent = true } }`，
         或直接走显式永久写入路径（`set_attribute` / 脚本 / 任务奖励）。

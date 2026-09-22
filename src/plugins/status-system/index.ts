@@ -18,13 +18,16 @@
 
 import type { PluginContext } from '../../core/types'
 import type { LoadedMod, StatusEffectDef } from '../../core/mod-types'
+// 注释：层数判据（isStackable / hasStackLevelConcept）是 core 的**唯一一份**，本插件与
+// mod-validate 共用——此前叠加分支与强度判定各写一份判据，两处可以互相矛盾（2026-09-22 终审 Fix 2）。
+import { isStackable, hasStackLevelConcept } from '../../core/mod-types'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { entitySystem } from '../../core/entity-system'
 import { modLoader } from '../../core/mod-loader'
 import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
 import { gameContext, gameTimeToTotalMinutes } from '../../core/game-context'
-import { registerRuntimeMod, removeRuntimeMod, readRuntimeMods } from '../../core/attribute-eval'
+import { registerRuntimeMod, removeRuntimeMod, readRuntimeMods, notifyAttrWrite, modStrength } from '../../core/attribute-eval'
 
 /** 层数修正条目（挂在**目标状态**实例上；`from` = 来源状态 id，用于撤销与排查） */
 export interface StatusStackMod {
@@ -174,7 +177,7 @@ export function applyStatus(charId: string, statusId: string, opts: ApplyStatusO
       last_tick_game_time: now - tickIntervalOf(def),
     }
     char.status_effects.push(entry)
-    installViews(entry)
+    installViews(entry, char)
     // 注释：本状态声明的层数修正落到目标状态实例上（目标尚未出现 → 目标出现时由 retrofit 补）
     applyStackModsFromSource(char, statusId)
     retrofitStackMods(char, statusId)
@@ -187,7 +190,11 @@ export function applyStatus(charId: string, statusId: string, opts: ApplyStatusO
   // 注释：已存在——「打到几」/「加几」/既有叠加语义（三选一）
   if (opts.stack !== undefined) {
     // D5 ①「打到几」：比较基准是**有效层数**（基础 + 层数修正 − 待衰减）；打不动 → 直接返回，
-    // 连时长都不刷新（这是用户明确要的语义）
+    // 连时长都不刷新（这是用户明确要的语义）。
+    // ⚠️ 这条早退**连 on_apply_effects 都不跑**（「什么都不发生」的字面语义，2026-09-22 终审裁定：
+    //    「被拒的『打到 2』不得造成伤害」）——作者若把"每次施加"的意图写进 on_apply_effects
+    //    （如「命中时造成 5 点伤害」），被拒时就静默吞掉。加载期由 mod-validate 对"有层数概念 +
+    //    有 on_apply_effects"的状态报 warning 点名该陷阱（要"每次都发生"请用 tick_effects/stack_add）。
     if (!(opts.stack > stackValueOf(existing, now))) return
     // 顶上成功：**先把投影出的待衰减量落账**，再写目标层数，并把衰减锚点重置到"现在"。
     // 若直接写 base_stack 而不管待衰减（曾经的写法）：投影出的层数会比目标少一截（刚"打到 3"
@@ -201,8 +208,10 @@ export function applyStatus(charId: string, statusId: string, opts: ApplyStatusO
   } else if (opts.stack_add !== undefined) {
     // 注释：加法类恒生效（不受顶替判定约束）
     existing.base_stack += opts.stack_add
-  } else if (def.stackable && existing.base_stack < def.max_stack) {
+  } else if (isStackable(def) && existing.base_stack < def.max_stack) {
     // 注释：既有语义——可叠则 +1 封顶；否则只刷新时长
+    // （判据 isStackable = `stackable === true && max_stack > 1`，与强度判定共用一份，
+    //   见 core/mod-types.ts；只写 stackable = true 而 max_stack ≤ 1 是自相矛盾声明 → 加载期 error）
     existing.base_stack += 1
   }
 
@@ -219,7 +228,7 @@ export function removeStatus(charId: string, statusId: string): void {
   if (!Array.isArray(char?.status_effects)) return
   const idx = char.status_effects.findIndex((s: any) => s?.id === statusId)
   if (idx === -1) return // 注释：没有该状态，静默跳过
-  normalizeEntry(char.status_effects[idx])
+  normalizeEntry(char.status_effects[idx], char)
   removeEntryAt(char, idx, modLoader.getMod()?.statusEffects[statusId])
 }
 
@@ -294,7 +303,7 @@ function retrofitStackMods(char: any, targetId: string): void {
     if (!raw || raw.id === targetId) continue
     const otherDef = mod.statusEffects[raw.id]
     if (!otherDef?.stack_mods?.length) continue
-    const source = normalizeEntry(raw)
+    const source = normalizeEntry(raw, char)
     if (!source || isExpired(source, now)) continue
     for (const m of otherDef.stack_mods) {
       if (m.status !== targetId) continue
@@ -365,16 +374,10 @@ function modStrengthFor(
 
 /** 运行时条目的强度（D5 顶替比较基准，随条目持久化）：
  *  有层数概念的状态 → **有效层数**（层数就是"这条状态多强"）；
- *  无层数概念 → 条目自身强度（沿用统一算式 `set ?? flat ?? percent`，全缺省 = 1）。 */
+ *  无层数概念 → 条目自身强度（core 的统一算式 `modStrength` = `set ?? flat ?? percent ?? 1`）。 */
 function runtimeStrength(def: StatusEffectDef, entry: StatusEntry, mod: any, now: number): number {
-  if (hasStackConcept(def)) return stackValueOf(entry, now)
-  const v = mod?.set ?? mod?.flat ?? mod?.percent
-  return typeof v === 'number' && Number.isFinite(v) ? v : 1
-}
-
-/** 该状态是否有"层数"概念（可叠 / 多层上限 / 会衰减）——决定强度取有效层数还是条目自身值 */
-function hasStackConcept(def: StatusEffectDef): boolean {
-  return def.stackable === true || (typeof def.max_stack === 'number' && def.max_stack > 1) || def.stack_decay !== undefined
+  if (hasStackLevelConcept(def)) return stackValueOf(entry, now)
+  return modStrength(mod, 1)
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -393,7 +396,7 @@ function settleChar(char: any, mod: LoadedMod, now: number, tick: boolean): void
   const list = char?.status_effects
   if (!Array.isArray(list)) return
   for (let i = list.length - 1; i >= 0; i--) {
-    const entry = normalizeEntry(list[i])
+    const entry = normalizeEntry(list[i], char)
     if (!entry) { list.splice(i, 1); continue } // 注释：畸形条目（无 id）剪除
     // 注释：到期——绝对时刻判定（now >= expiresAt 即失效）
     if (isExpired(entry, now)) { removeEntryAt(char, i, mod.statusEffects[entry.id]); continue }
@@ -448,7 +451,7 @@ function findEntry(char: any, statusId: string): StatusEntry | null {
   let found: StatusEntry | null = null
   // 倒序遍历（剪除用 splice 不破坏未访问下标）
   for (let i = char.status_effects.length - 1; i >= 0; i--) {
-    const entry = normalizeEntry(char.status_effects[i])
+    const entry = normalizeEntry(char.status_effects[i], char)
     if (!entry) { char.status_effects.splice(i, 1); continue } // 注释：畸形条目（无 id）剪除
     if (isExpired(entry, now)) { removeEntryAt(char, i, mod?.statusEffects[entry.id]); continue }
     if (entry.id === statusId) found = entry
@@ -460,8 +463,10 @@ function findEntry(char: any, statusId: string): StatusEntry | null {
  *  ① 旧档就地迁移：`remaining_duration → expiresAt`（-1 = 永久），`stack → base_stack`，
  *     `last_tick_game_time`/`last_decay_at` 从"现在"起算（迁移不触发立即 tick / 衰减爆发）；
  *  ② 字段兜底：任何来源（旧档/手改/TOML 初始数据）都保证管线拿得到数字；
- *  ③ 装配兼容视图访问器（`stack` / `remaining_duration`：真值在 base_stack/expiresAt）。 */
-function normalizeEntry(raw: any): StatusEntry | null {
+ *  ③ 装配兼容视图访问器（`stack` / `remaining_duration`：真值在 base_stack/expiresAt）。
+ *  `char` = 该条目所属角色（透传给 installViews：视图 setter 要 `notifyAttrWrite(char)` 失效
+ *  属性有效值缓存，见 installViews 注释）——所有调用方都在角色上下文里，故一律显式传入。 */
+function normalizeEntry(raw: any, char: any): StatusEntry | null {
   if (!raw || typeof raw !== 'object' || typeof raw.id !== 'string' || raw.id.length === 0) return null
   const entry = raw as StatusEntry
   if (!(VIEW_MARK in entry)) {
@@ -491,7 +496,7 @@ function normalizeEntry(raw: any): StatusEntry | null {
         suggestion: 'expiresAt 必须是有限 number（绝对游戏分钟）；写成字符串/NaN 会让状态永不失效（与 attribute-eval 对 attr_mods 的同款诊断）',
       })
     }
-    installViews(entry)
+    installViews(entry, char)
   }
   if (typeof entry.base_stack !== 'number' || !Number.isFinite(entry.base_stack)) entry.base_stack = 1
   if (!Array.isArray(entry.stack_mods)) entry.stack_mods = []
@@ -513,14 +518,20 @@ function normalizeEntry(raw: any): StatusEntry | null {
  *  访问器 —— 克隆体上 `entry.stack` / `entry.remaining_duration` 为 `undefined`（
  *  `engine-ui-bridge.ts:117` 把 player 克隆进 UI store、`character-system/index.ts:204` 同理）。
  *  当前这些克隆只有读取真值字段的消费方，故 D6 的三处消费者仍成立；新增消费方请读真值字段
- *  （`base_stack` / `expiresAt`），或先经 status-system 触碰（`game:load` 会重装视图）。 */
-function installViews(entry: StatusEntry): void {
+ *  （`base_stack` / `expiresAt`），或先经 status-system 触碰（`game:load` 会重装视图）。
+ *
+ *  ⚠️ setter 必须 `notifyAttrWrite(char)`（2026-09-22 终审 Fix 3）：两个 setter 改的是**属性有效值
+ *  层的输入**（`base_stack` 进 D5 强度、`expiresAt` 决定属性修正条目的寿命），而有效值层靠
+ *  `(裸值, 版本戳)` 缓存——**不 bump 版本戳就没有任何失效通道**。今天"恰好安全"只是因为实体一旦
+ *  有 `attr_mods` 就整体不可缓存（`cacheable = all.length === 0`），即靠巧合而非构造：一旦缓存策略
+ *  放宽（如运行时条目也进缓存），setter 就会静默留下陈旧有效值。故按其它所有属性写路径的规矩补通知。 */
+function installViews(entry: StatusEntry, char: any): void {
   Object.defineProperty(entry, VIEW_MARK, { value: true, enumerable: false, configurable: true })
   Object.defineProperty(entry, 'stack', {
     enumerable: false,
     configurable: true,
     get: () => stackValueOf(entry, getCurrentGameMinutes()),
-    set: (v: number) => { entry.base_stack = v },
+    set: (v: number) => { entry.base_stack = v; notifyAttrWrite(char) },
   })
   Object.defineProperty(entry, 'remaining_duration', {
     enumerable: false,
@@ -528,6 +539,7 @@ function installViews(entry: StatusEntry): void {
     get: () => remainingMinutes(entry, getCurrentGameMinutes()),
     set: (v: number) => {
       entry.expiresAt = (v === -1 || v === undefined) ? undefined : getCurrentGameMinutes() + v
+      notifyAttrWrite(char)
     },
   })
 }

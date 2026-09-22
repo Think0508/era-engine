@@ -721,6 +721,115 @@ describe('mod-loader integration', () => {
       const real = errorReporter.getErrors().filter(e => e.severity === 'error')
       expect(real.filter(e => e.message.includes('修正测试'))).toEqual([])
     })
+
+    // ── 2026-09-22 终审 Fix 2：叠加声明自洽性（stackable = true 与 max_stack <= 1 自相矛盾）──
+    it('stackable = true 但 max_stack <= 1 → error（自相矛盾声明；可叠的正对照零 error）', () => {
+      errorReporter.clear()
+      const mod = parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."坏叠加状态"]',
+          'name = "坏叠加状态"',
+          'description = "x"',
+          'category = "buff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = true',
+          'max_stack = 1',
+          '[status-effects."好叠加状态"]',
+          'name = "好叠加状态"',
+          'description = "x"',
+          'category = "buff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = true',
+          'max_stack = 3',
+        ].join('\n'),
+      }))
+      const errs = errorReporter.getErrors().filter(e => e.severity === 'error' && e.source === 'mod-loader')
+      const bad = errs.filter(e => e.message.includes('坏叠加状态'))
+      expect(bad.some(e => e.message.includes('max_stack') && e.message.includes('自相矛盾'))).toBe(true)
+      expect(bad.some(e => e.suggestion?.includes('max_stack = 3') && e.suggestion?.includes('打到 N'))).toBe(true)
+      // 正对照：stackable = true + max_stack = 3（真可叠）不得报错，且两条数据都真的加载进来
+      expect(errs.filter(e => e.message.includes('好叠加状态'))).toEqual([])
+      expect(mod.statusEffects['好叠加状态']?.max_stack).toBe(3)
+      // 现役夹具（醉意 = stackable true + max_stack 3）整体加载零 error —— 不误伤真可叠的状态
+      errorReporter.clear()
+      parseModData('test-mod', makeMap())
+      expect(errorReporter.getErrors().filter(e => e.severity === 'error')).toEqual([])
+    })
+
+    // ── 2026-09-22 终审 Fix 1：D5 拒绝路径静默吞掉 on_apply_effects（加载期 warning 点名陷阱）──
+    // 裁定：**不**让拒绝路径跑副作用（D5「什么都不发生」是字面语义），改为把这个陷阱显式化。
+    it('有层数概念 + on_apply_effects → warning（含 stack_decay 形态）；无层数概念 → 不报', () => {
+      errorReporter.clear()
+      const mod = parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          // ① 可叠（isStackable：stackable = true + max_stack > 1）
+          '[status-effects."层数钩子状态"]',
+          'name = "层数钩子状态"',
+          'description = "x"',
+          'category = "debuff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = true',
+          'max_stack = 3',
+          'on_apply_effects = [ { type = "modify_attribute", params = { attr = "hp", value = -5, permanent = true } } ]',
+          // ② 会衰减（stack_decay）——层数概念的另一条理由
+          '[status-effects."衰减钩子状态"]',
+          'name = "衰减钩子状态"',
+          'description = "x"',
+          'category = "debuff"',
+          'duration = 600',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          'stack_decay = { every = 60, amount = 1 }',
+          'on_apply_effects = [ { type = "modify_attribute", params = { attr = "hp", value = -5, permanent = true } } ]',
+          // ③ 无层数概念（不可叠、不衰减）→ 走不到"打不动"分支，不报
+          '[status-effects."无层数钩子状态"]',
+          'name = "无层数钩子状态"',
+          'description = "x"',
+          'category = "debuff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          'on_apply_effects = [ { type = "modify_attribute", params = { attr = "hp", value = -5, permanent = true } } ]',
+        ].join('\n'),
+      }))
+      const warns = errorReporter.getErrors().filter(e => e.severity === 'warning' && e.message.includes('on_apply_effects'))
+      expect(warns).toHaveLength(2)                                  // 恰好两条（③ 不报）
+      expect(warns.some(e => e.message.includes('层数钩子状态') && e.message.includes('被拒'))).toBe(true)
+      expect(warns.some(e => e.message.includes('衰减钩子状态'))).toBe(true)
+      expect(warns.every(e => !e.message.includes('无层数钩子状态'))).toBe(true)
+      // 建议必须指路：tick_effects（周期性）或 stack_add（加法恒生效）
+      expect(warns.every(e => e.suggestion?.includes('tick_effects') && e.suggestion?.includes('stack_add'))).toBe(true)
+      // 三个状态的数据都真的加载进来（warning 不拦加载）
+      expect(Object.keys(mod.statusEffects)).toEqual(expect.arrayContaining(['层数钩子状态', '衰减钩子状态', '无层数钩子状态']))
+      // 现役内容（h-core/test-mod 的状态都没有 on_apply_effects）整体加载零 warning
+      errorReporter.clear()
+      parseModData('test-mod', makeMap())
+      expect(errorReporter.getErrors().filter(e => e.severity === 'warning' && e.message.includes('on_apply_effects'))).toEqual([])
+    })
+
+    // 2026-09-22 终审 M-3：`params.permanent === true` 的放行分支此前只被真实数据间接走到
+    it('params.permanent = true 的状态钩子 → 零 error（作者显式声明"一次性永久改变"）', () => {
+      errorReporter.clear()
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."永久钩子状态"]',
+          'name = "永久钩子状态"',
+          'description = "x"',
+          'category = "debuff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          'on_apply_effects = [ { type = "modify_attribute", params = { attr = "hp", value = -50, permanent = true } } ]',
+        ].join('\n'),
+      }))
+      expect(errorReporter.getErrors().filter(e => e.severity === 'error')).toEqual([])
+    })
   })
 
   it('should populate condition registry after loading mod', async () => {

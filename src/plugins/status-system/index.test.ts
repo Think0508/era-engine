@@ -371,6 +371,61 @@ describe('status-system —— expiresAt + 层数三层模型 + 属性修正生�
     expect(effectiveStack('player', '醉意')).toBe(2)
   })
 
+  // ── 2026-09-22 终审 Fix 5：D5 ② 的**状态 → 属性修正清单**端到端路径 ─────────────────
+  // 单测层已有 attribute-eval.test.ts「强度相等也要顶上并刷新时长」（只盯 registerRuntimeMod），
+  // 拒绝路径也已有覆盖；缺的是整条链：有效层数 → modStrengthFor 的 max() → registerRuntimeMod 的 `>=`。
+  // 这条链的落点 = "buff 的属性效果不得比状态本身先过期"。
+  it('D5 ② 端到端：同强度再中一次 = 刷新时长（状态与属性修正的到期时刻一起推进，数量不变）', () => {
+    const t0 = nowMin()                                          // 8:00 的绝对分钟（year=1 起算，非 0 —— 故一律现算不写死）
+    applyStatus('player', '修正测试状态')                        // duration 120
+    const p = player()
+    const modId = 'status:修正测试状态'
+    expect(entryOf('player', '修正测试状态').expiresAt).toBe(t0 + 120)
+    expect(effectiveStack('player', '修正测试状态')).toBe(1)                    // 1 层（不可叠）
+    expect(p.attr_mods.find((m: any) => m.id === modId)?.expiresAt).toBe(t0 + 120) // 属性修正同刻到期
+    expect(getEntityAttr(p, '修正测试值')).toBe(125)                           // 100 + 25
+
+    setTime(9)                                                   // t0 + 60：状态与属性修正都只剩 60 分钟
+    const t1 = nowMin()
+    applyStatus('player', '修正测试状态')                        // 同强度再中一次（无 stack / stack_add）
+    const e = entryOf('player', '修正测试状态')
+    expect(e.expiresAt).toBe(t1 + 120)                          // ← 刷新（不是留在 t0 + 120）
+    expect(e.base_stack).toBe(1)                                // 数量不变（不可叠 → 不 +1）
+    expect(effectiveStack('player', '修正测试状态')).toBe(1)
+    const mod = p.attr_mods.find((m: any) => m.id === modId)!
+    expect(mod.expiresAt).toBe(e.expiresAt)                      // ← 属性修正跟着刷新（不早于状态）
+    expect(mod.strength).toBe(25)                                // 强度 = flat 25（无层数概念 → modStrength(mod, 1)）
+    expect(getEntityAttr(p, '修正测试值')).toBe(125)             // 加成还在（刷新没把它丢掉）
+    setTime(11)                                                  // t0 + 180 = 新到期时刻 → 状态与属性效果一起失效
+    expect(getEntityAttr(p, '修正测试值')).toBe(100)
+  })
+
+  // ── 2026-09-22 终审 Fix 3：兼容视图 setter 必须通知属性有效值层 ─────────────────────
+  // 原实现直接写 base_stack / expiresAt，**没有任何失效通道**（今天"恰好安全"只因带 attr_mods 的
+  // 实体在属性层整体不可缓存——靠巧合而非构造）。
+  // 观测方式：`派生测试值 = 根骨 × 10` 是 compute 派生 → 它的 (裸值 → 有效值) 缓存只由
+  // 【本属性裸值 + 实体版本戳】失效，故"版本戳有没有被 bump"在这里**可观测**：
+  //   直改 根骨 裸值（绕过 setEntityAttr/notifyAttrWrite）→ 读到陈旧值；再走一次 setter → 必须重算。
+  it('兼容视图 setter 通知属性层：写 stack / remaining_duration 都会失效该实体的有效值缓存', () => {
+    // 独立探针角色：无装备/能力/天赋 → 属性层对该实体可缓存（缓存才有意义）；状态也挂它身上
+    entitySystem.register('character', 'probe_setter', { id: 'probe_setter', base: { 根骨: 5 } })
+    try {
+      const c = entitySystem.get('character', 'probe_setter') as any
+      applyStatus('probe_setter', '修正测试层数', { stack: 2 })   // 该状态无 attribute_mods → 实体仍可缓存
+      expect(getEntityAttr(c, '派生测试值')).toBe(50)             // 5 × 10 → 这一读把 (0 → 50) 落进缓存
+      c.base['根骨'] = 6                                          // 直改裸值（生产写路径大量如此：无通知）
+      expect(getEntityAttr(c, '派生测试值')).toBe(50)             // 缓存命中 = 版本戳没动的陈旧窗口
+      entryOf('probe_setter', '修正测试层数').stack = 3            // setter ①：写 base_stack
+      expect(getEntityAttr(c, '派生测试值')).toBe(60)             // ← 修前：版本戳未 bump → 仍是陈旧的 50
+      c.base['根骨'] = 7
+      expect(getEntityAttr(c, '派生测试值')).toBe(60)             // 同上，再来一次陈旧窗口
+      entryOf('probe_setter', '修正测试层数').remaining_duration = 30  // setter ②：写 expiresAt
+      expect(getEntityAttr(c, '派生测试值')).toBe(70)             // ← 修前：仍是 60
+    } finally {
+      entitySystem.unregister('character', 'probe_setter')
+    }
+  })
+
   it('兼容视图的 setter 落回唯一真值：写 stack → base_stack；写 remaining_duration → expiresAt', () => {
     applyStatus('player', '修正测试层数', { stack: 3 })
     applyStatus('player', '修正测试护体')

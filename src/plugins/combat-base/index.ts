@@ -24,7 +24,7 @@ import { eventBus } from '../../core/event-bus'
 import { gameContext } from '../../core/game-context'
 import { narrativeLog } from '../../core/narrative-log'
 import { bindingResolver } from '../../core/binding-resolver'
-import { registerRuntimeMod, removeRuntimeModsByPrefix } from '../../core/attribute-eval'
+import { registerRuntimeMod, removeRuntimeModsByPrefix, modStrength } from '../../core/attribute-eval'
 import type { RuntimeAttrMod } from '../../core/attribute-eval'
 import { errorReporter } from '../../core/error-reporter'
 import { registerSkipRule } from '../../core/skip-registry'
@@ -1116,10 +1116,11 @@ function syncAttributeMods(c: Combatant): void {
   )
   if (c.attrModSig === sig) return
   c.attrModSig = sig
-  // 先清本场旧条目（含已从效果区消失的），再按当前值登记：强度算式 = set ?? flat ?? percent ?? 0（全项目统一）
+  // 先清本场旧条目（含已从效果区消失的），再按当前值登记：强度算式 = modStrength（core 唯一一份，
+  // set ?? flat ?? percent ?? 0）——本处曾与 status-system 各写一遍且默认值分叉（2026-09-22 终审 Fix 4）
   removeRuntimeModsByPrefix(entity, 'combat:')
   for (const m of want.values()) {
-    registerRuntimeMod(entity, m, m.set ?? m.flat ?? m.percent ?? 0)
+    registerRuntimeMod(entity, m, modStrength(m, 0))
   }
 }
 

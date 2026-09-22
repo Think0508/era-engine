@@ -7,6 +7,7 @@ import { useRegistry } from './use-registry'
 import { getCharacterValidators, validateTopLevelLayers } from './character-contract'
 import { modLoader } from './mod-loader'
 import type { LoadedMod, RelationTypeDef, RelationGroupDef, Quest, UpgradeNeed } from './mod-types'
+import { isStackable, hasStackLevelConcept } from './mod-types'
 import type { AttributeModSource } from './attribute-eval'
 
 export function validateCharacterContract(mod: LoadedMod, modName: string): void {
@@ -629,6 +630,35 @@ export function validateAttributeMods(mod: LoadedMod): void {
   // 状态**没有等级概念** → attribute_mods 里写 per_level 一律 error（与装备同待遇：不静默当 1 级）。
   for (const [id, def] of Object.entries(mod.statusEffects ?? {})) {
     check(`状态 '${id}'`, def?.attribute_mods, false)
+    // 叠加声明自洽性（2026-09-22 终审 Fix 2）：`stackable = true` + `max_stack <= 1` 是自相矛盾
+    // 的声明——运行时按 isStackable 判（两者必须同时成立）→ 该状态**实际不可叠**，作者写了
+    // "可叠"却得到"只刷时长"，且旧的强度判据（只看 stackable）会把它当有层数概念 → 强度取层数。
+    // 报 error 而不是静默按不可叠处理：两种解读（改 max_stack / 改 stackable）差一层语义，
+    // 只有作者知道要哪个。
+    if (def?.stackable === true && !isStackable(def)) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error',
+        message: `状态 '${id}' 声明 stackable = true，但 max_stack = ${String(def.max_stack)}（≤ 1）——自相矛盾，运行时按"不可叠"处理`,
+        suggestion: '要可叠就把 max_stack 写成 > 1（如 max_stack = 3）；不可叠就删掉 stackable = true（或改为 false）并保留 max_stack = 1。'
+          + '注意「打到 N 层」与叠加无关（apply_status 的 stack/stack_add 照常生效），本字段只影响"再施加一次会不会 +1 层"',
+      })
+    }
+    // on_apply_effects 的陷阱显式化（2026-09-22 终审 Fix 1，**裁定：拒绝路径不跑副作用**）：
+    // 「打到 N」被拒（N ≤ 当前有效层数）时 applyStatus 直接早退 = 「什么都不发生」（D5 语义，
+    // 用户明确要的），**on_apply_effects 一笔都不跑**。spec §7.1 把这两个钩子限定为"一次性、
+    // 非属性/非层数"的效果，作者因此很容易把"每次施加都该发生"的意图（如「命中时造成 5 点伤害」）
+    // 写进去——一旦被拒就静默吞掉，没有任何运行期信号。这里给加载期 warning 点名该陷阱
+    // （不改成拒绝时跑副作用：那会违背 D5「什么都不发生」，且"被拒的攻击仍然扣血"更难解释）。
+    // 判据 = 「有层数概念」（可叠 或 会衰减，与 status-system 的强度判定同一份 isStackable/
+    // hasStackLevelConcept）：无层数概念的状态走不到"打不动"分支，故不报。
+    if (def?.on_apply_effects?.length && hasStackLevelConcept(def)) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'warning',
+        message: `状态 '${id}' 既有层数概念（可叠/会衰减）又声明了 on_apply_effects——「打到 N」被拒（N ≤ 当前有效层数）时该钩子不会执行（D5「什么都不发生」）`,
+        suggestion: 'on_apply_effects 只在**真的施加/顶上**时跑。若意图是"每次施加都发生"，用 tick_effects（周期性）'
+          + '或 apply_status 的 stack_add（加法恒生效、不受顶替判定约束）；若只想在被拒时也有反馈，得由发起方（招式/脚本）自己处理',
+      })
+    }
     // stack_mods：被修正的状态 id 必须已定义（写错 = 一条恒不生效的静默修正），
     // 层数增减必须是非零整数（0 = 没写；小数 = 半层）。
     if (def?.stack_mods !== undefined) {

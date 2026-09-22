@@ -8,6 +8,7 @@ import {
   registerDeclarativeSource,
   registerRuntimeMod, removeRuntimeMod, removeRuntimeModsByPrefix,
   readAttrForCompute,
+  modStrength,
 } from './attribute-eval'
 
 describe('attribute-eval：闸门（零回归保证）', () => {
@@ -559,6 +560,26 @@ describe('attribute-eval：运行时修正（带到期时刻）', () => {
     expect(readEffective(c, '力道', 100)).toBe(157.5)
   })
 
+  // 2026-09-22 终审 M-2：三个来源（声明式/运行时清单/push 栈）**同时**落在同一属性上，
+  // percent 来自两个以上来源 → 必须经**同一份**累积体相加后只乘一次。逐个相乘（分叉回"各写各的"）
+  // 会得 188.76，这里钉 176（110 × 1.6）。
+  it('三源共存（装备 + 运行时清单 + push 栈）经同一累积体：flat 先加、percent 相加只乘一次', () => {
+    __resetAttributeEval()
+    NOW = 1000
+    configureAttributeEval({
+      definitions: { 力道: {} },
+      defs: { items: { 护腕: { attribute_mods: [{ attr: '力道', percent: 0.1 }] } } },
+      nowMinutes: () => NOW,
+    })
+    const c: any = { id: 'r7b', equipment: { accessory: '护腕' } }
+    registerRuntimeMod(c, { id: 'status:x', attr: '力道', flat: 10, percent: 0.2 }, 20)
+    registerModifier(c, 'combat:y', '力道', { percent: 0.3 })
+    // (100 + 10) × (1 + 0.1 + 0.2 + 0.3) = 110 × 1.6 = 176
+    expect(readEffective(c, '力道', 100)).toBeCloseTo(176, 10)
+    expect((c as any).attr_mods).toHaveLength(1)   // 运行时来源真的在实体上
+    expect(listModifiers(c)).toHaveLength(1)       // push 栈来源真的在模块里
+  })
+
   it('removeRuntimeMod / removeRuntimeModsByPrefix', () => {
     const c = ent('r8')
     registerRuntimeMod(c, { id: 'combat:a', attr: '力道', flat: 1 }, 1)
@@ -632,5 +653,29 @@ describe('attribute-eval：运行时修正（带到期时刻）', () => {
     const c = ent('r11')
     registerRuntimeMod(c, { id: 'x', attr: '力道', flat: 7, expiresAt: 1 }, 7)
     expect(readEffective(c, '力道', 100)).toBe(107)
+  })
+})
+
+// 2026-09-22 终审 Fix 4：强度算式从两个插件（status-system `?? 1` / combat-base 无兜底）收敛到
+// 本模块的 modStrength —— 这里把**优先级**与**兜底**两半都钉死（分叉过的两半各一条）。
+describe('attribute-eval：强度算式 modStrength（全项目唯一一份）', () => {
+  it('优先级 set ?? flat ?? percent', () => {
+    expect(modStrength({ set: 5, flat: 3, percent: 0.5 })).toBe(5)   // set 压过两者
+    expect(modStrength({ flat: 3, percent: 0.5 })).toBe(3)          // flat 压过 percent
+    expect(modStrength({ percent: 0.5 })).toBe(0.5)                 // 只剩 percent
+  })
+
+  it('全缺省 → fallback（默认 0；状态侧显式传 1）', () => {
+    expect(modStrength({})).toBe(0)
+    expect(modStrength({}, 1)).toBe(1)
+    expect(modStrength(undefined, 1)).toBe(1)                       // 调用方拿到 undefined 声明也不崩
+    expect(modStrength(null, 0)).toBe(0)
+  })
+
+  it('非有限声明（TOML 的 nan/inf typo）→ fallback，不把 NaN 当强度传下去', () => {
+    // 旧战斗侧写法（`set ?? flat ?? percent ?? 0`）在这里会吐 NaN → registerRuntimeMod 的
+    // `strength >= prev` 恒假 → 修正被静默拒绝（"配了却没生效"）。归一到 fallback 后语义明确。
+    expect(modStrength({ set: Number.NaN, flat: 3 }, 1)).toBe(1)    // NaN = 无效声明，不回退到 flat
+    expect(modStrength({ flat: Number.POSITIVE_INFINITY })).toBe(0)
   })
 })

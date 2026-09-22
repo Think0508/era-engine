@@ -161,6 +161,7 @@ function compileScript(code: string): Function {
 }
 
 /** 派生：v = 脚本(raw, attrs)。失败姿态一律「回退裸值 + 去重上报」，不阻断调用方。
+ *  唯一例外：脚本解析器未注入（注入前的接线缺失 / 单测直接调本模块）时**静默**回退裸值、不上报。
  *  ⚠️ 同步执行、**无超时保护**（同步管线里做不到，见 spec §4.3）——脚本必须纯同步且快速 */
 function applyCompute(entity: object, name: string, raw: number): number {
   const def = definitions[name]
@@ -265,7 +266,8 @@ export function readAttrForCompute(entity: any, name: string): any {
   if (!rawReader) {
     // 结构性接线缺失（entity-utils 模块加载时注入）——静默返回 0 会让派生值无声地错，
     // 故必须上报：调用方拿到 0 是回退姿态，但错误必须有信号。
-    errorReporter.reportDedup('attr-eval-no-raw-reader', {
+    // 去重键带属性名：否则进程内只有第一个被读的属性会被点名（与深度护栏同款归因处理）
+    errorReporter.reportDedup(`attr-eval-no-raw-reader:${name}`, {
       source: 'attribute-eval', severity: 'error',
       message: `读取属性 '${name}' 的有效值时 rawReader 未注入——已返回 0（compute 结果不可信）`,
       suggestion: 'entity-utils 在模块加载时注入 rawReader；单独使用本模块（如单元测试）须自行 configureAttributeEval({ rawReader })',

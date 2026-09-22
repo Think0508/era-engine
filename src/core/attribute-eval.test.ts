@@ -181,7 +181,11 @@ describe('attribute-eval：修正栈与叠加代数', () => {
 })
 
 describe('attribute-eval：compute 派生', () => {
-  beforeEach(() => { __resetAttributeEval() })
+  // ⚠️ errorReporter.clear() 是必须的：它同时清错误列表与 reportDedup 去重键。
+  //    只 reset 求值器的话，上一条用例的上报会残留 —— 「抛错」用例会被「文件缺失」用例
+  //    留下的含 'calc.js' 的消息喂饱（删掉 catch 里的上报也照样绿），非有限数用例的第二半
+  //    则会被第一半已消耗的 `attr-compute-bad:最大气血` 去重键压掉。清干净后每条姿态各自可观测。
+  beforeEach(() => { __resetAttributeEval(); errorReporter.clear() })
   const e = () => ({ id: 'c1', base: { 根骨: 50, 最大气血: 300 } })
 
   const withScripts = (scripts: Record<string, string>, defs?: Record<string, any>) => {
@@ -223,20 +227,28 @@ describe('attribute-eval：compute 派生', () => {
   it('脚本文件缺失 → 回退裸值 + 上报一次', () => {
     withScripts({})
     expect(readEffective(e(), '最大气血', 300)).toBe(300)
-    expect(errorReporter.getErrors().some(x => x.message.includes('calc.js'))).toBe(true)
+    // 钉死「缺失」这一条姿态自己的措辞（'calc.js' 单独出现于抛错/非有限数两条姿态的消息里）
+    expect(errorReporter.getErrors().some(x => x.message.includes('calc.js') && x.message.includes('不存在或为空'))).toBe(true)
   })
 
   it('脚本抛错 → 回退裸值 + 上报', () => {
     withScripts({ 'calc.js': 'throw "boom"' })
     expect(readEffective(e(), '最大气血', 300)).toBe(300)
-    expect(errorReporter.getErrors().some(x => x.message.includes('calc.js'))).toBe(true)
+    // 本姿态自己的措辞（含抛错内容）；此前只断言 'calc.js'，那条消息由「文件缺失」用例残留，
+    // 删掉 catch 分支的 reportDedup 也照样绿 —— 故必须钉「执行抛错：boom」。
+    expect(errorReporter.getErrors().some(x => x.message.includes('执行抛错') && x.message.includes('boom'))).toBe(true)
   })
 
   it('返回非有限数 → 回退裸值 + 上报', () => {
     withScripts({ 'calc.js': 'return NaN' })
     expect(readEffective(e(), '最大气血', 300)).toBe(300)
+    expect(errorReporter.getErrors().some(x => x.message.includes('返回非有限数字') && x.message.includes('收到 number'))).toBe(true)
+    // 去重键 `attr-compute-bad:最大气血` 已被上半段消耗 → clear() 一并清掉去重键，
+    // 下半段（字符串返回）才能独立上报与独立断言。
+    errorReporter.clear()
     withScripts({ 'calc.js': 'return "不是数字"' })
     expect(readEffective(e(), '最大气血', 300)).toBe(300)
+    expect(errorReporter.getErrors().some(x => x.message.includes('返回非有限数字') && x.message.includes('收到 string'))).toBe(true)
   })
 
   it('自引用 → 深度护栏断链 + 上报（不栈溢出）', () => {

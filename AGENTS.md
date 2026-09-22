@@ -560,9 +560,9 @@ const data = TOML.parse(rawToml)
 
 **关键特性**：
 - 构建时：Vite 扫描 `/mods/` 下所有 `.toml` 文件，生成路径→模块的映射表
-- 运行时：`import()` 走 Vite 内置模块系统，dev模式走真实HTTP请求（支持HMR），生产模式走代码分割chunk
+- 运行时：`import()` 走 Vite 内置模块系统，dev模式走真实HTTP请求，生产模式走代码分割chunk
 - 模组切换：`mod-loader` 仅加载目标模组的文件，不碰其他模组
-- HMR：开发时改TOML → Vite检测文件变化 → 引擎收到更新 → 重新加载对应文件，无需刷新页面
+- HMR：**未实现，有意不做**（全 `src/` 零处 `import.meta.hot`）。改 TOML → Vite 让该惰性模块失效 → 无 `accept` 处理器 → **整页重载**：数据生效，但内存进度回到标题界面。详见 §28
 - 局限：新增模组文件夹需重启Vite dev server（因glob在启动时扫描）。但切换模组本来就要求重启，不是额外负担
 
 ---
@@ -1078,20 +1078,23 @@ errorReporter.report({
 
 ---
 
-### 28. 开发时TOML热更新（HMR）
+### 28. 开发时改 TOML 的行为（**无 HMR**，有意不做）
 
-`mod-loader.ts` 监听 Vite HMR：
+**现状（2026-09-22 核实）**：`mod-loader.ts` **没有** `import.meta.hot` 处理（全 `src/` 零处）。
+TOML 经 `import.meta.glob(..., { eager: false })` 惰性导入，因此改一个 TOML 文件时，
+Vite 让该模块失效后**向上传播到入口模块 → 整页重载**：
 
-```typescript
-if (import.meta.hot) {
-  import.meta.hot.accept('/mods/**/*.toml', (updatedModule) => {
-    // 重新解析变更的 TOML，更新实体系统和模板缓存
-    engine.reloadFile(updatedModule)
-  })
-}
-```
+- 数据会生效（整页重载后重新走 `loadMod` 解析全部数据）
+- 但**内存中的游戏进度丢失**（回到标题界面）—— 不是"引擎就地重载该文件"
+- **新增**模组文件夹仍需重启 Vite dev server（glob 在启动时扫描）
 
-改 TOML 文件 → Vite 检测 → 引擎重载对应文件，无需刷新页面。
+**为什么不做**：改 TOML 属于改游戏内容，正常流程本就重启游戏；HMR 的收益仅是"省一次手动刷新"，
+而整页重载已自动发生。真要做无感热重载，需在 `mod-loader.ts` 对每个 glob 模块注册
+`import.meta.hot.accept` 并实现引擎侧就地重载（含模板缓存 / 实体系统 / 效果区的一致性处理）——
+收益不抵复杂度。**这是有意的设计取舍，不是待办欠账。**
+
+**与"属性即时生效"无关**：游戏内"改了属性立刻可见"由属性有效值层负责
+（读属性即重算，见 `docs/attributes-system.md`），不需要 HMR。
 
 ---
 

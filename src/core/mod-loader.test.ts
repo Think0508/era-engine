@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { parseModData, ModLoader, modLoader, revalidateItemUses, type LoadedMod } from './mod-loader'
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
+import { getEntityAttr, setEntityAttr } from './entity-utils'
 import { conditionRegistry } from './condition-registry'
 import { errorReporter } from './error-reporter'
 import { checkUpgrade } from '../plugins/ability-progression/index'
@@ -304,6 +305,24 @@ describe('mod-loader integration', () => {
     expect(bindingResolver.get('player', 'hp')).toBe(200)
     expect(bindingResolver.get('player', 'mp')).toBe(80)
     expect(bindingResolver.get('player', 'attack')).toBe(15)
+  })
+
+  // ── 属性有效值层 × 真实 loadMod（2026-09-22 全分支审查补：此前该缝零覆盖）────────
+  // 覆盖三件事：① 属性定义注入（哪些属性允许 compute）② scripts.get(fileName) 键位解析
+  // ③ 经真实 mod 数据拿到派生值。夹具 = test-mod 的 "派生测试值" + scripts/calc_derived_test.js
+  // （脚本：base + attrs.get("根骨")×10）。直接调 configureAttributeEval 的单测无法覆盖这条缝。
+  it('属性有效值层：compute 脚本经真实 loadMod 解析并派生（含跨属性读取与写后失效）', async () => {
+    const loader = new ModLoader()
+    await loader.loadMod('test-mod')
+    const player = entitySystem.get('character', 'player') as any
+    player.base['根骨'] = 50
+    player.base['派生测试值'] = 0
+    // 派生 = 裸值 0 + 根骨 50×10 = 500。
+    // 若定义未注入（闸门不认 compute）或脚本未解析（回退裸值）→ 这里会得到 0。
+    expect(getEntityAttr(player, '派生测试值')).toBe(500)
+    // 写**依赖**属性（派生属性自己的裸值仍为 0）：只有 setEntityAttr 的版本自增能让缓存失效。
+    setEntityAttr(player, '根骨', 60)
+    expect(getEntityAttr(player, '派生测试值')).toBe(600)
   })
 
   it('should populate condition registry after loading mod', async () => {

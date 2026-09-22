@@ -143,3 +143,11 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 
 # 阴茎大小（jj_0~3 前提数据源——h-ejaculation 角色注册时按分布初始化，默认 1 档）
 "阴茎大小" = { type = "number", default = 1, category = "body", display = false, description = "阴茎大小档位（0-3），jj_0~3 前提判定" }
+
+# ════════════════════════════════════════
+# 属性有效值层 E2E 夹具（2026-09-22）
+# compute 声明 + scripts/calc_derived_test.js：让 src/core/mod-loader.test.ts 走**真实 loadMod**
+# 验证「定义注入 + scripts.get(fileName) 键位 + 派生读取」这条缝（此前零覆盖）。
+# display = false（不进 UI 列表）；无任何生产消费方读取它。
+# ════════════════════════════════════════
+"派生测试值" = { type = "number", default = 0, category = "base", display = false, compute = "calc_derived_test.js", description = "属性有效值层 E2E 夹具（派生公式 = base + 根骨×10）" }

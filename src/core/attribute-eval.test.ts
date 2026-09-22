@@ -5,6 +5,7 @@ import { errorReporter } from './error-reporter'
 import {
   configureAttributeEval, readEffective, notifyAttrWrite, bumpDataVersion, __resetAttributeEval,
   registerModifier, removeModifier, clearModifiers, listModifiers,
+  registerDeclarativeSource,
 } from './attribute-eval'
 
 describe('attribute-eval：闸门（零回归保证）', () => {
@@ -286,5 +287,89 @@ describe('attribute-eval：compute 派生', () => {
     notifyAttrWrite(c)
     readEffective(c, '最大气血', 300)
     expect(probes).toBe(2)                          // 写后缓存失效 → 重算
+  })
+})
+
+describe('attribute-eval：声明式来源（装备/被动技能/天赋）', () => {
+  const DEFS = {
+    items: { 玄铁护腕: { attribute_mods: [{ attr: '力道', flat: 5 }] } },
+    abilities: {
+      龟息功: { attribute_mods: [{ attr: '力道', flat: 10, per_level: 2 }] },
+      无等级被动: { attribute_mods: [{ attr: '根骨', flat: 3 }] },
+    },
+    talentDefs: { 神目: { attribute_mods: [{ attr: '根骨', flat: 1, per_level: 1 }] } },
+  }
+
+  beforeEach(() => {
+    __resetAttributeEval()
+    configureAttributeEval({ definitions: { 力道: {}, 根骨: {} }, defs: DEFS })
+  })
+
+  it('装备：按 char.equipment 现算；equipment_off 里的不算穿着', () => {
+    const c = { id: 'e1', equipment: { wrist: '玄铁护腕' }, equipment_off: { wrist: '玄铁护腕' } }
+    expect(readEffective(c, '力道', 100)).toBe(105)
+    // 只放 equipment_off（H 中自动脱下）→ 不加修正
+    const off = { id: 'e2', equipment: {}, equipment_off: { wrist: '玄铁护腕' } }
+    expect(readEffective(off, '力道', 100)).toBe(100)
+  })
+
+  it('被动技能：1 级给 flat，每多 1 级再给 per_level（线性追加）', () => {
+    const c = { id: 'a1', abilities: { 龟息功: { level: 3, xp: 0 } } }
+    // 龟息功：flat=10, per_level=2 → 3 级 = 10 + 2×(3−1) = 14
+    expect(readEffective(c, '力道', 100)).toBe(114)
+    const zero = { id: 'a2', abilities: { 龟息功: { level: 0, xp: 0 } } }
+    expect(readEffective(zero, '力道', 100)).toBe(100)
+  })
+
+  it('天赋：char.talents[id] 是等级（数字）', () => {
+    const c = { id: 't1', talents: { 神目: 2 } }
+    // 神目：flat=1, per_level=1 → 2 级 = 1 + 1×(2−1) = 2
+    expect(readEffective(c, '根骨', 100)).toBe(102)
+  })
+
+  it('多源叠加：percent 相加后只乘一次（与 push 栈同一份代数）', () => {
+    const c = {
+      id: 'm1',
+      equipment: { wrist: '玄铁护腕' },
+      abilities: { 龟息功: { level: 0, xp: 0 } },
+      talents: {},
+    }
+    // 声明式 flat 5 + push 栈 percent +50% → (100 + 5) × 1.5
+    registerModifier(c, 'buff', '力道', { percent: 0.5 })
+    expect(readEffective(c, '力道', 100)).toBe(157.5)
+  })
+
+  it('【无漂移】脱下装备后立即不再加（无需任何通知）', () => {
+    const c: any = { id: 'd1', equipment: { wrist: '玄铁护腕' } }
+    expect(readEffective(c, '力道', 100)).toBe(105)
+    delete c.equipment.wrist          // 直改状态，不调用任何 API
+    expect(readEffective(c, '力道', 100)).toBe(100)
+  })
+
+  it('【无漂移·缓存】先前落下的 (raw → v) 缓存不得吃掉后来的声明式修正', () => {
+    // 缓存的失效靠版本戳 + 裸值比对，而换装备/加能力**不产生任何通知**（版本不变、裸值不变）
+    // → 带声明式修正的读取必须彻底绕过缓存（去掉 readEffective 的 cacheable 分支，这里会返回 100）
+    configureAttributeEval({
+      definitions: { 力道: { compute: 'id.js' } },
+      scriptResolver: () => 'return base',
+    })
+    const c: any = { id: 'h1' }
+    expect(readEffective(c, '力道', 100)).toBe(100)   // 有 compute、无声明式修正 → 值进缓存
+    c.equipment = { wrist: '玄铁护腕' }                // 直改状态，不调用任何 API
+    expect(readEffective(c, '力道', 100)).toBe(105)
+  })
+
+  it('registerDeclarativeSource 追加来源；顺序决定 set 的最后一条', () => {
+    const c = { id: 'x1' }
+    registerDeclarativeSource(() => [{ attr: '力道', set: 50 }])
+    registerDeclarativeSource(() => [{ attr: '力道', set: 70 }])
+    expect(readEffective(c, '力道', 100)).toBe(70)   // 后注册者胜
+  })
+
+  it('未知装备 ID / 未声明 attribute_mods 的定义 / 缺状态字段 → 静默跳过，不崩', () => {
+    expect(readEffective({ id: 'n1', equipment: { wrist: '不存在' } }, '力道', 100)).toBe(100)
+    expect(readEffective({ id: 'n2' }, '力道', 100)).toBe(100)   // 无 equipment/abilities/talents
+    configureAttributeEval({ defs: { items: { 无mods: {} } } })
+    expect(readEffective({ id: 'n3', equipment: { wrist: '无mods' } }, '力道', 100)).toBe(100)
   })
 })

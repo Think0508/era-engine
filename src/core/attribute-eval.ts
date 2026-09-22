@@ -13,6 +13,12 @@
 //
 // 闸门（零回归保证）：只有【属性定义存在】+【裸值是数字】+【有 compute 或有修正条目】才走管线，
 //   其余一律原样返回。因此未接入任何来源时，本管线是恒等变换。
+//
+// 两类修正来源（同一份叠加代数，见 applyMods）：
+//   ① 声明式（pull，2026-09-22 计划二）：装备/被动技能/天赋从实体**当前状态**现推导
+//      （char.equipment / char.abilities[id].level / char.talents[id]），每次进管线重算 ——
+//      不缓存、不需要任何变更通知，故脱下装备/掉级/失去天赋**立即**失效（天然无漂移）。
+//   ② 运行时（push）：registerModifier 登记的临时修正（战斗 buff 等）。
 
 import { errorReporter } from './error-reporter'
 
@@ -24,6 +30,23 @@ export interface AttributeMod {
   flat?: number
   percent?: number
   set?: number
+}
+
+/** 声明式来源的单条修正（mod 数据里写的 `attribute_mods = [{ attr, flat?, percent?, set?, per_level? }]`）。
+ *  ⚠️ 与 push 栈的 `AttributeMod` 刻意不同：本形状 `attr` 必填、多一个 `per_level`（等级缩放）。 */
+export interface AttributeModSource {
+  attr: string
+  flat?: number
+  percent?: number
+  set?: number
+  per_level?: number
+}
+
+/** 声明式来源需要的 mod 定义快照（mod-loader 注入；core 不能 import mod-loader，否则成环） */
+export interface DeclarativeDefs {
+  items?: Record<string, any>
+  abilities?: Record<string, any>
+  talentDefs?: Record<string, any>
 }
 
 export interface ModifierEntry {
@@ -51,16 +74,27 @@ let globalVersion = 1
 let definitions: Record<string, AttributeDefLike> = {}
 let scriptResolver: ((name: string) => string | undefined) | null = null
 let rawReader: ((entity: any, name: string) => any) | null = null
+/** 声明式来源的 mod 定义快照（items / abilities / talentDefs） */
+let defs: DeclarativeDefs = {}
+/** 插件追加的声明式来源（内置三源之后，按注册顺序） */
+const extraSources: ((entity: any, defs: DeclarativeDefs) => AttributeModSource[])[] = []
 let depth = 0
 
 export function configureAttributeEval(cfg: {
   definitions?: Record<string, AttributeDefLike>
   scriptResolver?: (name: string) => string | undefined
   rawReader?: (entity: any, name: string) => any
+  defs?: DeclarativeDefs
 }): void {
   if (cfg.definitions) definitions = cfg.definitions
   if (cfg.scriptResolver) scriptResolver = cfg.scriptResolver
   if (cfg.rawReader) rawReader = cfg.rawReader
+  if (cfg.defs) defs = cfg.defs
+}
+
+/** 追加声明式来源（内置三源最先，注册的按注册顺序在其后；顺序只影响 set 的「最后一条胜出」） */
+export function registerDeclarativeSource(fn: (entity: any, defs: DeclarativeDefs) => AttributeModSource[]): void {
+  extraSources.push(fn)
 }
 
 /** mod 数据（重新）加载（loadMod：定义/脚本注入本身就是重载点）→ 所有实体缓存失效 */
@@ -80,6 +114,9 @@ export function __resetAttributeEval(): void {
   globalVersion++
   definitions = {}
   scriptResolver = null
+  // 声明式来源的注入态同属测试态（定义快照 + 插件追加来源），必须一并清干净
+  defs = {}
+  extraSources.length = 0
   // ⚠️ 刻意**不重置** rawReader：它由 entity-utils 在模块加载时注入，属结构性接线而非测试态。
   //    若在此清掉，测试里 reset 之后 compute 的跨属性读取会静默失效（attr.get 恒 0）。
   depth = 0
@@ -112,7 +149,10 @@ export function readEffective(entity: any, name: string, raw: any): any {
   const def = definitions[name]
   if (!def) return raw
   const hasCompute = typeof def.compute === 'string' && def.compute.length > 0
-  if (!hasCompute && !hasMods(entity, name)) return raw
+  // 声明式来源每次进管线**现算一次**：闸门与叠加共用同一份清单（不在两处各聚合一次）
+  const decl = collectDeclarativeMods(entity)
+  const hasDecl = decl.some(m => m.attr === name)
+  if (!hasCompute && !hasMods(entity, name) && !hasDecl) return raw
   if (depth >= MAX_DEPTH) {
     errorReporter.reportDedup(`attr-eval-depth:${name}`, {
       source: 'attribute-eval', severity: 'error',
@@ -123,27 +163,37 @@ export function readEffective(entity: any, name: string, raw: any): any {
   }
 
   const st = stateOf(entity)
-  if (st.cachedAtVersion !== st.version || st.cachedAtGlobal !== globalVersion) {
-    st.cache.clear()
-    st.cachedAtVersion = st.version
-    st.cachedAtGlobal = globalVersion
+  // 声明式来源**没有任何变更通知**（改 equipment/abilities/talents 不走 registerModifier、
+  //   也不保证走 setEntityAttr）→ 它不能进 (raw → v) 缓存：缓存键只比对裸值与版本戳，
+  //   同裸值 + 同版本下声明式修正可能已经变了（换装备/升级/掉级/失去天赋），命中的就是陈旧值。
+  //   故只要实体带**任何**声明式修正，本次读取既不读缓存也不写缓存（一律现算）。
+  //   判据用整份清单而非仅本属性：compute 派生会读别的属性（attrs.get），别的属性上的声明式
+  //   变化同样会让本属性的缓存失真，只看本属性会漏掉这条传递路径。
+  //   反向仍然安全：缓存条目只在 decl 为空时写入，而 decl 为空时值与 (裸值, 版本) 一一对应。
+  const cacheable = decl.length === 0
+  if (cacheable) {
+    if (st.cachedAtVersion !== st.version || st.cachedAtGlobal !== globalVersion) {
+      st.cache.clear()
+      st.cachedAtVersion = st.version
+      st.cachedAtGlobal = globalVersion
+    }
+    // 缓存键必须同时比对 raw：生产写路径大量直接改 entity.base[...]（effect-system、h-group-sex、
+    //   h-ejaculation、hunger-system 等），绕过 setEntityAttr 也就绕过了 notifyAttrWrite 的版本号自增，
+    //   故版本戳单独不可信 —— 同一 (实体, 属性) 在版本不变的情况下裸值可能已变。
+    //   用 Object.is 而非 ===，使缓存里的 NaN 仍能命中（NaN !== NaN 会永远击穿缓存）。
+    const hit = st.cache.get(name)
+    if (hit && Object.is(hit.raw, raw)) return hit.v
   }
-  // 缓存键必须同时比对 raw：生产写路径大量直接改 entity.base[...]（effect-system、h-group-sex、
-  //   h-ejaculation、hunger-system 等），绕过 setEntityAttr 也就绕过了 notifyAttrWrite 的版本号自增，
-  //   故版本戳单独不可信 —— 同一 (实体, 属性) 在版本不变的情况下裸值可能已变。
-  //   用 Object.is 而非 ===，使缓存里的 NaN 仍能命中（NaN !== NaN 会永远击穿缓存）。
-  const hit = st.cache.get(name)
-  if (hit && Object.is(hit.raw, raw)) return hit.v
 
   depth++
   let v: number = raw
   try {
     v = applyCompute(entity, name, v)
-    v = applyMods(entity, name, v)
+    v = applyMods(entity, name, v, decl)
   } finally {
     depth--
   }
-  st.cache.set(name, { raw, v })
+  if (cacheable) st.cache.set(name, { raw, v })
   return v
 }
 
@@ -197,21 +247,106 @@ function applyCompute(entity: object, name: string, raw: number): number {
   }
 }
 
+/** 等级缩放（**线性追加**，与战斗效果的乘性 growth 刻意不同）：
+ *  `flat(级 n) = flat + per_level×(n−1)`（1 级 = flat 本身）；percent 同理；
+ *  `set` **不随等级缩放**（它是"覆盖基准"，缩放无意义）。只缩放**显式给过的**字段——
+ *  没给 percent 就不要因为 per_level 而凭空产生 percent。 */
+function scaleByLevel(m: AttributeModSource, level: number): AttributeModSource {
+  const per = m.per_level
+  // 非数字/非有限/0 的 per_level 一律当"无缩放"（不产生 NaN —— 静默吞掉数值比报错更难查）
+  if (typeof per !== 'number' || !Number.isFinite(per) || per === 0) return m
+  const n = Math.max(1, Math.floor(level))
+  if (n <= 1) return m
+  const step = per * (n - 1)
+  const out: AttributeModSource = { attr: m.attr }
+  if (typeof m.flat === 'number') out.flat = m.flat + step
+  if (typeof m.percent === 'number') out.percent = m.percent + step
+  if (typeof m.set === 'number') out.set = m.set
+  return out
+}
+
+/** 把一条定义的 attribute_mods 按等级缩放后追加进清单（形状不对的条目静默跳过） */
+function pushMods(out: AttributeModSource[], list: any, level: number): void {
+  if (!Array.isArray(list)) return
+  for (const raw of list) {
+    if (!raw || typeof raw.attr !== 'string' || raw.attr.length === 0) continue
+    out.push(scaleByLevel(raw as AttributeModSource, level))
+  }
+}
+
+/** 从实体**当前状态**现算声明式修正（每次调用都重算：不缓存 → 脱下/升级/失去天赋立即生效，无需通知） */
+export function collectDeclarativeMods(entity: any): AttributeModSource[] {
+  const out: AttributeModSource[] = []
+  if (!entity || typeof entity !== 'object') return out
+  // ① 装备（equipment_off 里的不算穿着——H 中自动脱下的部位不提供修正）
+  const worn = entity.equipment
+  if (worn && typeof worn === 'object') {
+    for (const itemId of Object.values(worn)) {
+      const def = typeof itemId === 'string' ? defs.items?.[itemId] : undefined
+      pushMods(out, def?.attribute_mods, 1)
+    }
+  }
+  // ② 被动技能（等级 = abilities[id].level；{level, xp} 契约）
+  const abil = entity.abilities
+  if (abil && typeof abil === 'object') {
+    for (const [id, entry] of Object.entries(abil)) {
+      const def = defs.abilities?.[id]
+      const level = typeof (entry as any)?.level === 'number' ? (entry as any).level : 0
+      if (level <= 0) continue
+      pushMods(out, def?.attribute_mods, level)
+    }
+  }
+  // ③ 天赋（等级 = talents[id] 数字）
+  const tal = entity.talents
+  if (tal && typeof tal === 'object') {
+    for (const [id, lv] of Object.entries(tal)) {
+      const def = defs.talentDefs?.[id]
+      const level = typeof lv === 'number' ? lv : 0
+      if (level <= 0) continue
+      pushMods(out, def?.attribute_mods, level)
+    }
+  }
+  // ④ 插件追加来源
+  for (const fn of extraSources) {
+    try {
+      const list = fn(entity, defs)
+      if (Array.isArray(list)) for (const m of list) if (m && typeof m.attr === 'string') out.push(m)
+    } catch (err) {
+      errorReporter.reportDedup('attr-decl-source', {
+        source: 'attribute-eval', severity: 'error',
+        message: `声明式来源函数抛错：${err instanceof Error ? err.message : String(err)}——已跳过该来源`,
+      })
+    }
+  }
+  return out
+}
+
 /** 叠加代数：base′ = set ?? v → value = (base′ + Σflat) × (1 + Σpercent)
- *  与 plugins/combat-base/formula-channels.ts 的通道语义一致（percent 相加后只乘一次） */
-function applyMods(entity: object, name: string, v: number): number {
-  const st = states.get(entity)
-  if (!st || st.mods.length === 0) return v
+ *  与 plugins/combat-base/formula-channels.ts 的通道语义一致（percent 相加后只乘一次）。
+ *  `decl` 由 readEffective 现算后传入（一次读取只聚合一次，闸门与叠加共用）；多个 set 取清单顺序最后一条。 */
+function applyMods(entity: object, name: string, v: number, decl: AttributeModSource[]): number {
   let set: number | undefined
   let flat = 0
   let percent = 0
   let hit = false
-  for (const m of st.mods) {
+  // ① 声明式来源（顺序：装备→技能→天赋→插件追加；push 栈在其后 —— 后写的 set 胜出）
+  for (const m of decl) {
     if (m.attr !== name) continue
     hit = true
-    if (typeof m.mod.set === 'number' && Number.isFinite(m.mod.set)) set = m.mod.set
-    if (typeof m.mod.flat === 'number' && Number.isFinite(m.mod.flat)) flat += m.mod.flat
-    if (typeof m.mod.percent === 'number' && Number.isFinite(m.mod.percent)) percent += m.mod.percent
+    if (typeof m.set === 'number' && Number.isFinite(m.set)) set = m.set
+    if (typeof m.flat === 'number' && Number.isFinite(m.flat)) flat += m.flat
+    if (typeof m.percent === 'number' && Number.isFinite(m.percent)) percent += m.percent
+  }
+  // ② push 栈（既有逻辑，原样保留）
+  const st = states.get(entity)
+  if (st) {
+    for (const m of st.mods) {
+      if (m.attr !== name) continue
+      hit = true
+      if (typeof m.mod.set === 'number' && Number.isFinite(m.mod.set)) set = m.mod.set
+      if (typeof m.mod.flat === 'number' && Number.isFinite(m.mod.flat)) flat += m.mod.flat
+      if (typeof m.mod.percent === 'number' && Number.isFinite(m.mod.percent)) percent += m.mod.percent
+    }
   }
   if (!hit) return v
   const base = set !== undefined ? set : v

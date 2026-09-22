@@ -8,7 +8,7 @@ import type { PluginContext } from '../../core/types'
 import { entitySystem } from '../../core/entity-system'
 import { narrativeLog } from '../../core/narrative-log'
 import { eventBus } from '../../core/event-bus'
-import { getEntityAttr, ATTR } from '../../core/entity-utils'
+import { getEntityAttr, readRawAttr, ATTR } from '../../core/entity-utils'
 import { apiSystem } from '../../core/api'
 
 // 注释：刻印 ID 映射
@@ -95,16 +95,14 @@ export function onEnable(ctx: PluginContext): void {
       if (markId === 19 && (char.sp_flag?.unconscious_h ?? 0) < 1) return
       while (nextLevel <= conditions.length) {
         const cond = conditions[nextLevel - 1]
-        const checkValue = getCheckValue(char, markId)
-        let met = false
-        if (Array.isArray(cond)) {
-          // 注释：OR 逻辑 —— 单次 OR 累计满足其一即可
-          const [single, cumulative] = cond
-          met = (checkValue >= (single ?? Infinity)) || (getCumulativeValue(char, markId) >= (cumulative ?? Infinity))
-        } else {
-          met = checkValue >= (cond as number)
-        }
-        if (!met) break
+        // 注释：两级判据、两个域（2026-09-23 Item 2a，用户裁定「判定读有效值、换算读裸值」）——
+        // ① 门槛判定读**有效值**：临时 buff 就该帮忙达标，临时 debuff 把有效值压下去时**正当拦住**；
+        // ② 等级换算读**裸值**：刻印等级是**永久资产**，且它正是同一状态的累积系数
+        //    （h-config state_ability：快乐→快乐刻印/屈服→屈服刻印/苦痛→苦痛刻印…）——
+        //    读有效值等于「拿临时值铸永久等级，而永久等级又放大该状态此后的累积」＝自我放大回路。
+        //    （修复前 getCheckValue 整段读有效值 → 临时「苦痛 +50000」凭空铸 LV3。）
+        if (!thresholdMet(char, markId, cond)) break
+        if (!thresholdMet(char, markId, cond, readRawAttr)) break
         // 注释：执行升级
         if (!char.abilities) char.abilities = {}
         if (!char.abilities[key]) char.abilities[key] = { level: 0, xp: 0 }
@@ -171,7 +169,11 @@ export function onEnable(ctx: PluginContext): void {
 // 2026-08-12（audit-b C1）：屈服/苦痛/恐怖/反发直读 base 命名空间——但这些状态
 // category=parameter → canonical 在 entity.params → 刻印永不升级。改经 getEntityAttr
 // 跨命名空间读取（base/params 均可，params 优先于 base 的既有落位规则不变——SEARCH_ORDER base 在前）
-function getCheckValue(char: any, markId: number): number {
+// 2026-09-23（Item 2a）：加 read 参数选择**读哪个域**——缺省有效值（门槛判定），
+// 传 readRawAttr 读裸值（等级换算）。13/19 检测值来自 h_state（绝顶计数/经验），两域同值。
+type AttrReader = (char: any, name: string) => any
+
+function getCheckValue(char: any, markId: number, read: AttrReader = getEntityAttr): number {
   const h = char.h_state
   switch (markId) {
     case 13: // 快乐——本次 H 绝顶次数
@@ -179,22 +181,22 @@ function getCheckValue(char: any, markId: number): number {
     case 19: // 无觉——本次 H 无意识绝顶次数
       return countUnconsciousOrgasmThisSession(h)
     case 14: // 屈服
-      return (getEntityAttr(char, ATTR.OBEDIENCE) ?? 0) + (getEntityAttr(char, ATTR.DEFERENCE) ?? 0) + (getEntityAttr(char, ATTR.SHAME) ?? 0) / 5
+      return (read(char, ATTR.OBEDIENCE) ?? 0) + (read(char, ATTR.DEFERENCE) ?? 0) + (read(char, ATTR.SHAME) ?? 0) / 5
     case 15: // 苦痛
-      return (getEntityAttr(char, ATTR.PAIN) ?? 0) * 5
+      return (read(char, ATTR.PAIN) ?? 0) * 5
     case 16: // 时姦——无自动升级
       return 0
     case 17: // 恐怖
-      return (getEntityAttr(char, ATTR.FEAR) ?? 0) * 5 + (getEntityAttr(char, ATTR.PAIN) ?? 0)
+      return (read(char, ATTR.FEAR) ?? 0) * 5 + (read(char, ATTR.PAIN) ?? 0)
     case 18: // 反发
-      return (getEntityAttr(char, ATTR.RESENTMENT) ?? 0) * 5 + (getEntityAttr(char, ATTR.DEPRESSION) ?? 0) + (getEntityAttr(char, ATTR.FEAR) ?? 0) + (getEntityAttr(char, ATTR.PAIN) ?? 0)
+      return (read(char, ATTR.RESENTMENT) ?? 0) * 5 + (read(char, ATTR.DEPRESSION) ?? 0) + (read(char, ATTR.FEAR) ?? 0) + (read(char, ATTR.PAIN) ?? 0)
     default:
       return 0
   }
 }
 
 // 注释：获取累计值（快乐/无觉用累计绝顶，其余同 getCheckValue）
-function getCumulativeValue(char: any, markId: number): number {
+function getCumulativeValue(char: any, markId: number, read: AttrReader = getEntityAttr): number {
   const h = char.h_state ?? {}
   switch (markId) {
     case 13: // 快乐——累计绝顶（erArk all_happy_count = sum orgasm_count[state][1]）
@@ -202,8 +204,23 @@ function getCumulativeValue(char: any, markId: number): number {
     case 19: // 无觉——累计无意识绝顶（erArk all = experience[78]）
       return getUnconsciousOrgasmTotal(char)
     default:
-      return getCheckValue(char, markId)
+      return getCheckValue(char, markId, read)
   }
+}
+
+// 注释：升级阈值判据——两个调用点共用同一比较式，只有**读哪个域**不同（2026-09-23 Item 2a）：
+// 缺省 read = getEntityAttr（有效值）：判「够不够格升级」（临时 buff 帮忙达标 / 临时 debuff 正当拦住）；
+// 传 read = readRawAttr（裸值）：判「裸值撑得起第几级」（永久等级只由永久值铸）。
+function thresholdMet(
+  char: any, markId: number, cond: number | number[], read: AttrReader = getEntityAttr,
+): boolean {
+  const value = getCheckValue(char, markId, read)
+  if (Array.isArray(cond)) {
+    // OR 逻辑 —— 单次 OR 累计满足其一即可
+    const [single, cumulative] = cond
+    return (value >= (single ?? Infinity)) || (getCumulativeValue(char, markId, read) >= (cumulative ?? Infinity))
+  }
+  return value >= (cond as number)
 }
 
 // 注释：计算单次 H 绝顶次数（orgasm_count[state][0] 合计——erArk mark_effect single_*_count）

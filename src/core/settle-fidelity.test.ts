@@ -20,6 +20,8 @@ import { behaviorHistory, clearBehaviorHistory, getContinuousAdjust } from './co
 import { effectTypeRegistry } from './effect-type-registry'
 import { SettlementContext } from '../plugins/effect-system/settlement-context'
 import { makeTestExecCtx, resetCharacterEntity, DEFAULT_NPC_BASE } from '../utils/test-helpers'
+import { registerRuntimeMod, removeRuntimeMod } from './attribute-eval'
+import { getEntityAttr, readRawAttr } from './entity-utils'
 
 const stubCtx: any = {
   api: apiSystem,
@@ -702,6 +704,27 @@ describe('结算保真补全（tenths_add / 连续减值 / 无意识门控）', 
         { type: 'pl_p_adjust', params: {}, target: 'self' },
       ], execCtx({ _timeCost: 5 }))
       expect((entitySystem.get('character', 'player') as any).base['射精欲']).toBe(85)
+    })
+
+    // 2026-09-23 Item 2b：这是「临时值 → 永久资产」的最后一处（每次行动重复，跨属性家族）——
+    // ownPFeel 喂**基础**射精欲增量（h-ejaculation addEja 写 base[射精欲]），操作数必须同域。
+    // 修复前读 getEntityAttr（有效值）→ 临时「阴茎 +240」被按 /8 折算成永久射精欲（每行动复利）。
+    it('射精欲增量按**裸值**阴茎取：临时「阴茎 +240」不改增量（修复前 480/8 → 115）', async () => {
+      setup()
+      const p = entitySystem.get('character', 'player') as any
+      p.base['阴茎'] = 240
+      registerRuntimeMod(p, { id: 'item2b:阴茎', attr: '阴茎', flat: 240 }, 240)
+      try {
+        expect(getEntityAttr(p, '阴茎')).toBe(480)   // 修正生效
+        await apiSystem.call('effect-system', 'execute', [
+          { type: 'pl_p_adjust', params: {}, target: 'self' },
+        ], execCtx({ _timeCost: 5 }))
+        // floor((5+50)×1.0 + 裸值 240/8) = 85；修复前按有效值 480/8 → 115
+        expect(p.base['射精欲']).toBe(85)
+        expect(readRawAttr(p, '阴茎')).toBe(240)     // 裸值分毫不动
+      } finally {
+        removeRuntimeMod(p, 'item2b:阴茎')
+      }
     })
   })
 

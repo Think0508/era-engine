@@ -16,6 +16,8 @@ import { eventBus } from '../core/event-bus'
 import { commandRegistry } from '../core/command-registry'
 import { clearBehaviorHistory } from '../core/command-executor'
 import { makeTestExecCtx, resetCharacterEntity, DEFAULT_NPC_BASE, DEFAULT_PLAYER_BASE } from '../utils/test-helpers'
+import { registerRuntimeMod, removeRuntimeMod } from '../core/attribute-eval'
+import { getEntityAttr, readRawAttr } from '../core/entity-utils'
 
 const stubCtx: any = {
   api: apiSystem,
@@ -137,6 +139,56 @@ describe('h-mark 刻印存储（按名键统一）', () => {
     expect(n.abilities?.['苦痛刻印']?.level).toBe(3)
     // judge 刻印修正读升级后的等级（LV3 → +30）
     expect(await apiSystem.call('h-mark', 'getMarkAdjust', 'npc_1', 15)).toBe(30)
+    n.params = undefined
+  })
+
+  // ═══ 2026-09-23 Item 2a：刻印等级是**永久资产**，且它正是同一状态的累积系数
+  // （h-config state_ability：快乐→快乐刻印 / 屈服→屈服刻印 / 苦痛→苦痛刻印…）→ 有反馈回路。
+  // 用户裁定（转珠同款规则）：**门槛判定读有效值、等级换算读裸值**。
+  // 修复前 getCheckValue 整段读有效值 → 临时修正凭空铸永久等级，且等级反过来放大该状态累积。
+  it('等级换算读裸值：临时「苦痛 +50000」→ 门槛成立但刻印等级不升（不拿临时值铸永久等级）', async () => {
+    const n = entitySystem.get('character', 'npc_1') as any
+    delete n.base['苦痛']
+    n.params = { 苦痛: 0 }
+    n.abilities = {}
+    registerRuntimeMod(n, { id: 'item2a:苦痛', attr: '苦痛', flat: 50000 }, 50000)
+    try {
+      expect(getEntityAttr(n, '苦痛')).toBe(50000)   // 修正生效（有效值 50000×5 ≥ 80000 = LV3 门槛）
+      await apiSystem.call('h-mark', 'checkOne', 'npc_1', 15)
+      expect(n.abilities?.['苦痛刻印']?.level ?? 0).toBe(0)  // 修复前：LV3（临时值 → 永久等级 → 永久系数）
+      expect(readRawAttr(n, '苦痛')).toBe(0)                 // 裸值分毫不动
+    } finally {
+      removeRuntimeMod(n, 'item2a:苦痛')
+    }
+    n.params = undefined
+  })
+
+  it('正对照：裸值 50000（无修正）→ 苦痛刻印 LV3（等级换算规则不改既有行为）', async () => {
+    const n = entitySystem.get('character', 'npc_1') as any
+    delete n.base['苦痛']
+    n.params = { 苦痛: 50000 }
+    n.abilities = {}
+    await apiSystem.call('h-mark', 'checkOne', 'npc_1', 15)
+    expect(n.abilities?.['苦痛刻印']?.level).toBe(3)
+    n.params = undefined
+  })
+
+  it('门槛判定仍读有效值：裸值 50000 + 临时「苦痛 −50000」→ 有效值 0 → 正当拦住升级', async () => {
+    const n = entitySystem.get('character', 'npc_1') as any
+    delete n.base['苦痛']
+    n.params = { 苦痛: 50000 }
+    n.abilities = {}
+    registerRuntimeMod(n, { id: 'item2a:苦痛减益', attr: '苦痛', flat: -50000 }, 50000)
+    try {
+      expect(getEntityAttr(n, '苦痛')).toBe(0)       // 修正生效（有效值被压到 0）
+      expect(readRawAttr(n, '苦痛')).toBe(50000)     // 裸值仍是 50000
+      await apiSystem.call('h-mark', 'checkOne', 'npc_1', 15)
+      // 「判定读有效值」（用户裁定：临时 debuff 把有效值压到 0 时正当拦住）——
+      // 若把门槛也改成读裸值，这条会变 LV3（懒修法防呆）
+      expect(n.abilities?.['苦痛刻印']?.level ?? 0).toBe(0)
+    } finally {
+      removeRuntimeMod(n, 'item2a:苦痛减益')
+    }
     n.params = undefined
   })
 })

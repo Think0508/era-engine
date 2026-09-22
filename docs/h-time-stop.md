@@ -13,6 +13,11 @@
   ```
 - **激活**：`time_stop_on` 指令（前提：**窄域时停素质**、精力>0、疲劳≤84、未时停）。激活时全场 `sp_flag.unconscious_h=3`（unnormal bit6 深度无意识置位），游戏时间冻结。
 - **行动扣费**：时停中任何行动按耗时×2 扣精力（至少 1，截断到当前值），归零自动解除时停（完整 TIME_STOP_OFF 链）。
+  ⚠️ **域归属（2026-09-23 Item 1 修复）**：费用与归零中断判据读的是**裸精力**（`getRawForPlugin`），
+  而不是有效值——扣费走 `consume_sanity`（读裸值 + 把扣减夹到裸值），算费用的操作数必须与扣的操作数同域；
+  读有效值时「裸精力 0 + 临时『精力 +100』」会算出扣不动的费用（`min(cost, 0) = 0`），
+  有效值永不 ≤0 → **时停永不中断也永不计费（免费时停）**。
+  门槛前提 `SANITY_POINT_G_0`（能否开时停）仍读**有效值**——那是判定、不是扣减，临时 buff 帮达标。
 - **绝顶累积**：H 中绝顶在时停期间累积到 `h_state.time_stop_orgasm_count`（h-core settleOrgasm 门控承担——⚠️ 不监听 h:orgasm，监听会双结算），解除时一次性释放（累积≥3 触发超强绝顶，全场 `time_stop_release` 置位）。
 - **关闭链（2026-08-16 复刻）**：对齐 erArk 1244→1246→**536**→1242→527——清搬运/自由 → **恢复玩家 H 中目标**（h-npc-ai `recoverFromUnconsciousH` mode='time_stop'：行为终止/semen+cloth 二段/**严重骚扰实行判定（600 阈值）+ 陷落三分支**/时间+5）→ 快照恢复无意识标记（unnormal 重算）→ 绝顶解放。
 - **门槛（2026-08-16 grill 定案 + 审查修正）**：`PRIMARY_TIME_STOP`=窄域时停素质（经验解锁：时姦经验 124≥50）；`INTERMEDIATE_TIME_STOP`/`TIME_STOP_JUDGE_FOR_MOVE`=广域时停素质（124≥200；原含"无意识绝顶经验 78≥10"——78 只写給目标/NPC，玩家恒 0 即死门槛，审查修正删除）；`ADVANCED_TIME_STOP` 恒 false（318 未实装）。窄域时停中**不可移动**（move 指令补 `TIME_STOP_JUDGE_FOR_MOVE` 前提）。
@@ -58,7 +63,7 @@
 | 前提 | 语义 |
 |------|------|
 | TIME_STOP_ON / TIME_STOP_OFF | 时停激活 / 未激活 |
-| SANITY_POINT_G_0 | 精力 > 0 |
+| SANITY_POINT_G_0 | 精力 > 0（**有效值**——门槛判定；费用/中断走裸值，见上「域归属」） |
 | PRIMARY_TIME_STOP / INTERMEDIATE_TIME_STOP / ADVANCED_TIME_STOP | 窄域时停 / 广域时停 / 精确时停（未实装恒 false） |
 | TIME_STOP_JUDGE_FOR_MOVE | 时停中可移动（需广域时停；move 指令前提） |
 | PL_NOT_BAGGING_CHARA | 玩家未在装袋搬运（confinement 同语义，本插件自注册） |

@@ -68,6 +68,17 @@ function getStamina(charId: string): number | null {
   return typeof v === 'number' ? v : null
 }
 
+// 注释：时停精力**裸值**读取（2026-09-23 Item 1 修复，用户裁定）——费用与中断判据必须与
+// **扣减通道同域**：扣费走 consume_sanity（sleep-system/index.ts:75 读裸值、:85 `down = min(amount, 裸值)`）。
+// 修复前两者读有效值：裸值 0 + 临时「精力 +100」→ 有效值 100 → cost = min(max(t×2,1),100) > 0
+// → 扣减被夹成 min(cost, 0) = 0 → 有效值永不 ≤0 → **时停永不自动中断、也永不计费（免费时停）**。
+// 域归属：费用/中断是「读出来就写回去」的读-改-写对（读的域 = 扣的域），故取裸值；
+// 而 SANITY_POINT_G_0 这类**门槛判定**与公开 API 仍读有效值（临时 buff 帮达标，见下）。
+function getStaminaRaw(charId: string): number | null {
+  const v = bindingResolver.getRawForPlugin('h-time-stop', charId, 'sanity')
+  return typeof v === 'number' ? v : null
+}
+
 // 注释：时停精力成本公式（erArk realtime_settle.py:412-415）：
 // cost = min(max(true_add_time × 2, 1), currentStamina)
 function calcTimeStopCost(timeCost: number, cur: number): number {
@@ -501,7 +512,9 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
     if (timeCost > 0) {
       // 注释：时停总时长统计（erArk character_behavior.py:59-62 achievement.time_stop_duration += pl_duration）
       timeStopDuration += timeCost
-      const cost = calcTimeStopCost(timeCost, getStamina(playerId) ?? 0)
+      // 注释：费用读**裸值**（2026-09-23 Item 1）——与 consume_sanity 的扣减同域，
+      // 否则临时「精力 +N」修正会算出扣不动的费用（扣减被夹到裸值 → 免费时停）
+      const cost = calcTimeStopCost(timeCost, getStaminaRaw(playerId) ?? 0)
       if (cost > 0) {
         try {
           // 注释：经 effect 通道走 consume_sanity（sleep-system 注册：clamp + 累计
@@ -519,7 +532,9 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       }
       // 注释：归零自动中断（erArk realtime_settle.py:417-434）——扣后精力 ≤ 0 →
       // 自动执行 TIME_STOP_OFF 全链（quiet 避免重复叙事——此处已输出解除原因）
-      if ((getStamina(playerId) ?? 0) <= 0) {
+      // 注释：判据读**裸值**（2026-09-23 Item 1）——扣减落在裸值域，中断必须看同一个数，
+      // 否则临时加成把有效值撑在 0 以上 → 永不中断
+      if ((getStaminaRaw(playerId) ?? 0) <= 0) {
         narrativeLog.write('精力值不足，时停自动解除', 'system', 'h-time-stop')
         await doTimeStopOff(true)
       }
@@ -583,14 +598,15 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
       if (timeStopActive) {
         // 注释：时停时长统计对齐 erArk 口径（character_behavior.py:60 每次玩家行动含移动）
         timeStopDuration += timeCostNum
-        const cost = calcTimeStopCost(timeCostNum, getStamina(playerId) ?? 0)
+        // 注释：费用读**裸值**（2026-09-23 Item 1）——与 consume_sanity 扣减同域，同 execution_end
+        const cost = calcTimeStopCost(timeCostNum, getStaminaRaw(playerId) ?? 0)
         if (cost > 0) {
           await apiSystem.call('effect-system', 'execute', [
             { type: 'consume_sanity', target: 'self', params: { amount: cost } },
           ], { sourceId: playerId, _targetIds: [playerId] })
         }
-        // 注释：归零自动解除（与 execution_end 监听器同语义）
-        if ((getStamina(playerId) ?? 0) <= 0) {
+        // 注释：归零自动解除（与 execution_end 监听器同语义）——判据读**裸值**（2026-09-23 Item 1）
+        if ((getStaminaRaw(playerId) ?? 0) <= 0) {
           narrativeLog.write('精力值不足，时停自动解除', 'system', 'h-time-stop')
           await quietTimeStop(false, playerId)
         }
@@ -609,7 +625,10 @@ export async function onEnable(ctx: PluginContext): Promise<void> {
         if (gateOk && sanityOk && tiredOk && notH) {
           await quietTimeStop(true, playerId)
           timeStopDuration += timeCostNum
-          const cost = calcTimeStopCost(timeCostNum, getStamina(playerId) ?? 0)
+          // 注释：费用读**裸值**（2026-09-23 Item 1）——本处虽未在 Item 1 列举的四个行号内，
+          // 但它与 :504/:586 是同一个 calcTimeStopCost → consume_sanity 通道：读有效值会算出
+          // 扣不动的费用（扣减被夹到裸值）并把它当返回值报出去，故一并收口到裸值域
+          const cost = calcTimeStopCost(timeCostNum, getStaminaRaw(playerId) ?? 0)
           if (cost > 0) {
             await apiSystem.call('effect-system', 'execute', [
               { type: 'consume_sanity', target: 'self', params: { amount: cost } },

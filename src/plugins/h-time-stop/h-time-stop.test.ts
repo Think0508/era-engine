@@ -24,6 +24,8 @@ import { onLoad as combatBaseOnLoad } from '../combat-base/index'
 import { onLoad as gainRuleOnLoad, onEnable as gainRuleOnEnable } from '../gain-rule-system/index'
 import { eventBus } from '../../core/event-bus'
 import { makeTestExecCtx } from '../../utils/test-helpers'
+import { registerRuntimeMod, removeRuntimeMod } from '../../core/attribute-eval'
+import { getEntityAttr, readRawAttr } from '../../core/entity-utils'
 
 // 注释：events 用真实 eventBus——h-time-stop 的 execution_end 监听器必须真实注册才能测到
 const stubCtx: any = {
@@ -128,6 +130,32 @@ describe('h-time-stop 资源统一（TSP → 精力）', () => {
     expect(player().base['精力']).toBe(0)
     expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
     expect(narrativeLog.getEntries().some((e: any) => String(e.text).includes('精力值不足'))).toBe(true)
+  })
+
+  // 2026-09-23 Item 1：费用与中断判据必须与**扣减通道**同域——consume_sanity 读裸值
+  // （sleep-system/index.ts:75）并把扣减夹到裸值（:85）。修复前两者读有效值：
+  // 裸值 0 + 临时「精力 +100」→ 有效值 100 → cost = min(max(20,1),100) = 20 → 扣减被夹成
+  // min(20, 裸值 0) = 0 → 有效值永不 ≤0 → 时停永不中断、也永不计费（免费时停）。
+  it('裸精力 0 + 临时「精力 +100」修正：费用读裸值（=0）→ 不扣费且自动中断', async () => {
+    const p = player()
+    p.base['精力'] = 0
+    registerRuntimeMod(p, { id: 'item1:精力', attr: '精力', flat: 100 }, 100)
+    try {
+      expect(getEntityAttr(p, '精力')).toBe(100)   // 修正生效（有效值侧仍然看得到）
+      await apiSystem.call('effect-system', 'execute', [
+        { type: 'time_stop_on', params: { quiet: true } },
+      ], { sourceId: 'player', _targetIds: ['player'] })
+      expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(true)
+      await eventBus.emit('game:execution_end', { commandId: 'rest', timeCost: 10 })
+      // 费用 = min(max(10×2,1), 裸值 0) = 0 → 扣不动就不计费（修复前 cost=20 → 今日消耗 +0 但报 20）
+      expect(p.action_info.today_sanity_point_cost ?? 0).toBe(0)
+      expect(readRawAttr(p, '精力')).toBe(0)                       // 裸值分毫不动
+      // 中断判据读裸值 → 0 ≤ 0 → 自动解除（修复前读有效值 100 → 永不中断）
+      expect(await apiSystem.call('h-time-stop', 'isActive')).toBe(false)
+      expect(narrativeLog.getEntries().some((e: any) => String(e.text).includes('精力值不足'))).toBe(true)
+    } finally {
+      removeRuntimeMod(p, 'item1:精力')
+    }
   })
 
   it('时长统计：时停中执行 time_cost=30 行动 → getDuration() 增加 30', async () => {

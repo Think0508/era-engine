@@ -367,8 +367,10 @@ export function registerSettleEffects(): void {
     const adjust = _p.skill
       ? techAdj / 2 + getAdj(partner?.abilities?.[_p.skill]?.level ?? 0)
       : techAdj
-    // 自己当前 P 快感（erArk status_data[3]）
-    const ownPFeel = getEntityAttr(src, ATTR.PENIS)
+    // 自己当前 P 快感（erArk status_data[3]）——读**裸值**（2026-09-23 Item 2b）：
+    // 它随后被折算成**基础**射精欲增量（addEja 写 base[射精欲]，每次行动重复），
+    // 读有效值会把「阴茎」上的临时修正按 /8 永久铸进射精欲（跨属性家族，且每行动复利）。
+    const ownPFeel = readRawAttr(src, ATTR.PENIS)
     const delta = Math.floor((tc + 50) * adjust + ownPFeel / 8)
     // 注释：跨插件写射精欲走 h-ejaculation API（唯一通信路径铁律；h-ejaculation 未启用 → 静默降级）
     await addEja(srcId, delta)

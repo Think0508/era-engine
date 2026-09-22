@@ -678,24 +678,33 @@ export function validateAttributeMods(mod: LoadedMod): void {
         })
       }
     }
-    // 计划三加固：on_apply_effects / on_remove_effects **禁止**用 modify_attribute 改属性。
+    // 计划三加固：on_apply_effects / on_remove_effects 里的 modify_attribute **按意图判**（不看 hook 名）。
     // 该写法经 effect-system 的 modify_attribute（effect-system/index.ts:52）落到**基础值域**
-    // （无 settlement → bindingResolver.getRaw + delta 写回裸值 / char.base），于是"生效期间 +10"
-    // 变成"永久 +10"，且生效期间任何一次读-改-写（升级/突破的成长结算）会把临时值按比例烘死
-    // （2026-09-22 探针实证：buff 期间一次 ×2 成长把 +10 永久留在身上，raw 30→40）。
-    // 属性临时加成一律写 attribute_mods（运行时清单：到期/移除自动消失，基础值分毫不动）；
-    // 确实要永久改变属性（伤害/成长）请显式走永久写入路径，不要用状态钩子表达"临时加成"。
+    // （无 settlement → bindingResolver.getRaw + delta 写回裸值 / char.base）：
+    //   · 作者想表达「生效期间 +10」→ 变成「永久 +10」，且生效期间任何一次读-改-写（升级/突破的
+    //     成长结算）会把临时值按比例烘死（2026-09-22 探针实证：buff 期间一次 ×2 成长把 +10
+    //     永久留在身上，raw 30→40）；
+    //   · 作者想表达「施加瞬间造成 50 点伤害」→ 那是**有意的永久改变**，写基础值本来就对。
+    // 二者在数据上无法自动区分，故**默认 error**（默认安全：绝大多数手写用法是想加个临时 buff），
+    // 由作者用 `params.permanent = true` 显式声明"我要的是永久改变"来放行——
+    //   `{ type = "modify_attribute", params = { attr = "hp", value = -50, permanent = true } }`
+    // 该字段是**作者意图声明**（供加载期校验判读）；运行期路径不变（照旧写基础值）。
+    // 属性临时加成一律写 attribute_mods（运行时清单：到期/移除自动消失，基础值分毫不动）。
     // 效果条目的判别字段是 `type`（Effect 形状，见 effect-type-registry.ts:7-14）；
     // battle-effects.toml 的 `action` 是另一份数据（BattleEffectDef），状态钩子不使用它。
     for (const hook of ['on_apply_effects', 'on_remove_effects'] as const) {
       const list: unknown = def?.[hook]
       if (!Array.isArray(list)) continue
       for (const entry of list) {
-        if ((entry as { type?: unknown } | null | undefined)?.type !== 'modify_attribute') continue
+        const e = entry as { type?: unknown; params?: { permanent?: unknown } } | null | undefined
+        if (e?.type !== 'modify_attribute') continue
+        if (e.params?.permanent === true) continue // 显式声明的永久意图（伤害/成长）→ 放行
         errorReporter.report({
           source: 'mod-loader', severity: 'error',
           message: `状态 '${id}' 的 ${hook} 用 modify_attribute 改属性会永久污染基础值`,
-          suggestion: '生效期间的临时加成改用 attribute_mods（到期/移除自动消失、基础值分毫不动）；确实要永久改变属性（伤害/成长）请显式走永久写入路径（如 set_attribute / 脚本 / 任务奖励）',
+          suggestion: '生效期间的临时加成改用 attribute_mods（到期/移除自动消失、基础值分毫不动）；'
+            + '确实要一次性永久改变属性（伤害/成长，不随状态到期回退）→ 在 params 上写 permanent = true 显式声明意图'
+            + '（如 { attr = "hp", value = -50, permanent = true }），或走显式永久写入路径（set_attribute / 脚本 / 任务奖励）',
         })
       }
     }

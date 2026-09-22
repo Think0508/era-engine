@@ -638,6 +638,43 @@ describe('mod-loader integration', () => {
       expect(errs.some(e => e.message.includes('坏施加状态') && e.suggestion?.includes('attribute_mods'))).toBe(true)
     })
 
+    it('含 permanent = true → 放行（作者显式声明"一次性永久改变"）；permanent = false 仍报', () => {
+      errorReporter.clear()
+      const mod = parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."合法永久状态"]',
+          'name = "合法永久状态"',
+          'description = "x"',
+          'category = "debuff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          // 施加瞬间造成 50 点伤害：有意的一次性永久改变，不是"生效期间的临时加成"
+          'on_apply_effects = [ { type = "modify_attribute", params = { attr = "hp", value = -50, permanent = true } } ]',
+          '[status-effects."坏非永久状态"]',
+          'name = "坏非永久状态"',
+          'description = "x"',
+          'category = "buff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          // permanent = false（或漏写）= 没声明意图 → 默认安全，仍判 error
+          'on_apply_effects = [ { type = "modify_attribute", params = { attr = "hp", value = 10, permanent = false } } ]',
+        ].join('\n'),
+      }))
+      const errs = errorReporter.getErrors().filter(e => e.severity === 'error' && e.source === 'mod-loader')
+      // ① 显式永久意图 → 零 error，且数据真的加载进来了（params 未被吞）
+      expect(errs.filter(e => e.message.includes('合法永久状态'))).toEqual([])
+      expect(mod.statusEffects['合法永久状态']?.on_apply_effects?.[0]?.params?.permanent).toBe(true)
+      // ② permanent = false 不等于声明了永久意图 → 仍报，且建议里给出 permanent = true 这条出口
+      const bad = errs.filter(e => e.message.includes('坏非永久状态'))
+      expect(bad.some(e => e.message.includes('on_apply_effects') && e.message.includes('永久污染基础值'))).toBe(true)
+      expect(bad.some(e => e.suggestion?.includes('permanent = true'))).toBe(true)
+      expect(bad.some(e => e.suggestion?.includes('attribute_mods'))).toBe(true)
+    })
+
     it('tick_effects 用 modify_attribute **不报**（逐次增量 = 伤害/回复，非临时修正沉淀）', () => {
       errorReporter.clear()
       parseModData('test-mod', makeMap({

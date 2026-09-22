@@ -115,7 +115,21 @@ level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 1
   叠加规则与战斗公式通道完全一致：`((set ?? 值) + Σflat) × (1 + Σpercent)`。
   **多个 percent 相加后只乘一次** —— 两个 `+10%` 是 `+20%`，不是复利。
   多个 `set` 并存时**只有一条生效** —— 按修正清单顺序最后一条的值胜出，覆盖而非相加
-  （顺序 = 声明式来源（装备 → 被动技能 → 天赋 → 插件追加）在前，push 栈在后；`listModifiers` 只列 push 栈条目）。
+  （顺序 = 声明式来源（装备 → 被动技能 → 天赋 → 插件追加）→ **运行时清单 `char.attr_mods`** → push 栈；
+  `listModifiers` 只列 push 栈条目）—— 故**临时修正的 `set` 压过常驻来源**，push 栈的 `set` 又在最后。
+  **修正来源共三类**：① 声明式（数据里写的 `attribute_mods`）② **运行时清单**（`char.attr_mods`，状态/战斗
+  挂上来的带到期时刻条目，随存档往返）③ push 栈（代码 `registerModifier()`，存内存 `WeakMap`、**不随存档**）。
+  - ⚠️ **先分清三种「属性变化」（D1 —— 写数据/写代码前必读）**：
+
+    | 你要做的事 | 走哪条路 | 落地在哪 |
+    |---|---|---|
+    | **永久成长**（修炼/吃药涨上限、扣血掉血） | 写**基础值** | `setEntityAttr` / `settlement.applyChange` / `applyAttrDelta`；演出文本自行播报「xx+30 yy+60」 |
+    | **临时修正**（生效期间 +N，到期消失） | 进**修正清单** | 状态写 `attribute_mods`、战斗写 `modify_attribute` 动作；**绝不写基础值** |
+    | **派生**（上限/总攻防随其他属性变） | `compute` 脚本**读时算** | 属性定义里 `compute = "xxx.js"`，不落任何存储 |
+
+    **第一类绝不走修正，第二类绝不写基础值。** 违反后者 = 临时加成永久沉淀成角色属性：
+    迁移前的「攻击增益」用 `on_apply_effects` 改 `attack` 基础值、到期再 −10 减回去 ——
+    中间只要发生成长/读档/其他改动，减回去的数值就对不上（详见下面「状态钩子」一节的禁令）。
   - ✅ **数据驱动来源已接线（2026-09-22 计划二）**：上一句的"效果/装配/装备/状态"里，
     **装备/服装、被动技能、天赋**三类**声明式来源**今天写在数据里即生效 —— 不需要任何注册代码。
     读属性时按角色**当前状态现算**（`char.equipment` / `char.abilities` / `char.talents`），
@@ -156,13 +170,193 @@ level_thresholds = [0, 100, 500, 1000, 2500, 6000, 12000, 30000, 50000, 75000, 1
       （`npm run validate` 即可查出；校验在 `src/core/mod-validate.ts` 的 `validateAttributeMods`）。
       ⚠️ 该校验只看**名字写对**的 `attribute_mods` 数组内的条目；字段名本身拼错（写成 `attribute_mod = [...]`）
       **不在**校验范围内 —— 它压根不是 `attribute_mods`，会被静默忽略（修正不生效，也不报错）。
-  - **今天仍未接线（计划三）**：战斗效果里挂属性修正的动作（`combat-base` 的 `modify_attribute` 落点 ——
-    与 effect-system 已有的同名「一次性加减值」效果不是一回事）、脚本/API 直挂的带时长与条件修正、
-    跨天限时状态（`attribute_mods` + `duration`，随存档序列化、到期回落）、内功装配（`equipped_mods`）。
-    **今天在数据里写这几类字段不会有任何效果。**
-    代码 API 仍是脚本/插件挂临时修正（以及用 `registerDeclarativeSource()` 追加声明式来源）的入口：
-    `registerModifier(entity, id, attr, { flat, percent, set }, opts?)`
-    （同文件另导出 `removeModifier` / `clearModifiers` / `listModifiers`；同 `(id, attr)` 重复注册 = 覆盖，可重复挂载与热重载）。
+  - ✅ **运行时来源已接线（2026-09-22 计划三）**：`char.attr_mods` —— 实体上的**纯数据字段**
+    （缺省 = 空清单，旧存档天然如此；随存档整对象往返，无需迁移步骤）。它与声明式来源**并列**：
+    读属性时一起现算、共用上面那一份叠加代数与闸门。**数据里没有人手写这个字段** ——
+    写入方是**状态效果**（`attribute_mods`）与**战斗效果**（`modify_attribute` 动作），代码侧入口是
+    `registerRuntimeMod`。
+
+    条目形状（`RuntimeAttrMod`）：
+
+    | 字段 | 含义 |
+    |---|---|
+    | `id` | 来源标识：状态 = `status:<状态ID>`，战斗 = `combat:<效果实例ID>`（前缀是整批撤销的依据） |
+    | `attr` | 属性名（mod 自定义字符串；必须在 `attributes.toml` 定义，否则有效值管线不认它 → 修正静默无效） |
+    | `flat` / `percent` / `set` | 三条写法（见下表），可同时给，按同一代数叠加 |
+    | `expiresAt` | **绝对游戏分钟**；缺省 = 不自动到期（永久，只能由来源显式移除） |
+    | `source` | 可读的来源说明（调试/UI 用，不参与计算） |
+    | `strength` | D5 顶替判定的强度，**随条目持久化**（存档往返后比较仍成立） |
+
+    **三条写法（各写各的，不互相换算 —— D4）**：
+
+    | 作者写法 | 语义 | 例子 |
+    |---|---|---|
+    | `set = 3` | **定值**：压过其它修正，值就是 3 | 「破绽打到 3 层」 |
+    | `flat = 3` | **加法**：与其它 `flat` 相加 | 「破绽 +3」 |
+    | `percent = -0.2` | **倍率**：与其它 `percent` 相加后**只乘一次** | 「中毒 −20%」 |
+
+    四个必须知道的点：
+    - **不做「差额」换算**：作者写什么就是什么，引擎**不记录"生效前是几"**（到期撤销修正即可，不需要把值减回去）。
+      `percent` 的单位是**小数**且与被缩放的字段一致（`0.1` = +10%；写 `10` 不是 +10% 而是 +1000%）。
+      在有 `+20%` 的属性上写「+20」得到 `(base+20)×1.2` —— 百分比本就该作用于它，这是对的。
+    - **`expiresAt` 到点即失效**：判定一律 `now >= expiresAt`，**没有"每次跨小时扣 60 分钟"那种递减**
+      （睡觉跨天/时间跳跃/非整点行动原先必然算错）。读属性时顺手**剪除**过期条目，因此
+      **不需要任何变更通知、不需要注销路径、也不需要为"到期"发事件** —— 到点自动回落。
+      时钟由 `mod-loader` 注入（`game.time` 换算成总分钟）；单独使用本模块（单测直调）未注入时钟时，
+      条目一律视为**不过期**（当作全过期会静默给出偏小的错值）。`expiresAt` 写成字符串/`NaN` 会
+      **按"不自动到期"处理并去重上报**（静默把减益变成永久，符号是反的，不能没有诊断）。
+    - ⚠️ **D5 顶替（同 `(id, attr)` 再次施加）**：新强度 **`<` 现有强度 → 什么都不发生** ——
+      **不降级，也不刷新时长**（已有破绽 3 层时打「打到 3」/「打到 2」都不改变层数、也不刷新周期）；
+      `>=` → 顶上并**重置为该条自己的完整时长**（同强度也刷新：毒再中一次 = 刷新时间，层数不变）。
+      强度算式**全项目统一**：`strength = set ?? flat ?? percent ?? 0`（必须有限数字，否则整条拒绝；
+      状态侧另有细化：有层数概念的状态取**有效层数** —— 层数就是"这条状态多强"，
+      无层数概念的取 `set ?? flat ?? percent`，全缺省 = 1）；
+      比较基准是**存活（未过期）条目**，且 `strength` 写在条目上随存档往返 —— 丢了这个字段会让
+      "存了破绽3、读档后又打来破绽2"错误顶替；老档条目无此字段 = `-Infinity`（任何新施加都能覆盖它）。
+    - 代码入口（mod 脚本/插件用；数据驱动无需调用）：
+
+      ```typescript
+      registerRuntimeMod(entity, { id: 'status:中毒', attr: '灵敏', percent: -0.2, expiresAt: t }, 0.2)  // 末参 = 强度
+      removeRuntimeMod(entity, 'status:中毒', '灵敏')    // 省略 attr = 移除该 id 的全部条目
+      removeRuntimeModsByPrefix(entity, 'combat:')        // 战斗结束整批清理（返回移除条数）
+      readRuntimeMods(entity)                             // 读：返回存活条目，顺手剪除过期/畸形条目
+      ```
+
+      ⚠️ `readRuntimeMods` 返回的数组与条目就是**实体自己的对象**（不是副本）：就地改 `strength` 会改写
+      D5 的比较基准，就地改数值会直接改写生效中的修正，且都绕过缓存失效 —— 要改清单请走上面三个写入口。
+      另注意它与 `registerModifier()`（push 栈：`WeakMap`、**不随存档**、不进 `attr_mods`）是**两套**机制：
+      要"随存档往返的临时修正"用前者，纯内存的临时叠加用后者。
+  - ✅ **状态效果的两种修正（计划三已接线）**：状态定义里多两个可选字段 —— 一个改**角色属性**，
+    一个改**别的状态的层数**：
+
+    ```toml
+    # definitions/status-effects.toml
+    [status-effects."中毒"]
+    duration = 360                                            # 分钟；-1 = 永久
+    attribute_mods = [ { attr = "灵敏", percent = -0.2 } ]     # 生效期间 灵敏 −20%（只进有效值，基础值分毫不动）
+
+    [status-effects."护体"]
+    duration = 4320                                           # 3 天（单位 = 分钟，D6：4320 = 3 天）
+    stack_mods = [ { status = "破绽", value = -1 } ]           # 身上破绽**恒 −1 层**（来源在才生效）
+    ```
+
+    - `attribute_mods` 与装备/被动/天赋的 `attribute_mods` **同形**（`attr` + `flat?/percent?/set?`，
+      可带 `per_level` 的只有被动技能/天赋），区别只在落点：状态的在**生效期间**被 push 进
+      `char.attr_mods`（`id = status:<状态ID>`，到期时刻 = 状态到期时刻），状态移除/到期**整批撤销**。
+      **基础值全程不动**。状态上写 `per_level` = **加载期报错**（状态没有等级概念，不静默当 1 级）。
+      属性必须先在 `attributes.toml` 定义（同一套闸门），否则加载期报错（`npm run validate` 可查）。
+    - **跨天限时状态今天已接线**：`attribute_mods` + `duration` 随存档序列化，睡一觉越过 `expiresAt`
+      就直接失效（不会"少扣/多扣"），到期后属性自动回落 —— **没有还原代码**。
+    - `stack_mods` 声明在**来源**状态上、作用于**目标**状态（`status` = 目标状态 ID，`value` = 非零整数）。
+      修正挂在目标状态实例上并记 `from`（谁给的）；**来源到期/被移除 → 撤销修正，目标的基础层数分毫不动**
+      （这就是"不需要记录生效前是几"的实现方式）；来源刷新时长 = 修正寿命跟着刷新；目标状态**后出现**
+      也照样生效（与施加顺序无关，写「恒 −1」不必管谁先来）。
+      ⚠️ 同一状态定义里对**同一目标状态**写两条（−1 与 −2）是**后者覆盖前者**（不叠加）——
+      要"既 −1 又 −2"请写成一个 −3 或换两个来源状态（加载期不对此告警）。
+
+    **状态实例的真值形状**（`char.status_effects[]` 的元素，纯数据字段、随存档整对象往返）：
+
+    | 字段 | 含义 |
+    |---|---|
+    | `id` | 状态 ID |
+    | `base_stack` | **基础层数**（招式给定，见下面的三层模型） |
+    | `expiresAt` | **绝对游戏分钟**；缺省 = 永久（定义里 `duration = -1`） |
+    | `stack_mods` | 收到的层数修正 `[{ from, value, expiresAt? }]` |
+    | `last_decay_at` | 上次衰减落账时刻（绝对游戏分钟） |
+    | `last_tick_game_time` | 上次 tick 时刻（绝对游戏分钟） |
+
+    旧存档**不需要迁移步骤**：条目首触时就地换算（`remaining_duration → expiresAt`，`-1` = 永久；
+    `stack → base_stack`），幂等、不丢条目，且时间锚点从"现在"起算（不会一读档就 tick/衰减爆发）。
+  - **层数三层模型（D11/D12）**：
+
+    ```
+    有效层数 = 基础层数(base_stack) + Σ 层数修正(stack_mods) − 时间衰减      （下限 0）
+    ```
+
+    | 层 | 谁改 | 怎么写 |
+    |---|---|---|
+    | 基础层数 | 招式/技能（施加那一刻） | `effects = [{ type = "apply_status", params = { status = "破绽", stack = 3 } }]`（打到 3）/ `params.stack_add = 3`（+3） |
+    | 层数修正 | 别的状态（护体那类） | 状态定义 `stack_mods = [ { status = "破绽", value = -1 } ]` |
+    | 时间衰减 | 状态定义自己 | `stack_decay = { every = 60, amount = 1 }`（每 60 分钟 −1 层；到 0 层状态结束） |
+
+    - **「打到 N」与「加 N」是两种运算**（`apply_status` 的 `params`）：**只写一个** ——
+      同时给会在运行时 warning 并**忽略 `stack_add`**（`stack` 优先）。
+
+      | 当前有效层数 | 招式 | 结果 |
+      |---|---|---|
+      | 1 | `stack_add = 3` | 4 |
+      | 0 | `stack_add = 5` | 5 |
+      | 5 | `stack = 3` | **无操作**（3 顶不掉 5），且**时长也不刷新** |
+
+      即「打到 N」只在 `N > 当前有效层数` 时才顶上并**重置时长为新的完整时长**；`<=` 时**什么都不发生**。
+      「加 N」恒生效地加，并重置时长（不受顶替判定约束）。比较基准是**有效层数**（含层数修正与待衰减），
+      所以"护体 −1 时打到 3"的有效值是 2（护体到期后回到 3）。不带这两个参数 = 沿用状态定义既有语义
+      （`stackable` + `max_stack`：可叠则 +1 封顶，否则只刷新时长）。
+    - 战斗效果里**重复施加的合并**沿用战斗效果库既有的 `merge`：`refresh`（只刷时长）/ `stack`（层数累加）/
+      `strongest`（取高层数）—— 层数进而决定数值类效果的大小（`growth`）。
+    - **两个兼容视图（活的，不入存档）**：状态条目上挂两个**非枚举访问器**，旧写法与条件路径照旧读得到，
+      真值唯一（分别在 `base_stack` / `expiresAt`）：
+
+      | 视图 | 读出来是什么 | 写回去落到哪 |
+      |---|---|---|
+      | `status.stack` | **有效层数**（基础 + 层数修正 − 待衰减，下限 0）——条件 `character.{id}.status.{状态ID}.stack` 看到的就是它 | 写 `base_stack`（旧代码写 `stack` 不会静默失效） |
+      | `status.remaining_duration` | **剩余分钟数**；永久状态 = `-1`（条件别名 `remaining` 同此） | 换算成绝对时刻写 `expiresAt` |
+
+      「永不陈旧」的边界：**活对象上**每次读都从唯一真值现算（含待衰减投影）；但**克隆**
+      （`JSON.parse(JSON.stringify(char))`、UI store 的结构化克隆）不带访问器 → 克隆体上这两个字段是
+      `undefined`。新写的消费方请直接读 `base_stack` / `expiresAt`，或走 API：
+      `ctx.api.call('status', 'getStack' | 'getRemaining' | 'hasStatus', 角色ID, 状态ID)`。
+    - **⚠️ 状态钩子里改属性：写 `attribute_mods`，不要写 `modify_attribute`**（加载期拦截）：
+
+      | 钩子 | 里面写 effect-system 的 `modify_attribute` | 为什么 |
+      |---|---|---|
+      | `on_apply_effects` / `on_remove_effects` | **加载期 error**（除非显式写 `params.permanent = true`） | 它写的是**基础值**：临时 buff 会永久沉淀成角色属性（"+10 / −10 减回去"经不起成长与读档） |
+      | `tick_effects` | **合法**（不报） | 逐次增量 = **伤害/回复的本义**（中毒每 tick 扣 5 点气血），不是"生效期间的加成" |
+
+      - 生效期间的临时加成 → 写 `attribute_mods`（到期/移除自动消失、基础值分毫不动）。
+      - 确实要**一次性永久改变属性**（伤害/成长）→ 在 `params` 上写 `permanent = true` **显式声明意图**：
+        `{ type = "modify_attribute", params = { attr = "hp", value = -50, permanent = true } }`，
+        或直接走显式永久写入路径（`set_attribute` / 脚本 / 任务奖励）。
+      - ⚠️ **命名撞车**：这里的 `modify_attribute` 是 **effect-system 的"一次性加减基础值"效果**，
+        与下面战斗效果里的 **`modify_attribute` 战斗动作**（写运行时清单）**不是一回事**。
+  - ✅ **战斗效果 `modify_attribute`（计划三已接线）**：库条目（`definitions/battle-effects.toml`）里声明
+    "战斗中改属性" —— `action = "modify_attribute"` + `attr`（属性名）+ `value = { flat?/percent?/set? }`：
+
+    ```toml
+    [effects."定身"]
+    name = "定身"
+    delivery = "zone"           # 常驻修正：**不写** settle（zone 条目的相位）
+    target = "enemy"
+    action = "modify_attribute"
+    attr = "speed"              # 必须在 attributes.toml 定义，否则加载期报错
+    value = { set = 1 }         # 定值：速度压到 1（与 modify_channel 一样支持覆盖语义）
+    duration = "battle"
+    ```
+
+    | 要点 | 行为 |
+    |---|---|
+    | 落点 | 写进**角色的运行时清单** `char.attr_mods`（`id = combat:<效果实例ID>`），**基础值全程不动** |
+    | 数值 | 受层数缩放（`growth`）：`value × (1 + growth×(层数−1))`；`flat`/`percent`/`set` 三条写法与状态同规矩（不换算） |
+    | 同步时机 | 复用既有的 `recalcStats` 全量重算：本场所需修正的签名（实例 id + 属性 + 数值）变化时才写实体清单；签名不变**完全不碰实体**（不白刷缓存版本） |
+    | 战斗结束 | 按 `combat:` 前缀**整批清除** → 属性自动回落（无还原代码） |
+    | ⚠️ 只支持常驻形态 | 写了相位的条目（zone 的 `settle`，如 `settle = "turn_start"`）**不生效**并报一次 warning —— 运行时清单没有"相位"概念，相位修正的落点是战斗本地聚合；要常驻就**删掉 `settle`** |
+    | ⚠️ `attr` 必须已定义 | 漏写 `attr` / 引用了 `attributes.toml` 里没有的属性 → **加载期 error**（`combat-base` 的 `validateBattleEffectDefs`）—— 不拦的话条目照挂进效果区但一点属性都不加，没有任何运行时信号 |
+    | `value.set` | **允许**（定值设置属性，如「定身」把速度压到 1）。与 `modify_stat` 不同：统计键没有覆盖语义，那里写 `set` 是加载期 error |
+  - **今天仍未接线**：内功装配（`equipped_mods` —— 属秘籍/内功系统：装配槽、排他规则、装配指令）、
+    **跨实体修正**（甲的状态改乙的属性 —— 本轮修正一律作用于**目标自身**，招式打别人时"目标"就是被打的人）、
+    条件手册标注受修正字段、UI 的基础/有效值差异呈现（`120 (+15)`）。
+    **今天在数据里写这几类字段不会有任何效果。** 另外修正**没有"条件"字段**：要"条件性生效"就用 `compute`
+    派生，或由脚本在条件满足时挂/摘运行时修正。
+  - 代码 API 仍是脚本/插件挂临时修正（以及用 `registerDeclarativeSource()` 追加声明式来源）的入口：
+
+    | 机制 | 入口 | 存哪 |
+    |---|---|---|
+    | 运行时清单（**随存档**，可带到期时刻） | `registerRuntimeMod(entity, entry, strength)` | 实体字段 `char.attr_mods` |
+    | push 栈（**不随存档**，纯内存临时叠加） | `registerModifier(entity, id, attr, { flat, percent, set }, opts?)` | 模块内 `WeakMap` |
+
+    同文件另导出 `removeRuntimeMod` / `removeRuntimeModsByPrefix` / `readRuntimeMods`（运行时清单）与
+    `removeModifier` / `clearModifiers` / `listModifiers`（push 栈）；同 `(id, attr)` 重复注册 = 覆盖，
+    可重复挂载与热重载。
   - ⚠️ **以上只改了「读」**：写路径契约（上一节）不变 —— 声明式修正同样只进有效值，不会被写回 `base`；
     「要写回哪个值就从哪个值出发读」（`applyAttrDelta` / `readRawAttr` / `bindingResolver.getRaw`）照旧。
   - mod 数据（重新）加载时（`loadMod`）会自动失效全部实体的有效值缓存（引擎内部调 `bumpDataVersion()`），作者无需处理；

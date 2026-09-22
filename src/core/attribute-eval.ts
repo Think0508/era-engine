@@ -9,7 +9,7 @@
 // 语义（唯一权威定义）：
 //   raw = 裸值（entity-utils 的命名空间查找结果）
 //   v   = compute ? 脚本(raw, attrs) : raw        ← 先派生
-//   v   = (set ?? v + Σflat) × (1 + Σpercent)     ← 后叠修正（复用公式通道代数）
+//   v   = ((set ?? v) + Σflat) × (1 + Σpercent)   ← 后叠修正（复用公式通道代数）
 //
 // 闸门（零回归保证）：只有【属性定义存在】+【裸值是数字】+【有 compute 或有修正条目】才走管线，
 //   其余一律原样返回。因此未接入任何来源时，本管线是恒等变换。
@@ -63,7 +63,7 @@ export function configureAttributeEval(cfg: {
   if (cfg.rawReader) rawReader = cfg.rawReader
 }
 
-/** mod 数据定义变更（热重载/读档重建）→ 所有实体缓存失效 */
+/** mod 数据（重新）加载（loadMod：定义/脚本注入本身就是重载点）→ 所有实体缓存失效 */
 export function bumpDataVersion(): void {
   globalVersion++
 }

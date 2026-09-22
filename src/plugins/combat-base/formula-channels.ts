@@ -113,7 +113,7 @@ export function isChannelBagEmpty(bag: ChannelBag | undefined | null): boolean {
   return true
 }
 
-/** 应用一条通道修正：base' = (set ?? base + flat) × (1 + percent) */
+/** 应用一条通道修正：base' = ((set ?? base) + flat) × (1 + percent) */
 export function applyChannel(base: number, mod: ChannelMod | undefined): number {
   if (!mod) return base
   const b = mod.set !== undefined ? mod.set : base

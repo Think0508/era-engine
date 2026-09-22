@@ -988,6 +988,34 @@ describe('combat-wuxia 数据校验', () => {
     expect(errorReporter.getErrors().some(e => e.message.includes('value.set 只允许用于 modify_channel'))).toBe(true)
   })
 
+  it('value.set 用于 modify_attribute → 校验通过（定值设置属性；Task 4 契约）', () => {
+    const mod = modLoader.getMod()!
+    Object.assign(mod.battleEffects, {
+      '定身': {
+        name: '定身', delivery: 'zone', target: 'enemy', action: 'modify_attribute',
+        attr: 'speed', value: { set: 1 }, duration: 'battle',
+      },
+    })
+    validateBattleData()
+    // 守卫只放行 modify_channel 与 modify_attribute 两个动作 → 本条零报错
+    expect(errorReporter.getErrors().some(e => e.message.includes('value.set 只允许用于'))).toBe(false)
+  })
+
+  it('value.set 用于 modify_stat / periodic_damage → 仍校验报错（守卫未放宽到其它动作）', () => {
+    const mod = modLoader.getMod()!
+    Object.assign(mod.battleEffects, {
+      '硬设统计': { name: '硬设统计', action: 'modify_stat', stat: 'damage_out', value: { set: 0.5 } },
+      '硬设定伤': {
+        name: '硬设定伤', delivery: 'zone', target: 'enemy', action: 'periodic_damage',
+        settle: 'turn_start', value: { set: 3 },
+      },
+    })
+    validateBattleData()
+    const setErrs = errorReporter.getErrors().filter(e => e.message.includes('value.set 只允许用于'))
+    expect(setErrs.some(e => e.message.includes("战斗效果 '硬设统计'"))).toBe(true)
+    expect(setErrs.some(e => e.message.includes("战斗效果 '硬设定伤'"))).toBe(true)
+  })
+
   it('点数制统计键给了 percent → 校验报错（不做静默换算）', () => {
     const mod = modLoader.getMod()!
     Object.assign(mod.battleEffects, {

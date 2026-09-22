@@ -1058,8 +1058,8 @@ export function validateBattleData(): void {
     if (value !== undefined && typeof value !== 'number' && (typeof value !== 'object' || value === null)) {
       errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 value 必须是数字或 { flat, percent, set } 对象` })
     }
-    if (value && typeof value === 'object' && value.set !== undefined && def.action !== 'modify_channel') {
-      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 value.set 只允许用于 modify_channel（统计键无覆盖语义）` })
+    if (value && typeof value === 'object' && value.set !== undefined && def.action !== 'modify_channel' && def.action !== 'modify_attribute') {
+      errorReporter.report({ source: 'combat-wuxia', severity: 'error', message: `${owner} 的 value.set 只允许用于 modify_channel 与 modify_attribute（统计键无覆盖语义）` })
     }
     // 统计键 / 通道落点
     if (def.action === 'modify_stat') {

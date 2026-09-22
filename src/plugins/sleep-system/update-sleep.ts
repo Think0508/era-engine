@@ -17,7 +17,7 @@ import { entitySystem } from '../../core/entity-system'
 import { gameContext } from '../../core/game-context'
 import { eventBus } from '../../core/event-bus'
 import { errorReporter } from '../../core/error-reporter'
-import { getEntityAttr, setEntityAttr, readRawAttr, applyAttrDelta, ATTR } from '../../core/entity-utils'
+import { setEntityAttr, readRawAttr, applyAttrDelta, ATTR } from '../../core/entity-utils'
 import { settleDailyReset } from '../../core/realtime-settle'
 import { settleJuelConversion } from '../../core/juel-settle'
 import { narrativeLog } from '../../core/narrative-log'
@@ -49,8 +49,14 @@ function growStaminaMax(char: any): void {
 // realtimeSettle 之后执行（基数含睡眠中的精液恢复 +1/20min），偏差量级为小时级恢复量
 function refreshTempSemenMax(char: any, minutes: number): void {
   if (minutes < 360) return
-  const semen = getEntityAttr(char, ATTR.SEMEN)
-  const semenMax = getEntityAttr(char, ATTR.SEMEN_MAX)
+  // 2026-09-23 末轮清扫：两个**操作数**都取基础值域（`readRawAttr`）——判据语义不变（`<= 0` 仍拒无效基数）：
+  //  · `semen`（被折半累加进基础 EXTRA_SEMEN 的量）：原读**有效**值 → 「精液量 +50」这类临时修正被烘进
+  //    基础 EXTRA_SEMEN，且**每夜重跑**（≥6h 睡眠就再来一次），不是一次性：探针 base 精液量 50 / 上限 100
+  //    / extra 0 + `精液量 +50` → extra 写 **50**（应为 floor(50/2)=25）；撤修正仍 50，第二夜 100。
+  //  · `semenMax`（extraMax = ×4 的封顶，同时是「浓厚精液」天赋的判据）：它是**基础值写点**的上限，
+  //    取有效上限会让临时「精液量上限 +N」永久抬高 EXTRA_SEMEN 的封顶、并凭此拿下天赋。
+  const semen = readRawAttr(char, ATTR.SEMEN)
+  const semenMax = readRawAttr(char, ATTR.SEMEN_MAX)
   if (typeof semen !== 'number' || semen <= 0) return
   if (typeof semenMax !== 'number' || semenMax <= 0) return
   const extraMax = semenMax * 4

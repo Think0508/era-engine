@@ -17,6 +17,8 @@ import { bindingResolver } from '../../core/binding-resolver'
 import { conditionRegistry } from '../../core/condition-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { narrativeLog } from '../../core/narrative-log'
+import { registerRuntimeMod, removeRuntimeMod } from '../../core/attribute-eval'
+import { getEntityAttr } from '../../core/entity-utils'
 import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
 import { getSleepLevelInfo } from './sleep-state'
@@ -290,6 +292,29 @@ describe('sleep-system 集成', () => {
       expect(player.base['额外精液量']).toBe(0)
       expect(player.base['射精欲']).toBe(0)
       expect(player.action_info.day_first_shoot_semen).toBe(true)
+    })
+
+    // 2026-09-23 末轮：转化基数取**基础值**（原读有效值 → 「精液量 +50」这类临时修正被烘进基础
+    // EXTRA_SEMEN，且 ≥6h 睡眠**每夜重跑**：探针 extra 50（应 25）→ 撤修正仍 50 → 第二夜 100）
+    it('精液转化取基础值：精液量上的临时修正（+50）不进基础「额外精液量」', async () => {
+      const player = getChar(PLAYER)
+      player.base['精液量'] = 50
+      player.base['精液量上限'] = 100
+      player.base['额外精液量'] = 0
+      registerRuntimeMod(player, { id: 'test:精液量', attr: '精液量', flat: 50 }, 50)
+      try {
+        expect(getEntityAttr(player, '精液量')).toBe(100)   // 有效值 50 + 50
+        await updateSleepAll(360)
+        // 修复前读有效值：floor(100/2) = 50；修复后读基础值：floor(50/2) = 25
+        expect(player.base['额外精液量']).toBe(25)
+        // 撤掉修正后不复利：第二夜只再转化基础值的一半
+        removeRuntimeMod(player, 'test:精液量')
+        expect(getEntityAttr(player, '精液量')).toBe(50)
+        await updateSleepAll(360)
+        expect(player.base['额外精液量']).toBe(50)          // 25 + floor(50/2)
+      } finally {
+        removeRuntimeMod(player, 'test:精液量')
+      }
     })
   })
 
@@ -681,6 +706,26 @@ describe('指令级口上与 ask_target_sleep（1014/1022 补测）', () => {
       expect(girl.juel['10']).toBe(0) // 被升级消耗
       expect(girl.base['恭顺']).toBe(0) // 状态清零
       expect(girl.abilities['顺从'].level).toBe(1) // 升级成功
+    })
+
+    // EXTRA_SEMEN 是**基础值**写点，它的封顶（extraMax = 精液量上限×4）也必须取基础值上限——
+    // 否则临时「精液量上限 +900」会永久抬高封顶并凭此决定「浓厚精液」天赋（修复前 extra 440 / 无天赋）
+    it('精液转化上限取基础值：临时「精液量上限 +900」不抬高 EXTRA_SEMEN 的永久封顶', async () => {
+      const player = getChar(PLAYER)
+      player.base['精液量'] = 100
+      player.base['精液量上限'] = 100
+      player.base['额外精液量'] = 390
+      registerRuntimeMod(player, { id: 'test:精液量上限', attr: '精液量上限', flat: 900 }, 900)
+      try {
+        expect(getEntityAttr(player, '精液量上限')).toBe(1000)  // 有效上限（判据/显示看它）
+        await updateSleepAll(360)
+        // 基础上限 100 → extraMax = 400：390 + floor(100/2)=50 = 440 → 封顶 400（不是有效 extraMax 4000）
+        expect(player.base['额外精液量']).toBe(400)
+        expect(player.talents['浓厚精液']).toBe(1)             // 天赋判据同样落在基础 extraMax
+      } finally {
+        removeRuntimeMod(player, 'test:精液量上限')
+        delete player.talents['浓厚精液']
+      }
     })
   })
 })

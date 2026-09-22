@@ -131,6 +131,30 @@ describe('applyAttrDelta × 基础值域读-改-写', () => {
     // 与清扫前的 fallback 写法（`char.base[attr] ?? 0` 再 +delta）语义一致，非行为变更。
     expect(applyAttrDelta(c, '未定义过的属性', 10)).toEqual({ old: 0, new: 10 })
   })
+
+  // ── 2026-09-23 末轮：`opts.clamp` 是**写路径**，钳制只能限制本次增量的幅度、不得反向 ──
+  // 判据用法（直接调 clampAttrValue：settle/UI/恢复速率）不变，仍看**有效**上限（见上一个用例）。
+  it('【R1】临时上限减益不得把正增量截断进基础值：基础 100 / 有效上限 20 → 仍是 100，不是 20', () => {
+    const c = { id: 'r1', base: { 体力: 100, 体力上限: 120 } }
+    configureAttributeEval({ definitions: { [ATTR.HP_MAX]: {} } })
+    registerModifier(c, 'debuff', ATTR.HP_MAX, { flat: -100 })
+    expect(getEntityAttr(c, ATTR.HP_MAX)).toBe(20)            // 有效上限 20（判据看它）
+    expect(clampAttrValue(c, ATTR.HP, 150)).toBe(20)          // clampAttrValue 未被改动：仍是有效上限判据
+    // 修复前：min(有效上限 20, 100+50) = 20 → 基础体力被临时上限**永久**截断（撤修正仍 20 = 永久 −80）
+    expect(applyAttrDelta(c, ATTR.HP, 50, { clamp: true })).toEqual({ old: 100, new: 100 })
+    expect(c.base[ATTR.HP]).toBe(100)
+  })
+
+  it('【对照】无修正时钳制行为不变：正增量照常涨到上限；负增量/常量上限分支不变', () => {
+    const c = { id: 'r1c', base: { 体力: 100, 体力上限: 120 } }
+    configureAttributeEval({ definitions: { [ATTR.HP_MAX]: {} } })
+    expect(applyAttrDelta(c, ATTR.HP, 50, { clamp: true })).toEqual({ old: 100, new: 120 })
+    expect(applyAttrDelta(c, ATTR.HP, -200, { clamp: true })).toEqual({ old: 120, new: 0 })
+    // ATTR_CAPS 常量分支（疲劳度 160，无 maxAttr）：与"不反向"守卫之外的行为逐位一致
+    expect(applyAttrDelta(c, ATTR.FATIGUE, 999, { clamp: true })).toEqual({ old: 0, new: 160 })
+  })
+
+  it.todo('【R2·未决】上限增益修正下钳制仍能把基础值抬到**基础**上限之上（base 50/上限 100 + 上限+100 → 200）——需先裁定 :118 期望（600 = 有效上限）')
 })
 
 describe('bindingResolver.getRaw × 基础值读取', () => {

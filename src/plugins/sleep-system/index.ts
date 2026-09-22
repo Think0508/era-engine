@@ -17,7 +17,7 @@ import { apiSystem } from '../../core/api'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { bindingResolver } from '../../core/binding-resolver'
 import { errorReporter } from '../../core/error-reporter'
-import { getEntityAttr, setEntityAttr, readRawAttr, ATTR } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, readRawAttr, applyAttrDelta, ATTR } from '../../core/entity-utils'
 import { registerSleepPremises, isSleepTimeWindow } from './premise/sleep'
 import { updateSleepAll } from './update-sleep'
 import { setAsleep, clearAsleep, isSleeping, getSleepLevel, getSleepLevelInfo } from './sleep-state'
@@ -102,14 +102,16 @@ export function onLoad(_ctx: PluginContext): void {
       if (id !== playerId) continue
       const char = entitySystem.get('character', id) as any
       if (!char) continue
-      const max = getEntityAttr(char, ATTR.SEMEN_MAX)
+      const max = getEntityAttr(char, ATTR.SEMEN_MAX)   // 上限/速率系数仍用**有效上限**（「上限+N」抬高上限）
       // 读**基础值**再加增量（2026-09-23「读-加-写回」型清扫）：原 `getEntityAttr(SEMEN) → set(min(max, cur+add))`
-      // 把精液量上的临时修正烘进 base 并逐次复利。上限判据仍用**有效上限**（「上限+N」抬高上限），
-      // 但正增量不反噬基础值（负向上限修正下 min() 会把基础值截断——即把修正沉淀进 base）。
+      // 把精液量上的临时修正烘进 base 并逐次复利。
       const cur = readRawAttr(char, ATTR.SEMEN)
       if (typeof max !== 'number' || typeof cur !== 'number' || !Number.isFinite(cur) || max <= 0) continue
       const add = Math.floor(addTime / 60 * 0.15 * max)
-      setEntityAttr(char, ATTR.SEMEN, Math.max(cur, Math.min(max, cur + add)))
+      // 2026-09-23 末轮：改调原子 API `applyAttrDelta(…, { clamp: true })` —— 它自带的「非负增量不反噬
+      // 基础值」守卫把原先手写的 `Math.max(cur, Math.min(max, cur + add))` 收进了 core（上限判据本就
+      // 用有效上限，与该 API 的 clampAttrValue 解析逐位等价）。
+      applyAttrDelta(char, ATTR.SEMEN, add, { clamp: true })
     }
     return true
   })

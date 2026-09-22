@@ -2239,6 +2239,9 @@ async function writeBackCombatant(c: Combatant): Promise<void> {
       // mp_max 未绑定 → 退回 c.maxMp（= 入场 mp 快照，与原 `Math.min(c.maxMp, c.mp)` 的兜底一致）。
       const rawMax = bindingResolver.getRaw(c.entityId, 'mp_max')
       const cap = typeof rawMax === 'number' && rawMax > 0 ? rawMax : c.maxMp
+      // 顺序后果（2026-09-23 记录，非行为变更）：本回写在下方 `absorbedMaxMp` 永久吸收**之前**执行，
+      // 故同一场战斗里吸到的内力上限不参与这次钳制 —— 回蓝可能被**旧的**基础上限截断（吸收在回写之后
+      // 才落账，下一场战斗才吃到新上限）。
       bindingResolver.set(c.entityId, 'mp', Math.max(0, Math.min(cap, rawMp + (c.mp - c.initialMp))))
     }
   } catch (err) {

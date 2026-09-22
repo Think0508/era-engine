@@ -216,9 +216,25 @@ export function clampAttrValue(char: any, attr: string, value: number): number {
  * 下次读取再叠一次 —— 无界膨胀（挂 +20 的效果，每次改属性都多烙一遍 +20）。
  * 本函数把这条读-改-写全程锁在基础值域，调用方不可能写错。
  *
- * 上限判据用**有效值**（`clampAttrValue` 读 `maxAttr` 走 `getEntityAttr`）：「上限 +500」这类修正的
- * 意义就是抬高上限，判超限时必须看到加成后的上限。规则一句话 ——
- * **要写回哪个值，就从哪个值出发读；白字（基础）会被写，绿字（加成）只用于显示与判断。**
+ * 规则一句话 —— **要写回哪个值，就从哪个值出发读；白字（基础）会被写，绿字（加成）只用于显示与判断。**
+ *
+ * 上限有**两种用法**，别混（2026-09-23 末轮修正）：
+ *   · **判据**（直接调 `clampAttrValue`：结算/UI/恢复速率系数这类「算不算超限、该给多少」）——
+ *     必须看**有效**上限：「上限 +500」这类修正的意义就是抬高上限，判超限时必须看到加成后的上限。
+ *     `clampAttrValue` 因此保持不变，仍走 `getEntityAttr`。
+ *   · **写路径**（本函数）—— 它的结果会被写进**基础值**，所以钳制只允许**限制本次增量的幅度**，
+ *     绝不允许反向作用在基础值上：`delta ≥ 0` 时 `min(有效上限, …)` 可能低于 `old`（临时上限减益），
+ *     那等于把"临时上限减了多少"永久刻进基础值（修复前探针：base 体力 100 / 上限 120 +
+ *     `体力上限 −100`（有效上限 20）→ `recover_permil +50` 把基础体力写成 **20**，撤掉修正仍 20
+ *     = 永久 −80；`rest`/`recover_permil` 正常路径可达）。故 `delta ≥ 0` 时以 `old` 为下界：
+ *     临时上限减益**可以**让值不再增长，但不得回收已经存在的基础值。
+ *     ⚠️ **未决（需人类决定，本波未实现）**：上限**增益**方向仍能把基础值抬到**基础**上限之上
+ *     （base 精液量 50 / 上限 100 + `精液量上限 +100` → 基础值可爬到 200 且撤修正后不回落），
+ *     与「base ≤ base 上限」不变量（`clampHpMp`、战斗 mp 回写已按此实现）冲突。改它 = 把
+ *     `clampAttrValue` 里 `rule.maxAttr` 的解析从 `getEntityAttr` 换成 `readRawAttr`，但那**必然**
+ *     让 `entity-utils.test.ts` 的「`opts.clamp` 按修正后的上限钳制」用例（`:118` 期望
+ *     `{old:90,new:600}`，基础上限 500）变红 —— 该用例钉住的正是这种"上限增益抬高钳制上限"的行为，
+ *     动手前必须先裁定它的期望（详见 `docs/attributes-system.md`「本层三处残留未决」）。
  *
  * @param opts.clamp 按 `ATTR_CAPS` 钳制（默认 false = 纯基础值加减，不引入新上限）
  * @param opts.max   额外固定上限（如 `STAMINA_MAX` 的 9999、`SEMEN_MAX` 的 999）
@@ -233,7 +249,13 @@ export function applyAttrDelta(
   if (typeof old !== 'number' || !Number.isFinite(old)) return null
   let next = Math.max(0, old + delta)
   if (typeof opts?.max === 'number') next = Math.min(opts.max, next)
-  if (opts?.clamp) next = clampAttrValue(entity, name, next)
+  if (opts?.clamp) {
+    const capped = clampAttrValue(entity, name, next)
+    // 钳制只「限制本次增量的幅度」，不得反向（见函数头注释）：非负增量以 old 为下界——
+    // 临时上限减益可以让值不再增长，但不得回收已有基础值；`delta === 0` 同理（空转的恢复调用
+    // 经 floor 后常为 0，它绝不能把高于有效上限的基础值截断成上限值）。
+    next = delta >= 0 ? Math.max(old, capped) : capped
+  }
   setEntityAttr(entity, name, next)
   return { old, new: next }
 }

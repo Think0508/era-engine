@@ -1,7 +1,7 @@
 // 实时结算——每次指令执行后自动触发
 // 对齐 erark Script/Settle/realtime_settle.py
 
-import { getEntityAttr, setEntityAttr, readRawAttr, ATTR, ATTR_CAPS, clampAttrValue } from './entity-utils'
+import { getEntityAttr, setEntityAttr, readRawAttr, applyAttrDelta, ATTR, ATTR_CAPS, clampAttrValue } from './entity-utils'
 import { gameContext, gameTimeToTotalMinutes } from './game-context'
 import { modLoader } from './mod-loader'
 
@@ -76,15 +76,17 @@ function sleepRecovery(entity: any, minutes: number): void {
   const hp = readRawAttr(entity, ATTR.HP)                  // 操作数用基础值：增量不烘修正（见 settleTired 注释）
   if (typeof hpMax === 'number' && hpMax > 0 && typeof hp === 'number' && Number.isFinite(hp) && hp < hpMax) {
     const hpBase = hpMax * 0.0025 + 3
-    // `Math.max(hp, …)`：正增量绝不反噬基础值——负向的 `体力上限−N` 修正下 `min(有效上限, …)`
-    // 会把本来就高于该上限的基础气血截断（=把修正沉淀进 base）。判超限有意义，截断没有。
-    setEntityAttr(entity, ATTR.HP, Math.max(hp, Math.min(hpMax, hp + Math.floor(hpBase * minutes))))
+    // 2026-09-23 末轮：写入改走 `applyAttrDelta(…, { clamp: true })` —— 它新增的「非负增量不反噬基础值」
+    // 守卫把本处原先手写的 `Math.max(hp, Math.min(有效上限, hp + 增益))` 收进了 core（判据仍读有效上限、
+    // 操作数仍是基础值，与手写版逐位等价）：正增量绝不把「高于有效上限的基础气血」截断——那正是把临时
+    // 上限减益沉淀进 base 的形态；临时上限减益只能让值不再增长。
+    applyAttrDelta(entity, ATTR.HP, Math.floor(hpBase * minutes), { clamp: true })
   }
   const mpMax = getEntityAttr(entity, ATTR.MP_MAX)
   const mp = readRawAttr(entity, ATTR.MP)
   if (typeof mpMax === 'number' && mpMax > 0 && typeof mp === 'number' && Number.isFinite(mp) && mp < mpMax) {
     const mpBase = mpMax * 0.005 + 6
-    setEntityAttr(entity, ATTR.MP, Math.max(mp, Math.min(mpMax, mp + Math.floor(mpBase * minutes))))
+    applyAttrDelta(entity, ATTR.MP, Math.floor(mpBase * minutes), { clamp: true })   // 同上（守卫在 core）
   }
 }
 

@@ -80,6 +80,8 @@ export function getEntityAttr(entity: any, name: string): any {
 }
 
 // 注入裸值读取器：compute 脚本跨属性读取时递归走同一管线（命名空间查找单一来源保留在本文件）
+// ⚠️ 上限规则表（capRules）也在这里注入，但必须放在 `ATTR_CAPS` 声明**之后**（见下方）——
+//    本文件是属性名表的唯一来源，attribute-eval 是叶子模块不能反向 import。
 configureAttributeEval({ rawReader: readRawAttr })
 
 /** 检查属性是否存在于任一命名空间（区别于 getEntityAttr 的 0 兜底——区分"值为 0"与"不存在"） */
@@ -195,6 +197,11 @@ export const ATTR_CAPS: Record<string, AttrCapRule> = {
   _default: { cap: 99999 },
 }
 
+// 上限规则表注入有效值层：**读时封顶投影**（`applyCapProjection`）按"该属性是否带 maxAttr"决定
+// 是否参与（带 maxAttr 的四项：体力/气力/射精欲/精液量），常量 `cap` 类不受影响（它们在写入端钳制）。
+// 注入点必须在 ATTR_CAPS 声明之后（本文件顶部那次注入只给 rawReader——那时 ATTR_CAPS 还在 TDZ）。
+configureAttributeEval({ capRules: ATTR_CAPS })
+
 /** 钳制属性值到有效范围（下限 0，上限查 ATTR_CAPS）——effect-system/realtime-settle 共用（C6） */
 export function clampAttrValue(char: any, attr: string, value: number): number {
   let v = Math.max(0, value)
@@ -218,26 +225,20 @@ export function clampAttrValue(char: any, attr: string, value: number): number {
  *
  * 规则一句话 —— **要写回哪个值，就从哪个值出发读；白字（基础）会被写，绿字（加成）只用于显示与判断。**
  *
- * 上限有**两种用法**，别混（2026-09-23 末轮修正）：
+ * 上限有**两种用法**，别混（2026-09-23 末轮：改为"读时封顶"）：
  *   · **判据**（直接调 `clampAttrValue`：结算/UI/恢复速率系数这类「算不算超限、该给多少」）——
  *     必须看**有效**上限：「上限 +500」这类修正的意义就是抬高上限，判超限时必须看到加成后的上限。
  *     `clampAttrValue` 因此保持不变，仍走 `getEntityAttr`。
- *   · **写路径**（本函数）—— 它的结果会被写进**基础值**，所以钳制只允许**限制本次增量的幅度**，
- *     绝不允许反向作用在基础值上：`delta ≥ 0` 时 `min(有效上限, …)` 可能低于 `old`（临时上限减益），
- *     那等于把"临时上限减了多少"永久刻进基础值（修复前探针：base 体力 100 / 上限 120 +
- *     `体力上限 −100`（有效上限 20）→ `recover_permil +50` 把基础体力写成 **20**，撤掉修正仍 20
- *     = 永久 −80；`rest`/`recover_permil` 正常路径可达）。故 `delta ≥ 0` 时以 `old` 为下界：
- *     临时上限减益**可以**让值不再增长，但不得回收已经存在的基础值。
- *     ⚠️ **未决（需人类决定，本波未实现）**：上限**增益**方向仍能把基础值抬到**基础**上限之上
- *     （base 精液量 50 / 上限 100 + `精液量上限 +100` → 基础值可爬到 200 且撤修正后不回落），
- *     与「base ≤ base 上限」不变量（`clampHpMp`、战斗 mp 回写已按此实现）冲突。改它 = 把
- *     `clampAttrValue` 里 `rule.maxAttr` 的解析从 `getEntityAttr` 换成 `readRawAttr`，但那**必然**
- *     让 `entity-utils.test.ts` 的「`opts.clamp` 按修正后的上限钳制」用例（`:118` 期望
- *     `{old:90,new:600}`，基础上限 500）变红 —— 该用例钉住的正是这种"上限增益抬高钳制上限"的行为，
- *     动手前必须先裁定它的期望（详见 `docs/attributes-system.md`「本层三处残留未决」）。
+ *   · **写路径**（本函数）—— **不再按属性上限（`maxAttr`）钳制**：写入端按上限钳制正是 R1/R2 的通道 ——
+ *     上限减益下 `min(有效上限, 裸值+增量)` 把裸值截断（base 体力 100 / 上限 120 + `体力上限 −100`
+ *     （有效上限 20）→ `recover_permil +50` 把基础体力写成 **20**，撤掉修正仍 20 = 永久 −80），
+ *     上限增益下又把裸值抬过基础上限且撤修正后不回落。「不超上限」改由**读时封顶投影**保证
+ *     （`attribute-eval.applyCapProjection`：裸值可以越顶，读出来的有效值不会 —— 详见 `docs/attributes-system.md`）。
+ *     `opts.clamp` 现在只钳**常量上限**（疲劳 160 / 信赖 300 / 好感 100000 / 饥饿 240 / 尿意 300 /
+ *     欲望 100 / 默认 99999），且保留"非负增量绝不减少裸值"守卫（常量上限同样不得反向回收既有裸值）。
  *
- * @param opts.clamp 按 `ATTR_CAPS` 钳制（默认 false = 纯基础值加减，不引入新上限）
- * @param opts.max   额外固定上限（如 `STAMINA_MAX` 的 9999、`SEMEN_MAX` 的 999）
+ * @param opts.clamp 按 `ATTR_CAPS` 的**常量上限**钳制（默认 false = 纯基础值加减，不引入新上限）
+ * @param opts.max   额外固定上限（如 `STAMINA_MAX` 的 9999、`SEMEN_MAX` 的 999）——原样保留
  * @returns `{ old, new }`（均为**基础值**）；实体/增量不可用 → `null`（未写入）。
  *          属性缺失沿用全仓既有「缺失 = 0」约定（`readRawAttr` 返回 0 → 结果为 delta）
  */
@@ -250,11 +251,14 @@ export function applyAttrDelta(
   let next = Math.max(0, old + delta)
   if (typeof opts?.max === 'number') next = Math.min(opts.max, next)
   if (opts?.clamp) {
-    const capped = clampAttrValue(entity, name, next)
-    // 钳制只「限制本次增量的幅度」，不得反向（见函数头注释）：非负增量以 old 为下界——
-    // 临时上限减益可以让值不再增长，但不得回收已有基础值；`delta === 0` 同理（空转的恢复调用
-    // 经 floor 后常为 0，它绝不能把高于有效上限的基础值截断成上限值）。
-    next = delta >= 0 ? Math.max(old, capped) : capped
+    // 只钳**常量上限**（带 `maxAttr` 的四项不在写入端钳制——见函数头注释：那是 R1/R2 的通道）
+    const rule = ATTR_CAPS[name] ?? ATTR_CAPS._default
+    if (typeof rule.cap === 'number') {
+      const capped = Math.min(rule.cap, next)
+      // 钳制只「限制本次增量的幅度」，不得反向：非负增量以 old 为下界——常量上限同样不得回收既有裸值；
+      // `delta === 0` 同理（空转的恢复调用经 floor 后常为 0，它绝不能把高于上限的裸值截断成上限值）。
+      next = delta >= 0 ? Math.max(old, capped) : capped
+    }
   }
   setEntityAttr(entity, name, next)
   return { old, new: next }

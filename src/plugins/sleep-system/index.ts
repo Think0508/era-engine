@@ -107,10 +107,12 @@ export function onLoad(_ctx: PluginContext): void {
       // 把精液量上的临时修正烘进 base 并逐次复利。
       const cur = readRawAttr(char, ATTR.SEMEN)
       if (typeof max !== 'number' || typeof cur !== 'number' || !Number.isFinite(cur) || max <= 0) continue
+      // 已达上限则不写（判据读**有效**上限；有效值已由读时封顶投影保证不超上限）。
+      // 末轮改"读时封顶"后写入端不再按属性上限钳制，少了这道判据，每次行动都会继续堆裸值
+      // （读不出来，但会无界写进存档，并喂给读裸值的下游如精液转化）。
+      if (cur >= max) continue
       const add = Math.floor(addTime / 60 * 0.15 * max)
-      // 2026-09-23 末轮：改调原子 API `applyAttrDelta(…, { clamp: true })` —— 它自带的「非负增量不反噬
-      // 基础值」守卫把原先手写的 `Math.max(cur, Math.min(max, cur + add))` 收进了 core（上限判据本就
-      // 用有效上限，与该 API 的 clampAttrValue 解析逐位等价）。
+      // 写入端不再按属性上限钳制（那是 R1/R2 通道）：增量按 delta 落裸值，超出上限的部分读不出来。
       applyAttrDelta(char, ATTR.SEMEN, add, { clamp: true })
     }
     return true

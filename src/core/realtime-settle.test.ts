@@ -135,9 +135,14 @@ describe('realtimeSettle（睡眠体力/气力公式恢复——erArk settle_sle
 
   it('NPC 睡眠窗口（sleepPassSettle）同样恢复（erArk 全员同构）', async () => {
     const { sleepPassSettle } = await import('./realtime-settle')
+    configureAttributeEval({ definitions: { 体力: {}, 体力上限: {} } }) // 读时封顶投影需要属性定义
     const char = registerChar('npc_sleeper', { 体力: 50, 体力上限: 100, 气力: 50, 气力上限: 100, 熟睡值: 0, 疲劳度: 60 })
     sleepPassSettle(char, 60)
-    expect(char.base['体力']).toBe(100)
+    // 2026-09-23 末轮「写入端不再按属性上限钳制」语义变更（原断言 base 体力 = 100）：
+    // 公式恢复量 (100×0.0025+3)×60 = 195 整段落进**裸值** → 50+195 = 245；超出上限的部分**读不出来**
+    // （读时封顶投影：读出来是 100）。裸值多余部分在下次 realtimeSettle 的 clampHpMp 会被拉回基础上限。
+    expect(char.base['体力']).toBe(245)
+    expect(getEntityAttr(char, '体力')).toBe(100)
     expect(char.base['疲劳度']).toBe(40) // 60 - 20
     expect(char.base['熟睡值']).toBe(90) // 60 × 1.5（无 tired_adjust，I6 修复）
   })
@@ -244,13 +249,15 @@ describe('realtimeSettle 基础值域（临时修正不沉淀）', () => {
     expect(getEntityAttr(c, '疲劳度')).toBe(22)     // 有效值 = 2 + 20
   })
 
-  it('clampHpMp：钳位两端都是基础值（有效体力不写回 base）', () => {
+  it('clampHpMp：钳位两端都是基础值（有效体力不写回 base）；读出的有效值按有效上限封顶', () => {
     const c = registerChar('npc_hp', { 体力: 100, 体力上限: 120 })
     registerRuntimeMod(c, { id: 'status:体力', attr: '体力', flat: 50 }, 50)
-    expect(getEntityAttr(c, '体力')).toBe(150)      // 有效值超过上限 120
+    // 2026-09-23 末轮「读时封顶」语义变更（原断言 150 = "有效值超过上限 120"）：裸值 100 + 修正 50 的
+    // 150 不再作为对外可见的有效值 —— 读出来被**有效上限** 120 封顶（裸值本身不受影响，仍是 100）。
+    expect(getEntityAttr(c, '体力')).toBe(120)
     realtimeSettle(c, 10)
     expect(readRawAttr(c, '体力')).toBe(100)        // 旧实现：clampAttrValue(150)=120 写进 base
-    expect(getEntityAttr(c, '体力')).toBe(150)
+    expect(getEntityAttr(c, '体力')).toBe(120)
   })
 
   it('基础值真的超上限时仍然钳制（不是把钳位整个关掉）', () => {

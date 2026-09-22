@@ -28,6 +28,16 @@ export interface AttributeDefLike {
   compute?: string
 }
 
+/** 上限规则（形状 = `src/core/entity-utils.ts` 的 `ATTR_CAPS` 条目；**属性名表只此一份**，
+ *  由 entity-utils 在模块加载时注入——本模块是叶子模块，不能反向 import）。 */
+export interface AttrCapRuleLike {
+  /** 固定上限（常量类：疲劳 160 / 信赖 300 / 饥饿 240 / 尿意 300 / 欲望 100 / 默认 99999）
+   *  ——读时投影**不**处理它们（写入端只钳这一类） */
+  cap?: number
+  /** 上限属性名（体力→体力上限、气力→气力上限、射精欲→射精欲上限、精液量→精液量上限） */
+  maxAttr?: string
+}
+
 export interface AttributeMod {
   flat?: number
   percent?: number
@@ -102,6 +112,9 @@ let globalVersion = 1
 let definitions: Record<string, AttributeDefLike> = {}
 let scriptResolver: ((name: string) => string | undefined) | null = null
 let rawReader: ((entity: any, name: string) => any) | null = null
+/** 上限规则表（`ATTR_CAPS`，由 entity-utils 注入）：读时封顶投影用（见 applyCapProjection）。
+ *  与 rawReader 同属**结构性接线**（不是测试态）——`__resetAttributeEval` 刻意不清它。 */
+let capRules: Record<string, AttrCapRuleLike> | null = null
 /** 声明式来源的 mod 定义快照（items / abilities / talentDefs） */
 let defs: DeclarativeDefs = {}
 /** 插件追加的声明式来源（内置三源之后，按注册顺序） */
@@ -119,12 +132,14 @@ export function configureAttributeEval(cfg: {
   rawReader?: (entity: any, name: string) => any
   defs?: DeclarativeDefs
   nowMinutes?: () => number
+  capRules?: Record<string, AttrCapRuleLike>
 }): void {
   if (cfg.definitions) definitions = cfg.definitions
   if (cfg.scriptResolver) scriptResolver = cfg.scriptResolver
   if (cfg.rawReader) rawReader = cfg.rawReader
   if (cfg.defs) defs = cfg.defs
   if (cfg.nowMinutes) nowMinutes = cfg.nowMinutes
+  if (cfg.capRules) capRules = cfg.capRules
 }
 
 /** 追加声明式来源（内置三源最先，注册的按注册顺序在其后；顺序只影响 set 的「最后一条胜出」） */
@@ -154,9 +169,39 @@ export function __resetAttributeEval(): void {
   extraSources.length = 0
   // ⚠️ 刻意**不重置** rawReader：它由 entity-utils 在模块加载时注入，属结构性接线而非测试态。
   //    若在此清掉，测试里 reset 之后 compute 的跨属性读取会静默失效（attr.get 恒 0）。
+  //    上限规则表（capRules）同属结构性接线，同样不清（清了 = 读时封顶在测试里静默失效）。
   // 时钟同属注入态（mod-loader 注入）→ 必须重置，否则上一个用例的时刻会渗进下一个用例。
   nowMinutes = null
   depth = 0
+}
+
+/** 读时封顶投影（2026-09-23 末轮用户裁定）：**裸值可以越过上限，读出来的有效值不可以**。
+ *
+ *  为什么收口在**读**这一侧：写入端按上限钳制会把"临时上限修正"永久刻进裸值 ——
+ *  上限**减益**下 `min(有效上限, 裸值+增量)` 把裸值截断（体力 100 + `体力上限−100` → 裸值写成 20，
+ *  撤修正仍 20 = 永久 −80）；上限**增益**下又把裸值抬过基础上限且不回落（R1/R2 同一通道）。
+ *  改在读侧后三条语义同时成立（裁定原文）：
+ *    · 裸值 150 / 基础上限 100 / 上限修正 +100（有效上限 200）→ 读 **150**（上限增益真能屯更多）
+ *    · 裸值 150 / 基础上限 100 / 无修正（有效上限 100）        → 读 **100**（不会白拿）
+ *    · 裸值 100 / 基础上限 120 / 上限修正 −100（有效上限 20）  → 读 **20**（上限减益立即削当前值）
+ *
+ *  上限取**有效上限**：裁定给的三条语义全部按"有效上限"定义（裸上限会让第一条失效——修正抬高的上限读不到）。
+ *  递归有界，三重保险：① `maxAttr === name` 显式跳过（上限属性不吃自己的规则，防自封顶）；
+ *  ② 四个上限属性（体力上限/气力上限/射精欲上限/精液量上限）自己都不带 `maxAttr` 规则 → 递归一层即终止；
+ *  ③ 再退一步还有本模块的 MAX_DEPTH 护栏（异形 mod 的 compute 环会有界断链 + 上报）。
+ *
+ *  生效条件（两条都必须满足）：
+ *    · 该属性在 `ATTR_CAPS` 里**带 maxAttr**（常量 `cap` 类不在此步——它们在写入端钳制）；
+ *    · 有效上限 **> 0**（≤0 视为"无上限"而不生效，与 `clampAttrValue` 既有约定一致：
+ *      否则上限缺失/为 0 的角色会被把值全封成 0）。
+ *  边界：属性未在 mod 定义里登记时不投影（沿用本模块"无定义 = 恒等"的闸门；生产侧四个属性都由 mod 定义）。 */
+function applyCapProjection(entity: any, name: string, v: number): number {
+  const maxAttr = capRules?.[name]?.maxAttr
+  if (!maxAttr || maxAttr === name) return v
+  if (!rawReader) return v
+  const max = readEffective(entity, maxAttr, rawReader(entity, maxAttr))
+  if (typeof max !== 'number' || !Number.isFinite(max) || max <= 0) return v
+  return v > max ? max : v
 }
 
 function stateOf(entity: object): EntityState {
@@ -214,7 +259,8 @@ export function readEffective(entity: any, name: string, raw: any): any {
     // 名字沿用「声明式」时期：这里判定的是**合并后清单**（声明式 + 运行时），
     // 故单有运行时条目（既无 compute 也无声明式）也能过闸门。
     const hasDecl = all.some(m => m.attr === name)
-    if (!hasCompute && !hasMods(entity, name) && !hasDecl) return raw
+    // 闸门：无 compute、无修正 → 原样返回（恒等）——但**读时封顶**仍要过（裸值可越顶、读出来不能）
+    if (!hasCompute && !hasMods(entity, name) && !hasDecl) return applyCapProjection(entity, name, raw)
 
     const st = stateOf(entity)
     // 声明式来源**没有任何变更通知**（改 equipment/abilities/talents 不走 registerModifier、
@@ -246,6 +292,8 @@ export function readEffective(entity: any, name: string, raw: any): any {
     let v: number = raw
     v = applyCompute(entity, name, v)
     v = applyMods(entity, name, v, all)
+    // 收口：先派生、再叠修正、最后**按有效上限封顶**（缓存里存的就是封顶后的值）
+    v = applyCapProjection(entity, name, v)
     if (cacheable) st.cache.set(name, { raw, v })
     return v
   } finally {

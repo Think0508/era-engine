@@ -4,7 +4,7 @@
 //       自动看到有效值（条件引擎/bindings 同走 getEntityAttr，属同一传递性质）
 import { describe, it, expect, beforeEach } from 'vitest'
 import { getEntityAttr, setEntityAttr, clampAttrValue, applyAttrDelta, ATTR } from './entity-utils'
-import { configureAttributeEval, registerModifier, __resetAttributeEval } from './attribute-eval'
+import { configureAttributeEval, registerModifier, removeModifier, __resetAttributeEval } from './attribute-eval'
 import { entitySystem } from './entity-system'
 import { bindingResolver } from './binding-resolver'
 
@@ -110,12 +110,15 @@ describe('applyAttrDelta × 基础值域读-改-写', () => {
     expect(getEntityAttr(c, '力道')).toBe(170)
   })
 
-  it('opts.max 固定封顶；opts.clamp 按**修正后**的上限钳制', () => {
+  it('opts.max 固定封顶；opts.clamp 只管**常量**上限（maxAttr 属性改由**读时封顶**保证）', () => {
     const c = { id: 'a3', base: { 体力: 90, 体力上限: 500 } }
-    configureAttributeEval({ definitions: { [ATTR.HP_MAX]: {} } })
-    // clamp：上限 500 → 修正 +100 → 有效上限 600，故 90+1000 应钳到 600（不是 500）
+    configureAttributeEval({ definitions: { [ATTR.HP]: {}, [ATTR.HP_MAX]: {} } })
     registerModifier(c, 'eq', ATTR.HP_MAX, { flat: 100 })
-    expect(applyAttrDelta(c, ATTR.HP, 1000, { clamp: true })).toEqual({ old: 90, new: 600 })
+    // 2026-09-23 末轮语义变更（本行原断言 `{old:90, new:600}`）：那正是 R2 —— 写入端按**有效上限**钳制，
+    // 等于让"临时上限修正"决定写进基础值多少，撤掉修正后差额永久留下（增益方向越顶、减益方向截断）。
+    // 现在：增量按 delta 落**裸值**（90+1000=1090），"不超上限"由**读时封顶投影**保证 —— 读出来是 600。
+    expect(applyAttrDelta(c, ATTR.HP, 1000, { clamp: true })).toEqual({ old: 90, new: 1090 })
+    expect(getEntityAttr(c, ATTR.HP)).toBe(600)
 
     const d = { id: 'a4', base: { 精力上限: 9990 } }
     configureAttributeEval({ definitions: { 精力上限: {} } })
@@ -132,29 +135,45 @@ describe('applyAttrDelta × 基础值域读-改-写', () => {
     expect(applyAttrDelta(c, '未定义过的属性', 10)).toEqual({ old: 0, new: 10 })
   })
 
-  // ── 2026-09-23 末轮：`opts.clamp` 是**写路径**，钳制只能限制本次增量的幅度、不得反向 ──
-  // 判据用法（直接调 clampAttrValue：settle/UI/恢复速率）不变，仍看**有效**上限（见上一个用例）。
-  it('【R1】临时上限减益不得把正增量截断进基础值：基础 100 / 有效上限 20 → 仍是 100，不是 20', () => {
+  // ── 2026-09-23 末轮（用户裁定）：上限改为**读时封顶** —— 裸值可越顶，读出来的有效值不可以 ──
+  // 写入端不再按属性上限钳制（那是 R1/R2 通道），只钳常量上限 + 下限。
+  it('【R1】上限减益不再写坏裸值：裸值 100 不会被写成 20（增量照落，读时按有效上限 20 封顶）', () => {
     const c = { id: 'r1', base: { 体力: 100, 体力上限: 120 } }
-    configureAttributeEval({ definitions: { [ATTR.HP_MAX]: {} } })
+    configureAttributeEval({ definitions: { [ATTR.HP]: {}, [ATTR.HP_MAX]: {} } })
     registerModifier(c, 'debuff', ATTR.HP_MAX, { flat: -100 })
-    expect(getEntityAttr(c, ATTR.HP_MAX)).toBe(20)            // 有效上限 20（判据看它）
-    expect(clampAttrValue(c, ATTR.HP, 150)).toBe(20)          // clampAttrValue 未被改动：仍是有效上限判据
-    // 修复前：min(有效上限 20, 100+50) = 20 → 基础体力被临时上限**永久**截断（撤修正仍 20 = 永久 −80）
-    expect(applyAttrDelta(c, ATTR.HP, 50, { clamp: true })).toEqual({ old: 100, new: 100 })
-    expect(c.base[ATTR.HP]).toBe(100)
+    expect(getEntityAttr(c, ATTR.HP_MAX)).toBe(20)             // 有效上限 20
+    expect(clampAttrValue(c, ATTR.HP, 150)).toBe(20)           // 判据用法不变：clampAttrValue 仍看有效上限
+    // 修复前：min(有效上限 20, 100+50) = 20 → 裸值被临时上限**永久**截断（撤修正仍 20 = 永久 −80）
+    expect(applyAttrDelta(c, ATTR.HP, 50, { clamp: true })).toEqual({ old: 100, new: 150 })
+    expect(c.base[ATTR.HP]).toBe(150)                          // 增量照落裸值（不再被上限截断）
+    expect(c.base[ATTR.HP]).not.toBe(20)                       // ← R1 复现点
+    expect(getEntityAttr(c, ATTR.HP)).toBe(20)                 // 读时按**有效上限**封顶：上限减益立即削当前值
+    removeModifier(c, 'debuff')
+    // 撤修正：裸值 150 一分没丢（修复前裸值已被写坏成 20）→ 有效上限回到基础上限 120，故读出 120
+    expect(c.base[ATTR.HP]).toBe(150)
+    expect(getEntityAttr(c, ATTR.HP)).toBe(120)
   })
 
-  it('【对照】无修正时钳制行为不变：正增量照常涨到上限；负增量/常量上限分支不变', () => {
+  it('【读时封顶】读出来按有效上限封顶：裸值 150 / 上限 100 → 100；上限 +100（有效 200）→ 150', () => {
+    const c = { id: 'cap', base: { 体力: 150, 体力上限: 100 } }
+    configureAttributeEval({ definitions: { [ATTR.HP]: {}, [ATTR.HP_MAX]: {} } })
+    expect(getEntityAttr(c, ATTR.HP)).toBe(100)                // 裸值越顶 → 读出来被有效上限封顶（不会白拿）
+    registerModifier(c, 'buff', ATTR.HP_MAX, { flat: 100 })
+    expect(getEntityAttr(c, ATTR.HP_MAX)).toBe(200)
+    expect(getEntityAttr(c, ATTR.HP)).toBe(150)                // 上限增益真能屯更多（裸值 150 全部读得到）
+  })
+
+  it('【正对照】无修正时读出来的值与修复前一致；常量上限钳制与"不反向"守卫逐位不变', () => {
     const c = { id: 'r1c', base: { 体力: 100, 体力上限: 120 } }
-    configureAttributeEval({ definitions: { [ATTR.HP_MAX]: {} } })
-    expect(applyAttrDelta(c, ATTR.HP, 50, { clamp: true })).toEqual({ old: 100, new: 120 })
-    expect(applyAttrDelta(c, ATTR.HP, -200, { clamp: true })).toEqual({ old: 120, new: 0 })
-    // ATTR_CAPS 常量分支（疲劳度 160，无 maxAttr）：与"不反向"守卫之外的行为逐位一致
+    configureAttributeEval({ definitions: { [ATTR.HP]: {}, [ATTR.HP_MAX]: {} } })
+    expect(applyAttrDelta(c, ATTR.HP, 50, { clamp: true })).toEqual({ old: 100, new: 150 })
+    expect(getEntityAttr(c, ATTR.HP)).toBe(120)                // 修复前也是读到 120（裸值只多存了 30）
+    expect(applyAttrDelta(c, ATTR.HP, -200, { clamp: true })).toEqual({ old: 150, new: 0 })
+    // ATTR_CAPS 常量分支（疲劳度 160，无 maxAttr）：钳制与"非负增量不减少裸值"守卫都在这条路上
     expect(applyAttrDelta(c, ATTR.FATIGUE, 999, { clamp: true })).toEqual({ old: 0, new: 160 })
+    setEntityAttr(c, ATTR.FATIGUE, 200)                        // 裸值已高于常量上限（历史数据/上限被下调）
+    expect(applyAttrDelta(c, ATTR.FATIGUE, 10, { clamp: true })).toEqual({ old: 200, new: 200 })
   })
-
-  it.todo('【R2·未决】上限增益修正下钳制仍能把基础值抬到**基础**上限之上（base 50/上限 100 + 上限+100 → 200）——需先裁定 :118 期望（600 = 有效上限）')
 })
 
 describe('bindingResolver.getRaw × 基础值读取', () => {

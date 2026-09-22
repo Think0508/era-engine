@@ -87,23 +87,25 @@ function windowSettle(char: any, minutes: number, behaviorType: string): void {
 //   · 但**正增量绝不反噬基础值**：负向的上限修正（如 `HP_MAX −40`）下 `min(有效上限, raw + 恢复量)`
 //     会把本来就高于该上限的基础气血**截断**成上限值——那正是把临时修正沉淀进 base 的同一形态
 //     （回血反而掉血）。截断到"上限"只对负增量有意义。
-//     2026-09-23 末轮：这条守卫已**收进 core**（`applyAttrDelta(…, { clamp: true })` 自己保证"非负增量
-//     不反噬基础值"），故本处原先手写的 `Math.max(raw, …)` 与 `setEntityAttr` 一并撤掉、改调该原子 API
-//     （判据仍读有效上限、操作数仍是基础值，与手写版逐位等价；见 `core/entity-utils.ts` 函数头注释）。
+//     2026-09-23 末轮：写入端**不再按属性上限钳制**（R1/R2 通道），"不超上限"改由有效值层的
+//     **读时封顶投影**保证（裸值可越顶、读出来不会）。故本处：
+//     ① 手写的 `Math.max(raw, …)` 与 `setEntityAttr` 撤掉、改调原子 API `applyAttrDelta(…, { clamp: true })`；
+//     ② 补一条**已达上限则不写**的判据（`raw < 有效上限`）——原先是靠写入端的 `min(上限, …)` 兜住的；
+//        少了它，窗口结算每轮都会继续加裸值（读不出来，但会无界写进存档）。判据读有效上限（合法用法）。
 function restRecovery(char: any, minutes: number): void {
   const home = char?.behavior?.home_locations as Record<string, number> | undefined
   const atHome = !!home && !!char?.current_location && home[char.current_location] !== undefined
   const adjust = atHome ? 1.0 : 0.3
   const hpMax = getEntityAttr(char, ATTR.HP_MAX)
   const hp = readRawAttr(char, ATTR.HP)
-  if (typeof hpMax === 'number' && hpMax > 0 && typeof hp === 'number' && Number.isFinite(hp)) {
+  if (typeof hpMax === 'number' && hpMax > 0 && typeof hp === 'number' && Number.isFinite(hp) && hp < hpMax) {
     const hpBase = hpMax * 0.003 + 10
     const gain = Math.floor(hpBase * minutes * adjust)
     applyAttrDelta(char, ATTR.HP, gain, { clamp: true })
   }
   const mpMax = getEntityAttr(char, ATTR.MP_MAX)
   const mp = readRawAttr(char, ATTR.MP)
-  if (typeof mpMax === 'number' && mpMax > 0 && typeof mp === 'number' && Number.isFinite(mp)) {
+  if (typeof mpMax === 'number' && mpMax > 0 && typeof mp === 'number' && Number.isFinite(mp) && mp < mpMax) {
     const mpBase = mpMax * 0.006 + 20
     const gain = Math.floor(mpBase * minutes * adjust)
     applyAttrDelta(char, ATTR.MP, gain, { clamp: true })

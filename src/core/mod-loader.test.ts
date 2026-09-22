@@ -611,8 +611,108 @@ describe('mod-loader integration', () => {
       expect(real.filter(e => e.message.includes('修正测试'))).toEqual([])
     })
 
-    // 计划三加固（2026-09-22）：状态钩子改属性 = 写基础值 → 临时加成永久沉淀（探针实证：
-    // buff 期间一次 ×2 成长把 +10 烘死，raw 30→40）。on_apply/on_remove 判 error；
+    // 2026-09-23 审计 Fix 3：同一声明里同一 attr 出现两条 → registerRuntimeMod 按 (id, attr) 顶替，
+    // **只有最后一条生效**（探针：flat 25 + percent 0.5 → 有效值 150，而非装备那样的累加 187.5），
+    // 且存活条目还带着被丢弃那条的 strength。一个概念两种结局 → 加载期 error。
+    it('状态 attribute_mods 重复属性 → error（静默只留最后一条）', () => {
+      errorReporter.clear()
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."重复修正状态"]',
+          'name = "重复修正状态"',
+          'description = "x"',
+          'category = "buff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          'attribute_mods = [ { attr = "修正测试值", flat = 25 }, { attr = "修正测试值", percent = 0.5 } ]',
+        ].join('\n'),
+      }))
+      const errs = errorReporter.getErrors().filter(e => e.severity === 'error')
+      const dup = errs.find(e => e.message.includes('重复修正状态') && e.message.includes('顶替'))
+      expect(dup).toBeDefined()
+      expect(dup!.message).toContain('修正测试值')
+      expect(dup!.suggestion).toContain('flat')          // 建议必须给出口（合并成一条 / 拆两个属性）
+      expect(dup!.suggestion).toContain('累加')           // 点明与装备定义的语义差异
+
+      // 正对照①：同一状态里**不同**属性的两条 → 合法，零 error
+      errorReporter.clear()
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."双属性状态"]',
+          'name = "双属性状态"',
+          'description = "x"',
+          'category = "buff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          'attribute_mods = [ { attr = "修正测试值", flat = 25 }, { attr = "attack", flat = 3 } ]',
+        ].join('\n'),
+      }))
+      expect(errorReporter.getErrors().filter(e => e.severity === 'error')).toEqual([])
+
+      // 正对照②：现役夹具（每种状态最多一条/属性）整体零 error
+      errorReporter.clear()
+      parseModData('test-mod', makeMap())
+      expect(errorReporter.getErrors().filter(e => e.severity === 'error')).toEqual([])
+    })
+
+    // 2026-09-23 审计 Fix 4：规格要求「状态 duration 必须是有限数字（-1 = 永久）」。
+    // 判据 = Number.isFinite(duration) && (duration === -1 || duration > 0)：
+    // 缺省 → expiresAt = now + undefined = NaN（状态永不到期 + 视图 NaN）；字符串 "360" →
+    // 字符串拼接 → 同样永不到期；0/负数（-1 之外）→ 施加即过期。
+    it('状态 duration 缺省 / 字符串 / 0 / 非 -1 负数 → error；正数与 -1 零误报', () => {
+      const bad = (name: string, line: string | null): void => {
+        const lines = [
+          `[status-effects."${name}"]`,
+          `name = "${name}"`,
+          'description = "x"',
+          'category = "buff"',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+        ]
+        if (line !== null) lines.splice(4, 0, line)   // duration 写在 category 之后（位置不影响校验）
+        parseModData('test-mod', makeMap({
+          '/mods/test-mod/definitions/status-effects.toml': lines.join('\n'),
+        }))
+      }
+      for (const [name, line] of [
+        ['缺时长状态', null],
+        ['字符串时长状态', 'duration = "360"'],
+        ['零时长状态', 'duration = 0'],
+        ['负时长状态', 'duration = -5'],
+        ['NaN时长状态', 'duration = nan'],
+      ] as [string, string | null][]) {
+        errorReporter.clear()
+        bad(name, line)
+        const errs = errorReporter.getErrors().filter(e => e.severity === 'error')
+        expect(errs.some(e => e.message.includes(name) && e.message.includes('duration'))).toBe(true)
+      }
+
+      // 正对照：正数（真实夹具 120/180/300/360/600）+ 永久 -1 都合法
+      errorReporter.clear()
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."合法永久状态"]',
+          'name = "合法永久状态"',
+          'description = "x"',
+          'category = "buff"',
+          'duration = -1',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+        ].join('\n'),
+      }))
+      expect(errorReporter.getErrors().filter(e => e.severity === 'error')).toEqual([])
+      errorReporter.clear()
+      parseModData('test-mod', makeMap())
+      expect(errorReporter.getErrors().filter(e => e.severity === 'error')).toEqual([])
+    })
+
+    // 计划三加固（2026-09-22）：状态钩子改属性 = 写基础值 → 临时加成永久沉淀（探针实证：    // buff 期间一次 ×2 成长把 +10 烘死，raw 30→40）。on_apply/on_remove 判 error；
     // tick_effects 是**逐次增量**（伤害/回复的本义）→ 刻意放行，见 validateAttributeMods 注释。
     it('on_apply_effects / on_remove_effects 用 modify_attribute 改属性 → error（临时加成永久沉淀）', () => {
       errorReporter.clear()

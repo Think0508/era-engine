@@ -64,6 +64,23 @@ class BindingResolver {
     return hasEntityAttr(entity, attrKey) ? getEntityAttr(entity, attrKey) : null
   }
 
+  // 注释：`getForPlugin` 的**裸值**读法（2026-09-23 审计 Fix 2「读-加-写回」清扫）——
+  // `getRaw` 只做跨插件同名键解析，而绑同名键的插件（sleep-system 与 h-time-stop 都绑 sanity）
+  // 必须按自己的映射读，否则会读错属性。凡「读出来加一点再写回 setForPlugin」的插件内读-改-写
+  // 都必须用本方法（语义与 getRaw 完全一致，只是映射来源换成插件自己的）。
+  getRawForPlugin(pluginId: string, entityId: string, pluginKey: string): any {
+    const entity = entitySystem.get('character', entityId)
+    if (!entity) return null
+
+    const mapping = this.bindings.get(pluginId)
+    if (!mapping) return null
+
+    const attrKey = mapping[pluginKey]
+    if (!attrKey) return null
+
+    return hasEntityAttr(entity, attrKey) ? readRawAttr(entity, attrKey) : null
+  }
+
   set(entityId: string, pluginKey: string, value: any): void {
     const entity = entitySystem.get('character', entityId)
     if (!entity) throw new Error(`角色 ${entityId} 不存在`)

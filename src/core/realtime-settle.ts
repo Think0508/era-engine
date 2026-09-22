@@ -1,7 +1,7 @@
 // 实时结算——每次指令执行后自动触发
 // 对齐 erark Script/Settle/realtime_settle.py
 
-import { getEntityAttr, setEntityAttr, ATTR, ATTR_CAPS, clampAttrValue } from './entity-utils'
+import { getEntityAttr, setEntityAttr, readRawAttr, ATTR, ATTR_CAPS, clampAttrValue } from './entity-utils'
 import { gameContext, gameTimeToTotalMinutes } from './game-context'
 import { modLoader } from './mod-loader'
 
@@ -33,11 +33,18 @@ export function isBodySettleFrozen(entity: any): boolean {
 // 注释：opts.isRest/isSleep 时跳过——玩家侧（指令休息/睡眠不积累疲劳，恢复走指令 effect）。
 // erArk 原义（realtime_settle.py:326-357）：仅 SLEEP 行为跳过，REST 行为照常积累——
 // NPC 侧由 npc-ai-system 用 opts={} 调用（休息也积累，erArk 同构）。
+//
+// ⚠️ 2026-09-23「读-加-写回」型清扫（全文件同一改动）：本文件所有累积/衰减的**操作数**一律
+// 从 `readRawAttr`（基础值域）出发。原实现读 `getEntityAttr`（有效值）再加增量写回基础值 →
+// 把属性上的临时修正（状态/装备/战斗 modify_attribute 的 attr_mods）**烘进基础值**并逐次复利
+// （探针：疲劳度 raw 0 + {attr:'疲劳度',flat:+20} → 一次结算后 raw ≥ 21，修正撤掉仍 21）。
+// 上限判据（`clampAttrValue` / 提前返回的 cap）**刻意保留有效值语义**——「上限 +N」这类修正的
+// 意义就是抬高上限，判超限时必须看到加成后的上限（与 core `applyAttrDelta` 的规则一致）。
 export function settleTired(entity: any, minutes: number, opts: SettleOptions = {}): void {
   // 休息/睡眠时不积累疲劳
   if (opts.isRest || opts.isSleep) return
-  const tired = getEntityAttr(entity, '疲劳度')
-  if (typeof tired !== 'number') return
+  const tired = readRawAttr(entity, '疲劳度')
+  if (typeof tired !== 'number' || !Number.isFinite(tired)) return
   const tiredCap = ATTR_CAPS[ATTR.FATIGUE]?.cap ?? 160
   if (tired >= tiredCap) return
   const add = Math.max(1, Math.floor(minutes / 6))
@@ -65,17 +72,19 @@ export function settleDailyReset(entity: any): void {
 // hp_base = 体力上限×0.0025 + 3；mp_base = 气力上限×0.005 + 6；恢复 = base × 分钟
 // 方舟世界观修正（天赋 351/352、监禁、宿舍设施、管理员知识）为世界观专属，不搬（Q4 定案）
 function sleepRecovery(entity: any, minutes: number): void {
-  const hpMax = getEntityAttr(entity, ATTR.HP_MAX)
-  const hp = getEntityAttr(entity, ATTR.HP)
-  if (typeof hpMax === 'number' && hpMax > 0 && typeof hp === 'number' && hp < hpMax) {
+  const hpMax = getEntityAttr(entity, ATTR.HP_MAX)          // 上限用有效值：`上限+N` 应当真抬高上限
+  const hp = readRawAttr(entity, ATTR.HP)                  // 操作数用基础值：增量不烘修正（见 settleTired 注释）
+  if (typeof hpMax === 'number' && hpMax > 0 && typeof hp === 'number' && Number.isFinite(hp) && hp < hpMax) {
     const hpBase = hpMax * 0.0025 + 3
-    setEntityAttr(entity, ATTR.HP, clampAttrValue(entity, ATTR.HP, hp + Math.floor(hpBase * minutes)))
+    // `Math.max(hp, …)`：正增量绝不反噬基础值——负向的 `体力上限−N` 修正下 `min(有效上限, …)`
+    // 会把本来就高于该上限的基础气血截断（=把修正沉淀进 base）。判超限有意义，截断没有。
+    setEntityAttr(entity, ATTR.HP, Math.max(hp, Math.min(hpMax, hp + Math.floor(hpBase * minutes))))
   }
   const mpMax = getEntityAttr(entity, ATTR.MP_MAX)
-  const mp = getEntityAttr(entity, ATTR.MP)
-  if (typeof mpMax === 'number' && mpMax > 0 && typeof mp === 'number' && mp < mpMax) {
+  const mp = readRawAttr(entity, ATTR.MP)
+  if (typeof mpMax === 'number' && mpMax > 0 && typeof mp === 'number' && Number.isFinite(mp) && mp < mpMax) {
     const mpBase = mpMax * 0.005 + 6
-    setEntityAttr(entity, ATTR.MP, clampAttrValue(entity, ATTR.MP, mp + Math.floor(mpBase * minutes)))
+    setEntityAttr(entity, ATTR.MP, Math.max(mp, Math.min(mpMax, mp + Math.floor(mpBase * minutes))))
   }
 }
 
@@ -89,13 +98,13 @@ function sleepRecovery(entity: any, minutes: number): void {
 // （玩家睡眠时对全员执行），NPC 自然醒（玩家没睡）不触发 wake 侧（sleep-system 编排）。
 export function sleepPassSettle(entity: any, minutes: number): void {
   if (!entity || minutes <= 0) return
-  const tired = getEntityAttr(entity, ATTR.FATIGUE)
-  if (typeof tired === 'number' && tired > 0) {
+  const tired = readRawAttr(entity, ATTR.FATIGUE)
+  if (typeof tired === 'number' && Number.isFinite(tired) && tired > 0) {
     const reduce = Math.max(1, Math.floor(minutes / 6) * 2)
     setEntityAttr(entity, ATTR.FATIGUE, Math.max(0, tired - reduce))
   }
-  const sleepVal = getEntityAttr(entity, ATTR.SLEEP)
-  if (typeof sleepVal === 'number') {
+  const sleepVal = readRawAttr(entity, ATTR.SLEEP)
+  if (typeof sleepVal === 'number' && Number.isFinite(sleepVal)) {
     const add = sleepVal <= 60
       ? Math.floor(minutes * 1.5)
       : Math.floor(minutes * (-0.3 + Math.random() * 0.9))
@@ -118,10 +127,12 @@ function settleRestRecovery(entity: any, minutes: number, opts: SettleOptions): 
 // erArk realtime_settle.py:126-135：rand(0.8~1.2×t) × 体力比例系数(2-hp/max) × 气力比例系数(2-mp/max)，
 // 上限 240；体力/气力越低系数越高（无体力时 2 倍，满时 1 倍）
 export function settleHunger(entity: any, minutes: number): void {
-  const hunger = getEntityAttr(entity, '饥饿值')
-  if (typeof hunger !== 'number') return
+  const hunger = readRawAttr(entity, '饥饿值')
+  if (typeof hunger !== 'number' || !Number.isFinite(hunger)) return
   const hungerCap = ATTR_CAPS[ATTR.HUNGER]?.cap ?? 240
   if (hunger >= hungerCap) return
+  // 系数按**有效值**算（体力/气力越低系数越高——这是"当前状态"的读数，不是被写回的基础值），
+  // 但被写回的只有 `hunger + add` 这一项，且 hunger 取自基础值域
   const hp = getEntityAttr(entity, '体力')
   const hpMax = getEntityAttr(entity, '体力上限')
   const mp = getEntityAttr(entity, '气力')
@@ -138,8 +149,8 @@ export function settleHunger(entity: any, minutes: number): void {
 // G6 决策 2026-08-09：上限对齐 erArk 实际行为 300（realtime_settle.py:122 min(...,300)——
 // game_type.py:1512 注释"4h=240 max"与代码矛盾，以代码为准）
 export function settleUrine(entity: any, minutes: number): void {
-  const urine = getEntityAttr(entity, '尿意')
-  if (typeof urine !== 'number') return
+  const urine = readRawAttr(entity, '尿意')
+  if (typeof urine !== 'number' || !Number.isFinite(urine)) return
   const urineCap = ATTR_CAPS[ATTR.URINE]?.cap ?? 300
   if (urine >= urineCap) return
   const variance = 0.8 + Math.random() * 0.4
@@ -149,25 +160,30 @@ export function settleUrine(entity: any, minutes: number): void {
 
 // ── 精液量恢复 ──
 function settleSemen(entity: any, minutes: number): void {
-  const semen = getEntityAttr(entity, '精液量')
-  const max = getEntityAttr(entity, '精液量上限')
-  if (typeof semen !== 'number' || typeof max !== 'number') return
+  const semen = readRawAttr(entity, '精液量')
+  const max = getEntityAttr(entity, '精液量上限')     // 上限 = 有效值（`上限+N` 抬高上限）
+  if (typeof semen !== 'number' || !Number.isFinite(semen) || typeof max !== 'number') return
   if (semen >= max) return
   const add = Math.max(1, Math.floor(minutes / 20))
   setEntityAttr(entity, '精液量', clampAttrValue(entity, '精液量', semen + add))
 }
 
 // ── 体力/气力钳位 ──
+// 2026-09-23「快照-回写」型清扫：原实现读**有效值**再钳制写回基础值——base 体力 100 + `体力+50`
+// 修正、上限 120 时，写回的是 `clampAttrValue(150) = 120`：+50 修正有一半被烙进 base（撤掉修正后
+// 仍是 120）。钳位是**基础值域不变量**（base 体力 ≤ base 体力上限），故两端都读裸值。
+// 副作用（已知、有意）：临时性的上限减益不再截断基础体力——修正期间有效体力可高于有效上限
+// （与 hp/mp 回写、applyAttrDelta 的"修正只在判据里出现"同一姿态）。
 export function clampHpMp(entity: any): void {
-  const hp = getEntityAttr(entity, '体力')
-  const hpMax = getEntityAttr(entity, '体力上限')
-  if (typeof hp === 'number' && typeof hpMax === 'number' && hp > hpMax) {
-    setEntityAttr(entity, '体力', clampAttrValue(entity, '体力', hp))
+  const hp = readRawAttr(entity, '体力')
+  const hpMax = readRawAttr(entity, '体力上限')
+  if (typeof hp === 'number' && Number.isFinite(hp) && typeof hpMax === 'number' && hp > hpMax) {
+    setEntityAttr(entity, '体力', Math.max(0, hpMax))
   }
-  const mp = getEntityAttr(entity, '气力')
-  const mpMax = getEntityAttr(entity, '气力上限')
-  if (typeof mp === 'number' && typeof mpMax === 'number' && mp > mpMax) {
-    setEntityAttr(entity, '气力', clampAttrValue(entity, '气力', mp))
+  const mp = readRawAttr(entity, '气力')
+  const mpMax = readRawAttr(entity, '气力上限')
+  if (typeof mp === 'number' && Number.isFinite(mp) && typeof mpMax === 'number' && mp > mpMax) {
+    setEntityAttr(entity, '气力', Math.max(0, mpMax))
   }
 }
 
@@ -184,8 +200,8 @@ function settleEjaDecay(entity: any, minutes: number): void {
   if (typeof last !== 'number') return
   const now = gameTimeToTotalMinutes(gameContext.getContext().time)
   if (now - last <= 30) return
-  const eja = getEntityAttr(entity, '射精欲')
-  if (typeof eja !== 'number' || eja <= 0) return
+  const eja = readRawAttr(entity, '射精欲')
+  if (typeof eja !== 'number' || !Number.isFinite(eja) || eja <= 0) return
   setEntityAttr(entity, '射精欲', clampAttrValue(entity, '射精欲', eja - minutes * 10))
 }
 

@@ -106,7 +106,10 @@ export function onEnable(ctx: PluginContext): void {
 
   ctx.api.register('status', {
     hasStatus: (charId: string, statusId: string): boolean => {
-      // 注释：findEntry 已把"已过期但未结算"的条目视为不存在并剪除 → 与条件存在性/层数读取一致
+      // 注释：findEntry 已把"已过期但未结算"的条目视为不存在并剪除 → 与条件存在性/层数读取一致。
+      // （2026-09-23 审计 Fix 5：此处原有的 `!isExpired(entry, getCurrentGameMinutes())` 是**死守卫**
+      //  ——findEntry 已剪除过期条目，它恒为 true，且多读一次时钟。已删；三者一致靠的是 findEntry
+      //  的剪除，不是这个判据，勿再加回来。）
       return !!findEntry(charOf(charId), statusId)
     },
     // 注释：有效层数（含层数修正与待衰减）——spec §9「层数条件看有效层数」的读取入口
@@ -544,9 +547,17 @@ function installViews(entry: StatusEntry, char: any): void {
   })
 }
 
-/** 剩余分钟数（永久状态 = -1）——`getRemaining` API 与 `remaining_duration` 视图**共用这一份公式** */
+/** 剩余分钟数（永久状态 = -1）——`getRemaining` API 与 `remaining_duration` 视图**共用这一份公式**
+ *
+ *  判据用 `Number.isFinite` 而非 `typeof === 'number'`（2026-09-23 审计 Fix 4）：`NaN`/`Infinity`
+ *  经 typeof 同样是 `'number'`，会原样漏进视图 / `getRemaining` / 条件引擎（`remaining` 别名）——
+ *  探针：`duration` 缺省时 `expiresAt = NaN`，视图返回 **NaN**。按文档契约，非有限时刻 = 不自动到期
+ *  = **永久 = -1**（与 `isExpired` 对非有限值恒 false、`normalizeEntry` 的"按不自动到期处理 + 留痕"
+ *  同一姿态），故这里也返回 -1 而不是把 NaN 传下去。 */
 function remainingMinutes(entry: StatusEntry, now: number): number {
-  return typeof entry.expiresAt === 'number' ? Math.max(0, entry.expiresAt - now) : -1
+  return typeof entry.expiresAt === 'number' && Number.isFinite(entry.expiresAt)
+    ? Math.max(0, entry.expiresAt - now)
+    : -1
 }
 
 function isExpired(entry: StatusEntry, now: number): boolean {

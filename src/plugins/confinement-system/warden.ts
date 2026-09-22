@@ -185,12 +185,14 @@ export async function settleTraining(): Promise<void> {
     // ⚠️ 2026-08-14 四轮审查：原走 modify_attribute（attr='hp'）经 bindingResolver.get 全局
     // 解析——多插件绑定同名键（combat-base 也绑 hp）时可能命中别的插件映射（扣错属性）。
     // 改用 getForPlugin 读写本插件绑定（与 escape.ts 逃脱公式的 hp/mp 读取一致，ADR 0010）
+    // 2026-09-23 审计 Fix 2「读-加-写回」清扫：读**基础值**再扣（原 getForPlugin 读有效值 →
+    // hp/mp 上的临时修正被烘进 base）。
     try {
-      const hp = bindingResolver.getForPlugin('confinement-system', charId, 'hp')
+      const hp = bindingResolver.getRawForPlugin('confinement-system', charId, 'hp')
       if (typeof hp === 'number') {
         bindingResolver.setForPlugin('confinement-system', charId, 'hp', Math.max(0, hp - 5))
       }
-      const mp = bindingResolver.getForPlugin('confinement-system', charId, 'mp')
+      const mp = bindingResolver.getRawForPlugin('confinement-system', charId, 'mp')
       if (typeof mp === 'number') {
         bindingResolver.setForPlugin('confinement-system', charId, 'mp', Math.max(0, mp - 3))
       }

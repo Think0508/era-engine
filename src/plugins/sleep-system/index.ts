@@ -17,7 +17,7 @@ import { apiSystem } from '../../core/api'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { bindingResolver } from '../../core/binding-resolver'
 import { errorReporter } from '../../core/error-reporter'
-import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, readRawAttr, ATTR } from '../../core/entity-utils'
 import { registerSleepPremises, isSleepTimeWindow } from './premise/sleep'
 import { updateSleepAll } from './update-sleep'
 import { setAsleep, clearAsleep, isSleeping, getSleepLevel, getSleepLevelInfo } from './sleep-state'
@@ -35,7 +35,10 @@ export function onLoad(_ctx: PluginContext): void {
     for (const id of ids) {
       const char = entitySystem.get('character', id) as any
       if (!char) continue
-      const cur = bindingResolver.getForPlugin('sleep-system', id, 'sanity')
+      // 2026-09-23 审计 Fix 2「读-加-写回」清扫：读**基础值**再加增量（原 getForPlugin 读有效值 →
+      // 精力上的临时修正被烘进 base 并逐次复利）。上限仍是**有效上限**（「精力上限+N」抬高上限，
+      // 也抬高恢复速率——那是判据/系数，不是被写回的基础值）。
+      const cur = bindingResolver.getRawForPlugin('sleep-system', id, 'sanity')
       if (cur === null || cur === undefined) {
         errorReporter.report({
           source: 'sleep-system',
@@ -49,8 +52,9 @@ export function onLoad(_ctx: PluginContext): void {
       const max = getEntityAttr(char, ATTR.STAMINA_MAX)
       const staminaMax = typeof max === 'number' && max > 0 ? max : 100
       const add = Math.floor(addTime / 60 * 0.15 * staminaMax)
-      // 注释：绑定写入走插件作用域（setForPlugin，M7 修复——set() 跨插件首键胜出会写错属性）
-      bindingResolver.setForPlugin('sleep-system', id, 'sanity', Math.min(staminaMax, Number(cur) + add))
+      // 注释：绑定写入走插件作用域（setForPlugin，M7 修复——set() 跨插件首键胜出会写错属性）。
+      // `Math.max(cur, …)`：正增量不反噬基础值（负向上限修正下 min() 会把基础精力截断）。
+      bindingResolver.setForPlugin('sleep-system', id, 'sanity', Math.max(Number(cur), Math.min(staminaMax, Number(cur) + add)))
     }
     return true
   })
@@ -66,7 +70,9 @@ export function onLoad(_ctx: PluginContext): void {
     for (const id of ids) {
       const char = entitySystem.get('character', id) as any
       if (!char) continue
-      const cur = bindingResolver.getForPlugin('sleep-system', id, 'sanity')
+      // 2026-09-23 审计 Fix 2：读**基础值**再扣（原 getForPlugin 读有效值 → 精力上的临时修正
+      // 被烘进 base）。今日消耗累计用的也是基础值域的实际扣减量。
+      const cur = bindingResolver.getRawForPlugin('sleep-system', id, 'sanity')
       if (cur === null || cur === undefined) {
         errorReporter.report({
           source: 'sleep-system',
@@ -97,10 +103,13 @@ export function onLoad(_ctx: PluginContext): void {
       const char = entitySystem.get('character', id) as any
       if (!char) continue
       const max = getEntityAttr(char, ATTR.SEMEN_MAX)
-      const cur = getEntityAttr(char, ATTR.SEMEN)
-      if (typeof max !== 'number' || typeof cur !== 'number' || max <= 0) continue
+      // 读**基础值**再加增量（2026-09-23「读-加-写回」型清扫）：原 `getEntityAttr(SEMEN) → set(min(max, cur+add))`
+      // 把精液量上的临时修正烘进 base 并逐次复利。上限判据仍用**有效上限**（「上限+N」抬高上限），
+      // 但正增量不反噬基础值（负向上限修正下 min() 会把基础值截断——即把修正沉淀进 base）。
+      const cur = readRawAttr(char, ATTR.SEMEN)
+      if (typeof max !== 'number' || typeof cur !== 'number' || !Number.isFinite(cur) || max <= 0) continue
       const add = Math.floor(addTime / 60 * 0.15 * max)
-      setEntityAttr(char, ATTR.SEMEN, Math.min(max, cur + add))
+      setEntityAttr(char, ATTR.SEMEN, Math.max(cur, Math.min(max, cur + add)))
     }
     return true
   })

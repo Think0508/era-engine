@@ -14,6 +14,8 @@ import { conditionRegistry } from '../../core/condition-registry'
 import { errorReporter } from '../../core/error-reporter'
 import { PluginManager } from '../../core/plugin-manager'
 import { SlotRegistry } from '../../ui/slots/slot-registry'
+import { getEntityAttr, readRawAttr } from '../../core/entity-utils'
+import { registerRuntimeMod, removeRuntimeModsByPrefix } from '../../core/attribute-eval'
 import { dailySettle } from './index'
 
 const GUARD = 'guard'
@@ -213,6 +215,63 @@ describe('npc-ai-system 集成', () => {
     const before = player.base?.['欲望值'] ?? player.params?.['欲望值'] ?? 0
     dailySettle()
     expect(player.base?.['欲望值'] ?? player.params?.['欲望值'] ?? 0).toBe(before)
+  })
+
+  // 2026-09-23 审计 Fix 2（同类清扫）：dailySettle 原读 `getEntityAttr(欲望值)`（有效值）再
+  // `setEntityAttr(min(100, desire + add))`（基础值）→ 欲望值上的临时修正被烘进 base 并逐日复利。
+  // 探针：raw 20 + {attr:'欲望值',flat:+20} → 每日结算后 raw 43（应约 21-22）。
+  it('每日结算读基础值：欲望值上的临时修正不沉淀进 base', () => {
+    const demo = entitySystem.get('character', 'contract_demo') as any
+    demo.base['欲望值'] = 20
+    registerRuntimeMod(demo, { id: 'status:欲望压制', attr: '欲望值', flat: 20 }, 20)
+    expect(getEntityAttr(demo, '欲望值')).toBe(40)          // 有效值 = 20 + 20
+    const abl33 = demo.abilities?.['欲望']?.level ?? 0      // 欲望能力等级（erArk ability[33]）
+    expect(abl33).toBeGreaterThan(0)
+
+    dailySettle()
+    const raw = readRawAttr(demo, '欲望值')
+    // add = abl33 + floor(random × (abl33+1)) ∈ [abl33, 2×abl33]
+    expect(raw).toBeGreaterThanOrEqual(20 + abl33)
+    expect(raw).toBeLessThanOrEqual(20 + 2 * abl33)
+    expect(raw).toBeLessThan(40)                            // 旧实现：40 + add ≥ 41（修正被烘死）
+    expect(getEntityAttr(demo, '欲望值')).toBe(raw + 20)     // 修正仍在有效值层，只是不进 base
+
+    removeRuntimeModsByPrefix(demo, 'status:')
+    expect(readRawAttr(demo, '欲望值')).toBe(raw)            // 撤掉修正基础值分毫不动
+  })
+
+  // 2026-09-23 审计 Fix 2 站点 3：restRecovery 原读 `getEntityAttr(HP/HP_MAX)`（有效值）
+  // → `setEntityAttr(HP, min(hpMax, hp + gain))`（基础值）——体力上的临时修正被烘进 base。
+  // 修法：操作数读裸值（readRawAttr），上限判据保留**有效上限**（「上限+N」抬高上限与恢复速率）。
+  it('休息恢复读基础值：体力上的临时修正不进 base（恢复量仍按有效上限公式）', async () => {
+    const inn = entitySystem.get('character', INNKEEPER) as any
+    const nowMinAt8 = (): number => {
+      const t = gameContext.getContext().time
+      return ((((t.year * 12 + (t.month - 1)) * 30 + (t.day - 1)) * 24 + t.hour) * 60 + t.minute)
+    }
+    /** 同一起点做一次 30 分钟休息窗口结算，返回基础体力的净增
+     *  （duration = 60 而只推进 30：行为**不到期** → 不触发完成结算/下一个决策，
+     *   本 pass 里唯一写体力的只有 restRecovery，两次测量可比） */
+    const restGain = async (): Promise<number> => {
+      gameContext.setTime({ minute: 0, hour: 8, day: 1, month: 1, year: 1 })
+      inn.current_location = 'tavern'                  // home_locations = { tavern: 1.0 } → adjust = 1.0
+      inn.base['体力'] = 100
+      inn.ai_behavior = { id: 'rest', type: 'rest', start_time: nowMinAt8(), duration: 60 }
+      await gameContext.advanceTime(30)
+      return readRawAttr(inn, '体力') - 100
+    }
+
+    const plain = await restGain()                     // 对照组：无修正
+    expect(plain).toBeGreaterThan(0)
+
+    registerRuntimeMod(inn, { id: 'status:体力', attr: '体力', flat: 30 }, 30)
+    inn.base['体力'] = 100                             // 与对照组同一起点
+    expect(getEntityAttr(inn, '体力')).toBe(130)        // 有效值（修正可见）
+    const withMod = await restGain()
+    expect(withMod).toBe(plain)                        // 旧实现：plain + 30（修正被烘进 base）
+    expect(getEntityAttr(inn, '体力')).toBe(100 + withMod + 30)
+    removeRuntimeModsByPrefix(inn, 'status:')
+    expect(readRawAttr(inn, '体力')).toBe(100 + withMod)
   })
 
   // ═══════════════════ 边界回归（2026-08-10 排查修复） ═══════════════════

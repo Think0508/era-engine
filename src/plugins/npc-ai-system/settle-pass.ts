@@ -11,7 +11,7 @@
 import { eventBus } from '../../core/event-bus'
 import { apiSystem } from '../../core/api'
 import { gameContext, gameTimeToTotalMinutes } from '../../core/game-context'
-import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, readRawAttr, ATTR } from '../../core/entity-utils'
 import { modLoader } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
 import { errorReporter } from '../../core/error-reporter'
@@ -78,21 +78,33 @@ function windowSettle(char: any, minutes: number, behaviorType: string): void {
 }
 
 // 注释：休息恢复（erArk settle_rest 公式——方舟设施等级/天赋修正为世界观专属，不搬）
+// 2026-09-23「读-加-写回」型清扫：增量必须落在**基础值域**，判定仍可看有效值。
+//   · 读：`readRawAttr(HP/MP)`（原 `getEntityAttr` 读的是有效值 → 回血会把 hp 上的临时修正
+//     烘进 base 并逐窗口复利）；
+//   · 上限判据：用**有效上限**（`HP_MAX` / `MP_MAX` 的 getEntityAttr）——「上限 +N」这类修正的
+//     意义就是抬高上限，判超限时必须看到加成后的上限（与 core `applyAttrDelta` 的规则一致：
+//     白字（基础）会被写，绿字（加成）只用于显示与判断）；
+//   · 但**正增量绝不反噬基础值**（`Math.max(raw, …)`）：负向的上限修正（如 `HP_MAX −40`）下
+//     `min(有效上限, raw + 恢复量)` 会把本来就高于该上限的基础气血**截断**成上限值——那正是
+//     把临时修正沉淀进 base 的同一形态（回血反而掉血）。截断到"上限"只对负增量有意义。
+//     故此处不用 `applyAttrDelta(…, {clamp:true})`（它的 clamp 会让正增量也反噬）。
 function restRecovery(char: any, minutes: number): void {
   const home = char?.behavior?.home_locations as Record<string, number> | undefined
   const atHome = !!home && !!char?.current_location && home[char.current_location] !== undefined
   const adjust = atHome ? 1.0 : 0.3
   const hpMax = getEntityAttr(char, ATTR.HP_MAX)
-  const hp = getEntityAttr(char, ATTR.HP)
-  if (typeof hpMax === 'number' && hpMax > 0 && typeof hp === 'number') {
+  const hp = readRawAttr(char, ATTR.HP)
+  if (typeof hpMax === 'number' && hpMax > 0 && typeof hp === 'number' && Number.isFinite(hp)) {
     const hpBase = hpMax * 0.003 + 10
-    setEntityAttr(char, ATTR.HP, Math.min(hpMax, hp + Math.floor(hpBase * minutes * adjust)))
+    const gain = Math.floor(hpBase * minutes * adjust)
+    setEntityAttr(char, ATTR.HP, Math.max(hp, Math.min(hpMax, hp + gain)))
   }
   const mpMax = getEntityAttr(char, ATTR.MP_MAX)
-  const mp = getEntityAttr(char, ATTR.MP)
-  if (typeof mpMax === 'number' && mpMax > 0 && typeof mp === 'number') {
+  const mp = readRawAttr(char, ATTR.MP)
+  if (typeof mpMax === 'number' && mpMax > 0 && typeof mp === 'number' && Number.isFinite(mp)) {
     const mpBase = mpMax * 0.006 + 20
-    setEntityAttr(char, ATTR.MP, Math.min(mpMax, mp + Math.floor(mpBase * minutes * adjust)))
+    const gain = Math.floor(mpBase * minutes * adjust)
+    setEntityAttr(char, ATTR.MP, Math.max(mp, Math.min(mpMax, mp + gain)))
   }
 }
 

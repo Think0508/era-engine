@@ -91,6 +91,19 @@ describe('status-system —— expiresAt + 层数三层模型 + 属性修正生�
   })
 
   // ── 层数三层模型（基础层数 + 层数修正 − 衰减）────────────────────────────
+  // 2026-09-23 审计 Fix 4：`duration` 的加载期校验挡住"缺省/字符串"→ 静默变永久；
+  // 但**手改档/旧格式**仍能让 expiresAt 变成非有限数（NaN），故视图侧也要挡住 NaN 外泄。
+  it('remaining 视图对非有限 expiresAt 返回 -1（NaN 不外泄到 UI/条件/API）', async () => {
+    const p = player()
+    p.status_effects = [{
+      id: '修正测试状态', expiresAt: Number.NaN, base_stack: 1,
+      last_tick_game_time: nowMin(), last_decay_at: nowMin(),
+    }]
+    const rem = await apiSystem.call('status', 'getRemaining', 'player', '修正测试状态')
+    expect(rem).toBe(-1)                                              // 永久（非有限 = 不自动到期）
+    expect(entryOf('player', '修正测试状态').remaining_duration).toBe(-1)
+    expect(Number.isNaN(entryOf('player', '修正测试状态').remaining_duration)).toBe(false)
+  })
   it('层数三层模型：基础层数 3 + 护体 −1 = 2；移除护体后回到 3（基础层数分毫不动）', () => {
     applyStatus('player', '修正测试层数', { stack: 3 })
     expect(entryOf('player', '修正测试层数').base_stack).toBe(3)

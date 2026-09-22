@@ -8,7 +8,7 @@ import { eventBus } from '../../core/event-bus'
 import { apiSystem } from '../../core/api'
 import { modLoader } from '../../core/mod-loader'
 import { entitySystem } from '../../core/entity-system'
-import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
+import { applyAttrDelta, ATTR } from '../../core/entity-utils'
 import { errorReporter } from '../../core/error-reporter'
 import { registerBuiltinPreChecks } from './pre-check'
 import { registerBuiltinHandlers } from './behavior-handlers'
@@ -184,10 +184,12 @@ export function dailySettle(): void {
     const abl33 = c.abilities?.[ATTR.LUST]?.level ?? 0
       if (abl33 > 0) {
         const add = abl33 + Math.floor(Math.random() * (abl33 + 1))
-        const desire = getEntityAttr(c, ATTR.DESIRE)
-        if (typeof desire === 'number') {
-          setEntityAttr(c, ATTR.DESIRE, Math.min(100, desire + add))
-        }
+        // 增量写**基础值域**（2026-09-23「读-加-写回」型清扫）：原写法
+        // `getEntityAttr(DESIRE) → setEntityAttr(min(100, desire + add))` 把欲望值上的临时修正
+        // 烘进 base（探针：raw 20 + {attr:'欲望值',flat:+20} → 结算后 raw 43，应约 21-24）。
+        // applyAttrDelta = 读裸值 → 加增量 → 按 ATTR_CAPS 钳制（欲望上限 100）→ 写裸值，
+        // 与原来的 `Math.min(100, …)` 同义（多一个 0 下钳，而本处 add > 0 恒不触底）。
+        applyAttrDelta(c, ATTR.DESIRE, add, { clamp: true })
       }
   }
 }

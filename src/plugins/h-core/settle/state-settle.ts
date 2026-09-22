@@ -14,7 +14,7 @@
 import { modLoader } from '../../../core/mod-loader'
 import { entitySystem } from '../../../core/entity-system'
 import { gameContext } from '../../../core/game-context'
-import { getEntityAttr, ATTR } from '../../../core/entity-utils'
+import { readRawAttr, ATTR } from '../../../core/entity-utils'
 import { getTalentStateAdjust } from './talent-adjust'
 import {
   isFavoritePosition, isFavoritePart, favoritePartApplies,
@@ -237,8 +237,10 @@ export function settleOneState(
   const finalAdjust = (!isBad && id !== ctx.sourceId) ? continuous : 1
   const adjValue = raw * finalAdjust
   // tenths_add（erArk common_default.py:233-240）——追加 min(3×基础值, 当前状态值/10)
-  // 当前值跨命名空间读取（与 applyChange/getEntityAttr 语义一致）
-  const cur = getEntityAttr(ch, state)
+  // 2026-09-23 审计 Fix 2「读-加-写回」：`cur` 必须取**基础值**（readRawAttr）——它随后
+  // 作为增量写回**同一属性**的基础值（applyStateChange → applyChange/char.base），
+  // 读有效值会把该属性上的临时修正按 1/10 逐次烘进 base（复利）。
+  const cur = readRawAttr(ch, state)
   let finalValue = Math.floor(adjValue + (tenthsAdd && cur > 0 ? Math.min(3 * adjValue, cur / 10) : 0))
   // 心控-苦痛快感化（erArk common_default.py:242-245）——苦痛 → 心理快感
   // （内层 ability_level = ability[36] 受虐；tenths_add=False；转化后 return 不结算苦痛）

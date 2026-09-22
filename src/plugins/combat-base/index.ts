@@ -124,8 +124,17 @@ export interface Combatant {
   entityId: string
   hp: number
   maxHp: number
+  /** 入场时的 hp **有效值**快照（战斗内可见性基准）。
+   *
+   *  结算回写用 `c.hp - initialHp` 的**增量**落基础值——绝不把 `c.hp` 整值写回基础值。
+   *  若整值回写，入场时生效的临时修正（如 `{attr:'hp',flat:-50}`，base 100 → 入场 50）会被
+   *  烘进 base：战斗后 raw = 50，修正撤掉仍是 50，第二场再读到 50 → raw 0（**逐场复利**）。
+   *  见 writeBackCombatant。 */
+  initialHp: number
   mp: number
   maxMp: number
+  /** 入场时的 mp **有效值**快照（同上，供增量结算用） */
+  initialMp: number
   absorbedMaxMp: number    // 永久吸收（上限），结束回写实体
   dead: boolean
   stats: CombatStats       // 聚合统计（常驻修正）
@@ -355,7 +364,12 @@ export function onLoad(_ctx: PluginContext): void {
           source: execCtx.sourceId ?? 'system', kind: 'external',
         })
       } else {
-        const current = bindingResolver.get(targetId, 'hp')
+        // 战场外直扣实体：读**基础值**再加增量（2026-09-23「读-加-写回」型清扫）。
+        // 原写法 `get('hp') → set(current - dmg)` 把 hp 上的临时修正烘进 base
+        // （探针：base 100 + {attr:'hp',flat:-50}，挨 10 点 → raw 变 40，应为 90）。
+        // 此处沿用**插件键域**（不引入模组属性名）故用 getRaw 而非 applyAttrDelta（后者要具体属性名）；
+        // 不加有效上限判据——原语义只有 Math.max(0, …)，伤害也不该被上限反噬。
+        const current = bindingResolver.getRaw(targetId, 'hp')
         if (typeof current === 'number') {
           bindingResolver.set(targetId, 'hp', Math.max(0, current - dmg))
           eventBus.emit('character:changed', { id: targetId })
@@ -1030,10 +1044,11 @@ async function startCombat(enemies: string[], allies: string[], _sourceId: strin
   await nextTurn()
 }
 
-// 战斗实体构建（战斗隔离值：hp/mp 入场快照；战斗中只改 combatant，结束回写）
+// 战斗实体构建（战斗隔离值：hp/mp 入场快照；战斗中只改 combatant，结束按**增量**回写基础值）
 function buildCombatant(entityId: string): Combatant | null {
   const entity = entitySystem.get('character', entityId)
   if (!entity) return null
+  // 入场读**有效值**（有意为之）：气血−50 的减益必须真的让人以 50 点气血参战
   const hp = bindingResolver.get(entityId, 'hp')
   const mp = bindingResolver.get(entityId, 'mp')
   const hpMax = bindingResolver.get(entityId, 'hp_max')
@@ -1044,8 +1059,10 @@ function buildCombatant(entityId: string): Combatant | null {
     entityId,
     hp: curHp,
     maxHp: typeof hpMax === 'number' && hpMax > 0 ? hpMax : curHp,
+    initialHp: curHp,   // 回写增量基准（见 Combatant.initialHp 注释）
     mp: curMp,
     maxMp: typeof mpMax === 'number' && mpMax > 0 ? mpMax : curMp,
+    initialMp: curMp,
     absorbedMaxMp: 0,
     dead: curHp <= 0,
     stats: zeroStats(),
@@ -2197,15 +2214,34 @@ async function endCombat(winner: string, outcome: string): Promise<void> {
 }
 
 async function writeBackCombatant(c: Combatant): Promise<void> {
-  // hp/mp 回写（死亡=0 持久）
-      try {
-        if (bindingResolver.get(c.entityId, 'hp') !== null) {
-          bindingResolver.set(c.entityId, 'hp', Math.max(0, c.hp))
-        }
-        if (bindingResolver.get(c.entityId, 'mp') !== null) {
-          bindingResolver.set(c.entityId, 'mp', Math.max(0, Math.min(c.maxMp, c.mp)))
-        }
-      } catch (err) {
+  // hp/mp 回写——**只结算增量，且两端都在基础值域**（2026-09-23「快照-回写」型读-改-写清扫）。
+  // 入场快照读的是**有效值**（气血−50 的减益必须真的让人以 50 点参战），而写回写的是**基础值**：
+  // 直接把 c.hp 写回去 = 把入场时生效的临时修正烘进 base，且**逐场复利**
+  // （探针：base 100 + {attr:'hp',flat:-50} → 入场 50 → 战后 raw 50；撤掉修正仍 50；第二场 raw 0）。
+  // 增量式：raw 不动时净变化为 0；打过多少伤害/回过多少血，基础值才动多少。
+  // 因此顺序必须"读 raw → 加增量 → 写 raw"，与同一函数里 mp_max 的处理同一模式。
+  try {
+    const rawHp = bindingResolver.getRaw(c.entityId, 'hp')
+    if (typeof rawHp === 'number') {
+      // 死亡照旧持久：c.hp = 0 → 增量 = −initialHp → base 归零（正修正下超杀被 Math.max(0,…) 夹到 0）。
+      // 负修正（初始 50 / base 100）下 base 落到 100−50 = 50：那只等于"本次真的掉了 50 点"，
+      // 修正期间有效值仍是 0（仍死）；修正撤除后以 50 点复起——修正本身从不沉淀进 base（正是本类缺陷）。
+      bindingResolver.set(c.entityId, 'hp', Math.max(0, rawHp + (c.hp - c.initialHp)))
+    }
+    const rawMp = bindingResolver.getRaw(c.entityId, 'mp')
+    if (typeof rawMp === 'number') {
+      // 上限判据用**基础值域**的 mp_max：用战斗内 c.maxMp（可能含 `mp_max` 临时修正）判上限，
+      // 等于让该修正经 clamp 沉淀进 base——base mp 50 + `mp_max −30` 的减益、战斗中掉 10 点内力的
+      // 例子里，`min(c.maxMp=20, 50−10) = 20` 会把 −30 的修正烘成 base 的 30 点损失（本类缺陷的
+      // 同一形态）。故 clamp 也锁在基础值域：`min(raw mp_max, raw + Δ)`。
+      // 代价（已知、可接受）：`mp_max +N` 正修正期间战斗内回蓝超过 base 上限的部分不回写
+      // （宁少写 ≤N 点，不让临时修正沉淀）；无修正时 c.maxMp === base mp_max，本分支与原行为等价。
+      // mp_max 未绑定 → 退回 c.maxMp（= 入场 mp 快照，与原 `Math.min(c.maxMp, c.mp)` 的兜底一致）。
+      const rawMax = bindingResolver.getRaw(c.entityId, 'mp_max')
+      const cap = typeof rawMax === 'number' && rawMax > 0 ? rawMax : c.maxMp
+      bindingResolver.set(c.entityId, 'mp', Math.max(0, Math.min(cap, rawMp + (c.mp - c.initialMp))))
+    }
+  } catch (err) {
     errorReporter.reportDedup(`combat-writeback:${c.entityId}`, {
       source: 'combat-base', severity: 'warning',
       message: `战斗结束回写失败（${getCharName(c.entityId)}）：${err instanceof Error ? err.message : String(err)}`,

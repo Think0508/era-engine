@@ -15,4 +15,8 @@ depends_on = ["effects:ready"]
 
 [[events.listen]]
 name = "game:hour_changed"
-description = "tick + duration 扣减"
+description = "tick + 到期结算（绝对到期时刻 expiresAt：到点失效 + 层数衰减落账 + tick_effects；时停中跳过）"
+
+[[events.listen]]
+name = "game:load"
+description = "读档归一化（旧档 remaining_duration 就地换算成 expiresAt）+ 兼容视图重装（不补 tick）"

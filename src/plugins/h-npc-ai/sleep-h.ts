@@ -14,7 +14,7 @@ import { apiSystem } from '../../core/api'
 import { errorReporter } from '../../core/error-reporter'
 import { conditionEngine } from '../../core/condition-engine'
 import { behaviorHistory } from '../../core/command-executor'
-import { getEntityAttr, setEntityAttr, ATTR } from '../../core/entity-utils'
+import { getEntityAttr, setEntityAttr, readRawAttr, ATTR } from '../../core/entity-utils'
 import { modLoader } from '../../core/mod-loader'
 import { getPlayerId, isInH } from './state'
 
@@ -119,7 +119,15 @@ export async function settleSleepH(minutes: number): Promise<void> {
   } else {
     // M3 修复：熟睡值不钳下界（erArk :459 无下钳——负熟睡值时 weak_rate >60 必醒）
     const downSleep = Math.floor(minutes * 3)
-    setEntityAttr(target, ATTR.SLEEP, sleepPointOf(target) - downSleep)
+    // 2026-09-23「读-加-写回」型清扫：写回必须从**基础值**出发。
+    //   `sleepPointOf`（有效值）只用于**判定**（等级/weak_rate——修正期间熟睡值就是该被看到），
+    //   而扣减落在基础值域：原写法 `setEntityAttr(SLEEP, sleepPointOf(target) - downSleep)`
+    //   把熟睡值上的临时修正（attr_mods）烘进 base，且每个窗口复利一遍。
+    //   刻意不用 `applyAttrDelta`：它会 `Math.max(0, …)` 下钳，而本处 M3 明确要求**不下钳**
+    //   （负熟睡值是"必醒"判据的一部分）。
+    const rawSleep = readRawAttr(target, ATTR.SLEEP)
+    const baseSleep = typeof rawSleep === 'number' && Number.isFinite(rawSleep) ? rawSleep : 0
+    setEntityAttr(target, ATTR.SLEEP, baseSleep - downSleep)
     sleepLevel = sleepLevelOf(target)
   }
   if (sleepLevel <= 1) {
@@ -301,7 +309,9 @@ export async function handleNpcInstructCondition(actorId: string, _mode?: Recove
     // 引擎"愤怒"属性 = base[ATTR.ANGER]（判定心情修正读它；angry_point 是 erArk 字段名，
     // 本引擎无此独立字段——2026-08-16 审查修复：原写 target.angry_point 为死字段，
     // 判定系统感知不到愤怒增长）
-    const cur = getEntityAttr(target, ATTR.ANGER) ?? 0
+    // 2026-09-23 审计 Fix 2「读-加-写回」清扫：读**基础值**再加 100（原 getEntityAttr 读有效值 →
+    // 愤怒上的临时修正被烘进 base）。
+    const cur = readRawAttr(target, ATTR.ANGER) ?? 0
     setEntityAttr(target, ATTR.ANGER, Number(cur) + 100)
     if (!target.sp_flag) target.sp_flag = {}
     target.sp_flag.angry_with_player = true

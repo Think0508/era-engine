@@ -11,7 +11,10 @@ import { entitySystem } from '../../../core/entity-system'
 import { modLoader } from '../../../core/mod-loader'
 import { apiSystem } from '../../../core/api'
 import { errorReporter } from '../../../core/error-reporter'
-import { ATTR, getEntityAttr } from '../../../core/entity-utils'
+// 2026-09-23 审计 Fix 2「读-加-写回」清扫：`反感/信赖` 的**增量取自基础值**（readRawAttr）——
+// 原读有效值再把其中一部分（如 `反感/2`）当增量写回基础值，会把属性上的临时修正按比例烘进
+// base 并逐次复利。
+import { ATTR, getEntityAttr, readRawAttr } from '../../../core/entity-utils'
 import { getContinuousAdjust } from '../../../core/command-executor'
 import { calcFavorability } from '../settle/favorability'
 import { settleOneState } from '../settle/state-settle'
@@ -162,14 +165,14 @@ export function registerAngerEffects(): void {
     for (const id of ids) {
       const target = entitySystem.get('character', id) as any
       if (!target) continue
-      const currentResent = Number(getEntityAttr(target, ATTR.RESENTMENT) ?? 0)
+      const currentResent = Number(readRawAttr(target, ATTR.RESENTMENT) ?? 0)
       const adjust = abilityAdjust(target?.abilities?.['反发刻印']?.level ?? 0)
       const addResent = Math.floor((addTime + 10000) * adjust + currentResent / 2)
       if (execCtx.settlement) execCtx.settlement.applyChange(id, ATTR.RESENTMENT, addResent)
       if (execCtx.settlement) execCtx.settlement.applyChange(id, ATTR.ANGER, 100)
       setAngryWithPlayer(id, true)
       if (execCtx.settlement) execCtx.settlement.applyChange(id, ATTR.FAVORABILITY, -3 * calcFavorability(id, addTime))
-      const trust = Number(getEntityAttr(target, ATTR.TRUST) ?? 0)
+      const trust = Number(readRawAttr(target, ATTR.TRUST) ?? 0)
       if (execCtx.settlement) execCtx.settlement.applyChange(id, ATTR.TRUST, -(trust * 0.2 + 2))
     }
     return true
@@ -186,14 +189,14 @@ export function registerAngerEffects(): void {
       if (!target) continue
       // TODO(anger-system)：陷落等级 getFallLevel 需要时从 state-settle 引入；此处先按 erArk
       // 高陷落跳过逻辑占位，陷落系统已存在但当前失败效果调用方尚未接入。
-      const currentResent = Number(getEntityAttr(target, ATTR.RESENTMENT) ?? 0)
+      const currentResent = Number(readRawAttr(target, ATTR.RESENTMENT) ?? 0)
       const adjust = abilityAdjust(target?.abilities?.['反发刻印']?.level ?? 0)
       const addResent = Math.floor((addTime + 20000) * adjust + currentResent / 2)
       if (execCtx.settlement) execCtx.settlement.applyChange(id, ATTR.RESENTMENT, addResent)
       if (execCtx.settlement) execCtx.settlement.applyChange(id, ATTR.ANGER, 100)
       setAngryWithPlayer(id, true)
       if (execCtx.settlement) execCtx.settlement.applyChange(id, ATTR.FAVORABILITY, -15 * calcFavorability(id, addTime))
-      const trust = Number(getEntityAttr(target, ATTR.TRUST) ?? 0)
+      const trust = Number(readRawAttr(target, ATTR.TRUST) ?? 0)
       if (execCtx.settlement) execCtx.settlement.applyChange(id, ATTR.TRUST, -(trust * 0.4 + 5))
     }
     return true

@@ -630,6 +630,47 @@ export function validateAttributeMods(mod: LoadedMod): void {
   // 状态**没有等级概念** → attribute_mods 里写 per_level 一律 error（与装备同待遇：不静默当 1 级）。
   for (const [id, def] of Object.entries(mod.statusEffects ?? {})) {
     check(`状态 '${id}'`, def?.attribute_mods, false)
+    // 同一声明里同一 attr 出现多条 → **静默只留最后一条**（2026-09-23 审计 Fix 3）：
+    // status-system 的 pushAttributeMods 逐条走 `registerRuntimeMod`，其顶替键是 `(id, attr)`
+    // 而 id = `status:<状态ID>` → 同一 attr 的第二条把第一条顶掉（探针：flat 25 + percent 0.5
+    // 得到有效值 150，且存活条目还带着被丢弃那条的 strength: 25）。
+    // 而**装备/天赋**定义的同样两行是**累加**的（collectDeclarativeMods 把每个 attr 条目都 push 进
+    // 清单，applyMods 逐条叠加 → 187.5）——一个概念两种结局，且两种写法都"看起来对"。
+    // 判 error 而不是静默按最后一条处理：合并成一条与拆成两属性是两种不同的设计意图，只有作者知道要哪个。
+    if (Array.isArray(def?.attribute_mods)) {
+      const seen = new Set<string>()
+      const dups = new Set<string>()
+      for (const m of def.attribute_mods) {
+        const attr = (m as AttributeModSource | null | undefined)?.attr
+        if (typeof attr !== 'string') continue
+        if (seen.has(attr)) dups.add(attr)
+        else seen.add(attr)
+      }
+      for (const attr of dups) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `状态 '${id}' 的 attribute_mods 对属性 '${attr}' 声明了多条修正——运行时按 (id, attr) 顶替，只有**最后一条**生效`,
+          suggestion: `合并成一条（同一条里 flat/percent/set 可以并存：{ attr = "${attr}", flat = 25, percent = 0.5 }），`
+            + '或改写成两个不同属性。注意装备/天赋定义里的同名多条是**累加**的，状态不是——别按累加的直觉写状态',
+        })
+      }
+    }
+    // duration：规格要求「状态 duration 必须是有限数字（或 -1 = 永久）」（2026-09-23 审计 Fix 4）。
+    // 判据 = `Number.isFinite(duration) && (duration === -1 || duration > 0)`：
+    //   · 缺省 → applyStatus 算 `now + undefined` = NaN → expiresAt = NaN → isExpired 恒 false
+    //     （**静默永久**），而 remaining 视图也给不出数字（NaN 漏进 UI/条件/API）；
+    //   · 字符串 "360" → `now + "360"` 是字符串拼接，同样恒不到期（静默永久）；
+    //   · 0 / 负数（-1 之外）→ expiresAt ≤ now = 施加即过期（"配了时长却一挂就没"）。
+    // 三种都写成 error：它们在数据上都"看起来配了时长"，结局却与 `-1`（永久）无异或更糟。
+    const duration: unknown = def?.duration
+    if (!(typeof duration === 'number' && Number.isFinite(duration) && (duration === -1 || duration > 0))) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error',
+        message: `状态 '${id}' 的 duration 非法（${duration === undefined ? '缺省' : `收到 ${typeof duration} ${String(duration)}`}）——必须是正有限数字（分钟）或 -1（永久）`,
+        suggestion: 'duration = 360（360 分钟后到期）/ duration = -1（永久，剩余时长视图返回 -1）。'
+          + '缺省或写成字符串会让 expiresAt 变成 NaN/字符串 = 状态永不到期（静默变永久）；0/负数是"施加即过期"',
+      })
+    }
     // 叠加声明自洽性（2026-09-22 终审 Fix 2）：`stackable = true` + `max_stack <= 1` 是自相矛盾
     // 的声明——运行时按 isStackable 判（两者必须同时成立）→ 该状态**实际不可叠**，作者写了
     // "可叠"却得到"只刷时长"，且旧的强度判据（只看 stackable）会把它当有层数概念 → 强度取层数。

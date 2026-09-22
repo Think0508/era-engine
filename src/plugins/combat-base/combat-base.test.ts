@@ -13,7 +13,7 @@ import { modLoader } from '../../core/mod-loader'
 import { effectTypeRegistry } from '../../core/effect-type-registry'
 import { commandRegistry } from '../../core/command-registry'
 import { getEntityAttr, readRawAttr, setEntityAttr } from '../../core/entity-utils'
-import { configureAttributeEval } from '../../core/attribute-eval'
+import { configureAttributeEval, registerRuntimeMod, removeRuntimeModsByPrefix } from '../../core/attribute-eval'
 import { restoreFromSave } from '../../core/save-system'
 import { validateBattleEffectDefs } from './effect-validate'
 
@@ -898,5 +898,126 @@ describe('combat-base 属性修正（modify_attribute）', () => {
     const errs = errorReporter.getErrors()
     expect(errs.some(e => e.message.includes("'缺字段'") && e.message.includes('attr'))).toBe(true)
     expect(errs.some(e => e.message.includes("'错属性'") && e.message.includes('不存在的属性'))).toBe(true)
+  })
+})
+
+// ── 2026-09-23 审计 Fix 1：「快照-回写」型读-改-写 ───────────────────────────
+// buildCombatant 读的是 hp/mp 的**有效值**（有意：气血−50 的减益必须真的让人以 50 参战），
+// 而 writeBackCombatant 写的是**基础值**。旧实现把 `c.hp` **整值**写回 base → 入场时生效的
+// 临时修正被永久烘进基础值，且**逐场复利**（探针：base 100 + {attr:'hp',flat:-50} → 战后 raw 50；
+// 撤掉修正仍 50；第二场入场读到 50−50=0 → raw 0）。
+// 裁定后的语义：**保留战斗内可见性 + 只把增量结算进基础值**。
+describe('combat-base 回写只结算增量（快照-回写型读-改-写）', () => {
+  beforeEach(async () => {
+    await boot()
+    // 有效值管线的闸门以 attributes.toml 定义 + 修正条目为前提（本文件用假 mod，故显式注入定义）
+    configureAttributeEval({ definitions: { hp: {}, mp: {}, hp_max: {}, mp_max: {} } })
+  })
+
+  const player = (): any => entitySystem.get('character', 'player') as any
+  const rawHp = (): number => readRawAttr(player(), 'hp')
+  const effHp = (): number => getEntityAttr(player(), 'hp')
+  const rawMp = (): number => readRawAttr(player(), 'mp')
+  const effMp = (): number => getEntityAttr(player(), 'mp')
+  const combatHp = (): number => apiSystem.callSync('combat', 'getCombatState')?.combatants?.player?.hp
+  const addMod = (attr: string, flat: number): void => {
+    registerRuntimeMod(player(), { id: `status:${attr}压制`, attr, flat }, flat)
+  }
+  /** damage effect type 的战斗内分支（直扣 combatant，确定性 —— 不用随机伤害） */
+  const hitCombatant = async (dmg: number): Promise<void> => {
+    await effectTypeRegistry.getHandler('damage')!({ value: dmg }, { _targetIds: ['player'], sourceId: 'system' })
+  }
+
+  it('入场读有效值（战斗中真的以 50 参战）；结束只结算增量 → 基础值 100→67 而非 50→17', async () => {
+    addMod('hp', -50)
+    expect(rawHp()).toBe(100)
+    expect(effHp()).toBe(50)
+
+    await startBattle(() => 0.9)
+    expect(combatHp()).toBe(50)                    // 战斗内可见性保留（用户裁定）
+
+    await playerAct(null)                          // 玩家一击 22 → 敌方三连击 33（既有用例钉住的数值）
+    await apiSystem.call('combat', 'end', '', 'fled')
+
+    expect(rawHp()).toBe(67)                       // = 100 − 33：只结算"真掉的 33 点"
+    expect(effHp()).toBe(17)                       // = 67 − 50：修正仍然可见
+    expect(rawHp()).not.toBe(17)                   // 旧实现：raw = c.hp = 50−33 = 17（修正被烘死）
+
+    removeRuntimeModsByPrefix(player(), 'status:')
+    expect(effHp()).toBe(67)                       // 修正只是"不再压制"——从未进入基础值
+    expect(rawHp()).toBe(67)
+  })
+
+  it('两场连打不复利：基础值恒 100（旧实现 100 → 50 → 0）', async () => {
+    addMod('hp', -50)
+    await startBattle(() => 0.9)
+    await apiSystem.call('combat', 'end', '', 'fled')
+    expect(rawHp()).toBe(100)                      // 旧实现：50（入场快照整值回写）
+    expect(effHp()).toBe(50)
+
+    await startBattle(() => 0.9)
+    expect(combatHp()).toBe(50)                    // 第二场入场仍读有效值 50（旧实现这里读到 0）
+    await apiSystem.call('combat', 'end', '', 'fled')
+    expect(rawHp()).toBe(100)                      // 旧实现：0（逐场复利）
+    expect(effHp()).toBe(50)
+  })
+
+  it('死亡照旧持久：无修正被击杀 → base 归零；负修正下只结算"真掉的血"', async () => {
+    await startBattle(() => 0.9)
+    await hitCombatant(999)
+    await apiSystem.call('combat', 'end', '', 'fled')
+    expect(rawHp()).toBe(0)                        // 死亡在基础值域持久
+
+    await boot()
+    configureAttributeEval({ definitions: { hp: {}, mp: {}, hp_max: {}, mp_max: {} } })
+    addMod('hp', -50)
+    await startBattle(() => 0.9)
+    await hitCombatant(999)                        // 50 点血全被打光 → c.hp = 0
+    await apiSystem.call('combat', 'end', '', 'fled')
+    // 增量 = 0 − 50 = −50 → base 100−50 = 50。语义：只掉了"修正期间真的有的那 50 点"；
+    // 修正期间有效值仍是 0（照样是死），修正一撤以 50 点复起——修正本身从不沉淀进 base。
+    expect(rawHp()).toBe(50)
+    expect(effHp()).toBe(0)
+    removeRuntimeModsByPrefix(player(), 'status:')
+    expect(effHp()).toBe(50)
+  })
+
+  // 2026-09-23 审计 Fix 2 站点 1：damage effect type 的**战场外**分支（直扣实体）
+  // 原写法 `get('hp') → set(current - dmg)` 把 hp 上的临时修正烘进 base。
+  it('damage effect（战场外直扣实体）：扣血落基础值，修正不烘进 base', async () => {
+    addMod('hp', -50)
+    expect(rawHp()).toBe(100)
+    expect(effHp()).toBe(50)                        // 有效值（修正期间可见）
+
+    await effectTypeRegistry.getHandler('damage')!({ value: 10 }, { _targetIds: ['player'], sourceId: 'system' })
+
+    expect(rawHp()).toBe(90)                        // = 100 − 10（旧实现：读有效值 50 → 写 40）
+    expect(effHp()).toBe(40)                        // 90 − 50
+    removeRuntimeModsByPrefix(player(), 'status:')
+    expect(effHp()).toBe(90)
+  })
+
+  it('mp 同理：消耗才落基础值（修正不进 base）', async () => {    addMod('mp', -20)
+    expect(rawMp()).toBe(50)
+    expect(effMp()).toBe(30)
+
+    await startBattle(() => 0.9)
+    await playerAct('三连击')                       // cost 10 → 战斗内 mp 30→20
+    await apiSystem.call('combat', 'end', '', 'fled')
+
+    expect(rawMp()).toBe(40)                       // = 50 − 10（旧实现：raw = 20）
+    expect(effMp()).toBe(20)                       // = 40 − 20
+  })
+
+  it('mp 上限判据用**基础值域**的 mp_max：`mp_max −30` 不再把基础内力截断掉 30', async () => {
+    // applyMods 对上限属性同样生效：有效上限 50−30 = 20，而入场的 mp 快照是有效值 50（> 上限）
+    addMod('mp_max', -30)
+    await startBattle(() => 0.9)
+    expect(apiSystem.callSync('combat', 'getCombatState').combatants.player.maxMp).toBe(20)
+
+    await apiSystem.call('combat', 'end', '', 'fled')
+    // 旧实现 `Math.min(c.maxMp, c.mp)` = min(20, 50) = 20 → 基础内力被临时上限减益截断 30 点
+    expect(rawMp()).toBe(50)
+    expect(readRawAttr(player(), 'mp_max')).toBe(50)
   })
 })

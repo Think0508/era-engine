@@ -4,6 +4,8 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { realtimeSettle } from './realtime-settle'
 import { gameTimeToTotalMinutes, gameContext } from './game-context'
 import { entitySystem } from './entity-system'
+import { getEntityAttr, readRawAttr } from './entity-utils'
+import { configureAttributeEval, registerRuntimeMod } from './attribute-eval'
 
 function registerChar(id: string, base: Record<string, number>, extra: any = {}): any {
   entitySystem.register('character', id, { id, base, action_info: {}, ...extra })
@@ -219,5 +221,41 @@ describe('mod-loader（G5：愤怒初始化 rand(1,35)——finalizeCharacterDat
     const first = char.base['愤怒']
     finalizeCharacterData(char, mod)
     expect(char.base['愤怒']).toBe(first)
+  })
+})
+
+// ── 2026-09-23 审计 Fix 2（同类清扫）：结算的操作数一律来自**基础值域** ────────────
+// 原实现读 `getEntityAttr`（有效值）再加增量写回基础值 → 属性上的临时修正（attr_mods：
+// 状态/装备/战斗 modify_attribute）被烘进 base 并逐次复利。探针：疲劳度 raw 0 +
+// {attr:'疲劳度',flat:+20} → 一次结算后 raw 22（应为 2），撤掉修正仍是 22。
+describe('realtimeSettle 基础值域（临时修正不沉淀）', () => {
+  beforeEach(() => {
+    entitySystem.clear()
+    gameContext.reset()
+    configureAttributeEval({ definitions: { 疲劳度: {}, 体力: {}, 体力上限: {} } })
+  })
+
+  it('settleTired：增量落基础值，有效值仍含修正', () => {
+    const c = registerChar('npc_tired', { 疲劳度: 0 })
+    registerRuntimeMod(c, { id: 'status:疲劳', attr: '疲劳度', flat: 20 }, 20)
+    expect(getEntityAttr(c, '疲劳度')).toBe(20)
+    realtimeSettle(c, 12)                          // add = max(1, 12/6) = 2
+    expect(readRawAttr(c, '疲劳度')).toBe(2)        // 旧实现：20 + 2 = 22
+    expect(getEntityAttr(c, '疲劳度')).toBe(22)     // 有效值 = 2 + 20
+  })
+
+  it('clampHpMp：钳位两端都是基础值（有效体力不写回 base）', () => {
+    const c = registerChar('npc_hp', { 体力: 100, 体力上限: 120 })
+    registerRuntimeMod(c, { id: 'status:体力', attr: '体力', flat: 50 }, 50)
+    expect(getEntityAttr(c, '体力')).toBe(150)      // 有效值超过上限 120
+    realtimeSettle(c, 10)
+    expect(readRawAttr(c, '体力')).toBe(100)        // 旧实现：clampAttrValue(150)=120 写进 base
+    expect(getEntityAttr(c, '体力')).toBe(150)
+  })
+
+  it('基础值真的超上限时仍然钳制（不是把钳位整个关掉）', () => {
+    const c = registerChar('npc_hp2', { 体力: 500, 体力上限: 120 })
+    realtimeSettle(c, 10)
+    expect(readRawAttr(c, '体力')).toBe(120)
   })
 })

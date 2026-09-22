@@ -14,7 +14,10 @@ import { errorReporter } from '../../../core/error-reporter'
 import { modLoader } from '../../../core/mod-loader'
 import { apiSystem } from '../../../core/api'
 import { getContinuousAdjust } from '../../../core/command-executor'
-import { ATTR, getEntityAttr } from '../../../core/entity-utils'
+// 2026-09-23 审计 Fix 2「读-加-写回」清扫：`curFeel/10`（十分之一追加）与降怒的
+// `current - value` 一律取**基础值**（readRawAttr）——它们随后被写回同一属性的基础值，
+// 读有效值等于把属性上的临时修正按比例烘进 base 并逐次复利。
+import { ATTR, getEntityAttr, readRawAttr } from '../../../core/entity-utils'
 import { isSettleGated } from '../../../utils/settle-gate'
 import { calcFavorability } from '../settle/favorability'
 import { calcTrust } from '../settle/trust'
@@ -275,7 +278,7 @@ export function registerSettleEffects(): void {
           feelCoeff = Math.max(0, Math.sqrt(techAdj * feelAdj) + hypnosisAdj + feelExtraAdj)
         }
         const rawFeel = base * feelCoeff * adjust
-        const curFeel = getEntityAttr(target, _p.part)
+        const curFeel = readRawAttr(target, _p.part)
         const feel = Math.floor(rawFeel + (curFeel > 0 ? Math.min(3 * rawFeel, curFeel / 10) : 0))
         if (!target.base) target.base = {}
         target.base[_p.part] = Math.min(99999, (target.base[_p.part] ?? 0) + feel)
@@ -297,7 +300,7 @@ export function registerSettleEffects(): void {
             lustExtraAdj += Math.min(10, others) * 0.05
           }
           const rawLust = base * Math.max(0, feelAdj + lustExtraAdj) * adjust
-          const curLust = getEntityAttr(target, ATTR.AROUSAL)
+          const curLust = readRawAttr(target, ATTR.AROUSAL)
           const lust = Math.floor(rawLust + (curLust > 0 ? Math.min(3 * rawLust, curLust / 10) : 0))
           target.base[ATTR.AROUSAL] = Math.min(99999, (target.base[ATTR.AROUSAL] ?? 0) + lust)
         }
@@ -462,7 +465,7 @@ export function registerSettleEffects(): void {
     if (execCtx.settlement) {
       execCtx.settlement.applyChange(targetId, ATTR.ANGER, -value)
     } else {
-      const current = Number(getEntityAttr(target, ATTR.ANGER) ?? 0)
+      const current = Number(readRawAttr(target, ATTR.ANGER) ?? 0)
       if (!target.base) target.base = {}
       target.base[ATTR.ANGER] = Math.max(0, current - value)
     }

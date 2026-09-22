@@ -7,8 +7,11 @@
 #   duration：持续分钟数；-1 = 永久
 #   tick_interval：每隔多少分钟触发一次 tick_effects；0 = 不触发
 #   stackable / max_stack：叠加规则（重新施加 = 刷新时长 + 叠加，上限 max_stack）
-#   tick_effects：每次 tick 执行的效果（数值类自动 × 层数）
-#   on_apply_effects / on_remove_effects：施加/移除时触发
+#   tick_effects：每次 tick 执行的效果（数值类自动 × 层数）——周期伤害/回复走这里
+#   on_apply_effects / on_remove_effects：施加/移除时各触发一次
+#     ⚠️ 这两个钩子**禁止**改属性：`modify_attribute` 写的是**基础值**，"生效期间 +10"会变成
+#        永久 +10（生效期间任何一次成长结算都会把它烘死）→ 加载期 error。
+#        属性临时加成写 `attribute_mods`（见 test-mod 的 攻击增益：attribute_mods = [...]）。
 # 状态效果广泛用于战斗内外（醉意影响对话好感、中毒影响体力…）。
 # ═══════════════════════════════════════════════════════════════════
 
@@ -25,12 +28,13 @@ tick_effects = [
   { type = "modify_attribute", params = { attr = "气血", value = 5 } }
 ]
 
-# ── 写法变体：debuff + 无 tick + 到期移除效果 ──
+# ── 写法变体：debuff + 无 tick + 施加/移除时各触发一次的效果 ──
 # 与 振奋（buff + tick_interval>0）的区别：没有 tick_effects 就不会周期触发；
-# on_apply/on_remove_effects 在施加/移除时各触发一次（如移除时扣属性）
+# on_apply/on_remove_effects 在施加/移除时各触发一次——演示**非属性**效果（此处为叙事文本）。
+# （原先这里是 `modify_attribute 体力 -10`：写基础值、被计划三判为加载期 error，故迁移。）
 [status-effects."力竭"]
 name = "力竭"
-description = "过度劳累，体力恢复减半"
+description = "过度劳累，精神涣散"
 category = "debuff"
 duration = 120
 tick_interval = 0
@@ -38,7 +42,10 @@ stackable = false
 max_stack = 1
 on_apply_effects = [
   # 目标由 status-system 注入（状态持有者），勿写 params.target
-  { type = "modify_attribute", params = { attr = "体力", value = -10 } }
+  { type = "narrative_output", params = { text = "一阵力竭涌上来，手脚发软。" } }
+]
+on_remove_effects = [
+  { type = "narrative_output", params = { text = "力竭感渐渐消退。" } }
 ]
 
 # 写法变体：stackable = true 的叠加型（醉意等）——重新施加刷新时长 + 层数递增；

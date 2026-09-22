@@ -610,6 +610,80 @@ describe('mod-loader integration', () => {
       const real = errorReporter.getErrors().filter(e => e.severity === 'error')
       expect(real.filter(e => e.message.includes('修正测试'))).toEqual([])
     })
+
+    // 计划三加固（2026-09-22）：状态钩子改属性 = 写基础值 → 临时加成永久沉淀（探针实证：
+    // buff 期间一次 ×2 成长把 +10 烘死，raw 30→40）。on_apply/on_remove 判 error；
+    // tick_effects 是**逐次增量**（伤害/回复的本义）→ 刻意放行，见 validateAttributeMods 注释。
+    it('on_apply_effects / on_remove_effects 用 modify_attribute 改属性 → error（临时加成永久沉淀）', () => {
+      errorReporter.clear()
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."坏施加状态"]',
+          'name = "坏施加状态"',
+          'description = "x"',
+          'category = "buff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          'on_apply_effects = [ { type = "modify_attribute", params = { attr = "修正测试值", value = 10, target = "self" } } ]',
+          'on_remove_effects = [ { type = "modify_attribute", params = { attr = "修正测试值", value = -10, target = "self" } } ]',
+        ].join('\n'),
+      }))
+      const errs = errorReporter.getErrors().filter(e => e.severity === 'error' && e.source === 'mod-loader')
+      // 两个钩子各自点名（消息含状态名 + 钩子名 + 后果）
+      expect(errs.some(e => e.message.includes('坏施加状态') && e.message.includes('on_apply_effects') && e.message.includes('永久污染基础值'))).toBe(true)
+      expect(errs.some(e => e.message.includes('坏施加状态') && e.message.includes('on_remove_effects') && e.message.includes('永久污染基础值'))).toBe(true)
+      // 建议必须指路：attribute_mods（临时修正）
+      expect(errs.some(e => e.message.includes('坏施加状态') && e.suggestion?.includes('attribute_mods'))).toBe(true)
+    })
+
+    it('tick_effects 用 modify_attribute **不报**（逐次增量 = 伤害/回复，非临时修正沉淀）', () => {
+      errorReporter.clear()
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."坏tick状态"]',
+          'name = "坏tick状态"',
+          'description = "x"',
+          'category = "debuff"',
+          'duration = 60',
+          'tick_interval = 60',
+          'stackable = false',
+          'max_stack = 1',
+          'tick_effects = [ { type = "modify_attribute", params = { attr = "hp", value = -5, target = "self" } } ]',
+        ].join('\n'),
+      }))
+      expect(errorReporter.getErrors().filter(e => e.message.includes('modify_attribute'))).toEqual([])
+      // 现役内容同形（h-core 默认 中毒 / test-mod 中毒 都是 tick_effects + modify_attribute）：
+      // 真实夹具整体加载也不得因本规则报一条
+      errorReporter.clear()
+      parseModData('test-mod', makeMap())
+      expect(errorReporter.getErrors().filter(e => e.message.includes('modify_attribute'))).toEqual([])
+    })
+
+    it('正对照：只用 attribute_mods 的合法状态 + 现役三个修正测试夹具 → 零 error', () => {
+      errorReporter.clear()
+      parseModData('test-mod', makeMap({
+        '/mods/test-mod/definitions/status-effects.toml': [
+          '[status-effects."合法修正状态"]',
+          'name = "合法修正状态"',
+          'description = "x"',
+          'category = "buff"',
+          'duration = 60',
+          'tick_interval = 0',
+          'stackable = false',
+          'max_stack = 1',
+          'attribute_mods = [ { attr = "修正测试值", flat = 25 } ]',
+        ].join('\n'),
+      }))
+      expect(errorReporter.getErrors().filter(e => e.severity === 'error')).toEqual([])
+
+      // 现役夹具（修正测试状态/护体/层数 = attribute_mods + stack_mods + stack_decay）整体加载零 error
+      errorReporter.clear()
+      parseModData('test-mod', makeMap())
+      const real = errorReporter.getErrors().filter(e => e.severity === 'error')
+      expect(real.filter(e => e.message.includes('修正测试'))).toEqual([])
+    })
   })
 
   it('should populate condition registry after loading mod', async () => {

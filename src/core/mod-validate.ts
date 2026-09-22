@@ -678,6 +678,36 @@ export function validateAttributeMods(mod: LoadedMod): void {
         })
       }
     }
+    // 计划三加固：on_apply_effects / on_remove_effects **禁止**用 modify_attribute 改属性。
+    // 该写法经 effect-system 的 modify_attribute（effect-system/index.ts:52）落到**基础值域**
+    // （无 settlement → bindingResolver.getRaw + delta 写回裸值 / char.base），于是"生效期间 +10"
+    // 变成"永久 +10"，且生效期间任何一次读-改-写（升级/突破的成长结算）会把临时值按比例烘死
+    // （2026-09-22 探针实证：buff 期间一次 ×2 成长把 +10 永久留在身上，raw 30→40）。
+    // 属性临时加成一律写 attribute_mods（运行时清单：到期/移除自动消失，基础值分毫不动）；
+    // 确实要永久改变属性（伤害/成长）请显式走永久写入路径，不要用状态钩子表达"临时加成"。
+    // 效果条目的判别字段是 `type`（Effect 形状，见 effect-type-registry.ts:7-14）；
+    // battle-effects.toml 的 `action` 是另一份数据（BattleEffectDef），状态钩子不使用它。
+    for (const hook of ['on_apply_effects', 'on_remove_effects'] as const) {
+      const list: unknown = def?.[hook]
+      if (!Array.isArray(list)) continue
+      for (const entry of list) {
+        if ((entry as { type?: unknown } | null | undefined)?.type !== 'modify_attribute') continue
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `状态 '${id}' 的 ${hook} 用 modify_attribute 改属性会永久污染基础值`,
+          suggestion: '生效期间的临时加成改用 attribute_mods（到期/移除自动消失、基础值分毫不动）；确实要永久改变属性（伤害/成长）请显式走永久写入路径（如 set_attribute / 脚本 / 任务奖励）',
+        })
+      }
+    }
+    // tick_effects **刻意放行**（2026-09-22 查证后的裁定，勿随手改成 error）：
+    // ① 路径事实：tick_effects 经 status-system.runEffects → effect-system 的 modify_attribute
+    //    （无 settlement → 写基础值），与 on_apply_effects 同一条路径；
+    // ② 但 tick 的 value 是**逐次增量**（中毒 −5/60 分钟、振奋 +5/60 分钟）——写基础值正是
+    //    "伤害/回复"的本义，不是"临时修正沉淀"；引擎内也没有不写基础值的周期伤害替代路径
+    //    （combat-base 的 damage effect-type 同样 bindingResolver.set('hp', …)，见 combat-base/index.ts:351-353）；
+    // ③ 现役内容依赖它（h-core 默认 中毒、example-mod 振奋），且既有测试同时钉住"tick 真的生效"
+    //    （example-mod-integration.test.ts:278 气血+5）与"启动零 error"（同文件 :58）——
+    //    判为 error 会把引擎自带内容判成非法。故规则只覆盖 on_apply/on_remove 两个钩子。
   }
 }
 

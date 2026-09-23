@@ -131,6 +131,24 @@ describe('checkUpgrade 条件驱动升级', () => {
     expect(char.abilities['隐蔽'].level).toBe(1)
   })
 
+  it('ability_sum 的 kind 形式：按被动类别（passive_kind）聚合，不依赖 tag', async () => {
+    await loadTestMod()
+    // 无任何内功 → 内功之和 0：0→1 门槛 = 0×1 = 0 恒满足 → 到 1 级；
+    // 1→2 门槛 = 1×1 = 1 > 0 → 停在 1 级（钱够也不升，证明 kind 闸真的在拦）
+    const noInternal = makeChar('npc_kind_a', { juel: { '20': 150 }, abilities: { '玄门心法': { level: 0, xp: 0 } } })
+    checkUpgrade('npc_kind_a')
+    expect(noInternal.abilities['玄门心法'].level).toBe(1)
+
+    // 内功之和 = 吐纳 2 + 玄功 1 = 3 ≥ 1 → 连升到 2 级（受 upgrades 条数 = 上限）
+    const withInternal = makeChar('npc_kind_b', {
+      juel: { '20': 150 },
+      abilities: { '玄门心法': { level: 0, xp: 0 }, '吐纳': { level: 2, xp: 0 }, '玄功': { level: 1, xp: 0 } },
+    })
+    checkUpgrade('npc_kind_b')
+    expect(withInternal.abilities['玄门心法'].level).toBe(2)
+    expect(withInternal.juel['20']).toBe(0)   // 50 + 100 全扣
+  })
+
   it('sex_need 性别限定：男限定腰技/女限定胸技', async () => {
     await loadTestMod()
     // 注意：全能力顺序遍历共享 juel 池（erArk 同构）——指技 70 + 腰技/胸技 70 = 140

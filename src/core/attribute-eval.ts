@@ -410,6 +410,24 @@ export function collectDeclarativeMods(entity: any): AttributeModSource[] {
       pushMods(out, def?.attribute_mods, level)
     }
   }
+  // ③.5 被装配的能力（2026-09-23 秘籍-内功系统）——声明式来源第四条。
+  //   与 ② 的区别：② 是"拥有即生效"（所有被动技能的 attribute_mods）；本条只在**装配期间**生效。
+  //   装配状态 = 角色的纯数据字段 `equipped_abilities`（能力 ID 列表，随存档往返）；
+  //   加成清单读能力定义的 `equipped_mods`（与 attribute_mods 同形状、同 per_level 缩放规则）。
+  //   core 只认"被装配的能力"这个概念，不认识"内功"——名字与准入规则（槽位数）由上层插件决定。
+  const equipped = entity.equipped_abilities
+  if (Array.isArray(equipped)) {
+    for (const id of equipped) {
+      if (typeof id !== 'string') continue
+      const def = defs.abilities?.[id]
+      const list = def?.equipped_mods
+      if (!Array.isArray(list) || list.length === 0) continue
+      const level = typeof entity.abilities?.[id]?.level === 'number' ? entity.abilities[id].level : 0
+      // 未学会（level 0）却挂在装配位上 = 数据畸形：不提供任何加成（与 ② 同判据）
+      if (level <= 0) continue
+      pushMods(out, list, level)
+    }
+  }
   // ④ 插件追加来源
   for (const fn of extraSources) {
     try {

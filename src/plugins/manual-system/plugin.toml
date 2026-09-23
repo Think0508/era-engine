@@ -1,0 +1,24 @@
+[meta]
+id = "manual-system"
+name = "秘籍-技能系统"
+version = "1.0.0"
+description = "秘籍修炼（经验购买层数）+ 层奖励发放 + 技能经验与层数钳制 + 内功装配 + 击败经验经济"
+
+# 无必需绑定：本插件自带默认属性（经验/内功位），属性名可在 manual-config.toml 覆盖
+
+[condition_fields]
+"character.{id}.manuals.{manual}.level" = { type = "number", description = "秘籍修炼进度（永久单调）" }
+"character.{id}.manuals.{manual}.cap_unlocked" = { type = "number", description = "永久解锁的层数上限（任务/合成写入）" }
+"character.{id}.equipped.{ability}" = { type = "boolean", description = "该可装配能力是否装配中（内功等）" }
+
+[data_dependencies]
+provides = ["manual:ready"]
+depends_on = ["effects:ready", "abilities:ready", "characters:initialized", "combat:ready"]
+
+[[events.listen]]
+name = "combat:skill_used"
+description = "战斗中使用主动技能 → 玩家/在队者积累技能经验（悟性×N）"
+
+[[events.listen]]
+name = "combat:end"
+description = "战斗结束 → 击破经验结算（敌方血量上限/10，首杀 ×3）"

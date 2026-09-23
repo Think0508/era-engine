@@ -9,7 +9,8 @@
 #   max_level：等级上限——0 = 无等级能力（存 {level:1, xp:null}）；>0 = 升级能力
 #         （存 {level, xp}，xp 由 gain_ability_xp 效果增加）
 #   tags：自由字符串【数组，可多个】——标签是插件按类型查询能力的通道：
-#         combat-wuxia 查 "combat_active"/"sword"/"internal"；其他插件可查任意标签。
+#         combat-wuxia 查 "combat_active"/"sword"/"轻功"（系别标签见该插件 plugin.toml）；
+#         内功用 "内功"（manual-system 的「已修炼内功」分组）；其他插件可查任意标签。
 #         ⚠️ 没有插件查询的标签 = 无害但没人用（h-core 默认能力标签如 "abl"/"h_mark"）
 #   effects：⚠️ 已改名——战斗效果请写 battle_effects【数组，见 docs/combat-system.md】，
 #         技能只写引用：battle_effects = [{ effect = "流血", chance = 0.3 }]
@@ -28,7 +29,8 @@ name = "吐纳术"
 description = "江湖基础内功心法，打坐调息用"
 type = "passive"
 max_level = 10
-tags = ["internal"]
+passive_kind = "内功"
+tags = ["combat_passive"]
 xp_curve = "linear"
 xp_per_level = 100
 # 被动效果示例（取消注释即生效；combat-wuxia 的战斗效果库内置了 回血/回内 等条目）：
@@ -44,7 +46,8 @@ name = "龟息功"
 description = "吐纳术进阶，气血恢复更快"
 type = "passive"
 max_level = 5
-tags = ["internal"]
+passive_kind = "内功"
+tags = ["combat_passive"]
 
 # ── 写法变体：max_level = 0 的无等级能力（存 {level:1, xp:null}，不升级）──
 # 适合"会/不会"型能力（如 轻功、暗器 这类只问有没有的）：
@@ -90,8 +93,8 @@ max_level = 3
 tags = ["abl"]
 mode = "condition"
 sex_need = -1
-# 附加判定：内功（internal tag）能力等级之和 ≥ 当前等级×2（每级升级前都检查）
-extra_needs = [{ type = "ability_sum", tag = "internal", per_level = 2 }]
+# 附加判定：内功（passive_kind = "内功"）能力等级之和 ≥ 当前等级×2（每级升级前都检查）
+extra_needs = [{ type = "ability_sum", kind = "内功", per_level = 2 }]
 
 [[abilities."房中术".upgrades]]
 # 0→1：皮肤经验 ≥ 5（E 类型，数字 id 直通）

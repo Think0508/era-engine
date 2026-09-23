@@ -343,6 +343,42 @@ function addOverlays(base: CombatStats, ...overlays: (StatOverlay | undefined)[]
 
 // ── onLoad：effect type 注册 ─────────────────────────────────────────────
 
+// 注释：技能蓝耗提供者（2026-09-23 秘籍-技能系统）——技能定义**没写 `cost`** 时，
+// 由外部（manual-system 按秘籍品级表）给蓝耗；技能显式写 cost → 显式值优先，提供者不参与。
+// 战斗是唯一消费 `cost` 的地方（内力校验 / 可用技列表 / 追击与复读再扣），所以解析器放在这里；
+// 其他消费方（combat-wuxia 的可用技列表与指令标签）走 `combat.getSkillCost` API，避免各写一份。
+export type SkillCostProvider = (charId: string, skillId: string, def: any) => number | null
+const skillCostProviders: SkillCostProvider[] = []
+
+/** 注册技能蓝耗提供者（幂等：同一函数重复注册忽略） */
+export function registerSkillCostProvider(fn: SkillCostProvider): void {
+  if (typeof fn === 'function' && !skillCostProviders.includes(fn)) skillCostProviders.push(fn)
+}
+
+/** 测试/重载用：清空提供者 */
+export function __resetSkillCostProviders(): void {
+  skillCostProviders.length = 0
+}
+
+/** 解析技能蓝耗：显式 `cost` 优先 → 各提供者（首个有效值）→ 0。
+ *  提供者抛错 → 忽略该提供者 + 去重上报（不阻断战斗结算）。 */
+function resolveSkillCost(charId: string, skillId: string | null, def: any): number {
+  if (typeof def?.cost === 'number' && Number.isFinite(def.cost) && def.cost >= 0) return def.cost
+  if (!skillId || skillCostProviders.length === 0) return 0
+  for (const fn of skillCostProviders) {
+    try {
+      const v = fn(charId, skillId, def)
+      if (typeof v === 'number' && Number.isFinite(v) && v >= 0) return v
+    } catch (err) {
+      errorReporter.reportDedup(`combat.skill-cost-provider:${skillId}`, {
+        source: 'combat-base', severity: 'error',
+        message: `技能蓝耗提供者抛错（技能 '${skillId}'）：${err instanceof Error ? err.message : String(err)}——已忽略该提供者`,
+      })
+    }
+  }
+  return 0
+}
+
 export function onLoad(_ctx: PluginContext): void {
   // 缺省施加器（zone 型条目的 apply 缺省值）
   registerApplyHandler('mount', defaultMountApply)
@@ -531,7 +567,7 @@ export function onLoad(_ctx: PluginContext): void {
     if (limit > 0 && actCtx.combat.extraAttacksLeft <= 0) return
     const mod = modLoader.getMod()
     const def = mod?.abilities?.[job.skillId]
-    const cost = typeof def?.cost === 'number' ? def.cost : 0
+    const cost = resolveSkillCost(job.source, job.skillId, def)
     const src = actCtx.combat.combatants.get(job.source)
     if (!src) return
     if (src.mp < cost) {
@@ -625,7 +661,7 @@ export function onLoad(_ctx: PluginContext): void {
     if (!job || !job.isOriginal || !job.skillId) return
     const mod = modLoader.getMod()
     const def = mod?.abilities?.[job.skillId]
-    const cost = typeof def?.cost === 'number' ? def.cost : 0
+    const cost = resolveSkillCost(job.source, job.skillId, def)
     const src = actCtx.combat.combatants.get(job.source)
     if (!src) return
     if (src.mp < cost) {
@@ -672,6 +708,15 @@ export function onEnable(ctx: PluginContext): void {
   ctx.events.on('game:mod_loaded', () => validateBattleEffectDefs())
 
   ctx.api.register('combat', {
+    // 技能蓝耗（显式 cost 优先 → 外部提供者 → 0）：供其他战斗插件/UI 与战斗内一致地取用
+    getSkillCost: (charId: string, skillId: string): number => {
+      const def = modLoader.getMod()?.abilities?.[skillId]
+      return resolveSkillCost(charId, skillId, def)
+    },
+    // 注册技能蓝耗提供者（如 manual-system 按秘籍品级表给蓝耗）
+    registerSkillCostProvider: (fn: SkillCostProvider): void => {
+      registerSkillCostProvider(fn)
+    },
     getCombatContext: (): any => {
       if (!currentCombat) return null
       return {
@@ -1506,8 +1551,8 @@ async function executePlayerAction(actorId: string, options: { type: string; ski
     })
     return
   }
-  // 消耗校验（默认攻击无消耗）
-  const cost = typeof skillDef?.cost === 'number' ? skillDef.cost : 0
+  // 消耗校验（默认攻击无消耗；技能未写 cost 时由蓝耗提供者按品级给）
+  const cost = resolveSkillCost(actorId, skillId, skillDef)
   if (actor.mp < cost) {
     narrativeLog.write(`${getCharName(actorId)} 内力不足，无法使用 ${skillDef?.name ?? skillId}（需 ${cost}）`, 'combat', 'combat-base')
     return
@@ -1559,6 +1604,12 @@ async function executePlayerAction(actorId: string, options: { type: string; ski
   }
   result.formulas = formulaLog.slice(formulaStart)
 
+  // 注释：技能使用事件（2026-09-23 秘籍-技能系统）——"这一次真的用了这招"的**唯一**判定点：
+  // 内力已扣、on_use 已跑完、行动未被 action_block 作废。**不论命中与否都发出**
+  // （经验是"练招"的报酬，不是"打中"的报酬）；默认攻击（skillId=null）不发。
+  // 谁积累技能经验由监听方（manual-system 的闸门：玩家/在队）决定，本插件不做判断。
+  if (skillId) await emitSkillUsed(actorId, skillId, combat.target, result, skillLevel)
+
   await eventBus.emit('combat:turn', {
     actor: actorId,
     action: skillId ? (skillDef?.power !== undefined ? 'skill' : 'skill_buff') : 'attack',
@@ -1588,7 +1639,7 @@ async function npcAutoAction(actorId: string): Promise<void> {
   const pick = usable.length > 0 ? usable[Math.floor(combat.rng() * usable.length)] : null
   const skillId = pick?.id ?? null
   const skillDef = skillId ? modLoader.getMod()?.abilities?.[skillId] : null
-  const cost = typeof skillDef?.cost === 'number' ? skillDef.cost : 0
+  const cost = resolveSkillCost(actorId, skillId, skillDef)
 
   const skillLevel = getSkillLevel(actorId, skillId ?? '')
   const formulaStart = formulaLog.length
@@ -1630,10 +1681,29 @@ async function npcAutoAction(actorId: string): Promise<void> {
     result.crits = totals.crits
   }
   result.formulas = formulaLog.slice(formulaStart)
+  if (skillId) await emitSkillUsed(actorId, skillId, targetId, result, skillLevel)
   await eventBus.emit('combat:turn', {
     actor: actorId, action: skillDef ? 'skill' : 'attack', skillId, target: targetId, result,
   })
   await checkBattleEnd()
+}
+
+/** 发 `combat:skill_used`（标准事件，战斗域）——payload：
+ *  `{ actor, skillId, level, target, result }`。见 executePlayerAction 处的语义注释。 */
+async function emitSkillUsed(
+  actorId: string,
+  skillId: string,
+  targetId: string | null,
+  result: any,
+  level: number,
+): Promise<void> {
+  await eventBus.emit('combat:skill_used', {
+    actor: actorId,
+    skillId,
+    level,
+    target: targetId,
+    result,
+  })
 }
 
 // 可用技能列表（主动、有定义、内力足够）
@@ -1646,7 +1716,7 @@ function getUsableSkills(actorId: string, mp: number): { id: string; level: numb
   for (const [abilityId, entry] of Object.entries(char.abilities)) {
     const def = mod.abilities?.[abilityId]
     if (!def || def.type !== 'active') continue
-    if (typeof def.cost === 'number' && def.cost > mp) continue
+    if (resolveSkillCost(actorId, abilityId, def) > mp) continue
     result.push({ id: abilityId, level: typeof (entry as any)?.level === 'number' ? (entry as any).level : 0 })
   }
   return result
@@ -2209,7 +2279,9 @@ async function endCombat(winner: string, outcome: string): Promise<void> {
   }
 
   await gameContext.exitMode()
-  await eventBus.emit('combat:end', { winner, outcome, participants })
+  // 注释：payload 增 `enemies`（2026-09-23 秘籍-经验经济）——胜负经验的结算需要"打败了谁"
+  // （数值取各敌方的血量上限）。participants 保持原样；enemies = 本场敌方实体 ID（含已阵亡者）。
+  await eventBus.emit('combat:end', { winner, outcome, participants, enemies: combat.enemies.slice() })
   narrativeLog.write(`战斗结束（${outcome}）`, 'combat', 'combat-base')
 }
 

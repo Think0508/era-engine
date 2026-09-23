@@ -155,3 +155,17 @@ speed = { type = "number", default = 5, category = "base", display = true, displ
 # 属性有效值层 计划二夹具（2026-09-22）：声明式来源（装备/被动技能/天赋的 attribute_mods）
 # E2E 用（src/core/mod-loader.test.ts）。display = false（不进 UI 列表）；无生产消费方读取它。
 "修正测试值" = { type = "number", default = 100, category = "base", display = false, description = "属性有效值层 E2E 夹具（声明式修正来源：无来源时 = 裸值 100）" }
+
+# ════════════════════════════════════════
+# 秘籍-技能系统演示（2026-09-23）——让「秘籍」面板在 test-mod 里就能点着玩
+# 「经验」是 manual-system 插件默认属性的 **mod 覆盖**：起手给 2000，够练三流秘籍几层；
+# 「武学常识」是品级表 auto_growth 的目标属性（未定义会在加载期报 error）。
+# 完整武侠品级表见 mods/武侠/definitions/manual-tiers.toml（这边只放演示用的三流）。
+# ════════════════════════════════════════
+"经验" = { type = "number", default = 5000, category = "base", display = true, display_group = "growth", description = "秘籍修炼经验（manual-system；演示起手 5000：够把两本演示秘籍各练几层）" }
+"武学常识" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "秘籍层成长：武学常识（manual-system 演示）" }
+# 下面三项与 combat-wuxia 插件默认层同值（mod 覆盖 = 无害）：目的是让 test-mod 数据在
+# **只看 mod 文件**的独立校验（parseModData）下也自足——秘籍演示引用它们（系数成长/装配加成）
+"拳掌系数" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "拳掌系伤害系数（combat-wuxia 默认；此处列出使 test-mod 数据自足）" }
+"力道" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "武侠六维：力道（combat-wuxia 默认；此处列出使 test-mod 数据自足）" }
+"轻灵" = { type = "number", default = 0, category = "base", display = true, display_group = "combat", description = "人物风格：轻灵（combat-wuxia 默认；此处列出使 test-mod 数据自足）" }

@@ -930,6 +930,45 @@ describe('combat-wuxia 数据校验', () => {
     expect(errorReporter.getErrors().some(e => e.message.includes('category'))).toBe(true)
   })
 
+  // 被动类别 passive_kind（2026-09-23）：与主动 category 是两个字段，"异术"同名不冲突
+  it('passive_kind 非法 / 主动技能写 passive_kind → error；被动写 category → warning（惰性字段）', () => {
+    const mod = modLoader.getMod()!
+    Object.assign(mod.abilities, {
+      '怪内功': { id: '怪内功', name: '怪内功', type: 'passive', max_level: 5, passive_kind: '妖法', tags: [] },
+      '错位招式': {
+        id: '错位招式', name: '错位招式', type: 'active', power: 10, cost: 0, category: '拳掌',
+        passive_kind: '内功', tags: [],
+      },
+      '写错字段的护体': {
+        id: '写错字段的护体', name: '写错字段的护体', type: 'passive', max_level: 5, category: '异术', tags: [],
+        battle_effects: [],
+      },
+    })
+    validateBattleData()
+    const errs = errorReporter.getErrors()
+    expect(errs.some(e => e.severity === 'error' && e.message.includes("passive_kind '妖法' 非法"))).toBe(true)
+    expect(errs.some(e => e.severity === 'error' && e.message.includes('却写了 passive_kind'))).toBe(true)
+    expect(errs.some(e => e.severity === 'warning' && e.message.includes('被动技能不消费 category'))).toBe(true)
+  })
+
+  it('被动类别正对照：四类合法取值零报错；主动技能写 category 不受影响', () => {
+    const mod = modLoader.getMod()!
+    Object.assign(mod.abilities, {
+      内功甲: { id: '内功甲', name: '内功甲', type: 'passive', max_level: 5, passive_kind: '内功', tags: [] },
+      护体甲: { id: '护体甲', name: '护体甲', type: 'passive', max_level: 5, passive_kind: '护体', tags: [] },
+      轻功甲: { id: '轻功甲', name: '轻功甲', type: 'passive', max_level: 5, passive_kind: '轻功', tags: [] },
+      异术甲: { id: '异术甲', name: '异术甲', type: 'passive', max_level: 5, passive_kind: '异术', tags: [] },
+      // 主动异术（category）与被异术（passive_kind）同名共存，互不干扰
+      异术招式: { id: '异术招式', name: '异术招式', type: 'active', power: 10, cost: 0, category: '异术', tags: [] },
+    })
+    // 主动异术需要 per-skill 脚本才合法（既有规则）——这里只为验证 passive_kind 不误伤
+    mod.scripts.set('damage_异术招式.js', 'return 100')
+    errorReporter.clear()
+    validateBattleData()
+    const errs = errorReporter.getErrors().filter(e => e.message.includes('passive_kind') || e.message.includes('category'))
+    expect(errs).toEqual([])
+  })
+
   it('技能引用不存在的效果 → 校验报错（列出可用效果）', () => {
     const mod = modLoader.getMod()!
     Object.assign(mod.abilities, {

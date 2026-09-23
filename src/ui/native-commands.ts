@@ -108,6 +108,22 @@ export function registerNativeCommands(): void {
     },
   })
 
+  // 注释：秘籍修炼面板入口（manual-system，2026-09-23）——与秘籍物品的
+  // `open_manual_panel` effect 同一个面板；无秘籍时面板显示空态提示
+  commandRegistry.register({
+    id: 'manuals',
+    label: '秘籍',
+    group: 'main_menu',
+    modes: ['exploration', 'daily_menu'],
+    priority: 31,
+    source: 'native',
+    handler: () => {
+      const uiStore = useUIStore()
+      uiStore.manualPanel = { manual: null }
+      uiStore.setActivePanel('manuals')
+    },
+  })
+
   // 注释：退出到标题——autoSave（对齐 erArk 退出自动存）+ 清空会话状态回标题
   commandRegistry.register({
     id: 'exit_to_title',

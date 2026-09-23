@@ -13,6 +13,7 @@ import SavePanel from './SavePanel.vue'
 import CharacterPanel from './CharacterPanel.vue'
 import SexPositionPanel from './SexPositionPanel.vue'
 import BackpackPanel from './BackpackPanel.vue'
+import ManualPanel from './ManualPanel.vue'
 
 const uiStore = useUIStore()
 
@@ -27,6 +28,7 @@ const panelTitles: Record<string, string> = {
   'save': '存档',
   'sex-position': '性交体位',
   'inventory': '背包',
+  'manuals': '秘籍修炼',
 }
 
 // 注释：关闭面板
@@ -87,6 +89,8 @@ onUnmounted(() => {
         <SexPositionPanel v-else-if="uiStore.activePanel === 'sex-position'" />
         <!-- 注释：背包面板（SYSTEM item 入口） -->
         <BackpackPanel v-else-if="uiStore.activePanel === 'inventory'" />
+        <!-- 注释：秘籍修炼面板（manual-system：修炼/上限/受阻原因；内功位显示） -->
+        <ManualPanel v-else-if="uiStore.activePanel === 'manuals'" />
         <!-- 注释：其他面板占位 -->
         <div v-else>
           <p>面板内容：{{ uiStore.activePanel }}</p>

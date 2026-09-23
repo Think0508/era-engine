@@ -6,6 +6,7 @@ import { errorReporter } from './error-reporter'
 import { useRegistry } from './use-registry'
 import { getCharacterValidators, validateTopLevelLayers } from './character-contract'
 import { modLoader } from './mod-loader'
+import { conditionRegistry } from './condition-registry'
 import type { LoadedMod, RelationTypeDef, RelationGroupDef, Quest, UpgradeNeed } from './mod-types'
 import { isStackable, hasStackLevelConcept } from './mod-types'
 import type { AttributeModSource } from './attribute-eval'
@@ -548,13 +549,26 @@ export function validateAbilityUpgrades(mod: LoadedMod, _modName: string): void 
         // 数字 id 直通（erArk Experience.csv，与 experience 命名空间同序）——无定义文件可机器校验，
         // 常规数据不报（E 需求是 erArk AbilityUp.csv 全量常态；报错只会刷屏）
       } else if (need.type === 'ability_sum') {
-        const hasTag = Object.values(defs).some(d => d.tags?.includes(need.tag as string))
-        if (!hasTag) {
-          errorReporter.report({
-            source: 'mod-loader',
-            severity: 'warning',
-            message: `能力 '${abilityId}' 的聚合判定引用 tag '${need.tag}'，但没有任何能力带此标签（聚合结果恒 0）`,
-          })
+        // 聚合过滤二选一：`kind` = 按被动类别（passive_kind：内功/护体/轻功/异术）；`tag` = 按横切标签
+        if (typeof need.kind === 'string') {
+          const hasKind = Object.values(defs).some(d => (d as any).passive_kind === need.kind)
+          if (!hasKind) {
+            errorReporter.report({
+              source: 'mod-loader',
+              severity: 'warning',
+              message: `能力 '${abilityId}' 的聚合判定引用被动类别 '${need.kind}'，但没有任何能力声明该 passive_kind（聚合结果恒 0）`,
+              suggestion: '被动类别写在能力定义的 passive_kind（内功/护体/轻功/异术）；若想按横切标签聚合请改用 tag',
+            })
+          }
+        } else {
+          const hasTag = Object.values(defs).some(d => d.tags?.includes(need.tag as string))
+          if (!hasTag) {
+            errorReporter.report({
+              source: 'mod-loader',
+              severity: 'warning',
+              message: `能力 '${abilityId}' 的聚合判定引用 tag '${need.tag}'，但没有任何能力带此标签（聚合结果恒 0）`,
+            })
+          }
         }
       }
     }
@@ -566,18 +580,269 @@ export function validateAbilityUpgrades(mod: LoadedMod, _modName: string): void 
   }
 }
 
+// 注释：能力成长曲线校验（2026-09-23 秘籍-技能系统）——
+// 此前 `xp_curve` 无任何加载期校验，未知值在运行期被 `getXpRequired` 静默当 100
+// （"写了 curve 却按 100 XP 升级"，无声无息）。现按四种合法值分别校验形状：
+//   linear/exponential → xp_per_level 数字（缺省按 100）；custom → 数字数组；
+//   geometric → 对象 { base, ratio? }（第 n 级 = base × ratio^(n-1)）。
+// 判 error（不是 warning）：曲线写错 = 全部升级数值错，且没有任何运行时信号。
+export function validateAbilityXpGrowth(mod: LoadedMod): void {
+  const CURVES = ['linear', 'exponential', 'custom', 'geometric']
+  for (const [abilityId, def] of Object.entries(mod.abilities ?? {})) {
+    const curve = def.xp_curve
+    const xp = def.xp_per_level
+    if (curve === undefined) {
+      // 缺省 linear：只校验显式写过的 xp_per_level（数字或对象都可能是笔误）
+      if (xp !== undefined && typeof xp !== 'number') {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `能力 '${abilityId}' 未声明 xp_curve（缺省 linear），但 xp_per_level 不是数字（收到 ${Array.isArray(xp) ? 'array' : typeof xp}）`,
+          suggestion: 'linear 用 xp_per_level = 100；要按数组/几何曲线请显式写 xp_curve',
+        })
+      }
+      continue
+    }
+    if (!CURVES.includes(curve)) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error',
+        message: `能力 '${abilityId}' 的 xp_curve '${curve}' 未知（可用：${CURVES.join(' / ')}）`,
+        suggestion: '未知曲线在运行期会被当成 100 XP/级（静默错值），故判 error',
+      })
+      continue
+    }
+    if (curve === 'custom') {
+      if (!Array.isArray(xp) || !xp.every(v => typeof v === 'number' && Number.isFinite(v))) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `能力 '${abilityId}' 的 xp_curve = "custom" 需要 xp_per_level 为有限数字数组`,
+          suggestion: '例：xp_per_level = [100, 200, 400, 800]',
+        })
+      }
+    } else if (curve === 'geometric') {
+      const spec = xp as { base?: unknown; ratio?: unknown } | undefined
+      const base = spec?.base
+      const ratio = spec?.ratio
+      const badBase = typeof base !== 'number' || !Number.isFinite(base) || base <= 0
+      const badRatio = ratio !== undefined && (typeof ratio !== 'number' || !Number.isFinite(ratio) || ratio <= 0)
+      if (badBase || badRatio) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `能力 '${abilityId}' 的 xp_curve = "geometric" 需要 xp_per_level = { base = 正数, ratio = 正数（可省，缺省 1.15） }`
+            + `（收到 base=${String(base)} ratio=${String(ratio)}）`,
+        })
+      }
+    } else if (typeof xp !== 'number' && xp !== undefined) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error',
+        message: `能力 '${abilityId}' 的 xp_curve = "${curve}" 需要 xp_per_level 为数字（收到 ${Array.isArray(xp) ? 'array' : typeof xp}）`,
+      })
+    }
+  }
+}
+
+// 注释：秘籍定义校验（2026-09-23 秘籍-技能系统）——manual-system 消费的那份数据。
+// 逐条判 error 的理由：这些字段写错的结局都是**静默错值**（练不了层、成长发到不存在的属性、
+// 层奖励永远拿不到），且没有任何运行时信号。
+//   ① 品级不存在 → 经验公式算不出（成本 0 = 白练）
+//   ② kind=skill 缺 category / category 无映射 → 每层系数成长发不出去
+//   ③ layer 越界/非正 → 该层奖励永不触发（或写出超上限的层）
+//   ④ 目标属性未定义 → applyAttrDelta 写进不存在的键（默认值 0 的命名空间里凭空多一个键）
+//   ⑤ 引用的 ability/talent 不存在 → 授予静默跳过
+//   ⑥ requires / layer_requires.condition 字段路径未注册 → 条件恒假（永远练不了）
+//   ⑦ 物品 manual_access.manual 不存在 / cap 非法
+export function validateManualDefs(mod: LoadedMod): void {
+  const tiers = mod.manualTiers?.tiers ?? {}
+  const categoryAttrs = mod.manualTiers?.category_attrs ?? {}
+  // 系别 → 系数属性的映射目标也必须是已定义属性：写错了就是"每层成长静默写进一个无人读的键"
+  for (const [category, attr] of Object.entries(categoryAttrs)) {
+    if (typeof attr !== 'string' || !mod.attributes?.[attr]) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error',
+        message: `manual-tiers.toml 的 category_attrs['${category}'] 指向未定义属性 '${String(attr)}'`,
+        suggestion: '该秘籍品级表把系别映射到系数属性，映射目标必须先在此 mod 的 attributes.toml（或某插件默认层）定义',
+      })
+    }
+  }
+  const checkAttr = (owner: string, attr: unknown, where: string): void => {
+    if (typeof attr !== 'string' || !attr) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error',
+        message: `${owner} 的 ${where} 缺少 attr（目标属性名）`,
+      })
+      return
+    }
+    if (!mod.attributes?.[attr]) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error',
+        message: `${owner} 的 ${where} 引用了未定义属性 '${attr}'`,
+        suggestion: '该属性需先在 attributes.toml 定义（未定义 = 成长静默写进一个无人读的键）',
+      })
+    }
+  }
+
+  for (const [manualId, def] of Object.entries(mod.manuals ?? {})) {
+    const owner = `秘籍 '${manualId}'`
+    const maxLayer = typeof def?.max_layer === 'number' ? def.max_layer : 10
+    if (!tiers[def?.tier]) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error',
+        message: `${owner} 的品级 '${String(def?.tier)}' 在 manual-tiers.toml 中不存在`,
+        suggestion: `可用品级：${Object.keys(tiers).join(' / ') || '（该 mod 尚未定义任何品级）'}`,
+      })
+    }
+    const kind = def?.kind ?? 'skill'
+    if (kind === 'skill') {
+      if (!def?.category) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 是技能秘籍（kind 缺省/\"skill\"）但没有 category（武功类别）——每层系数成长无法决定落到哪个属性`,
+          suggestion: `补 category = "拳掌" 之类，或显式写 kind = "internal"/"passive"（那两类不做自动系数成长）`,
+        })
+      } else if (!categoryAttrs[def.category]) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 的 category '${def.category}' 在 manual-tiers.toml 的 [manual-tiers.category_attrs] 中没有映射`,
+          suggestion: `补映射（如 ${def.category} = "拳掌系数"），或改用 kind = "internal"/"passive"`,
+        })
+      }
+    }
+    for (const g of def?.layer_growth ?? []) {
+      checkAttr(owner, (g as any)?.attr, 'layer_growth')
+      const rg = (g as any)?.range
+      if (rg !== undefined) {
+        if (!Array.isArray(rg) || rg.length !== 2 || rg.some((v: unknown) => typeof v !== 'number' || !Number.isFinite(v))) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error',
+            message: `${owner} 的 layer_growth['${String((g as any)?.attr)}'] 的 range 必须是 [下界, 上界] 两个有限数字`,
+          })
+        }
+      }
+    }
+    for (const r of def?.layer_rewards ?? []) {
+      const layer = (r as any)?.layer
+      if (typeof layer !== 'number' || !Number.isInteger(layer) || layer < 1 || layer > maxLayer) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 的 layer_rewards 层号非法（收到 ${String(layer)}）——必须在 1..${maxLayer}（max_layer）之间`,
+          suggestion: '层号越界的奖励永远不会发放',
+        })
+      }
+      const rAbility = (r as any)?.ability
+      if (rAbility !== undefined && !mod.abilities?.[rAbility]) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 第 ${String(layer)} 层的奖励引用了不存在的能力 '${String(rAbility)}'`,
+          suggestion: `检查 abilities.toml（可用：${Object.keys(mod.abilities ?? {}).slice(0, 8).join('、')}）`,
+        })
+      }
+      const rTalent = (r as any)?.talent
+      if (rTalent !== undefined && !mod.talentDefs?.[rTalent]) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 第 ${String(layer)} 层的奖励引用了不存在的天赋 '${String(rTalent)}'`,
+        })
+      }
+      for (const a of ((r as any)?.attributes ?? []) as any[]) {
+        checkAttr(owner, a?.attr, `第 ${String(layer)} 层的 attributes`)
+        if (typeof a?.flat !== 'number' || !Number.isFinite(a.flat)) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error',
+            message: `${owner} 第 ${String(layer)} 层的属性奖励 '${String(a?.attr)}' 的 flat 不是有限数字`,
+          })
+        }
+      }
+    }
+    for (const lr of def?.layer_requires ?? []) {
+      const layer = (lr as any)?.layer
+      if (typeof layer !== 'number' || !Number.isInteger(layer) || layer < 1 || layer > maxLayer) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 的 layer_requires 层号非法（收到 ${String(layer)}）——必须在 1..${maxLayer} 之间`,
+        })
+      }
+      const cond = (lr as any)?.condition
+      if (typeof cond !== 'string' || !cond.trim()) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 第 ${String(layer)} 层的 layer_requires 缺少 condition`,
+        })
+      } else {
+        const { ok, unknown } = conditionRegistry.validateExpression(cond)
+        if (!ok) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error',
+            message: `${owner} 第 ${String(layer)} 层的修炼门槛引用了未注册字段/前提：${unknown.join(', ')}（条件：${cond}）`,
+            suggestion: '门槛条件恒假 = 这一层永远练不上去；selected. 指修炼者本人',
+          })
+        }
+      }
+    }
+    if (def?.requires !== undefined) {
+      const cond = def.requires
+      if (typeof cond !== 'string' || !cond.trim()) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `${owner} 的 requires 必须是非空 condition 表达式`,
+        })
+      } else {
+        const { ok, unknown } = conditionRegistry.validateExpression(cond)
+        if (!ok) {
+          errorReporter.report({
+            source: 'mod-loader', severity: 'error',
+            message: `${owner} 的 requires 引用了未注册字段/前提：${unknown.join(', ')}（条件：${cond}）`,
+            suggestion: '门槛条件恒假 = 这本秘籍永远练不了；selected. 指修炼者本人',
+          })
+        }
+      }
+    }
+  }
+
+  // 卷册物品：manual_access 的引用与 cap
+  for (const [itemId, def] of Object.entries(mod.items ?? {})) {
+    const access = (def as any)?.manual_access
+    if (!access) continue
+    if (!mod.manuals?.[access.manual]) {
+      errorReporter.report({
+        source: 'mod-loader', severity: 'error',
+        message: `物品 '${itemId}' 的 manual_access.manual '${String(access.manual)}' 不存在`,
+        suggestion: `检查 manuals.toml（可用：${Object.keys(mod.manuals ?? {}).slice(0, 8).join('、')}）`,
+      })
+      continue
+    }
+    if (access.cap !== undefined) {
+      const cap = access.cap
+      const manualDef = mod.manuals[access.manual]
+      const maxLayer = typeof manualDef.max_layer === 'number' ? manualDef.max_layer : 10
+      if (typeof cap !== 'number' || !Number.isInteger(cap) || cap < 1) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `物品 '${itemId}' 的 manual_access.cap 必须是 ≥1 的整数（收到 ${String(cap)}）`,
+        })
+      } else if (cap > maxLayer) {
+        errorReporter.report({
+          source: 'mod-loader', severity: 'error',
+          message: `物品 '${itemId}' 的 manual_access.cap=${cap} 超过秘籍 '${access.manual}' 的 max_layer=${maxLayer}`,
+          suggestion: '残本的 cap 必须 ≤ 秘籍知识上限（否则该值会被 min 静默吃掉，看起来"没生效"）',
+        })
+      }
+    }
+  }
+}
+
 // 注释：声明式属性修正（attribute_mods）加载期校验（属性有效值层 计划二）——
 // 校验引擎真正消费的那份数据（合并后的 items/abilities/talentDefs）。
 // 只上报、不抛错：坏声明在运行时被 collectDeclarativeMods 静默跳过（形状不对即忽略），
 // 若加载期不留痕，"属性名拼错 / flat 拼成 flats / 装备写了 per_level" 全是无声失效。
 // per_level 只允许用在有等级概念的来源（被动技能/天赋）；装备写 → error（不静默当 1 级）。
 export function validateAttributeMods(mod: LoadedMod): void {
-  const check = (owner: string, list: unknown, allowPerLevel: boolean): void => {
+  // field：校验的字段名（attribute_mods / equipped_mods）——两者形状与消费方式完全相同
+  // （equipped_mods 只在装配期间生效，per_level 同样按能力等级缩放），共用同一份校验。
+  const check = (owner: string, list: unknown, allowPerLevel: boolean, field = 'attribute_mods'): void => {
     if (list === undefined) return
     if (!Array.isArray(list)) {
       errorReporter.report({
         source: 'mod-loader', severity: 'error',
-        message: `${owner} 的 attribute_mods 必须是数组`,
+        message: `${owner} 的 ${field} 必须是数组`,
       })
       return
     }
@@ -587,7 +852,7 @@ export function validateAttributeMods(mod: LoadedMod): void {
       if (typeof attr !== 'string' || !mod.attributes?.[attr]) {
         errorReporter.report({
           source: 'mod-loader', severity: 'error',
-          message: `${owner} 的 attribute_mods 引用了未定义属性 '${String(attr)}'`,
+          message: `${owner} 的 ${field} 引用了未定义属性 '${String(attr)}'`,
           suggestion: '该属性需先在 attributes.toml 定义（属性有效值层的闸门以定义为前提，未定义 = 静默不生效）',
         })
         continue
@@ -595,14 +860,14 @@ export function validateAttributeMods(mod: LoadedMod): void {
       if (typeof m?.flat !== 'number' && typeof m?.percent !== 'number' && typeof m?.set !== 'number') {
         errorReporter.report({
           source: 'mod-loader', severity: 'error',
-          message: `${owner} 的 attribute_mods['${attr}'] 至少要给 flat/percent/set 之一`,
+          message: `${owner} 的 ${field}['${attr}'] 至少要给 flat/percent/set 之一`,
           suggestion: '只写 attr 的条目没有任何修正量，运行时会被跳过',
         })
       }
       if (m?.per_level !== undefined && !allowPerLevel) {
         errorReporter.report({
           source: 'mod-loader', severity: 'error',
-          message: `${owner} 的 attribute_mods['${attr}'] 用了 per_level，但该来源没有等级概念`,
+          message: `${owner} 的 ${field}['${attr}'] 用了 per_level，但该来源没有等级概念`,
           suggestion: 'per_level 只能用在被动技能/天赋这类有等级的定义上',
         })
       }
@@ -611,7 +876,7 @@ export function validateAttributeMods(mod: LoadedMod): void {
       if (m?.per_level !== undefined && (typeof m.per_level !== 'number' || !Number.isFinite(m.per_level))) {
         errorReporter.report({
           source: 'mod-loader', severity: 'error',
-          message: `${owner} 的 attribute_mods['${attr}'] 的 per_level 不是有限数字（收到 ${typeof m.per_level}）`,
+          message: `${owner} 的 ${field}['${attr}'] 的 per_level 不是有限数字（收到 ${typeof m.per_level}）`,
           suggestion: 'per_level 必须是数字（最可能是 TOML 里写成了字符串 "2"）；非数字不会参与等级缩放，运行时按无缩放静默处理',
         })
       }
@@ -622,6 +887,8 @@ export function validateAttributeMods(mod: LoadedMod): void {
   }
   for (const [id, def] of Object.entries(mod.abilities ?? {})) {
     check(`能力 '${id}'`, def?.attribute_mods, true)
+    // 装配期间的加成（内功等可装配能力）——形状同 attribute_mods，per_level 同样按等级缩放
+    check(`能力 '${id}'`, def?.equipped_mods, true, 'equipped_mods')
   }
   for (const [id, def] of Object.entries(mod.talentDefs ?? {})) {
     check(`天赋 '${id}'`, def?.attribute_mods, true)

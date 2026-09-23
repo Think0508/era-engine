@@ -42,6 +42,13 @@ class ConditionRegistry {
     { path: 'character.{id}.abilities.{ability}', type: 'number', description: 'Character ability level', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.abilities.{ability}.level', type: 'number', description: 'Character ability level (object form)', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.abilities.{ability}.xp', type: 'number', description: 'Character ability xp', operators: '> < >= <= == !=', source: 'engine' },
+    // 注释：秘籍进度与内功装配（2026-09-23 秘籍-技能系统）——manuals.{秘籍ID}.level 是
+    // 唯一真相（永久单调）；equipped.{能力ID} 走 fieldAliases（equipped → equipped_abilities）
+    // 的数组包含语义（与 location.tags.{tag} 同款）
+    { path: 'character.{id}.manuals.{manual}.level', type: 'number', description: 'Character manual level (修炼进度)', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.manuals.{manual}.cap_unlocked', type: 'number', description: 'Character manual permanently unlocked layer cap', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'player.manuals.{manual}.level', type: 'number', description: 'Player manual level', operators: '> < >= <= == !=', source: 'engine' },
+    { path: 'character.{id}.equipped.{ability}', type: 'boolean', description: 'Character has ability equipped (装配中的内功等)', operators: '== !=', source: 'engine' },
     { path: 'player.abilities.{ability}.level', type: 'number', description: 'Player ability level (CVP A1 转换输出)', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'player.talents.{talent}', type: 'number', description: 'Player talent (CVP A1 转换输出)', operators: '> < >= <= == !=', source: 'engine' },
     { path: 'character.{id}.factions.{faction}', type: 'string', description: 'Character faction rank', operators: '== !=', source: 'engine' },

@@ -21,15 +21,18 @@ import type {
   NpcSpawn, ReactiveLine, ConversationNode, ItemDef, SetDef, StatusEffectDef, JuelDef,
   AttributeDefinition, ModDependency, PendingSpawn, GainRuleDef, AchievementDef,
   CounterDef, CounterViewDef, BodyShapeDef, BodyShapeDimDef, BattleEffectDef,
+  ManualDef, ManualTierTable, ManualConfig,
 } from './mod-types'
 import {
   validateCharacterContract,
   validateSceneSteps,
   validateRelations,
   validateAbilityUpgrades,
+  validateAbilityXpGrowth,
   validateLocations,
   validateTalents,
   validateAttributeMods,
+  validateManualDefs,
   normalizeRelationGroups,
   normalizeRelations,
   normalizeMarksToAbilities,
@@ -290,6 +293,10 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
     battleEffects: {},
     juelDefs: {},
     abilities: {},
+    // 注释：秘籍-技能系统（2026-09-23）——定义桶的初值（加载在 abilities 之后）
+    manuals: {},
+    manualTiers: {},
+    manualConfig: {},
     quests: new Map(),
     // 注释：C3：mod 自定义脚本（parseModData 只给空 Map——脚本 glob 加载在 loadMod 副作用区）
     scripts: new Map(),
@@ -697,6 +704,34 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   // 注释：加载 abilities.toml（插件默认 + mod 定义 deepMerge；支持目录拆分）
   mod.abilities = loadAbilityDefs()
 
+  // 注释：加载 manuals——秘籍定义（2026-09-23 秘籍-技能系统）
+  // 单文件 manuals.toml + 目录拆分 definitions/manuals/*.toml 与 data/default/manuals/*.toml
+  // （大量秘籍按门派/类型分文件维护），与 abilities 同构的三层 override
+  function loadManualDefs(): Record<string, ManualDef> {
+    let result: Record<string, ManualDef> = {}
+    for (const [path, raw] of Object.entries(rawTomlMap)) {
+      const isPluginDefault = path.startsWith('/src/plugins/')
+      const isModData = path.startsWith(`/mods/${modName}/`)
+      if (!isPluginDefault && !isModData) continue
+      if (!path.endsWith('.toml')) continue
+      const isManualFile = path.endsWith('/manuals.toml')
+        || path.includes('/definitions/manuals/')
+        || path.includes('/data/default/manuals/')
+      if (!isManualFile) continue
+      const data = parseFile(path, raw)
+      result = deepMerge(result, (data as any).manuals ?? {})
+    }
+    return result
+  }
+  mod.manuals = loadManualDefs()
+
+  // 注释：加载 manual-tiers.toml（品级表）与 manual-config.toml（属性名与数值系数）——
+  // 与 status-effects / battle-effects 同构的通用数据桶（插件默认层 + mod 覆盖）
+  const tierData = loadMerged<ManualTierTable>('manual-tiers.toml', 'manual-tiers')
+  if (tierData) mod.manualTiers = tierData
+  const manualCfg = loadMerged<ManualConfig>('manual-config.toml', 'manual')
+  if (manualCfg) mod.manualConfig = manualCfg
+
   // 注释：加载 juels.toml（宝珠定义，插件默认 + mod 覆盖）
   const juelData = loadMerged<Record<string, JuelDef>>('juels.toml', 'juels')
   if (juelData) mod.juelDefs = juelData
@@ -962,6 +997,8 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
 
   // 注释：升级路径校验（须在 talents 加载之后——needs 引用 talent 名需要 talentDefs 就绪）
   validateAbilityUpgrades(mod, modName)
+  // 注释：成长曲线校验（2026-09-23）——未知 xp_curve 在运行期会被静默当 100 XP/级
+  validateAbilityXpGrowth(mod)
 
   // 注释：加载 styles.toml（命名样式注册表）
   // 合并语义（2026-08-23 实现默认层）：插件默认层（各插件 data/default/talk/styles.toml，
@@ -1336,6 +1373,9 @@ export function parseModData(modName: string, rawTomlMap: RawTomlMap): LoadedMod
   validateTalents(mod, modName)
   // 注释：声明式属性修正声明校验（属性有效值层 计划二）——items/abilities/talentDefs 合并结果
   validateAttributeMods(mod)
+  // 注释：秘籍定义校验（2026-09-23 秘籍-技能系统）——须在 attributes 注册之后
+  // （requires/layer_requires 的 condition 走 conditionRegistry.validateExpression）
+  validateManualDefs(mod)
   // 注释：角色契约校验（裸字段 warning + 插件注册的必需集校验器）
   validateCharacterContract(mod, modName)
 

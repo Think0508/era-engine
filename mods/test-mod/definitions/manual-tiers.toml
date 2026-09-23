@@ -1,0 +1,21 @@
+# mods/test-mod/definitions/manual-tiers.toml
+# 秘籍-技能系统演示（2026-09-23）——test-mod 只用「三流」一档，够验证全链路。
+# 完整六品级（含内功 ×5 与各层系数成长区间）见 mods/武侠/definitions/manual-tiers.toml。
+# 机制说明见 docs/manual-system.md。
+
+[manual-tiers.category_attrs]
+"拳掌" = "拳掌系数"
+
+[manual-tiers.tiers."三流"]
+xp_base = 250                 # 纯技能秘籍第 1 层（第 n 层 = base × ratio^(n-1)）
+xp_base_internal = 1250       # 内功秘籍第 1 层（= 纯技能 × 5）
+xp_base_skill = 200           # 技能第 1 级（用技能涨经验那条线）
+cost = 170                    # 技能蓝耗：**技能没写 cost 时**按品级自动匹配（三流 170）
+                              # ⚠️ 演示里的「基础掌法」显式写了 cost = 5（test-mod 玩家内力只有 50，
+                              #    用 170 会一招都放不出来）——正好演示"显式值优先"这条规则
+ratio = 1.15
+coeff_bands = [
+  { from = 1, to = 3, min = 1, max = 2 },
+  { from = 3, to = 99, min = 2, max = 4 },
+]
+auto_growth = [ { attr = "武学常识", flat = 1 } ]   # 每层恒有

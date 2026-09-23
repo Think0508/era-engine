@@ -61,6 +61,20 @@ unlocks = [
 ]
 ```
 
+**曲线**（`xp_curve`）：`linear`（每级固定）｜`exponential`（`base × 2^level`）｜
+`custom`（数组，逐级显式）｜`geometric`（`base × ratio^(n−1)`，`xp_per_level = { base, ratio? }`，
+ratio 缺省 1.15）。**未知 curve 值 → 加载期 error**（原来运行期静默按 100 XP/级，是无声错值）。
+
+**外部提供者（2026-09-23 秘籍-技能系统）**——xp 模式的"能升到几级 / 每级要多少"可以外包：
+- `registerLevelCapProvider(fn)`：`fn(charId, abilityId, def) => number | null`（null = 不表态；多个取最小）
+  → 有效上限 = `min(def.max_level, 各提供者)`。**只拦增长，永不回退已存层数**。
+  秘籍系统用它实现"主动技能上限 = 依赖秘籍的已修炼层数"（该角色对这些秘籍毫无进度 → 返回 null = 不钳制）。
+- `registerXpCurveProvider(fn)`：`fn(charId, abilityId, def, level) => number | null` → 优先于 def 自身的曲线
+  （秘籍系统用品级表 `xp_base_skill` 驱动）。
+- `recheck(charId, abilityId?)`：外部上限放宽后补升满经验的技能（幂等）。秘籍升层后由秘籍系统调用。
+
+**到顶后的 xp**：钳在"下一级所需"（保持满值、多余清零）——不再无界累加。
+
 ### condition 模式（erArk AbilityUp.csv 复刻）
 
 ```toml
@@ -121,6 +135,10 @@ ctx.api.call('abilities', 'hasTag', charId, tag)        → boolean
 ctx.api.call('abilities', 'getLevel', charId, abilityId)→ number
 ctx.api.call('abilities', 'gainXp', charId, abilityId, xp) → void
 ctx.api.call('abilities', 'checkUpgrade', charId)       → void（结算点调用：条件驱动升级）
+ctx.api.call('abilities', 'getMaxLevel', charId, abilityId) → number（含外部上限）
+ctx.api.call('abilities', 'recheck', charId, abilityId?) → void（外部上限放宽后补升）
+ctx.api.call('abilities', 'registerLevelCapProvider', fn) → void
+ctx.api.call('abilities', 'registerXpCurveProvider', fn)  → void
 ```
 
 ## Override 规则

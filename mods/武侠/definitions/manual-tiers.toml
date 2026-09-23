@@ -1,0 +1,128 @@
+# ═══════════════════════════════════════════════════════════════════
+# manual-tiers.toml —— 秘籍品级表（武侠 mod）
+#
+# 这份数据 = 秘籍/技能的**经验曲线与自动成长**，机制在 src/plugins/manual-system/（引擎零硬编码数值）。
+# 数值来源：《（不需做仅参考）秘籍与技能的关系》《（不需做仅参考）不同东西的数值定位与价值》。
+#
+# 品级：三流 → 二流 → 一流 → 超一流 → 顶级 → 绝世（与「人物层次/天赋层次」同一套档次）
+#
+# xp_base           纯技能秘籍第 1 层所需经验（第 n 层 = base × ratio^(n-1)）
+# xp_base_internal  内功秘籍第 1 层所需经验 = 纯技能 × 5
+#                   （**有意偏离**参考文档的 ×20：2026-09-23 用户裁定 ×20 量级偏高）
+# xp_base_skill     技能第 1 级所需经验（用技能涨经验那条线）
+# cost              技能蓝耗：**技能没写 cost 时**按品级自动匹配（写了则以显式值为准）；
+#                   无等级武功/特殊武功照旧单独设定
+# coeff_bands       每层武功系数成长：按层区间给 roll 范围（min..max 闭区间，每次升层 roll 一次）
+# auto_growth       每层恒有的成长（武学常识按品级）
+#
+# 📐 量级参照（×5 之后）：顶级内功第 1 层 = 11 万经验、练满十层约 223 万；
+#    绝世内功第 1 层 = 27.5 万、练满约 558 万。对照「大宗师敌人 = 15000-30000 经验、首杀 ×3」
+#    与「顶级纯技能秘籍第 1 层 = 2.2 万」——内功仍是"这一门的重资产"，但不再是天文数字。
+# ⚠️ coeff_bands 的 min 我按"每层至少涨 1 点"填（max = 参考表的"最多涨 x 点"）；
+#    想让成长更稀缺就把 min 改成 0，想更稳定就把 min 提到 max 的一半。
+# ⚠️ 气功/异术两系没有对应系数属性（combat-wuxia 只提供五项系数）——这两系的秘籍
+#    必须在秘籍里手写 layer_growth；若想自动成长，就在 attributes.toml 补「气功系数/异术系数」并加映射。
+# ═══════════════════════════════════════════════════════════════════
+
+[manual-tiers.category_attrs]
+"拳掌" = "拳掌系数"
+"指腿" = "指腿系数"
+"刀剑" = "刀剑系数"
+"奇兵" = "奇兵系数"
+"暗毒" = "暗毒系数"
+
+# ── 三流：无门槛、极低经验、练到顶也没属性回报（单纯过渡）────────────
+[manual-tiers.tiers."三流"]
+xp_base = 250
+xp_base_internal = 1250
+xp_base_skill = 200
+cost = 170
+ratio = 1.15
+coeff_bands = [
+  { from = 1, to = 3, min = 0, max = 0 },
+  { from = 3, to = 5, min = 1, max = 1 },
+  { from = 5, to = 7, min = 1, max = 2 },
+  { from = 7, to = 9, min = 1, max = 3 },
+  { from = 9, to = 99, min = 1, max = 4 },
+]
+auto_growth = [ { attr = "武学常识", flat = 1 } ]
+
+# ── 二流：不难、低经验、回报一般 ─────────────────────────────────
+[manual-tiers.tiers."二流"]
+xp_base = 1200
+xp_base_internal = 6000
+xp_base_skill = 1000
+cost = 600
+ratio = 1.15
+coeff_bands = [
+  { from = 1, to = 3, min = 1, max = 1 },
+  { from = 3, to = 5, min = 1, max = 2 },
+  { from = 5, to = 7, min = 1, max = 3 },
+  { from = 7, to = 9, min = 1, max = 4 },
+  { from = 9, to = 99, min = 1, max = 5 },
+]
+auto_growth = [ { attr = "武学常识", flat = 2 } ]
+
+# ── 一流：中门槛、中经验、回报不错 ───────────────────────────────
+[manual-tiers.tiers."一流"]
+xp_base = 2500
+xp_base_internal = 12500
+xp_base_skill = 1500
+cost = 900
+ratio = 1.15
+coeff_bands = [
+  { from = 1, to = 3, min = 1, max = 2 },
+  { from = 3, to = 5, min = 2, max = 4 },
+  { from = 5, to = 7, min = 3, max = 6 },
+  { from = 7, to = 9, min = 4, max = 8 },
+  { from = 9, to = 99, min = 5, max = 10 },
+]
+auto_growth = [ { attr = "武学常识", flat = 3 } ]
+
+# ── 超一流：较高门槛、高经验、大属性提升 ─────────────────────────
+[manual-tiers.tiers."超一流"]
+xp_base = 6500
+xp_base_internal = 32500
+xp_base_skill = 4000
+cost = 1900
+ratio = 1.15
+coeff_bands = [
+  { from = 1, to = 3, min = 2, max = 4 },
+  { from = 3, to = 5, min = 4, max = 8 },
+  { from = 5, to = 7, min = 6, max = 12 },
+  { from = 7, to = 9, min = 8, max = 16 },
+  { from = 9, to = 99, min = 10, max = 20 },
+]
+auto_growth = [ { attr = "武学常识", flat = 4 } ]
+
+# ── 顶级：高门槛、极高经验；练一门到 7 级左右可战一流高手 ────────
+[manual-tiers.tiers."顶级"]
+xp_base = 22000
+xp_base_internal = 110000
+xp_base_skill = 8000
+cost = 5000
+ratio = 1.15
+coeff_bands = [
+  { from = 1, to = 3, min = 4, max = 8 },
+  { from = 3, to = 5, min = 8, max = 16 },
+  { from = 5, to = 7, min = 12, max = 24 },
+  { from = 7, to = 9, min = 16, max = 32 },
+  { from = 9, to = 99, min = 20, max = 40 },
+]
+auto_growth = [ { attr = "武学常识", flat = 5 } ]
+
+# ── 绝世：隐藏事件任务、超高经验；练一门到 5 级左右可与宗师较量 ──
+[manual-tiers.tiers."绝世"]
+xp_base = 55000
+xp_base_internal = 275000
+xp_base_skill = 12000
+cost = 8500
+ratio = 1.15
+coeff_bands = [
+  { from = 1, to = 3, min = 8, max = 16 },
+  { from = 3, to = 5, min = 16, max = 32 },
+  { from = 5, to = 7, min = 24, max = 48 },
+  { from = 7, to = 9, min = 32, max = 64 },
+  { from = 9, to = 99, min = 40, max = 80 },
+]
+auto_growth = [ { attr = "武学常识", flat = 6 } ]

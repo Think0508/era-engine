@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { useGameStore } from '../stores/game-store'
 import { useUIStore } from '../stores/ui-store'
 import { modLoader } from '../../core/mod-loader'
+import { apiSystem } from '../../core/api'
 import CollapsibleSection from './CollapsibleSection.vue'
 
 const props = withDefaults(defineProps<{
@@ -103,6 +104,92 @@ function filterAbilities(isTechnique: boolean) {
 const techniqueAttrs = filterAbilities(true)
 const skillAttrs = filterAbilities(false)
 
+// 注释：秘籍-技能系统（2026-09-23）——常驻一栏下的四个**被动类别**分组。
+// 类别读 `def.passive_kind`（不是 tag）：主动技能的系别是 `category`，两者刻意分开，
+// 所以「异术」在主动/被动两侧同名也不会混（见 AGENTS「能力标签词表」）。
+const PASSIVE_KINDS = ['内功', '护体', '轻功', '异术'] as const
+
+/** 某被动类别下"已拥有（level>0）"的能力（普通函数——外层 computed 负责响应式收集） */
+function listPassivesByKind(kind: string): { label: string; level: number }[] {
+  void refreshTick.value
+  const char = character.value as any
+  const mod = modLoader.getMod() as any
+  if (!char?.abilities || !mod?.abilities) return []
+  const out: { label: string; level: number }[] = []
+  for (const [name, val] of Object.entries(char.abilities as Record<string, any>)) {
+    const def = mod.abilities[name]
+    if (!def || def.type !== 'passive' || def.passive_kind !== kind) continue
+    if (def.display === false) continue
+    const level = typeof val === 'number' ? val : (val?.level ?? 0)
+    if (level <= 0) continue // 未拥有不显示
+    out.push({ label: name, level })
+  }
+  return out
+}
+
+const passiveSections = computed(() =>
+  PASSIVE_KINDS.map(kind => ({ kind, items: listPassivesByKind(kind) })),
+)
+
+/** 实体是普通对象（Pinia 不追踪内部字段）——装配/秘籍变动后手动 bump，让 computed 重算 */
+const refreshTick = ref(0)
+
+function isEquippable(abilityId: string): boolean {
+  const def = modLoader.getMod()?.abilities?.[abilityId] as any
+  return Array.isArray(def?.equipped_mods) && def.equipped_mods.length > 0
+}
+
+const currentInternal = computed<string[]>(() => {
+  void refreshTick.value
+  const ch = character.value as any
+  return Array.isArray(ch?.equipped_abilities) ? [...ch.equipped_abilities] : []
+})
+
+const internalSlots = computed(() => {
+  void refreshTick.value
+  const id = character.value?.id
+  if (!id) return { used: 0, total: 1, unlimited: false }
+  try {
+    return apiSystem.callSync('internal', 'slots', id) as any
+  } catch {
+    return { used: currentInternal.value.length, total: 1, unlimited: false }
+  }
+})
+
+const manualProgress = computed(() => {
+  void refreshTick.value
+  const ch = character.value as any
+  const mod = modLoader.getMod()
+  const out: { label: string; level: number; cap: number }[] = []
+  for (const [manualId, entry] of Object.entries(ch?.manuals ?? {}) as [string, any][]) {
+    const def = (mod as any)?.manuals?.[manualId]
+    const maxLayer = typeof def?.max_layer === 'number' ? def.max_layer : 10
+    // 可练上限：持有载体（cap 缺省 = max_layer）与永久解锁取最大
+    let cap = 0
+    for (const item of (ch?.inventory ?? []) as any[]) {
+      const acc = (mod as any)?.items?.[item?.itemId]?.manual_access
+      if (acc?.manual !== manualId) continue
+      cap = Math.max(cap, typeof acc.cap === 'number' ? acc.cap : maxLayer)
+    }
+    const unlocked = entry?.cap_unlocked
+    if (typeof unlocked === 'number') cap = Math.max(cap, unlocked)
+    cap = Math.min(cap, maxLayer)
+    out.push({ label: def?.name ?? manualId, level: entry?.level ?? 0, cap })
+  }
+  return out
+})
+
+function toggleInternal(abilityId: string, equip: boolean): void {
+  const id = character.value?.id
+  if (!id) return
+  try {
+    apiSystem.callSync('internal', equip ? 'equip' : 'unequip', id, abilityId)
+  } catch {
+    // 插件未启用（面板静默降级）
+  }
+  refreshTick.value++
+}
+
 // 注释：同行中标记（follow-system 运行时写 sp_flag.is_follow）
 const isFollowing = computed(() => {
   const ch = character.value as any
@@ -194,6 +281,47 @@ const isTimeStopped = computed(() => {
           <p v-else class="text-dim">（无性技术）</p>
         </CollapsibleSection>
 
+        <!-- 注释：常驻一栏的四个被动类别（manual-system/combat-wuxia）——层数随秘籍；
+             可装配的（写了 equipped_mods，通常是内功）显示装配/卸下按钮；内功位只在「内功」栏显示 -->
+        <CollapsibleSection
+          v-for="sec in passiveSections"
+          :key="sec.kind"
+          :title="`已修炼${sec.kind}`"
+          :fold-key="`panel-passive-${sec.kind}`"
+        >
+          <div v-if="sec.kind === '内功'" class="attr-subhead">
+            内功位 {{ internalSlots.unlimited ? '无限' : `${internalSlots.used}/${internalSlots.total}` }}
+          </div>
+          <div v-if="sec.items.length > 0" class="attr-list">
+            <div v-for="a in sec.items" :key="a.label" class="attr-row">
+              <span class="attr-label">{{ a.label }}</span>
+              <span class="attr-val">
+                Lv{{ a.level }}
+                <template v-if="isEquippable(a.label)">
+                  <button
+                    v-if="currentInternal.includes(a.label)"
+                    class="attr-action"
+                    @click="toggleInternal(a.label, false)"
+                  >卸下</button>
+                  <button v-else class="attr-action" @click="toggleInternal(a.label, true)">装配</button>
+                </template>
+              </span>
+            </div>
+          </div>
+          <p v-else class="text-dim">（未修炼{{ sec.kind }}）</p>
+        </CollapsibleSection>
+
+        <!-- 注释：秘籍进度（修炼在「秘籍修炼」面板；这里只读展示层数与可练上限） -->
+        <CollapsibleSection title="秘籍" fold-key="panel-manual">
+          <div v-if="manualProgress.length > 0" class="attr-list">
+            <div v-for="m in manualProgress" :key="m.label" class="attr-row">
+              <span class="attr-label">{{ m.label }}</span>
+              <span class="attr-val">{{ m.level }} / {{ m.cap }} 层</span>
+            </div>
+          </div>
+          <p v-else class="text-dim">（未修炼秘籍）</p>
+        </CollapsibleSection>
+
         <CollapsibleSection title="其他技能" fold-key="panel-skill">
           <div v-if="skillAttrs.length > 0" class="attr-list">
             <div v-for="a in skillAttrs" :key="a.label" class="attr-row">
@@ -236,5 +364,17 @@ const isTimeStopped = computed(() => {
 .attr-label { color: var(--color-text-secondary); }
 .attr-val { color: var(--color-text); font-weight: bold; }
 .attr-level { color: var(--color-primary); font-size: 0.75rem; margin-left: 4px; }
+.attr-subhead { color: var(--color-text-secondary); font-size: 0.8rem; margin-bottom: 2px; }
+.attr-action {
+  margin-left: var(--gap-small);
+  padding: 0 var(--gap-small);
+  min-height: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-button);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 0.75rem;
+}
 .text-dim { color: var(--color-text-secondary); font-size: 0.875rem; }
 </style>

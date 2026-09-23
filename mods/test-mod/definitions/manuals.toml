@@ -1,0 +1,34 @@
+# mods/test-mod/definitions/manuals.toml
+# 秘籍-技能系统演示（2026-09-23）——两本秘籍覆盖两条主干：
+#   ① 初级拳法（纯技能秘籍）：每层按品级表 roll 拳掌系数 + 武学常识，第 1 层给「基础掌法」
+#   ② 龟息功（内功秘籍）：每层手写成长，第 1 层给可装配的内功「龟息功」
+# 载体（卷册）在 items.toml：manual_access = { manual = "..." }（可加 cap 做残本）
+# 完整写法（残本链/层门槛/自设经验公式）见 mods/武侠/definitions/manuals.toml 与 docs/manual-system.md
+
+[manuals."初级拳法"]
+name = "初级拳法"
+description = "拳脚入门（test-mod 演示秘籍）"
+tier = "三流"
+kind = "skill"
+category = "拳掌"
+max_layer = 10
+
+[[manuals."初级拳法".layer_rewards]]
+layer = 1
+ability = "基础掌法"
+
+[[manuals."初级拳法".layer_rewards]]
+layer = 10
+attributes = [ { attr = "轻灵", flat = 5 } ]
+
+[manuals."龟息功"]
+name = "龟息功"
+description = "内功心法（test-mod 演示秘籍）"
+tier = "三流"
+kind = "internal"
+max_layer = 10
+layer_growth = [ { attr = "武学常识", flat = 1 } ]
+
+[[manuals."龟息功".layer_rewards]]
+layer = 1
+ability = "龟息功"

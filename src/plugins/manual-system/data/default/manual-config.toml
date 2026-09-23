@@ -1,0 +1,14 @@
+# manual-system 配置（2026-09-23）——属性名与数值系数全部数据化，插件代码零硬编码
+# mod 可在 definitions/manual-config.toml 写 [manual] 段覆盖
+
+[manual]
+# 修炼消耗的经验池属性名（须在 attributes.toml 定义）
+exp_attr = "经验"
+# 可装配能力（内功）数量属性名；值为 -1 表示无限
+slot_attr = "内功位"
+# 每次使用主动技能获得的技能经验 = 该属性有效值 × xp_per_wit
+wit_attr = "悟性"
+xp_per_wit = 10
+# 击败经验 = 敌方血量上限 / kill_exp_divisor；首杀（该角色首次击败该种敌人）× first_kill_multiplier
+kill_exp_divisor = 10
+first_kill_multiplier = 3

@@ -19,6 +19,10 @@ dependencies = [
 "气功" = { description = "气功系（per-skill 沙箱脚本伤害，无统一公式）" }
 "异术" = { description = "异术系（per-skill 沙箱脚本伤害，无统一公式）" }
 "轻功" = { description = "轻功系（特殊：命中/闪避计算用，非伤害系）" }
+# 被动技能类别标签（2026-09-23 词表定稿：内功/护体/轻功/异术）——
+# 「内功」由 manual-system 用作「已修炼内功」分组 + 装配候选；「护体」供 UI 分组与条件过滤
+"内功" = { description = "内功心法（可装配的分层被动技能；manual-system 装配与分组）" }
+"护体" = { description = "护体功（减伤/反伤类被动技能）" }
 
 [optional_attributes]
 weapon_base = { type = "number", description = "武器基础伤害（装备系统未开工前 = 0）" }

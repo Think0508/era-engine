@@ -18,6 +18,7 @@
 | 状态效果 | `docs/status-system.md` | src/plugins/status-system/ |
 | 任务 | `docs/quest-system.md` | src/plugins/quest-system/ |
 | 能力升级 | `docs/ability-progression.md` | src/plugins/ability-progression/ |
+| 秘籍-技能（修炼/层奖励/内功装配/击破经验） | `docs/manual-system.md` | src/plugins/manual-system/ |
 | 效果系统 | `docs/effect-system.md` | src/plugins/effect-system/ |
 | 道具/背包 | `docs/item-system.md` / `docs/inventory-system.md` | src/plugins/inventory-system/ |
 | 装备/服装 | `docs/clothing-system.md` | src/plugins/inventory-system/（equipment 槽） |
@@ -37,6 +38,43 @@
 | 前提 | `docs/premises.md` | src/core/condition-engine.ts |
 | 指令复刻检查清单 | `docs/skills/replicating-an-instruction.md` | scripts/ 复刻流程 |
 | 人设三属性（坚强度/道德感/贞操观） | `docs/persona-attributes.md` | h-core 默认层已落，纯静态人设数据 |
+
+### 已完成（2026-09-23）——秘籍-技能系统（manual-system）
+
+- **三层结构**：秘籍 = 知识（`definitions/manuals.toml`，层表写全 1..max_layer）／卷册 = 物品
+  （`items.manual_access = { manual, cap }`）／进度 = 角色（`char.manuals[秘籍ID] = { level, cap_unlocked? }`，永久单调）。
+  **残本→完整 = 换载体 + 提升 cap，零继承代码**；卖/丢/被偷不回退已得收益（上限只在增长时钳制）。
+- **修炼** = 花「经验」买层（`practice_manual` / `manual.practice`；layers=0 连修到底）；门槛 = condition 表达式
+  （整本 `requires` + 每层 `layer_requires`，`selected.` = 修炼者）；三条受阻路径（门槛/经验/cap）都不扣经验并返回 `reasons[]`。
+- **发放**：每层成长（手写或品级表 roll）与层奖励（属性**永久写基础值**；技能/天赋授予，"已有则跳过、
+  分层者取更高层"）都只发生在层数 +1 的那次事务；分层被动技能/内功层数随秘籍进度同步（只升不降）。
+- **技能经验**：`combat:skill_used`（新标准事件）→ 闸门（玩家/在队，`follow.isFollowing`）→ 悟性×N；
+  上限由秘籍进度钳制（`registerLevelCapProvider`，**无进度 = 不钳制** → NPC 零影响）；到顶 xp 钳满值；
+  秘籍升层后 `recheck` 立即补升。
+- **内功装配**：能力写 `equipped_mods` 即可装配；状态 `char.equipped_abilities`；加成 = 属性有效值层
+  **声明式来源第 4 条**（装/卸即生效/回落）；槽位 = 属性「内功位」（`-1` = 无限；"学武功 +1 内功位"就是一条
+  `attribute_mods`）；不搞互斥组。
+- **经验经济**：`combat:end`（payload 增 `enemies`）→ 敌方血量上限/10，首杀 ×3（玩家身上的 `kill_ledger`，
+  键 = `template ?? id`）；hp_max 未绑定 = 该 mod 未接入（静默跳过）。
+- **引擎改动**：属性层第 4 声明式来源；`xp_curve` 增 `geometric`（未知曲线改加载期 error）；到顶 xp 钳制；
+  `combat:skill_used`；`combat:end.enemies`；`spawnCharacter` 写 `template`；条件路径
+  `character.{id}.manuals.{id}.level` / `character.{id}.equipped.{id}`。
+- **UI**：「秘籍」面板（层数/可练上限/下一层消耗/受阻原因/一层·连修）+ 角色面板「已修炼内功」（装配/卸下/内功位）
+  与「秘籍」栏 + 秘籍物品 `open_manual_panel` 入口 + 主菜单「秘籍」。
+- **数据**：`mods/武侠/definitions/manual-tiers.toml`（六品级经验/系数成长/武常，数值来源见文件头注释）
+  + `manuals.toml`（四类典型与九阴残本链的写法模板，暂注释待技能落地后启用）；
+  test-mod 带一份开箱可玩的演示数据（初级拳法 + 内功龟息功 + 两本卷册 + 起手 5000 经验）。
+- **数值裁定（2026-09-23）**：内功秘籍 = 纯技能秘籍 × **5**（有意偏离参考文档的 ×20——×20 时
+  顶级内功第 1 层 44 万、练满约 890 万，量级过高）。改在 `manual-tiers.toml` 的 `xp_base_internal`。
+- **技能蓝耗自动匹配（2026-09-23）**：技能没写 `cost` → 按品级表 `cost`（三流 170 … 绝世 8500）；
+  解析器在 combat-base（`getSkillCost` / `registerSkillCostProvider`），战斗内校验/扣减/可用技列表/指令标签同一口径。
+- **能力类别词表定稿（2026-09-23）**：**主动**看 `category`（七系 拳掌/指腿/刀剑/奇兵/暗毒/气功/异术）、
+  **被动**看 `passive_kind`（四类 内功/护体/轻功/异术）、`tags` 只做横切分类；「异术」两侧同名不冲突
+  （靠字段区分）。UI 四栏（已修炼内功/护体/轻功/异术）读 `passive_kind`；加载期校验位置写错即报。
+- **测试**：`manual-system.test.ts` 35 例 + `manual-validate.test.ts` 12 例 + 演示数据端到端 3 例 +
+  属性层装配来源 4 例 + ability-progression 曲线/提供者 13 例 + combat 事件 4 例；
+  全量套件通过（scanner 0 违规）。
+- **待办**：队友系统落地后把技能经验闸门从 `follow.isFollowing` 换成队友谓词（只换这一处）。
 
 ### 已完成（2026-08-17）——chat 默认通用口上（原生指令口上的插件默认层）
 

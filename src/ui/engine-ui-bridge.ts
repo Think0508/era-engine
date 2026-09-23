@@ -73,6 +73,14 @@ export class EngineUIBridge {
     eventBus.on('ui:open_sex_position_panel', openSexPanelHandler)
     this.handlers.push({ event: 'ui:open_sex_position_panel', handler: openSexPanelHandler })
 
+    // 注释：监听 ui:open_manual_panel → 打开秘籍修炼面板（manual-system，2026-09-23）
+    const openManualPanelHandler: BridgeHandler = (payload: any) => {
+      uiStore.manualPanel = { manual: payload?.manual ?? null }
+      uiStore.setActivePanel('manuals')
+    }
+    eventBus.on('ui:open_manual_panel', openManualPanelHandler)
+    this.handlers.push({ event: 'ui:open_manual_panel', handler: openManualPanelHandler })
+
     // 注释：时停状态标记——执行结束/移动后同步 h-time-stop.isActive 到 game-store
     // 自动时停移动的静默循环发生在移动路径（不走指令生命周期），location:enter 兜底
     const syncTimeStopActive: BridgeHandler = () => {

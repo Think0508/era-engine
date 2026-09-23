@@ -78,6 +78,7 @@ needs = [{ type = "juel", id = 9, value = 70 }]
 name = "吐纳"
 type = "passive"
 max_level = 3
+passive_kind = "内功"
 tags = ["internal"]
 mode = "condition"
 [[abilities."吐纳".upgrades]]
@@ -109,7 +110,21 @@ needs = [{ type = "juel", id = 9, value = 70 }]
 name = "玄功"
 type = "passive"
 max_level = 2
+passive_kind = "内功"
 tags = ["internal"]
+
+# ability_sum 的 kind 形式（2026-09-23）：按被动类别聚合，不依赖 tag
+[abilities."玄门心法"]
+name = "玄门心法"
+type = "passive"
+max_level = 2
+mode = "condition"
+tags = ["abl"]
+extra_needs = [{ type = "ability_sum", kind = "内功", per_level = 1 }]
+[[abilities."玄门心法".upgrades]]
+needs = [{ type = "juel", id = 20, value = 50 }]
+[[abilities."玄门心法".upgrades]]
+needs = [{ type = "juel", id = 20, value = 100 }]
 `,
   '/mods/growth-test/definitions/ability-upgrades.toml': `
 [abilities."玄功"]

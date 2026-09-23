@@ -346,7 +346,8 @@ extends = "combat-base"
 | `combat:request` | 调用方 | `{ enemies: string[], context: string }` | 请求开始战斗 |
 | `combat:start` | 战斗插件 | `{ participants: string[] }` | 战斗已开始 |
 | `combat:turn` | 战斗插件 | `{ actor: string, action: string, target: string, result: object }` | 每回合 |
-| `combat:end` | 战斗插件 | `{ winner: string, outcome: string }` | 战斗结束 |
+| `combat:skill_used` | 战斗插件 | `{ actor, skillId, level, target, result }` | **真的用出了**一次主动技能（2026-09-23；内力已扣、行动未被作废；命中与否都发）——技能经验积累的判定点 |
+| `combat:end` | 战斗插件 | `{ winner, outcome, participants, enemies }` | 战斗结束（`enemies` 为 2026-09-23 新增，含已阵亡敌方） |
 
 所有插件自定义事件必须加插件名前缀（`potion:brewed`、`hypnosis:triggered`），防止命名冲突。标准事件不加前缀。
 
@@ -603,9 +604,10 @@ combat_active = { description = "可在战斗中主动使用的能力" }
 
 # 可选：本插件可选使用的能力标签（mod 没有则降级处理，不阻止加载）
 [optional_ability_tags]
-sword = { description = "剑类技能，有剑法加成系数" }
-internal = { description = "内功，影响内力计算" }
-movement = { description = "轻功，影响闪避" }
+"刀剑" = { description = "刀剑系（见 combat-wuxia 的完整系别表）" }
+"内功" = { description = "内功心法（可装配的分层被动技能）" }
+"护体" = { description = "护体功（减伤/反伤类被动技能）" }
+"轻功" = { description = "轻功（命中/闪避相关；也用于被动技能分组）" }
 
 # 可选：本插件注册到条件字典的字段
 [condition_fields]
@@ -1549,12 +1551,26 @@ tags = ["combat_active", "sword"]
 
 [abilities.混元功]
 name = "混元功"
-tags = ["combat_passive", "internal"]
+type = "passive"
+max_level = 10
+passive_kind = "内功"
+tags = ["combat_passive"]
 
 [abilities.催眠术]
 name = "催眠术"
 tags = ["mystic_active"]
 ```
+
+> **能力类别词表（2026-09-23 定稿：主动看 `category`、被动看 `passive_kind`、`tags` 只做横切分类）**：
+> - **主动技能**：`category` = 唯一系别，七系 拳掌/指腿/刀剑/奇兵/暗毒/气功/异术（伤害公式与可用技筛选读它）。
+> - **被动技能**：`passive_kind` = 被动类别，四类 **内功 / 护体 / 轻功 / 异术**（UI 的「已修炼内功/护体/轻功/异术」
+>   四栏与"按类别的加成/条件"读它）。内功的可装配资格仍只看 `equipped_mods`。
+> - **同名不冲突**：「异术」在两侧都有——被动异术是常驻机杼（如每回合雷击），主动异术是耗蓝放的招式；
+>   靠**字段**区分，不靠名字。`getAbilitiesByTag` 只查 `tags`（横切），按类别查用
+>   `combat-wuxia.getPassivesByKind`（被动）或 `getUsableSkills`（主动）。
+> - 加载期校验（combat-wuxia）：`passive_kind` 非法值 / 主动技能写 `passive_kind` → error；
+>   被动技能写 `category` → warning（惰性字段，不影响战斗公式）。
+> - 其他标签（`combat_active`/`sword`/`abl`/`h_mark`…）按插件约定自取。
 
 **插件声明期望标签**（plugin.toml）：
 ```toml
@@ -1582,7 +1598,8 @@ const hasMystic = ctx.api.call('engine', 'abilities.hasTag', charId, 'mystic_act
 [abilities.九阴真经]
 name = "九阴真经"
 max_level = 10
-tags = ["combat_passive", "internal", "legendary"]
+passive_kind = "内功"
+tags = ["combat_passive", "legendary"]
 
 [[abilities.九阴真经.unlocks]]
 at_level = 6
@@ -1721,6 +1738,35 @@ starting_location = "华山_正殿"       # 可选：创建完成后起始地点
 loading_image = "assets/loading.gif"
 # loading_video = "assets/loading.mp4"
 ```
+
+---
+
+### 40. 秘籍-技能系统（manual-system，2026-09-23）
+
+**一句话**：秘籍是知识（`definitions/manuals.toml`）、卷册是物品（`items.manual_access`）、
+进度长在角色身上（`char.manuals[秘籍ID] = { level, cap_unlocked? }`，永久单调）。
+
+- **修炼** = 花「经验」买层（`practice_manual` effect / `manual.practice` API）；每层发永久成长（写基础值）
+  与该层奖励（属性奖励永久写；技能/天赋授予）。**发放只发生在层数 +1 的那次事务**，秘籍数据改动对老存档不追溯。
+- **上限**：可练到 `min(秘籍 max_layer, max(持有载体 cap, 永久解锁 cap))`；`unlock_manual_cap` 写永久解锁
+  （残本→完整 → 换载体提升 cap，**零继承代码**）。钳制只在增长时生效，永不回退已存层数。
+- **分层被动技能（含内功）**：层数 = `min(max_level, max(依赖秘籍进度))`，随秘籍升层同步；
+  **主动技能不同步**——靠 `combat:skill_used` 涨经验（悟性×N），上限由依赖秘籍进度钳制，到顶 xp 钳在满值，
+  秘籍升层后 `recheck` 立即补升。
+- **内功装配**：能力写 `equipped_mods` 即可装配；状态 = `char.equipped_abilities`；
+  加成走属性有效值层的**声明式来源第 4 条**（装/卸即生效/回落）；槽位 = 属性「内功位」（`-1` = 无限）。
+- **技能经验闸门**：玩家本人 或 跟随/在队者（`follow.isFollowing`）；其他 NPC 用技能不计。
+- **技能蓝耗**：技能写了 `cost` 就用它；没写 → 按秘籍品级表的 `cost` 自动匹配
+  （解析器 = `combat.getSkillCost` / `registerSkillCostProvider`，战斗内校验扣减与 UI 标签同一口径）。
+- **依赖关系单写**：秘籍层表是唯一真相，技能侧靠引擎反向索引（可选 `capped_by` 逃生口）。
+- 数据与 API 全量说明见 `docs/manual-system.md`；两条新标准事件见 §5/§36 相关段落。
+
+### 40.1 秘籍相关条件路径与事件
+
+- 条件路径：`character.{id}.manuals.{秘籍ID}.level` / `.cap_unlocked`、`character.{id}.equipped.{能力ID}`
+- 标准事件：`combat:skill_used`（`{actor, skillId, level, target, result}`，"真的用出了这招"的唯一判定点）、
+  `combat:end` payload 增 `enemies`（击破经验结算用）
+- 插件事件：`manual:layer_gained`、`manual:cap_unlocked`、`internal:equipped` / `internal:unequipped`
 
 ---
 

@@ -291,7 +291,48 @@ ctx.api.call('abilities', 'gainXp', charId, abilityId, xp)    // → void（xp �
 ctx.api.call('abilities', 'checkUpgrade', charId)             // → void（2026-08-11：结算点调用，
                                                               //   condition 模式能力按 per-level needs
                                                               //   升级 + 扣宝珠；睡眠/H结束调用）
+ctx.api.call('abilities', 'registerLevelCapProvider', fn)     // → void（2026-09-23 秘籍系统：外部层数上限
+                                                              //   fn(charId, abilityId, def) → number|null，
+                                                              //   null = 不表态；多个取最小。只拦增长不回退）
+ctx.api.call('abilities', 'registerXpCurveProvider', fn)      // → void（外部经验曲线（品级表驱动）：
+                                                              //   fn(charId, abilityId, def, level) → number|null）
+ctx.api.call('abilities', 'recheck', charId, abilityId?)      // → void（外部上限放宽后补升；幂等）
+ctx.api.call('abilities', 'getMaxLevel', charId, abilityId)   // → number（def.max_level 与外部提供者取 min）
 ```
+
+#### manual — 秘籍-技能系统（2026-09-23）
+
+```typescript
+ctx.api.call('manual', 'getState', charId, manualId)          // → ManualState|null（{ level, cap, maxLayer,
+                                                              //   nextCost, canPractice, reasons[], heldVolumes[] }）
+ctx.api.call('manual', 'listManuals', charId)                 // → ManualState[]（持有载体的 + 已修炼的）
+ctx.api.call('manual', 'practice', charId, manualId, layers)  // → { ok, gained, reasons[] }（layers=0 = 连修到底）
+ctx.api.call('manual', 'grantLayer', charId, manualId, toLayer)  // → { ok, gained, reasons[] }（剧情直给，不花经验）
+ctx.api.call('manual', 'unlockCap', charId, manualId, cap)    // → boolean（永久提升可练上限，只增不减）
+ctx.api.call('manual', 'getConfig')                           // → { exp_attr, slot_attr, wit_attr, xp_per_wit,
+                                                              //     kill_exp_divisor, first_kill_multiplier }
+```
+
+#### internal — 内功装配（2026-09-23）
+
+```typescript
+ctx.api.call('internal', 'equip', charId, abilityId)          // → { ok, reason? }（可装配 = 能力有 equipped_mods）
+ctx.api.call('internal', 'unequip', charId, abilityId)        // → { ok, reason? }
+ctx.api.call('internal', 'list', charId)                      // → string[]（装配中的能力 ID）
+ctx.api.call('internal', 'slots', charId)                     // → { used, total, unlimited }（total=-1 = 无限）
+```
+
+- 效果类型（可在任何指令/任务 effects 使用）：`practice_manual`（params.manual / params.layers，0=连修到底）、
+  `learn_manual_layer`（params.manual / params.layer，剧情直给层数，不花经验）、
+  `unlock_manual_cap`（params.manual / params.cap，永久提升可练上限）、
+  `equip_internal` / `unequip_internal`（params.ability）、`grant_exp`（params.amount）、
+  `open_manual_panel`（params.manual?，打开「秘籍」面板）
+- 插件域事件：`manual:layer_gained`（`{character, manual, layer}`）、`manual:cap_unlocked`、
+  `internal:equipped` / `internal:unequipped`
+- 条件路径：`character.{id}.manuals.{秘籍ID}.level` / `.cap_unlocked`、`character.{id}.equipped.{能力ID}`
+- 注册给其他插件的提供者：`abilities.registerLevelCapProvider` / `registerXpCurveProvider`（层数上限与经验曲线）、
+  `combat.registerSkillCostProvider`（技能没写 `cost` 时按品级表给蓝耗）、`follow.isFollowing`（技能经验闸门）
+- 完整说明：`docs/manual-system.md`
 
 #### inventory — 背包物品
 
@@ -337,6 +378,10 @@ ctx.api.call('combat', 'recalcStats', entityId)               // → void
 ctx.api.call('combat', 'start', enemies, allies?)             // → void（发出 combat:start）
 ctx.api.call('combat', 'executeAction', actorId, action, targetId) // → void（发出 combat:turn）
 ctx.api.call('combat', 'end', winner, outcome)                // → void（发出 combat:end）
+// 技能蓝耗（2026-09-23 秘籍-技能系统）：显式 cost 优先 → 外部提供者 → 0
+ctx.api.call('combat', 'getSkillCost', charId, skillId)        // → number（战斗内校验/UI 同一口径）
+ctx.api.call('combat', 'registerSkillCostProvider', fn)        // → void（fn(charId, skillId, def) → number|null；
+                                                              //   秘籍系统按品级表 cost 注册；显式 cost 时提供者不参与）
 // 公式中间量通道（机制层：base 只存不解释，语义由注册通道的插件定义）
 ctx.api.call('combat', 'registerChannel', { id, label?, description? })  // → void（幂等）
 ctx.api.call('combat', 'getChannels')                         // → [{id,label,description,source}]
@@ -352,7 +397,8 @@ ctx.api.call('combat', 'setFormulaDetail', on)                // 明细写入叙
 ```typescript
 ctx.api.call('combat-wuxia', 'getSnapshot', charId)           // → 六维/系数/风格/防御面板
 ctx.api.call('combat-wuxia', 'getUsableSkills', charId)       // → 可用主动技（七系过滤）
-ctx.api.call('combat-wuxia', 'getAbilitiesByTag', charId, tag)// → {id, level}[]
+ctx.api.call('combat-wuxia', 'getAbilitiesByTag', charId, tag)// → {id, level}[]（只按 tags；类别不走标签）
+ctx.api.call('combat-wuxia', 'getPassivesByKind', charId, kind) // → {id, level}[]（被动类别：内功/护体/轻功/异术）
 ctx.api.call('combat-wuxia', 'getChannels')                   // → 武侠通道清单（先攻/命中率/…）
 ctx.api.call('combat-wuxia', 'previewDamage', sourceId, skillId?, level?, targetId?)
                                                               // → {parts, value, hitRate, hitParts}
@@ -708,8 +754,9 @@ ctx.api.call('engine', 'premises.getRegisteredIds')            // → string[]
 | dialogue:line | dialogue-system | `{ speaker, text }` | 对话行输出 |
 | dialogue:end | dialogue-system | `{ character, conversationId }` | 对话结束 |
 | combat:start | combat-base | `{ participants }` | 战斗开始 |
-| combat:turn | combat-base | `{ actor, action, target, result }` | 战斗回合 |
-| combat:end | combat-base | `{ winner, outcome }` | 战斗结束 |
+| combat:turn | combat-base | `{ actor, action, target, result }` | 战斗回合（NPC 与玩家都发） |
+| combat:skill_used | combat-base | `{ actor, skillId, level, target, result }` | **真的用出了**一次主动技能（内力已扣、行动未被作废；命中与否都发）。谁积累技能经验由监听方决定（manual-system 的闸门：玩家/在队） |
+| combat:end | combat-base | `{ winner, outcome, participants, enemies }` | 战斗结束（`enemies` = 本场敌方实体 ID，含已阵亡者——击破经验结算用） |
 | item:added | inventory-system | `{ charId, itemId, count }` | 物品添加 |
 | item:removed | inventory-system | `{ charId, itemId, count }` | 物品移除 |
 | item:used | inventory-system | `{ charId, itemId, targetId }` | 物品使用 |

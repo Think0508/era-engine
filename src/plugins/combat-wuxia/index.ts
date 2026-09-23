@@ -64,6 +64,10 @@ interface CompileScene {
 }
 
 const WUXIA_CATEGORIES = ['拳掌', '指腿', '刀剑', '奇兵', '暗毒', '气功', '异术'] as const
+// 被动技能类别（2026-09-23）：与主动 category（七系）**分开的字段**——
+// 「异术」在两侧同名但语义不同（被动异术 = 常驻机杼如每回合雷击；主动异术 = 耗蓝放的招式），
+// 靠字段区分而非名字：UI 四栏（已修炼内功/护体/轻功/异术）读 passive_kind。
+const PASSIVE_KINDS = ['内功', '护体', '轻功', '异术'] as const
 export type WuxiaCategory = (typeof WUXIA_CATEGORIES)[number]
 
 // 系别 → 系别系数属性名（伤害公式 (1+系数/1000)）
@@ -278,7 +282,9 @@ export function onEnable(ctx: PluginContext): void {
         const def = mod.abilities?.[abilityId]
         if (!def || def.type !== 'active') continue
         if (!WUXIA_CATEGORIES.includes((def as any).category)) continue
-        const cost = typeof (def as any).cost === 'number' ? (def as any).cost : 0
+        // 蓝耗走 combat 的解析器（显式 cost 优先 → 外部提供者按品级给 → 0），
+        // 与 combat-base 的内力校验/扣减同一口径（避免"标 170 却按 0 扣"这类分叉）
+        const cost = (apiSystem.callSync('combat', 'getSkillCost', charId, abilityId) as number) ?? 0
         if (cost > mp) continue
         result.push({
           id: abilityId,
@@ -291,6 +297,8 @@ export function onEnable(ctx: PluginContext): void {
       return result
     },
     getAbilitiesByTag: (charId: string, tag: string): any[] => {
+      // 注释：只按 `tags` 匹配（横切分类）；**主动系别看 def.category、被动类别看 def.passive_kind**，
+      // 二者都不是 tag——需要按类别查请用 getPassivesByKind（被动）或 getUsableSkills（主动）
       const char = entitySystem.get('character', charId) as any
       if (!char?.abilities) return []
       const mod = modLoader.getMod()
@@ -298,6 +306,20 @@ export function onEnable(ctx: PluginContext): void {
       return Object.entries(char.abilities)
         .filter(([id]) => mod.abilities[id]?.tags?.includes(tag))
         .map(([id, data]) => ({ id, ...(data as any) }))
+    },
+    // 按被动类别查（内功/护体/轻功/异术）——UI 分组与"按类别加成/条件"用
+    getPassivesByKind: (charId: string, kind: string): { id: string; level: number }[] => {
+      const char = entitySystem.get('character', charId) as any
+      if (!char?.abilities) return []
+      const mod = modLoader.getMod()
+      if (!mod) return []
+      const out: { id: string; level: number }[] = []
+      for (const [id, entry] of Object.entries(char.abilities)) {
+        const def = mod.abilities?.[id] as any
+        if (!def || def.type !== 'passive' || def.passive_kind !== kind) continue
+        out.push({ id, level: typeof (entry as any)?.level === 'number' ? (entry as any).level : 0 })
+      }
+      return out
     },
     // 公式中间量通道清单（文档/UI/校验用；权威实现在 combat-base 注册表）
     getChannels: (): any[] => apiSystem.callSync('combat', 'getChannels') ?? [],
@@ -1206,6 +1228,39 @@ export function validateBattleData(): void {
     const w = def as any
     if (!w || w.type !== 'passive') continue
     validateRefList(`被动技 '${id}'`, w.battle_effects)
+  }
+
+  // 被动类别 passive_kind（2026-09-23）——与主动的 category 分离：
+  // 主动看 category（七系），被动看 passive_kind（四类），故"异术"同名也不会混（不同字段）。
+  // 名字本身不是世界观专属数据，但**取值集合是武侠世界观词**，故校验放在本插件（与 category 同处）。
+  for (const [id, def] of Object.entries(mod.abilities ?? {})) {
+    const w = def as any
+    if (!w) continue
+    const kind = w.passive_kind
+    if (kind !== undefined) {
+      if (!PASSIVE_KINDS.includes(kind)) {
+        errorReporter.report({
+          source: 'combat-wuxia', severity: 'error',
+          message: `能力 '${id}' 的 passive_kind '${String(kind)}' 非法`,
+          suggestion: `可用被动类别：${PASSIVE_KINDS.join('、')}`,
+        })
+      }
+      if (w.type !== 'passive') {
+        errorReporter.report({
+          source: 'combat-wuxia', severity: 'error',
+          message: `能力 '${id}' 是 type='${String(w.type)}' 却写了 passive_kind——被动类别只属于被动技能`,
+          suggestion: '主动技能的系别请写 category（七系：' + WUXIA_CATEGORIES.join('、') + '）；两者是不同字段',
+        })
+      }
+    }
+    // 反向：被动技能写 category 是惰性字段（战斗公式只读主动的 category）——易误以为有用，给 warning
+    if (w.type === 'passive' && w.category !== undefined) {
+      errorReporter.report({
+        source: 'combat-wuxia', severity: 'warning',
+        message: `被动技 '${id}' 写了 category='${String(w.category)}'——被动技能不消费 category（不影响战斗公式）`,
+        suggestion: '被动类别请写 passive_kind（内功/护体/轻功/异术）；category 只对主动技能有意义',
+      })
+    }
   }
 }
 

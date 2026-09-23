@@ -297,7 +297,7 @@ describe('attribute-eval：声明式来源（装备/被动技能/天赋）', () 
   const DEFS = {
     items: { 玄铁护腕: { attribute_mods: [{ attr: '力道', flat: 5 }] } },
     abilities: {
-      龟息功: { attribute_mods: [{ attr: '力道', flat: 10, per_level: 2 }] },
+      龟息功: { attribute_mods: [{ attr: '力道', flat: 10, per_level: 2 }], equipped_mods: [{ attr: '力道', flat: 20, per_level: 5 }] },
       无等级被动: { attribute_mods: [{ attr: '根骨', flat: 3 }] },
       // 等级缩放的 percent / set（终审 Fix 2 的钉子：percent 与 flat 同单位 = 小数；set 不缩放）
       内力运转: { attribute_mods: [{ attr: '力道', percent: 0.1, per_level: 0.05 }] },
@@ -331,6 +331,41 @@ describe('attribute-eval：声明式来源（装备/被动技能/天赋）', () 
     const c = { id: 't1', talents: { 神目: 2 } }
     // 神目：flat=1, per_level=1 → 2 级 = 1 + 1×(2−1) = 2
     expect(readEffective(c, '根骨', 100)).toBe(102)
+  })
+
+  // 注释：装配来源（2026-09-23 秘籍-内功系统）——与"拥有即生效"的 attribute_mods 是**两条来源**：
+  // equipped_mods 只在实体 equipped_abilities 列表里列有该能力时生效。
+  describe('装配来源（equipped_abilities + equipped_mods）', () => {
+    it('装配 + 已学会 → 按等级缩放生效；未装配 → 不生效', () => {
+      const equipped = { id: 'q1', abilities: { 龟息功: { level: 3, xp: 0 } }, equipped_abilities: ['龟息功'] }
+      // 拥有即生效 10+2×2=14，装配再给 20+5×2=30 → 100+14+30 = 144
+      expect(readEffective(equipped, '力道', 100)).toBe(144)
+      const notEquipped = { id: 'q2', abilities: { 龟息功: { level: 3, xp: 0 } } }
+      expect(readEffective(notEquipped, '力道', 100)).toBe(114)
+    })
+
+    it('装配但等级 0（数据畸形）→ equipped_mods 不生效（与 attribute_mods 同判据）', () => {
+      const c = { id: 'q3', abilities: { 龟息功: { level: 0, xp: 0 } }, equipped_abilities: ['龟息功'] }
+      expect(readEffective(c, '力道', 100)).toBe(100)
+    })
+
+    it('装配列表里的未知能力 / 无 equipped_mods 的能力 → 静默跳过', () => {
+      const c = {
+        id: 'q4',
+        abilities: { 无等级被动: { level: 1, xp: 0 } },
+        equipped_abilities: ['无等级被动', '不存在的内功'],
+      }
+      // 无等级被动只有 attribute_mods（根骨 +3），无 equipped_mods → 力道不变
+      expect(readEffective(c, '力道', 100)).toBe(100)
+      expect(readEffective(c, '根骨', 100)).toBe(103)
+    })
+
+    it('卸下即回落（读时现算，无注销路径）', () => {
+      const c: any = { id: 'q5', abilities: { 龟息功: { level: 1, xp: 0 } }, equipped_abilities: ['龟息功'] }
+      expect(readEffective(c, '力道', 100)).toBe(100 + 10 + 20)
+      c.equipped_abilities = []
+      expect(readEffective(c, '力道', 100)).toBe(110)
+    })
   })
 
   it('多源叠加：percent 相加后只乘一次（与 push 栈同一份代数）', () => {

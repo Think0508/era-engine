@@ -1,0 +1,92 @@
+# ═══════════════════════════════════════════════════════════════════
+# manuals.toml —— 秘籍定义（武侠 mod）
+#
+# 分层：**秘籍 = 知识**（ID 唯一，层表写全）；**载体 = 物品**（items.toml 里写
+# `manual_access = { manual = "九阴真经", cap = 5 }`，决定"能练到几层"）。
+# 残本→完整 不需要任何特例代码：换载体 + 提升 cap 即可，进度与已得收益分毫不动。
+#
+# 完整写法见 docs/manual-system.md；下面给出四类典型（含九阴真经残本链）。
+# ⚠️ 现在整块注释掉：本 mod 的 abilities/items 还没落地，启用会触发"引用不存在"的加载期 error。
+#    落地技能与卷册物品后，把对应块打开即可（品级表已就绪：definitions/manual-tiers.toml）。
+# ═══════════════════════════════════════════════════════════════════
+
+# ── 典型 1：纯内功秘籍（每层手写成长；第 1 层给"可装配的内功"）──────────
+# [manuals."龟息功"]
+# name = "龟息功"
+# tier = "二流"
+# kind = "internal"                 # 内功秘籍：走 xp_base_internal（= 纯技能 × 5）
+# max_layer = 10                    # 缺省就是 10
+# layer_growth = [                  # 每层固定成长（内功秘籍成长手写，不套系数表）
+#   { attr = "气血上限", flat = 120 },
+#   { attr = "内力上限", flat = 80 },
+# ]
+# [[manuals."龟息功".layer_rewards]]
+# layer = 1
+# ability = "龟息功"                 # 内功本体：abilities.toml 里写 equipped_mods = [...] 即可装配
+# [[manuals."龟息功".layer_rewards]]
+# layer = 10
+# attributes = [ { attr = "根骨", flat = 6 } ]   # 属性奖励：永久写基础值
+
+# ── 典型 2：主动技能秘籍（每层自动 roll 武功系数；1 层给技能）───────────
+# [manuals."华山剑法"]
+# name = "华山剑法"
+# tier = "一流"
+# kind = "skill"                    # 缺省值，可省
+# category = "刀剑"                  # 必填：每层系数成长落到「刀剑系数」
+# max_layer = 10
+# [[manuals."华山剑法".layer_rewards]]
+# layer = 1
+# ability = "华山剑法"
+# [[manuals."华山剑法".layer_rewards]]
+# layer = 10
+# attributes = [ { attr = "轻灵", flat = 6 }, { attr = "巧技", flat = 8 } ]
+# requires = "selected.悟性 >= 20"   # 可选整本门槛；selected. = 修炼者本人
+
+# ── 典型 3：被动技能秘籍（不分层被动技能：任意层给，给即完全体）────────
+# [manuals."凌波微步"]
+# name = "凌波微步"
+# tier = "顶级"
+# kind = "passive"
+# max_layer = 10
+# layer_growth = [ { attr = "轻功系数", flat = 50 } ]   # 参考：每层轻功系数 +50
+# [[manuals."凌波微步".layer_rewards]]
+# layer = 6
+# ability = "凌波微步"
+
+# ── 典型 4：九阴真经（残本链：人皮 cap5 → 上卷 cap7 → 完整 cap10 → 总纲 cap11）────
+# [manuals."九阴真经"]
+# name = "九阴真经"
+# description = "天下武学总纲"
+# tier = "绝世"
+# category = "拳掌"
+# max_layer = 11                    # 知识上限 11：第 11 层留给"总纲"特例
+# [[manuals."九阴真经".layer_rewards]]
+# layer = 1
+# ability = "九阴真经心法"            # 内功（可装配的分层被动技能）
+# [[manuals."九阴真经".layer_rewards]]
+# layer = 3
+# ability = "九阴白骨爪"
+# [[manuals."九阴真经".layer_rewards]]
+# layer = 8
+# ability = "摧坚神爪"
+# [[manuals."九阴真经".layer_rewards]]
+# layer = 10
+# talent = "九阴天赋"
+# [[manuals."九阴真经".layer_requires]]
+# layer = 6
+# condition = "selected.abilities.九阴真经心法.level >= 5"   # 每层附加门槛
+#
+# 载体（items.toml）：
+# [items."九阴人皮"]
+# name = "九阴人皮"
+# type = "key"
+# stackable = false
+# consume = false
+# tags = ["manual", "kungfu"]
+# effects = [ { type = "open_manual_panel", params = { manual = "九阴真经" } } ]
+# manual_access = { manual = "九阴真经", cap = 5 }
+#
+# [items."九阴真经上卷"]      → manual_access = { manual = "九阴真经", cap = 7 }
+# [items."九阴真经·完整"]     → manual_access = { manual = "九阴真经" }（cap 省 = max_layer）
+# 合成任务：remove 两件 + add 完整本（进度键没变 → 层数自动"继承"，无需任何继承代码）
+# 总纲（剧情物品）：任务里 remove 它 + effect `unlock_manual_cap { manual = "九阴真经", cap = 11 }`

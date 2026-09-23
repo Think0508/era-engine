@@ -151,6 +151,10 @@ export interface ItemDef {
   body_slot?: number        // 身体物品槽位（≥0 时必须声明 body_auto_remove）
   body_auto_remove?: string // manual/h_end/expiry——body_slot≥0 时必填（加载校验）
   [key: string]: any        // 各 type 可扩展字段
+  // 注释：秘籍载体（2026-09-23 秘籍-技能系统）——**持有即解锁修炼该秘籍**，并决定可练到的层数上限。
+  // 完整本只写 manual（cap 缺省 = 该秘籍的 max_layer）；残本写 cap（如九阴人皮 cap = 5）。
+  // 同一个秘籍 ID 可以对应多个载体物品（人皮/上卷/完整本/总纲），上限取持有者的最大值。
+  manual_access?: { manual: string; cap?: number }
 }
 
 // 注释：天赋 modifier 声明
@@ -172,7 +176,8 @@ export interface UpgradeNeed {
   type: 'ability' | 'talent' | 'juel' | 'experience' | 'favorability' | 'trust' | 'ability_sum'
   id?: string | number   // ability/talent 用名称；juel/experience 用 erArk 数字 id（直通）
   value?: number         // 需求值（talent 类型 = 存在性检查，无 value）
-  tag?: string           // ability_sum 用
+  tag?: string           // ability_sum 用：按能力标签聚合
+  kind?: string          // ability_sum 用：按被动类别（passive_kind：内功/护体/轻功/异术）聚合；与 tag 二选一
   per_level?: number     // ability_sum 用（玩家倍率）
   per_level_npc?: number // ability_sum 用（NPC 倍率）
 }
@@ -452,8 +457,26 @@ export interface AbilityDef {
   effects?: any[]
   time_cost?: number
   condition?: string
-  xp_curve?: string     // linear/exponential/custom
-  xp_per_level?: number | number[]
+  xp_curve?: string     // linear/exponential/custom/geometric
+  xp_per_level?: number | number[] | { base: number; ratio?: number }  // geometric: 对象（base/ratio）
+  // 注释：能力类别（combat-wuxia 的七系：拳掌/指腿/刀剑/奇兵/暗毒/气功/异术；实战唯一系别）
+  // **只用于主动技能**（type="active"）：伤害公式/可用技筛选读它；被动技能写它 = 惰性字段（加载期 warning）
+  category?: string
+  // 注释：**被动技能类别**（2026-09-23）——只用于 type="passive"，取值由 combat-wuxia 校验：
+  // 内功 / 护体 / 轻功 / 异术（与主动的 category 是两个字段，故"异术"同名不冲突）。
+  // UI 的「已修炼内功/护体/轻功/异术」四栏与"按类别的加成/条件"都读它；tags 只做横切分类。
+  passive_kind?: string
+  // 注释：技能经验曲线的品级覆盖（manual-system 消费）——缺省 = 取其**授予秘籍中技能经验 base 最高者**
+  // 的品级（品级越高 base 越大）；只有"技能不由秘籍授予"或想特意指定时才写
+  xp_tier?: string
+  // 注释：声明式属性修正（属性有效值层 计划二）——**拥有即生效**，per_level 按能力等级线性追加
+  attribute_mods?: AttributeModSource[]
+  // 注释：装配期间的属性修正（2026-09-23 秘籍-内功系统）——**存在该字段 = 可装配**（不加独立 boolean）；
+  // 只在实体 `equipped_abilities` 列表里列有本能力时生效，per_level 按能力等级缩放
+  equipped_mods?: AttributeModSource[]
+  // 注释：外加上限逃生口（2026-09-23）——技能层数上限的依赖秘籍。一般留空：
+  // 引擎从各秘籍层表**自动反向索引**（谁在几层授予了本技能 → 上限 = 那些秘籍的已修炼进度）
+  capped_by?: string[]
   unlocks?: { at_level: number; ability?: string; talent?: string }[]
   // 注释：升级模式（2026-08-11 成长系统）——"xp"（缺省：gain_ability_xp 即时升级）/
   // "condition"（erArk 式：结算点按 upgrades 逐级检查 needs）
@@ -468,6 +491,62 @@ export interface AbilityDef {
   // 注释：性别限定（erArk Ability.csv sex_need 原值）——-1 通用 / 0 男限定 / 1 女限定
   sex_need?: number
   [key: string]: any
+}
+
+// 注释：秘籍定义（2026-09-23 秘籍-技能系统，manual-system 消费）——core 仅作通用数据桶。
+// 分层：**秘籍 = 知识**（ID 唯一、层表写全），**载体 = 物品**（item.manual_access，决定可练上限）。
+export interface ManualLayerGrowth {
+  attr: string                 // 目标属性（必须已在 attributes.toml 定义）
+  flat?: number                // 固定成长
+  range?: [number, number]     // 随机成长（闭区间；flat 与 range 至少给一个）
+}
+export interface ManualLayerReward {
+  layer: number
+  ability?: string             // 授予技能（已有则跳过；分层技能取更高层）
+  talent?: string              // 授予天赋
+  attributes?: { attr: string; flat: number }[]   // 属性奖励（**永久写基础值**）
+}
+export interface ManualLayerRequire {
+  layer: number
+  condition: string            // 该层附加门槛（condition 表达式；selected. = 修炼者）
+}
+export interface ManualDef {
+  name: string
+  description?: string
+  tier: string                 // 品级（键须存在于 manual-tiers.toml 的 tiers）
+  kind?: string                // skill（缺省）| internal | passive
+  category?: string            // 武功类别（kind=skill 必填；决定每层系数成长的目标属性）
+  max_layer?: number           // 知识上限（缺省 10）
+  layer_growth?: ManualLayerGrowth[]     // 每层成长（不写且 kind=skill → 按品级表 coeff_bands 自动）
+  layer_rewards?: ManualLayerReward[]    // 层奖励
+  requires?: string            // 整本默认门槛（condition）
+  layer_requires?: ManualLayerRequire[]  // 每层覆盖/附加门槛
+  xp?: { base: number; ratio?: number }  // 极个别自设经验公式（缺省按品级表）
+  [key: string]: any
+}
+/** 品级表条目（manual-tiers.toml 的 tiers.*）——数值属 mod 数据，引擎零硬编码 */
+export interface ManualTierDef {
+  xp_base?: number             // 纯技能秘籍第 1 层经验
+  xp_base_internal?: number    // 内功秘籍第 1 层经验
+  xp_base_skill?: number       // 技能第 1 级经验（技能经验曲线用）
+  cost?: number                // 技能蓝耗：技能**没写 cost** 时按品级取（combat-base 的 cost 提供者消费）
+  ratio?: number               // 该品级的公比（缺省 1.15）
+  coeff_bands?: { from: number; to: number; min: number; max: number }[]  // 层区间 → 每次升层 roll 范围
+  auto_growth?: ManualLayerGrowth[]   // 每层恒有的自动成长（如武学常识）
+  [key: string]: any
+}
+export interface ManualTierTable {
+  category_attrs?: Record<string, string>   // 武功类别 → 系数属性名（拳掌 = "拳掌系数"）
+  tiers?: Record<string, ManualTierDef>
+}
+/** 秘籍系统配置（manual-config.toml 的 [manual] 段）——插件默认层提供，mod 可 override */
+export interface ManualConfig {
+  exp_attr?: string            // 修炼消耗的经验池属性名（默认「经验」）
+  slot_attr?: string           // 可装配内功数量属性名（默认「内功位」；-1 = 无限）
+  wit_attr?: string            // 用技能涨经验基准属性名（默认「悟性」）
+  xp_per_wit?: number          // 每次使用技能获得的经验 = 悟性 × 该值（默认 10）
+  kill_exp_divisor?: number    // 击败经验 = 敌方血量上限 / 该值（默认 10）
+  first_kill_multiplier?: number  // 首杀倍率（默认 3）
 }
 
 // 注释：宝珠定义（erArk Juel.csv id 直通）
@@ -794,6 +873,12 @@ export interface LoadedMod {  id: string
   // 注释：战斗效果定义库（combat-wuxia 消费；core 仅作通用数据桶，不认知语义）
   battleEffects: Record<string, BattleEffectDef>
   abilities: Record<string, AbilityDef>
+  // 注释：秘籍定义（2026-09-23 秘籍-技能系统；core 仅作通用数据桶，语义由 manual-system 解释）
+  manuals: Record<string, ManualDef>
+  // 注释：秘籍品级表（经验 base/系数成长 roll 区间/自动成长/类别→属性映射）
+  manualTiers: ManualTierTable
+  // 注释：秘籍系统配置（属性名与数值系数；插件默认层提供，mod override）
+  manualConfig: ManualConfig
   // 注释：宝珠定义（2026-08-11 成长系统，erArk Juel.csv id 直通）
   juelDefs: Record<string, JuelDef>
   // 注释：任务

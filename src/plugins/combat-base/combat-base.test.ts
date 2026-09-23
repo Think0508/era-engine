@@ -1,7 +1,7 @@
 // 注释：combat-base 管线测试——回合循环/命中/暴击/浮动/效果区/反击一层/递归上限/复活/回写/隔离
 // 默认钩子（无 wuxia 公式）下验证通用战斗机制层
 import { describe, it, expect, beforeEach } from 'vitest'
-import { onLoad, onEnable, __resetCombatModule } from './index'
+import { onLoad, onEnable, __resetCombatModule, __resetSkillCostProviders } from './index'
 import { entitySystem } from '../../core/entity-system'
 import { bindingResolver } from '../../core/binding-resolver'
 import { gameContext } from '../../core/game-context'
@@ -1019,5 +1019,113 @@ describe('combat-base 回写只结算增量（快照-回写型读-改-写）', (
     // 旧实现 `Math.min(c.maxMp, c.mp)` = min(20, 50) = 20 → 基础内力被临时上限减益截断 30 点
     expect(rawMp()).toBe(50)
     expect(readRawAttr(player(), 'mp_max')).toBe(50)
+  })
+})
+
+// 2026-09-23 秘籍-技能系统：技能蓝耗提供者（技能没写 cost 时按品级匹配）
+describe('combat-base 技能蓝耗提供者', () => {
+  beforeEach(async () => {
+    __resetSkillCostProviders()
+    await boot()
+    // 加一个**没写 cost** 的技能（走提供者）与一个写了 cost 的技能（显式优先）
+    ;(modLoader.getMod() as any).abilities.无耗写招式 =
+      { id: '无耗写招式', name: '无耗写招式', type: 'active', power: 20, hits: 1 }
+    ;(modLoader.getMod() as any).abilities.显式耗招式 =
+      { id: '显式耗招式', name: '显式耗招式', type: 'active', power: 20, cost: 7, hits: 1 }
+    const p = entitySystem.get('character', 'player') as any
+    if (!p.abilities) p.abilities = {}
+    p.abilities['无耗写招式'] = { level: 1, xp: 0 }
+    p.abilities['显式耗招式'] = { level: 1, xp: 0 }
+  })
+
+  it('技能没写 cost → 用提供者的值（校验与扣减同一口径）', async () => {
+    await apiSystem.call('combat', 'registerSkillCostProvider', () => 30)
+    await startBattle(() => 0.9)
+    expect(apiSystem.callSync('combat', 'getSkillCost', 'player', '无耗写招式')).toBe(30)
+    await playerAct('无耗写招式')
+    expect(apiSystem.callSync('combat', 'getCombatState').combatants.player.mp).toBe(20)  // 50 − 30
+  })
+
+  it('提供者给的值超过内力 → 拒绝（与显式 cost 同一道校验）', async () => {
+    await apiSystem.call('combat', 'registerSkillCostProvider', () => 100)
+    await startBattle(() => 0.9)
+    const result = await playerAct('无耗写招式')
+    expect(result).toBeNull()                                   // 未发生行动
+    expect(narrativeLog.getEntries().some(e => e.text.includes('内力不足'))).toBe(true)
+    expect(apiSystem.callSync('combat', 'getCombatState').combatants.player.mp).toBe(50)  // 未扣
+  })
+
+  it('显式 cost 优先：提供者不参与', async () => {
+    await apiSystem.call('combat', 'registerSkillCostProvider', () => 999)
+    await startBattle(() => 0.9)
+    expect(apiSystem.callSync('combat', 'getSkillCost', 'player', '显式耗招式')).toBe(7)
+    await playerAct('显式耗招式')
+    expect(apiSystem.callSync('combat', 'getCombatState').combatants.player.mp).toBe(43)
+  })
+
+  it('提供者抛错 → 忽略该提供者 + 上报，蓝耗退回 0（不阻断战斗）', async () => {
+    await apiSystem.call('combat', 'registerSkillCostProvider', () => { throw new Error('boom') })
+    await startBattle(() => 0.9)
+    expect(apiSystem.callSync('combat', 'getSkillCost', 'player', '无耗写招式')).toBe(0)
+    expect(errorReporter.getErrors().some(e => e.message.includes('技能蓝耗提供者抛错'))).toBe(true)
+  })
+
+  it('无提供者时：没写 cost 的技能 = 不耗内力（旧行为不变）', async () => {
+    await startBattle(() => 0.9)
+    expect(apiSystem.callSync('combat', 'getSkillCost', 'player', '无耗写招式')).toBe(0)
+    await playerAct('无耗写招式')
+    expect(apiSystem.callSync('combat', 'getCombatState').combatants.player.mp).toBe(50)
+  })
+})
+
+// 2026-09-23 秘籍-技能系统：两个新增/扩展的标准事件
+describe('combat-base 技能使用事件与战果敌方清单', () => {
+  beforeEach(async () => { await boot() })
+
+  it('combat:skill_used：内力已扣、行动未被作废 → 发出（含 actor/skillId/level/target）', async () => {
+    await startBattle(() => 0.9)
+    // 只收玩家的（同一轮里敌人也会用技能 → 它的事件我们也发，谁涨经验由监听方的闸门决定）
+    const seen: any[] = []
+    eventBus.on('combat:skill_used', (p: any) => { if (p.actor === 'player') seen.push(p) })
+    await playerAct('三连击')
+    expect(seen.length).toBe(1)
+    // level = 施动者**自己的能力等级**（玩家夹具没写 abilities 条目 → 0）；
+    // 经验结算用它做钳制基准，故必须带在 payload 里
+    expect(seen[0]).toMatchObject({ actor: 'player', skillId: '三连击', level: 0, target: 'enemy' })
+    // 这次行动真的生效了：30×3 打死 60 血敌人 → 战斗结束（内力已扣、伤害已落），
+    // 而事件在战斗结束前就已发出 ✓
+    expect(apiSystem.callSync('combat', 'getCombatState')).toBeNull()
+  })
+
+  it('默认攻击（skillId = null）→ 不发 combat:skill_used', async () => {
+    await startBattle(() => 0.9)
+    const seen: any[] = []
+    eventBus.on('combat:skill_used', (p: any) => { if (p.actor === 'player') seen.push(p) })
+    await playerAct(null)
+    expect(seen.length).toBe(0)
+  })
+
+  it('内力不足 / action_block 作废 → 不发（不算"用过这招"）', async () => {
+    await startBattle(() => 0.9)
+    const seen: any[] = []
+    eventBus.on('combat:skill_used', (p: any) => { if (p.actor === 'player') seen.push(p) })
+
+    await playerAct('消耗技')                                  // cost 100 > mp 50 → 拒绝
+    expect(seen.length).toBe(0)
+
+    apiSystem.callSync('combat', 'addZoneEffect', 'player', {
+      id: '封穴', trigger: 'action_pre', action: 'action_block', duration: 'battle',
+    })
+    await playerAct('三连击')                                  // 被封穴 → 行动作废
+    expect(seen.length).toBe(0)
+  })
+
+  it('combat:end payload 带 enemies（胜负经验结算需要"打败了谁"）', async () => {
+    await startBattle(() => 0.9)
+    let ended: any = null
+    eventBus.once('combat:end', (p: any) => { ended = p })
+    await apiSystem.call('combat', 'end', 'allies', 'win')
+    expect(ended).toMatchObject({ outcome: 'win', enemies: ['enemy'] })
+    expect(ended.participants).toContain('player')
   })
 })

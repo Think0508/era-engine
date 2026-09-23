@@ -1,0 +1,6 @@
+# manual-system 插件默认属性（2026-09-23 秘籍-技能系统）
+# 三层 override：mod 可在 definitions/attributes.toml 重定义（改名请同步 manual-config.toml）
+
+[attributes]
+"经验" = { type = "number", default = 0, category = "base", display = true, display_group = "growth", description = "修炼资源：击败敌人获得，修炼秘籍消耗（manual-system）" }
+"内功位" = { type = "number", default = 1, category = "base", display = true, display_group = "combat", description = "可装配的内功数量；-1 = 无限（manual-system）" }

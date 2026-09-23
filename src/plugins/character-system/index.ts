@@ -204,6 +204,10 @@ export function onEnable(ctx: PluginContext): void {
       const data = deepMerge(JSON.parse(JSON.stringify(template)), overrides ?? {})
       data.id = id
       data.current_location = atLocation
+      // 注释：来源模板（2026-09-23 秘籍-经验经济）——运行时实例带上模板 ID，
+      // 供"按种类"统计的机制使用（胜负经验的首杀账本：同一模板生成的敌人视为"这类敌人"）。
+      // roster 角色本就在数据里写了 template 字段，两条路径语义一致。
+      if (data.template === undefined) data.template = templateId
       // 注释：C-1（audit-b Critical-1）——merge 后必须过 finalizeCharacterData——
       // 任何进入 entity-system 的角色都须契约最终化（attributes 默认值落位 /
       // abilities 简写展开 / talents 初始化 / relations 归一化），与 pendingSpawns

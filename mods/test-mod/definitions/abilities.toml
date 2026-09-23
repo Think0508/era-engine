@@ -14,7 +14,8 @@ description = "华山派基础剑法（test-mod 示范：mod 自定义能力）"
 name = "混元功"
 type = "passive"
 max_level = 10
-tags = ["combat_passive", "internal", "combat"]
+passive_kind = "内功"
+tags = ["combat_passive", "combat"]
 description = "华山派内功（test-mod 示范：roster 简写引用）"
 
 [abilities."基础攻击"]
@@ -49,3 +50,27 @@ tags = ["combat_passive", "combat"]
 display = false
 description = "属性修正夹具（1 级 +10，每多 1 级再 +2）"
 attribute_mods = [ { attr = "修正测试值", flat = 10, per_level = 2 } ]
+
+# ════════════════════════════════════════
+# 秘籍-技能系统演示（2026-09-23）——配套 definitions/manuals.toml + items.toml 的两本秘籍
+# 「基础掌法」：主动技能（用一次涨一次经验，上限由「初级拳法」进度钳制）
+# 「龟息功」：内功 = 分层被动技能 + 可装配（equipped_mods 存在即可装配；层数随秘籍）
+# ════════════════════════════════════════
+[abilities."基础掌法"]
+name = "基础掌法"
+type = "active"
+max_level = 10
+category = "拳掌"
+power = 50
+cost = 5
+tags = ["combat_active", "拳掌"]
+description = "拳脚入门招式（manual-system 演示：秘籍第 1 层授予；显式 cost 覆盖品级表自动蓝耗）"
+
+[abilities."龟息功"]
+name = "龟息功"
+type = "passive"
+max_level = 10
+passive_kind = "内功"
+tags = ["combat_passive"]
+description = "内功心法（manual-system 演示：可装配，装配期间提供属性加成）"
+equipped_mods = [ { attr = "力道", flat = 20, per_level = 10 }, { attr = "轻灵", flat = 3 } ]

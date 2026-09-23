@@ -115,9 +115,12 @@
 | 能力名（key） | — | ✅ | 角色数据 `abilities = { "吐纳术" = 3 }` 前必须定义 |
 | `name` / `description` | string | — | 显示名/说明 |
 | `type` | string | — | `active`（主动）/ `passive`（被动） |
+| `category` | string | — | **主动技能**的系别（七系：拳掌/指腿/刀剑/奇兵/暗毒/气功/异术）——伤害公式读它 |
+| `passive_kind` | string | — | **被动技能**的类别（四类：内功/护体/轻功/异术）——角色面板四栏与按类别查询读它 |
 | `max_level` | number | — | 0 = 无等级能力；>0 = 升级能力（存 {level, xp}） |
-| `tags` | string[] | — | 自由标签（插件按标签查询，如 combat_active/sword） |
-| `xp_curve` / `xp_per_level` | string/number | — | 升级曲线（linear/exponential/custom） |
+| `tags` | string[] | — | 自由标签（**横切分类**，如 combat_active/sword；系别与被动类别不走标签） |
+| `cost` | number | — | 主动技能内力消耗；**不写则按秘籍品级表自动匹配**（三流 170 … 绝世 8500） |
+| `xp_curve` / `xp_per_level` | string/number | — | 升级曲线（linear/exponential/custom/geometric） |
 | `[[unlocks]]` | 数组 | — | 技能树 `{ at_level, ability?, talent? }`（引用的能力/天赋须已定义） |
 | `time_cost` / `condition` | — | — | active 能力使用耗时/使用条件 |
 
@@ -304,6 +307,9 @@ objective 子格式：`{ type = reach_location|kill_count|collect_items|talk_to,
 | `definitions/talk/styles.toml` | 口上命名样式——写法/可选字段/覆盖规则见 docs/mod-author-guide.md「命名样式（styles）」节 + docs/dialogue-format.md §二；同名键整体覆盖 dialogue-system 提供的插件默认基座 | example-mod 示例 |
 | `definitions/scene-dialogue.toml` / `character-dialogue.toml` | 场景旁白 / 角色通用口上 | docs/mod-workflow.md 第 1 步 + example-mod 示例 |
 | `definitions/bondage/types.toml` | 紧缚类型（⚠️ **整表替换**：写了须完整复制 `src/plugins/h-core/data/default/bondage/types.toml` 的 15 种再改） | docs/bondage-system.md |
+| `definitions/manuals.toml` / `definitions/manuals/*.toml` | 秘籍定义（层表/成长/层奖励/门槛/经验） | docs/manual-system.md |
+| `definitions/manual-tiers.toml` | 秘籍品级表（经验 base / 系数成长 roll 区间 / 武常） | docs/manual-system.md §7.2 |
+| `definitions/manual-config.toml` | 秘籍系统配置（经验池/内功位/悟性 属性名与数值系数） | docs/manual-system.md §7.4 |
 | `migrations/*.toml` | 存档版本迁移 | AGENTS.md §12 |
 | `theme.css` | 自定义样式 | — |
 | `scripts/` | mod 专属 JS（沙箱） | AGENTS.md 安全节 |
